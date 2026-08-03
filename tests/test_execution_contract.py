@@ -29,7 +29,8 @@ class ExecutionContractTests(unittest.TestCase):
         manifest = {"id": "writer", "status": "active", "effects": ["write_workspace"]}
         result = enforce(ExecutionRequest("writer", ("write_workspace",), 30, 1), PolicyDecision(True, ("write_workspace",)), manifest)
         self.assertFalse(result.approved)
-        self.assertEqual(len(result.reasons), 2)
+        self.assertEqual(len(result.reasons), 3)
+        self.assertIn("non-read effects require an enforced runtime effect grant", result.reasons)
 
     def test_enforces_budgets_and_policy(self) -> None:
         result = enforce(ExecutionRequest("repo-reader", ("read_local",), 121, 13), PolicyDecision(False, ()), self.manifest)

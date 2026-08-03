@@ -58,6 +58,21 @@ class SanitizationAuditTests(unittest.TestCase):
             self.assertTrue(result["valid"])
             self.assertEqual(result["legacy_placeholder_hit_count"], 0)
 
+    def test_sanitation_summary_preserves_individual_gate_status(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            gates = audit(Path(directory))["gates"]
+            self.assertEqual(gates["brand_identifier_sanitation"]["status"], "passed")
+            self.assertEqual(gates["secret_scanning"]["status"], "not_run")
+
+    def test_not_run_secret_scan_cannot_be_reported_as_passed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            self.assertEqual(audit(Path(directory))["gates"]["secret_scanning"]["disposition"], "not_run")
+
+    def test_scanner_exclusions_are_recorded(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            result = audit(Path(directory), excluded_names=frozenset({"ignored"}))
+            self.assertIn("ignored", result["gates"]["archive_detection"]["exclusions"])
+
 
 if __name__ == "__main__":
     unittest.main()

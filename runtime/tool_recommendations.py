@@ -5,10 +5,40 @@ import json
 import os
 from pathlib import Path
 import shutil
+import subprocess
 from typing import Callable
 
 
 SKIP_DIRECTORIES = {".git", ".hg", ".svn", ".venv", "venv", "node_modules", "build", "dist", "quarantine", "repo_quarantine"}
+
+
+def search_project_text(project: Path, needle: str, *, resolver: Callable[[str], str | None] = shutil.which) -> tuple[str, ...]:
+    """Search text deterministically; ripgrep is optional acceleration only."""
+    project = project.resolve()
+    executable = resolver("rg")
+    if executable:
+        try:
+            completed = subprocess.run([executable, "--files-with-matches", "--fixed-strings", needle, "."], cwd=project, capture_output=True, text=True, timeout=30, shell=False, env={"PATH": str(Path(executable).parent), "NO_COLOR": "1"})
+            if completed.returncode in {0, 1}:
+                return tuple(sorted((line.removeprefix("./").removeprefix(".\\").replace("\\", "/") for line in completed.stdout.splitlines()), key=lambda value: (value.casefold(), value)))
+        except (OSError, subprocess.TimeoutExpired):
+            pass
+    found = []
+    for base, names, files in os.walk(project, followlinks=False):
+        names[:] = sorted(name for name in names if name not in SKIP_DIRECTORIES)
+        for name in sorted(files):
+            path = Path(base) / name
+            try:
+                if needle in path.read_text(encoding="utf-8", errors="replace"):
+                    found.append(path.relative_to(project).as_posix())
+            except OSError:
+                continue
+    return tuple(sorted(found, key=lambda value: (value.casefold(), value)))
+
+
+def optional_tool_status(resolver: Callable[[str], str | None] = shutil.which) -> dict[str, object]:
+    path = resolver("rg")
+    return {"name": "ripgrep", "available": bool(path), "path": path, "required": False, "disposition": "optional_performance_enhancement"}
 
 
 def _inventory(project: Path, *, maximum_files: int) -> dict[str, object]:
@@ -105,4 +135,3 @@ def assess_project_tooling(
         "installation_policy": "never_auto_install; submit a separate bounded proposal and obtain explicit approval",
         "errors": [],
     }
-

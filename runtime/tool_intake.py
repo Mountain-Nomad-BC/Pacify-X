@@ -34,6 +34,93 @@ def _inside(path: Path, root: Path) -> bool:
     return resolved == root.resolve() or root.resolve() in resolved.parents
 
 
+def _corpus_digest(project: Path) -> str:
+    records = []
+    for path in sorted(project.rglob("*"), key=lambda item: item.as_posix().casefold()):
+        if path.is_file() and not path.is_symlink() and _inside(path, project):
+            records.append((path.relative_to(project).as_posix(), path.stat().st_size, _sha(path)))
+    return hashlib.sha256(json.dumps(records, separators=(",", ":")).encode()).hexdigest()
+
+
+def execute_scanner(
+    command: list[str], *, project: Path, approved_executable: Path,
+    corpus_digest: str, network_allowed: bool | None = None,
+    network_isolation_enforced: bool = False, timeout_seconds: int = 300,
+    runner: Runner = subprocess.run,
+) -> dict[str, Any]:
+    """Run a pre-authorized scanner with a minimal environment and bound result."""
+    if timeout_seconds < 1:
+        raise ValueError("scanner timeout must be positive")
+    if not re.fullmatch(r"[0-9a-f]{64}", corpus_digest):
+        raise ValueError("scanner corpus digest must be a lowercase SHA-256")
+    if network_allowed is None:
+        raise PermissionError("scanner network policy must be explicit")
+    if network_allowed is False and not network_isolation_enforced:
+        raise PermissionError("network-denied scanner requires an enforced isolation adapter")
+    executable = approved_executable.resolve(strict=True)
+    if not executable.is_file() or not os.path.isabs(str(approved_executable)):
+        raise PermissionError("scanner executable must be an absolute regular file")
+    if not command or not Path(command[0]).is_absolute():
+        raise PermissionError("scanner path shadowing or identity mismatch")
+    try:
+        command_executable = Path(command[0]).resolve(strict=True)
+    except OSError as error:
+        raise PermissionError("scanner path shadowing or identity mismatch") from error
+    if command_executable != executable:
+        raise PermissionError("scanner path shadowing or identity mismatch")
+    environment = {
+        "PATH": str(executable.parent), "NO_COLOR": "1", "PYTHONNOUSERSITE": "1",
+    }
+    for name in ("SYSTEMROOT", "WINDIR", "COMSPEC"):
+        if os.environ.get(name):
+            environment[name] = os.environ[name]
+    environment["ENGINEERING_BOOTSTRAP_NETWORK"] = "allow" if network_allowed else "deny"
+    try:
+        version_result = runner(
+            [str(executable), "--version"], cwd=project.resolve(), capture_output=True,
+            text=True, timeout=min(timeout_seconds, 15), shell=False, env=environment,
+        )
+        if version_result.returncode:
+            return {
+                "status": "failure", "failure_stage": "scanner_identity",
+                "scanner": {"path": executable.as_posix(), "sha256": _sha(executable), "version": None},
+                "input_corpus_sha256": corpus_digest, "network_allowed": network_allowed,
+                "network_isolation_enforced": network_isolation_enforced,
+            }
+        version = ((version_result.stdout or version_result.stderr or "").strip().splitlines() or [""])[0][:500]
+        if not version:
+            return {
+                "status": "failure", "failure_stage": "scanner_identity",
+                "scanner": {"path": executable.as_posix(), "sha256": _sha(executable), "version": None},
+                "input_corpus_sha256": corpus_digest, "network_allowed": network_allowed,
+                "network_isolation_enforced": network_isolation_enforced,
+            }
+        completed = runner(command, cwd=project.resolve(), capture_output=True, text=True, timeout=timeout_seconds, shell=False, env=environment)
+    except subprocess.TimeoutExpired:
+        return {
+            "status": "timeout", "scanner": {"path": executable.as_posix(), "sha256": _sha(executable), "version": None},
+            "input_corpus_sha256": corpus_digest, "network_allowed": network_allowed,
+            "network_isolation_enforced": network_isolation_enforced,
+        }
+    output = (completed.stdout or "") + (completed.stderr or "")
+    parse_error = None
+    try:
+        structured = json.loads(completed.stdout or "")
+    except json.JSONDecodeError as error:
+        structured = None
+        parse_error = f"{type(error).__name__}: scanner stdout is not structured JSON"
+    status = "pass" if completed.returncode == 0 and parse_error is None else "failure"
+    return {
+        "status": status, "failure_stage": "structured_output" if parse_error else ("scanner_execution" if completed.returncode else None),
+        "returncode": completed.returncode, "output_sha256": hashlib.sha256(output.encode()).hexdigest(),
+        "output_bytes": len(output.encode()), "structured_output_type": type(structured).__name__ if structured is not None else None,
+        "parse_error": parse_error,
+        "scanner": {"path": executable.as_posix(), "sha256": _sha(executable), "version": version},
+        "network_allowed": network_allowed, "network_isolation_enforced": network_isolation_enforced,
+        "input_corpus_sha256": corpus_digest,
+    }
+
+
 def _inventory(project: Path) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for relative, ecosystem in MANIFESTS.items():
@@ -83,6 +170,8 @@ def scan_project_tooling(
     *,
     execute_scanners: bool = False,
     scanner_approval: bool = False,
+    scanner_network_allowed: bool | None = None,
+    scanner_network_isolation_enforced: bool = False,
     component_approval: bool = False,
     allowed_licenses: Iterable[str] = (),
     runner: Runner = subprocess.run,
@@ -96,25 +185,26 @@ def scan_project_tooling(
     scanners: list[dict[str, Any]] = []
     if execute_scanners and not scanner_approval:
         raise PermissionError("external scanner execution requires explicit scanner approval")
+    if execute_scanners and scanner_network_allowed is None:
+        raise PermissionError("external scanner execution requires an explicit network policy")
     if execute_scanners:
+        corpus_digest = _corpus_digest(project)
         for scanner_id, command in recipes:
             executable = shutil.which(command[0])
             if not executable:
                 scanners.append({"id": scanner_id, "status": "unavailable", "command": command})
                 continue
             try:
-                completed = runner(
-                    [executable, *command[1:]], cwd=project, capture_output=True, text=True,
-                    timeout=300, shell=False, env={**os.environ, "NO_COLOR": "1"},
+                result = execute_scanner(
+                    [str(Path(executable).resolve()), *command[1:]], project=project,
+                    approved_executable=Path(executable), corpus_digest=corpus_digest,
+                    network_allowed=scanner_network_allowed,
+                    network_isolation_enforced=scanner_network_isolation_enforced,
+                    runner=runner,
                 )
-                combined = (completed.stdout or "") + (completed.stderr or "")
-                scanners.append({
-                    "id": scanner_id, "status": "pass" if completed.returncode == 0 else "findings_or_failure",
-                    "returncode": completed.returncode, "output_sha256": hashlib.sha256(combined.encode()).hexdigest(),
-                    "output_bytes": len(combined.encode()), "command": command,
-                })
-            except subprocess.TimeoutExpired:
-                scanners.append({"id": scanner_id, "status": "timeout", "command": command})
+                scanners.append({"id": scanner_id, "command": command, **result})
+            except (OSError, PermissionError) as error:
+                scanners.append({"id": scanner_id, "status": "failure", "command": command, "error": type(error).__name__})
     else:
         scanners = [{"id": name, "status": "available_not_run", "command": command} for name, command in recipes]
     scanner_pass = bool(scanners) and all(item["status"] == "pass" for item in scanners)

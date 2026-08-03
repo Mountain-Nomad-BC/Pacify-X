@@ -98,5 +98,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(); parser.add_argument("--root", type=Path, default=Path.cwd())
     args = parser.parse_args(); root = args.root.resolve(); result = build(root)
     target = root / "registry" / "contract_ownership.json"
-    target.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    target.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(json.dumps({"contract_count": result["contract_count"]}, indent=2))

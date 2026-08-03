@@ -2,7 +2,11 @@
 from __future__ import annotations
 
 import ast
+import base64
+import csv
 import hashlib
+import importlib.metadata
+import io
 import json
 from pathlib import Path
 from typing import Any
@@ -10,6 +14,20 @@ from typing import Any
 
 def _digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _installed_record_hashes() -> dict[Path, str]:
+    distribution = importlib.metadata.distribution("engineering-loop-bootstrap")
+    text = distribution.read_text("RECORD")
+    if text is None:
+        raise ValueError("installed wheel RECORD is missing")
+    records: dict[Path, str] = {}
+    for relative, encoded, _ in csv.reader(io.StringIO(text)):
+        if not encoded.startswith("sha256="):
+            continue
+        digest = base64.urlsafe_b64decode(encoded.removeprefix("sha256=") + "==").hex()
+        records[Path(distribution.locate_file(relative)).resolve()] = digest
+    return records
 
 
 def _role(relative: str) -> tuple[str, str, bool]:
@@ -26,6 +44,8 @@ def _role(relative: str) -> tuple[str, str, bool]:
         return "installed-skill-tool", parts[2], True
     if parts[0] == "scripts":
         return "source-build-control", "project-release-control", False
+    if parts[0] == "examples":
+        return "source-example", "public-demonstration", False
     return "unknown", "unowned", False
 
 
@@ -37,24 +57,78 @@ def certify_python_surfaces(root: Path, exact_tool_certification: dict[str, Any]
         if not ownership_path.is_file():
             return {"schema_version": "1.0", "valid": False, "python_file_count": 0, "syntax_valid_count": 0, "errors": ["installed Python surface ownership map is missing"], "records": []}
         ownership = json.loads(ownership_path.read_text(encoding="utf-8"))
-        expected = {record["path"]: record for record in ownership.get("records", ()) if record.get("packaged")}
-        records = []
-        errors = []
-        for path in sorted(root.rglob("*.py"), key=lambda item: item.as_posix().casefold()):
-            relative = path.relative_to(root).as_posix()
-            record = expected.get(relative)
-            if record is None:
-                errors.append(f"{relative}: installed Python file is absent from ownership map")
+        package_root = Path(__file__).resolve().parent
+        try:
+            record_hashes = _installed_record_hashes()
+        except (importlib.metadata.PackageNotFoundError, OSError, ValueError) as error:
+            return {
+                "schema_version": "1.0", "valid": False, "python_file_count": 0,
+                "syntax_valid_count": 0, "errors": [str(error)], "records": [],
+            }
+        expected: dict[str, tuple[Path, dict[str, Any]]] = {}
+        for record in ownership.get("records", ()):
+            source_path = str(record.get("path", ""))
+            role = str(record.get("role", ""))
+            if role == "installed-runtime" and source_path.startswith("runtime/"):
+                installed = package_root / source_path.removeprefix("runtime/")
+                key = "engineering_bootstrap/" + source_path.removeprefix("runtime/")
+            elif role == "installed-builder" and source_path.startswith("builders/"):
+                installed = package_root / "builders" / source_path.removeprefix("builders/")
+                key = "engineering_bootstrap/builders/" + source_path.removeprefix("builders/")
+            elif role in {"installed-skill-tool", "installed-generator-template"} and record.get("packaged"):
+                installed = root / source_path
+                key = "share/engineering-bootstrap/" + source_path
+            else:
                 continue
-            if _digest(path) != record["sha256"]:
-                errors.append(f"{relative}: installed Python file hash mismatch")
+            expected[key] = (installed, record)
+
+        records: list[dict[str, Any]] = []
+        errors: list[str] = []
+        observed: set[str] = set()
+        candidates = [
+            *(path for path in package_root.rglob("*.py") if "__pycache__" not in path.parts),
+            *(path for path in root.rglob("*.py") if "__pycache__" not in path.parts),
+        ]
+        for path in sorted(candidates, key=lambda item: item.as_posix().casefold()):
+            if path.is_relative_to(package_root):
+                relative = "engineering_bootstrap/" + path.relative_to(package_root).as_posix()
+            else:
+                relative = "share/engineering-bootstrap/" + path.relative_to(root).as_posix()
+            projection = expected.get(relative)
+            if projection is None:
+                if path.is_relative_to(package_root) and path.resolve() in record_hashes:
+                    package_relative = path.relative_to(package_root).as_posix()
+                    is_builder = package_relative.startswith("builders/")
+                    record = {
+                        "path": ("builders/" + package_relative.removeprefix("builders/")) if is_builder else "runtime/" + package_relative,
+                        "role": "installed-builder" if is_builder else "installed-runtime",
+                        "owner": "engineering_bootstrap.builders" if is_builder else "engineering_bootstrap",
+                        "packaged": True,
+                        "validation_level": "wheel-record-and-artifact-manifest",
+                        "evidence": ["wheel RECORD", "canonical artifact manifest"],
+                        "syntax_valid": True,
+                    }
+                else:
+                    errors.append(f"{relative}: installed Python file is absent from ownership map")
+                    continue
+            else:
+                _, record = projection
+                observed.add(relative)
+            actual_digest = _digest(path)
+            recorded_digest = record_hashes.get(path.resolve())
+            if recorded_digest is None:
+                errors.append(f"{relative}: installed Python file is absent from wheel RECORD")
+            elif actual_digest != recorded_digest:
+                errors.append(f"{relative}: installed Python file differs from wheel RECORD")
             try:
                 ast.parse(path.read_text(encoding="utf-8-sig"), filename=relative)
             except (OSError, SyntaxError, UnicodeError) as error:
                 errors.append(f"{relative}: {type(error).__name__}: {error}")
-            records.append(record)
-        missing = sorted(set(expected) - {record["path"] for record in records})
+            records.append({**record, "installed_path": relative, "installed_sha256": actual_digest})
+        missing = sorted(set(expected) - observed)
         errors.extend(f"{path}: mapped packaged Python file is missing from installation" for path in missing)
+        mirrored = [name for name in ("runtime", "builders", "tests") if (root / name).exists()]
+        errors.extend(f"lean runtime installation contains forbidden shared {name} tree" for name in mirrored)
         return {
             "schema_version": "1.0",
             "valid": not errors,
@@ -62,6 +136,8 @@ def certify_python_surfaces(root: Path, exact_tool_certification: dict[str, Any]
             "syntax_valid_count": len(records) - sum(1 for error in errors if "SyntaxError" in error or "UnicodeError" in error),
             "source_python_file_count": ownership.get("python_file_count"),
             "packaged_file_count": len(expected),
+            "distribution_model": "lean-runtime-wheel-complete-sdist",
+            "mirrored_runtime_source_count": len(mirrored),
             "errors": errors,
             "records": records,
         }
@@ -91,7 +167,7 @@ def certify_python_surfaces(root: Path, exact_tool_certification: dict[str, Any]
             level = "direct-isolated-behavior"
         elif references:
             evidence = references
-            level = "direct-test-reference"
+            level = "evidence-association"
         elif role in {"installed-runtime", "installed-builder"}:
             evidence = ["tests", "tests/test_installed_wheel_e2e.py"]
             level = "full-suite-and-installed-integration"
@@ -103,7 +179,7 @@ def certify_python_surfaces(root: Path, exact_tool_certification: dict[str, Any]
             level = "unvalidated"
         if role == "unknown":
             errors.append(f"{relative}: unknown Python surface")
-        if packaged and role == "installed-skill-tool" and level not in {"direct-isolated-behavior", "direct-test-reference"}:
+        if packaged and role == "installed-skill-tool" and level not in {"direct-isolated-behavior", "evidence-association"}:
             errors.append(f"{relative}: packaged skill tool lacks direct behavioral evidence")
         records.append({
             "path": relative,
@@ -135,7 +211,7 @@ def certify_python_surfaces(root: Path, exact_tool_certification: dict[str, Any]
         "syntax_valid_count": sum(1 for record in records if record["syntax_valid"]),
         "packaged_file_count": sum(1 for record in records if record["packaged"]),
         "direct_behavior_count": validation_counts.get("direct-isolated-behavior", 0),
-        "direct_test_reference_count": validation_counts.get("direct-test-reference", 0),
+        "evidence_association_count": validation_counts.get("evidence-association", 0),
         "source_only_structural_count": validation_counts.get("source-only-structural", 0),
         "map_current": map_current,
         "role_counts": dict(sorted(role_counts.items())),

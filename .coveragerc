@@ -1,0 +1,10 @@
+[run]
+branch = true
+dynamic_context = test_function
+source = runtime
+
+[report]
+show_missing = true
+skip_covered = false
+exclude_also =
+    if TYPE_CHECKING:

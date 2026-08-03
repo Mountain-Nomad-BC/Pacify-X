@@ -6,7 +6,8 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
-import shutil
+
+from runtime.project_control_plane import quarantine_candidates
 
 
 def _inside(path: Path, parent: Path) -> bool:
@@ -45,14 +46,25 @@ def quarantine_paths(workspace: Path, project: Path, destination: Path, manifest
             raise ValueError(f"invalid, missing, broad, or duplicate source: {relative}")
         seen.add(source)
         sources.append((source, relative, _inventory(source)))
-    destination.mkdir(parents=True)
+    expected: dict[str, str] = {}
+    for _, relative, before in sources:
+        if len(before) == 1 and relative.suffix:
+            expected[relative.as_posix()] = next(iter(before.values()))
+        else:
+            expected.update({(relative / key).as_posix(): digest for key, digest in before.items()})
+    transaction = quarantine_candidates(
+        project, [source for source, _, _ in sources], destination,
+        manifest.parent / ".quarantine-events",
+        transaction_root=manifest.parent / ".quarantine-transactions",
+        expected_sha256=expected,
+    )
+    if transaction["decision"] != "quarantined":
+        raise ValueError("quarantine batch rejected: " + ", ".join(map(str, transaction.get("reasons", ()))))
     records: list[dict[str, object]] = []
-    for source, relative, before in sources:
+    for _, relative, before in sources:
         target = destination / relative
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.move(str(source), str(target))
         after = _inventory(target)
-        if source.exists() or before != after:
+        if before != after:
             raise RuntimeError(f"post-move reconciliation failed: {relative}")
         records.append({"source": relative.as_posix(), "destination": target.relative_to(workspace).as_posix(), "file_count": len(after), "files": [{"path": key, "sha256": value} for key, value in sorted(after.items())]})
     payload = {
@@ -61,6 +73,7 @@ def quarantine_paths(workspace: Path, project: Path, destination: Path, manifest
         "project": project.relative_to(workspace).as_posix(), "destination": destination.relative_to(workspace).as_posix(),
         "path_count": len(records), "file_count": sum(int(item["file_count"]) for item in records),
         "inventory_reconciled": True, "hard_delete": False,
+        "transaction_id": transaction.get("transaction_id"),
         "recovery": "Move an exact recorded destination back to its original project-relative source only after approved review.",
         "records": records,
     }

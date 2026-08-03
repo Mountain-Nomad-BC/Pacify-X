@@ -36,3 +36,16 @@ def test_registry_cannot_claim_removed_effect_surface() -> None:
     registry["records"] = registry["records"][1:]
     path.write_text(json.dumps(registry), encoding="utf-8")
     assert not validate_effect_surfaces(root)["valid"]
+
+
+def test_popen_without_bounded_communication_fails_closed() -> None:
+    root = Path(tempfile.mkdtemp()) / "framework"
+    shutil.copytree(ROOT, root, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache"))
+    target = root / "runtime/unbounded_process.py"
+    target.write_text(
+        "import subprocess\nprocess = subprocess.Popen(['tool'])\nprocess.communicate()\n",
+        encoding="utf-8",
+    )
+    result = validate_effect_surfaces(root)
+    assert not result["valid"]
+    assert any("process call lacks timeout" in item for item in result["errors"])

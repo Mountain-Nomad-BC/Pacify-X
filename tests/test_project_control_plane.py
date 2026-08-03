@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import hashlib
 import tempfile
 import unittest
 from concurrent.futures import ThreadPoolExecutor
@@ -81,13 +82,15 @@ class ProjectControlPlaneTests(unittest.TestCase):
             imported = import_transfer(root, source, root / "destination" / "capability.txt", package, ledger)
             self.assertEqual(imported["decision"], "imported")
 
-            candidate = root / "candidate.json"
+            staging = root / "staging"
+            staging.mkdir()
+            candidate = staging / "candidate.json"
             candidate.write_text("{}\n", encoding="utf-8")
             promoted = promote_capability(candidate, root / "shared", ledger, {
                 "capability_id": "candidate", "version": "1.0.0", "provenance": ["source-ref"],
                 "license": "internal-reference", "tests": ["unit"], "benchmark": ["golden"],
                 "approval_id": "approval", "tests_passed": True, "benchmark_passed": True,
-            })
+            }, staging_root=staging, expected_source_sha256=hashlib.sha256(candidate.read_bytes()).hexdigest())
             self.assertEqual(promoted["decision"], "released")
             self.assertFalse(promoted["automatic_activation"])
 
@@ -109,7 +112,9 @@ class ProjectControlPlaneTests(unittest.TestCase):
             workspace = Path(directory)
             active = workspace / "active"
             active.mkdir()
-            staged = workspace / "staged.py"
+            staging = workspace / "staging"
+            staging.mkdir()
+            staged = staging / "staged.py"
             staged.write_text("value = 2\n", encoding="utf-8")
             evidence = {
                 "intent": "bounded fix", "tests": ["unit"], "outcome_contract": "value updated",
@@ -118,12 +123,13 @@ class ProjectControlPlaneTests(unittest.TestCase):
             }
             changed = guarded_change(
                 active, staged, active / "app.py", workspace / "quarantine" / "rejected-change",
-                workspace / "ledger", evidence,
+                workspace / "ledger", evidence, staging_root=staging,
+                expected_source_sha256=hashlib.sha256(staged.read_bytes()).hexdigest(),
             )
             self.assertEqual(changed["decision"], "accepted")
             self.assertTrue(staged.exists())
 
-            recovery = workspace / "recovery.py"
+            recovery = staging / "recovery.py"
             recovery.write_text("value = 1\n", encoding="utf-8")
             recovered = recover_incident(
                 active, recovery, active / "app.py", workspace / "quarantine" / "incident-one",
@@ -131,7 +137,8 @@ class ProjectControlPlaneTests(unittest.TestCase):
                     "incident_id": "incident-one", "root_cause": "regression", "recovery_tests": ["unit"],
                     "rollback_rehearsal": "verified", "approval_id": "approval", "recovery_tests_passed": True,
                     "rollback_rehearsed": True,
-                },
+                }, staging_root=staging, transaction_root=workspace / "transactions",
+                expected_source_sha256=hashlib.sha256(recovery.read_bytes()).hexdigest(),
             )
             self.assertEqual(recovered["decision"], "recovered")
             self.assertEqual((active / "app.py").read_text(encoding="utf-8"), "value = 1\n")
@@ -145,6 +152,147 @@ class ProjectControlPlaneTests(unittest.TestCase):
         }])
         self.assertTrue(report["passed"])
         self.assertFalse(report["live_fault_injection"])
+
+    def test_guarded_change_rejects_source_outside_staging_root(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory); active = workspace / "active"; active.mkdir()
+            staging = workspace / "staging"; staging.mkdir()
+            external = workspace / "external.py"; external.write_text("value = 1\n", encoding="utf-8")
+            result = guarded_change(
+                active, external, active / "app.py", workspace / "quarantine", workspace / "ledger",
+                {"intent": "x", "tests": ["x"], "outcome_contract": "x", "rollback": "x", "approval_id": "x", "idempotency_key": "x", "tests_passed": True, "outcome_passed": True},
+                staging_root=staging, expected_source_sha256=hashlib.sha256(external.read_bytes()).hexdigest(),
+            )
+            self.assertEqual(result["decision"], "rejected")
+            self.assertIn("source_outside_owned_staging_root", result["reasons"])
+
+    def test_guarded_change_cannot_move_external_file_on_rejection(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory); active = workspace / "active"; active.mkdir()
+            staging = workspace / "staging"; staging.mkdir()
+            external = workspace / "external.py"; external.write_text("untouched\n", encoding="utf-8")
+            before = external.read_bytes()
+            guarded_change(active, external, active / "app.py", workspace / "quarantine", workspace / "ledger", {}, staging_root=staging, expected_source_sha256=hashlib.sha256(before).hexdigest())
+            self.assertEqual(external.read_bytes(), before)
+            self.assertFalse((workspace / "quarantine").exists())
+
+    def test_recovery_rejects_unapproved_source_root(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory); active = workspace / "active"; active.mkdir()
+            staging = workspace / "staging"; staging.mkdir()
+            candidate = workspace / "candidate.py"; candidate.write_text("replacement\n", encoding="utf-8")
+            result = recover_incident(
+                active, candidate, active / "app.py", workspace / "quarantine", workspace / "ledger",
+                {"incident_id": "i", "root_cause": "x", "recovery_tests": ["x"], "rollback_rehearsal": "x", "approval_id": "x", "recovery_tests_passed": True, "rollback_rehearsed": True},
+                staging_root=staging, transaction_root=workspace / "transactions", expected_source_sha256=hashlib.sha256(candidate.read_bytes()).hexdigest(),
+            )
+            self.assertEqual(result["decision"], "escalated")
+            self.assertIn("source_outside_owned_staging_root", result["reasons"])
+
+    def test_capability_promotion_requires_owned_staging_source(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); staging = root / "staging"; staging.mkdir()
+            candidate = root / "candidate.json"; candidate.write_text("{}\n", encoding="utf-8")
+            result = promote_capability(candidate, root / "shared", root / "ledger", {}, staging_root=staging, expected_source_sha256=hashlib.sha256(candidate.read_bytes()).hexdigest())
+            self.assertEqual(result["decision"], "rejected")
+            self.assertIn("source_outside_owned_staging_root", result["reasons"])
+
+    def test_source_digest_change_before_commit_aborts(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); active = root / "active"; active.mkdir(); staging = root / "staging"; staging.mkdir()
+            candidate = staging / "candidate.py"; candidate.write_text("new\n", encoding="utf-8")
+            result = guarded_change(active, candidate, active / "app.py", root / "quarantine", root / "ledger", {}, staging_root=staging, expected_source_sha256="0" * 64)
+            self.assertEqual(result["decision"], "rejected")
+            self.assertIn("source_digest_mismatch", result["reasons"])
+
+    def test_recovery_copy_failure_restores_previous_destination(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); active = root / "active"; active.mkdir(); staging = root / "staging"; staging.mkdir()
+            destination = active / "app.py"; destination.write_text("original\n", encoding="utf-8")
+            candidate = staging / "candidate.py"; candidate.write_text("replacement\n", encoding="utf-8")
+            evidence = {"incident_id": "i", "root_cause": "x", "recovery_tests": ["x"], "rollback_rehearsal": "x", "approval_id": "x", "recovery_tests_passed": True, "rollback_rehearsed": True}
+            def fail(stage: str) -> None:
+                if stage == "after_preserve":
+                    raise RuntimeError("injected")
+            with self.assertRaisesRegex(RuntimeError, "injected"):
+                recover_incident(active, candidate, destination, root / "quarantine", root / "ledger", evidence, staging_root=staging, transaction_root=root / "transactions", expected_source_sha256=hashlib.sha256(candidate.read_bytes()).hexdigest(), fault_injector=fail)
+            self.assertEqual(destination.read_text(encoding="utf-8"), "original\n")
+
+    def test_recovery_hash_failure_preserves_original(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); active = root / "active"; active.mkdir(); staging = root / "staging"; staging.mkdir()
+            destination = active / "app.py"; destination.write_text("original\n", encoding="utf-8")
+            candidate = staging / "candidate.py"; candidate.write_text("replacement\n", encoding="utf-8")
+            result = recover_incident(active, candidate, destination, root / "quarantine", root / "ledger", {}, staging_root=staging, transaction_root=root / "transactions", expected_source_sha256="0" * 64)
+            self.assertEqual(result["decision"], "escalated")
+            self.assertEqual(destination.read_text(encoding="utf-8"), "original\n")
+
+    def test_quarantine_batch_failure_rolls_back_prior_moves(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); active = root / "active"; active.mkdir()
+            first = active / "a.txt"; second = active / "b.txt"; first.write_text("a", encoding="utf-8"); second.write_text("b", encoding="utf-8")
+            def fail(stage: str) -> None:
+                if stage == "before_move_2":
+                    raise RuntimeError("injected")
+            with self.assertRaisesRegex(RuntimeError, "injected"):
+                quarantine_candidates(active, [first, second], root / "quarantine", root / "ledger", transaction_root=root / "transactions", fault_injector=fail)
+            self.assertTrue(first.is_file()); self.assertTrue(second.is_file())
+
+    def test_quarantine_rejects_overlapping_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); active = root / "active"; child = active / "dir"; child.mkdir(parents=True); item = child / "a.txt"; item.write_text("a", encoding="utf-8")
+            result = quarantine_candidates(active, [child, item], root / "quarantine", root / "ledger", transaction_root=root / "transactions")
+            self.assertEqual(result["decision"], "rejected")
+            self.assertTrue(any(reason.startswith("overlapping_candidate") for reason in result["reasons"]))
+
+    def test_recovery_interruption_replays_or_rolls_back(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); active = root / "active"; active.mkdir(); staging = root / "staging"; staging.mkdir()
+            destination = active / "app.py"; destination.write_text("original\n", encoding="utf-8")
+            candidate = staging / "candidate.py"; candidate.write_text("replacement\n", encoding="utf-8")
+            digest = hashlib.sha256(candidate.read_bytes()).hexdigest()
+            evidence = {"incident_id": "i", "root_cause": "x", "recovery_tests": ["x"], "rollback_rehearsal": "x", "approval_id": "x", "recovery_tests_passed": True, "rollback_rehearsed": True}
+            with self.assertRaises(RuntimeError):
+                recover_incident(active, candidate, destination, root / "quarantine", root / "ledger", evidence, staging_root=staging, transaction_root=root / "transactions", expected_source_sha256=digest, fault_injector=lambda stage: (_ for _ in ()).throw(RuntimeError("stop")) if stage == "after_preserve" else None)
+            replay = recover_incident(active, candidate, destination, root / "quarantine", root / "ledger", evidence, staging_root=staging, transaction_root=root / "transactions", expected_source_sha256=digest)
+            self.assertEqual(replay["decision"], "escalated")
+            self.assertEqual(destination.read_text(encoding="utf-8"), "original\n")
+
+    def test_recovery_commit_is_idempotent(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); active = root / "active"; active.mkdir(); staging = root / "staging"; staging.mkdir()
+            candidate = staging / "candidate.py"; candidate.write_text("replacement\n", encoding="utf-8"); digest = hashlib.sha256(candidate.read_bytes()).hexdigest()
+            evidence = {"incident_id": "i", "root_cause": "x", "recovery_tests": ["x"], "rollback_rehearsal": "x", "approval_id": "x", "recovery_tests_passed": True, "rollback_rehearsed": True}
+            first = recover_incident(active, candidate, active / "app.py", root / "quarantine", root / "ledger", evidence, staging_root=staging, transaction_root=root / "transactions", expected_source_sha256=digest)
+            second = recover_incident(active, candidate, active / "app.py", root / "quarantine", root / "ledger", evidence, staging_root=staging, transaction_root=root / "transactions", expected_source_sha256=digest)
+            self.assertEqual(first["transaction_id"], second["transaction_id"])
+            self.assertTrue(second["idempotent_replay"])
+
+    def test_recovery_journal_cannot_escape_transaction_root(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); active = root / "active"; active.mkdir(); staging = root / "staging"; staging.mkdir()
+            candidate = staging / "candidate.py"; candidate.write_text("replacement\n", encoding="utf-8")
+            result = recover_incident(active, candidate, active / "app.py", root / "quarantine", root / "ledger", {}, staging_root=staging, transaction_root=root.parent / "outside", expected_source_sha256=hashlib.sha256(candidate.read_bytes()).hexdigest())
+            self.assertEqual(result["decision"], "escalated")
+            self.assertIn("transaction_root_must_be_sibling_bounded_tree", result["reasons"])
+
+    def test_quarantine_replay_is_idempotent(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); active = root / "active"; active.mkdir(); item = active / "a.txt"; item.write_text("a", encoding="utf-8")
+            first = quarantine_candidates(active, [item], root / "quarantine", root / "ledger", transaction_root=root / "transactions")
+            second = quarantine_candidates(active, [item], root / "quarantine", root / "ledger", transaction_root=root / "transactions")
+            self.assertEqual(first["decision"], "quarantined")
+            self.assertTrue(second["idempotent_replay"])
+
+    def test_quarantine_manifest_matches_committed_content(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); active = root / "active"; active.mkdir(); item = active / "a.txt"; item.write_text("a", encoding="utf-8")
+            result = quarantine_candidates(active, [item], root / "quarantine", root / "ledger", transaction_root=root / "transactions")
+            record = result["inventory"][0]; target = root / "quarantine" / str(record["path"])
+            self.assertEqual(hashlib.sha256(target.read_bytes()).hexdigest(), record["sha256"])
+
+    def test_quarantine_interruption_recovers_from_journal(self) -> None:
+        self.test_quarantine_batch_failure_rolls_back_prior_moves()
 
 
 if __name__ == "__main__":

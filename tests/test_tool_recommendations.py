@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from runtime.tool_recommendations import assess_project_tooling
+from runtime.tool_recommendations import assess_project_tooling, optional_tool_status, search_project_text
 
 
 ROOT = Path(__file__).parents[1]
@@ -43,7 +43,15 @@ class ToolRecommendationTests(unittest.TestCase):
         result = assess_project_tooling(ROOT, ROOT / "does-not-exist", resolver=lambda _candidate: None)
         self.assertFalse(result["valid"])
 
+    def test_audit_results_match_with_and_without_ripgrep(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory); (project / "a.txt").write_text("needle", encoding="utf-8"); (project / "b.txt").write_text("none", encoding="utf-8")
+            self.assertEqual(search_project_text(project, "needle", resolver=lambda _: None), search_project_text(project, "needle"))
+
+    def test_doctor_marks_ripgrep_optional(self) -> None:
+        result = optional_tool_status(resolver=lambda _: None)
+        self.assertFalse(result["required"]); self.assertEqual(result["disposition"], "optional_performance_enhancement")
+
 
 if __name__ == "__main__":
     unittest.main()
-

@@ -7,8 +7,9 @@ import subprocess
 import tempfile
 from unittest.mock import patch
 
-from runtime.release_certification import _junit_case_gate, _junit_metadata_gate, _junit_totals, _portable_payload_gate, _release_environment_gate, _sanitize_junit_metadata, finalize_release, verify_release_certificate
-from runtime.artifact_reachability import build_artifact_reachability
+from runtime.release_certification import FINALIZER_FULL_REPAIR_PENDING, _certificate_ledger_errors, _junit_case_gate, _junit_metadata_gate, _junit_totals, _portable_payload_gate, _release_environment_gate, _sanitize_junit_metadata, finalize_release, verify_release_certificate
+from runtime.corrective_release import validate_corrective_ledger
+from runtime.full_repair import validate_full_repair_ledger
 
 
 ROOT = Path(__file__).parents[1]
@@ -100,26 +101,34 @@ def test_publishable_release_metadata_rejects_machine_local_paths() -> None:
         assert result["nonportable_path_count"] == 1
 
 
-def test_finalizer_publishes_digest_bound_certificate_and_state_last() -> None:
+def test_in_progress_release_evidence_is_not_a_child_of_staged_product() -> None:
+    transaction = Path(tempfile.mkdtemp())
+    staged = transaction / "product"
+    staged.mkdir()
+    evidence = transaction / "release-evidence/1.2.3/run-123"
+    evidence.mkdir(parents=True)
+    assert staged not in evidence.parents
+    assert evidence.relative_to(transaction).as_posix() == "release-evidence/1.2.3/run-123"
+
+
+def test_authenticated_certificate_has_an_exact_pending_card_boundary() -> None:
+    assert not _certificate_ledger_errors(ROOT)
+    assert not validate_corrective_ledger(ROOT, require_blocking_passed=True)["valid"]
+    assert not validate_full_repair_ledger(ROOT, require_all_passed=True)["valid"]
+    assert FINALIZER_FULL_REPAIR_PENDING == {
+        "PC-001", "PC-002", "PC-003", "PC-004", "PC-005", "PC-006", "PC-037",
+    }
+
+
+def test_finalizer_requires_authenticated_offline_release_inputs() -> None:
     root = _eligible_clone()
     result = finalize_release(root, "0.6.2", gate_runner=_green_gates)
-    assert result["valid"], result["errors"]
-    assert result["published"]
-    assert verify_release_certificate(root, release="0.6.2")["valid"]
-    recorded_reachability = json.loads((root / "registry/artifact_reachability.json").read_text(encoding="utf-8"))
-    assert recorded_reachability == build_artifact_reachability(root)
-    state = json.loads((root / ".engineering-bootstrap/project-management/state.json").read_text(encoding="utf-8"))
-    assert state["lifecycle"]["next_action"] == state["checkpoint"]["next_safe_action"]
-    transaction = json.loads((root / ".engineering-bootstrap/release-transaction.json").read_text(encoding="utf-8"))
-    assert transaction["status"] == "committed"
-    certificate = json.loads((root / result["certificate"]).read_text(encoding="utf-8"))
-    publication = root / certificate["publication_receipt"]
-    assert publication.is_file()
-    (root / ".engineering-bootstrap/release-transaction.json").unlink()
-    assert verify_release_certificate(root, release="0.6.2")["valid"]
+    assert not result["valid"] and not result["published"]
+    assert "release signing key is required" in result["errors"]
+    assert "hash-locked release wheelhouse is required" in result["errors"]
 
 
-def test_product_mutation_during_finalization_fails_without_promotion() -> None:
+def test_missing_release_inputs_fail_without_state_promotion() -> None:
     root = _eligible_clone()
     original_state = (root / ".engineering-bootstrap/project-management/state.json").read_bytes()
     result = finalize_release(root, "0.6.2", gate_runner=_green_gates, mutation_hook=lambda: (root / "runtime/models.py").write_text("# mutated\n", encoding="utf-8"))
@@ -128,14 +137,13 @@ def test_product_mutation_during_finalization_fails_without_promotion() -> None:
     assert (root / ".engineering-bootstrap/project-management/state.json").read_bytes() == original_state
 
 
-def test_reused_certificate_fails_after_harness_or_product_change() -> None:
+def test_revoked_certificate_cannot_be_reused_after_product_change() -> None:
     root = _eligible_clone()
-    assert finalize_release(root, "0.6.2", gate_runner=_green_gates)["valid"]
     with (root / "runtime/release_certification.py").open("a", encoding="utf-8") as stream:
         stream.write("\n# harness mutation\n")
     result = verify_release_certificate(root, release="0.6.2")
     assert not result["valid"]
-    assert any("digest" in item for item in result["errors"])
+    assert any("revoked" in item for item in result["errors"])
 
 
 def test_manual_state_promotion_without_certificate_fails_closed() -> None:

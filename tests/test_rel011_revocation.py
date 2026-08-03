@@ -39,7 +39,7 @@ class Rel011RevocationTests(unittest.TestCase):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         start = (ROOT / "START_HERE_FOR_AI.md").read_text(encoding="utf-8")
         self.assertNotIn("**Status:** Certified deployment-ready", readme)
-        self.assertIn("**Current release:** v0.6.2 — revoked", readme)
+        self.assertIn("**Current release:** v0.6.3 — release candidate", readme)
         self.assertIn("Release 0.6.2 is revoked", start)
 
 

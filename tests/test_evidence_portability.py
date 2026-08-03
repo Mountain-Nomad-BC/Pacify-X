@@ -2,7 +2,7 @@ from pathlib import Path
 import shutil
 import tempfile
 
-from runtime.evidence_portability import validate_evidence_portability
+from runtime.evidence_portability import portability_findings, validate_evidence_portability
 
 
 ROOT = Path(__file__).parents[1]
@@ -28,3 +28,8 @@ def test_generated_portability_registry_is_not_self_ingested() -> None:
     registry = root / "registry/historical_external_references.json"
     registry.write_text('{"reference_count":0,"records":[],"note":"../obsolete"}\n', encoding="utf-8")
     assert validate_evidence_portability(root)["valid"]
+
+def test_portability_detects_unc_path() -> None: assert portability_findings(r"\\server\share\file")
+def test_portability_detects_file_uri() -> None: assert portability_findings("file:///Users/a/file")
+def test_portability_detects_wsl_mount_path() -> None: assert portability_findings("/mnt/c/work/file")
+def test_portability_allowlist_is_explicit() -> None: assert not portability_findings("https://example.test/evidence")

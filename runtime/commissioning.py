@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import difflib
+from datetime import datetime, timezone
 import hashlib
 import json
 import os
@@ -12,8 +13,10 @@ from typing import Mapping
 
 from .intake import inspect_existing_project
 from .contracts import validate_instance
+from .event_ledger import append_chained_event, validate_event_ledger
 from .paths import framework_root
 from .project_management import project_management_files, validate_project_management
+from .release_identity import authoritative_version
 
 
 AGENTS = """# Repository engineering contract
@@ -79,6 +82,19 @@ VSCODE_TASKS = {
 
 def _sha256(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
+
+
+def _framework_binding(source: Path) -> dict[str, object]:
+    version = authoritative_version(source)
+    certificate = source / "evidence" / f"release-certification-{version}.json"
+    revocation = source / "evidence" / f"release-revocation-{version}.json"
+    return {
+        "version": version,
+        "certificate": certificate.relative_to(source).as_posix() if certificate.is_file() else None,
+        "certificate_sha256": _sha256(certificate.read_bytes()) if certificate.is_file() else None,
+        "revoked": revocation.is_file(),
+        "revocation_sha256": _sha256(revocation.read_bytes()) if revocation.is_file() else None,
+    }
 
 
 def _project_toml(mode: str) -> str:
@@ -279,25 +295,45 @@ def commission(project: Path, mode: str, *, apply: bool = False, source_root: Pa
     if not adoption_path.exists():
         adoption_path.write_bytes((json.dumps(adoption, indent=2) + "\n").encode())
     receipt_path = control / "commissioning-receipt.json"
-    if not receipt_path.exists():
-        mutable_prefixes = (
-            "PROJECT_MANAGEMENT.md", "PROJECT_BLUEPRINT.md", "ARCHITECTURE_GOVERNANCE_AND_RISK.md",
-            "EXECUTION_PLAN_PUNCH_CARDS_AND_ACCEPTANCE.md", ".engineering-bootstrap/project-management/",
-        )
-        managed = {}
-        for relative, proposed in expected.items():
-            path = relative.as_posix()
-            if any(path == prefix or path.startswith(prefix) for prefix in mutable_prefixes):
-                continue
-            target = resolved / relative
-            if target.is_file() and target.read_bytes() == proposed:
-                managed[path] = _sha256(proposed)
-        receipt = {
-            "schema_version": "1.0", "mode": mode, "created": create, "unchanged": unchanged,
-            "preserved_existing": preserved, "blocking_conflicts": [], "managed_file_sha256": managed,
-            "mutable_project_management": list(mutable_prefixes), "adoption_plan": ".engineering-bootstrap/adoption-plan.json",
-        }
-        receipt_path.write_bytes((json.dumps(receipt, indent=2) + "\n").encode())
+    mutable_prefixes = (
+        "PROJECT_MANAGEMENT.md", "PROJECT_BLUEPRINT.md", "ARCHITECTURE_GOVERNANCE_AND_RISK.md",
+        "EXECUTION_PLAN_PUNCH_CARDS_AND_ACCEPTANCE.md", ".engineering-bootstrap/project-management/",
+    )
+    managed = {}
+    for relative, proposed in expected.items():
+        path = relative.as_posix()
+        if any(path == prefix or path.startswith(prefix) for prefix in mutable_prefixes):
+            continue
+        target = resolved / relative
+        if target.is_file() and target.read_bytes() == proposed:
+            managed[path] = _sha256(proposed)
+    project_record = json.loads((control / "project-record.json").read_text(encoding="utf-8"))
+    base_receipt = {
+        "schema_version": "2.0", "mode": mode, "created": create, "unchanged": unchanged,
+        "preserved_existing": preserved, "blocking_conflicts": [], "managed_file_sha256": managed,
+        "managed_manifest_sha256": _sha256(json.dumps(managed, sort_keys=True, separators=(",", ":")).encode()),
+        "mutable_project_management": list(mutable_prefixes), "adoption_plan": ".engineering-bootstrap/adoption-plan.json",
+        "project_id": project_record["project_id"], "project_record_sha256": _sha256((control / "project-record.json").read_bytes()),
+        "framework_release": _framework_binding(source), "commissioning_tool_version": authoritative_version(source),
+        "commissioned_utc": datetime.now(timezone.utc).isoformat(), "approving_identity": "local-operator",
+    }
+    base_digest = _sha256(json.dumps(base_receipt, sort_keys=True, separators=(",", ":")).encode())
+    event_path = append_chained_event(control / "commissioning-events", "project-commissioned", {
+        "project_id": project_record["project_id"], "framework_release": base_receipt["framework_release"],
+        "managed_manifest_sha256": base_receipt["managed_manifest_sha256"], "receipt_payload_sha256": base_digest,
+    })
+    event = json.loads(event_path.read_text(encoding="utf-8"))
+    receipt = {**base_receipt, "receipt_payload_sha256": base_digest, "commissioning_event_sha256": event["event_sha256"]}
+    receipt["receipt_sha256"] = _sha256(json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode())
+    if receipt_path.is_file():
+        prior = receipt_path.read_bytes()
+        history = control / "commissioning-history" / f"{_sha256(prior)}.json"
+        history.parent.mkdir(parents=True, exist_ok=True)
+        if not history.exists():
+            history.write_bytes(prior)
+    temporary_receipt = receipt_path.with_name(f".{receipt_path.name}.{event['sequence']:06d}.prepared")
+    temporary_receipt.write_bytes((json.dumps(receipt, indent=2) + "\n").encode())
+    os.replace(temporary_receipt, receipt_path)
     result.update({"applied": True, "next": "validate", "receipt": str(receipt_path), "adoption_plan": str(adoption_path)})
     return result
 
@@ -436,6 +472,28 @@ def project_check(project: Path, source_root: Path | None = None) -> dict:
         errors.append(f"invalid project record: {error}")
     try:
         receipt = json.loads((resolved / ".engineering-bootstrap/commissioning-receipt.json").read_text(encoding="utf-8"))
+        receipt_digest = receipt.pop("receipt_sha256", None)
+        if receipt_digest != _sha256(json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()):
+            errors.append("commissioning receipt digest mismatch")
+        payload_digest = receipt.get("receipt_payload_sha256")
+        base = {key: value for key, value in receipt.items() if key not in {"receipt_payload_sha256", "commissioning_event_sha256"}}
+        if payload_digest != _sha256(json.dumps(base, sort_keys=True, separators=(",", ":")).encode()):
+            errors.append("commissioning receipt payload digest mismatch")
+        project_record_path = resolved / ".engineering-bootstrap/project-record.json"
+        if receipt.get("project_id") != record.get("project_id") or receipt.get("project_record_sha256") != _sha256(project_record_path.read_bytes()):
+            errors.append("commissioning receipt project binding mismatch")
+        framework = _framework_binding(source)
+        if receipt.get("framework_release") != framework or receipt.get("commissioning_tool_version") != framework["version"]:
+            errors.append("commissioning receipt framework release binding mismatch")
+        lifecycle = validate_event_ledger(resolved / ".engineering-bootstrap/commissioning-events")
+        if not lifecycle["valid"]:
+            errors.extend(f"commissioning event ledger: {item}" for item in lifecycle["errors"])
+        bound = next((event for event in lifecycle["events"] if event.get("event_sha256") == receipt.get("commissioning_event_sha256")), None)
+        if bound is None or bound.get("payload", {}).get("receipt_payload_sha256") != payload_digest:
+            errors.append("commissioning receipt event anchor mismatch")
+        managed = receipt.get("managed_file_sha256", {})
+        if receipt.get("managed_manifest_sha256") != _sha256(json.dumps(managed, sort_keys=True, separators=(",", ":")).encode()):
+            errors.append("commissioning managed manifest digest mismatch")
         for relative, digest in receipt.get("managed_file_sha256", {}).items():
             target = (resolved / relative).resolve()
             if resolved not in target.parents or not target.is_file() or _sha256(target.read_bytes()) != digest:

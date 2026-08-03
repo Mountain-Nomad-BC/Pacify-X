@@ -1,5 +1,7 @@
 # PACIFY-X
 
+PACIFY-X is the project and framework. `engineering-bootstrap` is its Python package and command-line control plane.
+
 ![PACIFY-X - AI and Engineering Framework](docs/assets/pacify-x.png)
 
 ## Engineering Loop & Bootstrap Framework
@@ -10,12 +12,12 @@
 
 **Engineering Loop & Bootstrap is a capability engineering framework that transforms general-purpose AI models into governed, evidence-driven engineering systems through modular skills, orchestrations, contracts, and deterministic execution.**
 
-**Current release:** v0.6.2 — revoked  
-**Status:** Repair in progress; no deployment-authoritative release  
-**Runtime:** Python 3.11+ with no required third-party runtime dependencies
+**Current release:** v0.6.3 — release candidate
+**Status:** Full repair implemented and validated; exact signed publication pending
+**Runtime:** See the tested support matrix in [the release process](docs/release-process.md); no third-party runtime packages are required.
 
 > [!WARNING]
-> Release 0.6.2 was revoked on 2026-08-03 after a full repair audit found that its self-certification did not bind the exact public artifacts, Git identity, publisher signature, and every evidence file into one independently authenticatable chain. Preserve it as historical evidence; do not deploy or cite it as release-authoritative. See [`evidence/release-revocation-0.6.2.json`](evidence/release-revocation-0.6.2.json).
+> Release 0.6.2 was revoked on 2026-08-03 after a full repair audit found that its self-certification did not bind the exact public artifacts, Git identity, publisher signature, and every evidence file into one independently authenticatable chain. Preserve it as historical evidence; do not deploy or cite it as release-authoritative. Version 0.6.3 remains a release candidate until its annotated tag, exact signed assets, and independent download verification are complete. See [`evidence/release-revocation-0.6.2.json`](evidence/release-revocation-0.6.2.json).
 
 PACIFY-X surrounds an AI coding assistant with the parts models usually lack: bounded planning, project isolation, explicit approvals, deterministic execution, independent validation, evidence, recovery, and repeatable engineering workflows. It loads compact metadata first and hydrates only the capability needed for the current step.
 
@@ -98,9 +100,9 @@ These are current repository denominators, not approximate marketing totals. The
 | Scheduling capabilities | 30 | Bounded scheduling operations |
 | Skill packages | 89 | 60 selectable plus 29 inert/deferred packages |
 | Executable workflow definitions | 24 | 7 general plus 17 project-stream YAML workflows |
-| Runtime modules | 101 | Python modules under `runtime/` |
+| Runtime modules | 112 | Python modules under `runtime/` |
 | Contracts | 82 | JSON contracts under `contracts/` |
-| Registry artifacts | 205 | Registry files and generated governance projections |
+| Registry artifacts | 206 | Registry files and generated governance projections |
 | Validator functions | 50 | Runtime validation, audit, certification, verification, and check functions |
 | Tool and support scripts | 112 | 29 framework scripts plus 83 skill-local scripts |
 | Admitted exact tools | 56 | Individually certified authoritative tool implementations |
@@ -199,11 +201,11 @@ python -m runtime.cli --root . audit licensing
 python -m runtime.cli --root . audit structure
 python -m runtime.cli --root . test-profile run fast
 python -m runtime.cli --root . test-profile run full
-# Release finalization is blocked while REL-011 closes the full repair audit.
-python -m runtime.cli --root . release verify --release 0.6.2
+# Before publication, verification fails closed because no signed 0.6.3 certificate exists.
+python -m runtime.cli --root . release verify --release 0.6.3 --artifact-dir <EXACT_ARTIFACT_DIR>
 ```
 
-The 0.6.2 verifier now fails closed because the project state and explicit revocation record deny deployment authority. A repaired release must build once, test and publish those exact artifacts, bind Git and evidence identity, and carry a trusted publisher signature before this section can advertise a release-authoritative certificate again.
+The 0.6.2 verifier fails closed because its explicit revocation record denies deployment authority. The 0.6.3 verifier also fails closed before publication; it becomes authoritative only for the exact artifacts bound to its trusted publisher signature and annotated Git tag.
 
 ## Major accomplishments
 

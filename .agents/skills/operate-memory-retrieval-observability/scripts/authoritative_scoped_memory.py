@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse,json,uuid
+import argparse,hashlib,json
 from datetime import datetime,timezone
 from pathlib import Path
 def load(p): return json.loads(p.read_text()) if p.exists() else {'records':[]}
@@ -11,7 +11,7 @@ def main():
  d=sub.add_parser('delete-scope'); d.add_argument('--scope',required=True); a=ap.parse_args(); p=Path(a.db); db=load(p)
  if a.cmd=='write':
   if a.type in ('semantic','procedural') and not a.verified: raise SystemExit('verified flag required for durable trusted memory')
-  r={'id':'mem-'+uuid.uuid4().hex[:12],'scope':a.scope,'type':a.type,'content':a.content,'source':a.source,'verified':a.verified,'created_at':datetime.now(timezone.utc).isoformat()}; db['records'].append(r); p.write_text(json.dumps(db,indent=2,sort_keys=True)+'\n'); print(json.dumps(r,indent=2))
+  r={'id':'mem-'+hashlib.sha256(json.dumps([a.scope,a.type,a.content,a.source],sort_keys=True).encode()).hexdigest()[:12],'scope':a.scope,'type':a.type,'content':a.content,'source':a.source,'verified':a.verified,'created_at':datetime.now(timezone.utc).isoformat()}; db['records'].append(r); p.write_text(json.dumps(db,indent=2,sort_keys=True)+'\n'); print(json.dumps(r,indent=2))
  elif a.cmd=='query': print(json.dumps({'records':[r for r in db['records'] if r['scope']==a.scope and a.contains.lower() in r['content'].lower()]},indent=2))
  else:
   before=len(db['records']); db['records']=[r for r in db['records'] if r['scope']!=a.scope]; p.write_text(json.dumps(db,indent=2,sort_keys=True)+'\n'); print(json.dumps({'deleted':before-len(db['records']),'scope':a.scope},indent=2))

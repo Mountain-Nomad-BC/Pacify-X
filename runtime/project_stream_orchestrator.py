@@ -240,6 +240,9 @@ def guarded_change(context: ProjectStreamContext) -> Mapping[str, object]:
     result = apply_guarded_change(
         _path(context, "active_root"), _path(context, "staged_file"), _path(context, "destination"),
         _path(context, "quarantine_root"), _path(context, "ledger"), evidence,
+        staging_root=_path(context, "staging_root"),
+        expected_source_sha256=str(context.payload.get("expected_source_sha256", "")),
+        collision_policy=str(context.payload.get("collision_policy", "reject")),
     )
     return {"change_accepted_or_quarantined": result}
 
@@ -251,6 +254,9 @@ def incident_diagnose_recover(context: ProjectStreamContext) -> Mapping[str, obj
     result = recover_incident(
         _path(context, "active_root"), _path(context, "recovery_candidate"), _path(context, "destination"),
         _path(context, "quarantine_root"), _path(context, "ledger"), evidence,
+        staging_root=_path(context, "staging_root"), transaction_root=_path(context, "transaction_root"),
+        expected_source_sha256=str(context.payload.get("expected_source_sha256", "")),
+        collision_policy=str(context.payload.get("collision_policy", "replace_preserving_previous")),
     )
     return {"incident_recovered_or_escalated": result}
 
@@ -302,6 +308,7 @@ def safe_cleanup(context: ProjectStreamContext) -> Mapping[str, object]:
         raise ValueError("cleanup workflow requires Path candidates")
     result = quarantine_candidates(
         _path(context, "active_root"), candidates, _path(context, "quarantine_root"), _path(context, "ledger"),
+        transaction_root=_path(context, "transaction_root"),
     )
     return {"quarantine_review_queue": result}
 
@@ -312,6 +319,8 @@ def shared_capability_promote(context: ProjectStreamContext) -> Mapping[str, obj
         raise ValueError("promotion workflow requires evidence mapping")
     result = promote_capability(
         _path(context, "candidate"), _path(context, "shared_root"), _path(context, "ledger"), evidence,
+        staging_root=_path(context, "staging_root"),
+        expected_source_sha256=str(context.payload.get("expected_source_sha256", "")),
     )
     return {"shared_capability_release": result}
 

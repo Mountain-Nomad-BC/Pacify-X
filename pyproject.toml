@@ -4,14 +4,23 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "engineering-loop-bootstrap"
-version = "0.6.2"
-description = "Model-agnostic, fail-closed engineering bootstrap and capability orchestrator"
+version = "0.6.3"
+description = "PACIFY-X governed engineering framework and engineering-bootstrap control plane"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.11,<3.15"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]
 authors = [{name = "Ben J. Cikovic"}]
 dependencies = []
+classifiers = [
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: MacOS",
+]
 
 [project.urls]
 Homepage = "https://github.com/Mountain-Nomad-BC/Pacify-X"
@@ -22,7 +31,7 @@ Issues = "https://github.com/Mountain-Nomad-BC/Pacify-X/issues"
 test = ["pytest==9.0.2", "PyYAML==6.0.3"]
 build = ["build==1.5.0", "setuptools==81.0.0", "wheel==0.47.0"]
 lint = ["ruff==0.14.4"]
-release = ["build==1.5.0", "pytest==9.0.2", "PyYAML==6.0.3", "ruff==0.14.4", "setuptools==81.0.0", "wheel==0.47.0"]
+release = ["build==1.5.0", "colorama==0.4.6", "coverage==7.14.2", "iniconfig==2.3.0", "packaging==26.2", "pluggy==1.6.0", "Pygments==2.20.0", "pyproject_hooks==1.2.0", "pytest==9.0.2", "PyYAML==6.0.3", "ruff==0.14.4", "setuptools==81.0.0", "wheel==0.47.0"]
 
 [project.scripts]
 engineering-bootstrap = "engineering_bootstrap.cli:main"
@@ -71,7 +80,7 @@ include-package-data = false
 "share/engineering-bootstrap/orchestration/workflows" = ["orchestration/workflows/*.yaml"]
 "share/engineering-bootstrap/orchestration/workflows/project_stream" = ["orchestration/workflows/project_stream/*.yaml"]
 "share/engineering-bootstrap/registry/orchestrations" = ["registry/orchestrations/control-plane.json"]
-"share/engineering-bootstrap/policies" = ["policies/policy_index.json", "policies/analyze-plan-execute-verify.json", "policies/canonical-owner.json", "policies/risk-classification.json", "policies/permission-boundary.json", "policies/evidence-required.json", "policies/change-control.json", "policies/recovery.json", "policies/skeptical-certification.json", "policies/contained-execution.json", "policies/external-tool-quarantine.json", "policies/runtime-assurance-privacy.json", "policies/artifact-preservation.json", "policies/imported_rule_index.json", "policies/release-artifact-policy.json"]
+"share/engineering-bootstrap/policies" = ["policies/policy_index.json", "policies/analyze-plan-execute-verify.json", "policies/canonical-owner.json", "policies/risk-classification.json", "policies/permission-boundary.json", "policies/evidence-required.json", "policies/change-control.json", "policies/recovery.json", "policies/skeptical-certification.json", "policies/contained-execution.json", "policies/external-tool-quarantine.json", "policies/runtime-assurance-privacy.json", "policies/artifact-preservation.json", "policies/imported_rule_index.json", "policies/release-artifact-policy.json", "policies/coverage-assurance.json", "policies/effect-grant-trust.json", "policies/platform-support.json", "policies/public-data-allowlist.json", "policies/release-trust.json"]
 "share/engineering-bootstrap/evidence/bundles/archive-custody-20260803" = ["evidence/bundles/archive-custody-20260803/*.json", "evidence/bundles/archive-custody-20260803/*.jsonl"]
 "share/engineering-bootstrap/registry" = ["registry/*.json", "registry/skill_catalog.toml"]
 "share/engineering-bootstrap/registry/graphs" = ["registry/graphs/*.json"]
@@ -84,20 +93,6 @@ include-package-data = false
   "registry/skills/skill-navigator.json",
   "registry/skills/workflow-orchestrator.json",
 ]
-"share/engineering-bootstrap/runtime" = ["runtime/*.py"]
-"share/engineering-bootstrap/runtime/metacognitive_evolution" = ["runtime/metacognitive_evolution/*.py"]
-"share/engineering-bootstrap/runtime/metacognitive_evolution/agent_profiles" = ["runtime/metacognitive_evolution/agent_profiles/*.py"]
-"share/engineering-bootstrap/runtime/metacognitive_evolution/capability_genome" = ["runtime/metacognitive_evolution/capability_genome/*.py"]
-"share/engineering-bootstrap/runtime/metacognitive_evolution/common" = ["runtime/metacognitive_evolution/common/*.py"]
-"share/engineering-bootstrap/runtime/metacognitive_evolution/engineering_dna" = ["runtime/metacognitive_evolution/engineering_dna/*.py"]
-"share/engineering-bootstrap/runtime/metacognitive_evolution/introspection" = ["runtime/metacognitive_evolution/introspection/*.py"]
-"share/engineering-bootstrap/runtime/metacognitive_evolution/knowledge_physics" = ["runtime/metacognitive_evolution/knowledge_physics/*.py"]
-"share/engineering-bootstrap/runtime/metacognitive_evolution/metacognition" = ["runtime/metacognitive_evolution/metacognition/*.py"]
-"share/engineering-bootstrap/runtime/metacognitive_evolution/optimization" = ["runtime/metacognitive_evolution/optimization/*.py"]
-"share/engineering-bootstrap/runtime/metacognitive_evolution/semantic_contracts" = ["runtime/metacognitive_evolution/semantic_contracts/*.py"]
-"share/engineering-bootstrap/runtime/metacognitive_evolution/theory_induction" = ["runtime/metacognitive_evolution/theory_induction/*.py"]
-"share/engineering-bootstrap/builders" = ["builders/*.py"]
-"share/engineering-bootstrap/tests" = ["tests/test_*.py"]
 "share/engineering-bootstrap/.agents/skills/admit-capability" = [".agents/skills/admit-capability/SKILL.md"]
 "share/engineering-bootstrap/.agents/skills/admit-capability/agents" = [".agents/skills/admit-capability/agents/openai.yaml"]
 "share/engineering-bootstrap/.agents/skills/admit-capability/references" = [".agents/skills/admit-capability/references/admission-contract.md"]

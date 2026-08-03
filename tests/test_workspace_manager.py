@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 from datetime import datetime, timedelta, timezone
 
 from runtime.workspace_manager import (
@@ -29,6 +31,9 @@ from runtime.workspace_manager import (
     run_workflow_request,
     show_project,
 )
+import runtime.workspace_manager as workspace_runtime
+from runtime.file_lock import FileLock, FileLockTimeout
+from runtime.event_ledger import validate_event_ledger
 
 
 ROOT = Path(__file__).parents[1]
@@ -257,22 +262,18 @@ class WorkspaceManagerTests(unittest.TestCase):
             active = json.loads(active_path.read_text(encoding="utf-8"))
             active["expires_utc"] = (datetime.now(timezone.utc) - timedelta(minutes=1)).isoformat()
             active_path.write_text(json.dumps(active, indent=2) + "\n", encoding="utf-8")
-            with self.assertRaisesRegex(ValueError, "lease expired"):
+            with self.assertRaisesRegex(ValueError, "session projection differs"):
                 search_memory(workspace, "prj_alpha", "anything", actor_id="agent_operator")
             status = workspace_status(workspace, source_root=ROOT)
             self.assertFalse(status["valid"])
-            self.assertIn("active_session_lease_expired", status["errors"])
+            self.assertTrue(any(error.startswith("session_projection_invalid:") for error in status["errors"]))
 
     def test_lease_renewal_cannot_exceed_cumulative_workspace_limit(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             workspace = self._workspace_with_projects(Path(directory))
             activate_project(workspace, "prj_alpha")
-            session = workspace / "projects_tracking/sessions/session_operator.json"
-            value = json.loads(session.read_text(encoding="utf-8"))
-            value["created_utc"] = (datetime.now(timezone.utc) - timedelta(minutes=479)).isoformat()
-            session.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "cumulative active lifetime"):
-                renew_project(workspace, minutes=2)
+                renew_project(workspace, minutes=480)
 
     def test_registered_workflow_runs_from_json_with_idempotent_receipt(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -351,7 +352,8 @@ class WorkspaceManagerTests(unittest.TestCase):
             temp = Path(directory)
             workspace = self._workspace_with_projects(temp)
             activate_project(workspace, "prj_alpha")
-            candidate = workspace / "projects/alpha/candidate-tool.py"
+            candidate = workspace / "projects/alpha/.engineering-bootstrap/staging/candidate-tool.py"
+            candidate.parent.mkdir(parents=True, exist_ok=True)
             candidate.write_text("def check():\n    return True\n", encoding="utf-8")
             request_path = temp / "promote.json"
             request_path.write_text(json.dumps({
@@ -360,7 +362,8 @@ class WorkspaceManagerTests(unittest.TestCase):
                 "idempotency_key": "promote_candidate_001",
                 "approved_effects": ["read_local", "write_workspace"],
                 "payload": {
-                    "candidate": "candidate-tool.py",
+                    "candidate": ".engineering-bootstrap/staging/candidate-tool.py",
+                    "expected_source_sha256": hashlib.sha256(candidate.read_bytes()).hexdigest(),
                     "evidence": {
                         "capability_id": "candidate-tool", "version": "1.0.0",
                         "provenance": ["projects/alpha/candidate-tool.py"],
@@ -377,6 +380,134 @@ class WorkspaceManagerTests(unittest.TestCase):
             target = Path(release["target"])
             self.assertTrue(target.is_file())
             self.assertEqual(target.read_bytes(), candidate.read_bytes())
+
+    def test_extended_session_file_without_renewal_event_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory)); activate_project(workspace, "prj_alpha")
+            session = workspace / "projects_tracking/sessions/session_operator.json"
+            value = json.loads(session.read_text()); value["expires_utc"] = (datetime.now(timezone.utc) + timedelta(days=7)).isoformat(); session.write_text(json.dumps(value), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "projection differs"):
+                current_project(workspace)
+
+    def test_released_session_cannot_be_reactivated_by_projection_edit(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory)); activate_project(workspace, "prj_alpha"); release_project(workspace, context_reset_confirmed=True)
+            session = workspace / "projects_tracking/sessions/session_operator.json"
+            value = json.loads(session.read_text()); value["status"] = "active"; session.write_text(json.dumps(value), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "projection differs"):
+                current_project(workspace)
+
+    def test_session_permission_expansion_requires_event(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory)); activate_project(workspace, "prj_alpha")
+            session = workspace / "projects_tracking/sessions/session_operator.json"
+            value = json.loads(session.read_text()); value["writable_roots"].append("projects/beta"); session.write_text(json.dumps(value), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "projection differs"):
+                current_project(workspace)
+
+    def test_session_maximum_lifetime_is_enforced(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory)); activate_project(workspace, "prj_alpha")
+            with self.assertRaisesRegex(ValueError, "cumulative active lifetime"):
+                renew_project(workspace, minutes=480)
+
+    def test_session_projection_rebuild_is_deterministic(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory)); activate_project(workspace, "prj_alpha"); renew_project(workspace, minutes=10)
+            first = rebuild_workspace_projections(workspace); second = rebuild_workspace_projections(workspace)
+            self.assertEqual(first["registry_sha256"], second["registry_sha256"])
+            self.assertEqual(first["active_project_ids"], second["active_project_ids"])
+
+    def test_workspace_mutation_loads_config_inside_lock(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory)); activate_project(workspace, "prj_alpha")
+            original = workspace_runtime._load_config
+            observed = {"locked": False}
+            def checked(paths):
+                try:
+                    with FileLock(paths.tracking / ".workspace-control.lock", timeout_seconds=0.02):
+                        pass
+                except FileLockTimeout:
+                    observed["locked"] = True
+                return original(paths)
+            with patch.object(workspace_runtime, "_load_config", side_effect=checked):
+                renew_project(workspace, minutes=5)
+            self.assertTrue(observed["locked"])
+
+    def test_config_change_during_mutation_aborts(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory)); activate_project(workspace, "prj_alpha")
+            original = workspace_runtime._snapshot_and_replace
+            changed = {"done": False}
+            def mutate(paths, path, value):
+                result = original(paths, path, value)
+                if not changed["done"]:
+                    config = workspace / "engineering-workspace.toml"; config.write_text(config.read_text() + "\n# concurrent drift\n", encoding="utf-8"); changed["done"] = True
+                return result
+            with patch.object(workspace_runtime, "_snapshot_and_replace", side_effect=mutate):
+                with self.assertRaisesRegex(ValueError, "configuration changed during mutation"):
+                    renew_project(workspace, minutes=5)
+
+    def test_event_records_configuration_digest(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory)); activate_project(workspace, "prj_alpha")
+            expected = hashlib.sha256((workspace / "engineering-workspace.toml").read_bytes()).hexdigest()
+            events = [json.loads(path.read_text()) for path in (workspace / "projects_tracking/events").glob("*.json")]
+            self.assertTrue(events)
+            self.assertTrue(all(event["payload"].get("workspace_config_sha256") == expected for event in events))
+
+    def test_read_only_config_snapshot_detects_mid_read_change(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory)); config = workspace / "engineering-workspace.toml"
+            original = Path.read_bytes; calls = {"count": 0}
+            def changing(path):
+                data = original(path)
+                if path == config:
+                    calls["count"] += 1
+                    if calls["count"] > 1:
+                        return data + b"\n# drift"
+                return data
+            with patch.object(Path, "read_bytes", changing):
+                with self.assertRaisesRegex(ValueError, "changed during verified read"):
+                    current_project(workspace)
+
+    def test_projection_rebuild_interruption_preserves_current_registry(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory)); registry = workspace / "projects_tracking/project-registry.json"; before = registry.read_bytes()
+            with self.assertRaisesRegex(RuntimeError, "injected"):
+                rebuild_workspace_projections(workspace, apply=True, fault_injector=lambda stage: (_ for _ in ()).throw(RuntimeError("injected")) if stage == "after_registry_switch" else None)
+            self.assertEqual(registry.read_bytes(), before)
+
+    def test_projection_rebuild_resumes_from_matching_checkpoint(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory))
+            with self.assertRaises(RuntimeError):
+                rebuild_workspace_projections(workspace, apply=True, fault_injector=lambda stage: (_ for _ in ()).throw(RuntimeError("stop")) if stage == "after_registry_switch" else None)
+            resumed = rebuild_workspace_projections(workspace, apply=True)
+            self.assertTrue(resumed["applied"])
+            self.assertTrue((Path(resumed["transaction"]) / "0002-committed.json").is_file())
+
+    def test_projection_rebuild_rejects_stale_checkpoint(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory)); events = workspace / "projects_tracking/events"; head = validate_event_ledger(events)["head_sha256"]
+            checkpoint = workspace / "projects_tracking/rebuild-transactions" / head / "0001-prepared.json"; checkpoint.parent.mkdir(parents=True); checkpoint.write_text(json.dumps({"source_event_head": "0" * 64}), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "different event head"):
+                rebuild_workspace_projections(workspace, apply=True)
+
+    def test_projection_rebuild_is_deterministic(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory))
+            first = rebuild_workspace_projections(workspace); second = rebuild_workspace_projections(workspace)
+            self.assertEqual(first["registry_sha256"], second["registry_sha256"])
+
+    def test_projection_switch_is_atomic(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory)); activate_project(workspace, "prj_alpha", session_id="session_alpha"); activate_project(workspace, "prj_beta", session_id="session_beta")
+            tracked = [workspace / "projects_tracking/project-registry.json", workspace / "projects_tracking/project-registry.sha256", *(workspace / "projects_tracking/sessions").glob("*.json")]
+            before = {path: path.read_bytes() for path in tracked}
+            with self.assertRaises(RuntimeError):
+                rebuild_workspace_projections(workspace, apply=True, fault_injector=lambda stage: (_ for _ in ()).throw(RuntimeError("stop")) if stage == "after_session_switch_1" else None)
+            self.assertTrue(all(path.read_bytes() == content for path, content in before.items()))
 
 
 if __name__ == "__main__":

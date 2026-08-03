@@ -28,9 +28,9 @@ SUPPORTED_CLI_ACCEPTANCE_FORMS = {
     ("audit", "structure"),
     ("project-check", "--project", "."),
     ("release", "environment"),
-    ("release", "finalize", "--release", "0.6.2"),
+    ("release", "finalize", "--release", "0.6.3"),
     ("release", "verify"),
-    ("release", "verify", "--release", "0.6.2"),
+    ("release", "verify", "--release", "0.6.3"),
     ("test-profile", "run", "fast"),
     ("test-profile", "run", "full"),
     ("test-profile", "run", "release"),
@@ -148,7 +148,7 @@ def validate_corrective_ledger(
             errors.append(f"{identifier}: child finding requires a known parent")
         if require_blocking_passed and priority in BLOCKING_PRIORITIES:
             permitted = {"passed"}
-            if allow_finalizer_in_progress and identifier == "REL-010-E":
+            if allow_finalizer_in_progress and identifier in {"REL-010-E", "REL-011-FULL-REPAIR"}:
                 permitted.add("in_progress")
             if status not in permitted:
                 errors.append(f"{identifier}: blocking card is {status}, not passed")

@@ -5,6 +5,7 @@ from dataclasses import asdict, dataclass, replace
 from datetime import datetime, timezone
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 from typing import Iterable
@@ -28,6 +29,7 @@ TRANSITIONS = {
     "superseded": set(),
 }
 WORD = re.compile(r"[a-z0-9]+")
+RECORD_NAME = re.compile(r"^record-(\d{6})\.json$")
 
 
 def _json_default(value: object) -> object:
@@ -62,6 +64,7 @@ def _record_payload(record: MemoryRecord) -> dict[str, object]:
 
 
 def _record_from_payload(value: dict[str, object]) -> MemoryRecord:
+    value = {key: item for key, item in value.items() if key in MemoryRecord.__dataclass_fields__}
     return MemoryRecord(
         **{
             **value,
@@ -73,6 +76,10 @@ def _record_from_payload(value: dict[str, object]) -> MemoryRecord:
             "expires_at": datetime.fromisoformat(str(value["expires_at"])) if value.get("expires_at") else None,
         }
     )
+
+
+def _hash_without(value: dict[str, object], field: str) -> str:
+    return _stable({key: item for key, item in value.items() if key != field})
 
 
 @dataclass(frozen=True, slots=True)
@@ -128,7 +135,38 @@ class MemoryVault:
         return tuple(sorted(self.knowledge_root.rglob("record-*.json"))) if self.knowledge_root.is_dir() else ()
 
     def records(self) -> tuple[MemoryRecord, ...]:
-        return tuple(_record_from_payload(json.loads(path.read_text(encoding="utf-8"))) for path in self._all_record_paths())
+        values: list[MemoryRecord] = []
+        previous_by_id: dict[str, str] = {}
+        revision_by_id: dict[str, int] = {}
+        lifecycle_hashes: dict[str, set[str]] = {}
+        for path in self._all_record_paths():
+            try:
+                payload = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, json.JSONDecodeError) as error:
+                raise ValueError(f"memory record integrity failure: {path.name}: {type(error).__name__}") from error
+            if not isinstance(payload, dict):
+                raise ValueError(f"memory record integrity failure: {path.name}: record is not an object")
+            required_seals = {"previous_record_sha256", "record_sha256", "lifecycle_event_head_sha256"}
+            if not required_seals.issubset(payload):
+                raise ValueError(f"memory record integrity failure: {path.name}: seal fields missing")
+            memory_id = str(payload.get("memory_id", "")); revision = payload.get("revision")
+            if not isinstance(revision, int) or isinstance(revision, bool) or revision != revision_by_id.get(memory_id, 0) + 1:
+                raise ValueError(f"memory record integrity failure: {path.name}: revision chain invalid")
+            if payload["previous_record_sha256"] != previous_by_id.get(memory_id, "0" * 64):
+                raise ValueError(f"memory record integrity failure: {path.name}: previous-record link mismatch")
+            if payload["record_sha256"] != _hash_without(payload, "record_sha256"):
+                raise ValueError(f"memory record integrity failure: {path.name}: record digest mismatch")
+            if memory_id not in lifecycle_hashes:
+                lifecycle_hashes[memory_id] = {str(item["event_sha256"]) for item in self._validate_lifecycle(memory_id)}
+            if payload["lifecycle_event_head_sha256"] not in lifecycle_hashes[memory_id]:
+                raise ValueError(f"memory record integrity failure: {path.name}: lifecycle binding mismatch")
+            record = _record_from_payload(payload)
+            errors = record.validation_errors()
+            if errors:
+                raise ValueError(f"memory record integrity failure: {path.name}: {', '.join(errors)}")
+            values.append(record)
+            previous_by_id[memory_id] = str(payload["record_sha256"]); revision_by_id[memory_id] = revision
+        return tuple(values)
 
     def latest_records(self) -> tuple[MemoryRecord, ...]:
         latest: dict[str, MemoryRecord] = {}
@@ -149,11 +187,31 @@ class MemoryVault:
             bucket = self.knowledge_root / CATEGORIES[record.memory_type]
             for component in address.bucket_path:
                 bucket /= component
-            count = sum(1 for path in bucket.glob("*/record-*.json")) if bucket.is_dir() else 0
+            count = self._verified_bucket_count(bucket) if bucket.is_dir() else 0
             if count < self.max_records_per_bucket:
                 return address
             minimum += 4
         raise ValueError("memory namespace cannot allocate a bounded bucket")
+
+    def _verified_bucket_count(self, bucket: Path) -> int:
+        """Count only parseable, sealed, filename-consistent bucket records."""
+        count = 0
+        for path in sorted(bucket.glob("*/record-*.json")):
+            match = RECORD_NAME.fullmatch(path.name)
+            if match is None:
+                raise ValueError(f"memory bucket integrity failure: invalid record filename {path.name}")
+            try:
+                payload = json.loads(path.read_text(encoding="utf-8"))
+                record = _record_from_payload(payload)
+            except (OSError, UnicodeError, json.JSONDecodeError, KeyError, TypeError, ValueError) as error:
+                raise ValueError(f"memory bucket integrity failure: corrupt entry {path.name}") from error
+            if record.revision != int(match.group(1)) or record.validation_errors():
+                raise ValueError(f"memory bucket integrity failure: invalid metadata {path.name}")
+            required = {"previous_record_sha256", "record_sha256", "lifecycle_event_head_sha256"}
+            if not required <= set(payload) or payload["record_sha256"] != _hash_without(payload, "record_sha256"):
+                raise ValueError(f"memory bucket integrity failure: invalid seal {path.name}")
+            count += 1
+        return count
 
     def append(self, record: MemoryRecord) -> VaultWrite:
         with FileLock(self.root / ".memory-control" / "vault.lock"):
@@ -178,7 +236,23 @@ class MemoryVault:
         directory /= f"{_slug(record.title)}--{address.short_address}"
         json_path = directory / f"record-{record.revision:06d}.json"
         markdown_path = directory / f"note-{record.revision:06d}.md"
-        _write_new(json_path, json.dumps(payload, indent=2, default=_json_default) + "\n")
+        lifecycle_path = self._append_lifecycle(
+            record.memory_id, "record-created" if record.revision == 1 else "record-revised",
+            record.certification_status, (record.evidence_locator,),
+        )
+        lifecycle_event = json.loads(lifecycle_path.read_text(encoding="utf-8"))
+        prior_payloads = [
+            json.loads(path.read_text(encoding="utf-8"))
+            for path in self._all_record_paths()
+            if json.loads(path.read_text(encoding="utf-8")).get("memory_id") == record.memory_id
+        ]
+        sealed = {
+            **payload,
+            "previous_record_sha256": str(prior_payloads[-1]["record_sha256"]) if prior_payloads else "0" * 64,
+            "lifecycle_event_head_sha256": lifecycle_event["event_sha256"],
+        }
+        sealed["record_sha256"] = _hash_without(sealed, "record_sha256")
+        _write_new(json_path, json.dumps(sealed, indent=2, default=_json_default) + "\n")
         links = "\n".join(f"- [[{link}]]" for link in record.relationships) or "- None"
         note = (
             f"---\nmemory_id: {record.memory_id}\nrevision: {record.revision}\n"
@@ -189,7 +263,6 @@ class MemoryVault:
             f"# {record.title}\n\n{record.summary}\n\n## Relationships\n\n{links}\n"
         )
         _write_new(markdown_path, note)
-        self._append_lifecycle(record.memory_id, "created", record.certification_status, (record.evidence_locator,))
         return VaultWrite(
             record.memory_id, record.revision,
             json_path.relative_to(self.root).as_posix(), markdown_path.relative_to(self.root).as_posix(),
@@ -200,7 +273,49 @@ class MemoryVault:
         directory = self.root / ".memory-control" / "lifecycle" / _slug(memory_id)
         return tuple(sorted(directory.glob("*.json"))) if directory.is_dir() else ()
 
+    def _lifecycle_authority(self, memory_id: str) -> tuple[Path, Path]:
+        root = self.root / ".memory-control" / "lifecycle-authority" / _slug(memory_id)
+        return root / "head.json", root / "anchors"
+
+    def _validate_lifecycle(self, memory_id: str) -> tuple[dict[str, object], ...]:
+        paths = self._lifecycle_paths(memory_id)
+        events: list[dict[str, object]] = []
+        previous_hash = "0" * 64
+        previous_state: str | None = None
+        for sequence, path in enumerate(paths, start=1):
+            try:
+                payload = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, json.JSONDecodeError) as error:
+                raise ValueError(f"memory lifecycle integrity failure: {path.name}: {type(error).__name__}") from error
+            required = {"schema_version", "sequence", "memory_id", "event", "state", "evidence", "created_utc", "previous_event_sha256", "event_sha256"}
+            if not isinstance(payload, dict) or set(payload) != required:
+                raise ValueError(f"memory lifecycle integrity failure: {path.name}: fields are not exact")
+            state = str(payload.get("state", "")); event = str(payload.get("event", ""))
+            if payload.get("sequence") != sequence or payload.get("memory_id") != memory_id:
+                raise ValueError(f"memory lifecycle integrity failure: {path.name}: identity or sequence mismatch")
+            if state not in TRANSITIONS:
+                raise ValueError(f"memory lifecycle integrity failure: {path.name}: invalid lifecycle state")
+            if payload.get("previous_event_sha256") != previous_hash or payload.get("event_sha256") != _hash_without(payload, "event_sha256"):
+                raise ValueError(f"memory lifecycle integrity failure: {path.name}: hash chain mismatch")
+            if previous_state is not None and state != previous_state and state not in TRANSITIONS.get(previous_state, set()):
+                if event != "reinstated":
+                    raise ValueError(f"memory lifecycle integrity failure: {path.name}: transition is not allowed")
+            if event == "reinstated" and (previous_state != "revoked" or not payload["evidence"]):
+                raise ValueError(f"memory lifecycle integrity failure: {path.name}: reinstatement is not approved")
+            previous_hash = str(payload["event_sha256"]); previous_state = state; events.append(payload)
+        if paths:
+            head_path, anchors = self._lifecycle_authority(memory_id)
+            try:
+                head = json.loads(head_path.read_text(encoding="utf-8"))
+                expected = {"schema_version": "1.0", "sequence": len(paths), "event_sha256": previous_hash}
+                if head != expected or not (anchors / f"{len(paths):06d}-{previous_hash}.json").is_file():
+                    raise ValueError("head mismatch")
+            except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
+                raise ValueError("memory lifecycle integrity failure: protected head mismatch") from error
+        return tuple(events)
+
     def _append_lifecycle(self, memory_id: str, event: str, state: str, evidence: Iterable[str]) -> Path:
+        events = self._validate_lifecycle(memory_id)
         paths = self._lifecycle_paths(memory_id)
         sequence = len(paths) + 1
         path = self.root / ".memory-control" / "lifecycle" / _slug(memory_id) / f"{sequence:06d}-{event}.json"
@@ -208,15 +323,25 @@ class MemoryVault:
             "schema_version": "1.0", "sequence": sequence, "memory_id": memory_id,
             "event": event, "state": state, "evidence": sorted(set(map(str, evidence))),
             "created_utc": datetime.now(timezone.utc).isoformat(),
+            "previous_event_sha256": str(events[-1]["event_sha256"]) if events else "0" * 64,
         }
+        payload["event_sha256"] = _hash_without(payload, "event_sha256")
         _write_new(path, json.dumps(payload, indent=2) + "\n")
+        head_path, anchors = self._lifecycle_authority(memory_id)
+        anchors.mkdir(parents=True, exist_ok=True)
+        head = {"schema_version": "1.0", "sequence": sequence, "event_sha256": payload["event_sha256"]}
+        _write_new(anchors / f"{sequence:06d}-{payload['event_sha256']}.json", json.dumps(head, indent=2) + "\n")
+        head_path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = head_path.with_name(f".{head_path.name}.{sequence:06d}.prepared")
+        _write_new(temporary, json.dumps(head, indent=2) + "\n")
+        os.replace(temporary, head_path)
         return path
 
     def lifecycle_state(self, memory_id: str) -> str:
-        paths = self._lifecycle_paths(memory_id)
-        if not paths:
+        events = self._validate_lifecycle(memory_id)
+        if not events:
             raise KeyError(memory_id)
-        return str(json.loads(paths[-1].read_text(encoding="utf-8"))["state"])
+        return str(events[-1]["state"])
 
     def transition(self, memory_id: str, target: str, *, evidence: Iterable[str]) -> LifecycleDecision:
         with FileLock(self.root / ".memory-control" / "vault.lock"):
@@ -231,6 +356,16 @@ class MemoryVault:
             raise ValueError("promotion requires evidence")
         path = self._append_lifecycle(memory_id, "transition", target, evidence_ids)
         return LifecycleDecision(memory_id, previous, target, path.relative_to(self.root).as_posix(), evidence_ids)
+
+    def reinstate(self, memory_id: str, *, approval_evidence: Iterable[str]) -> LifecycleDecision:
+        """Create an explicit reviewed reinstatement event; never erase revocation."""
+        with FileLock(self.root / ".memory-control" / "vault.lock"):
+            previous = self.lifecycle_state(memory_id)
+            evidence_ids = tuple(sorted(set(map(str, approval_evidence))))
+            if previous != "revoked" or not evidence_ids:
+                raise ValueError("reinstatement requires a revoked memory and approval evidence")
+            path = self._append_lifecycle(memory_id, "reinstated", "candidate", evidence_ids)
+            return LifecycleDecision(memory_id, previous, "candidate", path.relative_to(self.root).as_posix(), evidence_ids)
 
     def retrieval_records(self, *, actor_id: str, now: datetime | None = None) -> tuple[MemoryRecord, ...]:
         current = now or datetime.now(timezone.utc)

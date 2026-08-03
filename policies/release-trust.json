@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "signature_namespace": "pacify-x-release",
+  "trusted_signers": [
+    {
+      "identity": "pacify-x-release",
+      "publisher": "Mountain-Nomad-BC",
+      "fingerprint": "SHA256:aQC1XhpHq6hbFMK2vv7cKFgxLEXJVmnprjfZKTn12Ms",
+      "public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB22mMmNZMvrlkcwaXapA1YFqQrsv7n5VmFaqGvNv1oJ pacify-x-release@Mountain-Nomad-BC",
+      "valid_from_utc": "2026-08-03T00:00:00Z",
+      "status": "active"
+    }
+  ],
+  "revoked_fingerprints": [],
+  "private_key_policy": "Private signing keys are never stored in the repository. Local releases use a repository-external key; CI uses a protected secret.",
+  "rotation_policy": "Add and distribute the successor public key before use, certify one overlap release, then mark the predecessor revoked after the overlap release is independently verified.",
+  "revocation_policy": "Add the fingerprint to revoked_fingerprints, publish a signed revocation notice with the unaffected successor identity, revoke every affected release, and never rewrite historical certificates."
+}

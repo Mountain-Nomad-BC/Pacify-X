@@ -1,5 +1,5 @@
 {
-  "record_count": 321,
+  "record_count": 329,
   "records": [
     {
       "kind": "registry",
@@ -69,7 +69,7 @@
       "owner": "runtime/corrective_release.py",
       "path": "registry/corrective_release_ledger.json",
       "reachability": "release_validated",
-      "sha256": "c59a7733ce76d2d3262ede6f828778c3e02f199b6503d133f6d490e481eaa39b"
+      "sha256": "3a81b0971de90d3acf48d1643ff289917449726203f67f6cabc90a6ff54f2583"
     },
     {
       "kind": "registry",
@@ -90,7 +90,7 @@
       "owner": "runtime/exact_tool_certification.py",
       "path": "registry/declared_suite_authoritative_tools.json",
       "reachability": "release_validated",
-      "sha256": "b05712e1b067955330e12672f82cf4132c7e086293efa50f9a73fa456424e494"
+      "sha256": "03aeef5db5a01ea57fd1d3b4769f1d135f782af27eeaca24608746afdc0b65d2"
     },
     {
       "kind": "registry",
@@ -153,7 +153,7 @@
       "owner": "runtime/effect_surface.py",
       "path": "registry/effect_surface_ownership.json",
       "reachability": "release_validated",
-      "sha256": "30a9c92d51cb1669c5e9a804f3a8af8f5904f3d4bfdb11dd4dd8a9fb22ad0e68"
+      "sha256": "78eca0f72b9d82767a9fa05192bd3b3d52641db3a522bbc46d133331f2aa143e"
     },
     {
       "kind": "registry",
@@ -175,6 +175,13 @@
       "path": "registry/final_intake_disposition_policy.json",
       "reachability": "release_validated",
       "sha256": "f4fa2e0a2625509ca90f00a5e52e0b84046947e28abfe882d93043464e348e1b"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/full_repair.py",
+      "path": "registry/full_repair_ledger.json",
+      "reachability": "release_validated",
+      "sha256": "08cb8d3bea48bafa1d12a86d4af183e18446dae53f88ddc37a2de517d692f0e6"
     },
     {
       "kind": "registry",
@@ -202,7 +209,7 @@
       "owner": "runtime/structural_integrity.py",
       "path": "registry/graphs/graph_manifest.json",
       "reachability": "release_validated",
-      "sha256": "8c733b3988f50a6b112c871129e8d939f7ad167d2b47050e468d70242cf1ec58"
+      "sha256": "a44f10c92510c376c8eb3efad1a90007f8db95a845f9ef7163ba7dd66e5b02a6"
     },
     {
       "kind": "registry",
@@ -258,7 +265,7 @@
       "owner": "runtime/structural_integrity.py",
       "path": "registry/incomplete_finding_reviews.json",
       "reachability": "release_validated",
-      "sha256": "de3eb505446b603416b40d046326d7c9bfcc8191d956058d56f374d3b9f4eece"
+      "sha256": "92c08bb7c90f9f51a3e93ad6caf0583c6b84af37dad8e590528339f9e5ca29e3"
     },
     {
       "kind": "registry",
@@ -370,14 +377,14 @@
       "owner": "runtime/structural_integrity.py",
       "path": "registry/python_dependency_ownership.json",
       "reachability": "release_validated",
-      "sha256": "a4ea0985d5ef3780824ab9f1fbc1ecc9b81144cdeaf56df4d90ea65a69fff340"
+      "sha256": "a70bfd04cc139d861bf14388fbad7d8c64fbee132a3d2a1cf41fcbf0c7a4a13c"
     },
     {
       "kind": "registry",
       "owner": "runtime/python_surface_certification.py",
       "path": "registry/python_surface_ownership.json",
       "reachability": "release_validated",
-      "sha256": "957486408397403b863481c900c5024ce56b4cda95bd4e04e2cf0bca5230b459"
+      "sha256": "a98b012e50d6774f4d8707f64f37225250c9a4c943055d92fff0adc8d86f3408"
     },
     {
       "kind": "registry",
@@ -391,7 +398,7 @@
       "owner": "runtime/registry_envelope.py",
       "path": "registry/registry_envelope_inventory.json",
       "reachability": "release_validated",
-      "sha256": "be42ff6388bd7f1fc4dd95cf57d34eaa8e6883d3c63be1712a311136acdd1d33"
+      "sha256": "46f559bf81c52f1c391cd76efa52d51c9841da7a8c81af5ef6bad943329481ab"
     },
     {
       "kind": "registry",
@@ -1049,7 +1056,7 @@
       "owner": "runtime/structural_integrity.py",
       "path": "registry/skills/execution-contract-enforcer.json",
       "reachability": "release_validated",
-      "sha256": "03d46d07d852caca20329d272d4878733c65362dbd5ba366e8a702c161510954"
+      "sha256": "a2c69a2c724e2037239ea2c9849416d2da8b576699bfa0fa4da362e984e79ea5"
     },
     {
       "kind": "registry",
@@ -1413,7 +1420,7 @@
       "owner": "runtime/test_profiles.py",
       "path": "registry/test_profiles.json",
       "reachability": "release_validated",
-      "sha256": "38ea2b7b9a089bcc9c5f2eae93157949accda05bbb5266a8b9ece96ee271add3"
+      "sha256": "e88585e607f92ea0cab6b7a80698ccb9961f538c605cde739399f3fb3c43f090"
     },
     {
       "kind": "registry",
@@ -2243,6 +2250,55 @@
       "path": ".agents/skills/verify-outcome/agents/openai.yaml",
       "reachability": "lazy_skill_interface",
       "sha256": "0f9caf6f7cfcfcc22c947fa389d73b67aa41b49f70f4e9e2d30106b19a27ab7c"
+    },
+    {
+      "kind": "yaml",
+      "owner": "runtime/structural_integrity.py",
+      "path": ".github/dependabot.yml",
+      "reachability": "unclassified_yaml",
+      "sha256": "ec82f711621f2b80b00d2f149adcdaefbef01053a187bc24ac032131152ef62f"
+    },
+    {
+      "kind": "yaml",
+      "owner": "runtime/structural_integrity.py",
+      "path": ".github/ISSUE_TEMPLATE/bug_report.yml",
+      "reachability": "unclassified_yaml",
+      "sha256": "3bced27ff1ac88adaeda70ff2202e8713260c28efcaa9b8ac022050a1ca7fc9c"
+    },
+    {
+      "kind": "yaml",
+      "owner": "runtime/structural_integrity.py",
+      "path": ".github/ISSUE_TEMPLATE/capability_request.yml",
+      "reachability": "unclassified_yaml",
+      "sha256": "d08aff720a1b69545b3463cbbf95761ab6d996c9398def5c4a27adc41d2787e8"
+    },
+    {
+      "kind": "yaml",
+      "owner": "runtime/structural_integrity.py",
+      "path": ".github/ISSUE_TEMPLATE/config.yml",
+      "reachability": "unclassified_yaml",
+      "sha256": "57e3e1b49bee075c211c9b54598dbb6548a6e4443ad112a16a15dd29f9760e85"
+    },
+    {
+      "kind": "yaml",
+      "owner": "runtime/structural_integrity.py",
+      "path": ".github/workflows/ci.yml",
+      "reachability": "unclassified_yaml",
+      "sha256": "45420b5247f0393849ec09a258d9a4eff128aaa68bd8c449ff7ca0a43c1d71e6"
+    },
+    {
+      "kind": "yaml",
+      "owner": "runtime/structural_integrity.py",
+      "path": ".github/workflows/release.yml",
+      "reachability": "unclassified_yaml",
+      "sha256": "3ea7f3d249a0215e59bc7c23553e2f5fe38a0614c7fe8bffe307402ebbb8c3bb"
+    },
+    {
+      "kind": "yaml",
+      "owner": "runtime/structural_integrity.py",
+      "path": ".github/workflows/scheduled-assurance.yml",
+      "reachability": "unclassified_yaml",
+      "sha256": "9a30bdcc72d4cbc6fb9054c17ce78792b395cd1ad82a3d35f911cbc47f3ecb27"
     },
     {
       "kind": "yaml",

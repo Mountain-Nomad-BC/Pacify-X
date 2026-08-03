@@ -26,19 +26,26 @@ class InstalledWheelEndToEndTests(unittest.TestCase):
     def test_wheel_installs_and_commissions_new_and_existing_projects(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             temp = Path(directory)
-            source = temp / "source"
-            source.mkdir()
-            for name in (
-                ".agents", ".ai", ".cursor", ".github", ".windsurf", "bootstrap", "builders",
-                "contracts", "evidence", "models", "orchestration", "policies", "registry", "runtime", "templates", "tests",
-            ):
-                shutil.copytree(ROOT / name, source / name)
-            for name in ("AGENTS.md", "AI_ASSISTANT.md", "CLAUDE.md", "GEMINI.md", "README.md", "pyproject.toml"):
-                shutil.copy2(ROOT / name, source / name)
-            wheel_dir = temp / "wheel"
-            wheel_dir.mkdir()
-            self._run([sys.executable, "-m", "build", "--wheel", "--no-isolation", "--outdir", str(wheel_dir)], cwd=source)
-            wheel = next(wheel_dir.glob("*.whl"))
+            certified_wheel = os.environ.get("PACIFY_X_CERTIFIED_WHEEL")
+            if certified_wheel:
+                wheel = Path(certified_wheel).resolve(strict=True)
+                expected = os.environ.get("PACIFY_X_CERTIFIED_WHEEL_SHA256")
+                self.assertEqual(hashlib.sha256(wheel.read_bytes()).hexdigest(), expected)
+                self.assertEqual(os.environ.get("PACIFY_X_RELEASE_BUILD_PROHIBITED"), "1")
+            else:
+                source = temp / "source"
+                source.mkdir()
+                for name in (
+                    ".agents", ".ai", ".cursor", ".github", ".windsurf", "bootstrap", "builders",
+                    "contracts", "evidence", "models", "orchestration", "policies", "registry", "runtime", "templates", "tests",
+                ):
+                    shutil.copytree(ROOT / name, source / name)
+                for name in ("AGENTS.md", "AI_ASSISTANT.md", "CLAUDE.md", "GEMINI.md", "README.md", "pyproject.toml"):
+                    shutil.copy2(ROOT / name, source / name)
+                wheel_dir = temp / "wheel"
+                wheel_dir.mkdir()
+                self._run([sys.executable, "-m", "build", "--wheel", "--no-isolation", "--outdir", str(wheel_dir)], cwd=source)
+                wheel = next(wheel_dir.glob("*.whl"))
             venv = temp / "venv"
             self._run([sys.executable, "-m", "venv", str(venv)], cwd=temp)
             python = venv / ("Scripts/python.exe" if os.name == "nt" else "bin/python")

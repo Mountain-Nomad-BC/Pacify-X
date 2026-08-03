@@ -22,6 +22,7 @@ from functools import wraps
 from .commissioning import commission, project_check
 from .contracts import validate_instance
 from .file_lock import FileLock
+from .event_ledger import validate_event_ledger
 from .intake import inspect_existing_project
 from .integration_registry import validate_integrations
 from .knowledge_foundry import SourceArtifact
@@ -134,7 +135,13 @@ def _locked_when_apply(function):
             return function(root, *args, **kwargs)
         paths = workspace_paths(root)
         with FileLock(paths.tracking / ".workspace-control.lock"):
-            return function(root, *args, **kwargs)
+            config_path = paths.root / WORKSPACE_CONFIG
+            before = _sha(config_path) if config_path.is_file() else None
+            result = function(root, *args, **kwargs)
+            after = _sha(config_path) if config_path.is_file() else None
+            if before is not None and after != before:
+                raise ValueError("workspace configuration changed during mutation")
+            return result
     return wrapped
 
 
@@ -143,7 +150,13 @@ def _locked_mutation(function):
     def wrapped(root: Path, *args, **kwargs):
         paths = workspace_paths(root)
         with FileLock(paths.tracking / ".workspace-control.lock"):
-            return function(root, *args, **kwargs)
+            config_path = paths.root / WORKSPACE_CONFIG
+            before = _sha(config_path) if config_path.is_file() else None
+            result = function(root, *args, **kwargs)
+            after = _sha(config_path) if config_path.is_file() else None
+            if before is not None and after != before:
+                raise ValueError("workspace configuration changed during mutation")
+            return result
     return wrapped
 
 
@@ -218,10 +231,12 @@ def _load_config(paths: WorkspacePaths) -> dict[str, object]:
     config_path = paths.root / WORKSPACE_CONFIG
     if not config_path.is_file():
         raise ValueError(f"workspace is not initialized: missing {WORKSPACE_CONFIG}")
-    config = tomllib.loads(config_path.read_text(encoding="utf-8"))
+    before = config_path.read_bytes()
+    config_digest = hashlib.sha256(before).hexdigest()
+    config = tomllib.loads(before.decode("utf-8"))
     _validate_control(config, "workspace_config.schema.json")
     seal = paths.tracking / CONFIG_SEAL_NAME
-    if not seal.is_file() or seal.read_text(encoding="utf-8").strip() != _sha(config_path):
+    if not seal.is_file() or seal.read_text(encoding="utf-8").strip() != config_digest:
         raise ValueError("workspace configuration integrity seal is missing or mismatched")
     if not re.fullmatch(r"wsp_[A-Za-z0-9_-]+", str(config.get("workspace_id", ""))):
         raise ValueError("workspace configuration has an invalid workspace_id")
@@ -234,6 +249,8 @@ def _load_config(paths: WorkspacePaths) -> dict[str, object]:
     boundaries = config.get("boundaries", {})
     if not isinstance(boundaries, Mapping) or boundaries.get("cross_project_context_default") != "deny" or boundaries.get("project_switch_requires_teardown") is not True:
         raise ValueError("workspace isolation boundaries are not fail closed")
+    if config_path.read_bytes() != before or seal.read_text(encoding="utf-8").strip() != config_digest:
+        raise ValueError("workspace configuration changed during verified read")
     return config
 
 
@@ -285,7 +302,7 @@ def _pending_workspace_operations(paths: WorkspacePaths) -> tuple[str, ...]:
             continue
         if event.get("kind") == "workspace-operation-intent":
             intents.add(operation_id)
-        elif event.get("kind") in {"project-activated", "project-released", "workspace-operation-recovered"}:
+        elif event.get("kind") in {"project-activated", "project-released", "session-created", "session-released", "workspace-operation-recovered"}:
             completed.add(operation_id)
     return tuple(sorted(intents - completed))
 
@@ -296,15 +313,64 @@ def _session_path(paths: WorkspacePaths, session_id: str) -> Path:
     return paths.sessions / f"{session_id}.json"
 
 
+def _session_projections_from_events(paths: WorkspacePaths) -> dict[str, dict[str, object]]:
+    validation = validate_event_ledger(paths.events)
+    if not validation["valid"]:
+        raise ValueError("workspace event ledger integrity failure: " + "; ".join(validation["errors"]))
+    sessions: dict[str, dict[str, object]] = {}
+    for event in validation["events"]:
+        payload = event["payload"]; kind = event["kind"]
+        if kind in {"project-activated", "session-created"}:
+            session = payload.get("active_session")
+            if not isinstance(session, Mapping):
+                raise ValueError("session creation event is malformed")
+            session_id = str(session.get("scope", {}).get("session_id", ""))
+            if not session_id:
+                raise ValueError("session creation event has no session identity")
+            sessions[session_id] = dict(session)
+        elif kind in {"project-lease-renewed", "session-renewed"}:
+            session_id = str(payload.get("session_id", ""))
+            if not session_id or session_id not in sessions or sessions[session_id].get("status") != "active":
+                raise ValueError("session renewal event references no active session")
+            if payload.get("lease_id") != sessions[session_id].get("scope", {}).get("lease_id"):
+                raise ValueError("session renewal lease binding mismatch")
+            sessions[session_id] = {
+                **sessions[session_id], "expires_utc": payload["new_expiry"],
+                "renewed_utc": payload["renewed_utc"],
+            }
+        elif kind in {"project-released", "session-released", "session-revoked", "session-expired"}:
+            session_id = str(payload.get("session_id", ""))
+            if session_id in sessions:
+                status = {"session-revoked": "revoked", "session-expired": "expired"}.get(str(kind), "released")
+                sessions[session_id] = {**sessions[session_id], "status": status, str(payload.get("status_time_field", f"{status}_utc")): payload.get("status_time", event["created_utc"])}
+    return sessions
+
+
+def _verified_session(paths: WorkspacePaths, session_id: str) -> dict[str, object] | None:
+    expected = _session_projections_from_events(paths).get(session_id)
+    path = _session_path(paths, session_id)
+    if expected is None:
+        if path.is_file():
+            raise ValueError("session projection exists without authoritative lifecycle event")
+        return None
+    if not path.is_file():
+        raise ValueError("authoritative session event has no projection")
+    try:
+        actual = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise ValueError("session projection is unreadable") from error
+    if actual != expected:
+        raise ValueError("session projection differs from authoritative lifecycle events")
+    return expected
+
+
 def _active_sessions(paths: WorkspacePaths) -> tuple[dict[str, object], ...]:
-    if not paths.sessions.is_dir():
-        return ()
-    values = []
-    for path in sorted(paths.sessions.glob("*.json")):
-        value = json.loads(path.read_text(encoding="utf-8"))
-        if value.get("status") == "active":
-            values.append(value)
-    return tuple(values)
+    expected = _session_projections_from_events(paths)
+    actual_names = {path.stem for path in paths.sessions.glob("*.json")} if paths.sessions.is_dir() else set()
+    if actual_names != set(expected):
+        raise ValueError("session projection set differs from authoritative lifecycle events")
+    values = [_verified_session(paths, session_id) for session_id in sorted(expected)]
+    return tuple(value for value in values if value is not None and value.get("status") == "active")
 
 
 def _dashboard(paths: WorkspacePaths, registry: Mapping[str, object], active_sessions: Iterable[Mapping[str, object]]) -> str:
@@ -555,7 +621,7 @@ def activate_project(
     if not check.get("valid"):
         raise ValueError(f"target project failed integrity check: {check.get('errors')}")
     session_path = _session_path(paths, session_id)
-    previous = json.loads(session_path.read_text(encoding="utf-8")) if session_path.is_file() else None
+    previous = _verified_session(paths, session_id)
     if previous and previous.get("status") == "active" and previous.get("project_id") == project_id:
         return {"valid": True, "activated": False, "already_active": True, "session": previous}
     new_scope = _new_scope(str(config["workspace_id"]), project_id, agent_id=agent_id, session_id=session_id)
@@ -584,6 +650,11 @@ def activate_project(
         previous = {**previous, "status": "revoked", "revoked_utc": _now(), "checkpoint": checkpoint_path.relative_to(paths.root).as_posix()}
         history_path = paths.project_state / old_scope.project_id / "leases" / f"{old_scope.lease_id}-revoked.json"
         _write_json_new(history_path, previous)
+        append_event(_event_ledger(paths), "session-revoked", {
+            "operation_id": operation_id, "project_id": old_scope.project_id,
+            "session_id": old_scope.session_id, "lease_id": old_scope.lease_id,
+            "status_time": previous["revoked_utc"], "status_time_field": "revoked_utc",
+        })
     if not operation_intent_written:
         append_event(_event_ledger(paths), "workspace-operation-intent", {"operation_id": operation_id, "operation": "activate", "project_id": project_id, "session_id": session_id})
     expires = datetime.now(timezone.utc) + timedelta(minutes=int(config["leases"]["default_minutes"]))
@@ -596,6 +667,10 @@ def activate_project(
         "cross_project_access": "deny", "switch_receipt": switch_receipt,
     }
     _validate_control(active, "active-session.schema.json")
+    append_event(_event_ledger(paths), "session-created", {
+        "operation_id": operation_id, "active_session": active,
+        "old_project_negative_access_denied": True,
+    })
     _snapshot_and_replace(paths, session_path, active)
     active_project_ids = {str(item["project_id"]) for item in _active_sessions(paths)}
     for item in registry["projects"]:
@@ -607,7 +682,6 @@ def activate_project(
     registry["updated_utc"] = _now()
     _validate_control(registry, "workspace-registry.schema.json")
     _replace_registry(paths, registry)
-    append_event(_event_ledger(paths), "project-activated", {"operation_id": operation_id, "active_session": active, "old_project_negative_access_denied": True})
     _refresh_dashboard(paths, registry)
     return {"valid": True, "activated": True, "session": active, "switch": switch_receipt}
 
@@ -620,7 +694,9 @@ def release_project(root: Path, *, session_id: str = "session_operator", context
     session_path = _session_path(paths, session_id)
     if not session_path.is_file():
         return {"valid": True, "released": False, "reason": "no_active_project"}
-    active = json.loads(session_path.read_text(encoding="utf-8"))
+    active = _verified_session(paths, session_id)
+    if active is None:
+        return {"valid": True, "released": False, "reason": "no_active_project"}
     if active.get("status") != "active":
         return {"valid": True, "released": False, "reason": "no_active_project"}
     if not context_reset_confirmed:
@@ -631,6 +707,11 @@ def release_project(root: Path, *, session_id: str = "session_operator", context
     append_event(_event_ledger(paths), "workspace-operation-intent", {"operation_id": operation_id, "operation": "release", "project_id": scope.project_id, "session_id": scope.session_id})
     history_path = paths.project_state / scope.project_id / "leases" / f"{scope.lease_id}-released.json"
     _write_json_new(history_path, released)
+    append_event(_event_ledger(paths), "session-released", {
+        "operation_id": operation_id, "project_id": scope.project_id, "session_id": scope.session_id,
+        "lease_id": scope.lease_id, "context_reset_confirmed": True,
+        "status_time": released["released_utc"], "status_time_field": "released_utc",
+    })
     _snapshot_and_replace(paths, session_path, released)
     active_project_ids = {str(item["project_id"]) for item in _active_sessions(paths)}
     for item in registry["projects"]:
@@ -639,7 +720,6 @@ def release_project(root: Path, *, session_id: str = "session_operator", context
     registry["revision"] = int(registry["revision"]) + 1
     registry["updated_utc"] = _now()
     _replace_registry(paths, registry)
-    append_event(_event_ledger(paths), "project-released", {"operation_id": operation_id, "project_id": scope.project_id, "session_id": scope.session_id, "lease_id": scope.lease_id, "context_reset_confirmed": True})
     _refresh_dashboard(paths, registry)
     return {"valid": True, "released": True, "project_id": scope.project_id, "session_id": scope.session_id, "lease_id": scope.lease_id}
 
@@ -648,7 +728,7 @@ def current_project(root: Path, *, session_id: str = "session_operator") -> dict
     paths = workspace_paths(root)
     config = _load_config(paths)
     session_path = _session_path(paths, session_id)
-    active = json.loads(session_path.read_text(encoding="utf-8")) if session_path.is_file() else None
+    active = _verified_session(paths, session_id)
     return {"valid": True, "workspace_id": config["workspace_id"], "active": active if active and active.get("status") == "active" else None}
 
 
@@ -678,7 +758,9 @@ def renew_project(root: Path, *, session_id: str = "session_operator", minutes: 
     session_path = _session_path(paths, session_id)
     if not session_path.is_file():
         raise ValueError("no active project session")
-    active = json.loads(session_path.read_text(encoding="utf-8"))
+    active = _verified_session(paths, session_id)
+    if active is None:
+        raise ValueError("no active project session")
     if active.get("status") != "active":
         raise ValueError("no active project session")
     prior_expiry = active["expires_utc"]
@@ -687,10 +769,13 @@ def renew_project(root: Path, *, session_id: str = "session_operator", minutes: 
     absolute_expiry = activated + timedelta(minutes=maximum)
     if requested_expiry > absolute_expiry:
         raise ValueError("lease renewal would exceed the configured cumulative active lifetime")
-    active["expires_utc"] = requested_expiry.isoformat()
-    active["renewed_utc"] = _now()
+    active = {**active, "expires_utc": requested_expiry.isoformat(), "renewed_utc": _now()}
+    append_event(_event_ledger(paths), "session-renewed", {
+        "session_id": session_id, "project_id": active["project_id"],
+        "lease_id": active["scope"]["lease_id"], "prior_expiry": prior_expiry,
+        "new_expiry": active["expires_utc"], "renewed_utc": active["renewed_utc"],
+    })
     _snapshot_and_replace(paths, session_path, active)
-    append_event(_event_ledger(paths), "project-lease-renewed", {"project_id": active["project_id"], "lease_id": active["scope"]["lease_id"], "prior_expiry": prior_expiry, "new_expiry": active["expires_utc"]})
     return {"valid": True, "renewed": True, "project_id": active["project_id"], "lease_id": active["scope"]["lease_id"], "expires_utc": active["expires_utc"]}
 
 
@@ -726,10 +811,9 @@ def transition_project(root: Path, project_id: str, action: str, evidence: Itera
 def _require_active(paths: WorkspacePaths, project_id: str, session_id: str = "session_operator") -> tuple[dict[str, object], dict[str, object], dict[str, object]]:
     registry = _load_registry(paths)
     project = _project_by_id(registry, project_id)
-    session_path = _session_path(paths, session_id)
-    if not session_path.is_file():
+    active = _verified_session(paths, session_id)
+    if active is None:
         raise ValueError("no active project session")
-    active = json.loads(session_path.read_text(encoding="utf-8"))
     if active.get("status") != "active" or active.get("project_id") != project_id:
         raise ValueError("requested project is outside the active project session")
     if datetime.fromisoformat(str(active["expires_utc"])) <= datetime.now(timezone.utc):
@@ -824,6 +908,9 @@ def correct_memory(
     latest = {record.memory_id: record for record in vault.latest_records()}
     if previous_memory_id not in latest:
         raise ValueError("memory correction target does not exist")
+    previous_state = vault.lifecycle_state(previous_memory_id)
+    if previous_state in {"revoked", "superseded"}:
+        raise ValueError(f"memory correction target is {previous_state}; use a distinct approved reinstatement workflow")
     if memory_id in latest:
         raise ValueError("memory correction ID already exists")
     if not title.strip() or not summary.strip():
@@ -1043,6 +1130,8 @@ def _materialize_workflow_payload(
     payload["active_root"] = project
     payload["workspace_root"] = paths.root
     payload["shared_root"] = paths.shared_capabilities
+    payload["staging_root"] = project / ".engineering-bootstrap" / "staging"
+    payload["transaction_root"] = paths.tracking / "transactions" / project_id
     if workflow_id in {"memory_ingest_distill", "memory_maintenance"}:
         payload["vault"] = _vault(paths, workspace_id, project_id)
     if workflow_id in {"memory_ingest_distill", "continuous_improvement"}:
@@ -1055,6 +1144,8 @@ def _materialize_workflow_payload(
     for field in project_path_fields:
         if field in raw:
             payload[field] = _request_path(paths, project, raw[field])
+            if not _inside(payload[field], payload["staging_root"]):
+                raise ValueError(f"workflow {field} must remain below the framework-owned staging root")
     if workflow_id == "cross_project_transfer":
         package_raw = raw.get("package")
         if not isinstance(package_raw, Mapping):
@@ -1097,14 +1188,14 @@ def _validate_workflow_payload_shape(workflow_id: str, payload: Mapping[str, obj
         "agent_create_validate": {"specification": Mapping},
         "chaos_resilience_cycle": {"experiments": list},
         "cross_project_transfer": {"source": str, "destination": str, "package": Mapping},
-        "guarded_change": {"staged_file": str, "destination": str, "quarantine_root": str, "evidence": Mapping},
-        "incident_diagnose_recover": {"recovery_candidate": str, "destination": str, "quarantine_root": str, "evidence": Mapping},
+        "guarded_change": {"staged_file": str, "destination": str, "quarantine_root": str, "expected_source_sha256": str, "evidence": Mapping},
+        "incident_diagnose_recover": {"recovery_candidate": str, "destination": str, "quarantine_root": str, "expected_source_sha256": str, "evidence": Mapping},
         "memory_ingest_distill": {"sources": list},
         "memory_maintenance": {},
         "continuous_improvement": {"sources": list},
         "nightly_project_health": {"metrics": Mapping},
         "safe_cleanup": {"candidates": list, "quarantine_root": str},
-        "shared_capability_promote": {"candidate": str, "evidence": Mapping},
+        "shared_capability_promote": {"candidate": str, "expected_source_sha256": str, "evidence": Mapping},
         "workstream_plan_dispatch": {"workstreams": list, "resource_snapshot": Mapping},
     }
     contract = required.get(workflow_id)
@@ -1253,7 +1344,11 @@ def workspace_status(root: Path, *, source_root: Path | None = None) -> dict[str
         except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
             errors.append(f"project_invalid:{project_id}:{error}")
             project_results.append({"project_id": project_id, "valid": False, "error": str(error)})
-    active_sessions = _active_sessions(paths)
+    try:
+        active_sessions = _active_sessions(paths)
+    except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
+        errors.append(f"session_projection_invalid:{error}")
+        active_sessions = ()
     active_registry = [item for item in registry["projects"] if item.get("state") == "active"]
     for active in active_sessions:
         if active.get("project_id") not in seen_ids:
@@ -1322,20 +1417,24 @@ def workspace_monitor(root: Path, *, source_root: Path) -> dict[str, object]:
 
 
 @_locked_when_apply
-def rebuild_workspace_projections(root: Path, *, apply: bool = False) -> dict[str, object]:
+def rebuild_workspace_projections(
+    root: Path, *, apply: bool = False, fault_injector=None,
+) -> dict[str, object]:
     paths = workspace_paths(root)
     config = _load_config(paths)
     event_paths = tuple(sorted(paths.events.glob("*.json"))) if paths.events.is_dir() else ()
     if not event_paths:
         raise ValueError("workspace event ledger is empty")
+    ledger_validation = validate_event_ledger(paths.events)
+    if not ledger_validation["valid"]:
+        raise ValueError("workspace event ledger integrity failure: " + "; ".join(ledger_validation["errors"]))
     projects: dict[str, dict[str, object]] = {}
     sessions: dict[str, dict[str, object]] = {}
     expected_sequence = 1
     relevant_updates = 0
     intent_ids: set[str] = set()
     completed_ids: set[str] = set()
-    for path in event_paths:
-        event = json.loads(path.read_text(encoding="utf-8"))
+    for path, event in zip(event_paths, ledger_validation["events"], strict=True):
         if event.get("sequence") != expected_sequence:
             raise ValueError("workspace event sequence is not contiguous")
         payload = event.get("payload")
@@ -1356,7 +1455,7 @@ def rebuild_workspace_projections(root: Path, *, apply: bool = False) -> dict[st
                 raise ValueError(f"duplicate project admission event: {project_id}")
             projects[project_id] = dict(project)
             relevant_updates += 1
-        elif kind == "project-activated":
+        elif kind in {"project-activated", "session-created"}:
             if operation_id:
                 completed_ids.add(operation_id)
             session = payload.get("active_session")
@@ -1370,7 +1469,7 @@ def rebuild_workspace_projections(root: Path, *, apply: bool = False) -> dict[st
             for project in projects.values():
                 project["state"] = "active" if project["project_id"] in active_ids else ("registered" if project.get("state") == "active" else project.get("state"))
             relevant_updates += 1
-        elif kind == "project-released":
+        elif kind in {"project-released", "session-released", "session-revoked", "session-expired"}:
             if operation_id:
                 completed_ids.add(operation_id)
             project_id = str(payload.get("project_id", ""))
@@ -1378,10 +1477,20 @@ def rebuild_workspace_projections(root: Path, *, apply: bool = False) -> dict[st
                 raise ValueError("project release event references an unknown project")
             session_id = str(payload.get("session_id", ""))
             if session_id in sessions:
-                sessions[session_id] = {**sessions[session_id], "status": "released", "projection_rebuilt_utc": _now()}
+                status = {"session-revoked": "revoked", "session-expired": "expired"}.get(str(kind), "released")
+                sessions[session_id] = {**sessions[session_id], "status": status, str(payload.get("status_time_field", f"{status}_utc")): payload.get("status_time", event["created_utc"])}
             active_ids = {str(item["project_id"]) for item in sessions.values() if item.get("status") == "active"}
             if project_id not in active_ids:
                 projects[project_id]["state"] = "registered"
+            relevant_updates += 1
+        elif kind in {"project-lease-renewed", "session-renewed"}:
+            session_id = str(payload.get("session_id", ""))
+            if session_id not in sessions or sessions[session_id].get("status") != "active":
+                raise ValueError("session renewal event references no active session")
+            sessions[session_id] = {
+                **sessions[session_id], "expires_utc": payload["new_expiry"],
+                "renewed_utc": payload.get("renewed_utc", event["created_utc"]),
+            }
             relevant_updates += 1
         elif kind in {"project-pause", "project-resume", "project-archive"}:
             project_id = str(payload.get("project_id", ""))
@@ -1393,7 +1502,7 @@ def rebuild_workspace_projections(root: Path, *, apply: bool = False) -> dict[st
     registry = {
         "schema_version": "1.0", "workspace_id": config["workspace_id"],
         "revision": 1 + relevant_updates, "projects": sorted(projects.values(), key=lambda item: str(item["project_id"])),
-        "updated_utc": _now(),
+        "updated_utc": str(ledger_validation["events"][-1]["created_utc"]),
     }
     preview = {
         "valid": True, "applied": False, "approval_required": True,
@@ -1405,17 +1514,97 @@ def rebuild_workspace_projections(root: Path, *, apply: bool = False) -> dict[st
     }
     if not apply:
         return preview
-    _replace_registry(paths, registry)
+    source_head = str(ledger_validation["head_sha256"])
+    transaction = paths.tracking / "rebuild-transactions" / source_head
+    prepared = transaction / "prepared"
+    rollback = transaction / "rollback"
+    transaction.mkdir(parents=True, exist_ok=True)
+    prepared.mkdir(parents=True, exist_ok=True)
+    rollback.mkdir(parents=True, exist_ok=True)
+    registry_bytes = (json.dumps(registry, indent=2) + "\n").encode("utf-8")
+    prepared_registry = prepared / REGISTRY_NAME
+    if not prepared_registry.exists():
+        _write_new(prepared_registry, registry_bytes)
+    prepared_sessions = prepared / "sessions"
+    prepared_sessions.mkdir(parents=True, exist_ok=True)
     for session_id, session in sessions.items():
-        _snapshot_and_replace(paths, _session_path(paths, session_id), session)
-    for existing in paths.sessions.glob("*.json"):
-        if existing.stem not in sessions:
-            prior = json.loads(existing.read_text(encoding="utf-8"))
-            revoked = {**prior, "status": "revoked", "projection_rebuilt_utc": _now()}
-            _snapshot_and_replace(paths, existing, revoked)
+        target = prepared_sessions / f"{session_id}.json"
+        if not target.exists():
+            _write_new(target, (json.dumps(session, indent=2, default=str) + "\n").encode("utf-8"))
+    checkpoint = {
+        "schema_version": "1.0", "status": "prepared", "source_event_head": source_head,
+        "processed_events": len(event_paths), "registry_sha256": hashlib.sha256(registry_bytes).hexdigest(),
+        "session_sha256": {path.name: _sha(path) for path in sorted(prepared_sessions.glob("*.json"))},
+    }
+    checkpoint_path = transaction / "0001-prepared.json"
+    if not checkpoint_path.exists():
+        _write_json_new(checkpoint_path, checkpoint)
+    else:
+        stored_checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+        if stored_checkpoint.get("source_event_head") != source_head:
+            raise ValueError("projection rebuild checkpoint belongs to a different event head")
+        if stored_checkpoint.get("registry_sha256") != _sha(prepared_registry):
+            raise ValueError("projection rebuild checkpoint registry hash mismatch")
+        actual_session_hashes = {path.name: _sha(path) for path in sorted(prepared_sessions.glob("*.json"))}
+        if stored_checkpoint.get("session_sha256") != actual_session_hashes:
+            raise ValueError("projection rebuild checkpoint session hashes mismatch")
+    if validate_event_ledger(paths.events)["head_sha256"] != source_head:
+        raise ValueError("workspace event head changed during projection rebuild")
+    _validate_control(registry, "workspace-registry.schema.json")
+    for session in sessions.values():
+        _validate_control(session, "active-session.schema.json")
+    originals: dict[Path, Path] = {}
+    targets = [paths.registry, paths.tracking / REGISTRY_SEAL_NAME, *(_session_path(paths, identifier) for identifier in sorted(sessions))]
+    for target in targets:
+        if target.is_file():
+            relative = target.relative_to(paths.tracking).as_posix().replace("/", "--")
+            preserved = rollback / relative
+            if not preserved.exists():
+                _write_new(preserved, target.read_bytes())
+            originals[target] = preserved
+    try:
+        if fault_injector:
+            fault_injector("before_registry_switch")
+        registry_next = paths.registry.with_name(f".{paths.registry.name}.{source_head[:12]}.prepared")
+        if not registry_next.exists():
+            _write_new(registry_next, prepared_registry.read_bytes())
+        os.replace(registry_next, paths.registry)
+        seal_next = (paths.tracking / REGISTRY_SEAL_NAME).with_name(f".{REGISTRY_SEAL_NAME}.{source_head[:12]}.prepared")
+        if not seal_next.exists():
+            _write_new(seal_next, (_sha(paths.registry) + "\n").encode("utf-8"))
+        os.replace(seal_next, paths.tracking / REGISTRY_SEAL_NAME)
+        if fault_injector:
+            fault_injector("after_registry_switch")
+        for index, session_id in enumerate(sorted(sessions), start=1):
+            session_next = _session_path(paths, session_id).with_name(f".{session_id}.{source_head[:12]}.prepared")
+            if not session_next.exists():
+                _write_new(session_next, (prepared_sessions / f"{session_id}.json").read_bytes())
+            os.replace(session_next, _session_path(paths, session_id))
+            if fault_injector:
+                fault_injector(f"after_session_switch_{index}")
+    except BaseException as error:
+        for target, preserved in originals.items():
+            restore = target.with_name(f".{target.name}.{source_head[:12]}.rollback")
+            if restore.exists():
+                raise RuntimeError(f"projection rollback collision: {restore}") from error
+            _write_new(restore, preserved.read_bytes())
+            os.replace(restore, target)
+        _write_json_new(transaction / f"0002-rolled-back-{_stable(str(error))[:12]}.json", {
+            "schema_version": "1.0", "status": "rolled_back", "source_event_head": source_head,
+            "error": f"{type(error).__name__}: {error}", "restored": [path.as_posix() for path in originals],
+        })
+        raise
+    _write_json_new(transaction / "0002-committed.json", {
+        "schema_version": "1.0", "status": "committed", "source_event_head": source_head,
+        "registry_sha256": _sha(paths.registry), "session_sha256": {path.name: _sha(path) for path in sorted(paths.sessions.glob("*.json"))},
+    })
     for operation_id in sorted(intent_ids - completed_ids):
         append_event(_event_ledger(paths), "workspace-operation-recovered", {
             "operation_id": operation_id, "resolution": "rolled_back_to_last_committed_event_projection", "hard_delete": False,
         })
+    completed = append_event(_event_ledger(paths), "workspace-rebuild-completed", {
+        "source_event_head": source_head, "processed_events": len(event_paths),
+        "registry_sha256": _sha(paths.registry), "transaction": transaction.relative_to(paths.root).as_posix(),
+    })
     _refresh_dashboard(paths, registry)
-    return {**preview, "applied": True, "approval_required": False}
+    return {**preview, "applied": True, "approval_required": False, "transaction": transaction.as_posix(), "completion_event": completed.as_posix()}

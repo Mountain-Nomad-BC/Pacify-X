@@ -14,7 +14,12 @@
     {"id": "external-tool-quarantine", "summary": "Keep external tools inert until provenance, integrity, permissions, license, and risk pass review.", "body": "policies/external-tool-quarantine.json"},
     {"id": "runtime-assurance-privacy", "summary": "Collect only opt-in, redacted assurance signals with bounded retention.", "body": "policies/runtime-assurance-privacy.json"},
     {"id": "artifact-preservation", "summary": "Never hard-delete source, owned, unknown, generated, failed, or superseded artifacts; use hash-verified recoverable quarantine.", "body": "policies/artifact-preservation.json"},
-    {"id": "release-artifact-classification", "summary": "Classify every release file as product input, evidence output, generated intermediate, or bounded control output before hashing and certification.", "body": "policies/release-artifact-policy.json"}
+    {"id": "release-artifact-classification", "summary": "Classify every release file as product input, evidence output, generated intermediate, or bounded control output before hashing and certification.", "body": "policies/release-artifact-policy.json"},
+    {"id": "release-coverage-assurance", "summary": "Require executed branch coverage and per-test contexts for safety-critical release classes.", "body": "policies/coverage-assurance.json"},
+    {"id": "effect-grant-trust", "summary": "Trust effect authority only when a scoped, unexpired grant has a verified publisher signature.", "body": "policies/effect-grant-trust.json"},
+    {"id": "release-signing-trust", "summary": "Verify signed release certificates against explicitly trusted and non-revoked publisher keys.", "body": "policies/release-trust.json"},
+    {"id": "public-data-allowlist", "summary": "Admit only reviewed public identifiers, inert test domains, technical URI tokens, and binary signatures during sanitation review.", "body": "policies/public-data-allowlist.json"},
+    {"id": "platform-support", "summary": "Bound Python and operating-system support claims to the public CI and release matrices.", "body": "policies/platform-support.json"}
   ],
   "loading_rule": "Load a full policy body only when the request, selected capability, or declared effect references its policy ID."
 }

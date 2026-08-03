@@ -9,11 +9,23 @@ from typing import Any
 
 
 EXTERNAL = re.compile(
-    r"(?:\.\./[^\"'\s,\]]+|(?<![A-Za-z])[A-Za-z]:(?:\\\\|\\|/)[^\"'\r\n]+|/(?:Users|home|tmp|var/tmp)/[^\"'\r\n]+)",
+    r"(?:\.\./[^\"'\s,\]]+|(?<![A-Za-z])[A-Za-z]:(?:\\\\|\\|/)[^\"'\r\n]+|\\\\[^\\\s]+\\[^\\\s]+(?:\\[^\"'\r\n]*)?|file://[^\"'\s]+|/(?:mnt/[A-Za-z]|Users|home|tmp|var/tmp|private/var)/[^\"'\r\n]+|(?-i:\$(?:[A-Z_][A-Z0-9_]*|\{[A-Za-z_][A-Za-z0-9_]*\})))",
     re.IGNORECASE,
 )
 STRUCTURED_ROOTS = ("evidence", "registry", "bootstrap", "contracts", "models", "orchestration", "policies")
 TEXT_SUFFIXES = {".json", ".jsonl", ".md", ".txt", ".log", ".toml", ".yaml", ".yml"}
+PATH_KEYS = {"path", "file", "filepath", "directory", "root", "source", "location", "uri", "locator"}
+ALLOWED_URI_SCHEMES = {"https", "http", "urn"}
+
+
+def portability_findings(text: str, *, allowed_uri_schemes: set[str] = ALLOWED_URI_SCHEMES) -> tuple[str, ...]:
+    findings = []
+    for match in EXTERNAL.finditer(text):
+        value = match.group(0).rstrip(".,")
+        if "://" in value and value.split(":", 1)[0].casefold() in allowed_uri_schemes:
+            continue
+        findings.append(value)
+    return tuple(sorted(set(findings)))
 
 
 def discover_historical_references(root: Path) -> list[dict[str, Any]]:
@@ -31,8 +43,16 @@ def discover_historical_references(root: Path) -> list[dict[str, Any]]:
         text = path.read_text(encoding="utf-8", errors="replace")
         relative = path.relative_to(root).as_posix()
         for line_no, line in enumerate(text.splitlines(), 1):
-            for match in EXTERNAL.finditer(line):
-                locator = match.group(0).rstrip(".,")
+            for locator in portability_findings(line):
+                locator = locator.rstrip("`)]}>,.")
+                if locator.startswith("../"):
+                    candidate = (path.parent / locator).resolve()
+                    try:
+                        candidate.relative_to(root)
+                        if candidate.exists():
+                            continue
+                    except ValueError:
+                        pass
                 identifier = hashlib.sha256(f"{relative}:{locator}".encode()).hexdigest()[:20]
                 records.append({
                     "id": identifier,

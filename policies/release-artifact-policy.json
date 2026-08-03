@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "policy_version": "1.0.0",
-  "product_roots": [".agents", ".ai", ".codex", ".cursor", ".engineering-bootstrap", ".github", ".vscode", ".windsurf", "bootstrap", "builders", "contracts", "docs", "models", "orchestration", "policies", "registry", "runtime", "scripts", "templates", "tests"],
-  "product_root_files": [".gitattributes", ".gitignore", "AGENTS.md", "AI_ASSISTANT.md", "ARCHITECTURE_GOVERNANCE_AND_RISK.md", "CHANGELOG.md", "CLAUDE.md", "EXECUTION_PLAN_PUNCH_CARDS_AND_ACCEPTANCE.md", "GEMINI.md", "LICENSE", "MANIFEST.in", "NOTICE", "PROJECT_BLUEPRINT.md", "PROJECT_MANAGEMENT.md", "README.md", "START_HERE_FOR_AI.md", "pyproject.toml", "requirements-release.lock"],
+  "product_roots": [".agents", ".ai", ".codex", ".cursor", ".engineering-bootstrap", ".github", ".vscode", ".windsurf", "bootstrap", "builders", "contracts", "docs", "examples", "models", "orchestration", "policies", "registry", "runtime", "scripts", "templates", "tests"],
+  "product_root_files": [".coveragerc", ".gitattributes", ".gitignore", "AGENTS.md", "AI_ASSISTANT.md", "ARCHITECTURE_GOVERNANCE_AND_RISK.md", "CHANGELOG.md", "CLAUDE.md", "CONTRIBUTING.md", "EXECUTION_PLAN_PUNCH_CARDS_AND_ACCEPTANCE.md", "GEMINI.md", "LICENSE", "MANIFEST.in", "NOTICE", "PROJECT_BLUEPRINT.md", "PROJECT_MANAGEMENT.md", "README.md", "SECURITY.md", "START_HERE_FOR_AI.md", "pyproject.toml", "requirements-release.lock"],
   "evidence_roots": ["evidence"],
   "intermediate_names": [".git", "__pycache__", ".pytest_cache", ".ruff_cache", "build", "dist"],
   "intermediate_name_suffixes": [".egg-info"],
   "intermediate_suffixes": [".pyc", ".pyo", ".tmp"],
   "control_output_paths": [".engineering-bootstrap/release.lock", ".engineering-bootstrap/release-transaction.json"],
-  "evidence_allowed_suffixes": [".json", ".jsonl", ".md", ".txt", ".log", ".xml", ".png", ".svg"],
+  "evidence_allowed_suffixes": [".json", ".jsonl", ".md", ".txt", ".log", ".xml", ".png", ".svg", ".sig"],
   "product_digest_algorithm": "sha256-over-canonical-jsonl-path-size-sha256",
   "unclassified_policy": "fail_closed"
 }

@@ -6,6 +6,8 @@ from pathlib import Path
 import tomllib
 from typing import Any
 
+from .paths import declared_file_available
+
 
 def validate_source_coverage(root: Path) -> dict[str, Any]:
     path = root / "registry" / "source_requirement_coverage.json"
@@ -27,7 +29,7 @@ def validate_source_coverage(root: Path) -> dict[str, Any]:
             errors.append(f"{control_id}: required control is not operational")
         for field in ("owners", "contracts", "tests"):
             for relative in control.get(field, ()):
-                if not (root / str(relative)).is_file():
+                if not declared_file_available(root, str(relative)):
                     errors.append(f"{control_id}: missing {field[:-1]} {relative}")
         for skill_id in control.get("skills", ()):
             status = skills.get(skill_id)

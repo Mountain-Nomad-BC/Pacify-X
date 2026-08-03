@@ -26,34 +26,37 @@ class ExactToolCertificationTests(unittest.TestCase):
         self.assertEqual(result["directly_loaded"], 56)
         self.assertEqual(result["positive_cases"], 56)
         self.assertEqual(result["passed_tools"], 56)
-        self.assertEqual(result["negative_cases"], 11)
+        self.assertEqual(result["negative_cases"], 56)
+        self.assertEqual(result["deterministic_repeat_cases"], 56)
         self.assertEqual(result["domain_wrappers"], 7)
         self.assertEqual(result["passed_domain_wrappers"], 7)
         for record in result["results"]:
             target = ROOT / record["target"]
             self.assertEqual(record["sha256"], hashlib.sha256(target.read_bytes()).hexdigest())
 
-    def test_fail_closed_cases_are_attached_to_security_critical_tools(self) -> None:
+    def test_every_admitted_tool_has_negative_certification_case(self) -> None:
         result = self.result
         denied = {record["id"] for record in result["results"] if record["negative_behavior"] is not None}
-        self.assertEqual(
-            denied,
-            {
-                "archive-verifier",
-                "canary-compare",
-                "certification-aggregator",
-                "completion-cutline",
-                "ingestion-validator",
-                "memory-write-gate",
-                "permission-guard",
-                "prompt-injection-scanner",
-                "protocol-validator",
-                "secret-scanner",
-                "tool-policy-enforcer",
-            },
-        )
+        self.assertEqual(denied, {record["id"] for record in result["results"]})
 
-    def test_timeout_is_attributed_without_erasing_a_receipt(self) -> None:
+    def test_tool_without_boundary_case_cannot_be_fully_certified(self) -> None:
+        for record in self.result["results"]:
+            self.assertEqual(record["certification_strength"], "negative-path-certified")
+            self.assertTrue(record["fixture_classes"]["malformed_input"])
+            self.assertTrue(record["fixture_classes"]["wrong_type"])
+
+    def test_tool_side_effects_are_measured(self) -> None:
+        for record in self.result["results"]:
+            behavior = record["positive_behavior"]
+            self.assertIn("observed_filesystem_effects", behavior)
+            self.assertIn("unexpected_filesystem_effects", behavior)
+            self.assertEqual(behavior["unexpected_filesystem_effects"], [])
+
+    def test_tool_repeat_case_is_deterministic(self) -> None:
+        for record in self.result["results"]:
+            self.assertTrue(record["deterministic_repeat"], record["id"])
+
+    def test_tool_timeout_is_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             script = root / "stall.py"

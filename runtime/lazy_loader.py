@@ -4,6 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 import json
+from threading import RLock
 import tomllib
 from typing import Iterable
 
@@ -38,6 +39,7 @@ class LazySkillLoader:
         self.max_bytes = max_bytes
         self.max_depth = max_depth
         self._active: dict[str, HydratedSkill] = {}
+        self._lock = RLock()
 
     @classmethod
     def from_catalog(cls, root: Path, *, max_active: int = 3, max_bytes: int = 262144, max_depth: int = 4) -> "LazySkillLoader":
@@ -72,30 +74,50 @@ class LazySkillLoader:
         return tuple(sorted(self._active))
 
     def hydrate(self, capability_id: str, *, include_references: bool = False, _depth: int = 0) -> HydratedSkill:
-        if capability_id in self._active:
+        del _depth  # retained only for source compatibility; recursion is transaction-local.
+        with self._lock:
+            if capability_id in self._active:
+                return self._active[capability_id]
+            prepared: dict[str, HydratedSkill] = {}
+            visiting: set[str] = set()
+
+            def prepare(identifier: str, depth: int, references_requested: bool) -> None:
+                if identifier in self._active or identifier in prepared:
+                    return
+                if depth >= self.max_depth:
+                    raise ValueError("skill dependency depth exceeds budget")
+                if identifier in visiting:
+                    raise ValueError("skill dependency cycle detected")
+                descriptor = self.descriptors.get(identifier)
+                if descriptor is None:
+                    raise KeyError(f"unknown skill: {identifier}")
+                if descriptor.status not in {"active", "admitted"}:
+                    raise PermissionError(f"skill is not admitted for hydration: {identifier}")
+                visiting.add(identifier)
+                try:
+                    for dependency in descriptor.dependencies:
+                        prepare(dependency, depth + 1, False)
+                    body = self._read(descriptor.body)
+                    references = tuple((path, self._read(path)) for path in descriptor.references) if references_requested else ()
+                    loaded = len(body.encode()) + sum(len(value.encode()) for _, value in references)
+                    prepared[identifier] = HydratedSkill(identifier, body, references, loaded)
+                finally:
+                    visiting.remove(identifier)
+
+            prepare(capability_id, 0, include_references)
+            if len(self._active) + len(prepared) > self.max_active:
+                raise ValueError("active skill budget exhausted")
+            if self.footprint_bytes + sum(item.bytes_loaded for item in prepared.values()) > self.max_bytes:
+                raise ValueError("skill context byte budget exhausted")
+            # The only mutation in hydration happens after every read, contract,
+            # dependency, depth, count, and byte-budget check succeeds.
+            self._active.update(prepared)
             return self._active[capability_id]
-        if _depth >= self.max_depth:
-            raise ValueError("skill dependency depth exceeds budget")
-        descriptor = self.descriptors.get(capability_id)
-        if descriptor is None:
-            raise KeyError(f"unknown skill: {capability_id}")
-        if descriptor.status not in {"active", "admitted"}:
-            raise PermissionError(f"skill is not admitted for hydration: {capability_id}")
-        for dependency in descriptor.dependencies:
-            self.hydrate(dependency, include_references=False, _depth=_depth + 1)
-        if len(self._active) >= self.max_active:
-            raise ValueError("active skill budget exhausted")
-        body = self._read(descriptor.body)
-        references = tuple((path, self._read(path)) for path in descriptor.references) if include_references else ()
-        loaded = len(body.encode()) + sum(len(value.encode()) for _, value in references)
-        if self.footprint_bytes + loaded > self.max_bytes:
-            raise ValueError("skill context byte budget exhausted")
-        hydrated = HydratedSkill(capability_id, body, references, loaded)
-        self._active[capability_id] = hydrated
-        return hydrated
 
     def unload(self, capability_id: str) -> bool:
-        return self._active.pop(capability_id, None) is not None
+        with self._lock:
+            return self._active.pop(capability_id, None) is not None
 
     def unload_all(self) -> None:
-        self._active.clear()
+        with self._lock:
+            self._active.clear()

@@ -9,13 +9,13 @@
     {
       "id": "claim-ledger",
       "pack": "01",
-      "source_sha256": "3fea365348823a1f589949fa38d7009935ec827188e248ac1bbb598fb1ed65ac",
+      "source_sha256": "928be42d3d873eb08a9881ab6cb8bd3e18132980974fab9f39896720cb956d88",
       "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_claim_ledger.py"
     },
     {
       "id": "durable-state",
       "pack": "01",
-      "source_sha256": "2eaf1de1416488dca24b1765da135a862b69b7ec39f1e9eed94bab0f7816d15d",
+      "source_sha256": "e233b44d413dd90f7ca1ff53f8afa8dc5e24f41b396b07030c776c2ee04567ab",
       "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_durable_state.py"
     },
     {
@@ -183,19 +183,19 @@
     {
       "id": "scoped-memory",
       "pack": "04",
-      "source_sha256": "7363b9cffee8dda22039aad5b7ccc6c6d8fd26b8d0f3d80c18a6378a29116515",
+      "source_sha256": "4a402996ece9f1e0458c059d16241d436b61546584e4386a8d0ee6b1745cf6ba",
       "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_scoped_memory.py"
     },
     {
       "id": "trace-recorder",
       "pack": "04",
-      "source_sha256": "93098e87152340c41f1964c3d9cd430b47ddd8c45bd35eccb75e1eed0d3edcdc",
+      "source_sha256": "609abfb157f0f7f61c42aff8f4643d57316ad7bd1f3d2ed8ca8190f71894285b",
       "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_trace_recorder.py"
     },
     {
       "id": "ai-bom",
       "pack": "05",
-      "source_sha256": "f68a1e39efc793de2687fe055de081d9fab7ece0010c34be3eda23abe983994b",
+      "source_sha256": "1851adc3f0d414c161482eaa1ae35e21684a585afec7cbe2fbb56d8992069536",
       "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_ai_bom.py"
     },
     {
@@ -249,7 +249,7 @@
     {
       "id": "approval-request",
       "pack": "06",
-      "source_sha256": "c589451189be9615e2dcbed5d64b9e59e095d0360698883f50f766de9ee21efa",
+      "source_sha256": "8a08f59897c7dee9538dd39c3848825796b8556412adb9f5565289528e550484",
       "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_approval_request.py"
     },
     {
@@ -273,7 +273,7 @@
     {
       "id": "hardware-probe",
       "pack": "06",
-      "source_sha256": "310583f15d3bbb75a24be7a7e9df9e9c863d63775f220742784d3164ae0cf9c5",
+      "source_sha256": "d6ed17fe5db30b1b55deed07271325508bfd9fdccbf7a9c690080915b8558deb",
       "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_hardware_probe.py"
     },
     {

@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "branch_required": true,
+  "dynamic_context_required": true,
+  "classes": {
+    "release_certification": {"minimum_branch_percent": 45, "modules": ["runtime/release_certification.py", "runtime/release_distribution.py", "runtime/release_evidence.py", "runtime/release_identity.py", "runtime/release_signing.py"]},
+    "path_boundaries": {"minimum_branch_percent": 65, "modules": ["runtime/bounded_walk.py", "runtime/intake.py", "runtime/paths.py"]},
+    "mutation_recovery": {"minimum_branch_percent": 55, "modules": ["runtime/project_control_plane.py", "runtime/recovery.py"]},
+    "contracts": {"minimum_branch_percent": 70, "modules": ["runtime/contracts.py"]},
+    "memory_session_integrity": {"minimum_branch_percent": 50, "modules": ["runtime/memory_vault.py", "runtime/workspace_manager.py", "runtime/event_ledger.py"]},
+    "admission_execution_guards": {"minimum_branch_percent": 60, "modules": ["runtime/admission_controller.py", "runtime/execution_contract.py", "runtime/effect_grants.py"]}
+  },
+  "exemptions": []
+}

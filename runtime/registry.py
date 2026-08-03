@@ -18,6 +18,7 @@ from .integration_registry import validate_integrations
 from .graph_registry import validate_graph_artifacts
 from .capability_assimilation import validate_capability_assimilation
 from .semantic_index import load_semantic_index, validate_semantic_index
+from .paths import declared_file_available, resolve_declared_path
 
 CAPABILITY_ID = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 REQUIRED_CONTRACT_FIELDS = {
@@ -74,11 +75,11 @@ def validate_registry(root: Path) -> dict:
         if ledger_status.get(capability_id) != "active":
             errors.append(f"{capability_id}: missing active admission ledger record")
         for field in ("contract", "implementation", "evidence"):
-            target = root / str(item.get(field, ""))
-            if not target.is_file():
-                errors.append(f"{capability_id}: missing {field} {target}")
-        contract_path = root / str(item.get("contract", ""))
-        if contract_path.is_file():
+            relative = str(item.get(field, ""))
+            if not declared_file_available(root, relative):
+                errors.append(f"{capability_id}: missing {field} {relative}")
+        contract_path = resolve_declared_path(root, str(item.get("contract", "")))
+        if contract_path is not None and contract_path.is_file():
             try:
                 contract = load_json(contract_path)
             except (OSError, json.JSONDecodeError) as error:
@@ -102,8 +103,8 @@ def validate_registry(root: Path) -> dict:
             unknown_effects = set(contract.get("effects", ())) - KNOWN_EFFECTS
             if unknown_effects:
                 errors.append(f"{capability_id}: unknown effects: {', '.join(sorted(unknown_effects))}")
-            implementation_path = root / str(item.get("implementation", ""))
-            if implementation_path.is_file():
+            implementation_path = resolve_declared_path(root, str(item.get("implementation", "")))
+            if implementation_path is not None and implementation_path.is_file():
                 digest = hashlib.sha256(implementation_path.read_bytes()).hexdigest()
                 if contract.get("hash") != digest:
                     errors.append(f"{capability_id}: implementation hash mismatch")
@@ -190,27 +191,27 @@ def validate_registry(root: Path) -> dict:
             if skill_status not in {"active", "admitted", "mapped_deferred", "candidate", "quarantined"}:
                 errors.append(f"{skill_id}: invalid skill lifecycle state {skill_status}")
             for field in ("body", "contract"):
-                target = root / str(skill.get(field, ""))
-                if not target.is_file():
+                relative = str(skill.get(field, ""))
+                if not declared_file_available(root, relative):
                     errors.append(f"{skill_id}: missing skill {field}")
             admission_status = ledger_status.get(skill.get("admission_record"))
             if skill_status in {"active", "admitted"} and admission_status != "active":
                 errors.append(f"{skill_id}: missing active skill admission record")
             if skill_status in {"mapped_deferred", "candidate", "quarantined"} and admission_status == "active":
                 errors.append(f"{skill_id}: deferred skill has active admission record")
-            contract_path = root / str(skill.get("contract", ""))
-            if "skill_packages" in contract_path.parts and contract_path.is_file():
+            contract_path = resolve_declared_path(root, str(skill.get("contract", "")))
+            if contract_path is not None and "skill_packages" in contract_path.parts and contract_path.is_file():
                 package = load_json(contract_path)
-                body_path = root / str(skill.get("body", ""))
+                body_path = resolve_declared_path(root, str(skill.get("body", "")))
                 if package.get("id") != skill_id or package.get("status") != skill_status:
                     errors.append(f"{skill_id}: skill package identity/status mismatch")
-                if body_path.is_file() and package.get("body_sha256") != hashlib.sha256(body_path.read_bytes()).hexdigest():
+                if body_path is not None and body_path.is_file() and package.get("body_sha256") != hashlib.sha256(body_path.read_bytes()).hexdigest():
                     errors.append(f"{skill_id}: skill body hash mismatch")
                 for reference in package.get("references", ()):
-                    if not (root / reference).is_file():
+                    if not declared_file_available(root, reference):
                         errors.append(f"{skill_id}: missing lazy reference {reference}")
                 for resource in package.get("resources", ()):
-                    if not (root / resource).is_file():
+                    if not declared_file_available(root, resource):
                         errors.append(f"{skill_id}: missing skill resource {resource}")
     try:
         build_system_graph(root)

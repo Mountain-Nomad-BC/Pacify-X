@@ -72,14 +72,32 @@ def audit(
             errors.append(f"{relative}: {type(error).__name__}: {error}")
     identifier_hits.sort(key=lambda item: (str(item["path"]), str(item["location"]), int(item["offset"])))
     legacy_placeholder_hits.sort(key=lambda item: (str(item["path"]), str(item["location"]), int(item["offset"])))
+    exclusions = sorted(EXCLUDED_DIRECTORIES | set(excluded_names))
+    def gate(name: str, status: str, findings: object, limitations: str) -> dict[str, object]:
+        return {
+            "name": name, "status": status, "tool": "audit_sanitization.py",
+            "corpus": ".", "exclusions": exclusions, "limitations": limitations,
+            "findings": findings, "disposition": "pass" if status == "passed" else ("fail" if status == "failed" else "not_run"),
+        }
+    gates = {
+        "brand_identifier_sanitation": gate("brand_identifier_sanitation", "failed" if identifier_hits else "passed", identifier_hits, "Configured identifier patterns only; not a general secret or PII scan."),
+        "legacy_placeholder_detection": gate("legacy_placeholder_detection", "failed" if legacy_placeholder_hits else "passed", legacy_placeholder_hits, "Configured legacy placeholder patterns only."),
+        "archive_detection": gate("archive_detection", "failed" if zip_paths else "passed", sorted(zip_paths), "Detects active ZIP paths only; does not inspect archive contents."),
+        "secret_scanning": gate("secret_scanning", "not_run", [], "No credential/secret scanner was invoked by this control."),
+        "credential_scanning": gate("credential_scanning", "not_run", [], "No credential scanner was invoked by this control."),
+        "pii_review": gate("pii_review", "not_run", [], "No PII review tool or human review was invoked."),
+        "binary_review": gate("binary_review", "not_run", [], "Binary payload classification is outside this identifier scanner."),
+        "license_provenance_review": gate("license_provenance_review", "not_run", [], "License and provenance review requires a separate admitted control."),
+    }
     return {
         "schema_version": "1.0", "root": ".",
-        "excluded_directory_names": sorted(EXCLUDED_DIRECTORIES | set(excluded_names)),
+        "excluded_directory_names": exclusions,
         "files_scanned": files_scanned, "bytes_scanned": bytes_scanned,
         "identifier_hit_count": len(identifier_hits), "identifier_hits": identifier_hits,
         "legacy_placeholder_hit_count": len(legacy_placeholder_hits), "legacy_placeholder_hits": legacy_placeholder_hits,
         "active_zip_count": len(zip_paths), "active_zip_paths": sorted(zip_paths),
         "error_count": len(errors), "errors": errors,
+        "gates": gates,
         "valid": not identifier_hits and not legacy_placeholder_hits and not zip_paths and not errors,
     }
 

@@ -171,6 +171,8 @@ def admit_memory(record: MemoryRecord, *, active_project_id: str, actor_id: str)
 
 def correction_plan(previous: MemoryRecord, correction: MemoryRecord) -> MemoryDecision:
     reasons = list(correction.validation_errors())
+    if previous.certification_status in {"revoked", "superseded"}:
+        reasons.append(f"correction_target_{previous.certification_status}")
     if previous.memory_id not in correction.supersedes:
         reasons.append("supersession_link_missing")
     if previous.project_id != correction.project_id:

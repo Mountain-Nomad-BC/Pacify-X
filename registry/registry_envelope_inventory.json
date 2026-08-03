@@ -74,6 +74,15 @@
       "schema": "root schema_version plus shared registry-envelope invariant"
     },
     {
+      "builder": "runtime/full_repair.py",
+      "collection_key": "cards",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "card_count",
+      "path": "registry/full_repair_ledger.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
       "builder": "builders/last_round_assimilation_builder.py",
       "collection_key": "records",
       "consumer": "runtime/registry_envelope.py",
@@ -264,8 +273,8 @@
       "builder": "scripts/build_python_surface_ownership.py",
       "collection_key": "records",
       "consumer": "runtime/registry_envelope.py",
-      "count_key": "direct_test_reference_count",
-      "equals": "direct-test-reference",
+      "count_key": "evidence_association_count",
+      "equals": "evidence-association",
       "field": "validation_level",
       "path": "registry/python_surface_ownership.json",
       "rule": "filtered",

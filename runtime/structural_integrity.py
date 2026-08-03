@@ -16,6 +16,17 @@ from typing import Any
 from .version import VERSION
 
 
+DUPLICATE_CLASSIFICATIONS = {
+    "empty-package-markers": {"owner": "package-layout", "rationale": "Python package markers", "authoritative_source": "package layout", "regeneration_command": None, "equivalence_rule": "empty file"},
+    "generated-domain-tool-projections": {"owner": "templates/generated/domain_tool.py", "rationale": "portable generated tool projection", "authoritative_source": "templates/generated/domain_tool.py", "regeneration_command": "template regeneration", "equivalence_rule": "byte-for-byte"},
+    "generated-declared-suite-projections": {"owner": "templates/declared_suite", "rationale": "declared test-suite projections", "authoritative_source": "templates/declared_suite", "regeneration_command": "declared-suite generator", "equivalence_rule": "byte-for-byte"},
+    "generated-profile-projections": {"owner": "bootstrap/profiles", "rationale": "portable bootstrap profile projection", "authoritative_source": "bootstrap/profiles", "regeneration_command": "commission profile projection", "equivalence_rule": "byte-for-byte"},
+    "portable-skill-hash-helpers": {"owner": ".agents/skills", "rationale": "portable skill-local helpers", "authoritative_source": "shared behavioral contract", "regeneration_command": None, "equivalence_rule": "behavioral parity"},
+    "bounded-cli-boilerplate": {"owner": "scripts", "rationale": "small explicit command entrypoints", "authoritative_source": "each script", "regeneration_command": None, "equivalence_rule": "entrypoint behavior"},
+    "digest-adapters": {"owner": "runtime", "rationale": "bounded digest adapters", "authoritative_source": "hash contract", "regeneration_command": None, "equivalence_rule": "behavioral parity"},
+}
+
+
 def _json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -102,7 +113,7 @@ def _duplicate_files(root: Path) -> tuple[list[dict[str, Any]], list[list[str]]]
             continue
         paths.sort()
         classification = _classify_exact_group(paths)
-        record = {"sha256": digest, "paths": paths, "classification": classification or "unreviewed"}
+        record = {"sha256": digest, "paths": paths, "classification": classification or "unreviewed", **(DUPLICATE_CLASSIFICATIONS.get(classification, {}))}
         reviewed.append(record)
         if classification is None:
             unreviewed.append(paths)
@@ -140,7 +151,7 @@ def _logic_duplicates(root: Path) -> tuple[list[dict[str, Any]], list[list[str]]
         else:
             classification = "unreviewed"
             unreviewed.append(locations)
-        records.append({"signature_sha256": digest, "locations": locations, "classification": classification})
+        records.append({"signature_sha256": digest, "locations": locations, "classification": classification, **(DUPLICATE_CLASSIFICATIONS.get(classification, {}))})
     return records, unreviewed
 
 

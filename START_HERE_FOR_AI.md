@@ -3,7 +3,7 @@
 This is the required orientation document for any AI assistant entering the Engineering Loop & Bootstrap Framework.
 
 > [!WARNING]
-> Release 0.6.2 is revoked and REL-011 repair work is active. Do not describe the repository as deployment-ready and do not invoke release finalization until the controlling audit punch cards and their executed evidence are closed.
+> Release 0.6.2 is revoked. Version 0.6.3 is a release candidate: the full repair implementation is validated, but it is not release-authoritative until one-build certification, signed exact-asset publication, and independent download verification complete.
 
 Your job is not to load the repository into context. Your job is to establish one bounded project scope, discover only the capabilities needed for the current task, operate through governed interfaces, and prove outcomes with current evidence.
 
@@ -206,7 +206,7 @@ python -m runtime.cli --root . audit licensing
 python -m runtime.cli --root . audit structure
 python -m runtime.cli --root . test-profile run fast
 python -m runtime.cli --root . test-profile run full
-python -m runtime.cli --root . release verify --release 0.6.2
+python -m runtime.cli --root . release verify --release 0.6.3 --artifact-dir <EXACT_ARTIFACT_DIR>
 ```
 
 Also verify:

@@ -37,6 +37,32 @@ class ProjectOnboardingTests(unittest.TestCase):
             self.assertIn("AGENTS.md", first["canonical_owner_candidates"])
             self.assertEqual(first["languages"]["python"], 2)
 
+    def test_existing_project_inventory_changes_when_content_changes(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory); path = project / "app.py"
+            path.write_text("one\n", encoding="utf-8"); first = inspect_existing_project(project)
+            path.write_text("two\n", encoding="utf-8"); second = inspect_existing_project(project)
+            self.assertNotEqual(first["inventory_sha256"], second["inventory_sha256"])
+
+    def test_inventory_exact_limit_is_not_truncated(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in ("a.txt", "b.txt"): (root / name).write_text(name, encoding="utf-8")
+            self.assertFalse(inspect_existing_project(root, max_files=2)["truncated"])
+
+    def test_inventory_over_limit_is_truncated(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in ("a.txt", "b.txt", "c.txt"): (root / name).write_text(name, encoding="utf-8")
+            result = inspect_existing_project(root, max_files=2)
+            self.assertTrue(result["truncated"]); self.assertEqual(result["file_count"], 2)
+
+    def test_inventory_records_size_and_hash(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); (root / "a.txt").write_text("abc", encoding="utf-8")
+            record = inspect_existing_project(root)["inventory_records"][0]
+            self.assertEqual(record["path"], "a.txt"); self.assertEqual(record["size_bytes"], 3); self.assertEqual(len(record["sha256"]), 64)
+
     def test_new_project_manifest_has_guardrails_and_safe_watcher_exclusions(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             project = Path(directory) / "project"

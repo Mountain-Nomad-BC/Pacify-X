@@ -7,13 +7,23 @@ certification instead of being silently ignored.
 from __future__ import annotations
 
 from datetime import date, datetime
+from decimal import Decimal, InvalidOperation
+import hashlib
 import json
+import math
+import os
 from pathlib import Path
+from pathlib import PurePosixPath, PureWindowsPath
 import re
-from typing import Any
-from urllib.parse import urlparse
+from typing import Any, Iterable
+from urllib.parse import unquote, urlsplit
+
+from .paths import declared_file_available
 
 
+SUPPORTED_DIALECT = "https://json-schema.org/draft/2020-12/schema"
+MAX_REF_DEPTH = 64
+SUPPORTED_FORMATS = {"date", "date-time", "uri"}
 ANNOTATION_KEYS = {"$schema", "$id", "$defs", "title", "description", "default"}
 VALIDATION_KEYS = {
     "$ref", "type", "const", "enum", "required", "properties",
@@ -22,26 +32,159 @@ VALIDATION_KEYS = {
     "allOf", "anyOf", "not", "if", "then",
 }
 
+_RFC3339_DATETIME = re.compile(
+    r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$"
+)
+_RFC3339_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+_URI_SCHEME = re.compile(r"^[A-Za-z][A-Za-z0-9+.-]*$")
+_URN = re.compile(r"^urn:[A-Za-z0-9][A-Za-z0-9-]{0,31}:[^\s:][^\s]*$")
+
 
 class ContractValidationError(ValueError):
     """Raised when an instance does not satisfy a shipped contract."""
 
 
 def _load(path: Path) -> dict[str, Any]:
-    data = json.loads(path.read_text(encoding="utf-8"))
+    def reject_constant(value: str) -> None:
+        raise ValueError(f"non-JSON numeric constant {value!r} in {path}")
+
+    data = json.loads(path.read_text(encoding="utf-8"), parse_constant=reject_constant)
     if not isinstance(data, dict):
         raise ValueError(f"schema must be an object: {path}")
     return data
 
 
-def _resolve_ref(ref: str, schema: dict[str, Any], schema_path: Path) -> tuple[dict[str, Any], Path]:
-    if ref.startswith("#/"):
-        target: Any = schema
-        for part in ref[2:].split("/"):
-            target = target[part.replace("~1", "/").replace("~0", "~")]
-        return target, schema_path
-    target_path = (schema_path.parent / ref).resolve()
-    return _load(target_path), target_path
+def _contract_root_for(schema_path: Path, contract_root: Path | None) -> Path:
+    if contract_root is not None:
+        return contract_root.resolve(strict=True)
+    resolved_path = schema_path.resolve(strict=True)
+    for parent in (resolved_path.parent, *resolved_path.parents):
+        if parent.name == "contracts":
+            return parent
+    return resolved_path.parent
+
+
+def _resolve_pointer(document: dict[str, Any], fragment: str, ref: str, schema_path: Path) -> dict[str, Any]:
+    if not fragment:
+        return document
+    if not fragment.startswith("/"):
+        raise ValueError(f"unsupported JSON Schema reference fragment {ref!r} in {schema_path}")
+    target: Any = document
+    for raw_part in fragment[1:].split("/"):
+        part = unquote(raw_part).replace("~1", "/").replace("~0", "~")
+        if not isinstance(target, dict) or part not in target:
+            raise ValueError(f"unresolved reference {ref!r} in {schema_path}")
+        target = target[part]
+    if not isinstance(target, dict):
+        raise ValueError(f"reference does not resolve to a schema object: {ref!r}")
+    return target
+
+
+def _resolve_external_path(ref_path: str, schema_path: Path, contract_root: Path) -> Path:
+    decoded = unquote(ref_path)
+    if not decoded:
+        raise ValueError(f"external reference has no path in {schema_path}")
+    if Path(decoded).is_absolute() or PurePosixPath(decoded).is_absolute() or PureWindowsPath(decoded).is_absolute():
+        raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+    if Path(decoded).suffix.lower() != ".json":
+        raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+
+    lexical_root = Path(os.path.abspath(str(contract_root)))
+    lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+    try:
+        relative = lexical_target.relative_to(lexical_root)
+    except ValueError as exc:
+        raise ValueError(f"schema reference escapes contract root: {ref_path!r}") from exc
+
+    cursor = lexical_root
+    for part in relative.parts:
+        cursor = cursor / part
+        if cursor.is_symlink():
+            raise ValueError(f"symlinked schema references are not allowed: {ref_path!r}")
+
+    try:
+        target_path = lexical_target.resolve(strict=True)
+    except OSError as exc:
+        raise ValueError(f"unresolved external schema reference {ref_path!r} in {schema_path}") from exc
+    try:
+        target_path.relative_to(contract_root)
+    except ValueError as exc:
+        raise ValueError(f"schema reference escapes contract root: {ref_path!r}") from exc
+    if not target_path.is_file():
+        raise ValueError(f"referenced schema is not a file: {ref_path!r}")
+    return target_path
+
+
+def _resolve_ref(
+    ref: str,
+    schema: dict[str, Any],
+    schema_path: Path,
+    contract_root: Path,
+) -> tuple[dict[str, Any], dict[str, Any], Path, str]:
+    if not isinstance(ref, str) or not ref:
+        raise ValueError(f"schema reference must be a non-empty string in {schema_path}")
+    parsed = urlsplit(ref)
+    if parsed.scheme or parsed.netloc or parsed.query:
+        raise ValueError(f"URI schema references are not allowed: {ref!r}")
+
+    ref_path, marker, fragment = ref.partition("#")
+    if not ref_path:
+        target_path = schema_path.resolve(strict=True)
+        target_document = schema
+    else:
+        target_path = _resolve_external_path(ref_path, schema_path, contract_root)
+        target_document = _load(target_path)
+    target = _resolve_pointer(target_document, fragment if marker else "", ref, schema_path)
+    key = f"{target_path.as_posix()}#{fragment if marker else ''}"
+    return target, target_document, target_path, key
+
+
+def _finite_number(value: Any) -> bool:
+    return (
+        isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and (not isinstance(value, float) or math.isfinite(value))
+    )
+
+
+def _valid_datetime(value: str) -> bool:
+    if _RFC3339_DATETIME.fullmatch(value) is None:
+        return False
+    try:
+        parsed = datetime.fromisoformat(value[:-1] + "+00:00" if value.endswith("Z") else value)
+    except ValueError:
+        return False
+    return parsed.tzinfo is not None and parsed.utcoffset() is not None
+
+
+def _valid_date(value: str) -> bool:
+    if _RFC3339_DATE.fullmatch(value) is None:
+        return False
+    try:
+        date.fromisoformat(value)
+    except ValueError:
+        return False
+    return True
+
+
+def _valid_uri(value: str) -> bool:
+    if not value or any(character.isspace() or ord(character) < 0x20 for character in value) or "\\" in value:
+        return False
+    parsed = urlsplit(value)
+    if _URI_SCHEME.fullmatch(parsed.scheme) is None:
+        return False
+    scheme = parsed.scheme.lower()
+    if scheme == "urn":
+        return _URN.fullmatch(value) is not None
+    if scheme not in {"http", "https"}:
+        return False
+    if not parsed.netloc or not parsed.hostname or parsed.username is not None or parsed.password is not None:
+        return False
+    try:
+        parsed.port
+    except ValueError:
+        return False
+    return True
 
 
 def _is_type(value: Any, expected: str) -> bool:
@@ -51,16 +194,44 @@ def _is_type(value: Any, expected: str) -> bool:
         "string": isinstance(value, str),
         "boolean": isinstance(value, bool),
         "integer": isinstance(value, int) and not isinstance(value, bool),
-        "number": isinstance(value, (int, float)) and not isinstance(value, bool),
+        "number": _finite_number(value),
         "null": value is None,
     }.get(expected, False)
 
 
-def _errors(instance: Any, rule: dict[str, Any], root_schema: dict[str, Any], schema_path: Path, at: str) -> list[str]:
-    if "$ref" in rule:
-        resolved, resolved_path = _resolve_ref(str(rule["$ref"]), root_schema, schema_path)
-        return _errors(instance, resolved, root_schema if resolved_path == schema_path else resolved, resolved_path, at)
+def _errors(
+    instance: Any,
+    rule: dict[str, Any],
+    root_schema: dict[str, Any],
+    schema_path: Path,
+    at: str,
+    contract_root: Path,
+    ref_stack: tuple[str, ...] = (),
+) -> list[str]:
     errors: list[str] = []
+    if "$ref" in rule:
+        resolved, resolved_document, resolved_path, key = _resolve_ref(
+            rule["$ref"], root_schema, schema_path, contract_root
+        )
+        if key in ref_stack:
+            return [f"{at}: schema reference cycle detected at {key}"]
+        if len(ref_stack) >= MAX_REF_DEPTH:
+            return [f"{at}: schema reference depth exceeds {MAX_REF_DEPTH}"]
+        errors.extend(
+            _errors(
+                instance,
+                resolved,
+                resolved_document,
+                resolved_path,
+                at,
+                contract_root,
+                ref_stack + (key,),
+            )
+        )
+        siblings = {key_name: value for key_name, value in rule.items() if key_name != "$ref"}
+        if siblings:
+            errors.extend(_errors(instance, siblings, root_schema, schema_path, at, contract_root, ref_stack))
+        return errors
     expected = rule.get("type")
     if expected is not None:
         choices = [expected] if isinstance(expected, str) else expected
@@ -84,11 +255,21 @@ def _errors(instance: Any, rule: dict[str, Any], root_schema: dict[str, Any], sc
         for key, value in instance.items():
             child = properties.get(key)
             if isinstance(child, dict):
-                errors.extend(_errors(value, child, root_schema, schema_path, f"{at}/{key}"))
+                errors.extend(_errors(value, child, root_schema, schema_path, f"{at}/{key}", contract_root, ref_stack))
             elif rule.get("additionalProperties") is False:
                 errors.append(f"{at}: unexpected property {key}")
             elif isinstance(rule.get("additionalProperties"), dict):
-                errors.extend(_errors(value, rule["additionalProperties"], root_schema, schema_path, f"{at}/{key}"))
+                errors.extend(
+                    _errors(
+                        value,
+                        rule["additionalProperties"],
+                        root_schema,
+                        schema_path,
+                        f"{at}/{key}",
+                        contract_root,
+                        ref_stack,
+                    )
+                )
     if isinstance(instance, list):
         if len(instance) < int(rule.get("minItems", 0)):
             errors.append(f"{at}: too few items")
@@ -100,7 +281,9 @@ def _errors(instance: Any, rule: dict[str, Any], root_schema: dict[str, Any], sc
                 errors.append(f"{at}: items are not unique")
         if isinstance(rule.get("items"), dict):
             for index, value in enumerate(instance):
-                errors.extend(_errors(value, rule["items"], root_schema, schema_path, f"{at}/{index}"))
+                errors.extend(
+                    _errors(value, rule["items"], root_schema, schema_path, f"{at}/{index}", contract_root, ref_stack)
+                )
     if isinstance(instance, str):
         if len(instance) < int(rule.get("minLength", 0)):
             errors.append(f"{at}: string is too short")
@@ -108,40 +291,52 @@ def _errors(instance: Any, rule: dict[str, Any], root_schema: dict[str, Any], sc
             errors.append(f"{at}: string does not match required pattern")
         if "format" in rule:
             declared_format = rule.get("format")
-            try:
-                if declared_format == "date-time":
-                    datetime.fromisoformat(instance.replace("Z", "+00:00"))
-                elif declared_format == "date":
-                    date.fromisoformat(instance)
-                elif declared_format == "uri":
-                    if not urlparse(instance).scheme:
-                        raise ValueError("URI has no scheme")
-                else:
-                    errors.append(f"{at}: unsupported format {declared_format}")
-            except ValueError:
+            valid = {
+                "date-time": _valid_datetime,
+                "date": _valid_date,
+                "uri": _valid_uri,
+            }.get(declared_format)
+            if valid is None:
+                errors.append(f"{at}: unsupported format {declared_format}")
+            elif not valid(instance):
                 errors.append(f"{at}: invalid {declared_format}")
-    if isinstance(instance, (int, float)) and not isinstance(instance, bool):
+    if isinstance(instance, float) and not math.isfinite(instance):
+        errors.append(f"{at}: non-finite numbers are not valid JSON numbers")
+    elif _finite_number(instance):
         if "minimum" in rule and instance < rule["minimum"]:
             errors.append(f"{at}: value is below minimum")
         if "maximum" in rule and instance > rule["maximum"]:
             errors.append(f"{at}: value is above maximum")
-        if "multipleOf" in rule and abs((instance / rule["multipleOf"]) - round(instance / rule["multipleOf"])) > 1e-9:
-            errors.append(f"{at}: value is not a required multiple")
+        if "multipleOf" in rule:
+            try:
+                if Decimal(str(instance)) % Decimal(str(rule["multipleOf"])) != 0:
+                    errors.append(f"{at}: value is not a required multiple")
+            except (InvalidOperation, ZeroDivisionError):
+                errors.append(f"{at}: invalid multipleOf schema constraint")
     for child in rule.get("allOf", ()):
-        errors.extend(_errors(instance, child, root_schema, schema_path, at))
-    if "anyOf" in rule and not any(not _errors(instance, child, root_schema, schema_path, at) for child in rule["anyOf"]):
+        errors.extend(_errors(instance, child, root_schema, schema_path, at, contract_root, ref_stack))
+    if "anyOf" in rule and not any(
+        not _errors(instance, child, root_schema, schema_path, at, contract_root, ref_stack)
+        for child in rule["anyOf"]
+    ):
         errors.append(f"{at}: no anyOf branch matched")
-    if "not" in rule and not _errors(instance, rule["not"], root_schema, schema_path, at):
+    if "not" in rule and not _errors(instance, rule["not"], root_schema, schema_path, at, contract_root, ref_stack):
         errors.append(f"{at}: prohibited schema matched")
-    if "if" in rule and not _errors(instance, rule["if"], root_schema, schema_path, at) and "then" in rule:
-        errors.extend(_errors(instance, rule["then"], root_schema, schema_path, at))
+    if (
+        "if" in rule
+        and not _errors(instance, rule["if"], root_schema, schema_path, at, contract_root, ref_stack)
+        and "then" in rule
+    ):
+        errors.extend(_errors(instance, rule["then"], root_schema, schema_path, at, contract_root, ref_stack))
     return errors
 
 
-def validate_instance(instance: Any, schema_path: Path) -> None:
-    schema_path = schema_path.resolve()
+def validate_instance(instance: Any, schema_path: Path, *, contract_root: Path | None = None) -> None:
+    schema_path = schema_path.resolve(strict=True)
+    resolved_contract_root = _contract_root_for(schema_path, contract_root)
     schema = _load(schema_path)
-    errors = _errors(instance, schema, schema, schema_path, "$")
+    _admit_schema(schema, schema_path, resolved_contract_root)
+    errors = _errors(instance, schema, schema, schema_path, "$", resolved_contract_root)
     if errors:
         raise ContractValidationError("; ".join(errors))
 
@@ -178,10 +373,42 @@ def _pattern_example(pattern: str) -> str:
     return "example"
 
 
-def _minimal(rule: dict[str, Any], root_schema: dict[str, Any], schema_path: Path) -> Any:
+def _minimal(
+    rule: dict[str, Any],
+    root_schema: dict[str, Any],
+    schema_path: Path,
+    contract_root: Path,
+    ref_stack: tuple[str, ...] = (),
+) -> Any:
     if "$ref" in rule:
-        resolved, resolved_path = _resolve_ref(str(rule["$ref"]), root_schema, schema_path)
-        return _minimal(resolved, root_schema if resolved_path == schema_path else resolved, resolved_path)
+        resolved, resolved_document, resolved_path, key = _resolve_ref(
+            rule["$ref"], root_schema, schema_path, contract_root
+        )
+        if key in ref_stack:
+            raise ValueError(f"schema reference cycle detected at {key}")
+        if len(ref_stack) >= MAX_REF_DEPTH:
+            raise ValueError(f"schema reference depth exceeds {MAX_REF_DEPTH}")
+        candidate = _minimal(
+            resolved,
+            resolved_document,
+            resolved_path,
+            contract_root,
+            ref_stack + (key,),
+        )
+        siblings = {key_name: value for key_name, value in rule.items() if key_name != "$ref"}
+        if siblings and _errors(candidate, siblings, root_schema, schema_path, "$", contract_root, ref_stack):
+            sibling_candidate = _minimal(siblings, root_schema, schema_path, contract_root, ref_stack)
+            if not _errors(
+                sibling_candidate,
+                resolved,
+                resolved_document,
+                resolved_path,
+                "$",
+                contract_root,
+                ref_stack + (key,),
+            ):
+                candidate = sibling_candidate
+        return candidate
     if "const" in rule:
         return rule["const"]
     if "enum" in rule and rule["enum"]:
@@ -189,7 +416,7 @@ def _minimal(rule: dict[str, Any], root_schema: dict[str, Any], schema_path: Pat
     if "default" in rule:
         return rule["default"]
     if "anyOf" in rule:
-        return _minimal(rule["anyOf"][0], root_schema, schema_path)
+        return _minimal(rule["anyOf"][0], root_schema, schema_path, contract_root, ref_stack)
     declared = rule.get("type")
     choices = [declared] if isinstance(declared, str) else list(declared or ())
     selected = next((item for item in choices if item != "null"), choices[0] if choices else "object")
@@ -197,25 +424,34 @@ def _minimal(rule: dict[str, Any], root_schema: dict[str, Any], schema_path: Pat
         value: dict[str, Any] = {}
         properties = rule.get("properties", {})
         for key in rule.get("required", ()):
-            value[key] = _minimal(properties.get(key, {}), root_schema, schema_path)
+            value[key] = _minimal(properties.get(key, {}), root_schema, schema_path, contract_root, ref_stack)
         for child in rule.get("allOf", ()):
             if "if" in child:
-                if not _errors(value, child["if"], root_schema, schema_path, "$") and "then" in child:
+                if not _errors(value, child["if"], root_schema, schema_path, "$", contract_root, ref_stack) and "then" in child:
                     then = child["then"]
                     for key in then.get("required", ()):
-                        value[key] = _minimal(properties.get(key, {}), root_schema, schema_path)
+                        value[key] = _minimal(
+                            properties.get(key, {}), root_schema, schema_path, contract_root, ref_stack
+                        )
                 continue
-            addition = _minimal(child, root_schema, schema_path)
+            addition = _minimal(child, root_schema, schema_path, contract_root, ref_stack)
             if isinstance(addition, dict):
                 value.update(addition)
-        if "if" in rule and not _errors(value, rule["if"], root_schema, schema_path, "$") and "then" in rule:
-            addition = _minimal(rule["then"], root_schema, schema_path)
+        if (
+            "if" in rule
+            and not _errors(value, rule["if"], root_schema, schema_path, "$", contract_root, ref_stack)
+            and "then" in rule
+        ):
+            addition = _minimal(rule["then"], root_schema, schema_path, contract_root, ref_stack)
             if isinstance(addition, dict):
                 value.update(addition)
         return value
     if selected == "array":
         count = int(rule.get("minItems", 0))
-        return [_minimal(rule.get("items", {}), root_schema, schema_path) for _ in range(count)]
+        return [
+            _minimal(rule.get("items", {}), root_schema, schema_path, contract_root, ref_stack)
+            for _ in range(count)
+        ]
     if selected == "string":
         if rule.get("format") == "date-time":
             return "2026-08-02T00:00:00Z"
@@ -237,11 +473,13 @@ def _minimal(rule: dict[str, Any], root_schema: dict[str, Any], schema_path: Pat
     return None
 
 
-def build_minimal_instance(schema_path: Path) -> Any:
+def build_minimal_instance(schema_path: Path, *, contract_root: Path | None = None) -> Any:
     """Build a deterministic contract smoke fixture; validation remains authoritative."""
-    schema_path = schema_path.resolve()
+    schema_path = schema_path.resolve(strict=True)
+    resolved_contract_root = _contract_root_for(schema_path, contract_root)
     schema = _load(schema_path)
-    return _minimal(schema, schema, schema_path)
+    _admit_schema(schema, schema_path, resolved_contract_root)
+    return _minimal(schema, schema, schema_path, resolved_contract_root)
 
 
 def _schema_structure_errors(value: Any, at: str = "$", *, schema_object: bool = True) -> list[str]:
@@ -251,10 +489,62 @@ def _schema_structure_errors(value: Any, at: str = "$", *, schema_object: bool =
     if schema_object:
         unknown = set(value) - ANNOTATION_KEYS - VALIDATION_KEYS
         errors.extend(f"{at}: unsupported schema keyword {key}" for key in sorted(unknown))
+        if "$ref" in value and (not isinstance(value["$ref"], str) or not value["$ref"]):
+            errors.append(f"{at}: $ref must be a non-empty string")
+        if "$schema" in value and not isinstance(value["$schema"], str):
+            errors.append(f"{at}: $schema must be a string")
+        if "$id" in value and not isinstance(value["$id"], str):
+            errors.append(f"{at}: $id must be a string")
+        if "type" in value:
+            declared = value["type"]
+            choices = [declared] if isinstance(declared, str) else declared
+            known_types = {"object", "array", "string", "boolean", "integer", "number", "null"}
+            if (
+                not isinstance(choices, list)
+                or not choices
+                or not all(isinstance(item, str) and item in known_types for item in choices)
+            ):
+                errors.append(f"{at}: type must declare one or more supported JSON types")
+        if "enum" in value and not isinstance(value["enum"], list):
+            errors.append(f"{at}: enum must be a list")
         if "required" in value and (not isinstance(value["required"], list) or not all(isinstance(item, str) for item in value["required"])):
             errors.append(f"{at}: required must be a string list")
         if "properties" in value and not isinstance(value["properties"], dict):
             errors.append(f"{at}: properties must be an object")
+        if "additionalProperties" in value and not isinstance(value["additionalProperties"], (bool, dict)):
+            errors.append(f"{at}: additionalProperties must be a boolean or schema object")
+        for key in ("minItems", "maxItems", "minLength"):
+            if key in value and (
+                not isinstance(value[key], int) or isinstance(value[key], bool) or value[key] < 0
+            ):
+                errors.append(f"{at}: {key} must be a non-negative integer")
+        if "uniqueItems" in value and not isinstance(value["uniqueItems"], bool):
+            errors.append(f"{at}: uniqueItems must be a boolean")
+        for key in ("minimum", "maximum", "multipleOf"):
+            if key in value and not _finite_number(value[key]):
+                errors.append(f"{at}: {key} must be a finite JSON number")
+        if "multipleOf" in value and _finite_number(value["multipleOf"]) and value["multipleOf"] <= 0:
+            errors.append(f"{at}: multipleOf must be greater than zero")
+        if (
+            _finite_number(value.get("minimum"))
+            and _finite_number(value.get("maximum"))
+            and value["minimum"] > value["maximum"]
+        ):
+            errors.append(f"{at}: minimum must not exceed maximum")
+        if "pattern" in value:
+            if not isinstance(value["pattern"], str):
+                errors.append(f"{at}: pattern must be a string")
+            else:
+                try:
+                    re.compile(value["pattern"])
+                except re.error:
+                    errors.append(f"{at}: pattern must be a valid regular expression")
+        if "format" in value and (
+            not isinstance(value["format"], str) or value["format"] not in SUPPORTED_FORMATS
+        ):
+            errors.append(f"{at}: unsupported format {value['format']!r}")
+        if "then" in value and "if" not in value:
+            errors.append(f"{at}: then without if is unsupported")
         for map_key in ("properties", "$defs"):
             child_map = value.get(map_key, {})
             if child_map and not isinstance(child_map, dict):
@@ -262,10 +552,15 @@ def _schema_structure_errors(value: Any, at: str = "$", *, schema_object: bool =
             elif isinstance(child_map, dict):
                 for key, child in child_map.items():
                     errors.extend(_schema_structure_errors(child, f"{at}/{map_key}/{key}"))
-        for key in ("items", "additionalProperties", "not", "if", "then"):
+        for key in ("items", "not", "if", "then"):
             child = value.get(key)
-            if isinstance(child, dict):
+            if key in value and not isinstance(child, dict):
+                errors.append(f"{at}: {key} must be a schema object")
+            elif isinstance(child, dict):
                 errors.extend(_schema_structure_errors(child, f"{at}/{key}"))
+        child = value.get("additionalProperties")
+        if isinstance(child, dict):
+            errors.extend(_schema_structure_errors(child, f"{at}/additionalProperties"))
         for key in ("allOf", "anyOf"):
             children = value.get(key, ())
             if key in value and not isinstance(children, list):
@@ -276,6 +571,80 @@ def _schema_structure_errors(value: Any, at: str = "$", *, schema_object: bool =
     return errors
 
 
+def _schema_children(rule: dict[str, Any]) -> Iterable[dict[str, Any]]:
+    for map_key in ("properties", "$defs"):
+        child_map = rule.get(map_key)
+        if isinstance(child_map, dict):
+            yield from (child for child in child_map.values() if isinstance(child, dict))
+    for key in ("items", "additionalProperties", "not", "if", "then"):
+        child = rule.get(key)
+        if isinstance(child, dict):
+            yield child
+    for key in ("allOf", "anyOf"):
+        children = rule.get(key)
+        if isinstance(children, list):
+            yield from (child for child in children if isinstance(child, dict))
+
+
+def _admit_schema(schema: dict[str, Any], schema_path: Path, contract_root: Path) -> set[Path]:
+    dependencies = {schema_path.resolve(strict=True)}
+    validated_documents: set[Path] = set()
+
+    def validate_document(document: dict[str, Any], document_path: Path) -> None:
+        if document_path in validated_documents:
+            return
+        document_errors = _schema_structure_errors(document)
+        if document.get("$schema") != SUPPORTED_DIALECT:
+            document_errors.append(f"$: schema dialect must be {SUPPORTED_DIALECT}")
+        if document_errors:
+            raise ValueError("schema admission failed: " + "; ".join(document_errors))
+        validated_documents.add(document_path)
+
+    def walk(
+        rule: dict[str, Any],
+        document: dict[str, Any],
+        document_path: Path,
+        ref_stack: tuple[str, ...],
+    ) -> None:
+        if "$ref" in rule:
+            resolved, resolved_document, resolved_path, key = _resolve_ref(
+                rule["$ref"], document, document_path, contract_root
+            )
+            if key in ref_stack:
+                chain = " -> ".join((*ref_stack, key))
+                raise ValueError(f"schema reference cycle detected: {chain}")
+            if len(ref_stack) >= MAX_REF_DEPTH:
+                raise ValueError(f"schema reference depth exceeds {MAX_REF_DEPTH}")
+            dependencies.add(resolved_path)
+            validate_document(resolved_document, resolved_path)
+            walk(resolved, resolved_document, resolved_path, ref_stack + (key,))
+        for child in _schema_children(rule):
+            walk(child, document, document_path, ref_stack)
+
+    schema_path = schema_path.resolve(strict=True)
+    validate_document(schema, schema_path)
+    walk(schema, schema, schema_path, ())
+    return dependencies
+
+
+def contract_digest(schema_path: Path, *, contract_root: Path | None = None) -> str:
+    """Digest a contract and every schema document reached through its references."""
+    schema_path = schema_path.resolve(strict=True)
+    resolved_contract_root = _contract_root_for(schema_path, contract_root)
+    schema = _load(schema_path)
+    dependencies = _admit_schema(schema, schema_path, resolved_contract_root)
+    records = []
+    for dependency in sorted(dependencies, key=lambda item: item.as_posix()):
+        records.append(
+            {
+                "path": dependency.relative_to(resolved_contract_root).as_posix(),
+                "sha256": hashlib.sha256(dependency.read_bytes()).hexdigest(),
+            }
+        )
+    encoded = json.dumps(records, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def validate_contract_corpus(root: Path) -> dict[str, Any]:
     contract_root = root / "contracts"
     ownership = _load(root / "registry" / "contract_ownership.json")
@@ -284,29 +653,26 @@ def validate_contract_corpus(root: Path) -> dict[str, Any]:
     paths = sorted(path.relative_to(root).as_posix() for path in contract_root.rglob("*.json"))
     errors: list[str] = []
     owned: dict[str, str] = {}
+    contract_digests: dict[str, str] = {}
     for relative in paths:
         path = root / relative
+        schema: dict[str, Any] = {}
         try:
             schema = _load(path)
             errors.extend(f"{relative}: {item}" for item in _schema_structure_errors(schema))
-            if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
+            if schema.get("$schema") != SUPPORTED_DIALECT:
                 errors.append(f"{relative}: missing Draft 2020-12 declaration")
             expected_id = f"urn:engineering-loop-bootstrap:contract:{relative.removeprefix('contracts/').removesuffix('.schema.json').replace('/', ':')}"
             if schema.get("$id") != expected_id:
                 errors.append(f"{relative}: unstable or missing contract id")
-            # Resolve every local reference now, not when a future user discovers it.
-            def refs(node: Any) -> None:
-                if isinstance(node, dict):
-                    if "$ref" in node:
-                        _resolve_ref(str(node["$ref"]), schema, path)
-                    for child in node.values(): refs(child)
-                elif isinstance(node, list):
-                    for child in node: refs(child)
-            refs(schema)
-            example = build_minimal_instance(path)
-            example_errors = _errors(example, schema, schema, path, "$")
+            _admit_schema(schema, path, contract_root.resolve(strict=True))
+            contract_digests[relative] = contract_digest(path, contract_root=contract_root)
+            example = build_minimal_instance(path, contract_root=contract_root)
+            example_errors = _errors(example, schema, schema, path, "$", contract_root.resolve(strict=True))
             errors.extend(f"{relative}: generated valid fixture failed: {item}" for item in example_errors)
-            if schema.get("required") and not _errors({}, schema, schema, path, "$"):
+            if schema.get("required") and not _errors(
+                {}, schema, schema, path, "$", contract_root.resolve(strict=True)
+            ):
                 errors.append(f"{relative}: empty-object negative fixture unexpectedly passed")
         except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
             errors.append(f"{relative}: {error}")
@@ -315,7 +681,7 @@ def validate_contract_corpus(root: Path) -> dict[str, Any]:
             errors.append(f"{relative}: missing explicit ownership record")
         else:
             owner = str(ownership_record.get("owner", ""))
-            if not owner or not (root / owner).is_file():
+            if not owner or not declared_file_available(root, owner):
                 errors.append(f"{relative}: missing runtime owner {owner}")
             owned[relative] = owner
             if ownership_record.get("packaged") is not True:
@@ -327,10 +693,10 @@ def validate_contract_corpus(root: Path) -> dict[str, Any]:
             if ownership_record.get("contract_version") != "1.0.0":
                 errors.append(f"{relative}: ownership contract version is missing or invalid")
             for producer in ownership_record.get("producers", ()):
-                if not (root / str(producer)).exists():
+                if not declared_file_available(root, str(producer)):
                     errors.append(f"{relative}: missing producer {producer}")
             for test in ownership_record.get("tests", ()):
-                if not (root / str(test)).is_file():
+                if not declared_file_available(root, str(test)):
                     errors.append(f"{relative}: missing ownership test {test}")
     extras = sorted(set(ownership_by_path) - set(paths))
     errors.extend(f"ownership record references missing contract: {relative}" for relative in extras)
@@ -339,4 +705,13 @@ def validate_contract_corpus(root: Path) -> dict[str, Any]:
     enforcement_counts: dict[str, int] = {}
     for record in ownership_records:
         state = str(record.get("enforcement", "missing")); enforcement_counts[state] = enforcement_counts.get(state, 0) + 1
-    return {"valid": not errors, "contract_count": len(paths), "owned_count": len(owned), "enforcement_counts": enforcement_counts, "errors": errors}
+    corpus_bytes = json.dumps(contract_digests, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return {
+        "valid": not errors,
+        "contract_count": len(paths),
+        "owned_count": len(owned),
+        "enforcement_counts": enforcement_counts,
+        "contract_corpus_digest": hashlib.sha256(corpus_bytes).hexdigest(),
+        "contract_digests": contract_digests,
+        "errors": errors,
+    }

@@ -15,7 +15,7 @@ def test_complete_source_card_denominator_and_child_finding_are_visible():
     result = validate_corrective_ledger(ROOT)
     assert result["valid"], result["errors"]
     assert result["source_cards"] == len(SOURCE_CARD_IDS) == 23
-    assert result["children"] == 12
+    assert result["children"] == 13
 
 
 def test_blocking_card_gate_matches_the_project_lifecycle():
@@ -26,6 +26,15 @@ def test_blocking_card_gate_matches_the_project_lifecycle():
     else:
         assert not result["valid"]
         assert any("blocking card" in error for error in result["errors"])
+
+
+def test_only_finalizer_may_admit_in_progress_finalizer_cards() -> None:
+    strict = validate_corrective_ledger(ROOT, require_blocking_passed=True)
+    assert not strict["valid"]
+    staged = validate_corrective_ledger(
+        ROOT, require_blocking_passed=True, allow_finalizer_in_progress=True,
+    )
+    assert staged["valid"], staged["errors"]
 
 
 def test_closed_card_requires_existing_receipt(tmp_path):

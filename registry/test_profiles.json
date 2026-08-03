@@ -10,7 +10,13 @@
       "description": "Correctness-critical source checks excluding expensive exhaustive and artifact-isolation gates.",
       "exclude_files": [
         "tests/test_exact_tool_certification.py",
-        "tests/test_installed_wheel_e2e.py"
+        "tests/test_installed_wheel_e2e.py",
+        "tests/test_corrective_release.py",
+        "tests/test_release_audit.py",
+        "tests/test_release_certification.py",
+        "tests/test_release_distribution_controls.py",
+        "tests/test_rel009_release.py",
+        "tests/test_structural_integrity.py"
       ],
       "timeout_seconds": 300
     },

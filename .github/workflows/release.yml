@@ -1,0 +1,117 @@
+name: Exact signed release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pacify-x-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  certify-and-publish:
+    runs-on: windows-latest
+    timeout-minutes: 90
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONNOUSERSITE: "1"
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+    steps:
+      - name: Checkout exact annotated tag
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up tested release Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.14"
+
+      - name: Require annotated tag and clean source
+        shell: pwsh
+        run: |
+          if ((git cat-file -t $env:GITHUB_REF_NAME) -ne "tag") { throw "release tag must be annotated" }
+          if (git status --porcelain=v1 --untracked-files=all) { throw "release checkout is not clean" }
+
+      - name: Prepare hash-locked wheelhouse
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path wheelhouse | Out-Null
+          python -m pip download --require-hashes -r requirements-release.lock -d wheelhouse
+
+      - name: Materialize protected publisher key
+        shell: pwsh
+        env:
+          RELEASE_KEY_B64: ${{ secrets.PACIFY_X_RELEASE_SIGNING_KEY_B64 }}
+        run: |
+          if (-not $env:RELEASE_KEY_B64) { throw "PACIFY_X_RELEASE_SIGNING_KEY_B64 is required" }
+          $keyPath = Join-Path $PWD ".git\pacify-x-release-key"
+          [IO.File]::WriteAllBytes($keyPath, [Convert]::FromBase64String($env:RELEASE_KEY_B64))
+          "PACIFY_X_RELEASE_SIGNING_KEY=$keyPath" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Run one-build certification against exact artifacts
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path release-artifacts | Out-Null
+          python -m runtime.cli --root . release finalize `
+            --release $env:GITHUB_REF_NAME.Substring(1) `
+            --artifact-dir release-artifacts `
+            --wheelhouse wheelhouse `
+            --signing-key $env:PACIFY_X_RELEASE_SIGNING_KEY | Tee-Object release-result.json
+          $result = Get-Content release-result.json -Raw | ConvertFrom-Json
+          if (-not $result.valid -or -not $result.certified) { throw "release certification failed" }
+          "PACIFY_X_RUN_ID=$($result.run_id)" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "PACIFY_X_RELEASE=$($env:GITHUB_REF_NAME.Substring(1))" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Independently verify exact staged bytes
+        shell: pwsh
+        run: |
+          python -m runtime.cli --root . release verify --release $env:PACIFY_X_RELEASE --artifact-dir release-artifacts | Tee-Object release-verification.json
+          $result = Get-Content release-verification.json -Raw | ConvertFrom-Json
+          if (-not $result.valid) { throw "independent release verification failed" }
+
+      - name: Assemble immutable release assets without rebuilding
+        shell: pwsh
+        run: |
+          $run = "evidence\releases\$env:PACIFY_X_RELEASE\$env:PACIFY_X_RUN_ID"
+          New-Item -ItemType Directory -Path release-assets | Out-Null
+          Copy-Item release-artifacts\* release-assets\
+          Copy-Item "$run\SHA256SUMS.txt" release-assets\
+          Copy-Item "$run\sbom.cdx.json" release-assets\
+          Copy-Item "$run\provenance.intoto.json" release-assets\
+          Copy-Item "$run\evidence-manifest.json" release-assets\
+          Copy-Item "evidence\releases\$env:PACIFY_X_RELEASE\certificate.json" release-assets\
+          Copy-Item "evidence\releases\$env:PACIFY_X_RELEASE\certificate.json.sig" release-assets\
+          if (Test-Path "evidence\release-revocation-$env:PACIFY_X_RELEASE.json") {
+            Copy-Item "evidence\release-revocation-$env:PACIFY_X_RELEASE.json" release-assets\
+          }
+          @"
+          PACIFY-X $env:PACIFY_X_RELEASE
+
+          Self-certified release; signed evidence and reproducible verification included.
+          These are the exact artifacts built, tested, inspected, signed, and verified by this run. No release asset was rebuilt after certification.
+          "@ | Set-Content release-notes.md
+
+      - name: Publish exact GitHub Release assets
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create $env:GITHUB_REF_NAME release-assets\* --verify-tag --title "PACIFY-X $env:PACIFY_X_RELEASE" --notes-file release-notes.md
+
+      - name: Retain certification evidence on failure or success
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pacify-x-release-${{ github.ref_name }}
+          path: |
+            release-result.json
+            release-verification.json
+            release-artifacts/
+            release-assets/
+            evidence/releases/
+          if-no-files-found: warn
+          retention-days: 90

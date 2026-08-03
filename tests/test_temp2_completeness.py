@@ -183,6 +183,8 @@ class TempTwoCompletenessTests(unittest.TestCase):
                 },
                 "guarded_change": {
                     "active_root": active_change, "staged_file": staged_change,
+                    "staging_root": staged_change.parent,
+                    "expected_source_sha256": hashlib.sha256(staged_change.read_bytes()).hexdigest(),
                     "destination": active_change / "app.py", "quarantine_root": temp / "change" / "quarantine",
                     "ledger": temp / "change-ledger", "evidence": {
                         "intent": "bounded change", "tests": ["synthetic"], "outcome_contract": "value present",
@@ -192,6 +194,8 @@ class TempTwoCompletenessTests(unittest.TestCase):
                 },
                 "incident_diagnose_recover": {
                     "active_root": active_recovery, "recovery_candidate": recovery_candidate,
+                    "staging_root": recovery_candidate.parent, "transaction_root": temp / "recovery" / "transactions",
+                    "expected_source_sha256": hashlib.sha256(recovery_candidate.read_bytes()).hexdigest(),
                     "destination": active_recovery / "app.py", "quarantine_root": temp / "recovery" / "quarantine",
                     "ledger": temp / "recovery-ledger", "evidence": {
                         "incident_id": "incident-one", "root_cause": "synthetic regression",
@@ -213,10 +217,13 @@ class TempTwoCompletenessTests(unittest.TestCase):
                 },
                 "safe_cleanup": {
                     "active_root": cleanup_active, "candidates": (cleanup_candidate,),
+                    "transaction_root": temp / "cleanup" / "transactions",
                     "quarantine_root": temp / "cleanup" / "quarantine", "ledger": temp / "cleanup-ledger",
                 },
                 "shared_capability_promote": {
                     "candidate": promotion_candidate, "shared_root": temp / "shared", "ledger": temp / "promotion-ledger",
+                    "staging_root": promotion_candidate.parent,
+                    "expected_source_sha256": hashlib.sha256(promotion_candidate.read_bytes()).hexdigest(),
                     "evidence": {
                         "capability_id": "fixture", "version": "1.0.0", "provenance": ["synthetic"],
                         "license": "internal-reference", "tests": ["unit"], "benchmark": ["golden"],

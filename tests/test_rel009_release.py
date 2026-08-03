@@ -29,7 +29,11 @@ class Rel009ReleaseTests(unittest.TestCase):
         self.assertEqual(revocation["status"], "revoked")
         self.assertFalse(revocation["deployment_authoritative"])
         self.assertEqual(hashlib.sha256(certificate_path.read_bytes()).hexdigest(), revocation["certificate_sha256"])
-        self.assertEqual(state["lifecycle"]["phase"], "deployment-certified")
+        self.assertNotEqual(state["lifecycle"]["phase"], "deployment-certified")
+        self.assertEqual(
+            state["evidence"]["validation_receipt"],
+            "evidence/release-revocation-0.6.2.json",
+        )
 
 
 if __name__ == "__main__":

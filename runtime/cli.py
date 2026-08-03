@@ -70,6 +70,7 @@ from .python_surface_certification import certify_python_surfaces
 from .release_artifacts import classify_tree
 from .release_certification import finalize_release, verify_release_certificate
 from .test_profiles import resolve_test_profile
+from .test_runner import run_test_command
 from .release_environment import validate_release_environment
 from .licensing import validate_licensing, write_licensing_report
 from .tool_recommendations import assess_project_tooling
@@ -77,7 +78,10 @@ from .version import VERSION
 
 
 def parser() -> argparse.ArgumentParser:
-    result = argparse.ArgumentParser(prog="engineering-bootstrap")
+    result = argparse.ArgumentParser(
+        prog="engineering-bootstrap",
+        description="PACIFY-X package and command-line control plane",
+    )
     result.add_argument("--root", type=Path, default=None)
     result.add_argument("--version", action="version", version=f"%(prog)s {VERSION}")
     commands = result.add_subparsers(dest="command", required=True)
@@ -153,8 +157,12 @@ def parser() -> argparse.ArgumentParser:
     release_commands = release.add_subparsers(dest="release_action", required=True)
     release_verify = release_commands.add_parser("verify")
     release_verify.add_argument("--release")
+    release_verify.add_argument("--artifact-dir", type=Path)
     release_finalize = release_commands.add_parser("finalize")
     release_finalize.add_argument("--release", default=VERSION)
+    release_finalize.add_argument("--artifact-dir", type=Path)
+    release_finalize.add_argument("--wheelhouse", type=Path)
+    release_finalize.add_argument("--signing-key", type=Path)
     release_commands.add_parser("manifest")
     release_commands.add_parser("environment")
     brief = commands.add_parser("brief")
@@ -474,23 +482,22 @@ def main(argv: list[str] | None = None) -> int:
             output = resolve_test_profile(root, args.name)
             if args.action == "run":
                 import os
-                import subprocess
                 environment = dict(os.environ)
-                environment.update({"PYTHONDONTWRITEBYTECODE": "1"})
-                try:
-                    process = subprocess.run(output["command"], cwd=root, env=environment, timeout=output["timeout_seconds"])
-                    output = {**output, "valid": process.returncode == 0, "exit_code": process.returncode, "timed_out": False}
-                except subprocess.TimeoutExpired:
-                    output = {**output, "valid": False, "exit_code": None, "timed_out": True, "errors": [f"test profile exceeded {output['timeout_seconds']} seconds"]}
+                environment.update({"PYTHONDONTWRITEBYTECODE": "1", "PYTHONNOUSERSITE": "1"})
+                execution = run_test_command(output["command"], cwd=root, environment=environment, timeout_seconds=output["timeout_seconds"])
+                output = {**output, **execution, "profile_budget_seconds": output["timeout_seconds"]}
         elif args.command == "release":
             if args.release_action == "verify":
-                output = verify_release_certificate(root, release=args.release)
+                output = verify_release_certificate(root, release=args.release, artifact_dir=args.artifact_dir)
             elif args.release_action == "manifest":
                 output = classify_tree(root)
             elif args.release_action == "environment":
                 output = validate_release_environment(root)
             else:
-                output = finalize_release(root, args.release)
+                output = finalize_release(
+                    root, args.release, artifact_dir=args.artifact_dir,
+                    wheelhouse=args.wheelhouse, signing_key=args.signing_key,
+                )
         elif args.command == "brief":
             output = apply_project_brief(args.project, args.questionnaire, source_root=root, apply=args.apply)
         elif args.command == "tool-intake":
@@ -623,6 +630,10 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "tools":
             output = certify_exact_tools(root)
             output["python_surfaces"] = certify_python_surfaces(root, output)
+            output["errors"] = [
+                *output.get("errors", []),
+                *output["python_surfaces"].get("errors", []),
+            ]
             output["valid"] = output["valid"] and output["python_surfaces"]["valid"]
         elif args.command == "declared-suite":
             if args.declared_action == "list":

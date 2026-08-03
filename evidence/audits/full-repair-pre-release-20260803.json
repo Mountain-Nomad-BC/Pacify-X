@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "audit": "PACIFY-X full repair audit PC-001 through PC-042",
+  "status": "pre_release_controls_executed",
+  "executed_utc": "2026-08-03T22:45:00Z",
+  "results": {
+    "structural_integrity": {"valid": true, "categories": 15, "mature_framework_items": 21},
+    "fast_profile": {"valid": true, "tests": 539, "subtests": 448, "duration_seconds": 100.84},
+    "full_profile": {"valid": true, "tests": 598, "subtests": 448, "test_files": 113, "duration_seconds": 534.93},
+    "release_focused_profile": {"valid": true, "tests": 59, "covered_by_full_profile": true},
+    "executed_branch_coverage": {
+      "valid": true,
+      "tests": 163,
+      "subtests": 170,
+      "coverage_sha256": "5771cdc54b4ac55a392118f4789d9c1d1f67bcfca588612e409a10ea57231043",
+      "class_count": 6,
+      "exemptions": 0
+    },
+    "sanitation": {
+      "valid": true,
+      "files_scanned": 1425,
+      "bytes_scanned": 16205999,
+      "identifier_hits": 0,
+      "legacy_placeholder_hits": 0,
+      "active_zip_count": 0,
+      "secret_credential_pii_binary_license_findings": 0
+    },
+    "cache_custody": {
+      "hard_delete": false,
+      "files_quarantined": 109,
+      "directories_quarantined": 14,
+      "external_custody_receipt_id": "pacify-x-disposable-cache/20260803T223753.043345Z"
+    }
+  },
+  "pending": {
+    "PC-001_through_PC-006": "The finalizer must build, test, inspect, sign, and verify the exact release bytes from the annotated tag.",
+    "PC-037": "The exact certified assets must be published and independently downloaded and verified."
+  }
+}

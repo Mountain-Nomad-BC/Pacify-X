@@ -98,6 +98,31 @@ class MemoryVaultTests(unittest.TestCase):
             self.assertTrue(first.short_address)
             self.assertTrue(second.short_address)
 
+    def test_memory_shard_same_title_different_id(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            vault = MemoryVault(Path(directory), workspace_id="wsp", project_id="prj")
+            first = vault.append(record("one", title="same")); second = vault.append(record("two", title="same"))
+            self.assertNotEqual(first.short_address, second.short_address)
+
+    def test_memory_shard_full_bucket_expands_resolution(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            vault = MemoryVault(Path(directory), workspace_id="wsp", project_id="prj", max_records_per_bucket=1)
+            first = vault.append(record("one", title="same")); second = vault.append(record("two", title="same"))
+            self.assertGreaterEqual(second.address_bits, first.address_bits)
+
+    def test_memory_shard_corrupt_entry_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); vault = MemoryVault(root, workspace_id="wsp", project_id="prj")
+            vault.append(record("one")); next(root.rglob("record-*.json")).write_text("{bad", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "integrity failure"):
+                vault.append(record("two"))
+
+    def test_memory_shard_assignment_is_deterministic(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            vault = MemoryVault(Path(directory), workspace_id="wsp", project_id="prj")
+            item = record("one")
+            self.assertEqual(vault._address(item, b"stable"), vault._address(item, b"stable"))
+
     def test_parallel_appends_and_index_publication_are_serialized(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

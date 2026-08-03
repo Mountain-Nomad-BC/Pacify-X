@@ -1,0 +1,38 @@
+name: Governed bug report
+description: Report a reproducible PACIFY-X defect without sensitive data
+title: "[bug] "
+labels: [bug, needs-triage]
+body:
+  - type: markdown
+    attributes:
+      value: Do not report vulnerabilities or secrets here; follow SECURITY.md.
+  - type: input
+    id: identity
+    attributes:
+      label: Commit, tag, or package version
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: OS and Python version
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Use inert fixtures and include exact commands.
+    validations:
+      required: true
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Expected and observed boundary behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and hashes
+      description: Include sanitized logs, receipt paths, and artifact hashes.

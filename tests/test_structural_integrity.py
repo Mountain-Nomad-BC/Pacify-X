@@ -98,3 +98,21 @@ def test_project_management_checkpoint_drift_fails_closed() -> None:
     path.write_text(json.dumps(state), encoding="utf-8")
     result = audit_structural_integrity(root)
     assert not result["categories"]["documentation"]["passed"]
+
+
+def test_declared_generated_duplicates_regenerate_cleanly() -> None:
+    result = audit_structural_integrity(ROOT)
+    declared = [item for item in result["duplicate_file_groups"] if item["classification"] != "unreviewed"]
+    assert all(item.get("equivalence_rule") for item in declared)
+
+
+def test_undeclared_duplicate_group_fails_audit() -> None:
+    root = _clone(); (root / "docs/a.md").write_text("duplicate", encoding="utf-8"); (root / "docs/b.md").write_text("duplicate", encoding="utf-8")
+    result = audit_structural_integrity(root)
+    assert not result["categories"]["duplicate_files"]["passed"]
+
+
+def test_portable_hash_helpers_have_behavioral_parity() -> None:
+    result = audit_structural_integrity(ROOT)
+    helpers = [item for item in result["duplicate_logic_groups"] if item["classification"] == "portable-skill-hash-helpers"]
+    assert all(item["equivalence_rule"] == "behavioral parity" for item in helpers)

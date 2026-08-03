@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_every_count_bearing_registry_field_has_one_owner_and_invariant():
     result = validate_registry_envelopes(ROOT)
     assert result["valid"], result["errors"]
-    assert result["record_count"] == len(discover_count_fields(ROOT)) == 46
+    assert result["record_count"] == len(discover_count_fields(ROOT)) == 47
 
 
 def test_every_inventoried_count_rejects_deliberate_corruption():

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, json, uuid
+import argparse, hashlib, json
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -12,7 +12,7 @@ def main():
  v=sub.add_parser('verify'); v.add_argument('claim_id'); v.add_argument('--status',choices=['supported','verified','conflicted','rejected','stale'],required=True)
  sub.add_parser('list'); args=ap.parse_args(); d=load(args.ledger)
  if args.cmd=='add':
-  c={'claim_id':'claim-'+uuid.uuid4().hex[:12],'statement':args.statement,'claim_type':args.type,'status':'unverified','evidence':[{'locator':x} for x in args.evidence],'assumptions':[],'conflicts':[],'confidence':max(0,min(1,args.confidence)),'verified_at':None,'stale_after':None}; d['claims'].append(c); save(args.ledger,d); print(json.dumps(c,indent=2))
+  c={'claim_id':'claim-'+hashlib.sha256(json.dumps([args.statement,args.type,args.evidence],sort_keys=True).encode()).hexdigest()[:12],'statement':args.statement,'claim_type':args.type,'status':'unverified','evidence':[{'locator':x} for x in args.evidence],'assumptions':[],'conflicts':[],'confidence':max(0,min(1,args.confidence)),'verified_at':None,'stale_after':None}; d['claims'].append(c); save(args.ledger,d); print(json.dumps(c,indent=2))
  elif args.cmd=='verify':
   c=next((x for x in d['claims'] if x['claim_id']==args.claim_id),None)
   if not c: raise SystemExit('claim not found')

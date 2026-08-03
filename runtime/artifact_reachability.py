@@ -33,6 +33,7 @@ def build_artifact_reachability(root: Path) -> dict:
         "corrective_release_ledger.json": "runtime/corrective_release.py",
         "declared_suite_authoritative_tools.json": "runtime/exact_tool_certification.py",
         "effect_surface_ownership.json": "runtime/effect_surface.py",
+        "full_repair_ledger.json": "runtime/full_repair.py",
         "integrations.json": "runtime/integration_registry.py",
         "project_stream_handlers.json": "runtime/project_stream_orchestrator.py",
         "project_stream_orchestrations.json": "runtime/project_stream_orchestrator.py",

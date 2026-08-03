@@ -1,0 +1,31 @@
+name: Capability request
+description: Propose a bounded skill, workflow, or control-plane capability
+title: "[capability] "
+labels: [enhancement, needs-triage]
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Required engineering outcome
+    validations:
+      required: true
+  - type: textarea
+    id: boundaries
+    attributes:
+      label: Effects, risks, and denial behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Acceptance evidence
+      description: State how the outcome and fail-closed behavior can be independently verified.
+    validations:
+      required: true
+  - type: dropdown
+    id: hydration
+    attributes:
+      label: Expected loading model
+      options: [Metadata-only until selected, Always-on control-plane rule, Unsure]
+    validations:
+      required: true

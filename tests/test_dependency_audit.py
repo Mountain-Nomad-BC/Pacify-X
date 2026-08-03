@@ -14,7 +14,12 @@ def test_packaged_imports_are_fully_classified_and_declared():
     assert result["valid"], result["errors"]
     assert result["unclassified"] == 0
     assert result["runtime_dependency_count"] == 0
-    assert result["release_dependency_count"] == 6
+    locked = {
+        line.split("==", 1)[0].casefold()
+        for line in (ROOT / "requirements-release.lock").read_text(encoding="utf-8").splitlines()
+        if line and not line.startswith("#") and "==" in line
+    }
+    assert result["release_dependency_count"] == len(locked) == 13
 
 
 def test_dependency_inventory_is_deterministic_and_has_no_runtime_yaml_dependency():

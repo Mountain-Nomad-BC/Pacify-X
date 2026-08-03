@@ -3,9 +3,10 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 from pathlib import Path
 from typing import Any
+
+from .bounded_walk import FilesystemWalkError, WalkLimits, bounded_walk
 
 
 def _load_policy(root: Path) -> dict[str, Any]:
@@ -31,23 +32,29 @@ def classify_tree(root: Path) -> dict[str, Any]:
     records: list[dict[str, Any]] = []
     errors: list[str] = []
     normalized_seen: dict[str, str] = {}
-    for current, directories, files in os.walk(root, topdown=True, followlinks=False):
-        current_path = Path(current)
-        directories.sort(key=str.casefold)
-        files.sort(key=str.casefold)
-        for name in [*directories, *files]:
-            path = current_path / name
-            relative = path.relative_to(root).as_posix()
-            normalized = relative.replace("\\", "/").casefold()
-            prior = normalized_seen.get(normalized)
-            if prior is not None and prior != relative:
-                errors.append(f"case-fold path collision: {prior} vs {relative}")
-            normalized_seen[normalized] = relative
-            if path.is_symlink():
-                errors.append(f"symbolic link is not release eligible: {relative}")
-        for name in files:
-            path = current_path / name
-            relative = path.relative_to(root).as_posix()
+    try:
+        walk = bounded_walk(
+            root,
+            limits=WalkLimits(max_files=100_000, max_depth=128, max_bytes=2 * 1024 * 1024 * 1024),
+            symlink_policy="reject",
+        )
+    except FilesystemWalkError as error:
+        return {
+            "schema_version": "1.0", "valid": False, "policy_version": policy["policy_version"],
+            "policy_sha256": hashlib.sha256((root / "policies/release-artifact-policy.json").read_bytes()).hexdigest(),
+            "file_count": 0, "counts": {}, "product_digest": _canonical_digest([]),
+            "harness_digest": _canonical_digest([]), "product_records": [], "records": [],
+            "errors": [f"bounded filesystem walk failed: {error.code}"],
+        }
+    for entry in walk.entries:
+        relative = entry.relative
+        normalized = relative.casefold()
+        prior = normalized_seen.get(normalized)
+        if prior is not None and prior != relative:
+            errors.append(f"case-fold path collision: {prior} vs {relative}")
+        normalized_seen[normalized] = relative
+        if entry.kind == "file":
+            path = entry.path
             parts = relative.split("/")
             folded_parts = [item.casefold() for item in parts]
             folded = relative.casefold()
@@ -87,7 +94,7 @@ def classify_tree(root: Path) -> dict[str, Any]:
                     "path": relative,
                     "classification": classification,
                     "reason": reason,
-                    "size": path.stat().st_size,
+                    "size": entry.size,
                     "sha256": content_sha256,
                 })
     records.sort(key=lambda item: item["path"].casefold())

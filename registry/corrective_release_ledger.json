@@ -7,7 +7,7 @@
     "rejected_with_evidence",
     "deferred_with_owner"
   ],
-  "card_count": 35,
+  "card_count": 36,
   "cards": [
     {
       "acceptance_commands": [
@@ -460,8 +460,8 @@
     },
     {
       "acceptance_commands": [
-        "engineering-bootstrap release finalize --release 0.6.2",
-        "engineering-bootstrap release verify --release 0.6.2"
+        "engineering-bootstrap release finalize --release 0.6.3",
+        "engineering-bootstrap release verify --release 0.6.3"
       ],
       "dependencies": [
         "REL-010-C",
@@ -745,11 +745,34 @@
       ],
       "status": "passed",
       "title": "Final structural reachability duplication and drift audit"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_rel011_revocation.py",
+        "engineering-bootstrap audit structure"
+      ],
+      "dependencies": [
+        "ARCH-028"
+      ],
+      "disposition": "Release 0.6.2 is revoked. The external 42-card full repair audit is controlling; release authority remains blocked until every card has implementation, negative regression coverage, and executed evidence.",
+      "id": "REL-011-FULL-REPAIR",
+      "owning_paths": [
+        "evidence/release-revocation-0.6.2.json",
+        "PROJECT_MANAGEMENT.md",
+        ".engineering-bootstrap/project-management/state.json"
+      ],
+      "parent": "REL-010-E",
+      "priority": "P0",
+      "receipts": [
+        "evidence/release-revocation-0.6.2.json"
+      ],
+      "status": "in_progress",
+      "title": "Close the authenticated exact-artifact full repair audit"
     }
   ],
-  "child_finding_count": 12,
-  "product_version_target": "0.6.2",
-  "release": "REL-010",
+  "child_finding_count": 13,
+  "product_version_target": "0.6.3",
+  "release": "REL-011",
   "schema_version": "1.0",
   "source_card_count": 23,
   "sources": [

@@ -7,7 +7,6 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
-import subprocess
 
 from runtime.cli import main
 
@@ -24,7 +23,18 @@ def invoke(*arguments: str) -> tuple[int, dict]:
 
 class CliCommandTests(unittest.TestCase):
     def test_test_profile_timeout_fails_closed_without_traceback(self) -> None:
-        with patch("subprocess.run", side_effect=subprocess.TimeoutExpired(["pytest"], 1)):
+        timed_out = {
+            "valid": False,
+            "exit_code": 1,
+            "timed_out": True,
+            "duration_seconds": 1.0,
+            "stdout": "",
+            "stderr": "",
+            "process_tree_terminated": True,
+            "termination": {"method": "test-fixture", "errors": []},
+            "errors": ["test profile exceeded 300 seconds"],
+        }
+        with patch("runtime.cli.run_test_command", return_value=timed_out):
             status, output = invoke("test-profile", "run", "fast")
         self.assertEqual(status, 1)
         self.assertFalse(output["valid"])
