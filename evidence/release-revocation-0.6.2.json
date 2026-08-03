@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "release": "0.6.2",
+  "certificate": "evidence/release-certification-0.6.2.json",
+  "certificate_file_sha256": "9979f70f8ad30ef855382213cfe2cd8c6aa3119ab78f43f4de64b56081dadc40",
+  "status": "revoked",
+  "deployment_authoritative": false,
+  "revoked_utc": "2026-08-03T19:38:51Z",
+  "corrective_release": "REL-011-FULL-REPAIR",
+  "reason": "A full repair audit established that the self-certification chain did not authenticate the exact public wheel and sdist, Git commit/tree/tag, publisher identity, and every required evidence file as one immutable release.",
+  "preservation": {
+    "certificate_unchanged": true,
+    "historical_run": "evidence/release-runs/rel-0.6.2-0a059f670913",
+    "product_digest": "eb0ffad0e596e1d883423a5eae101ce94695ae8ee4b176a16aeafa16619db215"
+  },
+  "limitations": [
+    "The retained test run is evidence of the included validation profile, not an independent certification.",
+    "The retained checksum is not a publisher signature.",
+    "The retained build gate did not prove that one exact built artifact was both tested and publicly distributed."
+  ],
+  "restoration_condition": "Publish a new version only after the controlling full-repair audit is closed with exact-artifact testing, Git and evidence binding, trusted signature verification, clean-clone reproduction, and public release-asset reproduction."
+}

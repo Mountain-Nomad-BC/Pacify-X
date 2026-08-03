@@ -184,8 +184,9 @@ def _stage_final_state(root: Path, release: str, certificate_relative: str) -> N
     readme = root / "README.md"
     text = readme.read_text(encoding="utf-8")
     text = re_sub_release(text, release)
-    text = text.replace("**Status:** Certified deployment-ready", "**Status:** Certified deployment-ready")
-    text = re_sub_line(text, "**Status:**", "**Status:** Certified deployment-ready  ")
+    # This local validation profile is evidence, not third-party deployment
+    # authority. Keep the published language within the claim it proves.
+    text = re_sub_line(text, "**Status:**", "**Status:** Release-certified against the included validation profile  ")
     readme.write_text(text, encoding="utf-8", newline="\n")
 
     management_path = root / "PROJECT_MANAGEMENT.md"

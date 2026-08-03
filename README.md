@@ -10,9 +10,12 @@
 
 **Engineering Loop & Bootstrap is a capability engineering framework that transforms general-purpose AI models into governed, evidence-driven engineering systems through modular skills, orchestrations, contracts, and deterministic execution.**
 
-**Current release:** v0.6.2  
-**Status:** Certified deployment-ready  
+**Current release:** v0.6.2 — revoked  
+**Status:** Repair in progress; no deployment-authoritative release  
 **Runtime:** Python 3.11+ with no required third-party runtime dependencies
+
+> [!WARNING]
+> Release 0.6.2 was revoked on 2026-08-03 after a full repair audit found that its self-certification did not bind the exact public artifacts, Git identity, publisher signature, and every evidence file into one independently authenticatable chain. Preserve it as historical evidence; do not deploy or cite it as release-authoritative. See [`evidence/release-revocation-0.6.2.json`](evidence/release-revocation-0.6.2.json).
 
 PACIFY-X surrounds an AI coding assistant with the parts models usually lack: bounded planning, project isolation, explicit approvals, deterministic execution, independent validation, evidence, recovery, and repeatable engineering workflows. It loads compact metadata first and hydrates only the capability needed for the current step.
 
@@ -196,11 +199,11 @@ python -m runtime.cli --root . audit licensing
 python -m runtime.cli --root . audit structure
 python -m runtime.cli --root . test-profile run fast
 python -m runtime.cli --root . test-profile run full
-python -m runtime.cli --root . release finalize --release 0.6.2
+# Release finalization is blocked while REL-011 closes the full repair audit.
 python -m runtime.cli --root . release verify --release 0.6.2
 ```
 
-The atomic finalizer tests every discovered source test and admitted exact tool, validates owned artifact surfaces, builds a clean wheel and source distribution, runs sanitation and portability checks, and publishes only if the source tree remains unchanged. Release 0.6.1 is historical and revoked. After success, the authoritative certificate is `evidence/release-certification-0.6.2.json`; any material mutation revokes it.
+The 0.6.2 verifier now fails closed because the project state and explicit revocation record deny deployment authority. A repaired release must build once, test and publish those exact artifacts, bind Git and evidence identity, and carry a trusted publisher signature before this section can advertise a release-authoritative certificate again.
 
 ## Major accomplishments
 

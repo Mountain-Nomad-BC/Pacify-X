@@ -3,8 +3,8 @@
   "direct_test_reference_count": 36,
   "errors": [],
   "map_current": false,
-  "packaged_file_count": 289,
-  "python_file_count": 334,
+  "packaged_file_count": 290,
+  "python_file_count": 335,
   "records": [
     {
       "bytes": 1214,
@@ -2458,7 +2458,7 @@
       "validation_level": "direct-test-reference"
     },
     {
-      "bytes": 28563,
+      "bytes": 28635,
       "evidence": [
         "tests/test_rel009_release.py",
         "tests/test_release_certification.py"
@@ -2467,7 +2467,7 @@
       "packaged": true,
       "path": "runtime/release_certification.py",
       "role": "installed-runtime",
-      "sha256": "b9c1472d2b4093d6fcbaafc2aefb752a43b1dcdbe127a214edb7ff817aab066b",
+      "sha256": "d52f18149a973cbaaebd797d4aba1fc0ee8f95d456d990472817d21df2033f14",
       "syntax_valid": true,
       "validation_level": "direct-test-reference"
     },
@@ -4177,6 +4177,19 @@
       "validation_level": "executable-test"
     },
     {
+      "bytes": 1858,
+      "evidence": [
+        "tests/test_rel011_revocation.py"
+      ],
+      "owner": "release-verification",
+      "packaged": true,
+      "path": "tests/test_rel011_revocation.py",
+      "role": "release-test",
+      "sha256": "397de88e4c2146ea175cbd717ceaf6e6d37a3a262cf5235c2b001c542ccf4bf8",
+      "syntax_valid": true,
+      "validation_level": "executable-test"
+    },
+    {
       "bytes": 3560,
       "evidence": [
         "tests/test_release_artifacts.py"
@@ -4559,17 +4572,17 @@
     "installed-generator-template": 1,
     "installed-runtime": 101,
     "installed-skill-tool": 83,
-    "release-test": 94,
+    "release-test": 95,
     "source-build-control": 45
   },
   "schema_version": "1.0",
   "source_only_structural_count": 40,
-  "syntax_valid_count": 334,
+  "syntax_valid_count": 335,
   "valid": true,
   "validation_counts": {
     "direct-isolated-behavior": 63,
     "direct-test-reference": 36,
-    "executable-test": 94,
+    "executable-test": 95,
     "full-suite-and-installed-integration": 101,
     "source-only-structural": 40
   }

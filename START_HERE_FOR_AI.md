@@ -2,6 +2,9 @@
 
 This is the required orientation document for any AI assistant entering the Engineering Loop & Bootstrap Framework.
 
+> [!WARNING]
+> Release 0.6.2 is revoked and REL-011 repair work is active. Do not describe the repository as deployment-ready and do not invoke release finalization until the controlling audit punch cards and their executed evidence are closed.
+
 Your job is not to load the repository into context. Your job is to establish one bounded project scope, discover only the capabilities needed for the current task, operate through governed interfaces, and prove outcomes with current evidence.
 
 ## First response to the user
@@ -203,7 +206,6 @@ python -m runtime.cli --root . audit licensing
 python -m runtime.cli --root . audit structure
 python -m runtime.cli --root . test-profile run fast
 python -m runtime.cli --root . test-profile run full
-python -m runtime.cli --root . release finalize --release 0.6.2
 python -m runtime.cli --root . release verify --release 0.6.2
 ```
 
@@ -214,7 +216,8 @@ Also verify:
 - tests exercise behavior, denial paths, and recovery paths;
 - no active cache, temporary build, embedded archive, or quarantine payload remains in the deployable product;
 - sanitization passes;
-- the release certificate covers the current material tree or is explicitly marked revoked/pending.
+- the release certificate covers the current material tree and exact published artifacts, or is explicitly marked revoked/pending;
+- Git commit, tree, annotated tag, package version, evidence manifest, and publisher signature agree before any release-authoritative claim.
 
 ## Stop conditions
 

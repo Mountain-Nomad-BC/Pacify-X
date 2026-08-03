@@ -9,10 +9,12 @@ Deliver a model-agnostic, drop-in bootstrap that lets an LLM safely commission e
 ## Current state
 
 Mode: `existing`  
-Phase: `deployment certified`
-Status: `complete`
-Active card: `none`
-Next action: deploy release 0.6.2; any material product mutation revokes readiness until recertified.
+Phase: `full repair implementation`
+Status: `active`
+Active card: `REL-011-FULL-REPAIR`
+Next action: close the controlling 42-card full repair audit in dependency order and publish only an exact-artifact, Git-bound, signed replacement release.
+
+Release 0.6.2 is historical and revoked for deployment. Its validation proved internal consistency under the included profile, but did not authenticate one immutable chain from Git commit through the exact tested and publicly distributed package bytes. Revocation evidence is retained at `evidence/release-revocation-0.6.2.json`; the original certificate remains unchanged as historical evidence.
 
 Release 0.6.1 is historical and revoked for deployment. The live source suite reproduced a contract mismatch on 2026-08-03: `registry/declared_suite_formulas.json` emits `count`, while its authoritative consumer requires `formula_count`. Revocation evidence is retained at `evidence/release-revocation-0.6.1.json`; certification may be restored only by the atomic REL-010 finalizer against one unchanged product digest.
 

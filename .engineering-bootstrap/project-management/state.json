@@ -8,9 +8,14 @@
       "maximum_selected_skills": 3
     },
     "changed_file_sha256": {},
-    "degraded_components": [],
+    "degraded_components": [
+      "release_authenticity",
+      "artifact_identity",
+      "transactional_mutation",
+      "tamper_evident_history"
+    ],
     "failures": [],
-    "next_safe_action": "deploy release 0.6.2; any material product mutation revokes readiness until recertified",
+    "next_safe_action": "close REL-011 full repair and issue a signed exact-artifact replacement release",
     "open_circuits": [],
     "repository": {
       "branch": null,
@@ -19,12 +24,12 @@
       "working_tree_sha256": null
     },
     "retries": [],
-    "revision": 27,
+    "revision": 28,
     "runtime_version": "0.6.2",
     "tool_versions": {},
     "validation": {
-      "tests": "release_profile_passed",
-      "verifier": "release_0.6.2"
+      "tests": "historical_release_profile_passed_but_release_authority_revoked",
+      "verifier": "release_0.6.2_revoked_by_full_repair_audit"
     },
     "versions": {
       "assumptions": 12,
@@ -49,9 +54,10 @@
     "commissioning_receipt": ".engineering-bootstrap/commissioning-receipt.json",
     "existing_project_inventory": ".engineering-bootstrap/existing-project-inventory.json",
     "historical_validation_receipts": [
-      "evidence/release-certification-0.6.1.json"
+      "evidence/release-certification-0.6.1.json",
+      "evidence/release-certification-0.6.2.json"
     ],
-    "validation_receipt": "evidence/release-certification-0.6.2.json"
+    "validation_receipt": "evidence/release-revocation-0.6.2.json"
   },
   "governance": {
     "assumptions": [],
@@ -110,9 +116,9 @@
     "unknowns": []
   },
   "lifecycle": {
-    "next_action": "deploy release 0.6.2; any material product mutation revokes readiness until recertified",
-    "phase": "deployment-certified",
-    "status": "complete"
+    "next_action": "close REL-011 full repair and issue a signed exact-artifact replacement release",
+    "phase": "full-repair-implementation",
+    "status": "active"
   },
   "project": {
     "mode": "existing",
@@ -121,7 +127,7 @@
   },
   "schema_version": "1.0",
   "work": {
-    "active_punch_card": null,
+    "active_punch_card": "REL-011-FULL-REPAIR",
     "backlog": [
       {
         "id": "REL-008-LAST-ROUND",
@@ -137,6 +143,11 @@
         "id": "REL-010-CORRECTIVE-ATOMIC-RECERTIFICATION",
         "outcome": "All audited repair cards are dispositioned and a digest-bound atomic finalizer certifies one unchanged clean product tree.",
         "status": "complete"
+      },
+      {
+        "id": "REL-011-FULL-REPAIR",
+        "outcome": "All 42 full-repair audit cards are implemented with negative regressions, exact-artifact provenance, bounded mutation, tamper-evident state, signed evidence, public CI, and independent reproduction.",
+        "status": "active"
       }
     ],
     "milestones": [
