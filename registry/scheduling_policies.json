@@ -1,0 +1,102 @@
+{
+  "count": 3,
+  "policies": [
+    {
+      "id": "default-scheduler-policy",
+      "policy": {
+        "aging": {
+          "maximum": 100,
+          "points_per_minute": 0.2
+        },
+        "fallback": {
+          "may_reduce_quality": false,
+          "may_use_external_execution": false
+        },
+        "hard_gates": [
+          "dependencies",
+          "approval",
+          "privacy",
+          "resource_capacity",
+          "budget",
+          "idempotency_for_retry"
+        ],
+        "preemption": {
+          "checkpoint_required": true,
+          "enabled": true,
+          "minimum_priority_delta": 150
+        },
+        "queues": [
+          "critical",
+          "high",
+          "normal",
+          "background",
+          "maintenance",
+          "research",
+          "experimental"
+        ],
+        "recompute_on": [
+          "task_arrival",
+          "task_completion",
+          "task_failure",
+          "resource_change",
+          "approval_change",
+          "deadline_threshold",
+          "lease_expiry"
+        ],
+        "version": "1.0",
+        "weights": {
+          "aging": 0.1,
+          "cost_efficiency": 0.05,
+          "deadline_pressure": 0.2,
+          "dependency_unblock": 0.16,
+          "priority": 0.34,
+          "quality": 0.07,
+          "success_rate": 0.08
+        }
+      },
+      "source_sha256": "768b0b357baeb92cfcd68c7102674284d9ef8052a048c6bf21522f0f67d6b7fb"
+    },
+    {
+      "id": "recovery-policy",
+      "policy": {
+        "actions": [
+          "retry",
+          "alternate_capability",
+          "alternate_target",
+          "human_escalation",
+          "rollback",
+          "safe_stop"
+        ],
+        "backoff_seconds": [
+          1,
+          5,
+          30
+        ],
+        "max_attempts": 4,
+        "requires_idempotency": true,
+        "retryable_errors": [
+          "timeout",
+          "worker_lost",
+          "transient_resource",
+          "rate_limited"
+        ]
+      },
+      "source_sha256": "14ec23e4f7b6667da6ae2c83e4f0c9cda3bd5b9fbf1e7db081976ce122402b34"
+    },
+    {
+      "id": "zero-egress-policy",
+      "policy": {
+        "cloud_execution": "deny",
+        "external_network": "deny",
+        "local_execution": "allow",
+        "private_remote": "deny_unless_allowlisted",
+        "required_tags": [
+          "no-egress"
+        ],
+        "violation_action": "safe_stop"
+      },
+      "source_sha256": "8b0aece04eca1d2cd22e7a5a5d7afa5ab0a507f125b4da6accde6ceef10d2004"
+    }
+  ],
+  "schema_version": "1.0"
+}

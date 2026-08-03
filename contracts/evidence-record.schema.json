@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:evidence-record",
+  "title": "Evidence record",
+  "type": "object",
+  "required": [
+    "id",
+    "task_id",
+    "kind",
+    "source",
+    "created_at",
+    "sensitivity",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "test",
+        "inspection",
+        "tool_result",
+        "replay",
+        "approval",
+        "health",
+        "benchmark"
+      ]
+    },
+    "source": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "sensitivity": {
+      "enum": [
+        "public",
+        "internal",
+        "sensitive"
+      ]
+    },
+    "status": {
+      "enum": [
+        "current",
+        "stale",
+        "invalid"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

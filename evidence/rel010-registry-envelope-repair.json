@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "release": "REL-010",
+  "status": "passed",
+  "formula_registry": {
+    "canonical_count_key": "formula_count",
+    "formula_count": 18,
+    "implementation_count": 18,
+    "producer": "builders/last_round_assimilation_builder.py",
+    "compatibility_reader": false
+  },
+  "shared_envelopes": {
+    "count_fields": 42,
+    "registries": 25,
+    "unowned_count_fields": 0,
+    "stale_count_owners": 0,
+    "corruption_cases": 42
+  },
+  "additional_drift_repaired": {
+    "path": "registry/specialty_map.json",
+    "active_candidate_count": 7,
+    "deferred_candidate_count": 29,
+    "producer": "scripts/build_specialty_map.py",
+    "reconciler": "scripts/reconcile_skill_lifecycle_states.py"
+  },
+  "validation": {
+    "command": "python -m pytest -q -p no:cacheprovider tests/test_registry_envelopes.py tests/test_corrective_release.py tests/test_declared_suite_support.py tests/test_specialty_map.py",
+    "tests": 21,
+    "failures": 0
+  }
+}

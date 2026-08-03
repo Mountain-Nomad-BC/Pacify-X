@@ -1,0 +1,8 @@
+{
+  "id": "risk-classification",
+  "version": "1.0.0",
+  "status": "active",
+  "summary": "Risk determines approval, containment, evidence, rollback, and validation depth.",
+  "applies_to": ["planning", "tool_use", "migration", "security", "release"],
+  "enforcement": "Classify scope, reversibility, data sensitivity, permission expansion, external effects, and blast radius before execution. Unknown risk is treated as high until resolved."
+}

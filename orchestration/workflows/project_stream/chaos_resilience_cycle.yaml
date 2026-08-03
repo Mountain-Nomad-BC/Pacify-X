@@ -1,0 +1,27 @@
+orchestration_id: chaos_resilience_cycle
+title: Design and run bounded resilience experiments
+version: 0.1.0
+status: design-ready
+trigger: explicit-or-policy-scheduled
+project_binding: required unless workspace bootstrap
+skills:
+- chaos-architect
+- repository-digital-twin
+- reproducibility-manifest
+- autonomous-benchmark-lab
+- outcome-contract-validator
+required_context:
+- workspace_id
+- agent_id
+- session_id
+- intent_id
+- correlation_id
+preflight:
+- constitution_resolved
+- lease_valid
+- scope_resolved
+- side_effect_budget_set
+outcomes:
+- resilience_report
+failure_policy: checkpoint-and-fail-closed-on-boundary-or-integrity-violation
+audit: true

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:model-contract",
+  "title": "Model capability contract",
+  "type": "object",
+  "required": [
+    "model_id",
+    "runtime",
+    "available",
+    "context_tokens",
+    "traits",
+    "supports_tools",
+    "privacy",
+    "cost_class",
+    "latency_class",
+    "warm_cost",
+    "cold_cost",
+    "failure_modes"
+  ],
+  "properties": {
+    "model_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "runtime": {
+      "type": "string"
+    },
+    "available": {
+      "type": "boolean"
+    },
+    "context_tokens": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "traits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "supports_tools": {
+      "type": "boolean"
+    },
+    "privacy": {
+      "type": "string"
+    },
+    "cost_class": {
+      "type": "string"
+    },
+    "latency_class": {
+      "type": "string"
+    },
+    "warm_cost": {
+      "type": "number",
+      "minimum": 0
+    },
+    "cold_cost": {
+      "type": "number",
+      "minimum": 0
+    },
+    "failure_modes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}

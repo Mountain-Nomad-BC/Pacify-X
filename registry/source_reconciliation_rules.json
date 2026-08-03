@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "rules": [
+    {
+      "id": "generated-package-metadata",
+      "source_tree": "framework",
+      "path_glob": "engineering_loop_bootstrap.egg-info/*",
+      "disposition": "generated_artifact_externalized",
+      "owner_path": "pyproject.toml",
+      "reason": "Package metadata is regenerated from the canonical build configuration and is not a source owner."
+    },
+    {
+      "id": "superseded-release-readiness",
+      "source_tree": "framework",
+      "path_glob": "evidence/release-readiness.json",
+      "disposition": "superseded_evidence_externalized",
+      "owner_path": "PROJECT_MANAGEMENT.md",
+      "reason": "Release state is governed by the active project-management card and a fresh certificate after material changes."
+    },
+    {
+      "id": "externalized-archive-maps",
+      "source_tree": "framework",
+      "path_glob": "planning/archive_maps/*",
+      "disposition": "historical_map_externalized",
+      "owner_path": "evidence/externalized-payload-index.json",
+      "reason": "Historical maps remain recoverable outside the deployable product and are indexed by the canonical evidence record."
+    },
+    {
+      "id": "superseded-planning-controls",
+      "source_tree": "framework",
+      "path_glob": "planning/*",
+      "disposition": "superseded_control_externalized",
+      "owner_path": "PROJECT_MANAGEMENT.md",
+      "reason": "Closed working plans were consolidated into the sole durable project-management control point."
+    },
+    {
+      "id": "superseded-markdown-only-extractor",
+      "source_tree": "framework",
+      "path_glob": "scripts/extract/extract_markdown_structure.py",
+      "disposition": "superseded_tool_externalized",
+      "owner_path": "scripts/extract_structured_text.py",
+      "reason": "The canonical extractor covers structured text formats rather than only Markdown."
+    },
+    {
+      "id": "integrated-page-context-policy",
+      "source_tree": "staged-intake",
+      "path_glob": "*page_context_policy.md",
+      "disposition": "policy_integrated",
+      "owner_path": "registry/root_intake_admission.json",
+      "reason": "The staged page-context policy is explicitly admitted and mapped by the sanitized root-intake registry."
+    }
+  ]
+}

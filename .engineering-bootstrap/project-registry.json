@@ -1,0 +1,490 @@
+{
+  "canonical_runtime_registry": "installed_framework",
+  "loading_rule": "metadata_only_at_startup_body_after_selection",
+  "max_selected_skills": 3,
+  "mode": "existing",
+  "schema_version": "1.0",
+  "skill_bodies_copied_to_project": false,
+  "skills": [
+    {
+      "body": ".agents/skills/admit-capability/SKILL.md",
+      "bytes": 1253,
+      "id": "admit-capability",
+      "sha256": "12d9f91601589f440f246a0a5d003f341cd16b3845a99cbe8fe54d957baf3a7f",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/analyze-engineering-intelligence/SKILL.md",
+      "bytes": 1217,
+      "id": "analyze-engineering-intelligence",
+      "sha256": "17746bfc6c684ee185521a91353dd8999e7d0636c86fe89dd5675050cea40981",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/analyze-repository-intelligence/SKILL.md",
+      "bytes": 1624,
+      "id": "analyze-repository-intelligence",
+      "sha256": "abee2ceeb4486f5fea39402fb7cd1f3223c2d09260c98bcecfc46384de282341",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/audit-ai-runtime-assurance/SKILL.md",
+      "bytes": 1542,
+      "id": "audit-ai-runtime-assurance",
+      "sha256": "d18841059bd959631f0ec4bd1b5d19b941aee0f1400d23dd092cf35e21fc6313",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/audit-incomplete-implementations/SKILL.md",
+      "bytes": 1801,
+      "id": "audit-incomplete-implementations",
+      "sha256": "220e3e23f737071eff9060e5b1fe9866c77759088791586e86d72b4c3b4693c7",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/audit-source-capabilities/SKILL.md",
+      "bytes": 5208,
+      "id": "audit-source-capabilities",
+      "sha256": "1c97d9ecc6b2c657609c5f1df7d8510b885332073d72ad6e21b1f82f70dba286",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/certify-reversible-validation/SKILL.md",
+      "bytes": 1288,
+      "id": "certify-reversible-validation",
+      "sha256": "9503b0a9b26cad46ed756614d709eed63920f017e13d44f931a09637591509fb",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/certify-skeptical-engineering/SKILL.md",
+      "bytes": 1479,
+      "id": "certify-skeptical-engineering",
+      "sha256": "4ed66c6cb86bd3b0d658420a8de323e9f1ea26f2c240bf53cd9b3ac536591451",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/commission-evidence-first-project/SKILL.md",
+      "bytes": 1344,
+      "id": "commission-evidence-first-project",
+      "sha256": "b8d815891db4740a8d5a28c420f13cedf857418a904093ea987ad5f8e1bee73d",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/commission-project/SKILL.md",
+      "bytes": 1937,
+      "id": "commission-project",
+      "sha256": "26cc3a21835c8e5fd52610ad3b85cf50467588ef0fc8cc4789972b38b79b1b53",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/deploy-isolated-model-worker/SKILL.md",
+      "bytes": 1398,
+      "id": "deploy-isolated-model-worker",
+      "sha256": "936a84618047127e17ce58c73ca1d6e00f4ea001254edd4051323401a0da8927",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/diagnose-python-repair/SKILL.md",
+      "bytes": 1184,
+      "id": "diagnose-python-repair",
+      "sha256": "ea007c2ecce3c4f3b00cba4d4d0856b1584d6c53853f258104ba6cc4d2ef10f9",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/discover-environment-safely/SKILL.md",
+      "bytes": 1213,
+      "id": "discover-environment-safely",
+      "sha256": "0b4895410f80dfddefdf8eed60ca3f1af72da0b68b162db951f952e819aeb503",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/dynamic-service-discovery/SKILL.md",
+      "bytes": 1563,
+      "id": "dynamic-service-discovery",
+      "sha256": "42f3408df8e7f2e2b9178f1ef960fbf6c21cc61a7ae5c3e7d8a4807722aa7bfe",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/enforce-governance-controls/SKILL.md",
+      "bytes": 1130,
+      "id": "enforce-governance-controls",
+      "sha256": "bd4deaf4923623c8b1411995a824c4073f6be5825a6a1a687aa82121eeb02784",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/enforce-source-import-boundaries/SKILL.md",
+      "bytes": 1270,
+      "id": "enforce-source-import-boundaries",
+      "sha256": "70a2ffba4a09e0266f32752de47cc20562021ff7c60118fb77e75ed5e9bd9169",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/engineer-hybrid-retrieval/SKILL.md",
+      "bytes": 1484,
+      "id": "engineer-hybrid-retrieval",
+      "sha256": "a4b0eb434dc9fd552d9c54838bd9e0a70e0424f1aa1b9f04654ab97bd3892ad8",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/engineer-verification-lab/SKILL.md",
+      "bytes": 2105,
+      "id": "engineer-verification-lab",
+      "sha256": "268b6dabad70bf2dddac2991040b5f7caf92724395ddbd670d2d54521020f130",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/evaluate-retrieval-readiness/SKILL.md",
+      "bytes": 2301,
+      "id": "evaluate-retrieval-readiness",
+      "sha256": "6a252addc62a76f46d9518eda00d1f4a60bc61cba829e3d593b245b4f06428d9",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/evidence-assembler/SKILL.md",
+      "bytes": 2804,
+      "id": "evidence-assembler",
+      "sha256": "199a3fc7747232bef216b05961d7ac994dd97098c98b1fdb6d0fcc04c4dd24e1",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/execution-contract-enforcer/SKILL.md",
+      "bytes": 2625,
+      "id": "execution-contract-enforcer",
+      "sha256": "8cf2f0511b2c1a4362448deb12945f79c6d38618b02a89751b77869b1ea86214",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/forge-skills-from-knowledge/SKILL.md",
+      "bytes": 2345,
+      "id": "forge-skills-from-knowledge",
+      "sha256": "41f54564e2e956a31637525f3b9111538f7f83308ec4c4b16c1164487fdc561e",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/gate-model-data-lifecycle/SKILL.md",
+      "bytes": 1543,
+      "id": "gate-model-data-lifecycle",
+      "sha256": "c09424ce8a07145ec061fa6c2e82ad365d1ea8b6d9c02d39f7e0ae70422371f4",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/govern-deployment-safety/SKILL.md",
+      "bytes": 1814,
+      "id": "govern-deployment-safety",
+      "sha256": "9d7f59ed09ed21233a8a0c1cae4eb51a1c4548c23420876863e078b72f5f2dc3",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/govern-memory-fabric/SKILL.md",
+      "bytes": 3387,
+      "id": "govern-memory-fabric",
+      "sha256": "056f8ee0ffb4877671b2723f5cb8983433657a56c271310750884e8071d0c9e9",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/govern-metacognitive-evolution/SKILL.md",
+      "bytes": 2679,
+      "id": "govern-metacognitive-evolution",
+      "sha256": "fbf555b37234ecf0f84bbdf60982e08a4584ef5ecbc5de949c23dccc43af845d",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/govern-operating-kernel/SKILL.md",
+      "bytes": 1617,
+      "id": "govern-operating-kernel",
+      "sha256": "ad1bf0a4f9807a40e43a6226a2aff663fc04987418805d37815f1904b70a7eb6",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/govern-runtime-protocol-deployment/SKILL.md",
+      "bytes": 1770,
+      "id": "govern-runtime-protocol-deployment",
+      "sha256": "5718a6c60791ca0ffe47d9794abb9abe6b09a00628aee877fdc9ef9111a98484",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/govern-visual-runtime-accessibility/SKILL.md",
+      "bytes": 1200,
+      "id": "govern-visual-runtime-accessibility",
+      "sha256": "ad3cd975cd7b6cbb7a42b2e1950620d707ef44c28009e8912738e45f4b713605",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/harden-container-boundaries/SKILL.md",
+      "bytes": 1298,
+      "id": "harden-container-boundaries",
+      "sha256": "f5814185400bb02296f582e49521cf67ca14f59b3e9fac94b58cec1c3799e0ed",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/inspect-live-contracts/SKILL.md",
+      "bytes": 1257,
+      "id": "inspect-live-contracts",
+      "sha256": "8cd04d2feb62521d9313d044f9277a9cb8383717183ab7b1b02fd3ae43443626",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/inspect-llm-architecture/SKILL.md",
+      "bytes": 1698,
+      "id": "inspect-llm-architecture",
+      "sha256": "594294286c2e9f5031e41c87fafdc97a69445e9731f3368a62f03ab996ea859b",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/isolate-project-streams/SKILL.md",
+      "bytes": 2664,
+      "id": "isolate-project-streams",
+      "sha256": "f9e9b72e34dccf638d7fe7022a987f23a92cea4f1e76686f1ce08bf353b998cc",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/manage-mcp-lifecycle/SKILL.md",
+      "bytes": 1390,
+      "id": "manage-mcp-lifecycle",
+      "sha256": "416f2d4353bad6355206665f955b9eec00bab95df5756ea1e3ffd3a10e8986af",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/manage-revocable-certification/SKILL.md",
+      "bytes": 1736,
+      "id": "manage-revocable-certification",
+      "sha256": "b86848859c54e7d5faf23859414317daec93af33f1c9ea163c8ecdc9c1eae6f7",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/operate-memory-retrieval-observability/SKILL.md",
+      "bytes": 1696,
+      "id": "operate-memory-retrieval-observability",
+      "sha256": "3e41f74c9ef68980603481113754b8aa667e06ddd6fe67aafd106eb7688706b7",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/orchestrate-capability-scheduling/SKILL.md",
+      "bytes": 2347,
+      "id": "orchestrate-capability-scheduling",
+      "sha256": "6a698cfe38d3578b6e7ed0cd7110b1f903416e9b4f0a4df96d459d7acb2d0990",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/orchestrate-engineering-loop/SKILL.md",
+      "bytes": 3300,
+      "id": "orchestrate-engineering-loop",
+      "sha256": "677b5d3a75054b902e701bb212c1b769a81f5a8425983eaf45ca8309e0b39003",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/orchestrate-security-validation/SKILL.md",
+      "bytes": 1321,
+      "id": "orchestrate-security-validation",
+      "sha256": "226c50f4689dbe0e46f5948b94b8318e6b23af9e1bf4f3181c2670fe0b08a34d",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/outcome-verifier/SKILL.md",
+      "bytes": 2487,
+      "id": "outcome-verifier",
+      "sha256": "301ab12a8005c41ec0d959bf33171fd17cf89d5c340e5f9ae98abc975dc43d3d",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/plan-local-model-deployment/SKILL.md",
+      "bytes": 1822,
+      "id": "plan-local-model-deployment",
+      "sha256": "ec6b4862e0633512a7d29328a1cfe4b1ff0cf28730b199aff770c6acc28f8792",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/propose-change-intelligence/SKILL.md",
+      "bytes": 994,
+      "id": "propose-change-intelligence",
+      "sha256": "371219134666efd26b9b48f800bb97c7ba2d74fedd9e7748bc053f2c75bf2937",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/quarantine-external-tools/SKILL.md",
+      "bytes": 1100,
+      "id": "quarantine-external-tools",
+      "sha256": "d6dfe57ca49e8131f93c8d9b7cb28967f343939d85c627928a249c5db2818d41",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/repair-corrupted-text/SKILL.md",
+      "bytes": 1228,
+      "id": "repair-corrupted-text",
+      "sha256": "226ddc1e8bcb13403c99047cccd043e9c02ac1a2c5a95f54243564bc2771a9a0",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/research-to-capability/SKILL.md",
+      "bytes": 1146,
+      "id": "research-to-capability",
+      "sha256": "ffd5fce65c1dfb58b7f7bac560c10e8cd24d2e4ad6009b72a60e8172217d234c",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/run-evidence-campaigns/SKILL.md",
+      "bytes": 1338,
+      "id": "run-evidence-campaigns",
+      "sha256": "24ded8f3900b2029b624a5c22d28a239bfa92bf671ae802cc742fe796b7c0e1c",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/run-resilience-drills/SKILL.md",
+      "bytes": 1309,
+      "id": "run-resilience-drills",
+      "sha256": "9c4112ba2a93de91ad6b89a7d43fca9070e6969b607330b6b9280ff7a8494a23",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/secure-agent-supply-chain/SKILL.md",
+      "bytes": 1753,
+      "id": "secure-agent-supply-chain",
+      "sha256": "d818a9df088f22044de0cc03707394b7b22a837dcb91cb397a265411d767b4d5",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/skill-admission-controller/SKILL.md",
+      "bytes": 2284,
+      "id": "skill-admission-controller",
+      "sha256": "4cd825291afb398cca48757ab0f549028a1984677140c3083fa1c8564d9bff32",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/skill-bundle-resolver/SKILL.md",
+      "bytes": 2465,
+      "id": "skill-bundle-resolver",
+      "sha256": "f713ba80888d80b6db7a81468b0a0c34893f0629b7842a28cf8953691d6193aa",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/skill-navigator/SKILL.md",
+      "bytes": 2455,
+      "id": "skill-navigator",
+      "sha256": "e0cf9587ff6a24c928f706417b505565f9c591503b128b935436c45a828beda8",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/supervise-contained-execution/SKILL.md",
+      "bytes": 1013,
+      "id": "supervise-contained-execution",
+      "sha256": "18ec489a204669e2eb2392caa73e00432813b88c665e5150688b94fc433eb91e",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/synchronize-derived-architecture/SKILL.md",
+      "bytes": 1290,
+      "id": "synchronize-derived-architecture",
+      "sha256": "fef2e5475c6a8f2d0c434ecd5891b8fe2c2d20b99ba17496de9535a70a8f2a3d",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/trace-to-skill-compiler/SKILL.md",
+      "bytes": 2749,
+      "id": "trace-to-skill-compiler",
+      "sha256": "609452f65cb671be3d8efab56dd3c14843b438de5b731618aaa15495ea9605c1",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/triage-cross-surface-failures/SKILL.md",
+      "bytes": 1115,
+      "id": "triage-cross-surface-failures",
+      "sha256": "474618a8b085690466a075b3b2812b9c5c3e5d701a9477c1745ae252092264ef",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/validate-contract-boundaries/SKILL.md",
+      "bytes": 2400,
+      "id": "validate-contract-boundaries",
+      "sha256": "12e41b4b444f396dd69d0f3a7c3a05b09b63ea01bbc49e79a9f2492cf1ac505c",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/validate-engineering-outcomes/SKILL.md",
+      "bytes": 3214,
+      "id": "validate-engineering-outcomes",
+      "sha256": "f8f5202a618e921ffa1996b197278773449a7a754b77eb76527052e2c725dca1",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/validate-knowledge-relationships/SKILL.md",
+      "bytes": 1154,
+      "id": "validate-knowledge-relationships",
+      "sha256": "b287f2332cc74c0a1a57c316ca3ca8eb08259543e671aeca1f7045ae8d226126",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/validate-production-containers/SKILL.md",
+      "bytes": 1261,
+      "id": "validate-production-containers",
+      "sha256": "8ecc926bf157bf8e5c7ce32232e443cb2ffdad29fb6dca606f577782a7ad5b64",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/verify-outcome/SKILL.md",
+      "bytes": 1064,
+      "id": "verify-outcome",
+      "sha256": "579e51b14922148aab54a344eb1e44b43fa2fc068b4d8dc658fe56edc09167de",
+      "source": "installed_framework",
+      "status": "active"
+    }
+  ]
+}

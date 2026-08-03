@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:policy-contract",
+  "title": "Policy contract",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "status",
+    "summary",
+    "applies_to",
+    "enforcement"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "applies_to": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "enforcement": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

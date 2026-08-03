@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "valid": true,
+  "operation": "sanitized_historical_inventory_with_recoverable_preservation",
+  "changed_file_count": 1,
+  "changed_file": "evidence/bundles/archive-custody-20260803/complete_file_inventory.jsonl",
+  "inventory_sha256": "859a8b70a81558054f8bdc4c38fa01b7bda288c654e7ebb70677447b14194ebc",
+  "manifest_sha256": "b24d475be9292b3497f034f3d0bf2845537855b81638ba90098b0f4eb4a82c41",
+  "post_apply_scan": {
+    "files_scanned": 1344,
+    "bytes_scanned": 14252379,
+    "identifier_hit_count": 0,
+    "legacy_placeholder_hit_count": 0,
+    "active_zip_count": 0,
+    "error_count": 0
+  },
+  "preservation_count": 1,
+  "failed_intermediate_quarantine_id": "rel010-failed-intermediates-20260803T063500Z",
+  "hard_delete": false
+}

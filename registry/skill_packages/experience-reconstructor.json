@@ -1,0 +1,34 @@
+{
+  "id": "experience-reconstructor",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/experience-reconstructor/SKILL.md",
+  "body_sha256": "fd78e2e52f43263d492bae39e59e67db29a9fe73a5d284b6cd0fdeffd4f1cf20",
+  "references": [],
+  "capability_tags": [
+    "experience",
+    "memory",
+    "reconstructor"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_bd8b7e6f.md",
+        "sha256": "0130f7fe826c7901629bd59382bd20c3c5c0402bf02ab009fa526a0344e1ebbb"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_ac953d94.yaml",
+        "sha256": "41c7acc31deff88ed74aee902e9c014e1bf36bc0725b4855816e7c39846822d5"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

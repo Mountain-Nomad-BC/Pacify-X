@@ -1,0 +1,822 @@
+{
+  "schema_version": "1.0",
+  "candidate_count": 36,
+  "candidates": [
+    {
+      "id": "behavior-to-code-mapper",
+      "category": "engineering",
+      "priority": "P0",
+      "purpose": "Map runtime behaviors to code, states, tools, policies, tests, telemetry, and dependencies.",
+      "source_ids": [
+        "harness-handbook"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_1901a3ea.yaml"
+    },
+    {
+      "id": "candidate-memory-promoter",
+      "category": "memory",
+      "priority": "P0",
+      "purpose": "Decide whether a trace-derived observation, claim, or procedure may enter a wider memory scope.",
+      "source_ids": [
+        "karpathy-llm-wiki",
+        "llm-wiki-v2",
+        "memharness"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_26368719.yaml"
+    },
+    {
+      "id": "dynamic-skill-detonator",
+      "category": "security",
+      "priority": "P0",
+      "purpose": "Execute a skill in an instrumented sandbox with synthetic secrets and observe real behavior.",
+      "source_ids": [
+        "skill-detonate",
+        "malicious-skills"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_c16877d2.yaml"
+    },
+    {
+      "id": "evidence-assembler",
+      "category": "assurance",
+      "priority": "P0",
+      "purpose": "Build a typed evidence package distinguishing measurement, source text, tool output, inference, assumption, and precedent.",
+      "source_ids": [
+        "karpathy-llm-wiki",
+        "memharness"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_8e165656.yaml"
+    },
+    {
+      "id": "execution-contract-enforcer",
+      "category": "orchestration",
+      "priority": "P0",
+      "purpose": "Wrap every skill with validation, authorization, budget, idempotency, execution, verification, and trace controls.",
+      "source_ids": [
+        "iii-agent-harness",
+        "iii-loop-engineering",
+        "langgraph-workflow-pathways"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_9c69399b.yaml"
+    },
+    {
+      "id": "memory-applicability-critic",
+      "category": "memory",
+      "priority": "P0",
+      "purpose": "Determine which parts of a retrieved case apply now and which must be rejected.",
+      "source_ids": [
+        "memharness"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_45ffad09.yaml"
+    },
+    {
+      "id": "memory-injection-firewall",
+      "category": "security",
+      "priority": "P0",
+      "purpose": "Quarantine retrieved memory that redirects intent, expands permissions, exposes secrets, or alters policy hierarchy.",
+      "source_ids": [
+        "mind-memory-defense"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_fcaa2f0e.yaml"
+    },
+    {
+      "id": "outcome-verifier",
+      "category": "assurance",
+      "priority": "P0",
+      "purpose": "Independently determine whether evidence, policy, and actual postconditions support the claimed result.",
+      "source_ids": [
+        "audit-budget",
+        "nice-enterprise-agents"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_69c32df6.yaml"
+    },
+    {
+      "id": "permission-diff-auditor",
+      "category": "security",
+      "priority": "P0",
+      "purpose": "Identify new permissions, scopes, side effects, and destinations between versions.",
+      "source_ids": [
+        "malicious-skills"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_0c3d93f7.yaml"
+    },
+    {
+      "id": "provenance-signature-verifier",
+      "category": "security",
+      "priority": "P0",
+      "purpose": "Verify package identity, source, signature, hash, build chain, and owner.",
+      "source_ids": [
+        "malicious-skills"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_1486b24a.yaml"
+    },
+    {
+      "id": "reasoning-utility-controller",
+      "category": "evaluation",
+      "priority": "P0",
+      "purpose": "Decide whether another reasoning, retrieval, verification, or tool step has enough expected value.",
+      "source_ids": [
+        "overthinking",
+        "tool-loop-attacks"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_11b55646.yaml"
+    },
+    {
+      "id": "recovery-coordinator",
+      "category": "orchestration",
+      "priority": "P0",
+      "purpose": "Classify failures and choose retry, alternate path, rollback, escalation, or stop.",
+      "source_ids": [
+        "iii-loop-engineering",
+        "failure-process"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_25426b3f.yaml"
+    },
+    {
+      "id": "skill-admission-controller",
+      "category": "security",
+      "priority": "P0",
+      "purpose": "Control whether a skill may enter registry, sandbox, canary, or production.",
+      "source_ids": [
+        "malicious-skills",
+        "skill-detonate"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_6536c6db.yaml"
+    },
+    {
+      "id": "skill-navigator",
+      "category": "orchestration",
+      "priority": "P0",
+      "purpose": "Progressively locate the smallest relevant capability branch without loading the full catalog.",
+      "source_ids": [
+        "harness-handbook",
+        "corpus2skill"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_b4a46ed2.yaml"
+    },
+    {
+      "id": "tool-loop-circuit-breaker",
+      "category": "security",
+      "priority": "P0",
+      "purpose": "Detect cyclic tool calls, repeated no-op state, and cost amplification, then stop or isolate.",
+      "source_ids": [
+        "tool-loop-attacks",
+        "overthinking"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_3c3fd40b.yaml"
+    },
+    {
+      "id": "active-evaluation-selector",
+      "category": "evaluation",
+      "priority": "P1",
+      "purpose": "Choose the most informative evaluation cases under fixed time, compute, or review budget.",
+      "source_ids": [
+        "proeval"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_c50a37dd.yaml"
+    },
+    {
+      "id": "benchmark-domain-adapter",
+      "category": "research-ops",
+      "priority": "P1",
+      "purpose": "Translate an academic benchmark into intelligent system/intelligent system domain cases, outcomes, risks, and evidence requirements.",
+      "source_ids": [
+        "proeval",
+        "long-horizon-bench"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_0be8b3e1.yaml"
+    },
+    {
+      "id": "context-compactor",
+      "category": "orchestration",
+      "priority": "P1",
+      "purpose": "Reduce active context while preserving goals, constraints, decisions, evidence, unresolved questions, and state.",
+      "source_ids": [
+        "iii-agent-harness"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_cfa8999f.yaml"
+    },
+    {
+      "id": "corpus-to-skill-tree-compiler",
+      "category": "knowledge",
+      "priority": "P1",
+      "purpose": "Compile large corpora into navigable hierarchical skill/knowledge trees with evidence-linked nodes.",
+      "source_ids": [
+        "corpus2skill",
+        "karpathy-llm-wiki"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_39d51c09.yaml"
+    },
+    {
+      "id": "dependency-impact-tracer",
+      "category": "engineering",
+      "priority": "P1",
+      "purpose": "Predict downstream effects of changing a skill, tool, schema, state, model, policy, or data contract.",
+      "source_ids": [
+        "harness-handbook"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_59d422a7.yaml"
+    },
+    {
+      "id": "evaluation-budget-allocator",
+      "category": "evaluation",
+      "priority": "P1",
+      "purpose": "Allocate automated and human review by risk, disagreement, novelty, impact, and evidence quality\u2014not self-confidence.",
+      "source_ids": [
+        "audit-budget",
+        "proeval"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_d5733a87.yaml"
+    },
+    {
+      "id": "experience-reconstructor",
+      "category": "memory",
+      "priority": "P1",
+      "purpose": "Rebuild a current procedure from reusable principles rather than replaying old actions.",
+      "source_ids": [
+        "memharness",
+        "procmem"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_ac953d94.yaml"
+    },
+    {
+      "id": "human-handoff-state-transfer",
+      "category": "orchestration",
+      "priority": "P1",
+      "purpose": "Transfer complete resumable operational state to a human or bounded agent.",
+      "source_ids": [
+        "nice-enterprise-agents",
+        "langgraph-workflow-pathways"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_0e21ee81.yaml"
+    },
+    {
+      "id": "long-horizon-progress-ledger",
+      "category": "evaluation",
+      "priority": "P1",
+      "purpose": "Represent long work as evidence-backed milestones with partial completion, blockers, regression, and recoverability.",
+      "source_ids": [
+        "long-horizon-bench"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_0fd7e844.yaml"
+    },
+    {
+      "id": "paper-mechanism-extractor",
+      "category": "research-ops",
+      "priority": "P1",
+      "purpose": "Extract the actual mechanism, assumptions, data, evidence, and limitations from a paper.",
+      "source_ids": [
+        "arxiv-cs-ai-recent",
+        "voltagent-agent-papers"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_2176bb23.yaml"
+    },
+    {
+      "id": "productization-gap-analyzer",
+      "category": "research-ops",
+      "priority": "P1",
+      "purpose": "Identify what a research prototype lacks before safe operational use.",
+      "source_ids": [
+        "harness-handbook",
+        "iii-agent-harness"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_73c308e8.yaml"
+    },
+    {
+      "id": "research-to-operation-translator",
+      "category": "research-ops",
+      "priority": "P1",
+      "purpose": "Convert a validated research mechanism into a bounded skill, service, workflow, or evaluation.",
+      "source_ids": [
+        "proeval",
+        "harness-handbook"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_bc8e2013.yaml"
+    },
+    {
+      "id": "scenario-audit-generator",
+      "category": "evaluation",
+      "priority": "P1",
+      "purpose": "Generate realistic pressure, injection, stale-data, conflict, permission, and deception scenarios.",
+      "source_ids": [
+        "gram",
+        "honeypot-evals"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_5b5b91b0.yaml"
+    },
+    {
+      "id": "skill-bundle-resolver",
+      "category": "orchestration",
+      "priority": "P1",
+      "purpose": "Select a compatible set of skills and tools that jointly satisfies all required outcomes.",
+      "source_ids": [
+        "hyset"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_342a98d5.yaml"
+    },
+    {
+      "id": "skill-coexecution-graph-builder",
+      "category": "knowledge",
+      "priority": "P1",
+      "purpose": "Build a typed graph of skills/tools used together, order, context, outcomes, cost, and latency.",
+      "source_ids": [
+        "hyset"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_3959f3eb.yaml"
+    },
+    {
+      "id": "trajectory-failure-sentinel",
+      "category": "evaluation",
+      "priority": "P1",
+      "purpose": "Detect failure onset early enough to recover before cost or state damage accumulates.",
+      "source_ids": [
+        "failure-process"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_117a6015.yaml"
+    },
+    {
+      "id": "cross-paper-mechanism-fuser",
+      "category": "research-ops",
+      "priority": "P2",
+      "purpose": "Combine compatible research primitives into a stronger subsystem while exposing conflicts.",
+      "source_ids": [
+        "memharness",
+        "mind-memory-defense",
+        "hyset",
+        "proeval"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_61d22a06.yaml"
+    },
+    {
+      "id": "procedural-memory-compiler",
+      "category": "memory",
+      "priority": "P2",
+      "purpose": "Compile repeated successful patterns into candidate procedures with activation, execution, and termination.",
+      "source_ids": [
+        "procmem"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_ae2a572b.yaml"
+    },
+    {
+      "id": "trace-to-skill-compiler",
+      "category": "improvement",
+      "priority": "P2",
+      "purpose": "Convert repeated verified trajectories into candidate governed skill packages.",
+      "source_ids": [
+        "procmem"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_8a125c1a.yaml"
+    },
+    {
+      "id": "bounded-workflow-topology-selector",
+      "category": "advanced",
+      "priority": "P3",
+      "purpose": "Select among approved workflow templates based on complexity, novelty, risk, and evidence conflict.",
+      "source_ids": [
+        "manta"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest.yaml"
+    },
+    {
+      "id": "read-only-speculation-controller",
+      "category": "advanced",
+      "priority": "P3",
+      "purpose": "Predict and prefetch likely next read-only tool results into a quarantined cache.",
+      "source_ids": [
+        "speculate-while-reason"
+      ],
+      "status": "candidate",
+      "disposition": "defer",
+      "required_before_promotion": [
+        "manifest_match",
+        "io_contract",
+        "effect_review",
+        "dependency_review",
+        "validation_evidence",
+        "approval"
+      ],
+      "version": "0.1.0",
+      "owner": "intelligent system framework owner",
+      "manifest": "LLM_hybrid_rag/manifest_e9e1cb7f.yaml"
+    }
+  ]
+}

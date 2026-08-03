@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "classification": "external process/audit candidate intake disposition",
+  "files": [
+    {"name": "audit_validation.py", "sha256": "69662589b579ad2b59c683a02202c7f555848ed4fd48d28fa1616e5ea5a00c28", "disposition": "superseded_by_composed_live_audit", "executed_in_product": false},
+    {"name": "comprehensive_audit_report.json", "sha256": "011485a1b97dfa69b3556cb4d8f673c1a0c4f862d1a11c379e889c7a51707548", "disposition": "historical_claim_only", "executed_in_product": false},
+    {"name": "COMPREHENSIVE_AUDIT_REPORT.md", "sha256": "e22dfc3eca5e43556983e46222157c4332b6274c572deb1c6ef13bac6a545ce8", "disposition": "contradictory_historical_report", "executed_in_product": false},
+    {"name": "process_skills.md", "sha256": "17d76451c074ee22eb2704d302bf9323a13d5ba1db58430a36febeed1389bf71", "disposition": "operationalized", "executed_in_product": false},
+    {"name": "process_type.md", "sha256": "0e388e333d341c16cfaea13011803468e9161825da055afb8a020bc11a78d4c8", "disposition": "operationalized", "executed_in_product": false}
+  ],
+  "operational_owners": [
+    "runtime/release_audit.py",
+    "runtime/process_memory.py",
+    "contracts/engineering-process-record.schema.json",
+    ".agents/skills/validate-engineering-outcomes/scripts/audit_bootstrap.py",
+    ".agents/skills/trace-to-skill-compiler/SKILL.md",
+    "registry/engineering_lifecycle.json"
+  ],
+  "custody_index": "evidence/externalized-payload-index.json",
+  "unresolved": 0
+}

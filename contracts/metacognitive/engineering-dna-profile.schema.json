@@ -1,0 +1,62 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:metacognitive:engineering-dna-profile",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "observed_patterns": {
+      "items": {
+        "properties": {
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "context": {
+            "type": "string"
+          },
+          "evidence": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "expires_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "statement": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "statement",
+          "evidence",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "prohibited_inferences": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "project_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "project_id",
+    "observed_patterns",
+    "prohibited_inferences"
+  ],
+  "type": "object"
+}

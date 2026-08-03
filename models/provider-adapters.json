@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "adapters": [
+    {
+      "id": "local-runtime",
+      "state": "discoverable_unconfigured",
+      "discovery_commands": ["ollama", "llama-server", "lmstudio"],
+      "credential_mode": "none_or_runtime_managed",
+      "auto_start": false,
+      "auto_download": false
+    },
+    {
+      "id": "provider-adapter",
+      "state": "unconfigured",
+      "credential_mode": "approved_secret_store_only",
+      "network": "explicit_approval",
+      "auto_connect": false
+    }
+  ]
+}

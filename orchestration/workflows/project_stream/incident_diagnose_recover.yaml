@@ -1,0 +1,28 @@
+orchestration_id: incident_diagnose_recover
+title: Diagnose regressions and execute a validated recovery
+version: 0.1.0
+status: design-ready
+trigger: explicit-or-policy-scheduled
+project_binding: required unless workspace bootstrap
+skills:
+- regression-causality-engine
+- repository-digital-twin
+- change-blast-radius-predictor
+- rollback-rehearsal
+- outcome-contract-validator
+- engineering-receipts
+required_context:
+- workspace_id
+- agent_id
+- session_id
+- intent_id
+- correlation_id
+preflight:
+- constitution_resolved
+- lease_valid
+- scope_resolved
+- side_effect_budget_set
+outcomes:
+- incident_recovered_or_escalated
+failure_policy: checkpoint-and-fail-closed-on-boundary-or-integrity-violation
+audit: true

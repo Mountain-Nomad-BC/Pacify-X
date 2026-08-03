@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:skeptical-certification",
+  "title": "Skeptical engineering certification request",
+  "type": "object",
+  "required": [
+    "level",
+    "current_evidence_classes",
+    "discovery_denominator",
+    "covered_items",
+    "unknowns",
+    "contradictions",
+    "evidence_revision",
+    "discovery_revision"
+  ],
+  "properties": {
+    "level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 7
+    },
+    "current_evidence_classes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "discovery_denominator": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "covered_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contradictions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_revision": {
+      "type": "string"
+    },
+    "discovery_revision": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

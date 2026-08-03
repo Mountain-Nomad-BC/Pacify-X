@@ -1,0 +1,73 @@
+{
+  "declared_suite": {
+    "admitted_scripts": 56,
+    "authoritative_body_matches": 1233,
+    "contracts_enriched": 257,
+    "formulas": 18,
+    "knowledge": 0,
+    "orchestrations": 62,
+    "rejected_scripts": 3,
+    "schemas": 133,
+    "skills": 134,
+    "templates": 21,
+    "validation_scripts": 14
+  },
+  "intake_quarantine": {
+    "hard_delete": false,
+    "intake_closed": true,
+    "operation": "recoverable_move_to_quarantine",
+    "post_move_inventory_reconciled": true,
+    "pre_move_equality_verified": true,
+    "quarantine_path": "temp/quarantine/rel008-last-round-source-20260802",
+    "recovery": "Move the quarantined source tree back to its recorded source path only after an approved reopen operation.",
+    "schema_version": "1.0",
+    "source_alias": "last-round",
+    "source_byte_count": 4626519,
+    "source_file_count": 2192,
+    "source_path": "temp_audit_work/last_round",
+    "source_tree_sha256": "e7fb7dbdc79f120f3510beb0e9ec40944daaca11afd93e053aeaf3c590d524f3"
+  },
+  "metacognitive": {
+    "contracts": 14,
+    "formulas": 79,
+    "policies": 9,
+    "skills": 50,
+    "templates": 9,
+    "workflows": 15
+  },
+  "open_file_dispositions": 0,
+  "scheduling": {
+    "contracts": 8,
+    "policies": 3,
+    "skills": 30,
+    "workflows": 5
+  },
+  "schema_version": "1.0",
+  "source_files": 2195,
+  "source_files_at_close": 2192,
+  "source_files_at_expanded_intake": 2195,
+  "source_generated_cache_files_quarantined": 3,
+  "status": "verified_complete",
+  "validation": {
+    "contracts": "80/80",
+    "framework_failures": 0,
+    "framework_tests": 300,
+    "graphs": true,
+    "installed_wheel_0_6_0": true,
+    "integrations": "3/3 smoke-tested",
+    "official_skill_validators": 9,
+    "registry": true,
+    "sanitization": true,
+    "strict_release_audit": true
+  },
+  "wiring": {
+    "aliases": 80,
+    "catalog_owners": [
+      "govern-metacognitive-evolution",
+      "orchestrate-capability-scheduling"
+    ],
+    "graph_edges": 170,
+    "graph_nodes": 65,
+    "owned_contracts": 22
+  }
+}

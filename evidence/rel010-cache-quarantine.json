@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "operation": "recoverable_cache_quarantine",
+  "created_utc": "2026-08-03T06:26:50.856516Z",
+  "source_root": ".",
+  "external_quarantine_ids": [
+    "rel010-python-caches/20260803T062650.856516Z",
+    "rel010-final-cache-cleanup-20260803T070000Z/20260803T070254.286940Z",
+    "rel010-prefinal-cache-cleanup-20260803T071000Z/20260803T070940.681257Z"
+  ],
+  "cache_directories": 20,
+  "files": 96,
+  "inventory_reconciled": true,
+  "hard_delete": false,
+  "recovery": "Resolve the external quarantine ID through operator custody records, then restore only the exact hash-reconciled relative paths."
+}

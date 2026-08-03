@@ -1,0 +1,34 @@
+{
+  "id": "evaluation-budget-allocator",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/evaluation-budget-allocator/SKILL.md",
+  "body_sha256": "1c808edce803d1cdc944a94fb6071511370f650b52357403baf966e241266208",
+  "references": [],
+  "capability_tags": [
+    "allocator",
+    "budget",
+    "evaluation"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_9b2aeda9.md",
+        "sha256": "f4203489f61c7f03ef81606f4b46abddccc9f5d0f37bc72a3df59017f8876922"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_d5733a87.yaml",
+        "sha256": "ce2181ebe016de8999414fbd966c72296bf576328021d4458da16a0c48953b86"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

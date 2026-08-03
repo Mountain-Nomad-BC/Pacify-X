@@ -1,0 +1,286 @@
+{
+  "schema_version": "1.0",
+  "loading_rule": "Load a composite handler only after workflow selection, preflight, effect authorization, and explicit approval for mutation.",
+  "executable_count": 17,
+  "plan_only_count": 0,
+  "workflows": [
+    {
+      "orchestration_id": "agent_create_validate",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.agent_create_validate",
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "missing_capabilities": [
+        "agent-factory",
+        "agent-performance-health",
+        "agent-registry-lifecycle",
+        "agent-template-catalog"
+      ],
+      "deferred_capabilities": [
+        "agent-factory",
+        "agent-performance-health",
+        "agent-registry-lifecycle",
+        "agent-template-catalog"
+      ],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "chaos_resilience_cycle",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.chaos_resilience_cycle",
+      "effects": [
+        "read_local"
+      ],
+      "missing_capabilities": [],
+      "deferred_capabilities": [],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "continuous_improvement",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.continuous_improvement",
+      "effects": [
+        "read_local"
+      ],
+      "missing_capabilities": [
+        "decision-graph"
+      ],
+      "deferred_capabilities": [
+        "decision-graph"
+      ],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "cross_project_transfer",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.cross_project_transfer",
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "missing_capabilities": [],
+      "deferred_capabilities": [],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "guarded_change",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.guarded_change",
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "missing_capabilities": [
+        "assumption-auditor",
+        "branch-worktree-manager",
+        "change-intent-ledger"
+      ],
+      "deferred_capabilities": [
+        "assumption-auditor",
+        "branch-worktree-manager",
+        "change-intent-ledger"
+      ],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "incident_diagnose_recover",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.incident_diagnose_recover",
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "missing_capabilities": [
+        "rollback-rehearsal"
+      ],
+      "deferred_capabilities": [
+        "rollback-rehearsal"
+      ],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "memory_ingest_distill",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.memory_ingest_distill",
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "missing_capabilities": [
+        "contradiction-engine"
+      ],
+      "deferred_capabilities": [
+        "contradiction-engine"
+      ],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "memory_maintenance",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.memory_maintenance",
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "missing_capabilities": [
+        "assumption-decay",
+        "knowledge-coverage"
+      ],
+      "deferred_capabilities": [
+        "assumption-decay",
+        "knowledge-coverage"
+      ],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "nightly_project_health",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.nightly_project_health",
+      "effects": [
+        "read_local"
+      ],
+      "missing_capabilities": [
+        "agent-performance-health",
+        "project-health-scorecard",
+        "supply-chain-sentinel"
+      ],
+      "deferred_capabilities": [
+        "agent-performance-health",
+        "project-health-scorecard",
+        "supply-chain-sentinel"
+      ],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "project_close",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.project_close",
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "missing_capabilities": [
+        "agent-retirement-handoff",
+        "project-closure-autopsy",
+        "project-dormancy-archive"
+      ],
+      "deferred_capabilities": [
+        "agent-retirement-handoff",
+        "project-closure-autopsy",
+        "project-dormancy-archive"
+      ],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "project_onboard",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.project_onboard",
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "missing_capabilities": [
+        "multi-repo-tracker"
+      ],
+      "deferred_capabilities": [
+        "multi-repo-tracker"
+      ],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "project_pause_resume",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.project_pause_resume",
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "missing_capabilities": [
+        "concurrency-lock-manager",
+        "project-health-scorecard"
+      ],
+      "deferred_capabilities": [
+        "concurrency-lock-manager",
+        "project-health-scorecard"
+      ],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "project_switch",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.project_switch",
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "missing_capabilities": [],
+      "deferred_capabilities": [],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "safe_cleanup",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.safe_cleanup",
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "missing_capabilities": [
+        "artifact-lifecycle-manager",
+        "rollback-rehearsal"
+      ],
+      "deferred_capabilities": [
+        "artifact-lifecycle-manager",
+        "rollback-rehearsal"
+      ],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "shared_capability_promote",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.shared_capability_promote",
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "missing_capabilities": [],
+      "deferred_capabilities": [],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "workspace_bootstrap",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.workspace_bootstrap",
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "missing_capabilities": [
+        "audit-event-ledger"
+      ],
+      "deferred_capabilities": [
+        "audit-event-ledger"
+      ],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    },
+    {
+      "orchestration_id": "workstream_plan_dispatch",
+      "status": "executable",
+      "handler": "runtime.project_stream_orchestrator.workstream_plan_dispatch",
+      "effects": [
+        "read_local"
+      ],
+      "missing_capabilities": [
+        "agent-team-composer",
+        "duplicate-effort-detector"
+      ],
+      "deferred_capabilities": [
+        "agent-team-composer",
+        "duplicate-effort-detector"
+      ],
+      "scope": "bounded_runtime_handler_only; deferred capabilities are excluded"
+    }
+  ]
+}

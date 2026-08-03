@@ -1,0 +1,56 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:metacognitive:optimization-experiment",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "baseline": {
+      "type": "object"
+    },
+    "candidate": {
+      "type": "object"
+    },
+    "environment_fingerprint": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "guardrails": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "hypothesis": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "metrics": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "rollback": {
+      "type": "string"
+    },
+    "seed": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "hypothesis",
+    "baseline",
+    "candidate",
+    "metrics",
+    "guardrails",
+    "rollback"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,8 @@
+{
+  "id": "change-control",
+  "version": "1.0.0",
+  "status": "active",
+  "summary": "Approved change intent remains traceable through implementation, downstream impact, validation, and rollback.",
+  "applies_to": ["code_changes", "configuration", "schemas", "dependencies", "deployment"],
+  "enforcement": "Require approved scope, affected-owner map, expected postconditions, validation plan, evidence destinations, and rollback before effects. Re-plan when discovered impact exceeds scope."
+}

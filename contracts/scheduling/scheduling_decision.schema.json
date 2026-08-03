@@ -1,0 +1,61 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:scheduling:scheduling_decision",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "decision_id": {
+      "type": "string"
+    },
+    "eligible": {
+      "type": "boolean"
+    },
+    "policy_snapshot_hash": {
+      "type": "string"
+    },
+    "reason_codes": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "resource_reservation": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "score": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "selected_capability": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "selected_target": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "format": "date-time",
+      "type": "string"
+    }
+  },
+  "required": [
+    "decision_id",
+    "task_id",
+    "eligible",
+    "reason_codes",
+    "timestamp"
+  ],
+  "type": "object"
+}

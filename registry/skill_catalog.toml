@@ -1,0 +1,799 @@
+schema_version = "1.0"
+loading_rule = "metadata_only_at_startup_body_after_selection"
+default_active_limit = 3
+hard_active_limit = 8
+
+[[skills]]
+id = "admit-capability"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/admit-capability/SKILL.md"
+contract = "registry/skills/skill-admission-controller.json"
+admission_record = "skill-admission-controller"
+tags = ["admission", "governance"]
+
+[[skills]]
+id = "commission-project"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/commission-project/SKILL.md"
+contract = "registry/skills/workflow-orchestrator.json"
+admission_record = "workflow-orchestrator"
+tags = ["bootstrap", "onboarding"]
+
+[[skills]]
+id = "orchestrate-engineering-loop"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/orchestrate-engineering-loop/SKILL.md"
+contract = "registry/skills/workflow-orchestrator.json"
+admission_record = "workflow-orchestrator"
+tags = ["orchestration", "workflow"]
+
+[[skills]]
+id = "verify-outcome"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/verify-outcome/SKILL.md"
+contract = "registry/skills/outcome-verifier.json"
+admission_record = "outcome-verifier"
+tags = ["validation", "evidence"]
+
+[[skills]]
+id = "diagnose-python-repair"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/diagnose-python-repair/SKILL.md"
+contract = "registry/skill_packages/diagnose-python-repair.json"
+admission_record = "diagnose-python-repair"
+tags = ["python", "repair", "diagnosis"]
+
+[[skills]]
+id = "enforce-governance-controls"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/enforce-governance-controls/SKILL.md"
+contract = "registry/skill_packages/enforce-governance-controls.json"
+admission_record = "enforce-governance-controls"
+tags = ["security", "governance", "authorization"]
+
+[[skills]]
+id = "validate-engineering-outcomes"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/validate-engineering-outcomes/SKILL.md"
+contract = "registry/skill_packages/validate-engineering-outcomes.json"
+admission_record = "validate-engineering-outcomes"
+tags = ["architecture", "testing", "deployment"]
+
+[[skills]]
+id = "research-to-capability"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/research-to-capability/SKILL.md"
+contract = "registry/skill_packages/research-to-capability.json"
+admission_record = "research-to-capability"
+tags = ["research", "provenance", "capability-building"]
+
+[[skills]]
+id = "active-evaluation-selector"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/active-evaluation-selector/SKILL.md"
+contract = "registry/skill_packages/active-evaluation-selector.json"
+admission_record = "active-evaluation-selector"
+tags = ["active", "evaluation", "selector"]
+
+[[skills]]
+id = "behavior-to-code-mapper"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/behavior-to-code-mapper/SKILL.md"
+contract = "registry/skill_packages/behavior-to-code-mapper.json"
+admission_record = "behavior-to-code-mapper"
+tags = ["behavior", "code", "engineering", "mapper", "to"]
+
+[[skills]]
+id = "benchmark-domain-adapter"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/benchmark-domain-adapter/SKILL.md"
+contract = "registry/skill_packages/benchmark-domain-adapter.json"
+admission_record = "benchmark-domain-adapter"
+tags = ["adapter", "benchmark", "domain", "research-ops"]
+
+[[skills]]
+id = "bounded-workflow-topology-selector"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/bounded-workflow-topology-selector/SKILL.md"
+contract = "registry/skill_packages/bounded-workflow-topology-selector.json"
+admission_record = "bounded-workflow-topology-selector"
+tags = ["advanced", "bounded", "selector", "topology", "workflow"]
+
+[[skills]]
+id = "candidate-memory-promoter"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/candidate-memory-promoter/SKILL.md"
+contract = "registry/skill_packages/candidate-memory-promoter.json"
+admission_record = "candidate-memory-promoter"
+tags = ["candidate", "memory", "promoter"]
+
+[[skills]]
+id = "context-compactor"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/context-compactor/SKILL.md"
+contract = "registry/skill_packages/context-compactor.json"
+admission_record = "context-compactor"
+tags = ["compactor", "context", "orchestration"]
+
+[[skills]]
+id = "corpus-to-skill-tree-compiler"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/corpus-to-skill-tree-compiler/SKILL.md"
+contract = "registry/skill_packages/corpus-to-skill-tree-compiler.json"
+admission_record = "corpus-to-skill-tree-compiler"
+tags = ["compiler", "corpus", "knowledge", "skill", "to", "tree"]
+
+[[skills]]
+id = "cross-paper-mechanism-fuser"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/cross-paper-mechanism-fuser/SKILL.md"
+contract = "registry/skill_packages/cross-paper-mechanism-fuser.json"
+admission_record = "cross-paper-mechanism-fuser"
+tags = ["cross", "fuser", "mechanism", "paper", "research-ops"]
+
+[[skills]]
+id = "dependency-impact-tracer"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/dependency-impact-tracer/SKILL.md"
+contract = "registry/skill_packages/dependency-impact-tracer.json"
+admission_record = "dependency-impact-tracer"
+tags = ["dependency", "engineering", "impact", "tracer"]
+
+[[skills]]
+id = "dynamic-skill-detonator"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/dynamic-skill-detonator/SKILL.md"
+contract = "registry/skill_packages/dynamic-skill-detonator.json"
+admission_record = "dynamic-skill-detonator"
+tags = ["detonator", "dynamic", "security", "skill"]
+
+[[skills]]
+id = "evaluation-budget-allocator"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/evaluation-budget-allocator/SKILL.md"
+contract = "registry/skill_packages/evaluation-budget-allocator.json"
+admission_record = "evaluation-budget-allocator"
+tags = ["allocator", "budget", "evaluation"]
+
+[[skills]]
+id = "evidence-assembler"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/evidence-assembler/SKILL.md"
+contract = "registry/skill_packages/evidence-assembler.json"
+admission_record = "evidence-assembler"
+tags = ["assembler", "assurance", "evidence"]
+
+[[skills]]
+id = "execution-contract-enforcer"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/execution-contract-enforcer/SKILL.md"
+contract = "registry/skill_packages/execution-contract-enforcer.json"
+admission_record = "execution-contract-enforcer"
+tags = ["contract", "enforcer", "execution", "orchestration"]
+
+[[skills]]
+id = "experience-reconstructor"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/experience-reconstructor/SKILL.md"
+contract = "registry/skill_packages/experience-reconstructor.json"
+admission_record = "experience-reconstructor"
+tags = ["experience", "memory", "reconstructor"]
+
+[[skills]]
+id = "human-handoff-state-transfer"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/human-handoff-state-transfer/SKILL.md"
+contract = "registry/skill_packages/human-handoff-state-transfer.json"
+admission_record = "human-handoff-state-transfer"
+tags = ["handoff", "human", "orchestration", "state", "transfer"]
+
+[[skills]]
+id = "long-horizon-progress-ledger"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/long-horizon-progress-ledger/SKILL.md"
+contract = "registry/skill_packages/long-horizon-progress-ledger.json"
+admission_record = "long-horizon-progress-ledger"
+tags = ["evaluation", "horizon", "ledger", "long", "progress"]
+
+[[skills]]
+id = "memory-applicability-critic"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/memory-applicability-critic/SKILL.md"
+contract = "registry/skill_packages/memory-applicability-critic.json"
+admission_record = "memory-applicability-critic"
+tags = ["applicability", "critic", "memory"]
+
+[[skills]]
+id = "memory-injection-firewall"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/memory-injection-firewall/SKILL.md"
+contract = "registry/skill_packages/memory-injection-firewall.json"
+admission_record = "memory-injection-firewall"
+tags = ["firewall", "injection", "memory", "security"]
+
+[[skills]]
+id = "outcome-verifier"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/outcome-verifier/SKILL.md"
+contract = "registry/skill_packages/outcome-verifier.json"
+admission_record = "outcome-verifier"
+tags = ["assurance", "outcome", "verifier"]
+
+[[skills]]
+id = "paper-mechanism-extractor"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/paper-mechanism-extractor/SKILL.md"
+contract = "registry/skill_packages/paper-mechanism-extractor.json"
+admission_record = "paper-mechanism-extractor"
+tags = ["extractor", "mechanism", "paper", "research-ops"]
+
+[[skills]]
+id = "permission-diff-auditor"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/permission-diff-auditor/SKILL.md"
+contract = "registry/skill_packages/permission-diff-auditor.json"
+admission_record = "permission-diff-auditor"
+tags = ["auditor", "diff", "permission", "security"]
+
+[[skills]]
+id = "procedural-memory-compiler"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/procedural-memory-compiler/SKILL.md"
+contract = "registry/skill_packages/procedural-memory-compiler.json"
+admission_record = "procedural-memory-compiler"
+tags = ["compiler", "memory", "procedural"]
+
+[[skills]]
+id = "productization-gap-analyzer"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/productization-gap-analyzer/SKILL.md"
+contract = "registry/skill_packages/productization-gap-analyzer.json"
+admission_record = "productization-gap-analyzer"
+tags = ["analyzer", "gap", "productization", "research-ops"]
+
+[[skills]]
+id = "provenance-signature-verifier"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/provenance-signature-verifier/SKILL.md"
+contract = "registry/skill_packages/provenance-signature-verifier.json"
+admission_record = "provenance-signature-verifier"
+tags = ["provenance", "security", "signature", "verifier"]
+
+[[skills]]
+id = "read-only-speculation-controller"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/read-only-speculation-controller/SKILL.md"
+contract = "registry/skill_packages/read-only-speculation-controller.json"
+admission_record = "read-only-speculation-controller"
+tags = ["advanced", "controller", "only", "read", "speculation"]
+
+[[skills]]
+id = "reasoning-utility-controller"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/reasoning-utility-controller/SKILL.md"
+contract = "registry/skill_packages/reasoning-utility-controller.json"
+admission_record = "reasoning-utility-controller"
+tags = ["controller", "evaluation", "reasoning", "utility"]
+
+[[skills]]
+id = "recovery-coordinator"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/recovery-coordinator/SKILL.md"
+contract = "registry/skill_packages/recovery-coordinator.json"
+admission_record = "recovery-coordinator"
+tags = ["coordinator", "orchestration", "recovery"]
+
+[[skills]]
+id = "research-to-operation-translator"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/research-to-operation-translator/SKILL.md"
+contract = "registry/skill_packages/research-to-operation-translator.json"
+admission_record = "research-to-operation-translator"
+tags = ["operation", "research", "research-ops", "to", "translator"]
+
+[[skills]]
+id = "scenario-audit-generator"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/scenario-audit-generator/SKILL.md"
+contract = "registry/skill_packages/scenario-audit-generator.json"
+admission_record = "scenario-audit-generator"
+tags = ["audit", "evaluation", "generator", "scenario"]
+
+[[skills]]
+id = "skill-admission-controller"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/skill-admission-controller/SKILL.md"
+contract = "registry/skill_packages/skill-admission-controller.json"
+admission_record = "skill-admission-controller"
+tags = ["admission", "controller", "security", "skill"]
+
+[[skills]]
+id = "skill-bundle-resolver"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/skill-bundle-resolver/SKILL.md"
+contract = "registry/skill_packages/skill-bundle-resolver.json"
+admission_record = "skill-bundle-resolver"
+tags = ["bundle", "orchestration", "resolver", "skill"]
+
+[[skills]]
+id = "skill-coexecution-graph-builder"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/skill-coexecution-graph-builder/SKILL.md"
+contract = "registry/skill_packages/skill-coexecution-graph-builder.json"
+admission_record = "skill-coexecution-graph-builder"
+tags = ["builder", "coexecution", "graph", "knowledge", "skill"]
+
+[[skills]]
+id = "skill-navigator"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/skill-navigator/SKILL.md"
+contract = "registry/skill_packages/skill-navigator.json"
+admission_record = "skill-navigator"
+tags = ["navigator", "orchestration", "skill"]
+
+[[skills]]
+id = "tool-loop-circuit-breaker"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/tool-loop-circuit-breaker/SKILL.md"
+contract = "registry/skill_packages/tool-loop-circuit-breaker.json"
+admission_record = "tool-loop-circuit-breaker"
+tags = ["breaker", "circuit", "loop", "security", "tool"]
+
+[[skills]]
+id = "trace-to-skill-compiler"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/trace-to-skill-compiler/SKILL.md"
+contract = "registry/skill_packages/trace-to-skill-compiler.json"
+admission_record = "trace-to-skill-compiler"
+tags = ["compiler", "improvement", "skill", "to", "trace"]
+
+[[skills]]
+id = "trajectory-failure-sentinel"
+version = "0.1.0"
+status = "mapped_deferred"
+body = ".agents/skills/trajectory-failure-sentinel/SKILL.md"
+contract = "registry/skill_packages/trajectory-failure-sentinel.json"
+admission_record = "trajectory-failure-sentinel"
+tags = ["evaluation", "failure", "sentinel", "trajectory"]
+
+[[skills]]
+id = "audit-ai-runtime-assurance"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/audit-ai-runtime-assurance/SKILL.md"
+contract = "registry/skill_packages/audit-ai-runtime-assurance.json"
+admission_record = "audit-ai-runtime-assurance"
+tags = ["ai", "assurance", "drift", "privacy", "benchmark"]
+
+[[skills]]
+id = "certify-skeptical-engineering"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/certify-skeptical-engineering/SKILL.md"
+contract = "registry/skill_packages/certify-skeptical-engineering.json"
+admission_record = "certify-skeptical-engineering"
+tags = ["certification", "evidence", "skeptical", "maturity"]
+
+[[skills]]
+id = "commission-evidence-first-project"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/commission-evidence-first-project/SKILL.md"
+contract = "registry/skill_packages/commission-evidence-first-project.json"
+admission_record = "commission-evidence-first-project"
+tags = ["commissioning", "assumptions", "accessibility", "risk"]
+
+[[skills]]
+id = "discover-environment-safely"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/discover-environment-safely/SKILL.md"
+contract = "registry/skill_packages/discover-environment-safely.json"
+admission_record = "discover-environment-safely"
+tags = ["bootstrap", "discovery", "environment", "tools"]
+
+[[skills]]
+id = "propose-change-intelligence"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/propose-change-intelligence/SKILL.md"
+contract = "registry/skill_packages/propose-change-intelligence.json"
+admission_record = "propose-change-intelligence"
+tags = ["change", "architecture", "drift", "candidate"]
+
+[[skills]]
+id = "quarantine-external-tools"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/quarantine-external-tools/SKILL.md"
+contract = "registry/skill_packages/quarantine-external-tools.json"
+admission_record = "quarantine-external-tools"
+tags = ["supply-chain", "quarantine", "tools", "security"]
+
+[[skills]]
+id = "supervise-contained-execution"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/supervise-contained-execution/SKILL.md"
+contract = "registry/skill_packages/supervise-contained-execution.json"
+admission_record = "supervise-contained-execution"
+tags = ["containment", "authorization", "scope", "safety"]
+
+[[skills]]
+id = "isolate-project-streams"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/isolate-project-streams/SKILL.md"
+contract = "registry/skill_packages/isolate-project-streams.json"
+admission_record = "isolate-project-streams"
+tags = ["project", "session", "lease", "transfer", "isolation"]
+
+[[skills]]
+id = "govern-memory-fabric"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/govern-memory-fabric/SKILL.md"
+contract = "registry/skill_packages/govern-memory-fabric.json"
+admission_record = "govern-memory-fabric"
+tags = ["memory", "provenance", "isolation", "sharding", "repair"]
+
+[[skills]]
+id = "forge-skills-from-knowledge"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/forge-skills-from-knowledge/SKILL.md"
+contract = "registry/skill_packages/forge-skills-from-knowledge.json"
+admission_record = "forge-skills-from-knowledge"
+tags = ["knowledge", "compiler", "skill", "foundry", "research", "calculation", "certification"]
+
+[[skills]]
+id = "analyze-engineering-intelligence"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/analyze-engineering-intelligence/SKILL.md"
+contract = "registry/skill_packages/analyze-engineering-intelligence.json"
+admission_record = "analyze-engineering-intelligence"
+tags = ["architecture", "dependency", "semantic-drift", "engineering-health", "research", "refactoring"]
+
+[[skills]]
+id = "validate-contract-boundaries"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/validate-contract-boundaries/SKILL.md"
+contract = "registry/skill_packages/validate-contract-boundaries.json"
+admission_record = "validate-contract-boundaries"
+tags = ["contract", "api", "schema", "event", "permission", "integration"]
+
+[[skills]]
+id = "evaluate-retrieval-readiness"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/evaluate-retrieval-readiness/SKILL.md"
+contract = "registry/skill_packages/evaluate-retrieval-readiness.json"
+admission_record = "evaluate-retrieval-readiness"
+tags = ["retrieval", "quality", "recall", "ranking", "privacy", "activation"]
+
+[[skills]]
+id = "gate-model-data-lifecycle"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/gate-model-data-lifecycle/SKILL.md"
+contract = "registry/skill_packages/gate-model-data-lifecycle.json"
+admission_record = "gate-model-data-lifecycle"
+tags = ["model", "dataset", "training", "provenance", "privacy", "leakage", "supply-chain"]
+
+[[skills]]
+id = "audit-source-capabilities"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/audit-source-capabilities/SKILL.md"
+contract = "registry/skill_packages/audit-source-capabilities.json"
+admission_record = "audit-source-capabilities"
+tags = ["source", "audit", "coverage", "reconciliation"]
+
+[[skills]]
+id = "orchestrate-security-validation"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/orchestrate-security-validation/SKILL.md"
+contract = "registry/skill_packages/orchestrate-security-validation.json"
+admission_record = "orchestrate-security-validation"
+tags = ["security", "validation", "aggregation", "pipeline"]
+
+[[skills]]
+id = "harden-container-boundaries"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/harden-container-boundaries/SKILL.md"
+contract = "registry/skill_packages/harden-container-boundaries.json"
+admission_record = "harden-container-boundaries"
+tags = ["container", "database", "isolation", "least-privilege"]
+
+[[skills]]
+id = "deploy-isolated-model-worker"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/deploy-isolated-model-worker/SKILL.md"
+contract = "registry/skill_packages/deploy-isolated-model-worker.json"
+admission_record = "deploy-isolated-model-worker"
+tags = ["model", "worker", "gpu", "container", "isolation"]
+
+[[skills]]
+id = "synchronize-derived-architecture"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/synchronize-derived-architecture/SKILL.md"
+contract = "registry/skill_packages/synchronize-derived-architecture.json"
+admission_record = "synchronize-derived-architecture"
+tags = ["architecture", "documents", "graph", "synchronization"]
+
+[[skills]]
+id = "certify-reversible-validation"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/certify-reversible-validation/SKILL.md"
+contract = "registry/skill_packages/certify-reversible-validation.json"
+admission_record = "certify-reversible-validation"
+tags = ["validation", "recovery", "ui", "reversible"]
+
+[[skills]]
+id = "govern-visual-runtime-accessibility"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/govern-visual-runtime-accessibility/SKILL.md"
+contract = "registry/skill_packages/govern-visual-runtime-accessibility.json"
+admission_record = "govern-visual-runtime-accessibility"
+tags = ["visual", "runtime", "accessibility", "webgl"]
+
+[[skills]]
+id = "engineer-hybrid-retrieval"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/engineer-hybrid-retrieval/SKILL.md"
+contract = "registry/skill_packages/engineer-hybrid-retrieval.json"
+admission_record = "engineer-hybrid-retrieval"
+tags = ["retrieval", "ranking", "graph", "governance"]
+
+[[skills]]
+id = "inspect-live-contracts"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/inspect-live-contracts/SKILL.md"
+contract = "registry/skill_packages/inspect-live-contracts.json"
+admission_record = "inspect-live-contracts"
+tags = ["contract", "runtime", "dependency", "introspection"]
+
+[[skills]]
+id = "validate-production-containers"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/validate-production-containers/SKILL.md"
+contract = "registry/skill_packages/validate-production-containers.json"
+admission_record = "validate-production-containers"
+tags = ["container", "production", "validation", "isolation"]
+
+[[skills]]
+id = "dynamic-service-discovery"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/dynamic-service-discovery/SKILL.md"
+contract = "registry/skill_packages/dynamic-service-discovery.json"
+admission_record = "dynamic-service-discovery"
+tags = ["service-discovery", "dns", "identity", "cache", "network"]
+
+[[skills]]
+id = "repair-corrupted-text"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/repair-corrupted-text/SKILL.md"
+contract = "registry/skill_packages/repair-corrupted-text.json"
+admission_record = "repair-corrupted-text"
+tags = ["text", "ocr", "repair", "provenance"]
+
+[[skills]]
+id = "run-evidence-campaigns"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/run-evidence-campaigns/SKILL.md"
+contract = "registry/skill_packages/run-evidence-campaigns.json"
+admission_record = "run-evidence-campaigns"
+tags = ["evidence", "campaign", "validation", "coverage"]
+
+[[skills]]
+id = "triage-cross-surface-failures"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/triage-cross-surface-failures/SKILL.md"
+contract = "registry/skill_packages/triage-cross-surface-failures.json"
+admission_record = "triage-cross-surface-failures"
+tags = ["triage", "failure", "correlation", "diagnosis"]
+
+[[skills]]
+id = "validate-knowledge-relationships"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/validate-knowledge-relationships/SKILL.md"
+contract = "registry/skill_packages/validate-knowledge-relationships.json"
+admission_record = "validate-knowledge-relationships"
+tags = ["knowledge", "graph", "integrity", "provenance"]
+
+[[skills]]
+id = "manage-mcp-lifecycle"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/manage-mcp-lifecycle/SKILL.md"
+contract = "registry/skill_packages/manage-mcp-lifecycle.json"
+admission_record = "manage-mcp-lifecycle"
+tags = ["mcp", "tooling", "lifecycle", "lazy-loading"]
+
+[[skills]]
+id = "enforce-source-import-boundaries"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/enforce-source-import-boundaries/SKILL.md"
+contract = "registry/skill_packages/enforce-source-import-boundaries.json"
+admission_record = "enforce-source-import-boundaries"
+tags = ["imports", "architecture", "boundaries", "contracts"]
+
+[[skills]]
+id = "govern-deployment-safety"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/govern-deployment-safety/SKILL.md"
+contract = "registry/skill_packages/govern-deployment-safety.json"
+admission_record = "govern-deployment-safety"
+tags = ["deployment", "migration", "release", "rollback"]
+
+[[skills]]
+id = "run-resilience-drills"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/run-resilience-drills/SKILL.md"
+contract = "registry/skill_packages/run-resilience-drills.json"
+admission_record = "run-resilience-drills"
+tags = ["resilience", "chaos", "recovery", "fault"]
+
+[[skills]]
+id = "audit-incomplete-implementations"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/audit-incomplete-implementations/SKILL.md"
+contract = "registry/skill_packages/audit-incomplete-implementations.json"
+admission_record = "audit-incomplete-implementations"
+tags = ["completeness", "stub", "fallback", "audit"]
+
+[[skills]]
+id = "inspect-llm-architecture"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/inspect-llm-architecture/SKILL.md"
+contract = "registry/skill_packages/inspect-llm-architecture.json"
+admission_record = "inspect-llm-architecture"
+tags = ["model", "architecture", "memory", "inspection", "local-inference"]
+
+[[skills]]
+id = "plan-local-model-deployment"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/plan-local-model-deployment/SKILL.md"
+contract = "registry/skill_packages/plan-local-model-deployment.json"
+admission_record = "plan-local-model-deployment"
+tags = ["model", "deployment", "feasibility", "resources", "local-inference"]
+
+[[skills]]
+id = "govern-operating-kernel"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/govern-operating-kernel/SKILL.md"
+contract = "registry/skill_packages/govern-operating-kernel.json"
+admission_record = "govern-operating-kernel"
+tags = ["govern", "operating", "kernel", "declared-suite"]
+[[skills]]
+id = "analyze-repository-intelligence"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/analyze-repository-intelligence/SKILL.md"
+contract = "registry/skill_packages/analyze-repository-intelligence.json"
+admission_record = "analyze-repository-intelligence"
+tags = ["analyze", "repository", "intelligence", "declared-suite"]
+[[skills]]
+id = "engineer-verification-lab"
+version = "0.2.0"
+status = "active"
+body = ".agents/skills/engineer-verification-lab/SKILL.md"
+contract = "registry/skill_packages/engineer-verification-lab.json"
+admission_record = "engineer-verification-lab"
+tags = ["engineer", "verification", "lab", "declared-suite"]
+[[skills]]
+id = "operate-memory-retrieval-observability"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/operate-memory-retrieval-observability/SKILL.md"
+contract = "registry/skill_packages/operate-memory-retrieval-observability.json"
+admission_record = "operate-memory-retrieval-observability"
+tags = ["operate", "memory", "retrieval", "observability", "declared-suite"]
+[[skills]]
+id = "secure-agent-supply-chain"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/secure-agent-supply-chain/SKILL.md"
+contract = "registry/skill_packages/secure-agent-supply-chain.json"
+admission_record = "secure-agent-supply-chain"
+tags = ["secure", "agent", "supply", "chain", "declared-suite"]
+[[skills]]
+id = "govern-runtime-protocol-deployment"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/govern-runtime-protocol-deployment/SKILL.md"
+contract = "registry/skill_packages/govern-runtime-protocol-deployment.json"
+admission_record = "govern-runtime-protocol-deployment"
+tags = ["govern", "runtime", "protocol", "deployment", "declared-suite"]
+[[skills]]
+id = "manage-revocable-certification"
+version = "0.1.0"
+status = "active"
+body = ".agents/skills/manage-revocable-certification/SKILL.md"
+contract = "registry/skill_packages/manage-revocable-certification.json"
+admission_record = "manage-revocable-certification"
+tags = ["manage", "revocable", "certification", "declared-suite"]
+
+[[skills]]
+id = "govern-metacognitive-evolution"
+version = "1.0.0"
+status = "active"
+body = ".agents/skills/govern-metacognitive-evolution/SKILL.md"
+contract = "registry/skill_packages/govern-metacognitive-evolution.json"
+admission_record = "govern-metacognitive-evolution"
+tags = ["metacognition", "uncertainty", "introspection", "optimization", "knowledge-dynamics"]
+
+[[skills]]
+id = "orchestrate-capability-scheduling"
+version = "1.0.0"
+status = "active"
+body = ".agents/skills/orchestrate-capability-scheduling/SKILL.md"
+contract = "registry/skill_packages/orchestrate-capability-scheduling.json"
+admission_record = "orchestrate-capability-scheduling"
+tags = ["scheduling", "orchestration", "resources", "budgets", "recovery"]

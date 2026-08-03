@@ -1,0 +1,27 @@
+orchestration_id: project_close
+title: Close, learn from, and archive a completed project
+version: 0.1.0
+status: design-ready
+trigger: explicit-or-policy-scheduled
+project_binding: required unless workspace bootstrap
+skills:
+- project-closure-autopsy
+- project-dormancy-archive
+- agent-retirement-handoff
+- framework-dna
+- shared-capability-promotion
+required_context:
+- workspace_id
+- agent_id
+- session_id
+- intent_id
+- correlation_id
+preflight:
+- constitution_resolved
+- lease_valid
+- scope_resolved
+- side_effect_budget_set
+outcomes:
+- project_archived
+failure_policy: checkpoint-and-fail-closed-on-boundary-or-integrity-violation
+audit: true

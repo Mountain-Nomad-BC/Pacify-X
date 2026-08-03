@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "release": "0.3.0",
+  "created_utc": "2026-08-02T21:37:37.7091398Z",
+  "status": "certified",
+  "scope": "drop-in source tree and isolated installed wheel",
+  "source_validation": {
+    "tests_passed": 251,
+    "schema_subtests_passed": 57,
+    "tests_failed": 0,
+    "composed_audit_checks_passed": 14,
+    "composed_audit_checks_failed": 0,
+    "strict_external_manifests_verified": 15
+  },
+  "control_plane": {
+    "contracts_owned": 43,
+    "contracts_total": 43,
+    "skill_packages": 58,
+    "selectable_skills": 28,
+    "inert_skills": 30,
+    "registered_project_workflows": 17,
+    "generated_graph_artifacts": 6,
+    "active_integrations": 1,
+    "model_weights_bundled": false
+  },
+  "installed_wheel": {
+    "version": "0.3.0",
+    "artifact_custody_index": "evidence/externalized-payload-index.json",
+    "sha256": "c953ff532cf745e2c18692c58a4e9dc377293f4b82ed5dbf793048cf642444f9",
+    "member_count": 536,
+    "forbidden_member_count": 0,
+    "registry_validation": "passed",
+    "contract_validation": "passed",
+    "integration_smoke": "passed",
+    "graph_freshness": "passed",
+    "composed_audit": "passed",
+    "new_project_commissioning": "passed",
+    "existing_project_commissioning": "passed"
+  },
+  "layout": {
+    "placeholder_directories": [],
+    "embedded_quarantine_payloads": [],
+    "raw_planning_roots": [],
+    "raw_knowledge_roots": [],
+    "active_zip_archives": 0,
+    "cleanup_policy": "recoverable external quarantine only"
+  },
+  "entry_prompts": [
+    "bootstrap/prompts/NEW_PROJECT_PROMPT.md",
+    "bootstrap/prompts/EXISTING_PROJECT_PROMPT.md"
+  ],
+  "release_rule": "Any material source, contract, registry, orchestration, skill, packaging, or policy change invalidates this receipt until all gates are rerun."
+}

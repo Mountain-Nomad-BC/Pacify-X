@@ -1,0 +1,49 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:metacognitive:assumption-lineage",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "dependencies": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "string"
+    },
+    "statement": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "candidate",
+        "active",
+        "validated",
+        "invalidated",
+        "expired"
+      ]
+    },
+    "validation_plan": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "statement",
+    "scope",
+    "status",
+    "dependencies",
+    "validation_plan"
+  ],
+  "type": "object"
+}

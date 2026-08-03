@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:source-intake-event",
+  "title": "Append-only source intake event",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "sequence",
+    "event",
+    "created_utc",
+    "source_alias"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "event": {
+      "enum": [
+        "open",
+        "reopen",
+        "snapshot",
+        "close"
+      ]
+    },
+    "created_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_alias": {
+      "type": "string",
+      "minLength": 1
+    },
+    "opened_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approved_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "minimum_stability_seconds": {
+      "type": "number",
+      "minimum": 0
+    },
+    "snapshot": {
+      "$ref": "#/$defs/snapshot"
+    },
+    "accepted_snapshot": {
+      "$ref": "#/$defs/snapshot"
+    }
+  },
+  "$defs": {
+    "snapshot": {
+      "type": "object",
+      "required": [
+        "source_alias",
+        "captured_utc",
+        "file_count",
+        "byte_count",
+        "tree_sha256",
+        "records"
+      ],
+      "properties": {
+        "source_alias": {
+          "type": "string",
+          "minLength": 1
+        },
+        "captured_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "file_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "byte_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tree_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "path",
+              "sha256",
+              "bytes",
+              "mtime_ns"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "bytes": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "mtime_ns": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "event": {
+            "const": "snapshot"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "snapshot"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event": {
+            "const": "close"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "approved_by",
+          "accepted_snapshot"
+        ]
+      }
+    }
+  ],
+  "additionalProperties": true
+}

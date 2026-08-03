@@ -1,0 +1,306 @@
+{
+  "schema_version": "1.0",
+  "workflow_count": 5,
+  "workflows": [
+    {
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "failure_policy": "fail_closed",
+      "inputs": [
+        "task_contracts",
+        "capability_inventory",
+        "resource_snapshot",
+        "policy_snapshot"
+      ],
+      "name": "arbitrate-competing-capabilities",
+      "outputs": [
+        "decision_log",
+        "evidence",
+        "terminal_state"
+      ],
+      "source_sha256": "c825a72f1633a5ba5dba668690dd5b892fd502e97b600194236d9425ac99a926",
+      "steps": [
+        {
+          "id": "resolve_required_capability",
+          "requires": []
+        },
+        {
+          "id": "load_advertisements",
+          "requires": [
+            "resolve_required_capability"
+          ]
+        },
+        {
+          "id": "apply_hard_policy_gates",
+          "requires": [
+            "load_advertisements"
+          ]
+        },
+        {
+          "id": "estimate_utility",
+          "requires": [
+            "apply_hard_policy_gates"
+          ]
+        },
+        {
+          "id": "select_or_ensemble",
+          "requires": [
+            "estimate_utility"
+          ]
+        },
+        {
+          "id": "award_fenced_lease",
+          "requires": [
+            "select_or_ensemble"
+          ]
+        },
+        {
+          "id": "record_decision",
+          "requires": [
+            "award_fenced_lease"
+          ]
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "failure_policy": "fail_closed",
+      "inputs": [
+        "task_contracts",
+        "capability_inventory",
+        "resource_snapshot",
+        "policy_snapshot"
+      ],
+      "name": "certify-scheduler-integration",
+      "outputs": [
+        "decision_log",
+        "evidence",
+        "terminal_state"
+      ],
+      "source_sha256": "1c3d4ba6f188f97c626a1e9ea9e7a31a0462e84b2351fa62ed9d360dd9d325a6",
+      "steps": [
+        {
+          "id": "inventory_existing_system",
+          "requires": []
+        },
+        {
+          "id": "resolve_overlap",
+          "requires": [
+            "inventory_existing_system"
+          ]
+        },
+        {
+          "id": "validate_schemas",
+          "requires": [
+            "resolve_overlap"
+          ]
+        },
+        {
+          "id": "run_unit_tests",
+          "requires": [
+            "validate_schemas"
+          ]
+        },
+        {
+          "id": "run_simulations",
+          "requires": [
+            "run_unit_tests"
+          ]
+        },
+        {
+          "id": "run_chaos_cases",
+          "requires": [
+            "run_simulations"
+          ]
+        },
+        {
+          "id": "verify_evidence",
+          "requires": [
+            "run_chaos_cases"
+          ]
+        },
+        {
+          "id": "issue_certification",
+          "requires": [
+            "verify_evidence"
+          ]
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "failure_policy": "fail_closed",
+      "inputs": [
+        "task_contracts",
+        "capability_inventory",
+        "resource_snapshot",
+        "policy_snapshot"
+      ],
+      "name": "plan-and-execute-workload",
+      "outputs": [
+        "decision_log",
+        "evidence",
+        "terminal_state"
+      ],
+      "source_sha256": "00bb7641324f69393270bbbf3e169bd7f6cab0a8c48b081b98c671a612b19a44",
+      "steps": [
+        {
+          "id": "inventory_tasks",
+          "requires": []
+        },
+        {
+          "id": "validate_contracts",
+          "requires": [
+            "inventory_tasks"
+          ]
+        },
+        {
+          "id": "build_dependency_graph",
+          "requires": [
+            "validate_contracts"
+          ]
+        },
+        {
+          "id": "snapshot_resources",
+          "requires": [
+            "build_dependency_graph"
+          ]
+        },
+        {
+          "id": "score_ready_tasks",
+          "requires": [
+            "snapshot_resources"
+          ]
+        },
+        {
+          "id": "reserve_and_dispatch",
+          "requires": [
+            "score_ready_tasks"
+          ]
+        },
+        {
+          "id": "collect_evidence",
+          "requires": [
+            "reserve_and_dispatch"
+          ]
+        },
+        {
+          "id": "recompute_until_terminal",
+          "requires": [
+            "collect_evidence"
+          ]
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "failure_policy": "fail_closed",
+      "inputs": [
+        "task_contracts",
+        "capability_inventory",
+        "resource_snapshot",
+        "policy_snapshot"
+      ],
+      "name": "recover-failed-execution",
+      "outputs": [
+        "decision_log",
+        "evidence",
+        "terminal_state"
+      ],
+      "source_sha256": "992ca8a9f9254e8fafdbe77bdb1c5ee7c39dfd44958b6c27a067d58709f32923",
+      "steps": [
+        {
+          "id": "classify_failure",
+          "requires": []
+        },
+        {
+          "id": "verify_idempotency",
+          "requires": [
+            "classify_failure"
+          ]
+        },
+        {
+          "id": "apply_bounded_retry",
+          "requires": [
+            "verify_idempotency"
+          ]
+        },
+        {
+          "id": "select_alternative",
+          "requires": [
+            "apply_bounded_retry"
+          ]
+        },
+        {
+          "id": "check_acceptance_preservation",
+          "requires": [
+            "select_alternative"
+          ]
+        },
+        {
+          "id": "escalate_or_safe_stop",
+          "requires": [
+            "check_acceptance_preservation"
+          ]
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "failure_policy": "fail_closed",
+      "inputs": [
+        "task_contracts",
+        "capability_inventory",
+        "resource_snapshot",
+        "policy_snapshot"
+      ],
+      "name": "simulate-schedule-before-run",
+      "outputs": [
+        "decision_log",
+        "evidence",
+        "terminal_state"
+      ],
+      "source_sha256": "7cf5cdae493a4bdba30e71515529791e8043b035cc002ad51cbc76fd553054b3",
+      "steps": [
+        {
+          "id": "load_workload",
+          "requires": []
+        },
+        {
+          "id": "validate_dag",
+          "requires": [
+            "load_workload"
+          ]
+        },
+        {
+          "id": "model_resources",
+          "requires": [
+            "validate_dag"
+          ]
+        },
+        {
+          "id": "simulate_contention",
+          "requires": [
+            "model_resources"
+          ]
+        },
+        {
+          "id": "inspect_deadlines",
+          "requires": [
+            "simulate_contention"
+          ]
+        },
+        {
+          "id": "emit_bottlenecks_and_recommendations",
+          "requires": [
+            "inspect_deadlines"
+          ]
+        }
+      ],
+      "version": "1.0.0"
+    }
+  ]
+}

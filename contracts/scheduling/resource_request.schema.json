@@ -1,0 +1,48 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:scheduling:resource_request",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "cpu_cores": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "disk_gb": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "exclusive_tags": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "gpu_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "model": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "network": {
+      "enum": [
+        "none",
+        "local",
+        "external"
+      ]
+    },
+    "ram_gb": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "vram_gb": {
+      "minimum": 0,
+      "type": "number"
+    }
+  },
+  "title": "ResourceRequest",
+  "type": "object"
+}

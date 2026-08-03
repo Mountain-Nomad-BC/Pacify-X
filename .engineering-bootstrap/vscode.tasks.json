@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Bootstrap: validate installation",
+      "type": "shell",
+      "command": "engineering-bootstrap validate",
+      "problemMatcher": []
+    },
+    {
+      "label": "Bootstrap: check project",
+      "type": "shell",
+      "command": "engineering-bootstrap project-check --project .",
+      "problemMatcher": []
+    },
+    {
+      "label": "Bootstrap: bounded startup",
+      "type": "shell",
+      "command": "engineering-bootstrap startup --project .",
+      "problemMatcher": []
+    },
+    {
+      "label": "Bootstrap: doctor",
+      "type": "shell",
+      "command": "engineering-bootstrap doctor",
+      "problemMatcher": []
+    }
+  ]
+}

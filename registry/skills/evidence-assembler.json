@@ -1,0 +1,30 @@
+{
+  "id": "evidence-assembler",
+  "version": "0.2.0",
+  "owner": "independent-bootstrap-runtime",
+  "status": "active",
+  "provenance": {"type": "clean_room", "basis": ["reviewed evidence patterns", "local requirements"]},
+  "hash": "466e0b9268e445aa95cab2fe964c5cc388200d087536f089a054302bd76ef433",
+  "license": "Apache-2.0",
+  "provides": ["deterministic claim-to-evidence package", "unsupported claim report", "evidence warnings"],
+  "consumes": ["task id", "claims", "evidence records", "claim-evidence links"],
+  "effects": ["read_local"],
+  "permissions": ["read_local"],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {"class": "bounded", "max_tool_calls": 0},
+  "latency": {"class": "local", "max_seconds": 1},
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_evidence_assembler.py",
+    "passed": 8,
+    "failed": 0,
+    "covers": ["typed evidence", "freshness", "strict task ownership", "explicit foreign metadata retention", "contradictions", "determinism", "invalid inputs"]
+  },
+  "approval": {
+    "deployment": "required",
+    "runtime": "not required for pure in-memory assembly"
+  },
+  "evidence": {"suite": "tests/test_evidence_assembler.py", "status": "current"},
+  "rollback": {"strategy": "remove from active capability map"}
+}

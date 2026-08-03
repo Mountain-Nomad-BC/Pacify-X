@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:capability_record",
+  "title": "Capability Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "capability_id",
+    "name",
+    "inputs",
+    "outputs",
+    "implementations"
+  ],
+  "properties": {
+    "capability_id": {
+      "type": "string",
+      "pattern": "^cap_"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "implementations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^skl_"
+      }
+    },
+    "status": {
+      "enum": [
+        "active",
+        "gap",
+        "deprecated"
+      ]
+    }
+  }
+}

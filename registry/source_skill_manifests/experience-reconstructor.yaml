@@ -1,0 +1,64 @@
+id: experience-reconstructor
+version: 0.1.0
+status: draft
+owner: framework owner
+category: memory
+priority: P1
+purpose: Rebuild a current procedure from reusable principles rather than replaying
+  old actions.
+activation:
+  when:
+  - applicability critic finds partial value
+  not_when:
+  - approved deterministic procedure fully covers task
+inputs:
+  required:
+  - applicability analysis
+  - current evidence
+  - approved skills
+  - constraints
+  - postconditions
+outputs:
+  produces: &id001
+  - adapted plan
+  - required evidence
+  - explicit exclusions
+  - verification plan
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- planner
+- procedural memory
+- outcome verifier
+risk:
+  tier: R1
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- adapted-plan success
+- old-action replay
+- evidence completeness
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - memharness
+  - procmem

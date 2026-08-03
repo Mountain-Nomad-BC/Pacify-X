@@ -1,0 +1,35 @@
+{
+  "id": "benchmark-domain-adapter",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/benchmark-domain-adapter/SKILL.md",
+  "body_sha256": "d09d5a78d6505caa56f1c412e38af37228e7c7e1940e79ebe092a638e985db1a",
+  "references": [],
+  "capability_tags": [
+    "adapter",
+    "benchmark",
+    "domain",
+    "research-ops"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_a0f656c0.md",
+        "sha256": "d084f66d3ceeaf09c88f215a170ddcca63f08a44310a81855094602a9d7cced8"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_0be8b3e1.yaml",
+        "sha256": "6b2dc736290b0ad0f02e13e58b99ef792df2d7b8baca24f4d1db81b283e43dcf"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "count": 7,
+  "bindings": [
+    {"path": "orchestration/workflows/capability-assimilation.yaml", "mode": "executable_validator", "entrypoint": "runtime.capability_assimilation:validate_capability_assimilation"},
+    {"path": "orchestration/workflows/capability-scheduling.yaml", "mode": "executable_validator", "entrypoint": "runtime.capability_scheduler:validate_scheduling_layer"},
+    {"path": "orchestration/workflows/control-plane.yaml", "mode": "executable_runtime", "entrypoint": "runtime.orchestrator:Orchestrator.run"},
+    {"path": "orchestration/workflows/declared-suite.yaml", "mode": "executable_validator", "entrypoint": "runtime.declared_suite:validate_declared_suite"},
+    {"path": "orchestration/workflows/local-model-planning.yaml", "mode": "executable_runtime", "entrypoint": "runtime.models:rank_models"},
+    {"path": "orchestration/workflows/metacognitive-evolution.yaml", "mode": "executable_validator", "entrypoint": "runtime.metacognitive_evolution.facade:validate_layer"},
+    {"path": "orchestration/workflows/semantic-capability-query.yaml", "mode": "executable_runtime", "entrypoint": "runtime.query_certification:certify_queries"}
+  ]
+}

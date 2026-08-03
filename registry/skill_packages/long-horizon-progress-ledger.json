@@ -1,0 +1,36 @@
+{
+  "id": "long-horizon-progress-ledger",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/long-horizon-progress-ledger/SKILL.md",
+  "body_sha256": "07b54ae4bcb43633195f75eb8423b0ba3dee57129a9478388ab9c9b15ed6a267",
+  "references": [],
+  "capability_tags": [
+    "evaluation",
+    "horizon",
+    "ledger",
+    "long",
+    "progress"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_b93a03e3.md",
+        "sha256": "952a45497b5c8bb3b9199cf8558a49eeedb04227d6f7fcf3e18c692792e94036"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_0fd7e844.yaml",
+        "sha256": "ea013a56274ac4910981e1488cf250f9d20b82774621382f48a91b1ed839fc8e"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

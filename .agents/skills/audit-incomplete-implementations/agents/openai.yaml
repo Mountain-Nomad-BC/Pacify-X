@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit Incomplete Implementations"
+  short_description: "Find and classify stubs TODOs and fallbacks"
+  default_prompt: "Use $audit-incomplete-implementations to perform this workflow with explicit evidence and safety boundaries."

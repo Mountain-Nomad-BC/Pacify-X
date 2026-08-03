@@ -1,0 +1,8 @@
+{
+  "id": "contained-execution",
+  "version": "1.0.0",
+  "status": "active",
+  "summary": "Actions remain inside approved effects, owned paths, budgets, and human approval boundaries.",
+  "applies_to": ["execution", "installation", "network", "services", "migration", "destructive_testing"],
+  "enforcement": "The executing agent cannot override policy; undeclared effects, scope escape, excess budget, or missing approval block the action."
+}

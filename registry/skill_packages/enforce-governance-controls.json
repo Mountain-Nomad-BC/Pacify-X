@@ -1,0 +1,33 @@
+{
+  "id": "enforce-governance-controls",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/enforce-governance-controls/SKILL.md",
+  "body_sha256": "bd4deaf4923623c8b1411995a824c4073f6be5825a6a1a687aa82121eeb02784",
+  "references": [
+    ".agents/skills/enforce-governance-controls/references/authorization-visibility.md",
+    ".agents/skills/enforce-governance-controls/references/lifecycle-evidence.md",
+    ".agents/skills/enforce-governance-controls/references/containment-cleanup.md"
+  ],
+  "capability_tags": [
+    "security",
+    "governance",
+    "authorization",
+    "evidence"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "clean_room",
+    "basis": [
+      "generalized reviewed control patterns",
+      "local negative tests"
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_skill_library.py",
+  "evidence": "tests/test_skill_library.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 32768
+}

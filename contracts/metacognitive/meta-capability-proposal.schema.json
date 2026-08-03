@@ -1,0 +1,50 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:metacognitive:meta-capability-proposal",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "children": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "id": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "string"
+    },
+    "shared_mechanism": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "candidate",
+        "validated",
+        "rejected",
+        "narrowed"
+      ]
+    },
+    "validation_cases": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "variant_dimensions": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "id",
+    "children",
+    "shared_mechanism",
+    "scope",
+    "validation_cases"
+  ],
+  "type": "object"
+}

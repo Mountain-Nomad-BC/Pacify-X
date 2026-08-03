@@ -1,0 +1,16 @@
+schema_version = "1.0"
+entrypoint = "AI_ASSISTANT.md"
+ai_start = "START_HERE_FOR_AI.md"
+repository_contract = "AGENTS.md"
+startup_config = "bootstrap/startup.toml"
+new_project_prompt = "bootstrap/prompts/NEW_PROJECT_PROMPT.md"
+existing_project_prompt = "bootstrap/prompts/EXISTING_PROJECT_PROMPT.md"
+skill_catalog = "registry/skill_catalog.toml"
+policy_index = "policies/policy_index.json"
+project_management = "PROJECT_MANAGEMENT.md"
+model_agnostic = true
+metadata_only_at_startup = true
+max_selected_capabilities = 3
+cross_project_default = "deny"
+cleanup_mode = "quarantine_only"
+tool_installation = "explicit_approval_only"

@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "mode": "existing",
+  "profile": "default",
+  "stack": "project-owned",
+  "questionnaire": {
+    "stack": "discover_or_select",
+    "deployment": "explicit",
+    "sensitive_data": "policy_gated"
+  },
+  "baselines": {
+    "security": true,
+    "tests": true,
+    "evidence": true,
+    "accessibility": true
+  },
+  "model_routing": "capability_contract",
+  "tool_installation": "approval_required",
+  "startup": {
+    "metadata_only": true,
+    "maximum_selected_skills": 3,
+    "skill_bodies_copied_to_project": false
+  },
+  "project_management": {
+    "entrypoint": "PROJECT_MANAGEMENT.md",
+    "state": ".engineering-bootstrap/project-management/state.json"
+  },
+  "prompts": {
+    "new": ".engineering-bootstrap/prompts/new-project.md",
+    "existing": ".engineering-bootstrap/prompts/existing-project.md"
+  },
+  "deployment_guardrails": [
+    "tests_pass",
+    "security_review",
+    "evidence_current",
+    "rollback_viable",
+    "explicit_approval"
+  ]
+}

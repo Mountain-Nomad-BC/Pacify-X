@@ -1,0 +1,1387 @@
+{
+  "edges": [
+    {
+      "source": "epistemic-state-manager",
+      "target": "claim-evidence-ledger",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "epistemic-state-manager",
+      "target": "unknown-field-guardian",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "uncertainty-calibration-engine",
+      "target": "confidence-calibrator",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "contradiction-resolution-engine",
+      "target": "source-conflict-resolver",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "contradiction-resolution-engine",
+      "target": "memory-applicability-critic",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "assumption-lineage-ledger",
+      "target": "assumption-register",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "assumption-lineage-ledger",
+      "target": "dependency-impact-tracer",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "hypothesis-portfolio-manager",
+      "target": "scenario-audit-generator",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "hypothesis-portfolio-manager",
+      "target": "reasoning-utility-controller",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "causal-reasoning-planner",
+      "target": "analyze-engineering-intelligence",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "evidence-weighting-engine",
+      "target": "evidence-assembler",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "evidence-weighting-engine",
+      "target": "provenance-signature-verifier",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "explanation-provenance-builder",
+      "target": "experience-reconstructor",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "explanation-provenance-builder",
+      "target": "human-handoff-state-transfer",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "semantic-effect-contract-designer",
+      "target": "typed-capability-contract",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "semantic-effect-contract-designer",
+      "target": "execution-contract-enforcer",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "state-mutation-auditor",
+      "target": "validate-engineering-outcomes",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "state-mutation-auditor",
+      "target": "inspect-live-contracts",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "uncertainty-reduction-contract",
+      "target": "outcome-verifier",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "semantic-contract-linter",
+      "target": "validate-contract-boundaries",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "reasoning-trace-recorder",
+      "target": "long-horizon-progress-ledger",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "reasoning-trace-recorder",
+      "target": "provenance-signature-verifier",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "decision-path-reconstructor",
+      "target": "experience-reconstructor",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "decision-path-reconstructor",
+      "target": "skill-coexecution-graph-builder",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "memory-influence-auditor",
+      "target": "memory-applicability-critic",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "memory-influence-auditor",
+      "target": "memory-injection-firewall",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "alternative-path-analyzer",
+      "target": "skill-navigator",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "alternative-path-analyzer",
+      "target": "reasoning-utility-controller",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "introspection-report-builder",
+      "target": "evidence-assembler",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "introspection-report-builder",
+      "target": "human-handoff-state-transfer",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "capability-genome-builder",
+      "target": "capability_graph",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "capability-genome-builder",
+      "target": "semantic-capability-index",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "capability-genome-builder",
+      "target": "skill-coexecution-graph-builder",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "capability-relation-inferencer",
+      "target": "audit-source-capabilities",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "capability-relation-inferencer",
+      "target": "skill-bundle-resolver",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "duplication-supersession-resolver",
+      "target": "canonical-owner",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "duplication-supersession-resolver",
+      "target": "skill-admission-controller",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "duplication-supersession-resolver",
+      "target": "revocable-certification",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "capability-dependency-health",
+      "target": "dependency-impact-tracer",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "capability-dependency-health",
+      "target": "validate-knowledge-relationships",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "capability-gap-mutation-planner",
+      "target": "dynamic-skill-detonator",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "capability-gap-mutation-planner",
+      "target": "forge-skills-from-knowledge",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "agent-cognitive-profile-designer",
+      "target": "benchmark-domain-adapter",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "agent-cognitive-profile-designer",
+      "target": "provider-certification",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "agent-profile-router",
+      "target": "capability-router",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "agent-profile-router",
+      "target": "bounded-workflow-topology-selector",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "agent-risk-budgeter",
+      "target": "permission-diff-auditor",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "agent-risk-budgeter",
+      "target": "supervise-contained-execution",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "agent-failure-mode-calibrator",
+      "target": "trajectory-failure-sentinel",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "agent-failure-mode-calibrator",
+      "target": "audit-ai-runtime-assurance",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "multi-agent-composition-planner",
+      "target": "bounded-workflow-topology-selector",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "multi-agent-composition-planner",
+      "target": "human-handoff-state-transfer",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "closed-loop-system-optimizer",
+      "target": "run-evidence-campaigns",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "closed-loop-system-optimizer",
+      "target": "certify-reversible-validation",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "optimization-experiment-manager",
+      "target": "run-evidence-campaigns",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "optimization-experiment-manager",
+      "target": "provenance-signature-verifier",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "pareto-improvement-selector",
+      "target": "evaluation-budget-allocator",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "regression-rollback-controller",
+      "target": "recovery-coordinator",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "regression-rollback-controller",
+      "target": "tool-loop-circuit-breaker",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "workflow-autotuning-advisor",
+      "target": "propose-change-intelligence",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "workflow-autotuning-advisor",
+      "target": "reasoning-utility-controller",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "concept-cluster-inducer",
+      "target": "cross-paper-mechanism-fuser",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "concept-cluster-inducer",
+      "target": "semantic-capability-index",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "shared-mechanism-extractor",
+      "target": "paper-mechanism-extractor",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "shared-mechanism-extractor",
+      "target": "source_mechanism_mappings",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "meta-capability-proposer",
+      "target": "research-to-operation-translator",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "meta-capability-proposer",
+      "target": "forge-skills-from-knowledge",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "theory-validation-gate",
+      "target": "certify-skeptical-engineering",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "engineering-dna-profiler",
+      "target": "analyze-engineering-intelligence",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "engineering-dna-profiler",
+      "target": "long-horizon-progress-ledger",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "team-pattern-transfer-controller",
+      "target": "cross_project_transfer",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "team-pattern-transfer-controller",
+      "target": "shared_capability_promote",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "architecture-habit-detector",
+      "target": "synchronize-derived-architecture",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "architecture-habit-detector",
+      "target": "propose-change-intelligence",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "anti-pattern-lineage-tracer",
+      "target": "dependency-impact-tracer",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "anti-pattern-lineage-tracer",
+      "target": "behavior-to-code-mapper",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "knowledge-dynamics-modeler",
+      "target": "capability-genome-builder",
+      "target_scope": "metacognitive",
+      "type": "depends_on"
+    },
+    {
+      "source": "knowledge-dynamics-modeler",
+      "target": "long-horizon-progress-ledger",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "trust-decay-controller",
+      "target": "candidate-memory-promoter",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "trust-decay-controller",
+      "target": "revocable-certification",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "capability-entropy-monitor",
+      "target": "audit-source-capabilities",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "capability-entropy-monitor",
+      "target": "validate-knowledge-relationships",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "capability-attractor-detector",
+      "target": "skill-coexecution-graph-builder",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "capability-attractor-detector",
+      "target": "skill-bundle-resolver",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "contradiction-pressure-monitor",
+      "target": "contradiction-resolution-engine",
+      "target_scope": "metacognitive",
+      "type": "depends_on"
+    },
+    {
+      "source": "contradiction-pressure-monitor",
+      "target": "dependency-impact-tracer",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "knowledge-stability-simulator",
+      "target": "read-only-speculation-controller",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "revalidation-scheduler",
+      "target": "evaluation-budget-allocator",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "revalidation-scheduler",
+      "target": "certify-reversible-validation",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "cache-transient-release-cleaner",
+      "target": "final-sanitization-audit",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "cache-transient-release-cleaner",
+      "target": "archive-hygiene",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "integration-conflict-mapper",
+      "target": "audit-source-capabilities",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "integration-conflict-mapper",
+      "target": "duplication-supersession-resolver",
+      "target_scope": "metacognitive",
+      "type": "depends_on"
+    },
+    {
+      "source": "metacognitive-certification",
+      "target": "certify-skeptical-engineering",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "source": "metacognitive-certification",
+      "target": "revocable-certification",
+      "target_scope": "existing_framework",
+      "type": "depends_on"
+    },
+    {
+      "order": 1,
+      "source": "reason-under-uncertainty",
+      "target": "epistemic-state-manager",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "reason-under-uncertainty",
+      "target": "assumption-lineage-ledger",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "reason-under-uncertainty",
+      "target": "hypothesis-portfolio-manager",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "reason-under-uncertainty",
+      "target": "evidence-weighting-engine",
+      "type": "orchestrates"
+    },
+    {
+      "order": 5,
+      "source": "reason-under-uncertainty",
+      "target": "uncertainty-calibration-engine",
+      "type": "orchestrates"
+    },
+    {
+      "order": 6,
+      "source": "reason-under-uncertainty",
+      "target": "explanation-provenance-builder",
+      "type": "orchestrates"
+    },
+    {
+      "order": 1,
+      "source": "resolve-conflicting-evidence-forensically",
+      "target": "contradiction-resolution-engine",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "resolve-conflicting-evidence-forensically",
+      "target": "evidence-weighting-engine",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "resolve-conflicting-evidence-forensically",
+      "target": "causal-reasoning-planner",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "resolve-conflicting-evidence-forensically",
+      "target": "epistemic-state-manager",
+      "type": "orchestrates"
+    },
+    {
+      "order": 5,
+      "source": "resolve-conflicting-evidence-forensically",
+      "target": "explanation-provenance-builder",
+      "type": "orchestrates"
+    },
+    {
+      "order": 1,
+      "source": "manage-hypothesis-diagnostic-portfolio",
+      "target": "hypothesis-portfolio-manager",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "manage-hypothesis-diagnostic-portfolio",
+      "target": "assumption-lineage-ledger",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "manage-hypothesis-diagnostic-portfolio",
+      "target": "causal-reasoning-planner",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "manage-hypothesis-diagnostic-portfolio",
+      "target": "uncertainty-reduction-contract",
+      "type": "orchestrates"
+    },
+    {
+      "order": 5,
+      "source": "manage-hypothesis-diagnostic-portfolio",
+      "target": "epistemic-state-manager",
+      "type": "orchestrates"
+    },
+    {
+      "order": 1,
+      "source": "design-and-verify-semantic-effect-contract",
+      "target": "semantic-effect-contract-designer",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "design-and-verify-semantic-effect-contract",
+      "target": "semantic-contract-linter",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "design-and-verify-semantic-effect-contract",
+      "target": "state-mutation-auditor",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "design-and-verify-semantic-effect-contract",
+      "target": "uncertainty-reduction-contract",
+      "type": "orchestrates"
+    },
+    {
+      "order": 1,
+      "source": "inspect-reasoning-brain-mri",
+      "target": "reasoning-trace-recorder",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "inspect-reasoning-brain-mri",
+      "target": "decision-path-reconstructor",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "inspect-reasoning-brain-mri",
+      "target": "memory-influence-auditor",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "inspect-reasoning-brain-mri",
+      "target": "alternative-path-analyzer",
+      "type": "orchestrates"
+    },
+    {
+      "order": 5,
+      "source": "inspect-reasoning-brain-mri",
+      "target": "introspection-report-builder",
+      "type": "orchestrates"
+    },
+    {
+      "order": 1,
+      "source": "reconstruct-and-repair-failed-decision",
+      "target": "decision-path-reconstructor",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "reconstruct-and-repair-failed-decision",
+      "target": "memory-influence-auditor",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "reconstruct-and-repair-failed-decision",
+      "target": "contradiction-resolution-engine",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "reconstruct-and-repair-failed-decision",
+      "target": "alternative-path-analyzer",
+      "type": "orchestrates"
+    },
+    {
+      "order": 5,
+      "source": "reconstruct-and-repair-failed-decision",
+      "target": "assumption-lineage-ledger",
+      "type": "orchestrates"
+    },
+    {
+      "order": 6,
+      "source": "reconstruct-and-repair-failed-decision",
+      "target": "regression-rollback-controller",
+      "type": "orchestrates"
+    },
+    {
+      "order": 1,
+      "source": "build-and-evolve-capability-genome",
+      "target": "capability-genome-builder",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "build-and-evolve-capability-genome",
+      "target": "capability-relation-inferencer",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "build-and-evolve-capability-genome",
+      "target": "capability-dependency-health",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "build-and-evolve-capability-genome",
+      "target": "duplication-supersession-resolver",
+      "type": "orchestrates"
+    },
+    {
+      "order": 5,
+      "source": "build-and-evolve-capability-genome",
+      "target": "capability-gap-mutation-planner",
+      "type": "orchestrates"
+    },
+    {
+      "order": 1,
+      "source": "route-profiled-multi-agent-team",
+      "target": "agent-cognitive-profile-designer",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "route-profiled-multi-agent-team",
+      "target": "agent-failure-mode-calibrator",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "route-profiled-multi-agent-team",
+      "target": "agent-risk-budgeter",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "route-profiled-multi-agent-team",
+      "target": "agent-profile-router",
+      "type": "orchestrates"
+    },
+    {
+      "order": 5,
+      "source": "route-profiled-multi-agent-team",
+      "target": "multi-agent-composition-planner",
+      "type": "orchestrates"
+    },
+    {
+      "order": 1,
+      "source": "run-closed-loop-optimization-cycle",
+      "target": "workflow-autotuning-advisor",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "run-closed-loop-optimization-cycle",
+      "target": "optimization-experiment-manager",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "run-closed-loop-optimization-cycle",
+      "target": "closed-loop-system-optimizer",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "run-closed-loop-optimization-cycle",
+      "target": "pareto-improvement-selector",
+      "type": "orchestrates"
+    },
+    {
+      "order": 5,
+      "source": "run-closed-loop-optimization-cycle",
+      "target": "regression-rollback-controller",
+      "type": "orchestrates"
+    },
+    {
+      "order": 1,
+      "source": "induce-and-certify-meta-capability",
+      "target": "concept-cluster-inducer",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "induce-and-certify-meta-capability",
+      "target": "shared-mechanism-extractor",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "induce-and-certify-meta-capability",
+      "target": "meta-capability-proposer",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "induce-and-certify-meta-capability",
+      "target": "theory-validation-gate",
+      "type": "orchestrates"
+    },
+    {
+      "order": 5,
+      "source": "induce-and-certify-meta-capability",
+      "target": "capability-genome-builder",
+      "type": "orchestrates"
+    },
+    {
+      "order": 1,
+      "source": "profile-and-transfer-engineering-dna",
+      "target": "engineering-dna-profiler",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "profile-and-transfer-engineering-dna",
+      "target": "architecture-habit-detector",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "profile-and-transfer-engineering-dna",
+      "target": "anti-pattern-lineage-tracer",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "profile-and-transfer-engineering-dna",
+      "target": "team-pattern-transfer-controller",
+      "type": "orchestrates"
+    },
+    {
+      "order": 1,
+      "source": "simulate-knowledge-ecosystem",
+      "target": "knowledge-dynamics-modeler",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "simulate-knowledge-ecosystem",
+      "target": "trust-decay-controller",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "simulate-knowledge-ecosystem",
+      "target": "capability-entropy-monitor",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "simulate-knowledge-ecosystem",
+      "target": "capability-attractor-detector",
+      "type": "orchestrates"
+    },
+    {
+      "order": 5,
+      "source": "simulate-knowledge-ecosystem",
+      "target": "contradiction-pressure-monitor",
+      "type": "orchestrates"
+    },
+    {
+      "order": 6,
+      "source": "simulate-knowledge-ecosystem",
+      "target": "knowledge-stability-simulator",
+      "type": "orchestrates"
+    },
+    {
+      "order": 1,
+      "source": "schedule-risk-based-revalidation",
+      "target": "trust-decay-controller",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "schedule-risk-based-revalidation",
+      "target": "contradiction-pressure-monitor",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "schedule-risk-based-revalidation",
+      "target": "capability-dependency-health",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "schedule-risk-based-revalidation",
+      "target": "revalidation-scheduler",
+      "type": "orchestrates"
+    },
+    {
+      "order": 1,
+      "source": "integrate-metacognitive-pack-safely",
+      "target": "cache-transient-release-cleaner",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "integrate-metacognitive-pack-safely",
+      "target": "integration-conflict-mapper",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "integrate-metacognitive-pack-safely",
+      "target": "duplication-supersession-resolver",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "integrate-metacognitive-pack-safely",
+      "target": "semantic-contract-linter",
+      "type": "orchestrates"
+    },
+    {
+      "order": 5,
+      "source": "integrate-metacognitive-pack-safely",
+      "target": "metacognitive-certification",
+      "type": "orchestrates"
+    },
+    {
+      "order": 1,
+      "source": "certify-metacognitive-evolution-layer",
+      "target": "semantic-contract-linter",
+      "type": "orchestrates"
+    },
+    {
+      "order": 2,
+      "source": "certify-metacognitive-evolution-layer",
+      "target": "state-mutation-auditor",
+      "type": "orchestrates"
+    },
+    {
+      "order": 3,
+      "source": "certify-metacognitive-evolution-layer",
+      "target": "capability-dependency-health",
+      "type": "orchestrates"
+    },
+    {
+      "order": 4,
+      "source": "certify-metacognitive-evolution-layer",
+      "target": "metacognitive-certification",
+      "type": "orchestrates"
+    },
+    {
+      "order": 5,
+      "source": "certify-metacognitive-evolution-layer",
+      "target": "cache-transient-release-cleaner",
+      "type": "orchestrates"
+    }
+  ],
+  "nodes": [
+    {
+      "domain": "reasoning-kernel",
+      "id": "epistemic-state-manager",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "reasoning-kernel",
+      "id": "uncertainty-calibration-engine",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "reasoning-kernel",
+      "id": "contradiction-resolution-engine",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "reasoning-kernel",
+      "id": "assumption-lineage-ledger",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "reasoning-kernel",
+      "id": "hypothesis-portfolio-manager",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "reasoning-kernel",
+      "id": "causal-reasoning-planner",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "reasoning-kernel",
+      "id": "evidence-weighting-engine",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "reasoning-kernel",
+      "id": "explanation-provenance-builder",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "semantic-contracts",
+      "id": "semantic-effect-contract-designer",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "semantic-contracts",
+      "id": "state-mutation-auditor",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "semantic-contracts",
+      "id": "uncertainty-reduction-contract",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "semantic-contracts",
+      "id": "semantic-contract-linter",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "introspection",
+      "id": "reasoning-trace-recorder",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "introspection",
+      "id": "decision-path-reconstructor",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "introspection",
+      "id": "memory-influence-auditor",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "introspection",
+      "id": "alternative-path-analyzer",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "introspection",
+      "id": "introspection-report-builder",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "capability-genome",
+      "id": "capability-genome-builder",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "capability-genome",
+      "id": "capability-relation-inferencer",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "capability-genome",
+      "id": "duplication-supersession-resolver",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "capability-genome",
+      "id": "capability-dependency-health",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "capability-genome",
+      "id": "capability-gap-mutation-planner",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "agent-genetics",
+      "id": "agent-cognitive-profile-designer",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "agent-genetics",
+      "id": "agent-profile-router",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "agent-genetics",
+      "id": "agent-risk-budgeter",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "agent-genetics",
+      "id": "agent-failure-mode-calibrator",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "agent-genetics",
+      "id": "multi-agent-composition-planner",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "optimization",
+      "id": "closed-loop-system-optimizer",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "optimization",
+      "id": "optimization-experiment-manager",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "optimization",
+      "id": "pareto-improvement-selector",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "optimization",
+      "id": "regression-rollback-controller",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "optimization",
+      "id": "workflow-autotuning-advisor",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "theory-induction",
+      "id": "concept-cluster-inducer",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "theory-induction",
+      "id": "shared-mechanism-extractor",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "theory-induction",
+      "id": "meta-capability-proposer",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "theory-induction",
+      "id": "theory-validation-gate",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "engineering-dna",
+      "id": "engineering-dna-profiler",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "engineering-dna",
+      "id": "team-pattern-transfer-controller",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "engineering-dna",
+      "id": "architecture-habit-detector",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "engineering-dna",
+      "id": "anti-pattern-lineage-tracer",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "knowledge-physics",
+      "id": "knowledge-dynamics-modeler",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "knowledge-physics",
+      "id": "trust-decay-controller",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "knowledge-physics",
+      "id": "capability-entropy-monitor",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "knowledge-physics",
+      "id": "capability-attractor-detector",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "knowledge-physics",
+      "id": "contradiction-pressure-monitor",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "knowledge-physics",
+      "id": "knowledge-stability-simulator",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "knowledge-physics",
+      "id": "revalidation-scheduler",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "release-hygiene",
+      "id": "cache-transient-release-cleaner",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "release-hygiene",
+      "id": "integration-conflict-mapper",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "domain": "release-hygiene",
+      "id": "metacognitive-certification",
+      "kind": "metacognitive-capability",
+      "owner": "govern-metacognitive-evolution"
+    },
+    {
+      "id": "reason-under-uncertainty",
+      "kind": "orchestration"
+    },
+    {
+      "id": "resolve-conflicting-evidence-forensically",
+      "kind": "orchestration"
+    },
+    {
+      "id": "manage-hypothesis-diagnostic-portfolio",
+      "kind": "orchestration"
+    },
+    {
+      "id": "design-and-verify-semantic-effect-contract",
+      "kind": "orchestration"
+    },
+    {
+      "id": "inspect-reasoning-brain-mri",
+      "kind": "orchestration"
+    },
+    {
+      "id": "reconstruct-and-repair-failed-decision",
+      "kind": "orchestration"
+    },
+    {
+      "id": "build-and-evolve-capability-genome",
+      "kind": "orchestration"
+    },
+    {
+      "id": "route-profiled-multi-agent-team",
+      "kind": "orchestration"
+    },
+    {
+      "id": "run-closed-loop-optimization-cycle",
+      "kind": "orchestration"
+    },
+    {
+      "id": "induce-and-certify-meta-capability",
+      "kind": "orchestration"
+    },
+    {
+      "id": "profile-and-transfer-engineering-dna",
+      "kind": "orchestration"
+    },
+    {
+      "id": "simulate-knowledge-ecosystem",
+      "kind": "orchestration"
+    },
+    {
+      "id": "schedule-risk-based-revalidation",
+      "kind": "orchestration"
+    },
+    {
+      "id": "integrate-metacognitive-pack-safely",
+      "kind": "orchestration"
+    },
+    {
+      "id": "certify-metacognitive-evolution-layer",
+      "kind": "orchestration"
+    }
+  ],
+  "schema_version": "1.0"
+}

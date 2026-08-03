@@ -1,0 +1,50 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:ai-bom",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "components": {
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      },
+      "type": "array"
+    },
+    "datasets": {
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      },
+      "type": "array"
+    },
+    "id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "models": {
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      },
+      "type": "array"
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "id",
+    "components",
+    "models",
+    "datasets",
+    "provenance"
+  ],
+  "title": "Ai Bom",
+  "type": "object"
+}

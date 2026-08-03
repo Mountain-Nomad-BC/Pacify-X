@@ -1,0 +1,227 @@
+{
+  "checkpoint": {
+    "active_skills": [],
+    "approval_expiry": null,
+    "approved_effects": [],
+    "budgets": {
+      "maximum_heavy_lanes": 1,
+      "maximum_selected_skills": 3
+    },
+    "changed_file_sha256": {},
+    "degraded_components": [],
+    "failures": [],
+    "next_safe_action": "deploy release 0.6.2; any material product mutation revokes readiness until recertified",
+    "open_circuits": [],
+    "repository": {
+      "branch": null,
+      "commit": null,
+      "root": ".",
+      "working_tree_sha256": null
+    },
+    "retries": [],
+    "revision": 27,
+    "runtime_version": "0.6.2",
+    "tool_versions": {},
+    "validation": {
+      "tests": "release_profile_passed",
+      "verifier": "release_0.6.2"
+    },
+    "versions": {
+      "assumptions": 12,
+      "plan": 18,
+      "project_management_schema": "1.0"
+    }
+  },
+  "commissioning_outputs": [
+    "PROJECT_BLUEPRINT.md",
+    "ARCHITECTURE_GOVERNANCE_AND_RISK.md",
+    "EXECUTION_PLAN_PUNCH_CARDS_AND_ACCEPTANCE.md"
+  ],
+  "controls": {
+    "checkpoint_after_material_steps": true,
+    "explicit_approval_for_writes": true,
+    "maximum_selected_skills": 3,
+    "metadata_only_startup": true,
+    "proposal_before_mutation": true,
+    "quarantine_only_cleanup": true
+  },
+  "evidence": {
+    "commissioning_receipt": ".engineering-bootstrap/commissioning-receipt.json",
+    "existing_project_inventory": ".engineering-bootstrap/existing-project-inventory.json",
+    "historical_validation_receipts": [
+      "evidence/release-certification-0.6.1.json"
+    ],
+    "validation_receipt": "evidence/release-certification-0.6.2.json"
+  },
+  "governance": {
+    "assumptions": [],
+    "decisions": [
+      {
+        "decision": "retain skill bodies in the installed framework and hydrate explicitly",
+        "id": "D-001",
+        "status": "accepted"
+      },
+      {
+        "decision": "preserve differing existing integration owners and block only bootstrap-owned drift",
+        "id": "D-002",
+        "status": "accepted"
+      },
+      {
+        "decision": "cleanup uses recoverable quarantine only",
+        "id": "D-003",
+        "status": "accepted"
+      }
+    ],
+    "pending_approvals": [],
+    "risks": [
+      {
+        "id": "R-REL-001",
+        "mitigation": "rerun all gates after final mutation",
+        "risk": "release evidence can become stale after implementation changes"
+      }
+    ]
+  },
+  "knowledge": {
+    "assumptions": [],
+    "contradictions": [
+      "Release 0.6.1 claimed deployment readiness, but the live test_declared_suite_support.py suite fails because the formula registry envelope emits count instead of formula_count."
+    ],
+    "facts": [
+      "The repository exposes 80 catalog metadata records and keeps startup metadata-only with a maximum selected set of three.",
+      "Startup reports zero hydrated skill bodies.",
+      "A clean installed wheel completed both commissioning modes.",
+      "The completed source intake is preserved in the parent temporary quarantine.",
+      "The 0.3.0 deployment certificate is historical and is not authoritative after REL-004 reopened the release.",
+      "The 0.4.0 source suite previously passed 258 tests with zero failures.",
+      "The isolated 0.4.0 wheel previously passed registry, contract, integration, graph, audit, and both commissioning-mode gates.",
+      "REL-005 opened a mutation-tracked 16,743-file temporary-corpus intake before source-auditor changes.",
+      "REL-005 closed on two identical 16,890-file snapshots after accounting for recoverably quarantined generated test artifacts.",
+      "The current corpus produced 2,650 mechanism records with zero unresolved dispositions, and its release suite passed 266 tests.",
+      "The final-review intake closed on two matching 539-file snapshots after accounting for every physical file and both nonexecuted archives.",
+      "The final-review intake produced 374 typed candidates: 111 merges, one CLI wrapper, two rejections, and 260 absent-body outcomes mapped to current canonical owners.",
+      "REL-007 closed with 375 of 375 cards independently verified and a 293-test full framework suite.",
+      "The REL-008 intake accounts for 2,055 files and supplies exact size-and-hash matches for all 1,233 previously absent declared bodies.",
+      "All eight complete-suite pack validators and all available pack smoke tests pass; the metacognitive pack passes 20 unit tests and 22 smoke checks in an isolated validation copy.",
+      "REL-008 closed with all 2,195 expanded-intake files dispositioned, 2,192 source files hash-reconciled in quarantine, three generated cache files separately quarantined, and 300 framework tests passing.",
+      "REL-009 certified release 0.6.1 with 327 source tests, all admitted exact tools directly executed, and all Python surfaces owned.",
+      "REL-010 reopened certification after reproducing 1 failed and 4 passed declared-suite support tests against pre-change digest 55af1b3388e8c439cecf9244a19378ae80f0b9f4fc78123ad068619f16bb6c70.",
+      "REL-010 now governs 320 registry, YAML, and orchestration artifacts and passes all 21 mature-framework structural audit items across 15 executable categories; final full-profile and atomic publication remain pending."
+    ],
+    "unknowns": []
+  },
+  "lifecycle": {
+    "next_action": "deploy release 0.6.2; any material product mutation revokes readiness until recertified",
+    "phase": "deployment-certified",
+    "status": "complete"
+  },
+  "project": {
+    "mode": "existing",
+    "name": "Pacify-X",
+    "root": "."
+  },
+  "schema_version": "1.0",
+  "work": {
+    "active_punch_card": null,
+    "backlog": [
+      {
+        "id": "REL-008-LAST-ROUND",
+        "outcome": "The last-round intake supplies exact bodies for all 1,233 previously absent declarations plus 50 metacognitive skills, 15 orchestrations, 79 formulas, and bounded executable behavior requiring disposition and integration.",
+        "status": "complete"
+      },
+      {
+        "id": "REL-009-PROJECT-WIDE-RECERTIFICATION",
+        "outcome": "Every shipped operational Python tool executes directly, every Python source is mapped to validation evidence, the live post-mutation suite is green, and a superseding certificate is issued.",
+        "status": "revoked"
+      },
+      {
+        "id": "REL-010-CORRECTIVE-ATOMIC-RECERTIFICATION",
+        "outcome": "All audited repair cards are dispositioned and a digest-bound atomic finalizer certifies one unchanged clean product tree.",
+        "status": "complete"
+      }
+    ],
+    "milestones": [
+      {
+        "id": "REL-001-A",
+        "outcome": "project-management and commissioning artifacts implemented",
+        "status": "complete"
+      },
+      {
+        "id": "REL-001-B",
+        "outcome": "new and existing prompt paths implemented",
+        "status": "complete"
+      },
+      {
+        "id": "REL-001-C",
+        "outcome": "clean installed-wheel two-mode test passed",
+        "status": "complete"
+      },
+      {
+        "id": "REL-001-D",
+        "outcome": "single-project certification only",
+        "status": "superseded"
+      },
+      {
+        "id": "REL-002",
+        "outcome": "multi-project functions passed, but later structural audit invalidated deployment certification",
+        "status": "superseded"
+      },
+      {
+        "id": "REL-003",
+        "outcome": "structural certification passed, but later source-capability evidence reopened completeness",
+        "status": "superseded"
+      },
+      {
+        "id": "REL-004",
+        "outcome": "deep source-capability assimilation completed, but the temporary-corpus completeness audit reopened certification",
+        "status": "superseded"
+      },
+      {
+        "id": "REL-005",
+        "outcome": "current temporary corpus fully reconciled, validated, closed, and recoverably quarantined",
+        "status": "complete"
+      },
+      {
+        "id": "REL-006",
+        "outcome": "0.5.0 certification revoked because owner routing was treated as implementation evidence",
+        "status": "revoked"
+      },
+      {
+        "id": "REL-007",
+        "outcome": "reconstructed, implemented, wired, and independently verified all absent-body declared outcomes",
+        "status": "complete"
+      },
+      {
+        "id": "REL-008",
+        "outcome": "all three last-round packs assimilated, validated, closed, quarantined, and certified as release 0.6.0",
+        "status": "revoked"
+      },
+      {
+        "id": "REL-009",
+        "outcome": "project-wide exact-tool, Python-surface, behavioral, source, and installed-wheel recertification passed",
+        "status": "revoked"
+      },
+      {
+        "id": "REL-010",
+        "outcome": "correct registry drift, bind evidence to exact product and harness digests, and recertify atomically from a clean artifact",
+        "status": "complete"
+      }
+    ],
+    "objective": "Deliver a model-agnostic drop-in bootstrap for governed new-project and existing-project engineering loops with durable management, lazy skills, bounded orchestration, and evidence-backed completion.",
+    "scope": {
+      "excluded": [
+        "automatic provider or model selection",
+        "credential ownership",
+        "unapproved external deployment",
+        "certification of future user applications"
+      ],
+      "included": [
+        "new-project commissioning",
+        "existing-project collision-safe adoption",
+        "project management and compact dossier",
+        "metadata-only startup and explicit skill hydration",
+        "bounded orchestration, evidence, recovery, and quarantine",
+        "source and installed-wheel certification"
+      ]
+    }
+  }
+}

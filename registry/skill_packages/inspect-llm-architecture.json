@@ -1,0 +1,37 @@
+{
+  "id": "inspect-llm-architecture",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/inspect-llm-architecture/SKILL.md",
+  "body_sha256": "594294286c2e9f5031e41c87fafdc97a69445e9731f3368a62f03ab996ea859b",
+  "references": [
+    ".agents/skills/inspect-llm-architecture/references/architecture-inspection-contract.md"
+  ],
+  "resources": [
+    ".agents/skills/inspect-llm-architecture/scripts/inspect_llm_architecture.py"
+  ],
+  "capability_tags": [
+    "model",
+    "architecture",
+    "memory",
+    "inspection",
+    "local-inference"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "clean_room_from_behavior_contracts",
+    "basis": [
+      {
+        "receipt": "final-intake-assimilation",
+        "evidence": "evidence/final-intake-assimilation.json"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_local_model_capabilities.py",
+  "evidence": "evidence/final-intake-assimilation.json",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

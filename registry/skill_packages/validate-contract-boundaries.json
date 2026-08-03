@@ -1,0 +1,47 @@
+{
+  "id": "validate-contract-boundaries",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/validate-contract-boundaries/SKILL.md",
+  "body_sha256": "12e41b4b444f396dd69d0f3a7c3a05b09b63ea01bbc49e79a9f2492cf1ac505c",
+  "references": [
+    ".agents/skills/validate-contract-boundaries/references/boundary-contract.md"
+  ],
+  "capability_tags": [
+    "contract",
+    "api",
+    "schema",
+    "event",
+    "permission",
+    "integration"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "clean_room_from_behavior_contracts",
+    "input_tree_sha256": "e312f3b7203ec6cd034d8eca6324ceba5df7f630dfbb6931af31b4359f670342",
+    "basis": [
+      {
+        "source_alias": "source-12",
+        "sha256": "f876f7d512567d1310d1bc2b55c124c124547d852d1164de9fabe2e1dacb61c8",
+        "behavior": "provider-consumer contract validation"
+      },
+      {
+        "source_alias": "source-12",
+        "sha256": "04f8871566cca7c60f556027318fdb6967cfbc7301e6780eb64e9a9b680f3b97",
+        "behavior": "canonical schema ownership"
+      },
+      {
+        "source_alias": "source-20",
+        "sha256": "f1e32bbf2a2b49a19596b0d4171b4cf33a41adf0f1ce99f902c7d14a8dbf804b",
+        "behavior": "negative integration contract tests"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_foundation_assurance.py",
+  "evidence": "tests/test_foundation_assurance.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

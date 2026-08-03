@@ -1,0 +1,46 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:incident",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "evidence": {
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      },
+      "type": "array"
+    },
+    "id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "severity": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "status": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "timeline": {
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "id",
+    "severity",
+    "status",
+    "timeline",
+    "evidence"
+  ],
+  "title": "Incident",
+  "type": "object"
+}

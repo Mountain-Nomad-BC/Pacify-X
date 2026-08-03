@@ -1,0 +1,133 @@
+{
+  "formula_count": 18,
+  "formulas": [
+    {
+      "id": "weighted-source-quality",
+      "name": "Weighted source quality",
+      "pack": "01",
+      "path": "knowledge/formulas/weighted-source-quality.json",
+      "source_sha256": "1fd555ecf55c4dfacdaa6c5ee55eb05fe28f4298a38171d4cde3b1412399e03c"
+    },
+    {
+      "id": "confidence-combination-independent",
+      "name": "Independent support combination",
+      "pack": "01",
+      "path": "knowledge/formulas/confidence-combination-independent.json",
+      "source_sha256": "1fd555ecf55c4dfacdaa6c5ee55eb05fe28f4298a38171d4cde3b1412399e03c"
+    },
+    {
+      "id": "expected-plan-utility",
+      "name": "Expected execution-plan utility",
+      "pack": "01",
+      "path": "knowledge/formulas/expected-plan-utility.json",
+      "source_sha256": "1fd555ecf55c4dfacdaa6c5ee55eb05fe28f4298a38171d4cde3b1412399e03c"
+    },
+    {
+      "id": "jaccard-change-overlap",
+      "name": "Jaccard overlap",
+      "pack": "02",
+      "path": "knowledge/formulas/jaccard-change-overlap.json",
+      "source_sha256": "b14bbb9c3d074c67ca12ad4f968a3020e39add376ff7b46a8db14f049945ce42"
+    },
+    {
+      "id": "impact-risk-score",
+      "name": "Change impact risk",
+      "pack": "02",
+      "path": "knowledge/formulas/impact-risk-score.json",
+      "source_sha256": "b14bbb9c3d074c67ca12ad4f968a3020e39add376ff7b46a8db14f049945ce42"
+    },
+    {
+      "id": "mutation-score",
+      "name": "Mutation score",
+      "pack": "03",
+      "path": "knowledge/formulas/mutation-score.json",
+      "source_sha256": "63d20c2918792a94c06c5711bdd623a15dda2e9a40ea6e88707161cadc95b480"
+    },
+    {
+      "id": "precision-recall-f1",
+      "name": "F1 score",
+      "pack": "03",
+      "path": "knowledge/formulas/precision-recall-f1.json",
+      "source_sha256": "63d20c2918792a94c06c5711bdd623a15dda2e9a40ea6e88707161cadc95b480"
+    },
+    {
+      "id": "relative-performance-change",
+      "name": "Relative performance change",
+      "pack": "03",
+      "path": "knowledge/formulas/relative-performance-change.json",
+      "source_sha256": "63d20c2918792a94c06c5711bdd623a15dda2e9a40ea6e88707161cadc95b480"
+    },
+    {
+      "id": "reciprocal-rank-fusion",
+      "name": "Reciprocal rank fusion",
+      "pack": "04",
+      "path": "knowledge/formulas/reciprocal-rank-fusion.json",
+      "source_sha256": "7ab00139ba14ebb3cdc5ca9e077dbee35d64c74d01ffbb0e2d135869624dcf9c"
+    },
+    {
+      "id": "context-utility-density",
+      "name": "Context utility density",
+      "pack": "04",
+      "path": "knowledge/formulas/context-utility-density.json",
+      "source_sha256": "7ab00139ba14ebb3cdc5ca9e077dbee35d64c74d01ffbb0e2d135869624dcf9c"
+    },
+    {
+      "id": "population-stability-index",
+      "name": "Population stability index",
+      "pack": "04",
+      "path": "knowledge/formulas/population-stability-index.json",
+      "source_sha256": "7ab00139ba14ebb3cdc5ca9e077dbee35d64c74d01ffbb0e2d135869624dcf9c"
+    },
+    {
+      "id": "risk-priority",
+      "name": "Risk priority",
+      "pack": "05",
+      "path": "knowledge/formulas/risk-priority.json",
+      "source_sha256": "cbbc81f4cb1b86ce6b6b3dc8bfe7737aac195f17b53ff4697dd37d90d688479a"
+    },
+    {
+      "id": "reproducibility-rate",
+      "name": "Reproducibility rate",
+      "pack": "05",
+      "path": "knowledge/formulas/reproducibility-rate.json",
+      "source_sha256": "cbbc81f4cb1b86ce6b6b3dc8bfe7737aac195f17b53ff4697dd37d90d688479a"
+    },
+    {
+      "id": "kv-cache-bytes",
+      "name": "KV-cache memory",
+      "pack": "06",
+      "path": "knowledge/formulas/kv-cache-bytes.json",
+      "source_sha256": "d324a09b80c290166a9af3c22146ce146d0ebf6e5f194896efa8c26c3459b4bd"
+    },
+    {
+      "id": "little-law-serving",
+      "name": "Little law",
+      "pack": "06",
+      "path": "knowledge/formulas/little-law-serving.json",
+      "source_sha256": "d324a09b80c290166a9af3c22146ce146d0ebf6e5f194896efa8c26c3459b4bd"
+    },
+    {
+      "id": "canary-quality-delta",
+      "name": "Canary quality delta",
+      "pack": "06",
+      "path": "knowledge/formulas/canary-quality-delta.json",
+      "source_sha256": "d324a09b80c290166a9af3c22146ce146d0ebf6e5f194896efa8c26c3459b4bd"
+    },
+    {
+      "id": "certification-coverage",
+      "name": "Certification evidence coverage",
+      "pack": "07",
+      "path": "knowledge/formulas/certification-coverage.json",
+      "source_sha256": "707cf4bd01c65853a6190650e2e5d973f1626e482771a37e49c935ac7886db63"
+    },
+    {
+      "id": "semantic-overlap-jaccard",
+      "name": "Semantic token overlap",
+      "pack": "07",
+      "path": "knowledge/formulas/semantic-overlap-jaccard.json",
+      "source_sha256": "707cf4bd01c65853a6190650e2e5d973f1626e482771a37e49c935ac7886db63"
+    }
+  ],
+  "schema_version": "2.0",
+  "source": "REL-008 authoritative suite"
+}

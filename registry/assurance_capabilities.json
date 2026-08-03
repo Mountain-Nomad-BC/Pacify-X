@@ -1,0 +1,183 @@
+{
+  "schema_version": "1.0",
+  "count": 7,
+  "capabilities": [
+    {
+      "id": "audit-ai-runtime-assurance",
+      "status": "active",
+      "handler": "runtime.assurance_controls.run_assurance_control",
+      "body": ".agents/skills/audit-ai-runtime-assurance/SKILL.md",
+      "package": "registry/skill_packages/audit-ai-runtime-assurance.json",
+      "source_lineage": [
+        {
+          "path": "skills_bootstrap_stuff/EKG_CORRECTION_SKILL_ABD_BUILDER.txt",
+          "sha256": "2445cda06e857812779fefcfba6ff065c0d09f542cd520efdb8dffa5eec11feb"
+        },
+        {
+          "path": "skills_bootstrap_stuff/The actual lifecycle I see is.txt",
+          "sha256": "efee5005724cc8e7db378730bfbd644a0c08e01c4990ace87fe3f6d5ce2def8f"
+        }
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "evidence": [
+        "tests/test_assurance_controls.py"
+      ]
+    },
+    {
+      "id": "certify-skeptical-engineering",
+      "status": "active",
+      "handler": "runtime.assurance_controls.run_assurance_control",
+      "body": ".agents/skills/certify-skeptical-engineering/SKILL.md",
+      "package": "registry/skill_packages/certify-skeptical-engineering.json",
+      "source_lineage": [
+        {
+          "path": "skills_bootstrap_stuff/# Engineering Philosophy Skeptical.txt",
+          "sha256": "5ad0e37eec252fc54bb32e64d8168ef7b5872fa4263099270e847b021ce69253"
+        },
+        {
+          "path": "skills_bootstrap_stuff/skeptial engineering.txt",
+          "sha256": "d13ff90cf0e2747accf54b65f78e97ab38a3e308c79a819c9e011f2a6c77be6d"
+        },
+        {
+          "path": "skills_bootstrap_stuff/The actual lifecycle I see is.txt",
+          "sha256": "efee5005724cc8e7db378730bfbd644a0c08e01c4990ace87fe3f6d5ce2def8f"
+        }
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "evidence": [
+        "tests/test_assurance_controls.py"
+      ]
+    },
+    {
+      "id": "commission-evidence-first-project",
+      "status": "active",
+      "handler": "runtime.assurance_controls.run_assurance_control",
+      "body": ".agents/skills/commission-evidence-first-project/SKILL.md",
+      "package": "registry/skill_packages/commission-evidence-first-project.json",
+      "source_lineage": [
+        {
+          "path": "skills_bootstrap_stuff/First scan for all tools and deps -.txt",
+          "sha256": "92d68096a86f48155ab25e6aa24061a55e43debe1d4816f4b977f23760a972b7"
+        },
+        {
+          "path": "skills_bootstrap_stuff/intakept0.txt",
+          "sha256": "aa7d56fe0782b571a61798f3f60c0c292d8db391db0b6631830846eb84d10322"
+        },
+        {
+          "path": "skills_bootstrap_stuff/skeptial engineering.txt",
+          "sha256": "d13ff90cf0e2747accf54b65f78e97ab38a3e308c79a819c9e011f2a6c77be6d"
+        },
+        {
+          "path": "skills_bootstrap_stuff/The actual lifecycle I see is.txt",
+          "sha256": "efee5005724cc8e7db378730bfbd644a0c08e01c4990ace87fe3f6d5ce2def8f"
+        }
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "evidence": [
+        "tests/test_assurance_controls.py"
+      ]
+    },
+    {
+      "id": "discover-environment-safely",
+      "status": "active",
+      "handler": "runtime.assurance_controls.run_assurance_control",
+      "body": ".agents/skills/discover-environment-safely/SKILL.md",
+      "package": "registry/skill_packages/discover-environment-safely.json",
+      "source_lineage": [
+        {
+          "path": "skills_bootstrap_stuff/First scan for all tools and deps -.txt",
+          "sha256": "92d68096a86f48155ab25e6aa24061a55e43debe1d4816f4b977f23760a972b7"
+        },
+        {
+          "path": "skills_bootstrap_stuff/The actual lifecycle I see is.txt",
+          "sha256": "efee5005724cc8e7db378730bfbd644a0c08e01c4990ace87fe3f6d5ce2def8f"
+        }
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "evidence": [
+        "tests/test_assurance_controls.py"
+      ]
+    },
+    {
+      "id": "propose-change-intelligence",
+      "status": "active",
+      "handler": "runtime.assurance_controls.run_assurance_control",
+      "body": ".agents/skills/propose-change-intelligence/SKILL.md",
+      "package": "registry/skill_packages/propose-change-intelligence.json",
+      "source_lineage": [
+        {
+          "path": "skills_bootstrap_stuff/suggested skills to build.txt",
+          "sha256": "80e547c543fd1a815eccbf6f31fd7a7934b2d18e93601597c020c81b0d13ee88"
+        },
+        {
+          "path": "skills_bootstrap_stuff/The actual lifecycle I see is.txt",
+          "sha256": "efee5005724cc8e7db378730bfbd644a0c08e01c4990ace87fe3f6d5ce2def8f"
+        }
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "evidence": [
+        "tests/test_assurance_controls.py"
+      ]
+    },
+    {
+      "id": "quarantine-external-tools",
+      "status": "active",
+      "handler": "runtime.assurance_controls.run_assurance_control",
+      "body": ".agents/skills/quarantine-external-tools/SKILL.md",
+      "package": "registry/skill_packages/quarantine-external-tools.json",
+      "source_lineage": [
+        {
+          "path": "skills_bootstrap_stuff/First scan for all tools and deps -.txt",
+          "sha256": "92d68096a86f48155ab25e6aa24061a55e43debe1d4816f4b977f23760a972b7"
+        },
+        {
+          "path": "skills_bootstrap_stuff/For package and tooling scan.txt",
+          "sha256": "75bb6880cb3626e871afdac62b57c49ba9543a359ea4d00a1644d63bace8e734"
+        },
+        {
+          "path": "skills_bootstrap_stuff/The actual lifecycle I see is.txt",
+          "sha256": "efee5005724cc8e7db378730bfbd644a0c08e01c4990ace87fe3f6d5ce2def8f"
+        }
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "evidence": [
+        "tests/test_assurance_controls.py"
+      ]
+    },
+    {
+      "id": "supervise-contained-execution",
+      "status": "active",
+      "handler": "runtime.assurance_controls.run_assurance_control",
+      "body": ".agents/skills/supervise-contained-execution/SKILL.md",
+      "package": "registry/skill_packages/supervise-contained-execution.json",
+      "source_lineage": [
+        {
+          "path": "skills_bootstrap_stuff/First scan for all tools and deps -.txt",
+          "sha256": "92d68096a86f48155ab25e6aa24061a55e43debe1d4816f4b977f23760a972b7"
+        },
+        {
+          "path": "skills_bootstrap_stuff/The actual lifecycle I see is.txt",
+          "sha256": "efee5005724cc8e7db378730bfbd644a0c08e01c4990ace87fe3f6d5ce2def8f"
+        }
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "evidence": [
+        "tests/test_assurance_controls.py"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:recovery-plan",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "checkpoint": {
+      "type": "object"
+    },
+    "failure_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "steps": {
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      },
+      "type": "array"
+    },
+    "verification": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "id",
+    "failure_id",
+    "checkpoint",
+    "steps",
+    "verification"
+  ],
+  "title": "Recovery Plan",
+  "type": "object"
+}

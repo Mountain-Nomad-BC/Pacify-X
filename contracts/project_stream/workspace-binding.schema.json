@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:workspace-binding",
+  "title": "Project-to-workspace isolation binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "workspace_id",
+    "project_id",
+    "project_path",
+    "central_registry",
+    "project_tracking",
+    "memory_namespace",
+    "memory_root",
+    "cross_project_access"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "workspace_id": {
+      "type": "string",
+      "pattern": "^wsp_"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^prj_"
+    },
+    "project_path": {
+      "type": "string",
+      "pattern": "^projects/[^/]+$"
+    },
+    "central_registry": {
+      "const": "projects_tracking/project-registry.json"
+    },
+    "project_tracking": {
+      "type": "string",
+      "pattern": "^projects_tracking/projects/prj_[^/]+$"
+    },
+    "memory_namespace": {
+      "type": "string",
+      "pattern": "^project/prj_"
+    },
+    "memory_root": {
+      "type": "string",
+      "pattern": "^projects_tracking/projects/prj_[^/]+/memory$"
+    },
+    "cross_project_access": {
+      "const": "deny"
+    }
+  }
+}

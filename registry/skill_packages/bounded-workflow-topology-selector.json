@@ -1,0 +1,36 @@
+{
+  "id": "bounded-workflow-topology-selector",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/bounded-workflow-topology-selector/SKILL.md",
+  "body_sha256": "4481a54785bcb1af84202092e177ca4db29575e85c759e6a481798e3283570a4",
+  "references": [],
+  "capability_tags": [
+    "advanced",
+    "bounded",
+    "selector",
+    "topology",
+    "workflow"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL.md",
+        "sha256": "ee1b0711d444692896c3376be60411c8b40ce00b3ae5f8808d96931e451091c3"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest.yaml",
+        "sha256": "4dae83b1f518bb95c4bd122b0731289692cf0a98a53085fc25204b8f1119e41a"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

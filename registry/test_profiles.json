@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "runner": "python -m pytest",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "1"
+  },
+  "profiles": {
+    "fast": {
+      "description": "Correctness-critical source checks excluding expensive exhaustive and artifact-isolation gates.",
+      "exclude_files": [
+        "tests/test_exact_tool_certification.py",
+        "tests/test_installed_wheel_e2e.py"
+      ],
+      "timeout_seconds": 300
+    },
+    "full": {
+      "description": "Every discovered source test; new test files enter this profile automatically.",
+      "exclude_files": [],
+      "timeout_seconds": 1500
+    },
+    "release": {
+      "description": "Full source profile plus exact tools, clean build, installed wheel, reconciliation, strict audit, and sanitization.",
+      "includes": ["full"],
+      "gates": ["exact_tools", "registry", "contracts", "graphs", "integrations", "generated_outputs", "sanitization", "build", "installed_wheel"],
+      "timeout_seconds": 2400
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "skill-coexecution-graph-builder",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/skill-coexecution-graph-builder/SKILL.md",
+  "body_sha256": "1bd8885c4437a041084bfa8d088bb5f350ad188fa0837cb06d05001cd7a54973",
+  "references": [],
+  "capability_tags": [
+    "builder",
+    "coexecution",
+    "graph",
+    "knowledge",
+    "skill"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_c0638280.md",
+        "sha256": "4b144d18f7316c8e0177fbd4b60bf34077ec9012d2b5495f5a4dc0939bc84964"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_3959f3eb.yaml",
+        "sha256": "847bbf66cb6c69c3edc4fe1248ae0d27926fda47afbfaf2429e88b831f638e80"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

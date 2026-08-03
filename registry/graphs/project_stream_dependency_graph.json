@@ -1,0 +1,623 @@
+{
+  "schema_version": "2.0",
+  "generator": "engineering_bootstrap.graph_registry/1.0.0",
+  "orchestration_count": 17,
+  "node_count": 84,
+  "capability_reference_count": 88,
+  "nodes": [
+    "acceptance-gate-controller",
+    "adaptive-minimum-bit-sharder",
+    "agent-factory",
+    "agent-identity-permissions",
+    "agent-lease-manager",
+    "agent-performance-health",
+    "agent-registry-lifecycle",
+    "agent-retirement-handoff",
+    "agent-team-composer",
+    "agent-template-catalog",
+    "agent_create_validate",
+    "artifact-lifecycle-manager",
+    "assumption-auditor",
+    "assumption-decay",
+    "audit-event-ledger",
+    "autonomous-benchmark-lab",
+    "branch-worktree-manager",
+    "capability-gap-skill-foundry",
+    "capability-graph",
+    "change-blast-radius-predictor",
+    "change-intent-ledger",
+    "chaos-architect",
+    "chaos_resilience_cycle",
+    "checkpoint-resume-manager",
+    "concurrency-lock-manager",
+    "context-budget-compiler",
+    "continuous-knowledge-compression",
+    "continuous_improvement",
+    "contradiction-engine",
+    "cross-project-transfer-broker",
+    "cross_project_transfer",
+    "decision-graph",
+    "drift-radar",
+    "duplicate-effort-detector",
+    "engineering-receipts",
+    "evidence-freshness-verifier",
+    "framework-dna",
+    "guarded_change",
+    "human-approval-matrix",
+    "incident_diagnose_recover",
+    "knowledge-coverage",
+    "knowledge-distillation",
+    "memory-provenance",
+    "memory-self-healer",
+    "memory_ingest_distill",
+    "memory_maintenance",
+    "multi-repo-tracker",
+    "nightly_project_health",
+    "non-destructive-quarantine",
+    "obsidian-memory-mapper",
+    "opportunity-miner",
+    "orchestration-dependency-graph",
+    "outcome-contract-validator",
+    "pattern-miner",
+    "project-closure-autopsy",
+    "project-dormancy-archive",
+    "project-health-scorecard",
+    "project-registry",
+    "project-session-router",
+    "project_close",
+    "project_onboard",
+    "project_pause_resume",
+    "project_switch",
+    "regression-causality-engine",
+    "repo-onboarding-autodiscovery",
+    "repository-constitution",
+    "repository-digital-twin",
+    "reproducibility-manifest",
+    "rollback-rehearsal",
+    "safe_cleanup",
+    "secret-boundary-manager",
+    "semantic-contamination-detector",
+    "semantic-context-firewall",
+    "shared-capability-promotion",
+    "shared_capability_promote",
+    "side-effect-budgeter",
+    "skill-evolution-lineage",
+    "skill-health-entropy",
+    "supply-chain-sentinel",
+    "why-evidence-gate",
+    "workspace-bootstrap",
+    "workspace_bootstrap",
+    "workstream-dispatcher",
+    "workstream_plan_dispatch"
+  ],
+  "edges": [
+    {
+      "source": "agent_create_validate",
+      "target": "agent-factory",
+      "relation": "deferred_enhancement",
+      "order": 0
+    },
+    {
+      "source": "agent_create_validate",
+      "target": "agent-performance-health",
+      "relation": "deferred_enhancement",
+      "order": 1
+    },
+    {
+      "source": "agent_create_validate",
+      "target": "agent-registry-lifecycle",
+      "relation": "deferred_enhancement",
+      "order": 2
+    },
+    {
+      "source": "agent_create_validate",
+      "target": "agent-template-catalog",
+      "relation": "deferred_enhancement",
+      "order": 3
+    },
+    {
+      "source": "agent_create_validate",
+      "target": "agent-identity-permissions",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "chaos_resilience_cycle",
+      "target": "autonomous-benchmark-lab",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "chaos_resilience_cycle",
+      "target": "chaos-architect",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "chaos_resilience_cycle",
+      "target": "outcome-contract-validator",
+      "relation": "executes",
+      "order": 2
+    },
+    {
+      "source": "chaos_resilience_cycle",
+      "target": "repository-digital-twin",
+      "relation": "executes",
+      "order": 3
+    },
+    {
+      "source": "chaos_resilience_cycle",
+      "target": "reproducibility-manifest",
+      "relation": "executes",
+      "order": 4
+    },
+    {
+      "source": "continuous_improvement",
+      "target": "decision-graph",
+      "relation": "deferred_enhancement",
+      "order": 0
+    },
+    {
+      "source": "continuous_improvement",
+      "target": "capability-gap-skill-foundry",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "continuous_improvement",
+      "target": "framework-dna",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "continuous_improvement",
+      "target": "opportunity-miner",
+      "relation": "executes",
+      "order": 2
+    },
+    {
+      "source": "continuous_improvement",
+      "target": "pattern-miner",
+      "relation": "executes",
+      "order": 3
+    },
+    {
+      "source": "continuous_improvement",
+      "target": "skill-health-entropy",
+      "relation": "executes",
+      "order": 4
+    },
+    {
+      "source": "cross_project_transfer",
+      "target": "cross-project-transfer-broker",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "cross_project_transfer",
+      "target": "engineering-receipts",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "cross_project_transfer",
+      "target": "human-approval-matrix",
+      "relation": "executes",
+      "order": 2
+    },
+    {
+      "source": "cross_project_transfer",
+      "target": "secret-boundary-manager",
+      "relation": "executes",
+      "order": 3
+    },
+    {
+      "source": "cross_project_transfer",
+      "target": "semantic-contamination-detector",
+      "relation": "executes",
+      "order": 4
+    },
+    {
+      "source": "guarded_change",
+      "target": "assumption-auditor",
+      "relation": "deferred_enhancement",
+      "order": 0
+    },
+    {
+      "source": "guarded_change",
+      "target": "branch-worktree-manager",
+      "relation": "deferred_enhancement",
+      "order": 1
+    },
+    {
+      "source": "guarded_change",
+      "target": "change-intent-ledger",
+      "relation": "deferred_enhancement",
+      "order": 2
+    },
+    {
+      "source": "guarded_change",
+      "target": "acceptance-gate-controller",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "guarded_change",
+      "target": "engineering-receipts",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "guarded_change",
+      "target": "outcome-contract-validator",
+      "relation": "executes",
+      "order": 2
+    },
+    {
+      "source": "guarded_change",
+      "target": "side-effect-budgeter",
+      "relation": "executes",
+      "order": 3
+    },
+    {
+      "source": "guarded_change",
+      "target": "why-evidence-gate",
+      "relation": "executes",
+      "order": 4
+    },
+    {
+      "source": "incident_diagnose_recover",
+      "target": "rollback-rehearsal",
+      "relation": "deferred_enhancement",
+      "order": 0
+    },
+    {
+      "source": "incident_diagnose_recover",
+      "target": "change-blast-radius-predictor",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "incident_diagnose_recover",
+      "target": "engineering-receipts",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "incident_diagnose_recover",
+      "target": "outcome-contract-validator",
+      "relation": "executes",
+      "order": 2
+    },
+    {
+      "source": "incident_diagnose_recover",
+      "target": "regression-causality-engine",
+      "relation": "executes",
+      "order": 3
+    },
+    {
+      "source": "incident_diagnose_recover",
+      "target": "repository-digital-twin",
+      "relation": "executes",
+      "order": 4
+    },
+    {
+      "source": "memory_ingest_distill",
+      "target": "contradiction-engine",
+      "relation": "deferred_enhancement",
+      "order": 0
+    },
+    {
+      "source": "memory_ingest_distill",
+      "target": "adaptive-minimum-bit-sharder",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "memory_ingest_distill",
+      "target": "context-budget-compiler",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "memory_ingest_distill",
+      "target": "knowledge-distillation",
+      "relation": "executes",
+      "order": 2
+    },
+    {
+      "source": "memory_ingest_distill",
+      "target": "memory-provenance",
+      "relation": "executes",
+      "order": 3
+    },
+    {
+      "source": "memory_ingest_distill",
+      "target": "obsidian-memory-mapper",
+      "relation": "executes",
+      "order": 4
+    },
+    {
+      "source": "memory_maintenance",
+      "target": "assumption-decay",
+      "relation": "deferred_enhancement",
+      "order": 0
+    },
+    {
+      "source": "memory_maintenance",
+      "target": "knowledge-coverage",
+      "relation": "deferred_enhancement",
+      "order": 1
+    },
+    {
+      "source": "memory_maintenance",
+      "target": "continuous-knowledge-compression",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "memory_maintenance",
+      "target": "evidence-freshness-verifier",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "memory_maintenance",
+      "target": "memory-self-healer",
+      "relation": "executes",
+      "order": 2
+    },
+    {
+      "source": "nightly_project_health",
+      "target": "agent-performance-health",
+      "relation": "deferred_enhancement",
+      "order": 0
+    },
+    {
+      "source": "nightly_project_health",
+      "target": "project-health-scorecard",
+      "relation": "deferred_enhancement",
+      "order": 1
+    },
+    {
+      "source": "nightly_project_health",
+      "target": "supply-chain-sentinel",
+      "relation": "deferred_enhancement",
+      "order": 2
+    },
+    {
+      "source": "nightly_project_health",
+      "target": "drift-radar",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "nightly_project_health",
+      "target": "evidence-freshness-verifier",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "project_close",
+      "target": "agent-retirement-handoff",
+      "relation": "deferred_enhancement",
+      "order": 0
+    },
+    {
+      "source": "project_close",
+      "target": "project-closure-autopsy",
+      "relation": "deferred_enhancement",
+      "order": 1
+    },
+    {
+      "source": "project_close",
+      "target": "project-dormancy-archive",
+      "relation": "deferred_enhancement",
+      "order": 2
+    },
+    {
+      "source": "project_close",
+      "target": "framework-dna",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "project_close",
+      "target": "shared-capability-promotion",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "project_onboard",
+      "target": "multi-repo-tracker",
+      "relation": "deferred_enhancement",
+      "order": 0
+    },
+    {
+      "source": "project_onboard",
+      "target": "project-registry",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "project_onboard",
+      "target": "repo-onboarding-autodiscovery",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "project_onboard",
+      "target": "secret-boundary-manager",
+      "relation": "executes",
+      "order": 2
+    },
+    {
+      "source": "project_pause_resume",
+      "target": "concurrency-lock-manager",
+      "relation": "deferred_enhancement",
+      "order": 0
+    },
+    {
+      "source": "project_pause_resume",
+      "target": "project-health-scorecard",
+      "relation": "deferred_enhancement",
+      "order": 1
+    },
+    {
+      "source": "project_pause_resume",
+      "target": "agent-lease-manager",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "project_pause_resume",
+      "target": "checkpoint-resume-manager",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "project_switch",
+      "target": "agent-lease-manager",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "project_switch",
+      "target": "checkpoint-resume-manager",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "project_switch",
+      "target": "project-session-router",
+      "relation": "executes",
+      "order": 2
+    },
+    {
+      "source": "project_switch",
+      "target": "semantic-context-firewall",
+      "relation": "executes",
+      "order": 3
+    },
+    {
+      "source": "safe_cleanup",
+      "target": "artifact-lifecycle-manager",
+      "relation": "deferred_enhancement",
+      "order": 0
+    },
+    {
+      "source": "safe_cleanup",
+      "target": "rollback-rehearsal",
+      "relation": "deferred_enhancement",
+      "order": 1
+    },
+    {
+      "source": "safe_cleanup",
+      "target": "change-blast-radius-predictor",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "safe_cleanup",
+      "target": "engineering-receipts",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "safe_cleanup",
+      "target": "non-destructive-quarantine",
+      "relation": "executes",
+      "order": 2
+    },
+    {
+      "source": "shared_capability_promote",
+      "target": "acceptance-gate-controller",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "shared_capability_promote",
+      "target": "autonomous-benchmark-lab",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "shared_capability_promote",
+      "target": "capability-graph",
+      "relation": "executes",
+      "order": 2
+    },
+    {
+      "source": "shared_capability_promote",
+      "target": "pattern-miner",
+      "relation": "executes",
+      "order": 3
+    },
+    {
+      "source": "shared_capability_promote",
+      "target": "shared-capability-promotion",
+      "relation": "executes",
+      "order": 4
+    },
+    {
+      "source": "shared_capability_promote",
+      "target": "skill-evolution-lineage",
+      "relation": "executes",
+      "order": 5
+    },
+    {
+      "source": "workspace_bootstrap",
+      "target": "audit-event-ledger",
+      "relation": "deferred_enhancement",
+      "order": 0
+    },
+    {
+      "source": "workspace_bootstrap",
+      "target": "non-destructive-quarantine",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "workspace_bootstrap",
+      "target": "repository-constitution",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "workspace_bootstrap",
+      "target": "workspace-bootstrap",
+      "relation": "executes",
+      "order": 2
+    },
+    {
+      "source": "workstream_plan_dispatch",
+      "target": "agent-team-composer",
+      "relation": "deferred_enhancement",
+      "order": 0
+    },
+    {
+      "source": "workstream_plan_dispatch",
+      "target": "duplicate-effort-detector",
+      "relation": "deferred_enhancement",
+      "order": 1
+    },
+    {
+      "source": "workstream_plan_dispatch",
+      "target": "capability-graph",
+      "relation": "executes",
+      "order": 0
+    },
+    {
+      "source": "workstream_plan_dispatch",
+      "target": "orchestration-dependency-graph",
+      "relation": "executes",
+      "order": 1
+    },
+    {
+      "source": "workstream_plan_dispatch",
+      "target": "workstream-dispatcher",
+      "relation": "executes",
+      "order": 2
+    }
+  ]
+}

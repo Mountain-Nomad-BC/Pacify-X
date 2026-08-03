@@ -1,0 +1,18 @@
+workstream_id: ws_CHANGE_ME
+project_id: prj_CHANGE_ME
+title: CHANGE_ME
+state: planned
+risk_class: medium
+scope:
+  repositories:
+  - repo_CHANGE_ME
+  paths:
+  - CHANGE_ME
+dependencies: []
+acceptance_criteria:
+- CHANGE_ME
+rollback: CHANGE_ME
+evidence_required:
+- tests
+- outcome
+- receipt

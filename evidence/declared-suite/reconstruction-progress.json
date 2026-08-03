@@ -1,0 +1,3318 @@
+{
+  "cards": [
+    {
+      "card_id": "REL-007-ORCHESTRATION-AUDIT-AI-SUPPLY-CHAIN",
+      "evidence": {
+        "negative_case_sha256": "b5e61c116d57aaef0ef77ab59598a94f3953467fcdfe6dfba076a33bc570c41c",
+        "positive_plan_sha256": "63f6050a9c94f2f804404127096549ae2cc0de8a487315bd4db6b020db6f3a50"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-AUDIT-PACK-COMPLETENESS",
+      "evidence": {
+        "negative_case_sha256": "acb460edeec424ebef2d0d0b0be0aafc2523e529e49635c98201bf22e6a993c9",
+        "positive_plan_sha256": "6339b536aea5e3a1c029aeb2a41c6e16ebcc840a9c63e07e50cd7c1a0c61c3da"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-BENCHMARK-SERVING-BACKENDS",
+      "evidence": {
+        "negative_case_sha256": "4b51ac3ace91d9017a6824a12e20248cce615a21825a640427aee1911f837b1a",
+        "positive_plan_sha256": "41aaf888d71c1ee0ab1ce7b8699c6b5748ce91a129de9e8f0d873db7da5901a4"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-BUILD-SANDBOX-PROFILE",
+      "evidence": {
+        "negative_case_sha256": "ef42fab4a62e33a803ab3be896f3e290487aa2f5be29c8e80590be401461d8ef",
+        "positive_plan_sha256": "70db2a6f63e6fc330412876b12ce5fb49d101a8803caf84e9e674bc74bac47a0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-BUILD-VERIFICATION-PLAN",
+      "evidence": {
+        "negative_case_sha256": "745180a2a179a069d1c157f1e74106ec8ce79cde6a261d0eb600b739b644e498",
+        "positive_plan_sha256": "b1d1ceaaf6539ccd0767d053fbe35e0f1b3d26d3514cb18a128d51df05ffd1eb"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-CALIBRATE-LLM-JUDGE",
+      "evidence": {
+        "negative_case_sha256": "ecda9858ddd6921d2984213bfae5a7357de7ae4cecb9301b3c3500d1d6670cf9",
+        "positive_plan_sha256": "0c3939dd60ba2913999daa4f8d8b8b0ccfd4dd5845cb3f70d1a51e6085473332"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-COMPILE-AND-REGISTER-SKILL",
+      "evidence": {
+        "negative_case_sha256": "3e1339fe690c97f640e654a4440a0c9acad7335df68a62650e44dbbead65bf89",
+        "positive_plan_sha256": "834aed4bd3e116fd7ed298a5db0de73527cdf76bb6df441521940dcefa9bbe5c"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-CONVERT-INCIDENT-TO-REGRESSION",
+      "evidence": {
+        "negative_case_sha256": "6e0a469a54c1b0fdd81091f7fc586a50538bf6d5907e2e8d049e8c80513a7284",
+        "positive_plan_sha256": "4d3029aa2f9700170b1d2fbc8fca9a4bc9d6fa96704dba4f4dd20f7d8891eca7"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-CURATE-MEMORY-FROM-RUNS",
+      "evidence": {
+        "negative_case_sha256": "4d5cf965ffbabb244597c50e94af0744fa6edebdbda1877038a413079d3f145d",
+        "positive_plan_sha256": "539c242d9425b0c5ea95963985d1a992486e648fdef7689589f2a638f2436c6d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-DEBUG-RETRIEVAL-FAILURE",
+      "evidence": {
+        "negative_case_sha256": "432d3720047386c7da3e01af413b00cd0ad7f7c6b3fe8d9fc1f1ab9e27192222",
+        "positive_plan_sha256": "b1963281870420e0706f8bc1fe878b705f6ca4b0a7b906aa22819deb9b3620fd"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-DEGRADE-SAFELY",
+      "evidence": {
+        "negative_case_sha256": "f3b790833be141297e866ae0a3af127c258b0a89c0bed47e2f7d1a1f0d481bf2",
+        "positive_plan_sha256": "467ce34dd0b6d8e3382fc3850d57c727254c8dc985d0f559d60b89e17dfbb0b4"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-DEPLOY-CANARY-AND-COMPARE",
+      "evidence": {
+        "negative_case_sha256": "d0118f7bd81f37e12b3181e29fab13ad1dc9c0b518c0f6511a8edd6ff6de7402",
+        "positive_plan_sha256": "8d9205bef91f088cb4a5d6348a6228109575e96e8909d4c6e32b65677a945d46"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-DESIGN-MEMORY-SYSTEM",
+      "evidence": {
+        "negative_case_sha256": "4fbfdab4d0cd4c1bb0dcaa1ee34e87721c6f55b2bf3d49eb33316ce1ed822dda",
+        "positive_plan_sha256": "df8fc3ef817e862e31011a6370b12e2ebc7b619c26e24671ae4866950e4048c6"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-DETECT-AND-PLAN-CONFLICT-MERGES",
+      "evidence": {
+        "negative_case_sha256": "d88fcd83849d8d15543fb4c04eb3dc0741562775146b9b51c0e8a3642510a8ca",
+        "positive_plan_sha256": "b7490cb18b9fb88c1176f93774942a046e529a91b090edc4ca6d21e0aa352468"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-DIAGNOSE-ROOT-CAUSE",
+      "evidence": {
+        "negative_case_sha256": "f1ac78036c4a6369be1f46d8167a0e7865a1f48471a4bf7e4ed4a7de0bd46817",
+        "positive_plan_sha256": "b5a941574334e75740797a853c1994a2edb378382ee31c7786a2feae4e493236"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-EVALUATE-AGENT-END-TO-END",
+      "evidence": {
+        "negative_case_sha256": "71ebb796a1ac8a9f9a6b501c8b35254040feb0758d3f7fa65cff19fe9f2566a9",
+        "positive_plan_sha256": "3fb5a1df6297fe016d2130ff74dc82498f6c4712af4b7256ad3ea5b8b40afe19"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-EXECUTE-CONTROLLED-CAPABILITY",
+      "evidence": {
+        "negative_case_sha256": "bb51e00bc0dd5f8ecc3ca6c2a93de559fe6273b774b4e4b707864c9c9846a07a",
+        "positive_plan_sha256": "5bd0f0d940dd822901107cdbfa3b45ddbe9df292ab705caa81f6aed3e73ae647"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-FIELD-FEEDBACK-TO-REGRESSION",
+      "evidence": {
+        "negative_case_sha256": "af806017969f328910455536fae0d0afc7e5334a94344fb8740210d31eabbdba",
+        "positive_plan_sha256": "c906e28588ad2d71be8fd8a4ce64e2ff4c4b08141946f927047c42515fcfe088"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-FINAL-CAPABILITY-CERTIFICATION",
+      "evidence": {
+        "negative_case_sha256": "00ff4224751818d8275a3621df5c62ef570a29db7aa050034091a8b9ea1a566d",
+        "positive_plan_sha256": "34049818f8bb461c2d1133dc24ad3e822ebdbd41db1dbe69cfab2ee33e1863f5"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-FREEZE-FOUNDATIONAL-SCOPE",
+      "evidence": {
+        "negative_case_sha256": "b14db1af2e313e1102149d39b5b67c106afee5d2990e6d4da39e99e88a615b5c",
+        "positive_plan_sha256": "6d9502796eaf437f8adc0b1f842ac16467a5f35a6291c2646297850e3d8600c5"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-FUZZ-AND-MINIMIZE",
+      "evidence": {
+        "negative_case_sha256": "c88a0a53f9fd77b84be8fb7c527a41e990206e17821f852f66c3679e4edfd6d2",
+        "positive_plan_sha256": "301b397385e4a24621ecc7583784d7a598a1625826d8879201b3c6507e97e239"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-HANDLE-AI-SECURITY-INCIDENT",
+      "evidence": {
+        "negative_case_sha256": "39687acee0a75fa42948f980751d34e6e6ceb68caec4a3550a36b5cea2ccd782",
+        "positive_plan_sha256": "13d39d7b169541d73e301cb6b3ca9df7664e254d9cc55b8533331dadfc49f46a"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-HUMAN-REVIEW-AND-HANDOFF",
+      "evidence": {
+        "negative_case_sha256": "ea3a0236b45466097171cb1867d3466ced7e2445f0acf7f2aea231aafaa06004",
+        "positive_plan_sha256": "eb511fcd5bfd0e2d565e43c3e9fa6ae33bec568680a9ca8d3f2187e808a3da00"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-IMPLEMENT-VERIFIED-CHANGE",
+      "evidence": {
+        "negative_case_sha256": "85c312cd615a7de084d0f1aca4e5d683c0da302b51155809464c3cca66b2b317",
+        "positive_plan_sha256": "f81c345a8b9b6f9b6edb4c0722c931f51f0e697e62d7bf870296cbb863e8ff9a"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-IMPORT-AND-GOVERN-TOOL",
+      "evidence": {
+        "negative_case_sha256": "47d36af363053d274573965a6fa3999df32e6ec844aabe2de0ba34cea8240533",
+        "positive_plan_sha256": "e3d5029092af8207491624900bbcaa355b66a1d2ac5d9240d033a1cca486b160"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-INDEPENDENT-VERIFY-RESULT",
+      "evidence": {
+        "negative_case_sha256": "24e96d6db9e23a21277f0c793880622ba500138d2a06e67297fe9f97f00c8d97",
+        "positive_plan_sha256": "cf755747ca2f7a5c5b5bc3b07e85f71fcc62602e16788be552e8a0237f90dfaa"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-INGEST-AND-INDEX-CORPUS",
+      "evidence": {
+        "negative_case_sha256": "29257bd78422e03eab15dfda7962f8788ba1d413168c84fa3375de764dfe52ef",
+        "positive_plan_sha256": "67a190e17a5abbe624c6be02c37d9036ff43cea84f4c2d14736336b63e8dce9d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-INSTRUMENT-AGENT-WORKFLOW",
+      "evidence": {
+        "negative_case_sha256": "b2199218a7f10b8a71adc426960afe7b9eddd2a2ce3b6a0d25c325e63c5a8938",
+        "positive_plan_sha256": "91c02b02114e987aba06f151644bd56bebeab2db6af13bffea344e3abda0b592"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-ISSUE-TO-MINIMAL-REPRODUCTION",
+      "evidence": {
+        "negative_case_sha256": "64f5d63b2c46d22515b5ec2fa3b722375495b1b95de9000e578ba6a8ea3ff0f8",
+        "positive_plan_sha256": "21e5e01c40255440340b54b32bd6c75303fc4f3372650b43586eb488b6ca9a48"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-MONITOR-QUALITY-DRIFT",
+      "evidence": {
+        "negative_case_sha256": "97d5cf35fa3c6b943fbdf4379536ab911762ebee766efb9fc14e15b5877d9a24",
+        "positive_plan_sha256": "cc1946941582de63bc32edc449ddc24901037427e05c670e95ea5d4262e55336"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-MUTATION-QUALITY-GATE",
+      "evidence": {
+        "negative_case_sha256": "d519bf5cf7857ebfab1e3625be625bf370b2547c12efaf03310a047646ad6d41",
+        "positive_plan_sha256": "c5abed28826f490fbe820d606a463001c436be82950a323d8c8fae460fdb1a83"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-PERFORM-SECURITY-REVIEW",
+      "evidence": {
+        "negative_case_sha256": "cb1028425485c960fc1f69b46c3a7e3a96a35265c36e851a4b871a8ba44eb94f",
+        "positive_plan_sha256": "97c0be7dce5291f5d9a6b3c7261e6c27fccda89c28cf34c0e9cc50cfc48bc72f"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-PERFORMANCE-REGRESSION-GATE",
+      "evidence": {
+        "negative_case_sha256": "e16be69d750dff77d0475032328d29575b4bb51937ab7e92d87de667a4b6e954",
+        "positive_plan_sha256": "aa1bb5c901f0be39f5d4378cc74d3f5796efa22ec93ebe1f6e608c7b4559b2f2"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-PLAN-CAPACITY-AND-COST",
+      "evidence": {
+        "negative_case_sha256": "bfa73e36c8c5e27767b39cd0e120064c4da5b067a5f21e4e7a7ebc7c544f792b",
+        "positive_plan_sha256": "d37e5aef0a3c453623343518a81011205b1ff3232d6afb37540fa33ba8c9d79d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-PLAN-SAFE-MIGRATION",
+      "evidence": {
+        "negative_case_sha256": "32dae38af864e06e59a8dddec254f1c790896d453555cfee87ae0c6c0e977f8a",
+        "positive_plan_sha256": "97569cb2b5583adb00996a5ed3ae114cf374d8a5975eb6f202b0360c6c425161"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-PREPARE-AGENT-INSTRUCTIONS",
+      "evidence": {
+        "negative_case_sha256": "78fa781c54ce812db9ae544e1738f5b47e065db3ed4d2336d69253fa4d7b4309",
+        "positive_plan_sha256": "44fd9e4c5059dc64ae0be280346ec72b73c35bd8715a271a8d27fafd7704b100"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-PROMOTE-VALIDATED-LEARNING",
+      "evidence": {
+        "negative_case_sha256": "ad0fc7ee8eeb72b8554a3546c6775fca0c73fb49f5ee141e7bfeab4c66d33b43",
+        "positive_plan_sha256": "e89c0141d0f0740ab07a9a4a890923270863f4a546093c60cf4fbadfa86e9560"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-PUBLISH-A2A-CAPABILITY",
+      "evidence": {
+        "negative_case_sha256": "e83c7cb369f944d7d60eb16c56b95451dd302456cc77e166918776935cfdaa8b",
+        "positive_plan_sha256": "48cdb75f1f541facc67932bf91cd6f01738a1c7dabb0f67cc8cda91c3287fd59"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-PURGE-SCOPED-MEMORY",
+      "evidence": {
+        "negative_case_sha256": "2c9205c4d94a5724fbde24611f2f97eda4a2c2c164a58e22fe307259dc2271a1",
+        "positive_plan_sha256": "79b25f237bf8716f8b6fec0197a49acae3a24c824657f1662eeba515d6bd4f65"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-RECERTIFY-AFTER-CHANGE",
+      "evidence": {
+        "negative_case_sha256": "6f0ff07e7c36535bbcdbdf367215632727e9e36fd61dafc1f80833748f7e96e9",
+        "positive_plan_sha256": "dc03f23e08dd4400bce3496abc7ed1e4ad5747f6ddff6c37ca0d35ef0859a06c"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-RECONSTRUCT-TASK-CONTEXT",
+      "evidence": {
+        "negative_case_sha256": "1cbd91307a516699be3d4d070e062f928121c8c0bb5bd0417823e9af5d963063",
+        "positive_plan_sha256": "bb69f58e60d3b9accba46a6ec5bf53486fdf7ef9a2e4ae2114133bf6553ac4bb"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-RECOVER-FAILED-WORKFLOW",
+      "evidence": {
+        "negative_case_sha256": "f430fe3d731940677339131ed0bdda75e42f85fcef34558c507bb62b06de7755",
+        "positive_plan_sha256": "332cbbfb19b4b49198ad2a7ddbc422e1f7eea469bfbaa33a3206ff9cd95bffd0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-RED-TEAM-AGENT-SYSTEM",
+      "evidence": {
+        "negative_case_sha256": "eb17b7cc06b43b594c77e0f3058f19c644468b9b33cbef32dc44392733866efb",
+        "positive_plan_sha256": "64d14e18053dd74d7fad6518fd912b70ecdb62ede730a3d6a741123909f0469a"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-RELEASE-COMPLETION-SUITE",
+      "evidence": {
+        "negative_case_sha256": "a8290b995a6ff2aa26be86ae80d80fe00ed5bdcda1122dee62c5bc4f2abf6ef6",
+        "positive_plan_sha256": "64c70e1a2ced6b84c2e8a0737c43e8003891ff3981a5d121367fa474f2211d70"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-RELEASE-TRUSTED-ARTIFACT",
+      "evidence": {
+        "negative_case_sha256": "d1f5b2368ef31384fa29253b505d79bf3f83416f612777debd66aafd81533a05",
+        "positive_plan_sha256": "37dc9d51e6f0520459c48d4eeb2bfdd3b736e7369043a306ec73b64f492cdb1d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-REPLAY-FAILED-RUN",
+      "evidence": {
+        "negative_case_sha256": "25514f40f26eaadbc0e14d696753dd14558f3466b4c868624cfa796922b259e2",
+        "positive_plan_sha256": "cb76bddc681a791288e24b940b304222374729889a524cb0370f89b2d6ee52f7"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-REPRODUCE-AND-VERIFY-BUILD",
+      "evidence": {
+        "negative_case_sha256": "3be67b70637dbad5c7f373b5c1a5c5c9a61cf5310f9ee85abd8580d7428c411d",
+        "positive_plan_sha256": "3e9061d9835ab34fb2f3974e7f999b9febec874855222771cf98e4f1e08d6518"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-RESEARCH-WITH-EVIDENCE",
+      "evidence": {
+        "negative_case_sha256": "ce4a51af4767fb9891d2f75214cc8439d3d946179ae4e01125319f0447b362ce",
+        "positive_plan_sha256": "7a1dc2fd00bf393d1b5daf129b8bd6d662337e96a1a490d72ee4101e6ad6fb0f"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-RESOLVE-CONFLICTING-EVIDENCE",
+      "evidence": {
+        "negative_case_sha256": "d716d3531a0eb2703ed6be2f516cca6fdb8d4a8bd35052884c506e319c269d68",
+        "positive_plan_sha256": "7eb8317876e589d8c4514bd475e35dc48c6ce424ce4d12a6095859c542b8f071"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-RETRIEVE-WITH-GROUNDING",
+      "evidence": {
+        "negative_case_sha256": "48ca7ee76abd29806f31042bcf9ca7edab601b21721971bb8269c1b6cf9fef8f",
+        "positive_plan_sha256": "ff956b3f144877a96c028c23a0fe91b1100f9bf6608363896f13eaa066565198"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-REVIEW-CHANGE-IMPACT",
+      "evidence": {
+        "negative_case_sha256": "8e1f83a579c3ff4cc92695a234b8a6d0769959dd0bed9b9e5f7879b1e07f0d07",
+        "positive_plan_sha256": "14c4dc1e3c16c9e4d53290357b8d0797c84821bed09bf55faa911017a41e2a87"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-REVOKE-CERTIFICATION",
+      "evidence": {
+        "negative_case_sha256": "3877c60b8c6725c6124321319ecb90a652cac0be98f34697756376303472d41f",
+        "positive_plan_sha256": "824f324582dca40e00f4305b0e3c446e9b96b86244f7d0322c3d7a470ecdd621"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-ROUTE-AND-BUDGET-TASK",
+      "evidence": {
+        "negative_case_sha256": "54dafc30c1619bdc1ca95d75e6839a3efa8d37d0be5e54b07e6eaeb1e40b7862",
+        "positive_plan_sha256": "84baf239bc47fa80a2061a12207f3e7b75d8ef0905286ecf2519a0b6f58279e8"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-ROUTE-MODEL-BY-POLICY",
+      "evidence": {
+        "negative_case_sha256": "1e76d8f98e2ce1726c5c26b3abbbecf4a96af2780d1331395cc61437e2ef8713",
+        "positive_plan_sha256": "bd0b7eee3b2b386bbf46de85ece7d67f8c1824ec7d60e7a13a3020f98f3a4bee"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-RUN-BEHAVIORAL-CERTIFICATION",
+      "evidence": {
+        "negative_case_sha256": "185912dc30f71f790e63c8e6f5fff670d50c0efffc08d250934c0a421d8b4f4a",
+        "positive_plan_sha256": "063708fb56714c202a4e618e03e8d6acd28f960392afde39932dc5362e5d0ba4"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-RUN-LONG-HORIZON-EVALUATION",
+      "evidence": {
+        "negative_case_sha256": "8172d756dc0ee3f1a74885ec33bf797f360b2bc64579a9aa5494773c1b987934",
+        "positive_plan_sha256": "13d89b3851560aca279c84ae6229122ea10f0bd04eba05a81b7d770b8661da96"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-SELECT-SERVING-BACKEND",
+      "evidence": {
+        "negative_case_sha256": "6b4294fb9f4cb37a036210b5bb3f5333ce5e26d0b4185fa10f9092286b1598da",
+        "positive_plan_sha256": "59ad1a940fc16e3bf700a05cd86180f86b898fc906e57bdd0b5aed182a9bbc62"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-TEST-PROMPT-INJECTION-RESISTANCE",
+      "evidence": {
+        "negative_case_sha256": "4e816bfcdb493205447974c25825420c92b52fb5a2964e2e195f7dd0f980a862",
+        "positive_plan_sha256": "ff9b53c31bcd9d725c60653ed7f604f0422f01188c7f45d81fbc8767cc588572"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-TRACE-RUNTIME-REQUEST",
+      "evidence": {
+        "negative_case_sha256": "944d812e8e87331340da18595e2b5e490d3eab827a6e1ef40acff626d666783a",
+        "positive_plan_sha256": "8ebb8acaed58c92ef75128ded9238fe46bdf0f50ccb9b07a4d7e396ea72628ec"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-UNDERSTAND-REPOSITORY",
+      "evidence": {
+        "negative_case_sha256": "4b0d4de05deb44dca5fd9c8a77db48c4ec728ae88281a1c1e682cbe06938bec4",
+        "positive_plan_sha256": "01f502c5bb96dd2e7c390bb4750a10a5f9ca984d0801d13e934f41eb8ab99772"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-VALIDATE-PROTOCOL-COMPATIBILITY",
+      "evidence": {
+        "negative_case_sha256": "51cd16b017b3e0f4eeb808397cb8bb97417b92ae33565b73af8043c33f227d0e",
+        "positive_plan_sha256": "44a971cae0b514334d15231ac85588e767b40a9321152c7e319b47df415cad8f"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-ORCHESTRATION-VALIDATE-TOOL-AUTHORITY",
+      "evidence": {
+        "negative_case_sha256": "fc125a2888592b1189e35bfedb0045ce8502aa5852b46d534439c2c19e18bd89",
+        "positive_plan_sha256": "42693e0b68e5bb045e259801352ca4f4e27aeb43f7cc4b905cb7b27423556324"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-AGENTS-MD-GENERATOR",
+      "evidence": {
+        "negative_case_sha256": "83510c965c9be8fe142df85f4af7f12c49ecad43d2d896cc18b74afb1ed0cb13",
+        "positive_plan_sha256": "786290d686b440d5ffce7987caf147d533e2503cc7513f9c9479f2803a80d47d",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-AI-BOM",
+      "evidence": {
+        "negative_case_sha256": "efadb024ecbb46344afe61ad91f7e85a49af541f1c2d133e1cddb2e2e9dcb8d9",
+        "positive_plan_sha256": "848e1fca2aa8212c699d7a7dddeefb45737a61db5c2053802382e8e0865beb89",
+        "script_result_sha256": "6343ef8ef92093e28d53c1346f8619b869da9df1edf915175e34fbad184856a0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-APPROVAL-REQUEST",
+      "evidence": {
+        "negative_case_sha256": "f0ed2e59a1145fda4111b0912784833e8fe8954fd2356eedb474eef6ba313571",
+        "positive_plan_sha256": "1e4895ee15b61119a7862871f786520139209f534cf1b62702607ba81eca734a",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-ARCHIVE-HYGIENE",
+      "evidence": {
+        "negative_case_sha256": "8a5f1c268183272bfb2bca8b8f80f1646002caedcb3c40e6c42fca98b5d325ec",
+        "positive_plan_sha256": "52eb4a1c004caec425890dba39f70162643b8214b4f6000007a3eefc93f29ee7",
+        "script_result_sha256": "6343ef8ef92093e28d53c1346f8619b869da9df1edf915175e34fbad184856a0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-ARCHIVE-VERIFIER",
+      "evidence": {
+        "negative_case_sha256": "ba803dc21774eb723ac4249da8a23b28a40151b82d08c239a9b32f5899dd379e",
+        "positive_plan_sha256": "12b90a74ca9b47d2320a00722a5412c81d4049970a8a769cc0cf2872dba2bb22",
+        "script_result_sha256": "6343ef8ef92093e28d53c1346f8619b869da9df1edf915175e34fbad184856a0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-BACKEND-PROBE",
+      "evidence": {
+        "negative_case_sha256": "d28f193c8b437b39a3038e642a4093ffb06f7773fbaa49539a9fca8bbfdcb6be",
+        "positive_plan_sha256": "9a65901a5055fb4cce7edbac28469d48fc607514224a1fd3d1a18dfd0cb3b872",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-BENCHMARK-CONTAMINATION-SCAN",
+      "evidence": {
+        "negative_case_sha256": "a8705e3c3097d176de3a1c440df40b1e4b22c1ad2dd8cb45b4f87e8337a5a155",
+        "positive_plan_sha256": "80a26523b96d03d6b12d383f2f71d093cd95a712ace3a269d03fa92ddbac215b",
+        "script_result_sha256": "8385e338775beafa37eaf2a81a5e2c1f4bbf3db6d1a560662c4a74d3a8eefee3"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-BENCHMARK-HARNESS",
+      "evidence": {
+        "negative_case_sha256": "c145e6781dce3b00d1b45062eaf241fbd1f4e5a5686f2aa1bfc2a6c57f9a7865",
+        "positive_plan_sha256": "b72cab7d5e67ca666a4146c869ba1d99b912617822e36f083e13b6160c543f70",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-CANARY-COMPARE",
+      "evidence": {
+        "negative_case_sha256": "03b8d3465f260060e6b794ded076ac27b333b4e5e528e2c14c486c7a62c578f4",
+        "positive_plan_sha256": "9ec49511b65d7e3929290ad890929efbb81a22f32d49b716da2dfa67380fdcfd",
+        "script_result_sha256": "0c27a5ebff07c5cce6e9bb922ddceed7ec4dfa260977a5650d5d5a7e9ee17509"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-CAPABILITY-ROUTER",
+      "evidence": {
+        "negative_case_sha256": "acd954b1ca61eb9d0f990c0223276e820779b639f16ca19cdd7b12836843d96c",
+        "positive_plan_sha256": "939cd53fc562ecdc4f0bc38f63467bedb5e37b22d4d04c90e3515e15cab09da9",
+        "script_result_sha256": "5bcc3c6d30e4c3a836e19b64ff30e4a8720ad81e04374a7f85874633f559552d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-CAPACITY-PLANNER",
+      "evidence": {
+        "negative_case_sha256": "3ee9329d27657d3709d3851448cf345425ff763eab22856768cb8dc4019e214a",
+        "positive_plan_sha256": "d73acf93cee2a5fceb955b92d5e7fe10ecf29f61a31756fbd09845610aa9c056",
+        "script_result_sha256": "5bcc3c6d30e4c3a836e19b64ff30e4a8720ad81e04374a7f85874633f559552d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-CERTIFICATION-AGGREGATOR",
+      "evidence": {
+        "negative_case_sha256": "14d38238986fedbfecf1b0772c36f175707509dc7b29dc5ad652b85a97bec81e",
+        "positive_plan_sha256": "edc9ffdeba27bcfc5055cc125c68ee557f2554018b3058a659b8f1121e522fdb",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-CHANGE-IMPACT",
+      "evidence": {
+        "negative_case_sha256": "8d3f97c0ddb2197f21c6b4ad384930d6443b5d79c2e336f9e05fd540f9bc2fd4",
+        "positive_plan_sha256": "d74723c2286b46cab866134a217e84bd4eb69e58ca34bd31a5c55862705ab51a",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-CLAIM-LEDGER",
+      "evidence": {
+        "negative_case_sha256": "d2fa6768cf84d10298bb8bf9e497f66d8752b2313d7013763080cdad31809fc7",
+        "positive_plan_sha256": "399552a249d7b48edf998c5ad33f0cf4785983d6662d47e4c643824cba79b35a",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-COLLISION-MERGE-PLANNER",
+      "evidence": {
+        "negative_case_sha256": "15403bacbc616a6ab9848bfc1fe8e27702b623b3554c9fd3dbb9a363852f2c80",
+        "positive_plan_sha256": "d000736cf37c2fc0f84f579c60b7ae3e835b57b5649f5e8e5a5533b1b1d6bedb",
+        "script_result_sha256": "5bcc3c6d30e4c3a836e19b64ff30e4a8720ad81e04374a7f85874633f559552d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-COMPLETION-CUTLINE",
+      "evidence": {
+        "negative_case_sha256": "af055e52c9ddd6e2d6353ded68ea6d3043e85102303c8e10aebcf840ba97e7c2",
+        "positive_plan_sha256": "e39983ee12e97173d91261579386eca8055a77d4798de8d7f9f5d77041a95c92",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-CONFIG-TRACE",
+      "evidence": {
+        "negative_case_sha256": "38bbb54843ef922d3d69a26f5e364276204bbc4ab1f8556318076acdfc8870bd",
+        "positive_plan_sha256": "4eda682742615889338cdad0ee13b99c872a70d30e3ae7af2c29e71567f63c82",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-CONTEXT-BUDGET",
+      "evidence": {
+        "negative_case_sha256": "b1fb36673f90461ca042b7cc100d3892d5e48a51034bb430ce1afb0dbfdb57a7",
+        "positive_plan_sha256": "fefb5608876894e5b35cd7511b794c33304feb9011938c94b519a8ddbcc959bf",
+        "script_result_sha256": "5bcc3c6d30e4c3a836e19b64ff30e4a8720ad81e04374a7f85874633f559552d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-DETERMINISTIC-ARCHIVE",
+      "evidence": {
+        "negative_case_sha256": "fc4fe6c5bd6ec108325a6e140c2d7a87bf4caa9e91495497aa4209cde3cac012",
+        "positive_plan_sha256": "c58d591ae2d1ffc52ea3ccad5ad0fdd6bc1494435fef3b76c247321cdd375ad7",
+        "script_result_sha256": "6343ef8ef92093e28d53c1346f8619b869da9df1edf915175e34fbad184856a0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-DIFFERENTIAL-TESTER",
+      "evidence": {
+        "negative_case_sha256": "c3b0f5c94914942ce55a16ebdb3bd6bcc19285fb672fd0034649dd59f7e9450c",
+        "positive_plan_sha256": "8f2b29db83800ce340ff123abdc2eeb44d681d095f3b839d4e189a930637d3c5",
+        "script_result_sha256": "0c27a5ebff07c5cce6e9bb922ddceed7ec4dfa260977a5650d5d5a7e9ee17509"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-DRIFT-MONITOR",
+      "evidence": {
+        "negative_case_sha256": "e7ff87d926f2662055b2cfb2cd6ad001bc69e62eaac3628fb81c8bd35244f065",
+        "positive_plan_sha256": "182a306878b9b69731652fc612debf854e3d455470096175049b7359a20bc2bb",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-DUPLICATE-DETECTOR",
+      "evidence": {
+        "negative_case_sha256": "3361c9144794f68dd7966db03ec3810b12d97075ca1d7407fba747f0286a229f",
+        "positive_plan_sha256": "f1349b9042f4773090e2ccb92f0905a49b5914dbb5927270bbd1b037e343719a",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-DURABLE-STATE",
+      "evidence": {
+        "negative_case_sha256": "9d95b9eed81befb78c1b70a1a08537a5273484b1e22bfb8a9674973e79a8e58f",
+        "positive_plan_sha256": "3af34dfc1cbfe2e8c76f5a31794a912177dcebb2e5fde779130ed4c4060c506d",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-EVIDENCE-BUNDLE",
+      "evidence": {
+        "negative_case_sha256": "d22ae3ad729349e55ae0467fbad5cb3363c157589d5d1183ea14a4a7f772914b",
+        "positive_plan_sha256": "4bad061b51f7873b5148fc59096a0d7c9cf6baaed74445a6a132de68310914d3",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-FAILURE-NORMALIZER",
+      "evidence": {
+        "negative_case_sha256": "0393e4d949e27df522ddafc7759eda86dbf1b34ba69bda0f1d136173c5ab5578",
+        "positive_plan_sha256": "c050f5f8c4813bdf7634e3b77480fae90ef9fa8e1141e36dc52de88f810f8a08",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-FORMULA-PROPERTY-TESTS",
+      "evidence": {
+        "negative_case_sha256": "2f5faf0392267662f6ba1039214f3ee859430baba24a526375ba35f4404cc29f",
+        "positive_plan_sha256": "45cede6d697a8072571a02aa1ae6dfa4fea87401d2b64b001fa848bbf7a8e84d",
+        "script_result_sha256": "b3e7fd73be288b2c3a88aa48816f730546802a79be3d1e98ebb430fb043282de"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-FUZZ-JSON-RUNNER",
+      "evidence": {
+        "negative_case_sha256": "caf0864cb04bfeef673bf7f2bd2779c98b3a7e26fbadb3d0c9ff1b683b7ab032",
+        "positive_plan_sha256": "be22e614a1fae3d3afff52940ecba839735b4958abc39fb6700c5a91bdfb4c18",
+        "script_result_sha256": "b3e7fd73be288b2c3a88aa48816f730546802a79be3d1e98ebb430fb043282de"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-HARDWARE-PROBE",
+      "evidence": {
+        "negative_case_sha256": "5f305915acce0102866539564026c414d50d9ad572972af0482544143b419fe8",
+        "positive_plan_sha256": "f510453efe4d13629154a8880427291c1b68a66c37995ac076d4ad0e64c217e3",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-HYBRID-RETRIEVAL",
+      "evidence": {
+        "negative_case_sha256": "0f036577c39c70616b129a0f98ad02f12219be9994f42fe2b673e85a4a42881e",
+        "positive_plan_sha256": "ef27562d9e84f061944fd91737ffad4d0e6bce2dbec5465199603bfce8ef5fbb",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-INGESTION-VALIDATOR",
+      "evidence": {
+        "negative_case_sha256": "11210bcab5dd938280a6d90572fe6544ddae844670e3ee3e7474b9866670c72a",
+        "positive_plan_sha256": "70ea6fe7c8033a583936d16a5e1f5af9969400042efe8aa77d21030b62100b95",
+        "script_result_sha256": "7a2e9337d40cb79034dff6d333866f6ca933ab2ffc1583f850010e8b8c5fdd40"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-JUDGE-CALIBRATOR",
+      "evidence": {
+        "negative_case_sha256": "1f5f2ba4f25ad286b9ac8314170d32bb0c56f7cf35064d955f923aa26e2d625d",
+        "positive_plan_sha256": "65a8e13978d28523b44e3b823b6fbb286d81fe207db06cb3c6af6ccfe2d8372e",
+        "script_result_sha256": "5bcc3c6d30e4c3a836e19b64ff30e4a8720ad81e04374a7f85874633f559552d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-MANIFEST-RECONCILER",
+      "evidence": {
+        "negative_case_sha256": "37271cf93903216cb23cbe9864f2cc8dd148a34561909f4278d0bc5f0d5801d9",
+        "positive_plan_sha256": "a1ce256afddb3308fa920eea1b993adb3e3a2f650cece9bceea6e6d2c2e2669c",
+        "script_result_sha256": "6343ef8ef92093e28d53c1346f8619b869da9df1edf915175e34fbad184856a0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-MEMORY-WRITE-GATE",
+      "evidence": {
+        "negative_case_sha256": "376a6f46f6b9eac05c5abd67519478c5e7c9caa292d40c3201722b9a6fe047bf",
+        "positive_plan_sha256": "2f26de555d45349fbb1fc2fe0e0c73cc5f9ae9d3790811f9952d96d02cfe2df4",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-METAMORPHIC-RUNNER",
+      "evidence": {
+        "negative_case_sha256": "769937a92053ce671722f0388a498701876f90c0f99d30eaed5e3c2ee8918fcd",
+        "positive_plan_sha256": "76eb34a01c25fb4fb760e597277118c244e9fb70bfea3ff5906a7f754ed7cf2c",
+        "script_result_sha256": "b3e7fd73be288b2c3a88aa48816f730546802a79be3d1e98ebb430fb043282de"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-MODEL-ROUTER",
+      "evidence": {
+        "negative_case_sha256": "608204ce1a46fdf47c115dce69c2b5300ec00c6e8c453b1c2476303fcae37b37",
+        "positive_plan_sha256": "b18fab501dfb39518a5787ec231d308ada6237782170726fea13403f8c434573",
+        "script_result_sha256": "5bcc3c6d30e4c3a836e19b64ff30e4a8720ad81e04374a7f85874633f559552d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-MUTATION-OPERATOR",
+      "evidence": {
+        "negative_case_sha256": "321e883304cd3cbcca13fbf8041d51056241d4f49fef80049ec909db3e9f5e7f",
+        "positive_plan_sha256": "b79d0dc2460709176dc5d148a024d5c84b30c3fe97fc3abc35e3635e79a4175e",
+        "script_result_sha256": "b3e7fd73be288b2c3a88aa48816f730546802a79be3d1e98ebb430fb043282de"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-OPENAPI-TOOL-IMPORTER",
+      "evidence": {
+        "negative_case_sha256": "bcaa3cc917160aa0315637fd247562d9cfb08571e29011a06ecd0f9f9140edca",
+        "positive_plan_sha256": "38b7fd8eb9ec4e60b1f1817336057ed03665e094055f7c8f4d4b53269b583bd5",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-PATCH-SCOPE-GUARD",
+      "evidence": {
+        "negative_case_sha256": "de66fec78550dbac76f77ec994e1c3b7c31cc5c15d728726c452cbb031d757ab",
+        "positive_plan_sha256": "7f1767a01185ca031d42896eccedd7eb62a9cf4f632d21095168701d3ee968eb",
+        "script_result_sha256": "7a2e9337d40cb79034dff6d333866f6ca933ab2ffc1583f850010e8b8c5fdd40"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-PERMISSION-GUARD",
+      "evidence": {
+        "negative_case_sha256": "0a8484ba7d54a0557ba97a48cfa3a9f029f6c692b765950ebc1564423cb1530a",
+        "positive_plan_sha256": "ddfb3fddd648b3608229a53023b376249227c2ecab71bde3d86d52d039ff5f7a",
+        "script_result_sha256": "7a2e9337d40cb79034dff6d333866f6ca933ab2ffc1583f850010e8b8c5fdd40"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-PROMPT-INJECTION-SCANNER",
+      "evidence": {
+        "negative_case_sha256": "c9d1debe6889623a6905fb3a1e98a9d3621fa9e6f0f0ead5f5ae45399713c5d2",
+        "positive_plan_sha256": "32e5fe66e3674aca6dc97f2cba6bceb433e0b46365df4851dd4533b75116805f",
+        "script_result_sha256": "8385e338775beafa37eaf2a81a5e2c1f4bbf3db6d1a560662c4a74d3a8eefee3"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-PROTOCOL-VALIDATOR",
+      "evidence": {
+        "negative_case_sha256": "3e3298e5e559698c556c2bbce3fff7dba6d3e640437e990e87636de108730337",
+        "positive_plan_sha256": "f5c376eb1e63d9a8550b842c28170a35064e948d1f2fa9d61b4cc0824d45ad4f",
+        "script_result_sha256": "7a2e9337d40cb79034dff6d333866f6ca933ab2ffc1583f850010e8b8c5fdd40"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-PROVENANCE-GENERATOR",
+      "evidence": {
+        "negative_case_sha256": "7fe0243401d44bedb3285839a768efe3e2785bff9596967308922adca842d992",
+        "positive_plan_sha256": "fdf426b73419b6861f0f1aafda769359015e516aabedcf5e12b62aba19f20628",
+        "script_result_sha256": "6343ef8ef92093e28d53c1346f8619b869da9df1edf915175e34fbad184856a0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-RECERTIFICATION-IMPACT",
+      "evidence": {
+        "negative_case_sha256": "259b8b9a38c70f968f28cf3e0e3ef43d34dc3d0ba27d22e2611d9b88a7e981c4",
+        "positive_plan_sha256": "36f1b971316f6aa050a2e18c5296069e137371a636bebae25b60c9034adcecbb",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-REPLAY-BUNDLE",
+      "evidence": {
+        "negative_case_sha256": "70f1a44c3fc0b77cf877bc845dd9f3c14eeb39352d6f5c4683504c8b760de55a",
+        "positive_plan_sha256": "b332a8e9dde0024a82b9f23c7dffb3ba0cf0acc0e58e149e82c18c5a5f5e6cb5",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-REPO-MAPPER",
+      "evidence": {
+        "negative_case_sha256": "e38517346936d82f44437c38feb892682e51ea44bd15c8e824b6ee9aedf163fd",
+        "positive_plan_sha256": "1a0c2fbd28216b5141d402d168a7ef19d2b40a1eef116d46468836d940a4d55c",
+        "script_result_sha256": "6343ef8ef92093e28d53c1346f8619b869da9df1edf915175e34fbad184856a0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-REPRODUCTION-SCAFFOLD",
+      "evidence": {
+        "negative_case_sha256": "7ab5ef013cbd2ceba5e9f44f1ad7149d499dad3e438139d6201e604ef27a3c22",
+        "positive_plan_sha256": "63a706298a5cabb03d710579be052a726eee337b89f216fb6df1ab7e43151562",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-RETRIEVAL-EVALUATOR",
+      "evidence": {
+        "negative_case_sha256": "5a1cc2765f3c0d8885467e63fb2631919568a67ecf6244c9dd034f466e17270f",
+        "positive_plan_sha256": "9156df4e0398507c4f29c755b01400fb12eebf4d861d2b40c238271d7a8ff4fe",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-RUN-SMOKE-TESTS",
+      "evidence": {
+        "negative_case_sha256": "0901a405a5601db8d8251525fb73ec553e619753cb17647729b549735c2de6da",
+        "positive_plan_sha256": "c2f9546702fd4f550f1254fcabf16655205ec3726fe990d276241a4605b70b81",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-RUNTIME-PATH",
+      "evidence": {
+        "negative_case_sha256": "7721264dc571f6f727e8d7a3c0b926da270795b78e122fb3d24391aec58ac478",
+        "positive_plan_sha256": "8c2169a77139deda5ed9526993b317e5b02c18f0f197daa21759520907ff8345",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-SANDBOX-PROFILE",
+      "evidence": {
+        "negative_case_sha256": "d6c8923f302d1d1ad70f0f0e24804ac696cf33b2f8a398a047e78ec9b27d27ef",
+        "positive_plan_sha256": "cd0e689cde0f751543c39a78397f421d573780ce2fd9a2d68281aa2bab914c9f",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-SBOM-LITE",
+      "evidence": {
+        "negative_case_sha256": "2be3291fe3f3a3145f7b1fedcf01022200b7bba67efc48ed45411a4d29751c84",
+        "positive_plan_sha256": "e77e11f9f81efdbe38fc99d541d667e402daba1bbabdccd2f67d6480b9df7ec8",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-SCENARIO-RUNNER",
+      "evidence": {
+        "negative_case_sha256": "a2d0d83c2679e4cf25cd318a68c0734f76ee165328021ab0ea04ce814f5e5d80",
+        "positive_plan_sha256": "899a0e364f05db9bc37752135377272c5678c10c2d3ae1174975b0afb61dac56",
+        "script_result_sha256": "b3e7fd73be288b2c3a88aa48816f730546802a79be3d1e98ebb430fb043282de"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-SCOPED-MEMORY",
+      "evidence": {
+        "negative_case_sha256": "7ff13ea854ea176801e010d4fda3200c5d688e9e0d4f644ad7b42f7b98096720",
+        "positive_plan_sha256": "ab7ea3aabf97edf8776435fa2f441b18c92dec13e567f5e77a3fea88790f0a4b",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-SECRET-SCANNER",
+      "evidence": {
+        "negative_case_sha256": "83c75bdf31f573b13761c55f52a5e4339b8f12132c632f21c66b3da43bfec501",
+        "positive_plan_sha256": "30d69214891dc6fd9c6411a0e1d81e7b3e804ae3831e72e14894edb79a435486",
+        "script_result_sha256": "8385e338775beafa37eaf2a81a5e2c1f4bbf3db6d1a560662c4a74d3a8eefee3"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-SKILL-COMPILER",
+      "evidence": {
+        "negative_case_sha256": "9abded799d8adbe811373b2ddb508f06f26140db267ba3624671eed2ebf1356d",
+        "positive_plan_sha256": "ab1ddb532d1786942a4d28e69a1b618d5df64e76415120a4e0998046ca484bd5",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-SYMBOL-INDEX",
+      "evidence": {
+        "negative_case_sha256": "666bf6481a33e0126cdfe41befd806daeec985a31c2e2820c0b59d4ebae8f9d4",
+        "positive_plan_sha256": "357cb61ccd3d1d00b11908de300a2dafe4b05de61013f4b4f683115638b26fa3",
+        "script_result_sha256": "6343ef8ef92093e28d53c1346f8619b869da9df1edf915175e34fbad184856a0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-THREAT-MODEL",
+      "evidence": {
+        "negative_case_sha256": "de7a2b1ebdaeb6b2708e8c411f55760ba427ec2b814a270132cd76f3f3d1231e",
+        "positive_plan_sha256": "10b1efbdae78d75189e5218f9ee33cb677f74e306dc921c458e9d76662fb0363",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-TOOL-POLICY-ENFORCER",
+      "evidence": {
+        "negative_case_sha256": "d40c25f2f268abcc22d96acd77757da1389c7eee52c8b9ba62ee4118c7e989f3",
+        "positive_plan_sha256": "672eb4e69dca2d5d5a59fa052b2442ec9435958f21b8ed8fdf95e4073b64011a",
+        "script_result_sha256": "7a2e9337d40cb79034dff6d333866f6ca933ab2ffc1583f850010e8b8c5fdd40"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-TRACE-RECORDER",
+      "evidence": {
+        "negative_case_sha256": "8bdce06547d36bd16d9a1408fd88f344c8f25b78214e965fa75d390c32d98af7",
+        "positive_plan_sha256": "beb4bfd2b6c632a686b19279ee1c01900e1d7fc859a964b8cf0b4a58bf58f55f",
+        "script_result_sha256": "1bab3739b5842a630a3d587214a011265f41579445562567e5f11a8a23ec3a61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-TRAJECTORY-SCORER",
+      "evidence": {
+        "negative_case_sha256": "4bff5d4ec62dded1657139f0ef50a1b7f7915e6537c86ba76bc84dd3c22098fd",
+        "positive_plan_sha256": "7bcd9f99f4570e2c1c80cae314c465e6db8e9cc83929bf857b4b14a6f5c27426",
+        "script_result_sha256": "5bcc3c6d30e4c3a836e19b64ff30e4a8720ad81e04374a7f85874633f559552d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SCRIPT-VALIDATE-PACK",
+      "evidence": {
+        "negative_case_sha256": "2fcc4dbdbbdaf0d244c6a5c1de76fafaefc0f4dd6f620c625a02199ce9f7d773",
+        "positive_plan_sha256": "41ccd57fa58349f7dbf91da5f94ecab1e813807285a5af0b3700a80c09eb4f53",
+        "script_result_sha256": "7a2e9337d40cb79034dff6d333866f6ca933ab2ffc1583f850010e8b8c5fdd40"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-A2A-AGENT-ADAPTER",
+      "evidence": {
+        "negative_case_sha256": "fc2e4a5046b97eb18c61fb3baf65a78d310cba595694441327c2dc9a54177c9e",
+        "positive_plan_sha256": "5d48b805daae6727e7332ac1c03819edb105059f14b7c7bf03a4b900d50295be"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-ABSTENTION-AND-ESCALATION",
+      "evidence": {
+        "negative_case_sha256": "6ed0600651ed558991fb96440bab18426d936e6e0dbf3e4b4489df3249b0d52d",
+        "positive_plan_sha256": "7afdfe2c80e9490b7712fab6a79c8a5816a663e6b9edb1e759e6e9bb7e21dfbb"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-ADVERSARIAL-ROBUSTNESS-CERTIFIER",
+      "evidence": {
+        "negative_case_sha256": "9fd6f42ce3fe4429280cd780822cbffa48435df28da0e05ecfc261ece60a2c09",
+        "positive_plan_sha256": "8a2cdbbe8489c8aee05ab8991980f65d91a9ee51c13586cbd067b2919059117b"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-AGENT-COMPUTER-INTERFACE-DESIGNER",
+      "evidence": {
+        "negative_case_sha256": "863bb7c7c3e169ab68782d233b17c69999ced3cb8e9c6c65c0a0e23ae3d3c4b8",
+        "positive_plan_sha256": "0c71d5a42019085225cd86f317b95573cce16c30022ef3ebe8140823f5eb318c"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-AGENT-IDENTITY-AUTHENTICATION",
+      "evidence": {
+        "negative_case_sha256": "b34e48cd11c02ccc95195c27623f4ae9160619a01f095aaada90499a3ecdfe1d",
+        "positive_plan_sha256": "d0e2e444a523611dd4b050c658ab2b695d5fba4b6ffcba3d8f03ea2e96289113"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-AGENT-RED-TEAMING",
+      "evidence": {
+        "negative_case_sha256": "ccd670c207db8e3afdbcfdf512c5597556107acb06bdce9861c896a7785d705c",
+        "positive_plan_sha256": "9fe0a613e756e14b599a02dd96051d016d71f90caa9f9fe43f3ed2ab50acee4e"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-AGENT-TRAJECTORY-EVALUATOR",
+      "evidence": {
+        "negative_case_sha256": "768db29c6490a26dd4ee38089ebb0103353992875b6bc349df6a1019c8c82649",
+        "positive_plan_sha256": "956b863f3bd2ce4ff8116f8de41fd7889ef194e52d0d1ffd6a361ccd51ed9f4e"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-AI-BOM-GENERATOR",
+      "evidence": {
+        "negative_case_sha256": "fa472a957beb1c5331545341f86777158451a4d54da9e56b7758a8715069a86f",
+        "positive_plan_sha256": "890e763dfd6c0d295add9200dd49aa9216174ce94dab482603b84b7793bd95fd"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-AI-THREAT-MODELING",
+      "evidence": {
+        "negative_case_sha256": "61dfdf04701d9f51ecb4189e571b951658d714bfdb0b7463a660a70d29ca9ea0",
+        "positive_plan_sha256": "6797a5e4214a9a6f9b97e9a54443887ee01b904c525a5b8e0669a74f46642146"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-ARCHIVE-HYGIENE",
+      "evidence": {
+        "negative_case_sha256": "8a5f1c268183272bfb2bca8b8f80f1646002caedcb3c40e6c42fca98b5d325ec",
+        "positive_plan_sha256": "1cc7e731189dbd2f71a3a26abe9fa4ae16841e8edba2712419cc1904197632ed"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-ARTIFACT-SIGNER-VERIFIER",
+      "evidence": {
+        "negative_case_sha256": "fd1eec2cc9b8c92a53f619efaa94416758cace9470c32e444f63ca424fe63f43",
+        "positive_plan_sha256": "f5804c4f87519c024d38b2ec164df6b5593cc922e5e54a35819795c63a1d78dd"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-ASSUMPTION-REGISTER",
+      "evidence": {
+        "negative_case_sha256": "5e2639389b5e63ead51e1da9f1d6800f2e40777f41a47e15be1b1cf775db7c77",
+        "positive_plan_sha256": "581b0814bcbea577ee3f58405541cba418082feaa3b51f8630ff843e4ae7cd0b"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-AUTHORIZATION-POLICY",
+      "evidence": {
+        "negative_case_sha256": "c0515bb8c6e86b5c49d2ade27d9def67e63fb82002cc1b3a2f69e0738828e844",
+        "positive_plan_sha256": "a056c7bf4290ba268cd0ae88ef59b211b37c5a5d17e3c0660d275494b734be0c"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-BACKEND-CAPABILITY-PROBER",
+      "evidence": {
+        "negative_case_sha256": "092f23136e7ecbcfd46d964961b56538d804524d69a0083f5c04e79ae78e1f75",
+        "positive_plan_sha256": "932fd35fe64b28499a195426ee63725416250ed503eff0b81b2d74009479ee55"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-BATCHING-POLICY-SELECTOR",
+      "evidence": {
+        "negative_case_sha256": "a10ff7f7828a1deaa2378605485556c9407333fb9d6c34097c9840d0746e04eb",
+        "positive_plan_sha256": "fdb54463ba235546d65d6ddc6746c6ea7b7322ff28a8d74b3c501d46a4327c0b"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-BEHAVIORAL-COMPETENCE-CERTIFIER",
+      "evidence": {
+        "negative_case_sha256": "6aa9550a7603d1d3337bce8c1550ec99cd40e5df2344cb312288d1ad2221da45",
+        "positive_plan_sha256": "48aa72c927368b582e9a72a8edd416a154db9850d911eb4a2aaea5996591d4ec"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-BENCHMARK-CONTAMINATION-AUDITOR",
+      "evidence": {
+        "negative_case_sha256": "9d2ea9412d81cdd674f0424e1a1c1cc381bde657812b283bfcde4b84d557789b",
+        "positive_plan_sha256": "5bdf9cbad19048bdb10a9550a8deb7cde8fbf41d4cbd6fa2047f02113ab59b70"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-CACHE-POLICY-SELECTOR",
+      "evidence": {
+        "negative_case_sha256": "23b6a0796fc468988c62c9b0a03d0e69b51f02d43ced637f933f8a8e29ccd2b3",
+        "positive_plan_sha256": "9be8881080d2fb7ac5fb805d244660001285ce303cce95ebd90ad6baf408ba93"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-CALL-GRAPH-BUILDER",
+      "evidence": {
+        "negative_case_sha256": "7224daededb648271de02960fd732141281411e53355f5241d0108e990a04cf4",
+        "positive_plan_sha256": "7e4568855bf386b6be7173d23f90433ad2a0e327b6ae0177037fa580852f7c10"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-CAPABILITY-DISCOVERY-NEGOTIATION",
+      "evidence": {
+        "negative_case_sha256": "97952346ff5843255dcef0f6914d7b6679ae10bb5e9ffeb53ad7061f2eac1dff",
+        "positive_plan_sha256": "f2403d2f036a063a91e9571aa50e6585cfb881d1425bbda987b084b19f23ae12"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-CAPABILITY-ROUTER",
+      "evidence": {
+        "negative_case_sha256": "acd954b1ca61eb9d0f990c0223276e820779b639f16ca19cdd7b12836843d96c",
+        "positive_plan_sha256": "3f0fdf21c277baf009753a536568dbc976b2b898e035406ef1395821591422b0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-CAPACITY-PLANNER",
+      "evidence": {
+        "negative_case_sha256": "3ee9329d27657d3709d3851448cf345425ff763eab22856768cb8dc4019e214a",
+        "positive_plan_sha256": "72c2bd0f6289fbaefea8e680312aa24a5197be81a613431952fdf996e9fd937e"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-CHANGE-REVIEWER",
+      "evidence": {
+        "negative_case_sha256": "427089dfdcc3c4bf8afe6c6cdd3204ec483306474e5193bd418516d9ab80ca9d",
+        "positive_plan_sha256": "5b8c49aee2cee5a60f4833b6400b5eb03af8924b4afa62b2642f5507d3c17f6d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-CHAOS-SCENARIO-DESIGNER",
+      "evidence": {
+        "negative_case_sha256": "6c0f9297df56c5ad4f46d6aadf206745f5b3ea3057442b4a0d7931dc2ff15e45",
+        "positive_plan_sha256": "45b5736b33b2306987d16485e6acb746424115c2b7e2ec59628d5cd948d17a9b"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-CLAIM-EVIDENCE-LEDGER",
+      "evidence": {
+        "negative_case_sha256": "2b7ddc9fa9a94ad733cb7a8ffaaecbacef9523f76b958c5df56911a5d88e0bf3",
+        "positive_plan_sha256": "1c94fbda6b1cfcb9e7f1a9f1ad06bd97d8df1f9a76d3e9b6c5b69cc7b9ff66dc"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-COLLISION-AND-MERGE-PLANNER",
+      "evidence": {
+        "negative_case_sha256": "7babca220b285e66600ba8ff2add8ccd084603547ba6af1447f8fe9599872b41",
+        "positive_plan_sha256": "cc8dbacb7ade9a112405d419709ea3b53285f6a32a753ef99214d20c8ac0527c"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-COMPLETION-CUTLINE-ENFORCER",
+      "evidence": {
+        "negative_case_sha256": "febcb76e2dfa100821bbc8a49a9ba89d26ad831ab8ff4e5bc8c226c56745a180",
+        "positive_plan_sha256": "43623c34fe02e3885d4abb9c00d9079119537427e73d9b1e25990a9d675cf5da"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-CONFIDENCE-CALIBRATOR",
+      "evidence": {
+        "negative_case_sha256": "0a4f7ccfcf75c6554c837dcfa8cb54658eea6ef2aa90ca20fd6fb543ef2a9da2",
+        "positive_plan_sha256": "769b411479865ae6c86ad2496e71ced1f9a7380865ed792f6f0ebc59f7933487"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-CONFIGURATION-RESOLUTION-TRACER",
+      "evidence": {
+        "negative_case_sha256": "45ea8499d24c8da053c66e387ca56df92f6770fcc1c8ee77435f521582bce1bc",
+        "positive_plan_sha256": "548b883eec2c9b6b16892d33bcdc774c392197521cfd980816bdc8a566467dbe"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-CONTEXT-BUDGET-MANAGER",
+      "evidence": {
+        "negative_case_sha256": "db08b3d099c9c6835474e0bd6605c96d8ddc026e557ddf41331a9c638b5366d8",
+        "positive_plan_sha256": "e5996c116cbd424869739271427dbb4022ab99f178bbe0983d56d33b02bbf2b8"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-CONTEXT-INJECTION-DEFENDER",
+      "evidence": {
+        "negative_case_sha256": "3cb7ce90201cc9c2681a97e1e3954a06c493b03882c683fd8be81a4698169653",
+        "positive_plan_sha256": "a670fbf3a8c2b4e8ff5d0121759b98ba1ff5cd4788ca92be76daf8ee5159d04c"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-CONTRACT-TEST-DESIGNER",
+      "evidence": {
+        "negative_case_sha256": "34501ad3619ba32eb4020081ef088fe9784def7867ab0837b52ffad4794aa982",
+        "positive_plan_sha256": "d1fd9af8817c630858c7778077bfbdf8e7c234c0f17ea3ce20987e2afb5377a6"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-CONTROL-MAPPING",
+      "evidence": {
+        "negative_case_sha256": "2c2e98863ba2e99da341c796746789cfbb15c00dcfe5f8343cde9707dbb8ee6a",
+        "positive_plan_sha256": "c2502ff6595931134265fc8b67c977e92aa1246ef06da91993f7ac145161a14a"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-COST-RESOURCE-BUDGET-MANAGER",
+      "evidence": {
+        "negative_case_sha256": "fa2d0443007b0fa72f473e8b12722f82506aed0252d63744011fb27b8d12fb19",
+        "positive_plan_sha256": "2845587a453e0493c61947db5e3c0fda38eba1cef4f5da25c735d2d7d9b83b44"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-DATA-CLASSIFICATION",
+      "evidence": {
+        "negative_case_sha256": "47b2254123dba0c02ed647a23cb370be0b59b41891877ddeb95fcbf6c9ec89aa",
+        "positive_plan_sha256": "31557399b5bd5cc9f64b3b6070a0ae4fe49e134be1fe9b88dc7b68586ae44ac3"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-DATA-FLOW-TRACER",
+      "evidence": {
+        "negative_case_sha256": "e91dd74610139b482ba28121bc2d32d42251ff2635dd3d7d34bac00ef66d9d68",
+        "positive_plan_sha256": "82bcf89665b2fc5389631a8d450b1cc9d3809dce68be006af40cd34597520694"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-DEPENDENCY-IMPACT-ANALYZER",
+      "evidence": {
+        "negative_case_sha256": "2ce95144c58cd729f800ee24ed90673dcbfee5035b0b86524b895c80b1935b13",
+        "positive_plan_sha256": "227fb9246ecfd259e9aa348fceaad5f8ed4004b5839e7b102acbf4d6ef44d806"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-DEPENDENCY-RISK-SCORER",
+      "evidence": {
+        "negative_case_sha256": "6ff07c70caa37caa7af168c94c841c79ab3bcad3ca3d81d157fac9a7e2806ab6",
+        "positive_plan_sha256": "190f8e1acdf51ce01e63f9603d7ffad228be5e6ad9f13cfd3e0d23a22b7d3dd0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-DEPLOYMENT-CANARY-MANAGER",
+      "evidence": {
+        "negative_case_sha256": "61b4ca28393353fdfad387d955df441149e91560d4807039f1259065b059710d",
+        "positive_plan_sha256": "36bf030dd55b1e3ff3d0a391abf25ee476160072939b9d366a8977ff02e220af"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-DETERMINISTIC-CORRECTNESS-CERTIFIER",
+      "evidence": {
+        "negative_case_sha256": "1de3f65bc625ffd62485e736f7443a02ded68e07058f48f1b15cd39e12e95880",
+        "positive_plan_sha256": "25935e21be046565af8234e95b83f133a79b367064c563dd1349ef1b5363a5ca"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-DIFFERENTIAL-TEST-DESIGNER",
+      "evidence": {
+        "negative_case_sha256": "092ff3ae2204f0dd313feb3caa205c8fac24992d69f5d17b5850a17c07d0c9fa",
+        "positive_plan_sha256": "53e8a6f8f1aacecd98eccb513abb7b89851b7fabb5910fd89b81268c07b50acc"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-DOCUMENT-INGESTION-VALIDATOR",
+      "evidence": {
+        "negative_case_sha256": "0099199a17a500b735b43810558adffbbbf86ccaf9acde4a404356ce7f1989cc",
+        "positive_plan_sha256": "af8cf57748781ce4cc45597ab250cf3880464f395791b4ffdee120ef79853ecc"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-DUPLICATE-CAPABILITY-DETECTOR",
+      "evidence": {
+        "negative_case_sha256": "175b81647179324f5f7430d7b3fd2d949054ece0f5ae3304a6d6e8e25dd6d331",
+        "positive_plan_sha256": "e4cb53362c966a3233a8d536e8876c856e6bf0729e8594e88e6fec9a00c1bd3e"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-DURABLE-TASK-STATE",
+      "evidence": {
+        "negative_case_sha256": "97f5f5096f32eaae80ac2b9bd6ff4a56b462847df93e0133f4c65dacb2dff20f",
+        "positive_plan_sha256": "d4f290a29d69ac9b3560d0002e49547076f22de06ab906f7caf1138bc7d4a506"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-EGRESS-POLICY-ENFORCER",
+      "evidence": {
+        "negative_case_sha256": "9124de6bcb847eab469adff071cab316aeeb493bac8f07aaf0aa17f148ad0f44",
+        "positive_plan_sha256": "9e21e4b0dac482c9b11c299be216113f00868840440c3da8d9cf240fca8e3c72"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-EPISODIC-MEMORY-MANAGER",
+      "evidence": {
+        "negative_case_sha256": "fbeadec540941ef55c57d810fc53a2c60c07b7ac61b99db2cdc56f92ca23b52e",
+        "positive_plan_sha256": "0bbd40bfe250e3ec54b133fd0950055dd7ef2238f20d259b6a8472bb310376f0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-EVALUATION-DESIGN",
+      "evidence": {
+        "negative_case_sha256": "cf6e20c956ee1b1e1f324f77746aa5ed420b32c71db39f540b3cd9c4012e238e",
+        "positive_plan_sha256": "89f9302149e5b1a79387425926996b92fa619c82450a3ba58e6834216349fe36"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-FAILURE-TAXONOMY-NORMALIZER",
+      "evidence": {
+        "negative_case_sha256": "4fe1bbac2134d8ea575b2f7cdb6de0679c9347db7798bab1be62768942712bea",
+        "positive_plan_sha256": "ab17fbf7d9dc6cc1db87a52054549683479b056cd16a9e5f0dadbc8bf21158f7"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-FALLBACK-AND-DEGRADATION",
+      "evidence": {
+        "negative_case_sha256": "b7c4a4d34e767586f2273bc2ff2dd7df2023391e34dc518a24ad4fe95d8074ca",
+        "positive_plan_sha256": "d8ccef0d040ee8afa30a52e3ee34c4bad2e2af7fc64b229222f4ef8296f16549"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-FAULT-INJECTION-OPERATOR",
+      "evidence": {
+        "negative_case_sha256": "eaf183de74e6218d67ff53f20658de8e4616a3b7f84a33d3c40ff8f7ebb44d73",
+        "positive_plan_sha256": "c7f1de60c2d079f7d42833b36637ef974e77c196e4fbc440a3fb4173816ddd5b"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-FIELD-VALIDATION-MONITOR",
+      "evidence": {
+        "negative_case_sha256": "aa6f9ec5c8f44734a3c0610c41c2a8eb637f7bd82a778fff9615c35e0e6d161c",
+        "positive_plan_sha256": "8ff170c442bd50b934dbc0cc07b619b1e9434173231ace54f415ee26bbcdc2bf"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-FLAKY-TEST-DIAGNOSER",
+      "evidence": {
+        "negative_case_sha256": "791488384b7bffb87030e434cdb8d8cd3fc97adf18f1d6a73f1db5742b5a6ec7",
+        "positive_plan_sha256": "0e624916aee469aa95f9c6ee9e51ef8e370c413c7edff295fb86dc6093ba1e1f"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-FUZZ-TEST-OPERATOR",
+      "evidence": {
+        "negative_case_sha256": "a041bc3e7c9e6156543895951b8f83d846598d49fe25e7891527fbea6764516f",
+        "positive_plan_sha256": "a4c6657c599ea2037ae58db46ac440c05d6bcc440b418fcfba84da592357ceaa"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-GENAI-TELEMETRY-INSTRUMENTATION",
+      "evidence": {
+        "negative_case_sha256": "89ad8444e606dfec0ce49c6f34a44ec116c114598890e4cb9c8193b9571bbce1",
+        "positive_plan_sha256": "730e3d46c8c27022603858c80e03aa816e3ae65243a7a763e9df95a78f0b24c5"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-GOLDEN-MASTER-MANAGER",
+      "evidence": {
+        "negative_case_sha256": "c33e4529940c773943277522c9ac70613f2031707dec9cba58e5677ab444c269",
+        "positive_plan_sha256": "d5375c5e91472b8d558116210b6e829c0fae3ccba7612b16dcc98b16e6ef8382"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-GRAPH-RETRIEVAL",
+      "evidence": {
+        "negative_case_sha256": "ad9c2405ad1adac6025681359b117ef876a0bd907fda7ea071abdea17410bea8",
+        "positive_plan_sha256": "3f221600f27f1ea49a4cf309fd4e72fecb664436728ed7670cf02b739be355cf"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-HANDOFF-PACKAGE-AUTHOR",
+      "evidence": {
+        "negative_case_sha256": "0fc23d3a48d3e3bf3903015f0972e0af512dfee9ebbd01c395decba7e804f2b4",
+        "positive_plan_sha256": "ff6bec672b8942d14eef48ac3d3d4f8d4290ddd51b690f5af939de3ba02584e8"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-HARDWARE-TOPOLOGY-INSPECTOR",
+      "evidence": {
+        "negative_case_sha256": "81b0a597a0ec7a07255dfea061188f479ca43272793017fd0d5c6f8ff642ff29",
+        "positive_plan_sha256": "c49f76a73a5158b666d02b57d10d77c0d4c98c7b54e429e112b7e9b80d2c2e9b"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-HIDDEN-TEST-MANAGER",
+      "evidence": {
+        "negative_case_sha256": "a13d9719d3e69a2d3f433d8b21e29fdca37f740b817616742041af99123fd860",
+        "positive_plan_sha256": "aa1efc00b8d3f65c20c15b16b3e35a4ff64fba5837b7a6d1d4ba014f56553755"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-HUMAN-APPROVAL-UX",
+      "evidence": {
+        "negative_case_sha256": "8e86f97c6713df7cdb86f3ffe016ee990756cc0c2163f44ebed8dafdce1789ac",
+        "positive_plan_sha256": "533bfcb85e1658834e23e7658cfe41f88ff4f84385407d6c83aca5b2a549d042"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-HYBRID-RETRIEVAL",
+      "evidence": {
+        "negative_case_sha256": "0f036577c39c70616b129a0f98ad02f12219be9994f42fe2b673e85a4a42881e",
+        "positive_plan_sha256": "a773ec6005d75a3eb71f13c47d88af53e643196fb167863536c1890f0037770a"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-IDEMPOTENCY-AND-COMPENSATION",
+      "evidence": {
+        "negative_case_sha256": "d377211e1a58b0f7c9823dfb787b46a788285ae7a3d313cf6448bb359bff42d0",
+        "positive_plan_sha256": "73256477935133f4e63e003e9056abe1e03c46d889d39c7b66183020158ee253"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-INDEPENDENT-VERIFICATION-GATE",
+      "evidence": {
+        "negative_case_sha256": "b6148fe31e96429978ba59f50349eb3e01f0b4c3562ffe96fb169b822cc46685",
+        "positive_plan_sha256": "aa582ff5c5a80129e36f7c6907974488bf0b5460854c9e426b326cc557381b21"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-INTEGRATION-TEST-DESIGNER",
+      "evidence": {
+        "negative_case_sha256": "accf6b576795589a2cc8279be49b74ae9628722dcb0ca10314d36555f9d92c37",
+        "positive_plan_sha256": "79ab082702b1cc53272b74cab78872ab604b8e2f13d6c2e9fe20b1a6541acc15"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-ISSUE-TO-REPRODUCTION",
+      "evidence": {
+        "negative_case_sha256": "74c9ac16f158969195dde4e7becf7fc351a5954bffebffc6f516d1539652a583",
+        "positive_plan_sha256": "5e28a400d3413bf32595f84a9b9da531d9fe4e65bbb20a28a26736b0b27af277"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-JSON-SCHEMA-TOOL-VALIDATOR",
+      "evidence": {
+        "negative_case_sha256": "17c9c47c2f3b1b06d9904f4be874b8f72eab8dffce1b69308796f832554883ad",
+        "positive_plan_sha256": "5c7237394bbe9b431949644d00d27ded08242045923b0360db114263a9def04e"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-LICENSE-COMPLIANCE",
+      "evidence": {
+        "negative_case_sha256": "c286445664055187f1bbdc221b71f78ef8e9da90da9a9ae556c6ba1702ec6b0b",
+        "positive_plan_sha256": "1668c5ec30b57ea738d09b4eebd8f258edec9ef84b4d178e2c33c32da3a53d34"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-LLM-JUDGE-CALIBRATOR",
+      "evidence": {
+        "negative_case_sha256": "5a9ea9a52d1e6fb81b9e67ab59c28c75610055b2fb6f83279fd913827d8c67f7",
+        "positive_plan_sha256": "23594ff6a5b5c9eeac42a4361178151100c46bb75faae2a74cf7be183ca88501"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-LONG-HORIZON-RELIABILITY-CERTIFIER",
+      "evidence": {
+        "negative_case_sha256": "c687eb516b96012d47edae6ded6329ae84e9f633be3b94ed7ef6175bec063751",
+        "positive_plan_sha256": "ad890f89959d813c71e8953301c216d7e2316c2a732a33d16cc0474ebcb8cb40"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-MANIFEST-RECONCILER",
+      "evidence": {
+        "negative_case_sha256": "37271cf93903216cb23cbe9864f2cc8dd148a34561909f4278d0bc5f0d5801d9",
+        "positive_plan_sha256": "cd7f2a67fb215e638b0b16945b5ce3788d0fd6fd86f9b07a214899d0a8c5af91"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-MCP-CLIENT-SERVER-ADAPTER",
+      "evidence": {
+        "negative_case_sha256": "558697a5392f3abf40819a5a04e24ab2302d0dc6896f3b05f74b7d1fe9c4b3b8",
+        "positive_plan_sha256": "5eeebb71d47f8ab9035b36eb10089f9413649503fe86af2bb8fae52c096106fb"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-MEMORY-COMPACTION",
+      "evidence": {
+        "negative_case_sha256": "3d2647ef791ecd4288a65d2a5f7d44854382c74d20bd47568c5ea1768c057feb",
+        "positive_plan_sha256": "14afec996b9a9f2f2edaa700f48f611105d45bcfe97e7f4a19c559a510a9fab9"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-MEMORY-CONFLICT-RESOLUTION",
+      "evidence": {
+        "negative_case_sha256": "05a0f7e38fa203de569dd2c5d0e2d13a846ca22ab61d192c681f7ede7fc5a5e8",
+        "positive_plan_sha256": "2ee95a63d3dbe9a16a813819fe733d78c5a219f9f417379857d4c012c95111a7"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-MEMORY-ISOLATION",
+      "evidence": {
+        "negative_case_sha256": "06863c155bab0178621bcaebc935dd0dd7b24e99ead8d1a48913f9685622ff5e",
+        "positive_plan_sha256": "9fc86d4ba9d2dcc9384b0a8bf0b3af8d1925bf0d763e6d591fe15d0f44d38b42"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-MEMORY-POISONING-DEFENSE",
+      "evidence": {
+        "negative_case_sha256": "894f73cdd8f8433ff7b97350442db7b4a08a77f3aadba422bc0919419e67bc2d",
+        "positive_plan_sha256": "2b43f5c1f5c22b5a1d1f7e1c37eded3bf0e7365190cab2d3fba8319ff5e17e9e"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-MEMORY-PROVENANCE",
+      "evidence": {
+        "negative_case_sha256": "fb4d5cc7bf7c1336b27085b4704ae1fdecf76addfbad83ffcfaab868982e429e",
+        "positive_plan_sha256": "e227836253128d648a01c38d06807f07d13429441b32dfb0e0f23a9996c19806"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-MEMORY-RETENTION-DELETION",
+      "evidence": {
+        "negative_case_sha256": "2e96f96898873c7ce19bf8f077dfa2634f738cc1b33d51a86ce5b8ac3ffa789c",
+        "positive_plan_sha256": "7d7b2d2eb8c75cac5fb89c2fbc9a27b094f5f5968db3c20478977394a5800b79"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-MEMORY-RETRIEVAL-PLANNER",
+      "evidence": {
+        "negative_case_sha256": "0cf0a1a97d53fb8de7558a6bfe1743f2c49330f93cfea8e358fbfeb2b6453610",
+        "positive_plan_sha256": "dff1083ec123b5b3184667e10aa81132222f30117fbe527424c5003cfd783e2a"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-MEMORY-WRITE-GATE",
+      "evidence": {
+        "negative_case_sha256": "376a6f46f6b9eac05c5abd67519478c5e7c9caa292d40c3201722b9a6fe047bf",
+        "positive_plan_sha256": "8780664dc7e0e2973d6d38e92f115cd9d0f1f1b7cd68010fa0da0c163f99cc24"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-METAMORPHIC-TEST-DESIGNER",
+      "evidence": {
+        "negative_case_sha256": "c8ad241d880ec2ec01a6c7ecf075e62c9d7feebe029d8ee4f65f5f8c1f8bbe39",
+        "positive_plan_sha256": "ef23ee37e4875368b39d1071ddc3027c863ebe75bcd42bc2ecd87fe84c6e007a"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-MIGRATION-PLANNER",
+      "evidence": {
+        "negative_case_sha256": "a789dd91bf0659621b3126bca45f188924d064a673d35895218eb830dfcb3d49",
+        "positive_plan_sha256": "f9a1e56c57304a591bd56747403fe014ad514760c89d98c4a8621a27939cffbb"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-MODEL-COMPATIBILITY-PROBER",
+      "evidence": {
+        "negative_case_sha256": "8c6c1630bd8b2656f09b3e97fbedc03544fafaaefa4119d4746c4c6cb93d2020",
+        "positive_plan_sha256": "19fb1c4b67c6040ac3978343c89936c6e17abb4539c24b391685e20becc2756f"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-MODEL-ROUTER",
+      "evidence": {
+        "negative_case_sha256": "608204ce1a46fdf47c115dce69c2b5300ec00c6e8c453b1c2476303fcae37b37",
+        "positive_plan_sha256": "c8b3c8f7678104a563b48df8926d53a47bcebc3f3f725ebe91fa2aaecf69b464"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-MUTATION-TEST-OPERATOR",
+      "evidence": {
+        "negative_case_sha256": "951f0af5c225762a58164196a1f3c749629d16a03f282a0906bbb935e20a2cde",
+        "positive_plan_sha256": "bcb25b17ed864356fc02943c463aec8b5b12d57cb0c992beaa7c4d11876adc0e"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-OPENAPI-TOOL-IMPORTER",
+      "evidence": {
+        "negative_case_sha256": "bcaa3cc917160aa0315637fd247562d9cfb08571e29011a06ecd0f9f9140edca",
+        "positive_plan_sha256": "c5ce8d82bde9e29a632f59fa32eb8bb0aab689c744f0f121b07dcf4e70c17473"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-OPERATIONAL-RESILIENCE-CERTIFIER",
+      "evidence": {
+        "negative_case_sha256": "5db30df20ac133bfd6133a0645570012055b01dfca98d6be4312cb2a946a895c",
+        "positive_plan_sha256": "86f3337725356caa8af3dfdd80e72310f6e48de6720c8967cd5ffa8196c826bf"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-OUTPUT-SANITIZATION",
+      "evidence": {
+        "negative_case_sha256": "d47c4a047741bbb2ff2203edeac16f4143d01d070cec652ef39a64f6f5fe30e6",
+        "positive_plan_sha256": "4103faaab9a931cf946e9f95056c1faf127738594b6756a7bd311d326b6b4cdb"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-OWNERSHIP-HISTORY-MAPPER",
+      "evidence": {
+        "negative_case_sha256": "49d86f532dd854eb3831e667537cf60ab3821bf5e13d367380d9bc96a522f551",
+        "positive_plan_sha256": "82cd3fb788fa673e471ffe07866d21c235c4ddee4dcf77e126c16770c52dfd7e"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-PACKAGE-INTEGRITY-VALIDATOR",
+      "evidence": {
+        "negative_case_sha256": "6966ad0b6109923e617e4a2be0fcdbea8c3cdd35309351a2428ee0ed8f236378",
+        "positive_plan_sha256": "5e0e8d5f3473c7799d1f299700e0572ed9ba3180e6403dfd375d05e95c90c8e8"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-PATCH-SCOPE-GUARDIAN",
+      "evidence": {
+        "negative_case_sha256": "a86b68bf82ed90bf09d2e36ee644dabb3e2ae31e40783dea237cfd465a131b6b",
+        "positive_plan_sha256": "663dc334420854cb62546944b1acece43b67f5d7b08d10435459d92b4ada4d90"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-PATCH-TO-TEST-PLAN",
+      "evidence": {
+        "negative_case_sha256": "15c3c2d8f020d8c9b17a8bf3df9fc094e29ea407d47301188136a7ffee8b5291",
+        "positive_plan_sha256": "69391c8985f3f278b02a5d933538ef2854301ed1df7cf7eacc0287f274b1333d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-PERFORMANCE-REGRESSION-TESTER",
+      "evidence": {
+        "negative_case_sha256": "81ea012fd3c416f3549003055ada38bf1eed533530b018485ec056e2cc3b428f",
+        "positive_plan_sha256": "a6fc29f066543bf8daffe0ec8531ef7c47abbcbc438551b6c2aa5849404aea09"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-PERMISSION-SCOPE-DESIGNER",
+      "evidence": {
+        "negative_case_sha256": "94423715def379fed0d8d0f4a35036633c5066e34fdf7047bf7ed806d1089d17",
+        "positive_plan_sha256": "82236492cde57085e6d3bd38447b9f71e85553a1990bf2b4fa2d37c1c55bc139"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-PRIVACY-IMPACT-ANALYSIS",
+      "evidence": {
+        "negative_case_sha256": "9aa007417b7bc5f53038c811894ebddc9d3f0b450bfc73c72a129aa6cd6a63a3",
+        "positive_plan_sha256": "850740a4969098390c573b18f1beb515261eb29d6427413c3375140e01372ef4"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-PROCEDURAL-MEMORY-MANAGER",
+      "evidence": {
+        "negative_case_sha256": "5de35960f6c92cbc12022eb1c3f0b251b0a8016fef0e4fbfc3a155014f52a83d",
+        "positive_plan_sha256": "3906169ea6fb9008ecf361f2e3fe246b7ba59d0b57efc507c493f7ac7cb7af03"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-PROMPT-INJECTION-DEFENSE",
+      "evidence": {
+        "negative_case_sha256": "cdb1e93d2de9a9bdc21094ed56f6e3a6c423fc8adfdb23546b22d69a2a1e4f39",
+        "positive_plan_sha256": "33b8b2189c89313d2f64f1d8704cfafd57ddb3495f10ac15599dd42045a16a76"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-PROPERTY-BASED-TEST-DESIGNER",
+      "evidence": {
+        "negative_case_sha256": "04419111caad1e50214fc4024382ed156aaff2da5bca280a1859c77dde04b8a8",
+        "positive_plan_sha256": "47acd47f5169dfc32c15291e5ccc5ac9408afca6588362f39230e899519c5b54"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-PROVENANCE-GENERATOR",
+      "evidence": {
+        "negative_case_sha256": "7fe0243401d44bedb3285839a768efe3e2785bff9596967308922adca842d992",
+        "positive_plan_sha256": "e089305bffbc15a14da7f784c21bb31c01db73920e2530f93dddaf3cf9ff64f3"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-QUALITY-DRIFT-MONITOR",
+      "evidence": {
+        "negative_case_sha256": "bf62a899f30e123582ca9b61c90e51c97ba2f19049afd26e4e2875783c2db6f2",
+        "positive_plan_sha256": "870d7476b6df520956e8c3966c4116419170f8e816e8b9fe2acd3ee0f30800bb"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-QUANTIZATION-QUALITY-EVALUATOR",
+      "evidence": {
+        "negative_case_sha256": "19a246692b3ba34b31f6281b9873883819fd17ba67300c24de1440b1a9932f29",
+        "positive_plan_sha256": "fe8d41b2b1710a99c0bf34266e18034cfe548c020af2ec7efd02594bf210bdb8"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-RECERTIFICATION-IMPACT-ANALYZER",
+      "evidence": {
+        "negative_case_sha256": "9eaeb6e4b08ce609f1f02c56055aff88a5b804eb250130ded2148285005c84a3",
+        "positive_plan_sha256": "3b8a6ee67a2f318d68ce88454f64a06b54cee0f6f4e92a691f5ff751c3dfb87c"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-REGRESSION-SUITE-CURATOR",
+      "evidence": {
+        "negative_case_sha256": "d344b68913030f3ba952ff21747de8ab6df0b022fd7873931a3d50e2166a3b6c",
+        "positive_plan_sha256": "04d903c41e7508974f89215b349c1df9db5e46130ea91dc1e04535b9a71e443c"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-RELEASE-TRUST-CERTIFIER",
+      "evidence": {
+        "negative_case_sha256": "278752a91a31af2cafd7e4d03c36822944e08ba1ee62d01b61ae9b1bb1dde8ae",
+        "positive_plan_sha256": "8663538d124641b6d5644d4af970ad33edd30d52d8d009bf48347239a39105cc"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-REPLAY-AND-FORENSICS",
+      "evidence": {
+        "negative_case_sha256": "3d6da3c4d98df48b23de9274afcb1f7746d03e0e11471847c90ad0160f5c08cc",
+        "positive_plan_sha256": "4e616f07393653bea1dadfb3450f568a60ac6f09779b6257227a095a0179a0f0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-REPOSITORY-CARTOGRAPHER",
+      "evidence": {
+        "negative_case_sha256": "50da96d41c71bb5c11ac741dafff60fd572231d728dd6d551bdc402e09953b03",
+        "positive_plan_sha256": "5020fb635498f9108eda07b33d3f0419cce266446a72c14e9a0365a7c6bab56d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-REPRODUCIBLE-BUILD-VALIDATOR",
+      "evidence": {
+        "negative_case_sha256": "5ed6f1f0bb31c83cad5b812e34acb594db7bf0fc2e497a3b143a05a5d4e951fb",
+        "positive_plan_sha256": "743c5df9cfaf8f791ec543a37f1be3e71cefa91d838f4e3578b8a03eb50b7f83"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-REPRODUCTION-MINIMIZER",
+      "evidence": {
+        "negative_case_sha256": "b0439b3e4c76e684ce0ef31e962c51a87cf0134027ec0c9d55899829177b697c",
+        "positive_plan_sha256": "8432d1e1b92c372720ca8d3e6405612a327c6cf1776392cce163e8eea75a6408"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-RERANKING",
+      "evidence": {
+        "negative_case_sha256": "b73bbc8bd8884c1947701435fdf9ebcd776ba4d1815d7a01eac8e7bdf0802c7d",
+        "positive_plan_sha256": "f3c2b111fb62f2690321c8102bac2ef953fcc041541255e2bb72b14253a96fd2"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-RETRIEVAL-EVALUATOR",
+      "evidence": {
+        "negative_case_sha256": "5a1cc2765f3c0d8885467e63fb2631919568a67ecf6244c9dd034f466e17270f",
+        "positive_plan_sha256": "6d24a870bd28ee23f84208cdb83c852b01af208b0c3049ab599e362edd2a1a30"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-REVOCABLE-CERTIFICATION-MANAGER",
+      "evidence": {
+        "negative_case_sha256": "df48547668bb61e08c220cdede40e888822ed5a2bcf8d0820c752748aa2982be",
+        "positive_plan_sha256": "522dd00dbe8b1fedd5752e3b7f4e9e78cb136b162e45475b357c76fde3e22405"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-ROOT-CAUSE-HYPOTHESIS-MANAGER",
+      "evidence": {
+        "negative_case_sha256": "798ec358b73581c154b9dab5a789eeb90346197d326937c8a6259bc2de1f04b5",
+        "positive_plan_sha256": "ae0f1e0ca1156cec17c24863f3416ec27668d544ba3c3e54bdf41b72c3990eff"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-RUNTIME-PATH-TRACER",
+      "evidence": {
+        "negative_case_sha256": "ba71cc0b922499c983786e9cf079ac230f5343c1eea439f362a3f8b3a0b3c478",
+        "positive_plan_sha256": "40b1c33f8b3d5c80ab64be841071245449a075eae76f2db4d020bffbcb03914a"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-RUNTIME-REGRESSION-TESTER",
+      "evidence": {
+        "negative_case_sha256": "1e43d55fb1b18839cde8158c3c4432f7cd76e80db2321e9c5aa6aa90e576a8f3",
+        "positive_plan_sha256": "e45b9773ccec4067db4c3b06bf2bc8e4ddfc8dd5a5972f42ee1751986339ef61"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-SANDBOX-PROFILE-DESIGNER",
+      "evidence": {
+        "negative_case_sha256": "3edc0336297c323fa019683db8ff9e1618937b3c0f6bd53c5e2eb17629783617",
+        "positive_plan_sha256": "60e7ddda27b457fb51fd91ff2bf2151a77be5d014106d04ac79902a2e03da4be"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-SBOM-GENERATOR",
+      "evidence": {
+        "negative_case_sha256": "1ce0a89fcaa2d5f8599210a4382652980b0bfc43f8250d27ed23fa22f3aa0b1b",
+        "positive_plan_sha256": "05d5d95bcb5b9e60a7f8899fbde621b91559c5b6e9120c66158f0d5c1da97bef"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-SECRET-HANDLING",
+      "evidence": {
+        "negative_case_sha256": "dc2a4614afaa8e17e714a15469501f5f88053176a7aacaab18c5c9ea5d6b88b3",
+        "positive_plan_sha256": "cfd121c65531403dd9ede18da42f7c2f82845e50e397f8a30aeccf6b864e6922"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-SECURITY-BOUNDARY-MAPPER",
+      "evidence": {
+        "negative_case_sha256": "bdc1a818c2f116dd3617f04fa77eabd0eea2edf471dddcc9b3bb3213bb6e712b",
+        "positive_plan_sha256": "f9b4645183a1448b62a9cea64eb8f8e2abcc1d51bf8087abb4baa0f45ec1d188"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-SECURITY-INCIDENT-RESPONSE",
+      "evidence": {
+        "negative_case_sha256": "670286fd06f69c5e084cbfad3f23a6e8786458480f3a2fdb1f65a417b94791ce",
+        "positive_plan_sha256": "8c534795b8f3f0271a4031466656e7304ed294e3bf313473223e4b7a93bede17"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-SEMANTIC-MEMORY-MANAGER",
+      "evidence": {
+        "negative_case_sha256": "a84516ce7914a57544e98f32f17a6429362d58f0ea48ae8117a70d3750c3e716",
+        "positive_plan_sha256": "01e86ff2095e88e989fc7817e8fa4d0ba1206e83c36d48ddc98e06361c0dca8f"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-SERVING-BACKEND-SELECTOR",
+      "evidence": {
+        "negative_case_sha256": "a6b5291168412b710c8b8ecdf8c86849a1a4c91e7cbb99e3649dfcf5987f94fe",
+        "positive_plan_sha256": "8d02bc21cb47a049582227ac45ccf9bdd82da64fb3d0be189105087aabd2232f"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-SKILL-COMPILER",
+      "evidence": {
+        "negative_case_sha256": "9abded799d8adbe811373b2ddb508f06f26140db267ba3624671eed2ebf1356d",
+        "positive_plan_sha256": "d786b635be214b9919abe248945078561e07baa823f5ab3d8b22eb2ef290a7b6"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-SOURCE-CONFLICT-RESOLVER",
+      "evidence": {
+        "negative_case_sha256": "5f71642d89cad8365873f4773eed7bc0b0235cd35004d8bd404df895e39e6a2b",
+        "positive_plan_sha256": "9eaf5e3b49d64d00a65e1ec83172a95144cf25e28c06e6c1648e72ed004a788b"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-SOURCE-QUALITY-ASSESSOR",
+      "evidence": {
+        "negative_case_sha256": "fecd33b575f8deb2d488393fcf03b660cde719cc4394bc31f4b412ea7104d75f",
+        "positive_plan_sha256": "fe2e66dbfda180a857476a3a99edc119f80ce344707c76eb6600e3d7df986a6e"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-SYMBOL-REFERENCE-NAVIGATOR",
+      "evidence": {
+        "negative_case_sha256": "41d04fde34f530e659b1933d78254e34bb1938bb36c02c01912a6c8ed7b481ae",
+        "positive_plan_sha256": "ed0edee49630bf11a98d10cf164bf3abc5f8c0a1270b3fb271e88b6b734579d2"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-TEST-COVERAGE-MAPPER",
+      "evidence": {
+        "negative_case_sha256": "022c9b41f1c7db6ccc99f8a1108b0f6d34d9aae568ecf1381975e673a1628ea6",
+        "positive_plan_sha256": "854269d2323c2af129225d4549425912a63f7781cc73a460203aaf6eb00aef71"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-TEST-QUALITY-AUDITOR",
+      "evidence": {
+        "negative_case_sha256": "d8f4ed59b43e9df994093a55fcc8fc13f1eedb240a265a2970b6d306e68c494c",
+        "positive_plan_sha256": "cd35a8e338fb2cd4162a6167c455dc58fd0928da0536dc21079f8fe698f8db5c"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-THROUGHPUT-LATENCY-BENCHMARKER",
+      "evidence": {
+        "negative_case_sha256": "22143cd6a8e7c683afb8349056d1f2430f8a5d75bcb7e9281439970160b53f0e",
+        "positive_plan_sha256": "a440874aaa373d2bae149b4eaf2c99c037a1ee00032d702decf17491fb214422"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-TOOL-ABUSE-DEFENSE",
+      "evidence": {
+        "negative_case_sha256": "63f67a1848b5b651dc8ba0cf0632da2f7e618e1561a2ab4a6bdf778a92fce22e",
+        "positive_plan_sha256": "594deecc74a9d73f2dfdd3f53790fb7481b1e00cf007df8c911a4179696cc4c0"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-TOOL-OUTPUT-SANITIZER",
+      "evidence": {
+        "negative_case_sha256": "71b0236b15bff1191022b7d53fe32ecfaa7685c596b2ec550a828dea8a356daa",
+        "positive_plan_sha256": "9df1a4ce136822b5b1870964fdbcd7c43ab30aa2f54117afd059aa2f78d0151c"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-TRACE-CORRELATION",
+      "evidence": {
+        "negative_case_sha256": "47802c643eedbc2260e8140e1e6f899cf1999bcc123d991c78f8a197aafc0c9f",
+        "positive_plan_sha256": "0708c559b5fa72b37aa2f456769ad5f23e40d2d770592e1a2b52f3d7d74d1d3d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-TYPED-CAPABILITY-CONTRACT",
+      "evidence": {
+        "negative_case_sha256": "5b3058bdaa2ee5b632fe6de58029046870cce56c902308c10ba5ad6691542a10",
+        "positive_plan_sha256": "b9f05c6af53092f3788cf659d991f830c7bf4575ad4b6942dd7c7ff8fe12722a"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-UNIT-TEST-DESIGNER",
+      "evidence": {
+        "negative_case_sha256": "f073331732d1546105448e2a643973d7aa7f03fce11e62b272a53ed9a5a0984b",
+        "positive_plan_sha256": "4b6c9c1575370ebfc0534ec846de8d2c2494b829c1886a4e42f187cb243322c8"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-UNKNOWN-FIELD-GUARDIAN",
+      "evidence": {
+        "negative_case_sha256": "e3c6731b37e1d186bc1607936c10834eaf3b8b909a3f9b2db51cfea08fc3c5b6",
+        "positive_plan_sha256": "5b14b024942deb0e37d806589a6d4c634b975fca8162f7d9e0848cae4b72b596"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SKILL-WORKING-MEMORY-MANAGER",
+      "evidence": {
+        "negative_case_sha256": "55f9b4de14bbbdb206026e4c0016deb0b05dd0722d67eaab6ded38363271745e",
+        "positive_plan_sha256": "06aac318991aa098da6514b4ca1d6a79d538f39e8612e1a85bb6335788986ed9"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-01-BUILD-QA",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "245fc096ae9498a7cae238f6772f3acd52e9c5fff8bc921795d704d8ba22f013"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-01-CERTIFICATION-REPORT",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "48ca55e22bdd64f5e075fde3fb5d9e3575ba9d12af65137d882e886974005f2e"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-01-SHA256SUMS",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "3efac226650d7be1f6fb706539a51f00085408154edaa35ef2829337c6943a5f"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-02-BUILD-QA",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "e75751fd6918414c48786f8601d3438fd4cbda70bd65dab7e29addd9ce7ff624"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-02-CERTIFICATION-REPORT",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "014bb1e69fbf7edf0e6e14c79e5e48ce3d8289b857004a70cd6f7cfa87f18c01"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-02-SHA256SUMS",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "9ea8e056fc02c36c815108a0324dca11da9943e11fbf78c50957a58b754980de"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-03-BUILD-QA",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "bf96a7d254f558ce07d98429b035482c431bf6d5d9d5cb26f552e1778b400ad1"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-03-CERTIFICATION-REPORT",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "4648fae72dfdc35a298ecb1f941656eb86cfee691e77d8d9a38d617b153f2f86"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-03-SHA256SUMS",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "4fdffe8e8b88ff242c5f9b87fb2139365146a563ff9273cd5ba179d4a617ea88"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-04-BUILD-QA",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "4d0388f5562527e4c758c2649ba8dc35f4e77ac3c4efd51307045826d9c0b0cd"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-04-CERTIFICATION-REPORT",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "88224281129a5221f78f47e4b10d602f2b787687755025e6ceec353060bdd109"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-04-SHA256SUMS",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "bbb7f81398f9b54904aa7cff115ac74aa371514a731fe68b89a0cd58bf2d2640"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-05-BUILD-QA",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "e3821d287785aa23aefe54ba45a6e3707ff4de4c91fbcf6f03e9d7dff2dac8b5"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-05-CERTIFICATION-REPORT",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "ea9c99d691ccdd96b04fdaa949d64c3d0583383992bd0071b93ff768f7a1b12d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-05-SHA256SUMS",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "257d6dbd3563d67b65ef1d7c166024a341a1b4458f277c179cf341de1b7e6507"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-06-BUILD-QA",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "97a8636a52a31e93b2b72ff69f933f680864e0856bd68cbcfd0b0260652de6c7"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-06-CERTIFICATION-REPORT",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "c775b178efc8bee8b3714877e9b0eee3122c7419f207d670cd6c97ab8aebafdf"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-06-SHA256SUMS",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "653ee334f404e0926a459ad70dc262930043b09e258163eed7ab20b36960ee9e"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-07-BUILD-QA",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "3cddf5bd48c7b023a57a43894b0379612b551058f4484e44db543352d1424f1b"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-07-CERTIFICATION-REPORT",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "d1a78cd39640fe03963eefe638a31de201956bf13dc42a51ffabb1534980c21d"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-07-SHA256SUMS",
+      "evidence": {
+        "final_gate_receipt_sha256": "35e8f4b73a935d7e1087adf0f43a1fa77b5fd3965cb73fab42a205de936f2f7a",
+        "target_sha256": "7895948716d369a3cc5cf0910c3167cfc0e215b2c3f99fd13a8bacfef589f01c"
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-01-CHANGELOG",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-01-PACK",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-01-README",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-02-CHANGELOG",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-02-PACK",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-02-README",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-03-CHANGELOG",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-03-PACK",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-03-README",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-04-CHANGELOG",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-04-PACK",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-04-README",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-05-CHANGELOG",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-05-PACK",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-05-README",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-06-CHANGELOG",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-06-PACK",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-06-README",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-07-CHANGELOG",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-07-PACK",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-07-README",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_pack_metadata.json": "dfc2f1b948cb49558c9fad3eb0c904af804c8cb5f96cc01b58f05b4a9ba50cb1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-CANARY-QUALITY-DELTA",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-CAPABILITY-EXECUTION",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_knowledge.json": "9768674714b4dda3ecb4b2dc526302ea90ebcd67861db16464bf8e06492e08d6"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-CERTIFICATION-COVERAGE",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-CONFIDENCE-COMBINATION-INDEPENDENT",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-CONTEXT-UTILITY-DENSITY",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-EXPECTED-PLAN-UTILITY",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-FAILURE-TAXONOMY",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_knowledge.json": "9768674714b4dda3ecb4b2dc526302ea90ebcd67861db16464bf8e06492e08d6"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-IMPACT-RISK-SCORE",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-JACCARD-CHANGE-OVERLAP",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-KV-CACHE-BYTES",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-LITTLE-LAW-SERVING",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-MUTATION-SCORE",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-POPULATION-STABILITY-INDEX",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-PRECISION-RECALL-F1",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-RECIPROCAL-RANK-FUSION",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-RELATIVE-PERFORMANCE-CHANGE",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-REPRODUCIBILITY-RATE",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-RISK-PRIORITY",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-SEMANTIC-OVERLAP-JACCARD",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-SOURCE-REGISTRY",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_knowledge.json": "9768674714b4dda3ecb4b2dc526302ea90ebcd67861db16464bf8e06492e08d6"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REFERENCE-OR-KNOWLEDGE-WEIGHTED-SOURCE-QUALITY",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_formulas.json": "16d79fa6cd26688b0220f0539932534c472da1e8cf18d7098e359514b5f9debb",
+          "runtime/declared_suite_formulas.py": "98ba9478177cc384c96dc7f50b2628d8c955c8be51856b3f76a226bb6cdb8d2f"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-DEPENDENCY-GRAPH",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-GLOBAL-SKILL-INDEX",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-01-FORMULAS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-01-ORCHESTRATIONS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-01-SKILLS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-02-FORMULAS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-02-ORCHESTRATIONS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-02-SKILLS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-03-FORMULAS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-03-ORCHESTRATIONS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-03-SKILLS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-04-FORMULAS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-04-ORCHESTRATIONS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-04-SKILLS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-05-FORMULAS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-05-ORCHESTRATIONS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-05-SKILLS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-06-FORMULAS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-06-ORCHESTRATIONS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-06-SKILLS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-07-FORMULAS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-07-ORCHESTRATIONS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-07-SKILLS",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-REGISTRY-PACK-INDEX",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_dependency_graph.json": "1f38a299183d4f6e86ac70d0edb8f2ce3630717bdcab25d4595b53d0d65170dc",
+          "registry/declared_suite_pack_index.json": "bfe3d1f37987952ac2439a688caded0245a0cb9fc6062a620cb917b8af3e9397"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-AI-BOM",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/ai-bom.schema.json": "f8ac9d6960dbd7747845a32c6c765a88b619257cff0cdfca15b4eea589697b5c"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-APPROVAL",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/approval.schema.json": "3cda8b9f163b98fce7b486aa27a1b2b63300fdeb79165b13c81d7522f920d719"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-ASSUMPTION",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/assumption.schema.json": "10384598a73e536d026875f4bad9a17fbeffec860589ed751d5cf051dabf9d13"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-CERTIFICATION",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/skeptical-certification.schema.json": "78ef61369078539cec977c8d227fc5e7ff73794cea5c81486eac5d1cecaa759d"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-CLAIM",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/claim.schema.json": "7af3598dcf7e58eb3fe6b5fabbefd72670763333fef05bdb987ffd75e4daf182"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-COMPATIBILITY-RECORD",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/compatibility-record.schema.json": "e3ba8557e7f76a0c1c6bb3f0534fc736e7f4d6993c22818eb5b2858649752c82"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-DECISION-RECORD",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/decision-record.schema.json": "159c15dc3cd88f8d9d7f1c1a947fb4704eba7ae8e4f3f2e350587afd94a7119a"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-EVALUATION-CASE",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/evaluation-case.schema.json": "cc8defc33a3856fa4f7440138f4b42141e833ee4aa4395ad119f99723d8dc9f6"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-EVALUATION-RESULT",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/evaluation-result.schema.json": "b2d686dbf8b1b1d5054c15affe838d35dd2b234248e41bdaf0091c2a4e5d89f6"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-EVIDENCE",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/evidence-record.schema.json": "d963ad610c40a91dedcb071061d6e74c67aa3eee6438f1dd7ab29308d83a7894"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-FAILURE",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/failure.schema.json": "7c25aea60596330fa7ddbe3e4b6e00b9ef193440c6eddbe1fe1d2ce9d645c7e3"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-INCIDENT",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/incident.schema.json": "d542e7d5dd07c2bbda66140f0461000dab85ddfd12131bf466953ff0ac212e10"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-MEMORY-RECORD",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/memory-record.schema.json": "5c0b96b5f16169c92d705a78d6fb58b367ed66f57c238d9c3f66d0872e2b9c1a"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-ORCHESTRATION",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/orchestration-contract.schema.json": "66a2ae91c35d63b183aced9018f5d7f944cd8865d195a48b8e2de07db082262d"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-RECOVERY-PLAN",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/recovery-plan.schema.json": "49cdb065a2e497f2c5f462c73cda4d82c7846db1331ab7daaadbbf8cf236381a"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-SKILL-CONTRACT",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/skill-package.schema.json": "3c0ccbd050471e15c30687595d4a080bae349783598f3ff80ac85b4b3eeffba5"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-TASK-STATE",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/task-state.schema.json": "5d87e154eef26b5092b8bb4a03d0cf924d9339d942468c0fb6810f26d598b5a4"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-TOOL-CONTRACT",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/tool-contract.schema.json": "c7c91ad96030c530b7e2432aba782b1551c4a9e035423427f23b7ca215962e29"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SCHEMA-TRACE-LINK",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "contracts/trace-link.schema.json": "b848a6a0ac2bf015aa13350cc7e10ed8db491a80568227b0429bd0f67b9986d2"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SKILL-COMPONENT-BEHAVIOR-CASE",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_behavior_cases.json": "6a8851ff86af345de0a58aaf20be9d9792cbc63f3f81fd5db0d6ca898fd71c9c"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-SKILL-COMPONENT-EXAMPLE",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_behavior_cases.json": "6a8851ff86af345de0a58aaf20be9d9792cbc63f3f81fd5db0d6ca898fd71c9c"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-TEMPLATE-CERTIFICATION",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "templates/declared_suite": "directory-present"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-TEMPLATE-TASK",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "templates/declared_suite": "directory-present"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-TEMPLATE-TOOL-CONTRACT",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "templates/declared_suite": "directory-present"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-TEST-OR-EVALUATION-PACK-01-BEHAVIOR-CASES",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_behavior_cases.json": "6a8851ff86af345de0a58aaf20be9d9792cbc63f3f81fd5db0d6ca898fd71c9c",
+          "tests/test_declared_suite_domains.py": "d61af5d249ea76b1cd9564fbb0221da7a1f71ad532dd917918804810f2e54069"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-TEST-OR-EVALUATION-PACK-02-BEHAVIOR-CASES",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_behavior_cases.json": "6a8851ff86af345de0a58aaf20be9d9792cbc63f3f81fd5db0d6ca898fd71c9c",
+          "tests/test_declared_suite_domains.py": "d61af5d249ea76b1cd9564fbb0221da7a1f71ad532dd917918804810f2e54069"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-TEST-OR-EVALUATION-PACK-03-BEHAVIOR-CASES",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_behavior_cases.json": "6a8851ff86af345de0a58aaf20be9d9792cbc63f3f81fd5db0d6ca898fd71c9c",
+          "tests/test_declared_suite_domains.py": "d61af5d249ea76b1cd9564fbb0221da7a1f71ad532dd917918804810f2e54069"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-TEST-OR-EVALUATION-PACK-04-BEHAVIOR-CASES",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_behavior_cases.json": "6a8851ff86af345de0a58aaf20be9d9792cbc63f3f81fd5db0d6ca898fd71c9c",
+          "tests/test_declared_suite_domains.py": "d61af5d249ea76b1cd9564fbb0221da7a1f71ad532dd917918804810f2e54069"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-TEST-OR-EVALUATION-PACK-05-BEHAVIOR-CASES",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_behavior_cases.json": "6a8851ff86af345de0a58aaf20be9d9792cbc63f3f81fd5db0d6ca898fd71c9c",
+          "tests/test_declared_suite_domains.py": "d61af5d249ea76b1cd9564fbb0221da7a1f71ad532dd917918804810f2e54069"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-TEST-OR-EVALUATION-PACK-06-BEHAVIOR-CASES",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_behavior_cases.json": "6a8851ff86af345de0a58aaf20be9d9792cbc63f3f81fd5db0d6ca898fd71c9c",
+          "tests/test_declared_suite_domains.py": "d61af5d249ea76b1cd9564fbb0221da7a1f71ad532dd917918804810f2e54069"
+        }
+      },
+      "valid": true
+    },
+    {
+      "card_id": "REL-007-SUPPORT-TEST-OR-EVALUATION-PACK-07-BEHAVIOR-CASES",
+      "evidence": {
+        "missing": [],
+        "targets": {
+          "registry/declared_suite_behavior_cases.json": "6a8851ff86af345de0a58aaf20be9d9792cbc63f3f81fd5db0d6ca898fd71c9c",
+          "tests/test_declared_suite_domains.py": "d61af5d249ea76b1cd9564fbb0221da7a1f71ad532dd917918804810f2e54069"
+        }
+      },
+      "valid": true
+    }
+  ],
+  "schema_version": "1.0",
+  "status": "complete",
+  "summary": {
+    "errors": [],
+    "open_cards": 0,
+    "pending_final_evidence_cards": 0,
+    "total_cards": 375,
+    "valid": true,
+    "verified_cards": 375
+  }
+}

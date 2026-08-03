@@ -1,0 +1,7209 @@
+{
+  "count": 133,
+  "records": [
+    {
+      "name": "ai-bom.schema.json",
+      "pack": "01",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "bomFormat": {
+            "const": "AI-BOM"
+          },
+          "canonical_sha256": {
+            "type": "string"
+          },
+          "components": {
+            "type": "object"
+          },
+          "specVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "bomFormat",
+          "specVersion",
+          "components"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "5301e014c8ea3d72b8573aabdfd1a44c7b2f4f64bcaf70ac0546fccfbda2a650"
+    },
+    {
+      "name": "approval.schema.json",
+      "pack": "01",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "approval_id": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": "string"
+          },
+          "risk": {
+            "type": "string"
+          },
+          "rollback": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "approved",
+              "denied",
+              "expired",
+              "revoked"
+            ]
+          }
+        },
+        "required": [
+          "approval_id",
+          "action",
+          "scope",
+          "risk",
+          "status",
+          "expires_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "7999d4c9b5de80a4acf96199a9892e3a54e38e1fe34dcba6ed49bcb1a9f346f0"
+    },
+    {
+      "name": "assumption.schema.json",
+      "pack": "01",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "assumption_id": {
+            "type": "string"
+          },
+          "dependents": {
+            "type": "array"
+          },
+          "sensitivity": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "verified",
+              "invalidated",
+              "retired"
+            ]
+          }
+        },
+        "required": [
+          "assumption_id",
+          "statement",
+          "status",
+          "dependents"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "39b59dd0561922c2eab433e742e3685219482761845f8b7f8af094e34b730323"
+    },
+    {
+      "name": "certification.schema.json",
+      "pack": "01",
+      "schema": {
+        "$id": "certification.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "certification_status": {
+            "enum": [
+              "active",
+              "provisional",
+              "expired",
+              "revoked",
+              "failed"
+            ]
+          },
+          "certification_version": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "issued_at": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array"
+          },
+          "review_due": {
+            "type": "string"
+          },
+          "revocation_triggers": {
+            "type": "array"
+          },
+          "scope": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "certification_status",
+          "certification_version",
+          "scope",
+          "issued_at",
+          "review_due",
+          "evidence",
+          "revocation_triggers"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "5256c071b6395f757c984a8170a77ecd073a9beb7ab260879aa0ed4c9472a1d2"
+    },
+    {
+      "name": "claim.schema.json",
+      "pack": "01",
+      "schema": {
+        "$id": "claim.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "assumptions": {
+            "type": "array"
+          },
+          "claim_id": {
+            "type": "string"
+          },
+          "claim_type": {
+            "enum": [
+              "observed_fact",
+              "sourced_fact",
+              "calculation",
+              "inference",
+              "hypothesis",
+              "constraint",
+              "unknown"
+            ]
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "conflicts": {
+            "type": "array"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "stale_after": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "unverified",
+              "supported",
+              "verified",
+              "conflicted",
+              "rejected",
+              "stale"
+            ]
+          },
+          "verified_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "claim_id",
+          "statement",
+          "claim_type",
+          "status",
+          "evidence",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "03f9b950d992392250443a0460310079ed31d76df736c6d29727291fe34dd84d"
+    },
+    {
+      "name": "compatibility-record.schema.json",
+      "pack": "01",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "capabilities": {
+            "type": "object"
+          },
+          "component": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array"
+          },
+          "tested_at": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "component",
+          "version",
+          "capabilities",
+          "limitations",
+          "tested_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "04d8a8b13f01493084ab2de93a2a1e2a7c74c46ec91ddff65416125af1c6f08f"
+    },
+    {
+      "name": "decision-record.schema.json",
+      "pack": "01",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "consequences": {
+            "type": "array"
+          },
+          "context": {
+            "type": "string"
+          },
+          "decision": {},
+          "decision_id": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "options": {
+            "type": "array"
+          },
+          "rationale": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "decision_id",
+          "context",
+          "options",
+          "decision",
+          "rationale",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "f170af1fcabe41a030ca3d4adb624e8ed26eb772498dfb0cf3629a58c5d8893c"
+    },
+    {
+      "name": "evaluation-case.schema.json",
+      "pack": "01",
+      "schema": {
+        "$id": "evaluation-case.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "evidence_required": {
+            "type": "array"
+          },
+          "expected": {},
+          "forbidden": {
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "input": {},
+          "kind": {
+            "enum": [
+              "deterministic",
+              "property",
+              "differential",
+              "metamorphic",
+              "fuzz",
+              "behavioral",
+              "adversarial",
+              "recovery",
+              "performance",
+              "long_horizon"
+            ]
+          },
+          "target": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "target",
+          "kind",
+          "input",
+          "expected",
+          "forbidden",
+          "evidence_required"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "4bd978283af2ea3e492c0125e9308731394ef46e37e699931a95a9cba339b2b4"
+    },
+    {
+      "name": "evaluation-result.schema.json",
+      "pack": "01",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "case_id": {
+            "type": "string"
+          },
+          "duration_seconds": {
+            "type": "number"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "scores": {
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "ERROR",
+              "SKIP"
+            ]
+          }
+        },
+        "required": [
+          "case_id",
+          "status",
+          "scores",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "1e92ed742910b1ad911f966d4a700f83d6342ce8c39ed161d6319abd1e7894d7"
+    },
+    {
+      "name": "evidence.schema.json",
+      "pack": "01",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "access_class": {
+            "type": "string"
+          },
+          "content": {},
+          "evidence_id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "source",
+              "observation",
+              "calculation",
+              "test",
+              "trace",
+              "artifact",
+              "human_review"
+            ]
+          },
+          "locator": {
+            "type": "string"
+          },
+          "observed_at": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "kind",
+          "source",
+          "locator",
+          "observed_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "cb7ca02a628e26a534843659aeaa41244aec6a182f0acf532ebc1e9392c5d634"
+    },
+    {
+      "name": "failure.schema.json",
+      "pack": "01",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "cause": {},
+          "code": {
+            "enum": [
+              "INPUT_INVALID",
+              "CONTEXT_INSUFFICIENT",
+              "EVIDENCE_CONFLICT",
+              "ASSUMPTION_VIOLATED",
+              "TOOL_UNAVAILABLE",
+              "TOOL_TIMEOUT",
+              "TOOL_SCHEMA_MISMATCH",
+              "PERMISSION_DENIED",
+              "AUTHENTICATION_FAILED",
+              "DEPENDENCY_FAILURE",
+              "NONDETERMINISTIC_FAILURE",
+              "TEST_FAILURE",
+              "SECURITY_POLICY_VIOLATION",
+              "RESOURCE_EXHAUSTED",
+              "COMPATIBILITY_FAILURE",
+              "MODEL_BEHAVIOR_FAILURE",
+              "RETRIEVAL_FAILURE",
+              "MEMORY_ISOLATION_FAILURE",
+              "ROLLBACK_FAILURE",
+              "VERIFICATION_INCONCLUSIVE",
+              "HUMAN_APPROVAL_REQUIRED"
+            ]
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "message": {
+            "type": "string"
+          },
+          "retryable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "retryable"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "7dfacb76c4d1ec79f0765d825dd17732afa514bacddd1d6b6cbb3dd8d43d835a"
+    },
+    {
+      "name": "incident.schema.json",
+      "pack": "01",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "detected_at": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "incident_id": {
+            "type": "string"
+          },
+          "regressions": {
+            "type": "array"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "incident_id",
+          "status",
+          "severity",
+          "detected_at",
+          "summary"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "637d1c7b691d06c5c5a6add217982297a97fa55444bbc5bd4e8d4ec0c23e6b86"
+    },
+    {
+      "name": "memory-record.schema.json",
+      "pack": "01",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "content": {},
+          "created_at": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "working",
+              "episodic",
+              "semantic",
+              "procedural"
+            ]
+          },
+          "verified": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "scope",
+          "type",
+          "content",
+          "source",
+          "verified",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "6c0ef1675d3a48e2bda229d4b8e4bda2d45e1aecc371826482cadd9317664e4f"
+    },
+    {
+      "name": "orchestration.schema.json",
+      "pack": "01",
+      "schema": {
+        "$id": "orchestration.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "approval_gates": {
+            "type": "array"
+          },
+          "evidence_outputs": {
+            "type": "array"
+          },
+          "failure_policy": {
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "required_skills": {
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "2.0"
+          },
+          "states": {
+            "type": "array"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "name",
+          "summary",
+          "version",
+          "states",
+          "steps",
+          "failure_policy",
+          "evidence_outputs"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "0f516b97b6abd1854a18d582c6b1e3499b38cc5745954d83b7b06851fc446f32"
+    },
+    {
+      "name": "recovery-plan.schema.json",
+      "pack": "01",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "idempotency_keys": {
+            "type": "array"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "strategy": {
+            "enum": [
+              "resume",
+              "retry",
+              "rollback",
+              "compensate",
+              "abort",
+              "escalate"
+            ]
+          },
+          "verification": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "strategy",
+          "steps",
+          "verification"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "889fd6c7dfa6629896c1b811fb7a7b71e81063b22840c6411e8cb1154649a66f"
+    },
+    {
+      "name": "skill-contract.schema.json",
+      "pack": "01",
+      "schema": {
+        "$id": "skill-contract.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "deprecation_policy": {
+            "type": "object"
+          },
+          "evaluation_suites": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "evidence_contract": {
+            "type": "object"
+          },
+          "external_dependencies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "failure_modes": {
+            "items": {
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "id": {
+            "pattern": "^[a-z0-9][a-z0-9-]+$",
+            "type": "string"
+          },
+          "idempotency": {
+            "type": "object"
+          },
+          "implementation_scripts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "inputs": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "invariants": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          },
+          "outputs": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "permissions": {
+            "additionalProperties": false,
+            "properties": {
+              "approval": {
+                "type": "string"
+              },
+              "filesystem_read": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "filesystem_write": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "network": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "process": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "secrets": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "filesystem_read",
+              "filesystem_write",
+              "network",
+              "process",
+              "secrets",
+              "approval"
+            ],
+            "type": "object"
+          },
+          "postconditions": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "preconditions": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "references": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "2.0"
+          },
+          "security_class": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "side_effects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "active",
+              "deprecated"
+            ]
+          },
+          "summary": {
+            "minLength": 20,
+            "type": "string"
+          },
+          "telemetry_contract": {
+            "type": "object"
+          },
+          "triggers": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "name",
+          "summary",
+          "category",
+          "version",
+          "status",
+          "triggers",
+          "inputs",
+          "outputs",
+          "preconditions",
+          "postconditions",
+          "invariants",
+          "permissions",
+          "side_effects",
+          "idempotency",
+          "failure_modes",
+          "evidence_contract",
+          "telemetry_contract",
+          "security_class",
+          "evaluation_suites",
+          "deprecation_policy"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "b4f7c6fb43139213d7577ab46a6bb851ff15d9e78215d60476b88f293f22b041"
+    },
+    {
+      "name": "task-state.schema.json",
+      "pack": "01",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "approvals": {
+            "type": "array"
+          },
+          "artifacts": {
+            "type": "array"
+          },
+          "history": {
+            "type": "array"
+          },
+          "idempotency_keys": {
+            "type": "array"
+          },
+          "state": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "task_id",
+          "state",
+          "version",
+          "history"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "c6183d8fe8afbb031a85bf78907410cbb994f2bfa2783d84df565e1e8c33b767"
+    },
+    {
+      "name": "tool-contract.schema.json",
+      "pack": "01",
+      "schema": {
+        "$id": "tool-contract.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "destructive": {
+            "type": "boolean"
+          },
+          "idempotent": {
+            "type": "boolean"
+          },
+          "input_schema": {
+            "type": "string"
+          },
+          "max_output_bytes": {
+            "type": "integer"
+          },
+          "max_runtime_seconds": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "network_scope": {
+            "type": "array"
+          },
+          "output_schema": {
+            "type": "string"
+          },
+          "read_scope": {
+            "type": "array"
+          },
+          "requires_approval": {
+            "type": "boolean"
+          },
+          "risk_tier": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "rollback": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "write_scope": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "risk_tier",
+          "read_scope",
+          "write_scope",
+          "network_scope",
+          "requires_approval",
+          "destructive",
+          "idempotent",
+          "input_schema",
+          "output_schema"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "d58d87e0ab7a48c155ca4a637ed694bddc78d68771c52dcdaee2485076dd46a1"
+    },
+    {
+      "name": "trace-link.schema.json",
+      "pack": "01",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "artifacts": {
+            "type": "array"
+          },
+          "model_calls": {
+            "type": "array"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "tool_calls": {
+            "type": "array"
+          },
+          "trace_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "trace_id",
+          "task_id",
+          "artifacts"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "34f9dddf9cf47dd4615862e6a90b6399891ea064df83d916fabcc9cb877cef24"
+    },
+    {
+      "name": "ai-bom.schema.json",
+      "pack": "02",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "bomFormat": {
+            "const": "AI-BOM"
+          },
+          "canonical_sha256": {
+            "type": "string"
+          },
+          "components": {
+            "type": "object"
+          },
+          "specVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "bomFormat",
+          "specVersion",
+          "components"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "5301e014c8ea3d72b8573aabdfd1a44c7b2f4f64bcaf70ac0546fccfbda2a650"
+    },
+    {
+      "name": "approval.schema.json",
+      "pack": "02",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "approval_id": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": "string"
+          },
+          "risk": {
+            "type": "string"
+          },
+          "rollback": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "approved",
+              "denied",
+              "expired",
+              "revoked"
+            ]
+          }
+        },
+        "required": [
+          "approval_id",
+          "action",
+          "scope",
+          "risk",
+          "status",
+          "expires_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "7999d4c9b5de80a4acf96199a9892e3a54e38e1fe34dcba6ed49bcb1a9f346f0"
+    },
+    {
+      "name": "assumption.schema.json",
+      "pack": "02",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "assumption_id": {
+            "type": "string"
+          },
+          "dependents": {
+            "type": "array"
+          },
+          "sensitivity": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "verified",
+              "invalidated",
+              "retired"
+            ]
+          }
+        },
+        "required": [
+          "assumption_id",
+          "statement",
+          "status",
+          "dependents"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "39b59dd0561922c2eab433e742e3685219482761845f8b7f8af094e34b730323"
+    },
+    {
+      "name": "certification.schema.json",
+      "pack": "02",
+      "schema": {
+        "$id": "certification.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "certification_status": {
+            "enum": [
+              "active",
+              "provisional",
+              "expired",
+              "revoked",
+              "failed"
+            ]
+          },
+          "certification_version": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "issued_at": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array"
+          },
+          "review_due": {
+            "type": "string"
+          },
+          "revocation_triggers": {
+            "type": "array"
+          },
+          "scope": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "certification_status",
+          "certification_version",
+          "scope",
+          "issued_at",
+          "review_due",
+          "evidence",
+          "revocation_triggers"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "5256c071b6395f757c984a8170a77ecd073a9beb7ab260879aa0ed4c9472a1d2"
+    },
+    {
+      "name": "claim.schema.json",
+      "pack": "02",
+      "schema": {
+        "$id": "claim.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "assumptions": {
+            "type": "array"
+          },
+          "claim_id": {
+            "type": "string"
+          },
+          "claim_type": {
+            "enum": [
+              "observed_fact",
+              "sourced_fact",
+              "calculation",
+              "inference",
+              "hypothesis",
+              "constraint",
+              "unknown"
+            ]
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "conflicts": {
+            "type": "array"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "stale_after": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "unverified",
+              "supported",
+              "verified",
+              "conflicted",
+              "rejected",
+              "stale"
+            ]
+          },
+          "verified_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "claim_id",
+          "statement",
+          "claim_type",
+          "status",
+          "evidence",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "03f9b950d992392250443a0460310079ed31d76df736c6d29727291fe34dd84d"
+    },
+    {
+      "name": "compatibility-record.schema.json",
+      "pack": "02",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "capabilities": {
+            "type": "object"
+          },
+          "component": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array"
+          },
+          "tested_at": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "component",
+          "version",
+          "capabilities",
+          "limitations",
+          "tested_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "04d8a8b13f01493084ab2de93a2a1e2a7c74c46ec91ddff65416125af1c6f08f"
+    },
+    {
+      "name": "decision-record.schema.json",
+      "pack": "02",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "consequences": {
+            "type": "array"
+          },
+          "context": {
+            "type": "string"
+          },
+          "decision": {},
+          "decision_id": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "options": {
+            "type": "array"
+          },
+          "rationale": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "decision_id",
+          "context",
+          "options",
+          "decision",
+          "rationale",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "f170af1fcabe41a030ca3d4adb624e8ed26eb772498dfb0cf3629a58c5d8893c"
+    },
+    {
+      "name": "evaluation-case.schema.json",
+      "pack": "02",
+      "schema": {
+        "$id": "evaluation-case.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "evidence_required": {
+            "type": "array"
+          },
+          "expected": {},
+          "forbidden": {
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "input": {},
+          "kind": {
+            "enum": [
+              "deterministic",
+              "property",
+              "differential",
+              "metamorphic",
+              "fuzz",
+              "behavioral",
+              "adversarial",
+              "recovery",
+              "performance",
+              "long_horizon"
+            ]
+          },
+          "target": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "target",
+          "kind",
+          "input",
+          "expected",
+          "forbidden",
+          "evidence_required"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "4bd978283af2ea3e492c0125e9308731394ef46e37e699931a95a9cba339b2b4"
+    },
+    {
+      "name": "evaluation-result.schema.json",
+      "pack": "02",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "case_id": {
+            "type": "string"
+          },
+          "duration_seconds": {
+            "type": "number"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "scores": {
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "ERROR",
+              "SKIP"
+            ]
+          }
+        },
+        "required": [
+          "case_id",
+          "status",
+          "scores",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "1e92ed742910b1ad911f966d4a700f83d6342ce8c39ed161d6319abd1e7894d7"
+    },
+    {
+      "name": "evidence.schema.json",
+      "pack": "02",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "access_class": {
+            "type": "string"
+          },
+          "content": {},
+          "evidence_id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "source",
+              "observation",
+              "calculation",
+              "test",
+              "trace",
+              "artifact",
+              "human_review"
+            ]
+          },
+          "locator": {
+            "type": "string"
+          },
+          "observed_at": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "kind",
+          "source",
+          "locator",
+          "observed_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "cb7ca02a628e26a534843659aeaa41244aec6a182f0acf532ebc1e9392c5d634"
+    },
+    {
+      "name": "failure.schema.json",
+      "pack": "02",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "cause": {},
+          "code": {
+            "enum": [
+              "INPUT_INVALID",
+              "CONTEXT_INSUFFICIENT",
+              "EVIDENCE_CONFLICT",
+              "ASSUMPTION_VIOLATED",
+              "TOOL_UNAVAILABLE",
+              "TOOL_TIMEOUT",
+              "TOOL_SCHEMA_MISMATCH",
+              "PERMISSION_DENIED",
+              "AUTHENTICATION_FAILED",
+              "DEPENDENCY_FAILURE",
+              "NONDETERMINISTIC_FAILURE",
+              "TEST_FAILURE",
+              "SECURITY_POLICY_VIOLATION",
+              "RESOURCE_EXHAUSTED",
+              "COMPATIBILITY_FAILURE",
+              "MODEL_BEHAVIOR_FAILURE",
+              "RETRIEVAL_FAILURE",
+              "MEMORY_ISOLATION_FAILURE",
+              "ROLLBACK_FAILURE",
+              "VERIFICATION_INCONCLUSIVE",
+              "HUMAN_APPROVAL_REQUIRED"
+            ]
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "message": {
+            "type": "string"
+          },
+          "retryable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "retryable"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "7dfacb76c4d1ec79f0765d825dd17732afa514bacddd1d6b6cbb3dd8d43d835a"
+    },
+    {
+      "name": "incident.schema.json",
+      "pack": "02",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "detected_at": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "incident_id": {
+            "type": "string"
+          },
+          "regressions": {
+            "type": "array"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "incident_id",
+          "status",
+          "severity",
+          "detected_at",
+          "summary"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "637d1c7b691d06c5c5a6add217982297a97fa55444bbc5bd4e8d4ec0c23e6b86"
+    },
+    {
+      "name": "memory-record.schema.json",
+      "pack": "02",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "content": {},
+          "created_at": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "working",
+              "episodic",
+              "semantic",
+              "procedural"
+            ]
+          },
+          "verified": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "scope",
+          "type",
+          "content",
+          "source",
+          "verified",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "6c0ef1675d3a48e2bda229d4b8e4bda2d45e1aecc371826482cadd9317664e4f"
+    },
+    {
+      "name": "orchestration.schema.json",
+      "pack": "02",
+      "schema": {
+        "$id": "orchestration.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "approval_gates": {
+            "type": "array"
+          },
+          "evidence_outputs": {
+            "type": "array"
+          },
+          "failure_policy": {
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "required_skills": {
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "2.0"
+          },
+          "states": {
+            "type": "array"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "name",
+          "summary",
+          "version",
+          "states",
+          "steps",
+          "failure_policy",
+          "evidence_outputs"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "0f516b97b6abd1854a18d582c6b1e3499b38cc5745954d83b7b06851fc446f32"
+    },
+    {
+      "name": "recovery-plan.schema.json",
+      "pack": "02",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "idempotency_keys": {
+            "type": "array"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "strategy": {
+            "enum": [
+              "resume",
+              "retry",
+              "rollback",
+              "compensate",
+              "abort",
+              "escalate"
+            ]
+          },
+          "verification": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "strategy",
+          "steps",
+          "verification"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "889fd6c7dfa6629896c1b811fb7a7b71e81063b22840c6411e8cb1154649a66f"
+    },
+    {
+      "name": "skill-contract.schema.json",
+      "pack": "02",
+      "schema": {
+        "$id": "skill-contract.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "deprecation_policy": {
+            "type": "object"
+          },
+          "evaluation_suites": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "evidence_contract": {
+            "type": "object"
+          },
+          "external_dependencies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "failure_modes": {
+            "items": {
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "id": {
+            "pattern": "^[a-z0-9][a-z0-9-]+$",
+            "type": "string"
+          },
+          "idempotency": {
+            "type": "object"
+          },
+          "implementation_scripts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "inputs": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "invariants": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          },
+          "outputs": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "permissions": {
+            "additionalProperties": false,
+            "properties": {
+              "approval": {
+                "type": "string"
+              },
+              "filesystem_read": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "filesystem_write": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "network": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "process": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "secrets": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "filesystem_read",
+              "filesystem_write",
+              "network",
+              "process",
+              "secrets",
+              "approval"
+            ],
+            "type": "object"
+          },
+          "postconditions": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "preconditions": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "references": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "2.0"
+          },
+          "security_class": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "side_effects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "active",
+              "deprecated"
+            ]
+          },
+          "summary": {
+            "minLength": 20,
+            "type": "string"
+          },
+          "telemetry_contract": {
+            "type": "object"
+          },
+          "triggers": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "name",
+          "summary",
+          "category",
+          "version",
+          "status",
+          "triggers",
+          "inputs",
+          "outputs",
+          "preconditions",
+          "postconditions",
+          "invariants",
+          "permissions",
+          "side_effects",
+          "idempotency",
+          "failure_modes",
+          "evidence_contract",
+          "telemetry_contract",
+          "security_class",
+          "evaluation_suites",
+          "deprecation_policy"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "b4f7c6fb43139213d7577ab46a6bb851ff15d9e78215d60476b88f293f22b041"
+    },
+    {
+      "name": "task-state.schema.json",
+      "pack": "02",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "approvals": {
+            "type": "array"
+          },
+          "artifacts": {
+            "type": "array"
+          },
+          "history": {
+            "type": "array"
+          },
+          "idempotency_keys": {
+            "type": "array"
+          },
+          "state": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "task_id",
+          "state",
+          "version",
+          "history"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "c6183d8fe8afbb031a85bf78907410cbb994f2bfa2783d84df565e1e8c33b767"
+    },
+    {
+      "name": "tool-contract.schema.json",
+      "pack": "02",
+      "schema": {
+        "$id": "tool-contract.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "destructive": {
+            "type": "boolean"
+          },
+          "idempotent": {
+            "type": "boolean"
+          },
+          "input_schema": {
+            "type": "string"
+          },
+          "max_output_bytes": {
+            "type": "integer"
+          },
+          "max_runtime_seconds": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "network_scope": {
+            "type": "array"
+          },
+          "output_schema": {
+            "type": "string"
+          },
+          "read_scope": {
+            "type": "array"
+          },
+          "requires_approval": {
+            "type": "boolean"
+          },
+          "risk_tier": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "rollback": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "write_scope": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "risk_tier",
+          "read_scope",
+          "write_scope",
+          "network_scope",
+          "requires_approval",
+          "destructive",
+          "idempotent",
+          "input_schema",
+          "output_schema"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "d58d87e0ab7a48c155ca4a637ed694bddc78d68771c52dcdaee2485076dd46a1"
+    },
+    {
+      "name": "trace-link.schema.json",
+      "pack": "02",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "artifacts": {
+            "type": "array"
+          },
+          "model_calls": {
+            "type": "array"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "tool_calls": {
+            "type": "array"
+          },
+          "trace_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "trace_id",
+          "task_id",
+          "artifacts"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "34f9dddf9cf47dd4615862e6a90b6399891ea064df83d916fabcc9cb877cef24"
+    },
+    {
+      "name": "ai-bom.schema.json",
+      "pack": "03",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "bomFormat": {
+            "const": "AI-BOM"
+          },
+          "canonical_sha256": {
+            "type": "string"
+          },
+          "components": {
+            "type": "object"
+          },
+          "specVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "bomFormat",
+          "specVersion",
+          "components"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "5301e014c8ea3d72b8573aabdfd1a44c7b2f4f64bcaf70ac0546fccfbda2a650"
+    },
+    {
+      "name": "approval.schema.json",
+      "pack": "03",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "approval_id": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": "string"
+          },
+          "risk": {
+            "type": "string"
+          },
+          "rollback": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "approved",
+              "denied",
+              "expired",
+              "revoked"
+            ]
+          }
+        },
+        "required": [
+          "approval_id",
+          "action",
+          "scope",
+          "risk",
+          "status",
+          "expires_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "7999d4c9b5de80a4acf96199a9892e3a54e38e1fe34dcba6ed49bcb1a9f346f0"
+    },
+    {
+      "name": "assumption.schema.json",
+      "pack": "03",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "assumption_id": {
+            "type": "string"
+          },
+          "dependents": {
+            "type": "array"
+          },
+          "sensitivity": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "verified",
+              "invalidated",
+              "retired"
+            ]
+          }
+        },
+        "required": [
+          "assumption_id",
+          "statement",
+          "status",
+          "dependents"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "39b59dd0561922c2eab433e742e3685219482761845f8b7f8af094e34b730323"
+    },
+    {
+      "name": "certification.schema.json",
+      "pack": "03",
+      "schema": {
+        "$id": "certification.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "certification_status": {
+            "enum": [
+              "active",
+              "provisional",
+              "expired",
+              "revoked",
+              "failed"
+            ]
+          },
+          "certification_version": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "issued_at": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array"
+          },
+          "review_due": {
+            "type": "string"
+          },
+          "revocation_triggers": {
+            "type": "array"
+          },
+          "scope": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "certification_status",
+          "certification_version",
+          "scope",
+          "issued_at",
+          "review_due",
+          "evidence",
+          "revocation_triggers"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "5256c071b6395f757c984a8170a77ecd073a9beb7ab260879aa0ed4c9472a1d2"
+    },
+    {
+      "name": "claim.schema.json",
+      "pack": "03",
+      "schema": {
+        "$id": "claim.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "assumptions": {
+            "type": "array"
+          },
+          "claim_id": {
+            "type": "string"
+          },
+          "claim_type": {
+            "enum": [
+              "observed_fact",
+              "sourced_fact",
+              "calculation",
+              "inference",
+              "hypothesis",
+              "constraint",
+              "unknown"
+            ]
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "conflicts": {
+            "type": "array"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "stale_after": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "unverified",
+              "supported",
+              "verified",
+              "conflicted",
+              "rejected",
+              "stale"
+            ]
+          },
+          "verified_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "claim_id",
+          "statement",
+          "claim_type",
+          "status",
+          "evidence",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "03f9b950d992392250443a0460310079ed31d76df736c6d29727291fe34dd84d"
+    },
+    {
+      "name": "compatibility-record.schema.json",
+      "pack": "03",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "capabilities": {
+            "type": "object"
+          },
+          "component": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array"
+          },
+          "tested_at": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "component",
+          "version",
+          "capabilities",
+          "limitations",
+          "tested_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "04d8a8b13f01493084ab2de93a2a1e2a7c74c46ec91ddff65416125af1c6f08f"
+    },
+    {
+      "name": "decision-record.schema.json",
+      "pack": "03",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "consequences": {
+            "type": "array"
+          },
+          "context": {
+            "type": "string"
+          },
+          "decision": {},
+          "decision_id": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "options": {
+            "type": "array"
+          },
+          "rationale": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "decision_id",
+          "context",
+          "options",
+          "decision",
+          "rationale",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "f170af1fcabe41a030ca3d4adb624e8ed26eb772498dfb0cf3629a58c5d8893c"
+    },
+    {
+      "name": "evaluation-case.schema.json",
+      "pack": "03",
+      "schema": {
+        "$id": "evaluation-case.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "evidence_required": {
+            "type": "array"
+          },
+          "expected": {},
+          "forbidden": {
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "input": {},
+          "kind": {
+            "enum": [
+              "deterministic",
+              "property",
+              "differential",
+              "metamorphic",
+              "fuzz",
+              "behavioral",
+              "adversarial",
+              "recovery",
+              "performance",
+              "long_horizon"
+            ]
+          },
+          "target": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "target",
+          "kind",
+          "input",
+          "expected",
+          "forbidden",
+          "evidence_required"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "4bd978283af2ea3e492c0125e9308731394ef46e37e699931a95a9cba339b2b4"
+    },
+    {
+      "name": "evaluation-result.schema.json",
+      "pack": "03",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "case_id": {
+            "type": "string"
+          },
+          "duration_seconds": {
+            "type": "number"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "scores": {
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "ERROR",
+              "SKIP"
+            ]
+          }
+        },
+        "required": [
+          "case_id",
+          "status",
+          "scores",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "1e92ed742910b1ad911f966d4a700f83d6342ce8c39ed161d6319abd1e7894d7"
+    },
+    {
+      "name": "evidence.schema.json",
+      "pack": "03",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "access_class": {
+            "type": "string"
+          },
+          "content": {},
+          "evidence_id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "source",
+              "observation",
+              "calculation",
+              "test",
+              "trace",
+              "artifact",
+              "human_review"
+            ]
+          },
+          "locator": {
+            "type": "string"
+          },
+          "observed_at": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "kind",
+          "source",
+          "locator",
+          "observed_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "cb7ca02a628e26a534843659aeaa41244aec6a182f0acf532ebc1e9392c5d634"
+    },
+    {
+      "name": "failure.schema.json",
+      "pack": "03",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "cause": {},
+          "code": {
+            "enum": [
+              "INPUT_INVALID",
+              "CONTEXT_INSUFFICIENT",
+              "EVIDENCE_CONFLICT",
+              "ASSUMPTION_VIOLATED",
+              "TOOL_UNAVAILABLE",
+              "TOOL_TIMEOUT",
+              "TOOL_SCHEMA_MISMATCH",
+              "PERMISSION_DENIED",
+              "AUTHENTICATION_FAILED",
+              "DEPENDENCY_FAILURE",
+              "NONDETERMINISTIC_FAILURE",
+              "TEST_FAILURE",
+              "SECURITY_POLICY_VIOLATION",
+              "RESOURCE_EXHAUSTED",
+              "COMPATIBILITY_FAILURE",
+              "MODEL_BEHAVIOR_FAILURE",
+              "RETRIEVAL_FAILURE",
+              "MEMORY_ISOLATION_FAILURE",
+              "ROLLBACK_FAILURE",
+              "VERIFICATION_INCONCLUSIVE",
+              "HUMAN_APPROVAL_REQUIRED"
+            ]
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "message": {
+            "type": "string"
+          },
+          "retryable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "retryable"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "7dfacb76c4d1ec79f0765d825dd17732afa514bacddd1d6b6cbb3dd8d43d835a"
+    },
+    {
+      "name": "incident.schema.json",
+      "pack": "03",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "detected_at": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "incident_id": {
+            "type": "string"
+          },
+          "regressions": {
+            "type": "array"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "incident_id",
+          "status",
+          "severity",
+          "detected_at",
+          "summary"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "637d1c7b691d06c5c5a6add217982297a97fa55444bbc5bd4e8d4ec0c23e6b86"
+    },
+    {
+      "name": "memory-record.schema.json",
+      "pack": "03",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "content": {},
+          "created_at": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "working",
+              "episodic",
+              "semantic",
+              "procedural"
+            ]
+          },
+          "verified": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "scope",
+          "type",
+          "content",
+          "source",
+          "verified",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "6c0ef1675d3a48e2bda229d4b8e4bda2d45e1aecc371826482cadd9317664e4f"
+    },
+    {
+      "name": "orchestration.schema.json",
+      "pack": "03",
+      "schema": {
+        "$id": "orchestration.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "approval_gates": {
+            "type": "array"
+          },
+          "evidence_outputs": {
+            "type": "array"
+          },
+          "failure_policy": {
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "required_skills": {
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "2.0"
+          },
+          "states": {
+            "type": "array"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "name",
+          "summary",
+          "version",
+          "states",
+          "steps",
+          "failure_policy",
+          "evidence_outputs"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "0f516b97b6abd1854a18d582c6b1e3499b38cc5745954d83b7b06851fc446f32"
+    },
+    {
+      "name": "recovery-plan.schema.json",
+      "pack": "03",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "idempotency_keys": {
+            "type": "array"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "strategy": {
+            "enum": [
+              "resume",
+              "retry",
+              "rollback",
+              "compensate",
+              "abort",
+              "escalate"
+            ]
+          },
+          "verification": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "strategy",
+          "steps",
+          "verification"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "889fd6c7dfa6629896c1b811fb7a7b71e81063b22840c6411e8cb1154649a66f"
+    },
+    {
+      "name": "skill-contract.schema.json",
+      "pack": "03",
+      "schema": {
+        "$id": "skill-contract.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "deprecation_policy": {
+            "type": "object"
+          },
+          "evaluation_suites": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "evidence_contract": {
+            "type": "object"
+          },
+          "external_dependencies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "failure_modes": {
+            "items": {
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "id": {
+            "pattern": "^[a-z0-9][a-z0-9-]+$",
+            "type": "string"
+          },
+          "idempotency": {
+            "type": "object"
+          },
+          "implementation_scripts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "inputs": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "invariants": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          },
+          "outputs": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "permissions": {
+            "additionalProperties": false,
+            "properties": {
+              "approval": {
+                "type": "string"
+              },
+              "filesystem_read": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "filesystem_write": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "network": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "process": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "secrets": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "filesystem_read",
+              "filesystem_write",
+              "network",
+              "process",
+              "secrets",
+              "approval"
+            ],
+            "type": "object"
+          },
+          "postconditions": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "preconditions": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "references": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "2.0"
+          },
+          "security_class": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "side_effects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "active",
+              "deprecated"
+            ]
+          },
+          "summary": {
+            "minLength": 20,
+            "type": "string"
+          },
+          "telemetry_contract": {
+            "type": "object"
+          },
+          "triggers": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "name",
+          "summary",
+          "category",
+          "version",
+          "status",
+          "triggers",
+          "inputs",
+          "outputs",
+          "preconditions",
+          "postconditions",
+          "invariants",
+          "permissions",
+          "side_effects",
+          "idempotency",
+          "failure_modes",
+          "evidence_contract",
+          "telemetry_contract",
+          "security_class",
+          "evaluation_suites",
+          "deprecation_policy"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "b4f7c6fb43139213d7577ab46a6bb851ff15d9e78215d60476b88f293f22b041"
+    },
+    {
+      "name": "task-state.schema.json",
+      "pack": "03",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "approvals": {
+            "type": "array"
+          },
+          "artifacts": {
+            "type": "array"
+          },
+          "history": {
+            "type": "array"
+          },
+          "idempotency_keys": {
+            "type": "array"
+          },
+          "state": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "task_id",
+          "state",
+          "version",
+          "history"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "c6183d8fe8afbb031a85bf78907410cbb994f2bfa2783d84df565e1e8c33b767"
+    },
+    {
+      "name": "tool-contract.schema.json",
+      "pack": "03",
+      "schema": {
+        "$id": "tool-contract.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "destructive": {
+            "type": "boolean"
+          },
+          "idempotent": {
+            "type": "boolean"
+          },
+          "input_schema": {
+            "type": "string"
+          },
+          "max_output_bytes": {
+            "type": "integer"
+          },
+          "max_runtime_seconds": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "network_scope": {
+            "type": "array"
+          },
+          "output_schema": {
+            "type": "string"
+          },
+          "read_scope": {
+            "type": "array"
+          },
+          "requires_approval": {
+            "type": "boolean"
+          },
+          "risk_tier": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "rollback": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "write_scope": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "risk_tier",
+          "read_scope",
+          "write_scope",
+          "network_scope",
+          "requires_approval",
+          "destructive",
+          "idempotent",
+          "input_schema",
+          "output_schema"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "d58d87e0ab7a48c155ca4a637ed694bddc78d68771c52dcdaee2485076dd46a1"
+    },
+    {
+      "name": "trace-link.schema.json",
+      "pack": "03",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "artifacts": {
+            "type": "array"
+          },
+          "model_calls": {
+            "type": "array"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "tool_calls": {
+            "type": "array"
+          },
+          "trace_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "trace_id",
+          "task_id",
+          "artifacts"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "34f9dddf9cf47dd4615862e6a90b6399891ea064df83d916fabcc9cb877cef24"
+    },
+    {
+      "name": "ai-bom.schema.json",
+      "pack": "04",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "bomFormat": {
+            "const": "AI-BOM"
+          },
+          "canonical_sha256": {
+            "type": "string"
+          },
+          "components": {
+            "type": "object"
+          },
+          "specVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "bomFormat",
+          "specVersion",
+          "components"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "5301e014c8ea3d72b8573aabdfd1a44c7b2f4f64bcaf70ac0546fccfbda2a650"
+    },
+    {
+      "name": "approval.schema.json",
+      "pack": "04",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "approval_id": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": "string"
+          },
+          "risk": {
+            "type": "string"
+          },
+          "rollback": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "approved",
+              "denied",
+              "expired",
+              "revoked"
+            ]
+          }
+        },
+        "required": [
+          "approval_id",
+          "action",
+          "scope",
+          "risk",
+          "status",
+          "expires_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "7999d4c9b5de80a4acf96199a9892e3a54e38e1fe34dcba6ed49bcb1a9f346f0"
+    },
+    {
+      "name": "assumption.schema.json",
+      "pack": "04",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "assumption_id": {
+            "type": "string"
+          },
+          "dependents": {
+            "type": "array"
+          },
+          "sensitivity": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "verified",
+              "invalidated",
+              "retired"
+            ]
+          }
+        },
+        "required": [
+          "assumption_id",
+          "statement",
+          "status",
+          "dependents"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "39b59dd0561922c2eab433e742e3685219482761845f8b7f8af094e34b730323"
+    },
+    {
+      "name": "certification.schema.json",
+      "pack": "04",
+      "schema": {
+        "$id": "certification.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "certification_status": {
+            "enum": [
+              "active",
+              "provisional",
+              "expired",
+              "revoked",
+              "failed"
+            ]
+          },
+          "certification_version": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "issued_at": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array"
+          },
+          "review_due": {
+            "type": "string"
+          },
+          "revocation_triggers": {
+            "type": "array"
+          },
+          "scope": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "certification_status",
+          "certification_version",
+          "scope",
+          "issued_at",
+          "review_due",
+          "evidence",
+          "revocation_triggers"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "5256c071b6395f757c984a8170a77ecd073a9beb7ab260879aa0ed4c9472a1d2"
+    },
+    {
+      "name": "claim.schema.json",
+      "pack": "04",
+      "schema": {
+        "$id": "claim.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "assumptions": {
+            "type": "array"
+          },
+          "claim_id": {
+            "type": "string"
+          },
+          "claim_type": {
+            "enum": [
+              "observed_fact",
+              "sourced_fact",
+              "calculation",
+              "inference",
+              "hypothesis",
+              "constraint",
+              "unknown"
+            ]
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "conflicts": {
+            "type": "array"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "stale_after": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "unverified",
+              "supported",
+              "verified",
+              "conflicted",
+              "rejected",
+              "stale"
+            ]
+          },
+          "verified_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "claim_id",
+          "statement",
+          "claim_type",
+          "status",
+          "evidence",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "03f9b950d992392250443a0460310079ed31d76df736c6d29727291fe34dd84d"
+    },
+    {
+      "name": "compatibility-record.schema.json",
+      "pack": "04",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "capabilities": {
+            "type": "object"
+          },
+          "component": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array"
+          },
+          "tested_at": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "component",
+          "version",
+          "capabilities",
+          "limitations",
+          "tested_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "04d8a8b13f01493084ab2de93a2a1e2a7c74c46ec91ddff65416125af1c6f08f"
+    },
+    {
+      "name": "decision-record.schema.json",
+      "pack": "04",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "consequences": {
+            "type": "array"
+          },
+          "context": {
+            "type": "string"
+          },
+          "decision": {},
+          "decision_id": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "options": {
+            "type": "array"
+          },
+          "rationale": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "decision_id",
+          "context",
+          "options",
+          "decision",
+          "rationale",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "f170af1fcabe41a030ca3d4adb624e8ed26eb772498dfb0cf3629a58c5d8893c"
+    },
+    {
+      "name": "evaluation-case.schema.json",
+      "pack": "04",
+      "schema": {
+        "$id": "evaluation-case.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "evidence_required": {
+            "type": "array"
+          },
+          "expected": {},
+          "forbidden": {
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "input": {},
+          "kind": {
+            "enum": [
+              "deterministic",
+              "property",
+              "differential",
+              "metamorphic",
+              "fuzz",
+              "behavioral",
+              "adversarial",
+              "recovery",
+              "performance",
+              "long_horizon"
+            ]
+          },
+          "target": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "target",
+          "kind",
+          "input",
+          "expected",
+          "forbidden",
+          "evidence_required"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "4bd978283af2ea3e492c0125e9308731394ef46e37e699931a95a9cba339b2b4"
+    },
+    {
+      "name": "evaluation-result.schema.json",
+      "pack": "04",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "case_id": {
+            "type": "string"
+          },
+          "duration_seconds": {
+            "type": "number"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "scores": {
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "ERROR",
+              "SKIP"
+            ]
+          }
+        },
+        "required": [
+          "case_id",
+          "status",
+          "scores",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "1e92ed742910b1ad911f966d4a700f83d6342ce8c39ed161d6319abd1e7894d7"
+    },
+    {
+      "name": "evidence.schema.json",
+      "pack": "04",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "access_class": {
+            "type": "string"
+          },
+          "content": {},
+          "evidence_id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "source",
+              "observation",
+              "calculation",
+              "test",
+              "trace",
+              "artifact",
+              "human_review"
+            ]
+          },
+          "locator": {
+            "type": "string"
+          },
+          "observed_at": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "kind",
+          "source",
+          "locator",
+          "observed_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "cb7ca02a628e26a534843659aeaa41244aec6a182f0acf532ebc1e9392c5d634"
+    },
+    {
+      "name": "failure.schema.json",
+      "pack": "04",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "cause": {},
+          "code": {
+            "enum": [
+              "INPUT_INVALID",
+              "CONTEXT_INSUFFICIENT",
+              "EVIDENCE_CONFLICT",
+              "ASSUMPTION_VIOLATED",
+              "TOOL_UNAVAILABLE",
+              "TOOL_TIMEOUT",
+              "TOOL_SCHEMA_MISMATCH",
+              "PERMISSION_DENIED",
+              "AUTHENTICATION_FAILED",
+              "DEPENDENCY_FAILURE",
+              "NONDETERMINISTIC_FAILURE",
+              "TEST_FAILURE",
+              "SECURITY_POLICY_VIOLATION",
+              "RESOURCE_EXHAUSTED",
+              "COMPATIBILITY_FAILURE",
+              "MODEL_BEHAVIOR_FAILURE",
+              "RETRIEVAL_FAILURE",
+              "MEMORY_ISOLATION_FAILURE",
+              "ROLLBACK_FAILURE",
+              "VERIFICATION_INCONCLUSIVE",
+              "HUMAN_APPROVAL_REQUIRED"
+            ]
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "message": {
+            "type": "string"
+          },
+          "retryable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "retryable"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "7dfacb76c4d1ec79f0765d825dd17732afa514bacddd1d6b6cbb3dd8d43d835a"
+    },
+    {
+      "name": "incident.schema.json",
+      "pack": "04",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "detected_at": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "incident_id": {
+            "type": "string"
+          },
+          "regressions": {
+            "type": "array"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "incident_id",
+          "status",
+          "severity",
+          "detected_at",
+          "summary"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "637d1c7b691d06c5c5a6add217982297a97fa55444bbc5bd4e8d4ec0c23e6b86"
+    },
+    {
+      "name": "memory-record.schema.json",
+      "pack": "04",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "content": {},
+          "created_at": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "working",
+              "episodic",
+              "semantic",
+              "procedural"
+            ]
+          },
+          "verified": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "scope",
+          "type",
+          "content",
+          "source",
+          "verified",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "6c0ef1675d3a48e2bda229d4b8e4bda2d45e1aecc371826482cadd9317664e4f"
+    },
+    {
+      "name": "orchestration.schema.json",
+      "pack": "04",
+      "schema": {
+        "$id": "orchestration.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "approval_gates": {
+            "type": "array"
+          },
+          "evidence_outputs": {
+            "type": "array"
+          },
+          "failure_policy": {
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "required_skills": {
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "2.0"
+          },
+          "states": {
+            "type": "array"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "name",
+          "summary",
+          "version",
+          "states",
+          "steps",
+          "failure_policy",
+          "evidence_outputs"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "0f516b97b6abd1854a18d582c6b1e3499b38cc5745954d83b7b06851fc446f32"
+    },
+    {
+      "name": "recovery-plan.schema.json",
+      "pack": "04",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "idempotency_keys": {
+            "type": "array"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "strategy": {
+            "enum": [
+              "resume",
+              "retry",
+              "rollback",
+              "compensate",
+              "abort",
+              "escalate"
+            ]
+          },
+          "verification": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "strategy",
+          "steps",
+          "verification"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "889fd6c7dfa6629896c1b811fb7a7b71e81063b22840c6411e8cb1154649a66f"
+    },
+    {
+      "name": "skill-contract.schema.json",
+      "pack": "04",
+      "schema": {
+        "$id": "skill-contract.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "deprecation_policy": {
+            "type": "object"
+          },
+          "evaluation_suites": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "evidence_contract": {
+            "type": "object"
+          },
+          "external_dependencies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "failure_modes": {
+            "items": {
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "id": {
+            "pattern": "^[a-z0-9][a-z0-9-]+$",
+            "type": "string"
+          },
+          "idempotency": {
+            "type": "object"
+          },
+          "implementation_scripts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "inputs": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "invariants": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          },
+          "outputs": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "permissions": {
+            "additionalProperties": false,
+            "properties": {
+              "approval": {
+                "type": "string"
+              },
+              "filesystem_read": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "filesystem_write": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "network": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "process": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "secrets": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "filesystem_read",
+              "filesystem_write",
+              "network",
+              "process",
+              "secrets",
+              "approval"
+            ],
+            "type": "object"
+          },
+          "postconditions": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "preconditions": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "references": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "2.0"
+          },
+          "security_class": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "side_effects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "active",
+              "deprecated"
+            ]
+          },
+          "summary": {
+            "minLength": 20,
+            "type": "string"
+          },
+          "telemetry_contract": {
+            "type": "object"
+          },
+          "triggers": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "name",
+          "summary",
+          "category",
+          "version",
+          "status",
+          "triggers",
+          "inputs",
+          "outputs",
+          "preconditions",
+          "postconditions",
+          "invariants",
+          "permissions",
+          "side_effects",
+          "idempotency",
+          "failure_modes",
+          "evidence_contract",
+          "telemetry_contract",
+          "security_class",
+          "evaluation_suites",
+          "deprecation_policy"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "b4f7c6fb43139213d7577ab46a6bb851ff15d9e78215d60476b88f293f22b041"
+    },
+    {
+      "name": "task-state.schema.json",
+      "pack": "04",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "approvals": {
+            "type": "array"
+          },
+          "artifacts": {
+            "type": "array"
+          },
+          "history": {
+            "type": "array"
+          },
+          "idempotency_keys": {
+            "type": "array"
+          },
+          "state": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "task_id",
+          "state",
+          "version",
+          "history"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "c6183d8fe8afbb031a85bf78907410cbb994f2bfa2783d84df565e1e8c33b767"
+    },
+    {
+      "name": "tool-contract.schema.json",
+      "pack": "04",
+      "schema": {
+        "$id": "tool-contract.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "destructive": {
+            "type": "boolean"
+          },
+          "idempotent": {
+            "type": "boolean"
+          },
+          "input_schema": {
+            "type": "string"
+          },
+          "max_output_bytes": {
+            "type": "integer"
+          },
+          "max_runtime_seconds": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "network_scope": {
+            "type": "array"
+          },
+          "output_schema": {
+            "type": "string"
+          },
+          "read_scope": {
+            "type": "array"
+          },
+          "requires_approval": {
+            "type": "boolean"
+          },
+          "risk_tier": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "rollback": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "write_scope": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "risk_tier",
+          "read_scope",
+          "write_scope",
+          "network_scope",
+          "requires_approval",
+          "destructive",
+          "idempotent",
+          "input_schema",
+          "output_schema"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "d58d87e0ab7a48c155ca4a637ed694bddc78d68771c52dcdaee2485076dd46a1"
+    },
+    {
+      "name": "trace-link.schema.json",
+      "pack": "04",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "artifacts": {
+            "type": "array"
+          },
+          "model_calls": {
+            "type": "array"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "tool_calls": {
+            "type": "array"
+          },
+          "trace_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "trace_id",
+          "task_id",
+          "artifacts"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "34f9dddf9cf47dd4615862e6a90b6399891ea064df83d916fabcc9cb877cef24"
+    },
+    {
+      "name": "ai-bom.schema.json",
+      "pack": "05",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "bomFormat": {
+            "const": "AI-BOM"
+          },
+          "canonical_sha256": {
+            "type": "string"
+          },
+          "components": {
+            "type": "object"
+          },
+          "specVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "bomFormat",
+          "specVersion",
+          "components"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "5301e014c8ea3d72b8573aabdfd1a44c7b2f4f64bcaf70ac0546fccfbda2a650"
+    },
+    {
+      "name": "approval.schema.json",
+      "pack": "05",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "approval_id": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": "string"
+          },
+          "risk": {
+            "type": "string"
+          },
+          "rollback": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "approved",
+              "denied",
+              "expired",
+              "revoked"
+            ]
+          }
+        },
+        "required": [
+          "approval_id",
+          "action",
+          "scope",
+          "risk",
+          "status",
+          "expires_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "7999d4c9b5de80a4acf96199a9892e3a54e38e1fe34dcba6ed49bcb1a9f346f0"
+    },
+    {
+      "name": "assumption.schema.json",
+      "pack": "05",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "assumption_id": {
+            "type": "string"
+          },
+          "dependents": {
+            "type": "array"
+          },
+          "sensitivity": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "verified",
+              "invalidated",
+              "retired"
+            ]
+          }
+        },
+        "required": [
+          "assumption_id",
+          "statement",
+          "status",
+          "dependents"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "39b59dd0561922c2eab433e742e3685219482761845f8b7f8af094e34b730323"
+    },
+    {
+      "name": "certification.schema.json",
+      "pack": "05",
+      "schema": {
+        "$id": "certification.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "certification_status": {
+            "enum": [
+              "active",
+              "provisional",
+              "expired",
+              "revoked",
+              "failed"
+            ]
+          },
+          "certification_version": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "issued_at": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array"
+          },
+          "review_due": {
+            "type": "string"
+          },
+          "revocation_triggers": {
+            "type": "array"
+          },
+          "scope": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "certification_status",
+          "certification_version",
+          "scope",
+          "issued_at",
+          "review_due",
+          "evidence",
+          "revocation_triggers"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "5256c071b6395f757c984a8170a77ecd073a9beb7ab260879aa0ed4c9472a1d2"
+    },
+    {
+      "name": "claim.schema.json",
+      "pack": "05",
+      "schema": {
+        "$id": "claim.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "assumptions": {
+            "type": "array"
+          },
+          "claim_id": {
+            "type": "string"
+          },
+          "claim_type": {
+            "enum": [
+              "observed_fact",
+              "sourced_fact",
+              "calculation",
+              "inference",
+              "hypothesis",
+              "constraint",
+              "unknown"
+            ]
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "conflicts": {
+            "type": "array"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "stale_after": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "unverified",
+              "supported",
+              "verified",
+              "conflicted",
+              "rejected",
+              "stale"
+            ]
+          },
+          "verified_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "claim_id",
+          "statement",
+          "claim_type",
+          "status",
+          "evidence",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "03f9b950d992392250443a0460310079ed31d76df736c6d29727291fe34dd84d"
+    },
+    {
+      "name": "compatibility-record.schema.json",
+      "pack": "05",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "capabilities": {
+            "type": "object"
+          },
+          "component": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array"
+          },
+          "tested_at": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "component",
+          "version",
+          "capabilities",
+          "limitations",
+          "tested_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "04d8a8b13f01493084ab2de93a2a1e2a7c74c46ec91ddff65416125af1c6f08f"
+    },
+    {
+      "name": "decision-record.schema.json",
+      "pack": "05",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "consequences": {
+            "type": "array"
+          },
+          "context": {
+            "type": "string"
+          },
+          "decision": {},
+          "decision_id": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "options": {
+            "type": "array"
+          },
+          "rationale": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "decision_id",
+          "context",
+          "options",
+          "decision",
+          "rationale",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "f170af1fcabe41a030ca3d4adb624e8ed26eb772498dfb0cf3629a58c5d8893c"
+    },
+    {
+      "name": "evaluation-case.schema.json",
+      "pack": "05",
+      "schema": {
+        "$id": "evaluation-case.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "evidence_required": {
+            "type": "array"
+          },
+          "expected": {},
+          "forbidden": {
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "input": {},
+          "kind": {
+            "enum": [
+              "deterministic",
+              "property",
+              "differential",
+              "metamorphic",
+              "fuzz",
+              "behavioral",
+              "adversarial",
+              "recovery",
+              "performance",
+              "long_horizon"
+            ]
+          },
+          "target": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "target",
+          "kind",
+          "input",
+          "expected",
+          "forbidden",
+          "evidence_required"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "4bd978283af2ea3e492c0125e9308731394ef46e37e699931a95a9cba339b2b4"
+    },
+    {
+      "name": "evaluation-result.schema.json",
+      "pack": "05",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "case_id": {
+            "type": "string"
+          },
+          "duration_seconds": {
+            "type": "number"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "scores": {
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "ERROR",
+              "SKIP"
+            ]
+          }
+        },
+        "required": [
+          "case_id",
+          "status",
+          "scores",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "1e92ed742910b1ad911f966d4a700f83d6342ce8c39ed161d6319abd1e7894d7"
+    },
+    {
+      "name": "evidence.schema.json",
+      "pack": "05",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "access_class": {
+            "type": "string"
+          },
+          "content": {},
+          "evidence_id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "source",
+              "observation",
+              "calculation",
+              "test",
+              "trace",
+              "artifact",
+              "human_review"
+            ]
+          },
+          "locator": {
+            "type": "string"
+          },
+          "observed_at": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "kind",
+          "source",
+          "locator",
+          "observed_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "cb7ca02a628e26a534843659aeaa41244aec6a182f0acf532ebc1e9392c5d634"
+    },
+    {
+      "name": "failure.schema.json",
+      "pack": "05",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "cause": {},
+          "code": {
+            "enum": [
+              "INPUT_INVALID",
+              "CONTEXT_INSUFFICIENT",
+              "EVIDENCE_CONFLICT",
+              "ASSUMPTION_VIOLATED",
+              "TOOL_UNAVAILABLE",
+              "TOOL_TIMEOUT",
+              "TOOL_SCHEMA_MISMATCH",
+              "PERMISSION_DENIED",
+              "AUTHENTICATION_FAILED",
+              "DEPENDENCY_FAILURE",
+              "NONDETERMINISTIC_FAILURE",
+              "TEST_FAILURE",
+              "SECURITY_POLICY_VIOLATION",
+              "RESOURCE_EXHAUSTED",
+              "COMPATIBILITY_FAILURE",
+              "MODEL_BEHAVIOR_FAILURE",
+              "RETRIEVAL_FAILURE",
+              "MEMORY_ISOLATION_FAILURE",
+              "ROLLBACK_FAILURE",
+              "VERIFICATION_INCONCLUSIVE",
+              "HUMAN_APPROVAL_REQUIRED"
+            ]
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "message": {
+            "type": "string"
+          },
+          "retryable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "retryable"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "7dfacb76c4d1ec79f0765d825dd17732afa514bacddd1d6b6cbb3dd8d43d835a"
+    },
+    {
+      "name": "incident.schema.json",
+      "pack": "05",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "detected_at": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "incident_id": {
+            "type": "string"
+          },
+          "regressions": {
+            "type": "array"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "incident_id",
+          "status",
+          "severity",
+          "detected_at",
+          "summary"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "637d1c7b691d06c5c5a6add217982297a97fa55444bbc5bd4e8d4ec0c23e6b86"
+    },
+    {
+      "name": "memory-record.schema.json",
+      "pack": "05",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "content": {},
+          "created_at": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "working",
+              "episodic",
+              "semantic",
+              "procedural"
+            ]
+          },
+          "verified": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "scope",
+          "type",
+          "content",
+          "source",
+          "verified",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "6c0ef1675d3a48e2bda229d4b8e4bda2d45e1aecc371826482cadd9317664e4f"
+    },
+    {
+      "name": "orchestration.schema.json",
+      "pack": "05",
+      "schema": {
+        "$id": "orchestration.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "approval_gates": {
+            "type": "array"
+          },
+          "evidence_outputs": {
+            "type": "array"
+          },
+          "failure_policy": {
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "required_skills": {
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "2.0"
+          },
+          "states": {
+            "type": "array"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "name",
+          "summary",
+          "version",
+          "states",
+          "steps",
+          "failure_policy",
+          "evidence_outputs"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "0f516b97b6abd1854a18d582c6b1e3499b38cc5745954d83b7b06851fc446f32"
+    },
+    {
+      "name": "recovery-plan.schema.json",
+      "pack": "05",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "idempotency_keys": {
+            "type": "array"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "strategy": {
+            "enum": [
+              "resume",
+              "retry",
+              "rollback",
+              "compensate",
+              "abort",
+              "escalate"
+            ]
+          },
+          "verification": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "strategy",
+          "steps",
+          "verification"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "889fd6c7dfa6629896c1b811fb7a7b71e81063b22840c6411e8cb1154649a66f"
+    },
+    {
+      "name": "skill-contract.schema.json",
+      "pack": "05",
+      "schema": {
+        "$id": "skill-contract.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "deprecation_policy": {
+            "type": "object"
+          },
+          "evaluation_suites": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "evidence_contract": {
+            "type": "object"
+          },
+          "external_dependencies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "failure_modes": {
+            "items": {
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "id": {
+            "pattern": "^[a-z0-9][a-z0-9-]+$",
+            "type": "string"
+          },
+          "idempotency": {
+            "type": "object"
+          },
+          "implementation_scripts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "inputs": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "invariants": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          },
+          "outputs": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "permissions": {
+            "additionalProperties": false,
+            "properties": {
+              "approval": {
+                "type": "string"
+              },
+              "filesystem_read": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "filesystem_write": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "network": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "process": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "secrets": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "filesystem_read",
+              "filesystem_write",
+              "network",
+              "process",
+              "secrets",
+              "approval"
+            ],
+            "type": "object"
+          },
+          "postconditions": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "preconditions": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "references": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "2.0"
+          },
+          "security_class": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "side_effects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "active",
+              "deprecated"
+            ]
+          },
+          "summary": {
+            "minLength": 20,
+            "type": "string"
+          },
+          "telemetry_contract": {
+            "type": "object"
+          },
+          "triggers": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "name",
+          "summary",
+          "category",
+          "version",
+          "status",
+          "triggers",
+          "inputs",
+          "outputs",
+          "preconditions",
+          "postconditions",
+          "invariants",
+          "permissions",
+          "side_effects",
+          "idempotency",
+          "failure_modes",
+          "evidence_contract",
+          "telemetry_contract",
+          "security_class",
+          "evaluation_suites",
+          "deprecation_policy"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "b4f7c6fb43139213d7577ab46a6bb851ff15d9e78215d60476b88f293f22b041"
+    },
+    {
+      "name": "task-state.schema.json",
+      "pack": "05",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "approvals": {
+            "type": "array"
+          },
+          "artifacts": {
+            "type": "array"
+          },
+          "history": {
+            "type": "array"
+          },
+          "idempotency_keys": {
+            "type": "array"
+          },
+          "state": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "task_id",
+          "state",
+          "version",
+          "history"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "c6183d8fe8afbb031a85bf78907410cbb994f2bfa2783d84df565e1e8c33b767"
+    },
+    {
+      "name": "tool-contract.schema.json",
+      "pack": "05",
+      "schema": {
+        "$id": "tool-contract.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "destructive": {
+            "type": "boolean"
+          },
+          "idempotent": {
+            "type": "boolean"
+          },
+          "input_schema": {
+            "type": "string"
+          },
+          "max_output_bytes": {
+            "type": "integer"
+          },
+          "max_runtime_seconds": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "network_scope": {
+            "type": "array"
+          },
+          "output_schema": {
+            "type": "string"
+          },
+          "read_scope": {
+            "type": "array"
+          },
+          "requires_approval": {
+            "type": "boolean"
+          },
+          "risk_tier": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "rollback": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "write_scope": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "risk_tier",
+          "read_scope",
+          "write_scope",
+          "network_scope",
+          "requires_approval",
+          "destructive",
+          "idempotent",
+          "input_schema",
+          "output_schema"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "d58d87e0ab7a48c155ca4a637ed694bddc78d68771c52dcdaee2485076dd46a1"
+    },
+    {
+      "name": "trace-link.schema.json",
+      "pack": "05",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "artifacts": {
+            "type": "array"
+          },
+          "model_calls": {
+            "type": "array"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "tool_calls": {
+            "type": "array"
+          },
+          "trace_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "trace_id",
+          "task_id",
+          "artifacts"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "34f9dddf9cf47dd4615862e6a90b6399891ea064df83d916fabcc9cb877cef24"
+    },
+    {
+      "name": "ai-bom.schema.json",
+      "pack": "06",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "bomFormat": {
+            "const": "AI-BOM"
+          },
+          "canonical_sha256": {
+            "type": "string"
+          },
+          "components": {
+            "type": "object"
+          },
+          "specVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "bomFormat",
+          "specVersion",
+          "components"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "5301e014c8ea3d72b8573aabdfd1a44c7b2f4f64bcaf70ac0546fccfbda2a650"
+    },
+    {
+      "name": "approval.schema.json",
+      "pack": "06",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "approval_id": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": "string"
+          },
+          "risk": {
+            "type": "string"
+          },
+          "rollback": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "approved",
+              "denied",
+              "expired",
+              "revoked"
+            ]
+          }
+        },
+        "required": [
+          "approval_id",
+          "action",
+          "scope",
+          "risk",
+          "status",
+          "expires_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "7999d4c9b5de80a4acf96199a9892e3a54e38e1fe34dcba6ed49bcb1a9f346f0"
+    },
+    {
+      "name": "assumption.schema.json",
+      "pack": "06",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "assumption_id": {
+            "type": "string"
+          },
+          "dependents": {
+            "type": "array"
+          },
+          "sensitivity": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "verified",
+              "invalidated",
+              "retired"
+            ]
+          }
+        },
+        "required": [
+          "assumption_id",
+          "statement",
+          "status",
+          "dependents"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "39b59dd0561922c2eab433e742e3685219482761845f8b7f8af094e34b730323"
+    },
+    {
+      "name": "certification.schema.json",
+      "pack": "06",
+      "schema": {
+        "$id": "certification.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "certification_status": {
+            "enum": [
+              "active",
+              "provisional",
+              "expired",
+              "revoked",
+              "failed"
+            ]
+          },
+          "certification_version": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "issued_at": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array"
+          },
+          "review_due": {
+            "type": "string"
+          },
+          "revocation_triggers": {
+            "type": "array"
+          },
+          "scope": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "certification_status",
+          "certification_version",
+          "scope",
+          "issued_at",
+          "review_due",
+          "evidence",
+          "revocation_triggers"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "5256c071b6395f757c984a8170a77ecd073a9beb7ab260879aa0ed4c9472a1d2"
+    },
+    {
+      "name": "claim.schema.json",
+      "pack": "06",
+      "schema": {
+        "$id": "claim.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "assumptions": {
+            "type": "array"
+          },
+          "claim_id": {
+            "type": "string"
+          },
+          "claim_type": {
+            "enum": [
+              "observed_fact",
+              "sourced_fact",
+              "calculation",
+              "inference",
+              "hypothesis",
+              "constraint",
+              "unknown"
+            ]
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "conflicts": {
+            "type": "array"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "stale_after": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "unverified",
+              "supported",
+              "verified",
+              "conflicted",
+              "rejected",
+              "stale"
+            ]
+          },
+          "verified_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "claim_id",
+          "statement",
+          "claim_type",
+          "status",
+          "evidence",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "03f9b950d992392250443a0460310079ed31d76df736c6d29727291fe34dd84d"
+    },
+    {
+      "name": "compatibility-record.schema.json",
+      "pack": "06",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "capabilities": {
+            "type": "object"
+          },
+          "component": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array"
+          },
+          "tested_at": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "component",
+          "version",
+          "capabilities",
+          "limitations",
+          "tested_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "04d8a8b13f01493084ab2de93a2a1e2a7c74c46ec91ddff65416125af1c6f08f"
+    },
+    {
+      "name": "decision-record.schema.json",
+      "pack": "06",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "consequences": {
+            "type": "array"
+          },
+          "context": {
+            "type": "string"
+          },
+          "decision": {},
+          "decision_id": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "options": {
+            "type": "array"
+          },
+          "rationale": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "decision_id",
+          "context",
+          "options",
+          "decision",
+          "rationale",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "f170af1fcabe41a030ca3d4adb624e8ed26eb772498dfb0cf3629a58c5d8893c"
+    },
+    {
+      "name": "evaluation-case.schema.json",
+      "pack": "06",
+      "schema": {
+        "$id": "evaluation-case.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "evidence_required": {
+            "type": "array"
+          },
+          "expected": {},
+          "forbidden": {
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "input": {},
+          "kind": {
+            "enum": [
+              "deterministic",
+              "property",
+              "differential",
+              "metamorphic",
+              "fuzz",
+              "behavioral",
+              "adversarial",
+              "recovery",
+              "performance",
+              "long_horizon"
+            ]
+          },
+          "target": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "target",
+          "kind",
+          "input",
+          "expected",
+          "forbidden",
+          "evidence_required"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "4bd978283af2ea3e492c0125e9308731394ef46e37e699931a95a9cba339b2b4"
+    },
+    {
+      "name": "evaluation-result.schema.json",
+      "pack": "06",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "case_id": {
+            "type": "string"
+          },
+          "duration_seconds": {
+            "type": "number"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "scores": {
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "ERROR",
+              "SKIP"
+            ]
+          }
+        },
+        "required": [
+          "case_id",
+          "status",
+          "scores",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "1e92ed742910b1ad911f966d4a700f83d6342ce8c39ed161d6319abd1e7894d7"
+    },
+    {
+      "name": "evidence.schema.json",
+      "pack": "06",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "access_class": {
+            "type": "string"
+          },
+          "content": {},
+          "evidence_id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "source",
+              "observation",
+              "calculation",
+              "test",
+              "trace",
+              "artifact",
+              "human_review"
+            ]
+          },
+          "locator": {
+            "type": "string"
+          },
+          "observed_at": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "kind",
+          "source",
+          "locator",
+          "observed_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "cb7ca02a628e26a534843659aeaa41244aec6a182f0acf532ebc1e9392c5d634"
+    },
+    {
+      "name": "failure.schema.json",
+      "pack": "06",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "cause": {},
+          "code": {
+            "enum": [
+              "INPUT_INVALID",
+              "CONTEXT_INSUFFICIENT",
+              "EVIDENCE_CONFLICT",
+              "ASSUMPTION_VIOLATED",
+              "TOOL_UNAVAILABLE",
+              "TOOL_TIMEOUT",
+              "TOOL_SCHEMA_MISMATCH",
+              "PERMISSION_DENIED",
+              "AUTHENTICATION_FAILED",
+              "DEPENDENCY_FAILURE",
+              "NONDETERMINISTIC_FAILURE",
+              "TEST_FAILURE",
+              "SECURITY_POLICY_VIOLATION",
+              "RESOURCE_EXHAUSTED",
+              "COMPATIBILITY_FAILURE",
+              "MODEL_BEHAVIOR_FAILURE",
+              "RETRIEVAL_FAILURE",
+              "MEMORY_ISOLATION_FAILURE",
+              "ROLLBACK_FAILURE",
+              "VERIFICATION_INCONCLUSIVE",
+              "HUMAN_APPROVAL_REQUIRED"
+            ]
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "message": {
+            "type": "string"
+          },
+          "retryable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "retryable"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "7dfacb76c4d1ec79f0765d825dd17732afa514bacddd1d6b6cbb3dd8d43d835a"
+    },
+    {
+      "name": "incident.schema.json",
+      "pack": "06",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "detected_at": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "incident_id": {
+            "type": "string"
+          },
+          "regressions": {
+            "type": "array"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "incident_id",
+          "status",
+          "severity",
+          "detected_at",
+          "summary"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "637d1c7b691d06c5c5a6add217982297a97fa55444bbc5bd4e8d4ec0c23e6b86"
+    },
+    {
+      "name": "memory-record.schema.json",
+      "pack": "06",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "content": {},
+          "created_at": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "working",
+              "episodic",
+              "semantic",
+              "procedural"
+            ]
+          },
+          "verified": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "scope",
+          "type",
+          "content",
+          "source",
+          "verified",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "6c0ef1675d3a48e2bda229d4b8e4bda2d45e1aecc371826482cadd9317664e4f"
+    },
+    {
+      "name": "orchestration.schema.json",
+      "pack": "06",
+      "schema": {
+        "$id": "orchestration.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "approval_gates": {
+            "type": "array"
+          },
+          "evidence_outputs": {
+            "type": "array"
+          },
+          "failure_policy": {
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "required_skills": {
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "2.0"
+          },
+          "states": {
+            "type": "array"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "name",
+          "summary",
+          "version",
+          "states",
+          "steps",
+          "failure_policy",
+          "evidence_outputs"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "0f516b97b6abd1854a18d582c6b1e3499b38cc5745954d83b7b06851fc446f32"
+    },
+    {
+      "name": "recovery-plan.schema.json",
+      "pack": "06",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "idempotency_keys": {
+            "type": "array"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "strategy": {
+            "enum": [
+              "resume",
+              "retry",
+              "rollback",
+              "compensate",
+              "abort",
+              "escalate"
+            ]
+          },
+          "verification": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "strategy",
+          "steps",
+          "verification"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "889fd6c7dfa6629896c1b811fb7a7b71e81063b22840c6411e8cb1154649a66f"
+    },
+    {
+      "name": "skill-contract.schema.json",
+      "pack": "06",
+      "schema": {
+        "$id": "skill-contract.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "deprecation_policy": {
+            "type": "object"
+          },
+          "evaluation_suites": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "evidence_contract": {
+            "type": "object"
+          },
+          "external_dependencies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "failure_modes": {
+            "items": {
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "id": {
+            "pattern": "^[a-z0-9][a-z0-9-]+$",
+            "type": "string"
+          },
+          "idempotency": {
+            "type": "object"
+          },
+          "implementation_scripts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "inputs": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "invariants": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          },
+          "outputs": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "permissions": {
+            "additionalProperties": false,
+            "properties": {
+              "approval": {
+                "type": "string"
+              },
+              "filesystem_read": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "filesystem_write": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "network": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "process": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "secrets": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "filesystem_read",
+              "filesystem_write",
+              "network",
+              "process",
+              "secrets",
+              "approval"
+            ],
+            "type": "object"
+          },
+          "postconditions": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "preconditions": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "references": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "2.0"
+          },
+          "security_class": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "side_effects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "active",
+              "deprecated"
+            ]
+          },
+          "summary": {
+            "minLength": 20,
+            "type": "string"
+          },
+          "telemetry_contract": {
+            "type": "object"
+          },
+          "triggers": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "name",
+          "summary",
+          "category",
+          "version",
+          "status",
+          "triggers",
+          "inputs",
+          "outputs",
+          "preconditions",
+          "postconditions",
+          "invariants",
+          "permissions",
+          "side_effects",
+          "idempotency",
+          "failure_modes",
+          "evidence_contract",
+          "telemetry_contract",
+          "security_class",
+          "evaluation_suites",
+          "deprecation_policy"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "b4f7c6fb43139213d7577ab46a6bb851ff15d9e78215d60476b88f293f22b041"
+    },
+    {
+      "name": "task-state.schema.json",
+      "pack": "06",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "approvals": {
+            "type": "array"
+          },
+          "artifacts": {
+            "type": "array"
+          },
+          "history": {
+            "type": "array"
+          },
+          "idempotency_keys": {
+            "type": "array"
+          },
+          "state": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "task_id",
+          "state",
+          "version",
+          "history"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "c6183d8fe8afbb031a85bf78907410cbb994f2bfa2783d84df565e1e8c33b767"
+    },
+    {
+      "name": "tool-contract.schema.json",
+      "pack": "06",
+      "schema": {
+        "$id": "tool-contract.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "destructive": {
+            "type": "boolean"
+          },
+          "idempotent": {
+            "type": "boolean"
+          },
+          "input_schema": {
+            "type": "string"
+          },
+          "max_output_bytes": {
+            "type": "integer"
+          },
+          "max_runtime_seconds": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "network_scope": {
+            "type": "array"
+          },
+          "output_schema": {
+            "type": "string"
+          },
+          "read_scope": {
+            "type": "array"
+          },
+          "requires_approval": {
+            "type": "boolean"
+          },
+          "risk_tier": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "rollback": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "write_scope": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "risk_tier",
+          "read_scope",
+          "write_scope",
+          "network_scope",
+          "requires_approval",
+          "destructive",
+          "idempotent",
+          "input_schema",
+          "output_schema"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "d58d87e0ab7a48c155ca4a637ed694bddc78d68771c52dcdaee2485076dd46a1"
+    },
+    {
+      "name": "trace-link.schema.json",
+      "pack": "06",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "artifacts": {
+            "type": "array"
+          },
+          "model_calls": {
+            "type": "array"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "tool_calls": {
+            "type": "array"
+          },
+          "trace_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "trace_id",
+          "task_id",
+          "artifacts"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "34f9dddf9cf47dd4615862e6a90b6399891ea064df83d916fabcc9cb877cef24"
+    },
+    {
+      "name": "ai-bom.schema.json",
+      "pack": "07",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "bomFormat": {
+            "const": "AI-BOM"
+          },
+          "canonical_sha256": {
+            "type": "string"
+          },
+          "components": {
+            "type": "object"
+          },
+          "specVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "bomFormat",
+          "specVersion",
+          "components"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "5301e014c8ea3d72b8573aabdfd1a44c7b2f4f64bcaf70ac0546fccfbda2a650"
+    },
+    {
+      "name": "approval.schema.json",
+      "pack": "07",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "approval_id": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": "string"
+          },
+          "risk": {
+            "type": "string"
+          },
+          "rollback": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "approved",
+              "denied",
+              "expired",
+              "revoked"
+            ]
+          }
+        },
+        "required": [
+          "approval_id",
+          "action",
+          "scope",
+          "risk",
+          "status",
+          "expires_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "7999d4c9b5de80a4acf96199a9892e3a54e38e1fe34dcba6ed49bcb1a9f346f0"
+    },
+    {
+      "name": "assumption.schema.json",
+      "pack": "07",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "assumption_id": {
+            "type": "string"
+          },
+          "dependents": {
+            "type": "array"
+          },
+          "sensitivity": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "verified",
+              "invalidated",
+              "retired"
+            ]
+          }
+        },
+        "required": [
+          "assumption_id",
+          "statement",
+          "status",
+          "dependents"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "39b59dd0561922c2eab433e742e3685219482761845f8b7f8af094e34b730323"
+    },
+    {
+      "name": "certification.schema.json",
+      "pack": "07",
+      "schema": {
+        "$id": "certification.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "certification_status": {
+            "enum": [
+              "active",
+              "provisional",
+              "expired",
+              "revoked",
+              "failed"
+            ]
+          },
+          "certification_version": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "issued_at": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array"
+          },
+          "review_due": {
+            "type": "string"
+          },
+          "revocation_triggers": {
+            "type": "array"
+          },
+          "scope": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "certification_status",
+          "certification_version",
+          "scope",
+          "issued_at",
+          "review_due",
+          "evidence",
+          "revocation_triggers"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "5256c071b6395f757c984a8170a77ecd073a9beb7ab260879aa0ed4c9472a1d2"
+    },
+    {
+      "name": "claim.schema.json",
+      "pack": "07",
+      "schema": {
+        "$id": "claim.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "assumptions": {
+            "type": "array"
+          },
+          "claim_id": {
+            "type": "string"
+          },
+          "claim_type": {
+            "enum": [
+              "observed_fact",
+              "sourced_fact",
+              "calculation",
+              "inference",
+              "hypothesis",
+              "constraint",
+              "unknown"
+            ]
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "conflicts": {
+            "type": "array"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "stale_after": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "unverified",
+              "supported",
+              "verified",
+              "conflicted",
+              "rejected",
+              "stale"
+            ]
+          },
+          "verified_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "claim_id",
+          "statement",
+          "claim_type",
+          "status",
+          "evidence",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "03f9b950d992392250443a0460310079ed31d76df736c6d29727291fe34dd84d"
+    },
+    {
+      "name": "compatibility-record.schema.json",
+      "pack": "07",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "capabilities": {
+            "type": "object"
+          },
+          "component": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array"
+          },
+          "tested_at": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "component",
+          "version",
+          "capabilities",
+          "limitations",
+          "tested_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "04d8a8b13f01493084ab2de93a2a1e2a7c74c46ec91ddff65416125af1c6f08f"
+    },
+    {
+      "name": "decision-record.schema.json",
+      "pack": "07",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "consequences": {
+            "type": "array"
+          },
+          "context": {
+            "type": "string"
+          },
+          "decision": {},
+          "decision_id": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "options": {
+            "type": "array"
+          },
+          "rationale": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "decision_id",
+          "context",
+          "options",
+          "decision",
+          "rationale",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "f170af1fcabe41a030ca3d4adb624e8ed26eb772498dfb0cf3629a58c5d8893c"
+    },
+    {
+      "name": "evaluation-case.schema.json",
+      "pack": "07",
+      "schema": {
+        "$id": "evaluation-case.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "evidence_required": {
+            "type": "array"
+          },
+          "expected": {},
+          "forbidden": {
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "input": {},
+          "kind": {
+            "enum": [
+              "deterministic",
+              "property",
+              "differential",
+              "metamorphic",
+              "fuzz",
+              "behavioral",
+              "adversarial",
+              "recovery",
+              "performance",
+              "long_horizon"
+            ]
+          },
+          "target": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "target",
+          "kind",
+          "input",
+          "expected",
+          "forbidden",
+          "evidence_required"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "4bd978283af2ea3e492c0125e9308731394ef46e37e699931a95a9cba339b2b4"
+    },
+    {
+      "name": "evaluation-result.schema.json",
+      "pack": "07",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "case_id": {
+            "type": "string"
+          },
+          "duration_seconds": {
+            "type": "number"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "scores": {
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "ERROR",
+              "SKIP"
+            ]
+          }
+        },
+        "required": [
+          "case_id",
+          "status",
+          "scores",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "1e92ed742910b1ad911f966d4a700f83d6342ce8c39ed161d6319abd1e7894d7"
+    },
+    {
+      "name": "evidence.schema.json",
+      "pack": "07",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "access_class": {
+            "type": "string"
+          },
+          "content": {},
+          "evidence_id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "source",
+              "observation",
+              "calculation",
+              "test",
+              "trace",
+              "artifact",
+              "human_review"
+            ]
+          },
+          "locator": {
+            "type": "string"
+          },
+          "observed_at": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "kind",
+          "source",
+          "locator",
+          "observed_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "cb7ca02a628e26a534843659aeaa41244aec6a182f0acf532ebc1e9392c5d634"
+    },
+    {
+      "name": "failure.schema.json",
+      "pack": "07",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "cause": {},
+          "code": {
+            "enum": [
+              "INPUT_INVALID",
+              "CONTEXT_INSUFFICIENT",
+              "EVIDENCE_CONFLICT",
+              "ASSUMPTION_VIOLATED",
+              "TOOL_UNAVAILABLE",
+              "TOOL_TIMEOUT",
+              "TOOL_SCHEMA_MISMATCH",
+              "PERMISSION_DENIED",
+              "AUTHENTICATION_FAILED",
+              "DEPENDENCY_FAILURE",
+              "NONDETERMINISTIC_FAILURE",
+              "TEST_FAILURE",
+              "SECURITY_POLICY_VIOLATION",
+              "RESOURCE_EXHAUSTED",
+              "COMPATIBILITY_FAILURE",
+              "MODEL_BEHAVIOR_FAILURE",
+              "RETRIEVAL_FAILURE",
+              "MEMORY_ISOLATION_FAILURE",
+              "ROLLBACK_FAILURE",
+              "VERIFICATION_INCONCLUSIVE",
+              "HUMAN_APPROVAL_REQUIRED"
+            ]
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "message": {
+            "type": "string"
+          },
+          "retryable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "retryable"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "7dfacb76c4d1ec79f0765d825dd17732afa514bacddd1d6b6cbb3dd8d43d835a"
+    },
+    {
+      "name": "incident.schema.json",
+      "pack": "07",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "detected_at": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array"
+          },
+          "incident_id": {
+            "type": "string"
+          },
+          "regressions": {
+            "type": "array"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "incident_id",
+          "status",
+          "severity",
+          "detected_at",
+          "summary"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "637d1c7b691d06c5c5a6add217982297a97fa55444bbc5bd4e8d4ec0c23e6b86"
+    },
+    {
+      "name": "memory-record.schema.json",
+      "pack": "07",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "content": {},
+          "created_at": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "working",
+              "episodic",
+              "semantic",
+              "procedural"
+            ]
+          },
+          "verified": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "scope",
+          "type",
+          "content",
+          "source",
+          "verified",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "6c0ef1675d3a48e2bda229d4b8e4bda2d45e1aecc371826482cadd9317664e4f"
+    },
+    {
+      "name": "orchestration.schema.json",
+      "pack": "07",
+      "schema": {
+        "$id": "orchestration.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "approval_gates": {
+            "type": "array"
+          },
+          "evidence_outputs": {
+            "type": "array"
+          },
+          "failure_policy": {
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "required_skills": {
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "2.0"
+          },
+          "states": {
+            "type": "array"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "name",
+          "summary",
+          "version",
+          "states",
+          "steps",
+          "failure_policy",
+          "evidence_outputs"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "0f516b97b6abd1854a18d582c6b1e3499b38cc5745954d83b7b06851fc446f32"
+    },
+    {
+      "name": "recovery-plan.schema.json",
+      "pack": "07",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "idempotency_keys": {
+            "type": "array"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "strategy": {
+            "enum": [
+              "resume",
+              "retry",
+              "rollback",
+              "compensate",
+              "abort",
+              "escalate"
+            ]
+          },
+          "verification": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "strategy",
+          "steps",
+          "verification"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "889fd6c7dfa6629896c1b811fb7a7b71e81063b22840c6411e8cb1154649a66f"
+    },
+    {
+      "name": "skill-contract.schema.json",
+      "pack": "07",
+      "schema": {
+        "$id": "skill-contract.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "deprecation_policy": {
+            "type": "object"
+          },
+          "evaluation_suites": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "evidence_contract": {
+            "type": "object"
+          },
+          "external_dependencies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "failure_modes": {
+            "items": {
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "id": {
+            "pattern": "^[a-z0-9][a-z0-9-]+$",
+            "type": "string"
+          },
+          "idempotency": {
+            "type": "object"
+          },
+          "implementation_scripts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "inputs": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "invariants": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          },
+          "outputs": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "permissions": {
+            "additionalProperties": false,
+            "properties": {
+              "approval": {
+                "type": "string"
+              },
+              "filesystem_read": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "filesystem_write": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "network": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "process": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "secrets": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "filesystem_read",
+              "filesystem_write",
+              "network",
+              "process",
+              "secrets",
+              "approval"
+            ],
+            "type": "object"
+          },
+          "postconditions": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "preconditions": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "references": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "2.0"
+          },
+          "security_class": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "side_effects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "active",
+              "deprecated"
+            ]
+          },
+          "summary": {
+            "minLength": 20,
+            "type": "string"
+          },
+          "telemetry_contract": {
+            "type": "object"
+          },
+          "triggers": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "name",
+          "summary",
+          "category",
+          "version",
+          "status",
+          "triggers",
+          "inputs",
+          "outputs",
+          "preconditions",
+          "postconditions",
+          "invariants",
+          "permissions",
+          "side_effects",
+          "idempotency",
+          "failure_modes",
+          "evidence_contract",
+          "telemetry_contract",
+          "security_class",
+          "evaluation_suites",
+          "deprecation_policy"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "b4f7c6fb43139213d7577ab46a6bb851ff15d9e78215d60476b88f293f22b041"
+    },
+    {
+      "name": "task-state.schema.json",
+      "pack": "07",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "approvals": {
+            "type": "array"
+          },
+          "artifacts": {
+            "type": "array"
+          },
+          "history": {
+            "type": "array"
+          },
+          "idempotency_keys": {
+            "type": "array"
+          },
+          "state": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "task_id",
+          "state",
+          "version",
+          "history"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "c6183d8fe8afbb031a85bf78907410cbb994f2bfa2783d84df565e1e8c33b767"
+    },
+    {
+      "name": "tool-contract.schema.json",
+      "pack": "07",
+      "schema": {
+        "$id": "tool-contract.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "destructive": {
+            "type": "boolean"
+          },
+          "idempotent": {
+            "type": "boolean"
+          },
+          "input_schema": {
+            "type": "string"
+          },
+          "max_output_bytes": {
+            "type": "integer"
+          },
+          "max_runtime_seconds": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "network_scope": {
+            "type": "array"
+          },
+          "output_schema": {
+            "type": "string"
+          },
+          "read_scope": {
+            "type": "array"
+          },
+          "requires_approval": {
+            "type": "boolean"
+          },
+          "risk_tier": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "rollback": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "write_scope": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "risk_tier",
+          "read_scope",
+          "write_scope",
+          "network_scope",
+          "requires_approval",
+          "destructive",
+          "idempotent",
+          "input_schema",
+          "output_schema"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "d58d87e0ab7a48c155ca4a637ed694bddc78d68771c52dcdaee2485076dd46a1"
+    },
+    {
+      "name": "trace-link.schema.json",
+      "pack": "07",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "artifacts": {
+            "type": "array"
+          },
+          "model_calls": {
+            "type": "array"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "tool_calls": {
+            "type": "array"
+          },
+          "trace_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "trace_id",
+          "task_id",
+          "artifacts"
+        ],
+        "type": "object"
+      },
+      "source_sha256": "34f9dddf9cf47dd4615862e6a90b6399891ea064df83d916fabcc9cb877cef24"
+    }
+  ],
+  "schema_version": "1.0"
+}

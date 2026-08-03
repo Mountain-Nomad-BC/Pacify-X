@@ -1,0 +1,35 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:failure",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "category": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "fingerprint": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "message": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "recoverable": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "fingerprint",
+    "category",
+    "message",
+    "recoverable"
+  ],
+  "title": "Failure",
+  "type": "object"
+}

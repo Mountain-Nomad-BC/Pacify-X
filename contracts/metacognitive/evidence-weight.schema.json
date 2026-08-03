@@ -1,0 +1,35 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:metacognitive:evidence-weight",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "aggregate": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "correlation_group": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dimensions": {
+      "additionalProperties": {
+        "maximum": 1,
+        "minimum": 0,
+        "type": "number"
+      },
+      "type": "object"
+    },
+    "evidence_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "dimensions",
+    "aggregate"
+  ],
+  "type": "object"
+}

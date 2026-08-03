@@ -1,0 +1,87 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:metacognitive:agent-cognitive-profile",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "agent_id": {
+      "type": "string"
+    },
+    "failure_modes": {
+      "items": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "rate": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "severity": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "triggers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "rate",
+          "severity"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "permissions": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "task_classes": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "traits": {
+      "additionalProperties": {
+        "properties": {
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "score": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "score",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "type": "object"
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agent_id",
+    "version",
+    "traits",
+    "failure_modes",
+    "task_classes"
+  ],
+  "type": "object"
+}

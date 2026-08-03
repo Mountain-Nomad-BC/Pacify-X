@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:external-tool-intake",
+  "title": "External tool quarantine intake",
+  "type": "object",
+  "required": [
+    "component_id",
+    "source",
+    "sha256",
+    "license",
+    "permissions",
+    "vulnerabilities",
+    "policy_compatible",
+    "approval"
+  ],
+  "properties": {
+    "component_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{64}$"
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "vulnerabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "malicious_indicators": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "policy_compatible": {
+      "type": "boolean"
+    },
+    "approval": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": true
+}

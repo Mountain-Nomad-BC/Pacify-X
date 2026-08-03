@@ -1,0 +1,36 @@
+{
+  "id": "tool-loop-circuit-breaker",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/tool-loop-circuit-breaker/SKILL.md",
+  "body_sha256": "4530197c21703b061c79d13b725f41cd187d26ebba7f88f08b3ea3a8df5adbae",
+  "references": [],
+  "capability_tags": [
+    "breaker",
+    "circuit",
+    "loop",
+    "security",
+    "tool"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_47b68265.md",
+        "sha256": "fba3499378921533e97e7ea25c435fc7b65429a4099bc587e08f7642112dc47c"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_3c3fd40b.yaml",
+        "sha256": "eec57940351558019f025a363eaed40173fbefc44c1ee7e9ce465cbb6fc6b56b"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

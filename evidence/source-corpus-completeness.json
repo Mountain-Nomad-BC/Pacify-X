@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "status": "current_corpus_closed_with_deferred_final_review",
+  "scope": {
+    "current_temporary_corpus": "complete",
+    "user_held_final_review_corpus": "explicitly_excluded_and_untouched",
+    "official_deployment_certification": "deferred"
+  },
+  "physical_corpus": {
+    "files_accounted": 16890,
+    "bytes_accounted": 1435492427,
+    "text_files_scanned": 3036,
+    "excluded_generated_or_dependency_files_hashed": 13821,
+    "oversize_files_stream_scanned": 27,
+    "read_errors": 0,
+    "inventory_sha256": "1d964ef49fcc64888ccd140bbd02c0e74064e6ac02d51cc6582abb33d76a3679",
+    "scanner_report_sha256": "3699fe69988a30d9b8eb7deefe28d471e6d906398d0cc53ead304958ccb72fe9"
+  },
+  "reconciliations": {
+    "local_planning_inventory": {
+      "records": 788,
+      "unresolved": 0,
+      "report_sha256": "b7d71c517886ec7d7c080f624011ce53690c4cb23926d89a49827441ae965de2"
+    },
+    "external_classified_assets": {
+      "records": 264244,
+      "inventory_errors_dispositioned": 53,
+      "unresolved": 0,
+      "report_sha256": "f945e6047d51ccb5d0fab531885b322e5f187591b657a77f96d463157f602bf0"
+    },
+    "skill_identities": {
+      "skill_files": 1292,
+      "unique_identities": 571,
+      "unique_bodies": 591,
+      "unresolved": 0,
+      "report_sha256": "239717240a44562178b6fe95fea3949d6847708e8522650332cf47275981086c"
+    },
+    "mechanism_records": {
+      "records": 2650,
+      "merged_to_current_owners": 2072,
+      "oversize_stream_scanned_and_mapped": 27,
+      "no_reusable_signal": 551,
+      "unresolved": 0,
+      "report_sha256": "51c1cb39825a3d0dab231573a6625cf136133c74c933a4c98f18d6d4f5218fe9"
+    },
+    "historical_incomplete_findings": {
+      "records": 4599,
+      "unresolved": 0,
+      "current_product_findings_reviewed": 17,
+      "current_product_unreviewed": 0,
+      "current_product_report_sha256": "d45284ced54ca8ddd63a6dd8a24b63f6f6530b0059f22b49ff5d59f2f0dedd65"
+    },
+    "planning_cards": {
+      "cards": 46,
+      "unmapped": 0,
+      "coverage_sha256": "60dc769e7ad52b5807ab2501aa99efc6be990cd1029a5906275f74954f67f579",
+      "report_sha256": "1893a4c31804a616ed73909f1eba5d03e719d38e43fa64cada3e1718ca1f7777"
+    }
+  },
+  "source_instructions": {
+    "build_instructions_sha256": "6887fd82852a3860f368afb917c6c5efeea876b3048d4f48d90e3d81e0a1fd27",
+    "punch_cards_sha256": "640777a4a45a578b39394c1299b7d7315adb55a2bf972680a85fad99170ebc6c"
+  },
+  "closure": {
+    "matching_snapshot_count": 2,
+    "accepted_file_count": 16890,
+    "accepted_byte_count": 1435492427,
+    "accepted_tree_sha256": "86eac445428bbaabb5b2209f21a46c5c718e3cbcd97cdd17bcdf89ca10742bef",
+    "quarantined_top_level_paths": 22,
+    "quarantined_files": 4582,
+    "quarantined_bytes": 52503362,
+    "quarantine_manifest_sha256": "f6624e172f15d4dd6b70563708798e0dbdb7c74ee3c4e6ce897dc21b93e7de21",
+    "inventory_reconciled": true,
+    "hard_delete": false
+  },
+  "closure_rule": "Close this intake only after two consecutive identical full-tree snapshots; quarantine is recoverable and never destructive."
+}

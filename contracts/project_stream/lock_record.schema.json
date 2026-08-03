@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:lock_record",
+  "title": "Resource Lock",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "lock_id",
+    "project_id",
+    "owner_session_id",
+    "scope",
+    "mode",
+    "expires_at"
+  ],
+  "properties": {
+    "lock_id": {
+      "type": "string"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^prj_"
+    },
+    "owner_session_id": {
+      "type": "string",
+      "pattern": "^ses_"
+    },
+    "scope": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mode": {
+      "enum": [
+        "read",
+        "write",
+        "exclusive"
+      ]
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reason": {
+      "type": "string"
+    }
+  }
+}

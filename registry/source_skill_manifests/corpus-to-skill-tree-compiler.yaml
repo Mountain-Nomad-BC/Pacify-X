@@ -1,0 +1,67 @@
+id: corpus-to-skill-tree-compiler
+version: 0.1.0
+status: draft
+owner: framework owner
+category: knowledge
+priority: P1
+purpose: Compile large corpora into navigable hierarchical skill/knowledge trees with
+  evidence-linked nodes.
+activation:
+  when:
+  - knowledge spans many documents
+  - flat retrieval loses structure
+  not_when:
+  - tiny corpus or deterministic lookup exists
+inputs:
+  required:
+  - documents
+  - canonical taxonomy
+  - model/product mappings
+  - evidence IDs
+  - access scopes
+outputs:
+  produces: &id001
+  - navigation tree
+  - node summaries
+  - evidence links
+  - cross-branch relations
+  - drift report
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- TurnBurn graph
+- intelligent system RAG
+- skill navigator
+- LMS source library
+risk:
+  tier: R1
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- navigation success
+- evidence precision
+- context reduction
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - corpus2skill
+  - karpathy-llm-wiki

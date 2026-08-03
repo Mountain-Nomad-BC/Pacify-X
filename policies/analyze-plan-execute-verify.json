@@ -1,0 +1,8 @@
+{
+  "id": "analyze-plan-execute-verify",
+  "version": "1.0.0",
+  "status": "active",
+  "summary": "Discovery, planning, execution, and verification are distinct evidence-bearing phases.",
+  "applies_to": ["commissioning", "planning", "execution", "completion_claims"],
+  "enforcement": "Require discovery evidence before planning, an approved plan before effects, and independent postcondition evidence before completion. A successful command is not proof of the intended outcome."
+}

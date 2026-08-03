@@ -1,0 +1,36 @@
+{
+  "id": "human-handoff-state-transfer",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/human-handoff-state-transfer/SKILL.md",
+  "body_sha256": "d547f50aa5bcd149fda972330aee1278b58eaa9dd7a22c4619cf09f676269300",
+  "references": [],
+  "capability_tags": [
+    "handoff",
+    "human",
+    "orchestration",
+    "state",
+    "transfer"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_076e92c4.md",
+        "sha256": "71e01c9546b3fa70e76bbc54b899afc55f67b231c00e3c692a576d42a1679df0"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_0e21ee81.yaml",
+        "sha256": "9722dfd1f39632ae400eb56843777cd8e37044a86a2e77db997f9eb5994168ad"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

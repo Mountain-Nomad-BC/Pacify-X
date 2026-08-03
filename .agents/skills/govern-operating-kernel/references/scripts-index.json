@@ -1,0 +1,60 @@
+{
+  "count": 9,
+  "records": [
+    {
+      "id": "capability-router",
+      "path": ".agents/skills/govern-operating-kernel/references/scripts/capability-router.json",
+      "sha256": "f73fb9b88b49185e0d34dc11fdc5906b944101d74af34e53eea4694211419cf7",
+      "trigger": "Use when the requested outcome is capability router or when that outcome is a required dependency."
+    },
+    {
+      "id": "claim-ledger",
+      "path": ".agents/skills/govern-operating-kernel/references/scripts/claim-ledger.json",
+      "sha256": "0f262caab195a37a30127ea30e18a6a0584b871233e7ce768dc39c1cad0b8642",
+      "trigger": "Use when the requested outcome is claim ledger or when that outcome is a required dependency."
+    },
+    {
+      "id": "durable-state",
+      "path": ".agents/skills/govern-operating-kernel/references/scripts/durable-state.json",
+      "sha256": "bbf9eb3490d20382be8fbd88be7dadcb10f22de4c35e64f32d2ee2a110921b18",
+      "trigger": "Use when the requested outcome is durable state or when that outcome is a required dependency."
+    },
+    {
+      "id": "evidence-bundle",
+      "path": ".agents/skills/govern-operating-kernel/references/scripts/evidence-bundle.json",
+      "sha256": "98b5f5eb67d36429a5fbdeb74e81e6c34fdba0fef6ab8cc74a0ac38feffe1155",
+      "trigger": "Use when the requested outcome is evidence bundle or when that outcome is a required dependency."
+    },
+    {
+      "id": "failure-normalizer",
+      "path": ".agents/skills/govern-operating-kernel/references/scripts/failure-normalizer.json",
+      "sha256": "1374fa2a42de11641596a046356aa3be1b4b9499f0bf3714a3214e101263d37d",
+      "trigger": "Use when the requested outcome is failure normalizer or when that outcome is a required dependency."
+    },
+    {
+      "id": "permission-guard",
+      "path": ".agents/skills/govern-operating-kernel/references/scripts/permission-guard.json",
+      "sha256": "f956249c16c4e105d922f57803312542c3a565afc2eeb83f8f9dcf5daae57983",
+      "trigger": "Use when the requested outcome is permission guard or when that outcome is a required dependency."
+    },
+    {
+      "id": "run-smoke-tests",
+      "path": ".agents/skills/govern-operating-kernel/references/scripts/run-smoke-tests.json",
+      "sha256": "94771ee4114e4a530a5108bc5e2cdfa0ea6e975c3f4cd0a9ae0f98b1b2c1e68e",
+      "trigger": "Use when the requested outcome is run smoke tests or when that outcome is a required dependency."
+    },
+    {
+      "id": "skill-compiler",
+      "path": ".agents/skills/govern-operating-kernel/references/scripts/skill-compiler.json",
+      "sha256": "4898da6375651f8e8af21d03ac42487629a1ea6574b1e52f6a6f1cd7fbf17bde",
+      "trigger": "Use when the requested outcome is skill compiler or when that outcome is a required dependency."
+    },
+    {
+      "id": "validate-pack",
+      "path": ".agents/skills/govern-operating-kernel/references/scripts/validate-pack.json",
+      "sha256": "c7120180ad12cd679eb479f18d0474d3a6c3196731836599846c9589e977266b",
+      "trigger": "Use when the requested outcome is validate pack or when that outcome is a required dependency."
+    }
+  ],
+  "schema_version": "1.0"
+}

@@ -1,0 +1,46 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:decision-record",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "alternatives": {
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      },
+      "type": "array"
+    },
+    "decision": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "evidence": {
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      },
+      "type": "array"
+    },
+    "id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "rationale": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "decision",
+    "alternatives",
+    "rationale",
+    "evidence"
+  ],
+  "title": "Decision Record",
+  "type": "object"
+}

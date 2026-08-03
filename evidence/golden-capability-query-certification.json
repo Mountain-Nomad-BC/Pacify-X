@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "complete": true,
+  "case_count": 6,
+  "passed": 6,
+  "failed": 0,
+  "cases": [
+    {
+      "id": "source-reconciliation",
+      "passed": true,
+      "returned": [
+        "audit-source-capabilities",
+        "audit-incomplete-implementations",
+        "audit-ai-runtime-assurance"
+      ],
+      "missing_required": [],
+      "forbidden_returned": [],
+      "deterministic": true,
+      "index_revision": "18ea302c8ef9c77fb6ee94bf41a68bbe08ce56fd120822b68d00061a56f2a710"
+    },
+    {
+      "id": "project-isolation",
+      "passed": true,
+      "returned": [
+        "isolate-project-streams",
+        "manage-mcp-lifecycle",
+        "govern-memory-fabric"
+      ],
+      "missing_required": [],
+      "forbidden_returned": [],
+      "deterministic": true,
+      "index_revision": "18ea302c8ef9c77fb6ee94bf41a68bbe08ce56fd120822b68d00061a56f2a710"
+    },
+    {
+      "id": "retrieval-readiness",
+      "passed": true,
+      "returned": [
+        "evaluate-retrieval-readiness",
+        "engineer-hybrid-retrieval",
+        "plan-local-model-deployment"
+      ],
+      "missing_required": [],
+      "forbidden_returned": [],
+      "deterministic": true,
+      "index_revision": "18ea302c8ef9c77fb6ee94bf41a68bbe08ce56fd120822b68d00061a56f2a710"
+    },
+    {
+      "id": "deployment-recovery",
+      "passed": true,
+      "returned": [
+        "run-resilience-drills",
+        "govern-deployment-safety",
+        "validate-engineering-outcomes"
+      ],
+      "missing_required": [],
+      "forbidden_returned": [],
+      "deterministic": true,
+      "index_revision": "18ea302c8ef9c77fb6ee94bf41a68bbe08ce56fd120822b68d00061a56f2a710"
+    },
+    {
+      "id": "model-architecture-inspection",
+      "passed": true,
+      "returned": [
+        "inspect-llm-architecture",
+        "inspect-live-contracts",
+        "govern-memory-fabric"
+      ],
+      "missing_required": [],
+      "forbidden_returned": [],
+      "deterministic": true,
+      "index_revision": "18ea302c8ef9c77fb6ee94bf41a68bbe08ce56fd120822b68d00061a56f2a710"
+    },
+    {
+      "id": "local-model-feasibility",
+      "passed": true,
+      "returned": [
+        "plan-local-model-deployment",
+        "evaluate-retrieval-readiness",
+        "gate-model-data-lifecycle"
+      ],
+      "missing_required": [],
+      "forbidden_returned": [],
+      "deterministic": true,
+      "index_revision": "18ea302c8ef9c77fb6ee94bf41a68bbe08ce56fd120822b68d00061a56f2a710"
+    }
+  ]
+}

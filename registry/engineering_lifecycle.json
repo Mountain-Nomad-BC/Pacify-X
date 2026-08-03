@@ -1,0 +1,209 @@
+{
+  "schema_version": "1.0",
+  "id": "evidence-first-engineering-lifecycle",
+  "loading_rule": "Inspect project state and stage metadata first; hydrate only a selected stage skill.",
+  "invariants": [
+    "No mutation before project identity, scope, effects, approval requirements, and rollback are explicit.",
+    "Facts, assumptions, unknowns, contradictions, and preferences remain separate.",
+    "Existing owner files are preserved unless an approved decision names their replacement.",
+    "Every material claim maps to current scoped evidence; executor claims never self-certify.",
+    "Cleanup is a recoverable move to an external quarantine with hashes and a receipt.",
+    "Project context, memory, leases, and writable roots never bleed across workspace project boundaries."
+  ],
+  "stages": [
+    {
+      "id": "environment-discovery",
+      "purpose": "Inventory the environment, repository owners, dependencies, tools, and unknowns without mutation.",
+      "skills": [
+        "discover-environment-safely",
+        "audit-source-capabilities",
+        "audit-incomplete-implementations",
+        "validate-knowledge-relationships",
+        "skill-navigator"
+      ],
+      "commands": [
+        "validate",
+        "doctor",
+        "startup",
+        "intake"
+      ],
+      "exit_evidence": [
+        "valid framework registry",
+        "metadata-only startup",
+        "read-only project inventory",
+        "complete source capability coverage receipt",
+        "explicit capability disposition registry",
+        "zero-unresolved source inventory reconciliation",
+        "zero-unresolved skill identity reconciliation",
+        "zero-unresolved classified asset and incomplete-finding reconciliation",
+        "zero-unresolved staged capability dispositions",
+        "manifest/filesystem parity or an explicit recovery backlog that blocks completeness claims",
+        "passing deterministic golden capability queries"
+      ],
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "project-commissioning",
+      "purpose": "Create or adopt namespaced controls and capture the evidence-first project questionnaire.",
+      "skills": [
+        "commission-evidence-first-project",
+        "commission-project"
+      ],
+      "commands": [
+        "commission",
+        "project-check"
+      ],
+      "exit_evidence": [
+        "commissioning receipt",
+        "project-management state",
+        "accepted objective/scope/constraints"
+      ],
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ]
+    },
+    {
+      "id": "tool-and-package-admission",
+      "purpose": "Inventory requested tooling and dependencies, verify provenance/license/security findings, and isolate untrusted candidates.",
+      "skills": [
+        "quarantine-external-tools"
+      ],
+      "commands": [
+        "tool-intake"
+      ],
+      "exit_evidence": [
+        "tool intake record",
+        "scanner findings",
+        "license decision",
+        "admission or external-quarantine receipt"
+      ],
+      "effects": [
+        "read_local",
+        "write_workspace",
+        "execute_tool"
+      ]
+    },
+    {
+      "id": "architecture-and-planning",
+      "purpose": "Resolve canonical owners, alternatives, risks, dependencies, punch cards, acceptance, and rollback before implementation.",
+      "skills": [
+        "orchestrate-engineering-loop",
+        "dependency-impact-tracer",
+        "certify-skeptical-engineering",
+        "inspect-llm-architecture",
+        "plan-local-model-deployment"
+      ],
+      "commands": [
+        "lifecycle status",
+        "working-set",
+        "hydrate",
+        "plan"
+      ],
+      "exit_evidence": [
+        "approved execution plan",
+        "bounded punch cards",
+        "acceptance contract",
+        "risk disposition"
+      ],
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "bounded-implementation",
+      "purpose": "Execute one approved dependency-ordered card at a time with declared effects and checkpoints.",
+      "skills": [
+        "execution-contract-enforcer",
+        "isolate-project-streams",
+        "long-horizon-progress-ledger"
+      ],
+      "commands": [
+        "authorize",
+        "workflow run"
+      ],
+      "exit_evidence": [
+        "change hashes",
+        "checkpoint",
+        "actual effects",
+        "rollback state"
+      ],
+      "effects": [
+        "read_local",
+        "write_workspace",
+        "execute_tool"
+      ]
+    },
+    {
+      "id": "verification-and-repair",
+      "purpose": "Attempt to invalidate assumptions and outcomes using positive, negative, integration, security, accessibility, and recovery checks.",
+      "skills": [
+        "validate-engineering-outcomes",
+        "verify-outcome",
+        "certify-skeptical-engineering"
+      ],
+      "commands": [
+        "verify-outcome",
+        "retry-decision"
+      ],
+      "exit_evidence": [
+        "claim-to-evidence matrix",
+        "passing postconditions",
+        "resolved contradictions",
+        "residual risks"
+      ],
+      "effects": [
+        "read_local",
+        "execute_tool"
+      ]
+    },
+    {
+      "id": "deployment-readiness",
+      "purpose": "Prove packaging, installation, isolation, sanitation, rollback, operations, and user acceptance before release.",
+      "skills": [
+        "productization-gap-analyzer",
+        "scenario-audit-generator",
+        "certify-skeptical-engineering"
+      ],
+      "commands": [
+        "contracts status",
+        "validate",
+        "doctor"
+      ],
+      "exit_evidence": [
+        "installed-artifact test",
+        "package reconciliation",
+        "sanitization audit",
+        "rollback rehearsal",
+        "acceptance receipt"
+      ],
+      "effects": [
+        "read_local",
+        "execute_tool",
+        "deploy_external"
+      ]
+    },
+    {
+      "id": "process-capture-and-skill-candidate",
+      "purpose": "Capture the verified engineering process, preserve decisions and recovery, and compile an inert improvement or skill candidate without automatic activation.",
+      "skills": [
+        "trace-to-skill-compiler"
+      ],
+      "commands": [
+        "process compile"
+      ],
+      "exit_evidence": [
+        "validated engineering process record",
+        "decision/tool/execution graphs",
+        "duplicate comparison",
+        "candidate admission disposition"
+      ],
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ]
+    }
+  ]
+}

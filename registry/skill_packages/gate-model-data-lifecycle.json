@@ -1,0 +1,48 @@
+{
+  "id": "gate-model-data-lifecycle",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/gate-model-data-lifecycle/SKILL.md",
+  "body_sha256": "c09424ce8a07145ec061fa6c2e82ad365d1ea8b6d9c02d39f7e0ae70422371f4",
+  "references": [
+    ".agents/skills/gate-model-data-lifecycle/references/model-data-gate.md"
+  ],
+  "capability_tags": [
+    "model",
+    "dataset",
+    "training",
+    "provenance",
+    "privacy",
+    "leakage",
+    "supply-chain"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "clean_room_from_behavior_contracts",
+    "input_tree_sha256": "e312f3b7203ec6cd034d8eca6324ceba5df7f630dfbb6931af31b4359f670342",
+    "basis": [
+      {
+        "source_alias": "source-05",
+        "sha256": "c87c7a3bd1b56b345aad1d8598b7278364af2b7e25d75b481759ff8d5f8436aa",
+        "behavior": "training artifact preparation boundary"
+      },
+      {
+        "source_alias": "source-06",
+        "sha256": "d7f90d1d2f394a9dd6524eea282b04363b7b03c8f33a369395f46b5268136021",
+        "behavior": "conversion supply-chain boundary"
+      },
+      {
+        "source_alias": "source-13",
+        "sha256": "e52dff234399f9fccc1a4f75f09aa2860710bc3381d8177744818a433d6681b9",
+        "behavior": "training-data admission gates"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_foundation_assurance.py",
+  "evidence": "tests/test_foundation_assurance.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

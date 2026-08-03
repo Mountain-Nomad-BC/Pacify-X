@@ -1,0 +1,278 @@
+{
+  "schema_version": "1.0",
+  "loading_rule": "Load workflow and skill metadata first; hydrate one selected skill body at a time.",
+  "count": 7,
+  "workflows": [
+    {
+      "id": "source-capability-assimilation",
+      "purpose": "Account, classify, admit, map, validate, and evidence reusable source mechanisms without copying private product identity.",
+      "steps": [
+        {
+          "id": "inventory",
+          "skill": "audit-source-capabilities",
+          "depends_on": []
+        },
+        {
+          "id": "reconcile-inventory",
+          "skill": "audit-source-capabilities",
+          "depends_on": [
+            "inventory"
+          ]
+        },
+        {
+          "id": "reconcile-skill-identities",
+          "skill": "audit-source-capabilities",
+          "depends_on": [
+            "inventory"
+          ]
+        },
+        {
+          "id": "reconcile-classified-assets",
+          "skill": "audit-source-capabilities",
+          "depends_on": [
+            "reconcile-inventory",
+            "reconcile-skill-identities"
+          ]
+        },
+        {
+          "id": "incompleteness",
+          "skill": "audit-incomplete-implementations",
+          "depends_on": [
+            "reconcile-classified-assets"
+          ]
+        },
+        {
+          "id": "relationships",
+          "skill": "validate-knowledge-relationships",
+          "depends_on": [
+            "reconcile-classified-assets"
+          ]
+        },
+        {
+          "id": "boundaries",
+          "skill": "enforce-source-import-boundaries",
+          "depends_on": [
+            "reconcile-classified-assets"
+          ]
+        },
+        {
+          "id": "derive",
+          "skill": "synchronize-derived-architecture",
+          "depends_on": [
+            "relationships",
+            "boundaries"
+          ]
+        },
+        {
+          "id": "certify",
+          "skill": "run-evidence-campaigns",
+          "depends_on": [
+            "incompleteness",
+            "derive"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "secure-service-release",
+      "purpose": "Validate isolated services from contract and discovery design through security aggregation and deployment evidence.",
+      "steps": [
+        {
+          "id": "isolate",
+          "skill": "harden-container-boundaries",
+          "depends_on": []
+        },
+        {
+          "id": "discover",
+          "skill": "dynamic-service-discovery",
+          "depends_on": [
+            "isolate"
+          ]
+        },
+        {
+          "id": "contracts",
+          "skill": "inspect-live-contracts",
+          "depends_on": [
+            "discover"
+          ]
+        },
+        {
+          "id": "security",
+          "skill": "orchestrate-security-validation",
+          "depends_on": [
+            "contracts"
+          ]
+        },
+        {
+          "id": "containers",
+          "skill": "validate-production-containers",
+          "depends_on": [
+            "security"
+          ]
+        },
+        {
+          "id": "release",
+          "skill": "govern-deployment-safety",
+          "depends_on": [
+            "containers"
+          ]
+        },
+        {
+          "id": "evidence",
+          "skill": "run-evidence-campaigns",
+          "depends_on": [
+            "release"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "retrieval-readiness",
+      "purpose": "Repair and validate source knowledge before constructing and evaluating governed retrieval.",
+      "steps": [
+        {
+          "id": "repair",
+          "skill": "repair-corrupted-text",
+          "depends_on": []
+        },
+        {
+          "id": "relationships",
+          "skill": "validate-knowledge-relationships",
+          "depends_on": [
+            "repair"
+          ]
+        },
+        {
+          "id": "retrieval",
+          "skill": "engineer-hybrid-retrieval",
+          "depends_on": [
+            "relationships"
+          ]
+        },
+        {
+          "id": "evaluate",
+          "skill": "evaluate-retrieval-readiness",
+          "depends_on": [
+            "retrieval"
+          ]
+        },
+        {
+          "id": "evidence",
+          "skill": "run-evidence-campaigns",
+          "depends_on": [
+            "evaluate"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure-and-recovery",
+      "purpose": "Triage cross-surface failure, prove reversible restoration, exercise bounded resilience, and retain release blockers.",
+      "steps": [
+        {
+          "id": "triage",
+          "skill": "triage-cross-surface-failures",
+          "depends_on": []
+        },
+        {
+          "id": "restore",
+          "skill": "certify-reversible-validation",
+          "depends_on": [
+            "triage"
+          ]
+        },
+        {
+          "id": "drill",
+          "skill": "run-resilience-drills",
+          "depends_on": [
+            "restore"
+          ]
+        },
+        {
+          "id": "release",
+          "skill": "govern-deployment-safety",
+          "depends_on": [
+            "drill"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external-tool-lifecycle",
+      "purpose": "Audit, quarantine, admit, lazily register, and protocol-certify external tool servers.",
+      "steps": [
+        {
+          "id": "inventory",
+          "skill": "audit-source-capabilities",
+          "depends_on": []
+        },
+        {
+          "id": "quarantine",
+          "skill": "quarantine-external-tools",
+          "depends_on": [
+            "inventory"
+          ]
+        },
+        {
+          "id": "lifecycle",
+          "skill": "manage-mcp-lifecycle",
+          "depends_on": [
+            "quarantine"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "semantic-capability-query-certification",
+      "purpose": "Select capabilities from metadata, resolve a bounded dependency bundle, and certify deterministic golden-query behavior without eager skill-body loading.",
+      "steps": [
+        {
+          "id": "select",
+          "skill": "skill-navigator",
+          "depends_on": []
+        },
+        {
+          "id": "resolve",
+          "skill": "skill-bundle-resolver",
+          "depends_on": ["select"]
+        },
+        {
+          "id": "certify",
+          "skill": "run-evidence-campaigns",
+          "depends_on": ["resolve"]
+        }
+      ]
+    },
+    {
+      "id": "local-model-planning",
+      "purpose": "Inspect a model without importing it, rank feasible execution strategies, enforce data and retrieval gates, and validate the chosen plan.",
+      "steps": [
+        {
+          "id": "inspect",
+          "skill": "inspect-llm-architecture",
+          "depends_on": []
+        },
+        {
+          "id": "plan",
+          "skill": "plan-local-model-deployment",
+          "depends_on": ["inspect"]
+        },
+        {
+          "id": "data-gate",
+          "skill": "gate-model-data-lifecycle",
+          "depends_on": ["plan"]
+        },
+        {
+          "id": "retrieval-gate",
+          "skill": "evaluate-retrieval-readiness",
+          "depends_on": ["plan"]
+        },
+        {
+          "id": "validate",
+          "skill": "validate-engineering-outcomes",
+          "depends_on": ["data-gate", "retrieval-gate"]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:metacognitive:epistemic-state",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "assumptions": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "claims": {
+      "items": {
+        "properties": {
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "statement": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "observed",
+              "inferred",
+              "assumed",
+              "disputed",
+              "unknown"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "statement",
+          "status",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "hypotheses": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "id": {
+      "type": "string"
+    },
+    "unknowns": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "id",
+    "claims",
+    "unknowns",
+    "assumptions",
+    "hypotheses"
+  ],
+  "type": "object"
+}

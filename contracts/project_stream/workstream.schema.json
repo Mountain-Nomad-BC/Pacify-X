@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:workstream",
+  "title": "Workstream",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "workstream_id",
+    "project_id",
+    "title",
+    "state",
+    "scope",
+    "acceptance_criteria"
+  ],
+  "properties": {
+    "workstream_id": {
+      "type": "string",
+      "pattern": "^ws_"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^prj_"
+    },
+    "title": {
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "planned",
+        "ready",
+        "active",
+        "blocked",
+        "review",
+        "accepted",
+        "failed",
+        "paused",
+        "cancelled"
+      ]
+    },
+    "scope": {
+      "type": "object"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^ws_"
+      }
+    },
+    "assigned_agents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^agt_"
+      }
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "risk_class": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "rollback": {
+      "type": "string"
+    },
+    "evidence_required": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -1,0 +1,275 @@
+{
+  "schema_version": "1.0",
+  "rules": [
+    {
+      "id": "reject-package-init-marker",
+      "priority": 210,
+      "when": {"presence": "manifest-only", "kinds": ["script"], "ids": ["init"]},
+      "disposition": "REJECT",
+      "targets": [],
+      "rationale": "The declared __init__.py is a package marker, not an independently invocable operational capability; an exact sibling copy is present in the intake.",
+      "preserve": ["cross-tree exact-recovery evidence"],
+      "tests_required": []
+    },
+    {
+      "id": "reject-unneeded-local-query-api",
+      "priority": 200,
+      "when": {"presence": "actual", "ids": ["capquery-local-api"]},
+      "disposition": "REJECT",
+      "targets": [],
+      "rationale": "A loopback HTTP service adds network and lifecycle surface without improving the existing in-process and CLI query boundary.",
+      "preserve": ["query contract semantics"],
+      "tests_required": ["semantic capability golden queries"]
+    },
+    {
+      "id": "wrap-capability-query-cli",
+      "priority": 199,
+      "when": {"presence": "actual", "ids": ["capquery-cli"]},
+      "disposition": "WRAP",
+      "targets": ["skill-navigator"],
+      "rationale": "The existing bootstrap CLI exposes the admitted metadata-only selector without adding another command surface.",
+      "preserve": ["structured query output", "explainable ranking"],
+      "tests_required": ["CLI selection tests", "golden query certification"]
+    },
+    {
+      "id": "merge-semantic-query-regression",
+      "priority": 190,
+      "when": {"presence": "actual", "id_regex": "(golden-query|query-regression|evaluate-golden|rank-stability|precision-at-k|recall-at-k)"},
+      "disposition": "MERGE",
+      "targets": ["run-evidence-campaigns", "skill-navigator"],
+      "rationale": "Query quality and rank stability belong to the product golden-query evidence gate and selector owner.",
+      "preserve": ["deterministic ordering", "quality denominator", "failure evidence"],
+      "tests_required": ["golden query certification"]
+    },
+    {
+      "id": "merge-semantic-graph-and-bundles",
+      "priority": 189,
+      "when": {"presence": "actual", "id_regex": "(dependency|graph|bundle|relation|goal-to-capability)"},
+      "disposition": "MERGE",
+      "targets": ["skill-bundle-resolver", "skill-coexecution-graph-builder"],
+      "rationale": "Typed relations and dependency closure extend the canonical bundle and co-execution graph owners.",
+      "preserve": ["typed edges", "dependency closure", "bounded traversal"],
+      "tests_required": ["registry graph validation", "cycle and depth bounds"]
+    },
+    {
+      "id": "merge-semantic-intake-and-reconciliation",
+      "priority": 188,
+      "when": {"presence": "actual", "id_regex": "(corpus|metadata|staging|index-refresh|build-capability-index|extract-capability|integrity-manifest|capability-gap)"},
+      "disposition": "MERGE",
+      "targets": ["audit-source-capabilities", "skill-navigator"],
+      "rationale": "Corpus accounting, metadata repair, and incremental index generation extend intake reconciliation and the derived semantic index.",
+      "preserve": ["complete denominator", "content hashes", "incremental rebuild boundary"],
+      "tests_required": ["staged reconciliation", "semantic index validation"]
+    },
+    {
+      "id": "merge-semantic-retrieval",
+      "priority": 187,
+      "when": {"presence": "actual", "id_regex": "(hybrid|bm25|jaccard|retrieval|semantic-alias|graph-propagation)"},
+      "disposition": "MERGE",
+      "targets": ["skill-navigator", "engineer-hybrid-retrieval"],
+      "rationale": "Retrieval selection, scoring vocabulary, and explanation extend the bounded metadata selector and retrieval engineering owner.",
+      "preserve": ["explainable scores", "lexical fallback", "policy filtering"],
+      "tests_required": ["golden query certification", "retrieval readiness tests"]
+    },
+    {
+      "id": "merge-semantic-query-control",
+      "priority": 186,
+      "when": {"presence": "actual", "id_regex": "(intent|ambiguity|constraint|context-budget|query-decomposer|semantic-query|risk-policy|lifecycle|lazy-context|multi-intent|materialize-lazy|capability-query|capability-result|artifact-metadata|context-efficiency)"},
+      "disposition": "MERGE",
+      "targets": ["skill-navigator"],
+      "rationale": "Query normalization, bounded activation, lifecycle/risk filters, and explanations belong to the single metadata-only navigation boundary.",
+      "preserve": ["lazy body loading", "risk and lifecycle filters", "exclusion explanations"],
+      "tests_required": ["selector policy tests", "golden query certification"]
+    },
+    {
+      "id": "merge-semantic-package-default",
+      "priority": 100,
+      "when": {"presence": "actual", "source_contains": "semantic_capability_query_layer/"},
+      "disposition": "MERGE",
+      "targets": ["skill-navigator", "audit-source-capabilities"],
+      "rationale": "The physical semantic-query artifact is admitted through existing selector and intake owners rather than a parallel subsystem.",
+      "preserve": ["typed metadata", "deterministic behavior"],
+      "tests_required": ["semantic query suite"]
+    },
+    {
+      "id": "merge-architecture-validation",
+      "priority": 180,
+      "when": {"presence": "actual", "id_regex": "(architecture-validation-certification|final-pack-certification|diagnose-generation-failure|generation-behavior-diagnostics)"},
+      "disposition": "MERGE",
+      "targets": ["validate-engineering-outcomes", "inspect-llm-architecture"],
+      "rationale": "Architecture claims and generation diagnoses require observable, discriminating validation through the existing outcome gate.",
+      "preserve": ["evidence-backed conclusions", "failure diagnosis"],
+      "tests_required": ["local model capability tests", "outcome validation"]
+    },
+    {
+      "id": "merge-architecture-planning",
+      "priority": 179,
+      "when": {"presence": "actual", "id_regex": "(fine-tuning|inference-optimization|local-model-deployment|quantization|long-context|review-moe-deployment|optimize-local-inference|select-fine-tuning|design-long-context|design-custom)"},
+      "disposition": "MERGE",
+      "targets": ["plan-local-model-deployment", "gate-model-data-lifecycle"],
+      "rationale": "Deployment, optimization, context, and training choices are ranked as constraint-bound strategies with data-lifecycle gates.",
+      "preserve": ["feasibility alternatives", "resource constraints", "rollback"],
+      "tests_required": ["local model planning tests"]
+    },
+    {
+      "id": "merge-architecture-inspection",
+      "priority": 101,
+      "when": {"presence": "actual", "source_contains": "llm_architecture_expert_capabilities_pack_v1.0.0/"},
+      "disposition": "MERGE",
+      "targets": ["inspect-llm-architecture"],
+      "rationale": "Transformer, attention, embedding, cache, MoE, parameter, and configuration concepts are consolidated into one hostile-input architecture inspector.",
+      "preserve": ["normalization rules", "parameter and memory formulas", "architecture vocabulary"],
+      "tests_required": ["architecture fixture tests"]
+    },
+    {
+      "id": "merge-complete-pack-architecture",
+      "priority": 102,
+      "when": {"presence": "actual", "source_contains": "complete-expert-capability-system_v1.0.0/packs/00-llm-architecture"},
+      "disposition": "MERGE",
+      "targets": ["inspect-llm-architecture", "plan-local-model-deployment"],
+      "rationale": "The physically present architecture pack is consolidated into the inspection and constraint-based planning owners.",
+      "preserve": ["workflow ordering", "validation requirements"],
+      "tests_required": ["local model capability tests"]
+    },
+    {
+      "id": "merge-local-retrieval",
+      "priority": 175,
+      "when": {"presence": "actual", "id_regex": "(embedding|hybrid-retrieval|retrieval-quality)"},
+      "disposition": "MERGE",
+      "targets": ["evaluate-retrieval-readiness", "engineer-hybrid-retrieval"],
+      "rationale": "Index choice, compression calibration, hybrid retrieval, and quality/performance gates extend the canonical retrieval owners.",
+      "preserve": ["exact reference comparison", "calibration fingerprint", "recall/privacy/resource gates"],
+      "tests_required": ["retrieval strategy tests"]
+    },
+    {
+      "id": "merge-local-durability",
+      "priority": 174,
+      "when": {"presence": "actual", "id_regex": "(durable-paired|versioned-binary|checkpoint-transformation)"},
+      "disposition": "MERGE",
+      "targets": ["govern-deployment-safety"],
+      "rationale": "Paired metadata/binary state, versioning, transformation caches, and atomic promotion extend deployment durability controls.",
+      "preserve": ["generation consistency", "atomic replace", "hostile-format boundary"],
+      "tests_required": ["deployment safety validation"]
+    },
+    {
+      "id": "merge-local-runtime-validation",
+      "priority": 173,
+      "when": {"presence": "actual", "id_regex": "(discriminating-test|native-python-concurrency|operational-observability)"},
+      "disposition": "MERGE",
+      "targets": ["validate-engineering-outcomes", "run-evidence-campaigns"],
+      "rationale": "Mutation-sensitive tests, cancellation/concurrency checks, and operational telemetry extend outcome and evidence gates.",
+      "preserve": ["mutation discrimination", "cancellation safety", "observable thresholds"],
+      "tests_required": ["outcome validation suite"]
+    },
+    {
+      "id": "merge-local-adapter-boundary",
+      "priority": 172,
+      "when": {"presence": "actual", "id_regex": "(vector-framework-adapter|model-compatibility-router)"},
+      "disposition": "MERGE",
+      "targets": ["validate-contract-boundaries", "plan-local-model-deployment"],
+      "rationale": "Framework adapters and compatibility routing must preserve canonical behavior and remain explicit planning constraints.",
+      "preserve": ["canonical parity", "fail-closed compatibility"],
+      "tests_required": ["contract boundary validation"]
+    },
+    {
+      "id": "merge-local-execution-planning",
+      "priority": 171,
+      "when": {"presence": "actual", "id_regex": "(streamed-model|local-worker-offload|io-compute-overlap|resource-preflight|strategy-selector|capability-inventory|parameter-efficient-training)"},
+      "disposition": "MERGE",
+      "targets": ["plan-local-model-deployment", "gate-model-data-lifecycle"],
+      "rationale": "Local execution, offload, streaming, overlap, training, and preflight choices are alternatives in one constraint-first plan.",
+      "preserve": ["resource preflight", "transformation budget", "privacy boundary"],
+      "tests_required": ["local model planning tests"]
+    },
+    {
+      "id": "merge-local-supply-chain",
+      "priority": 170,
+      "when": {"presence": "actual", "id_regex": "native-extension-release-supply-chain"},
+      "disposition": "MERGE",
+      "targets": ["quarantine-external-tools", "orchestrate-security-validation"],
+      "rationale": "Native extensions are executable supply-chain inputs and remain behind quarantine and security-validation boundaries.",
+      "preserve": ["provenance", "signature/hash verification", "contained testing"],
+      "tests_required": ["security validation suite"]
+    },
+    {
+      "id": "merge-local-pack-default",
+      "priority": 99,
+      "when": {"presence": "actual", "source_contains": "local_llm_bootstrap_extraction_pack/"},
+      "disposition": "MERGE",
+      "targets": ["plan-local-model-deployment"],
+      "rationale": "The remaining physical local-model behavior is consolidated into the bounded deployment planner rather than admitted as one-step micro-skills.",
+      "preserve": ["constraint-first decision making", "validation and rollback"],
+      "tests_required": ["local model capability tests"]
+    },
+    {
+      "id": "reference-manifest-memory",
+      "priority": 80,
+      "when": {"presence": "manifest-only", "id_regex": "(memory|context|trajectory|experience|reasoning|token)"},
+      "disposition": "DEFER",
+      "targets": ["govern-memory-fabric"],
+      "rationale": "Only a manifest declaration is present; retain it as a future memory-governance lead without claiming implementation.",
+      "preserve": ["declared identity and source path"],
+      "tests_required": []
+    },
+    {
+      "id": "reference-manifest-security",
+      "priority": 79,
+      "when": {"presence": "manifest-only", "id_regex": "(security|privacy|permission|secret|auth|sandbox|quarantine|trust|attack|threat|policy)"},
+      "disposition": "DEFER",
+      "targets": ["orchestrate-security-validation"],
+      "rationale": "Only a manifest declaration is present; retain it as a security-validation research lead without activation credit.",
+      "preserve": ["declared identity and source path"],
+      "tests_required": []
+    },
+    {
+      "id": "reference-manifest-evaluation",
+      "priority": 78,
+      "when": {"presence": "manifest-only", "id_regex": "(test|eval|benchmark|quality|verify|validation|certif|metric|score|audit)"},
+      "disposition": "DEFER",
+      "targets": ["run-evidence-campaigns"],
+      "rationale": "Only a manifest declaration is present; retain it as an evidence/evaluation lead without treating it as a test body.",
+      "preserve": ["declared identity and source path"],
+      "tests_required": []
+    },
+    {
+      "id": "reference-manifest-model",
+      "priority": 77,
+      "when": {"presence": "manifest-only", "id_regex": "(model|llm|training|inference|quant|attention|embedding|retrieval|rag|vector|generation)"},
+      "disposition": "DEFER",
+      "targets": ["plan-local-model-deployment"],
+      "rationale": "Only a manifest declaration is present; retain it as a model/retrieval planning lead without implementation evidence.",
+      "preserve": ["declared identity and source path"],
+      "tests_required": []
+    },
+    {
+      "id": "reference-manifest-orchestration",
+      "priority": 76,
+      "when": {"presence": "manifest-only", "kinds": ["orchestration"]},
+      "disposition": "DEFER",
+      "targets": ["orchestrate-engineering-loop"],
+      "rationale": "The orchestration is declared but its executable graph is absent; retain only a future topology lead.",
+      "preserve": ["declared identity and source path"],
+      "tests_required": []
+    },
+    {
+      "id": "reference-manifest-script",
+      "priority": 75,
+      "when": {"presence": "manifest-only", "kinds": ["script", "tool", "validator", "formula", "contract"]},
+      "disposition": "DEFER",
+      "targets": ["audit-source-capabilities"],
+      "rationale": "The executable or typed artifact is absent; retain its declaration for future source recovery and do not expose it as tooling.",
+      "preserve": ["declared identity and source path"],
+      "tests_required": []
+    },
+    {
+      "id": "reference-manifest-general",
+      "priority": 1,
+      "when": {"presence": "manifest-only"},
+      "disposition": "DEFER",
+      "targets": ["audit-source-capabilities"],
+      "rationale": "The suite manifest declares this candidate, but no body or test artifact exists in the intake; retain the lead solely for accountable future recovery.",
+      "preserve": ["declared identity and source path"],
+      "tests_required": []
+    }
+  ]
+}

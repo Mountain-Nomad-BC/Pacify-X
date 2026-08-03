@@ -1,0 +1,40 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:task-state",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "checkpoint": {
+      "type": "object"
+    },
+    "evidence": {
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      },
+      "type": "array"
+    },
+    "id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "project_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "status": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "project_id",
+    "status",
+    "checkpoint",
+    "evidence"
+  ],
+  "title": "Task State",
+  "type": "object"
+}

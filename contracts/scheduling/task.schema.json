@@ -1,0 +1,90 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:scheduling:task",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "acceptance": {
+      "type": "object"
+    },
+    "alternatives": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "approval_required": {
+      "type": "boolean"
+    },
+    "budget": {
+      "$ref": "budget.schema.json"
+    },
+    "capability": {
+      "type": "string"
+    },
+    "deadline": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dependencies": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "estimated_seconds": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "idempotency_key": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "priority": {
+      "maximum": 1000,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "resources": {
+      "$ref": "resource_request.schema.json"
+    },
+    "risk": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "state": {
+      "enum": [
+        "pending",
+        "ready",
+        "running",
+        "blocked",
+        "succeeded",
+        "failed",
+        "cancelled"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "capability",
+    "state",
+    "priority",
+    "resources",
+    "acceptance"
+  ],
+  "title": "SchedulableTask",
+  "type": "object"
+}

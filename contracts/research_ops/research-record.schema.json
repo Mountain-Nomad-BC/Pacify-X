@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:research_ops:research-record",
+  "title": "Research Record",
+  "type": "object",
+  "required": [
+    "record_id",
+    "title",
+    "source_type",
+    "source",
+    "claims",
+    "mechanisms",
+    "evidence_strength",
+    "review_status"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 3
+    },
+    "source_type": {
+      "enum": [
+        "paper",
+        "repository",
+        "article",
+        "vendor",
+        "benchmark",
+        "dataset",
+        "talk",
+        "other"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "url",
+        "retrieved_at"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "published_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "retrieved_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "claim",
+          "support",
+          "limitations"
+        ],
+        "properties": {
+          "claim": {
+            "type": "string"
+          },
+          "support": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "quoted": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    },
+    "mechanisms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "evidence_strength": {
+      "enum": [
+        "speculative",
+        "practitioner",
+        "preprint",
+        "peer_reviewed",
+        "replicated",
+        "production_evidence"
+      ]
+    },
+    "implementation_status": {
+      "enum": [
+        "none_found",
+        "prototype",
+        "reference_code",
+        "package",
+        "platform_feature",
+        "unknown"
+      ]
+    },
+    "review_status": {
+      "enum": [
+        "intake",
+        "triaged",
+        "validated",
+        "rejected",
+        "superseded"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

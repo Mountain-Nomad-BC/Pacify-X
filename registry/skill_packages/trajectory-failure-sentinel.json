@@ -1,0 +1,35 @@
+{
+  "id": "trajectory-failure-sentinel",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/trajectory-failure-sentinel/SKILL.md",
+  "body_sha256": "79da68a94e6db3d29028b22c6dc538d68c529db82d0252987630458f4c965cd8",
+  "references": [],
+  "capability_tags": [
+    "evaluation",
+    "failure",
+    "sentinel",
+    "trajectory"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_e3c01da6.md",
+        "sha256": "7b205f8e775f6b2b8478cbf64bf0bbd61697ecdf7556288e3939603882214a1a"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_117a6015.yaml",
+        "sha256": "4be21d195be76be025971c1d6ac538401823fc53f9181ebe7c503c6f69cc3a48"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

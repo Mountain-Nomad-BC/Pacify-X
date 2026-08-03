@@ -1,0 +1,36 @@
+{
+  "id": "cross-paper-mechanism-fuser",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/cross-paper-mechanism-fuser/SKILL.md",
+  "body_sha256": "2fa7268a2870e550c02103ab0bf38b583f945bec75c4b5a3c9a4a3a6cf3187b6",
+  "references": [],
+  "capability_tags": [
+    "cross",
+    "fuser",
+    "mechanism",
+    "paper",
+    "research-ops"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_3247dec4.md",
+        "sha256": "92a38441e4ae7f6c4317dc3dc4a21ec78d0852cd582b6d645fcad0902630edac"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_61d22a06.yaml",
+        "sha256": "9f9753b0453c0e4f538d9ff4a25649b7d75a594112f7e25ec409762fb5ecbc84"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

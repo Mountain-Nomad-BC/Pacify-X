@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "release": "0.6.2",
+  "run_id": "rel-0.6.2-ddaae09966a8",
+  "status": "failed_without_publication",
+  "live_state_promoted": false,
+  "retained_workspace_id": "workspace-5dymmi59",
+  "duration_seconds": 1183.796212,
+  "diagnosis": {
+    "full_profile_timeout_seconds": 600,
+    "full_profile_timed_out": true,
+    "partial_progress_percent": 92,
+    "state_sensitive_test_failure_observed": true,
+    "cause": "The clean isolated environment was slower than the source environment, and the open-release assertion did not account for the staged deployment-certified lifecycle."
+  },
+  "passing_gates": {
+    "exact_tools": "63/63",
+    "clean_build_artifacts": 2,
+    "release_toolchain": true,
+    "release_audit": true,
+    "structural_integrity": true,
+    "generated_artifacts": true,
+    "dependency_ownership": true,
+    "registry_envelopes": true,
+    "external_evidence": true,
+    "contracts": true,
+    "graphs": true,
+    "integrations": true,
+    "registry": true,
+    "corrective_release": true,
+    "effect_surfaces": true,
+    "evidence_portability": true,
+    "release_environment": true
+  },
+  "repair": {
+    "full_profile_timeout_seconds": 900,
+    "test_contract": "Validate blocking-card expectations against the actual open or complete project lifecycle."
+  },
+  "hard_delete": false
+}

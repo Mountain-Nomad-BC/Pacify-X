@@ -1,0 +1,8 @@
+{
+  "id": "runtime-assurance-privacy",
+  "version": "1.0.0",
+  "status": "active",
+  "summary": "AI runtime assurance is opt-in, redacted, retention-bounded, and local unless a separate network policy allows otherwise.",
+  "applies_to": ["runtime_passport", "drift", "benchmark", "response_trace"],
+  "enforcement": "Do not collect raw prompts, raw responses, secrets, tokens, or credentials; missing telemetry degrades rather than fabricates certification."
+}

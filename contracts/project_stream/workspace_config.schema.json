@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:workspace_config",
+  "title": "Workspace Configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "workspace_id",
+    "roots",
+    "policy_version"
+  ],
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "pattern": "^wsp_[A-Za-z0-9_-]+$"
+    },
+    "policy_version": {
+      "type": "string"
+    },
+    "roots": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "projects",
+        "tracking",
+        "quarantine",
+        "shared_capabilities"
+      ],
+      "properties": {
+        "projects": {
+          "type": "string"
+        },
+        "tracking": {
+          "type": "string"
+        },
+        "quarantine": {
+          "type": "string"
+        },
+        "shared_capabilities": {
+          "type": "string"
+        }
+      }
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "hard_delete_allowed_for_automation": {
+      "const": false
+    },
+    "boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cross_project_context_default",
+        "untagged_context",
+        "project_switch_requires_teardown",
+        "quarantine_indexing"
+      ],
+      "properties": {
+        "cross_project_context_default": {
+          "const": "deny"
+        },
+        "untagged_context": {
+          "const": "deny"
+        },
+        "project_switch_requires_teardown": {
+          "const": true
+        },
+        "quarantine_indexing": {
+          "const": false
+        }
+      }
+    },
+    "leases": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_minutes",
+        "max_minutes",
+        "write_requires_intent"
+      ],
+      "properties": {
+        "default_minutes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_minutes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "write_requires_intent": {
+          "const": true
+        }
+      }
+    },
+    "memory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_format",
+        "address_scheme",
+        "integrity_hash"
+      ],
+      "properties": {
+        "canonical_format": {
+          "const": "markdown"
+        },
+        "address_scheme": {
+          "const": "adaptive-minimum-bit-alphabetic-v1"
+        },
+        "integrity_hash": {
+          "const": "sha256"
+        }
+      }
+    }
+  }
+}

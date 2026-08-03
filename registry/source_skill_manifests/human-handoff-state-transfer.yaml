@@ -1,0 +1,72 @@
+id: human-handoff-state-transfer
+version: 0.1.0
+status: draft
+owner: framework owner
+category: orchestration
+priority: P1
+purpose: Transfer complete resumable operational state to a human or bounded agent.
+activation:
+  when:
+  - approval required
+  - system blocked
+  - risk exceeds autonomy
+  - ownership changes
+  not_when:
+  - normal response needs no resumable work
+inputs:
+  required:
+  - goal
+  - state
+  - actions
+  - tool results
+  - evidence
+  - approvals
+  - unresolved items
+  - risks
+  - checkpoint
+outputs:
+  produces: &id001
+  - handoff packet
+  - resume token
+  - next action
+  - ownership event
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- session store
+- intelligent system UI
+- approval system
+- outcome verifier
+risk:
+  tier: R1
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- resume success
+- missing-state corrections
+- handoff time
+- human rework
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - nice-enterprise-agents
+  - langgraph-workflow-pathways

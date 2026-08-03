@@ -1,0 +1,18 @@
+{
+  "schema_version": "2.0",
+  "policy": "Historical source payloads remain recoverable outside the deployable product. Portable release verification uses bundled content-addressed custody inventories and never infers a sibling-directory layout.",
+  "superseded_record_count": 31,
+  "records": [
+    {
+      "reference_id": "archive-custody-20260803",
+      "required_for": ["historical_custody_provenance"],
+      "availability": "bundled_inventory",
+      "bundle_id": "sha256:859a8b70a81558054f8bdc4c38fa01b7bda288c654e7ebb70677447b14194ebc",
+      "manifest": "evidence/bundles/archive-custody-20260803/manifest.json",
+      "sha256": "b24d475be9292b3497f034f3d0bf2845537855b81638ba90098b0f4eb4a82c41",
+      "retention": "retain with every release that cites the historical source disposition",
+      "verification_mode": "bundled_manifest_and_inventory_hash",
+      "runtime_required": false
+    }
+  ]
+}

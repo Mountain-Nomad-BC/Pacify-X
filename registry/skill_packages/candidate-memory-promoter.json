@@ -1,0 +1,34 @@
+{
+  "id": "candidate-memory-promoter",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/candidate-memory-promoter/SKILL.md",
+  "body_sha256": "f5296d359fd40ef7f2b45a4e5d6cba92032e5bff91e8e28435b63e2d9caa0b05",
+  "references": [],
+  "capability_tags": [
+    "candidate",
+    "memory",
+    "promoter"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_461a56bc.md",
+        "sha256": "a44f1ec857589740d27ebdc49729277e61616c652923bd17355210b576e4643f"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_26368719.yaml",
+        "sha256": "a8d4d0e62f82cf37f9c5e24be5b6f11d1b327137e4fb62796f9717fc02a277d2"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

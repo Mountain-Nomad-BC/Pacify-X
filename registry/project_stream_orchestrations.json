@@ -1,0 +1,702 @@
+{
+  "schema_version": "1.0",
+  "count": 17,
+  "orchestrations": [
+    {
+      "orchestration_id": "agent_create_validate",
+      "title": "Validate and register a supplied agent specification",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "agent-identity-permissions"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "agent_active_or_rejected"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_bounded_scope_with_deferred_enhancements",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/agent_create_validate.yaml",
+      "source_sha256": "ac237ed3b8e18b386e3e2b4174ddd50b11bb9d5dfae79afef12ec68328baed08",
+      "deferred_capabilities": [
+        "agent-factory",
+        "agent-performance-health",
+        "agent-registry-lifecycle",
+        "agent-template-catalog"
+      ],
+      "source_title": "Create, sandbox, test, and register an agent"
+    },
+    {
+      "orchestration_id": "chaos_resilience_cycle",
+      "title": "Evaluate supplied bounded resilience experiment records",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "autonomous-benchmark-lab",
+        "chaos-architect",
+        "outcome-contract-validator",
+        "repository-digital-twin",
+        "reproducibility-manifest"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "resilience_report"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_composite",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/chaos_resilience_cycle.yaml",
+      "source_sha256": "14f200cdc78e34e7b435c7c26339eed216032e28600cf1329ebce69c4073249d",
+      "deferred_capabilities": [],
+      "source_title": "Design and run bounded resilience experiments"
+    },
+    {
+      "orchestration_id": "continuous_improvement",
+      "title": "Compile supplied sources into a candidate-only improvement backlog",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "capability-gap-skill-foundry",
+        "framework-dna",
+        "opportunity-miner",
+        "pattern-miner",
+        "skill-health-entropy"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "improvement_backlog"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_bounded_scope_with_deferred_enhancements",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/continuous_improvement.yaml",
+      "source_sha256": "ac0242e44069f60b3c307e589b6f07c56af2835ec97cd32d6ebe9381a25d70f1",
+      "deferred_capabilities": [
+        "decision-graph"
+      ],
+      "source_title": "Find measured opportunities and govern new skill creation"
+    },
+    {
+      "orchestration_id": "cross_project_transfer",
+      "title": "Validate and import an approved cross-project transfer package",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "cross-project-transfer-broker",
+        "engineering-receipts",
+        "human-approval-matrix",
+        "secret-boundary-manager",
+        "semantic-contamination-detector"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "destination_owned_import"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_composite",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/cross_project_transfer.yaml",
+      "source_sha256": "e13a985e18da91452f13515e177ff38d76f358debe971ec56eb1eb83717acd3a",
+      "deferred_capabilities": [],
+      "source_title": "Sanitize and import a reusable artifact across project boundaries"
+    },
+    {
+      "orchestration_id": "guarded_change",
+      "title": "Validate and apply or quarantine one staged change",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "acceptance-gate-controller",
+        "engineering-receipts",
+        "outcome-contract-validator",
+        "side-effect-budgeter",
+        "why-evidence-gate"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "change_accepted_or_quarantined"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_bounded_scope_with_deferred_enhancements",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/guarded_change.yaml",
+      "source_sha256": "7c3fca4c504df8e912c6b3ca9b50646a959683f8c1e79fa59c9fc42218192beb",
+      "deferred_capabilities": [
+        "assumption-auditor",
+        "branch-worktree-manager",
+        "change-intent-ledger"
+      ],
+      "source_title": "Execute a bounded change with evidence and outcome validation"
+    },
+    {
+      "orchestration_id": "incident_diagnose_recover",
+      "title": "Validate and apply or quarantine one supplied recovery candidate",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "change-blast-radius-predictor",
+        "engineering-receipts",
+        "outcome-contract-validator",
+        "regression-causality-engine",
+        "repository-digital-twin"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "incident_recovered_or_escalated"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_bounded_scope_with_deferred_enhancements",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/incident_diagnose_recover.yaml",
+      "source_sha256": "acc4e2d3e988e6005472da5d936ace9b4d501d7144bd4dc3756d84106ee24c42",
+      "deferred_capabilities": [
+        "rollback-rehearsal"
+      ],
+      "source_title": "Diagnose regressions and execute a validated recovery"
+    },
+    {
+      "orchestration_id": "memory_ingest_distill",
+      "title": "Compile supplied sources into candidate project memory",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "adaptive-minimum-bit-sharder",
+        "context-budget-compiler",
+        "knowledge-distillation",
+        "memory-provenance",
+        "obsidian-memory-mapper"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "memory_notes_updated"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_bounded_scope_with_deferred_enhancements",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/memory_ingest_distill.yaml",
+      "source_sha256": "79281713033ce70c6963c8f98650142d8e82e78be4b53d730e58dec2fec1cf60",
+      "deferred_capabilities": [
+        "contradiction-engine"
+      ],
+      "source_title": "Distill source material into minimal project memory"
+    },
+    {
+      "orchestration_id": "memory_maintenance",
+      "title": "Reconcile and rebuild project memory indexes without deletion",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "continuous-knowledge-compression",
+        "evidence-freshness-verifier",
+        "memory-self-healer"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "memory_health_report"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_bounded_scope_with_deferred_enhancements",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/memory_maintenance.yaml",
+      "source_sha256": "90c9769a4f4395def52f9d40b9860f19b9630c1d4ab7196117f28fd029173245",
+      "deferred_capabilities": [
+        "assumption-decay",
+        "knowledge-coverage"
+      ],
+      "source_title": "Repair, compress, and validate memory without changing unsupported facts"
+    },
+    {
+      "orchestration_id": "nightly_project_health",
+      "title": "Evaluate supplied project-health metrics",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "drift-radar",
+        "evidence-freshness-verifier"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "health_scorecards"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_bounded_scope_with_deferred_enhancements",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/nightly_project_health.yaml",
+      "source_sha256": "b2818a1292469f8dff060d6aa3d04853c17f65663ffb1e0969dd6fc39cf3271f",
+      "deferred_capabilities": [
+        "agent-performance-health",
+        "project-health-scorecard",
+        "supply-chain-sentinel"
+      ],
+      "source_title": "Evaluate drift, health, stale evidence, dependencies, and agent state"
+    },
+    {
+      "orchestration_id": "project_close",
+      "title": "Record an evidence-backed project archive transition",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "framework-dna",
+        "shared-capability-promotion"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "project_archived"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_bounded_scope_with_deferred_enhancements",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/project_close.yaml",
+      "source_sha256": "ed94412e23f4d9070f37b89d5d8055be4628f395efbfb19729008791aa5273fe",
+      "deferred_capabilities": [
+        "agent-retirement-handoff",
+        "project-closure-autopsy",
+        "project-dormancy-archive"
+      ],
+      "source_title": "Close, learn from, and archive a completed project"
+    },
+    {
+      "orchestration_id": "project_onboard",
+      "title": "Inventory and register one existing project",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "project-registry",
+        "repo-onboarding-autodiscovery",
+        "secret-boundary-manager"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "project_registered"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_bounded_scope_with_deferred_enhancements",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/project_onboard.yaml",
+      "source_sha256": "624c1c7660caa16ea19a198259eaa0b4ef8109e3e1906e1aa337a7b24c2db959",
+      "deferred_capabilities": [
+        "multi-repo-tracker"
+      ],
+      "source_title": "Discover and register a repository without modifying it"
+    },
+    {
+      "orchestration_id": "project_pause_resume",
+      "title": "Record an evidence-backed pause or resume transition",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "agent-lease-manager",
+        "checkpoint-resume-manager"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "project_paused_or_resumed"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_bounded_scope_with_deferred_enhancements",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/project_pause_resume.yaml",
+      "source_sha256": "e1d04824f895644c5f31b19da8b5c8b32b852f028f1f89d8b5c729e937e3a0b8",
+      "deferred_capabilities": [
+        "concurrency-lock-manager",
+        "project-health-scorecard"
+      ],
+      "source_title": "Checkpoint, release resources, and later restore a project workstream"
+    },
+    {
+      "orchestration_id": "project_switch",
+      "title": "Validate and record an isolated project-session switch",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "agent-lease-manager",
+        "checkpoint-resume-manager",
+        "project-session-router",
+        "semantic-context-firewall"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "new_project_session_active"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_composite",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/project_switch.yaml",
+      "source_sha256": "ee4c96321af42857da5e70011cf87e20cdca67cc5651f40d1125588a29dd90ff",
+      "deferred_capabilities": [],
+      "source_title": "Safely switch an agent session between projects"
+    },
+    {
+      "orchestration_id": "safe_cleanup",
+      "title": "Move explicitly supplied cleanup candidates to recoverable quarantine",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "change-blast-radius-predictor",
+        "engineering-receipts",
+        "non-destructive-quarantine"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "quarantine_review_queue"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_bounded_scope_with_deferred_enhancements",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/safe_cleanup.yaml",
+      "source_sha256": "e26e242258eee25fe29f5528881250cc1bcc36fe3a5bed306a07c949f88df0fd",
+      "deferred_capabilities": [
+        "artifact-lifecycle-manager",
+        "rollback-rehearsal"
+      ],
+      "source_title": "Classify and quarantine cleanup candidates reversibly"
+    },
+    {
+      "orchestration_id": "shared_capability_promote",
+      "title": "Validate and copy an approved candidate to shared capability storage",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "acceptance-gate-controller",
+        "autonomous-benchmark-lab",
+        "capability-graph",
+        "pattern-miner",
+        "shared-capability-promotion",
+        "skill-evolution-lineage"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "shared_capability_release"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_composite",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/shared_capability_promote.yaml",
+      "source_sha256": "d693e15a66a85a0ff62a3c1dad4786616077f16ef41421d486cd9d1da56dfdc9",
+      "deferred_capabilities": [],
+      "source_title": "Promote a project pattern to a shared versioned capability"
+    },
+    {
+      "orchestration_id": "workspace_bootstrap",
+      "title": "Initialize a bounded workspace and register dropped projects",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "non-destructive-quarantine",
+        "repository-constitution",
+        "workspace-bootstrap"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "workspace_ready"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_bounded_scope_with_deferred_enhancements",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/workspace_bootstrap.yaml",
+      "source_sha256": "6b72c03049bb944f390162d2cbbce6f6532e530f8b3c8f3796de1918293dcd65",
+      "deferred_capabilities": [
+        "audit-event-ledger"
+      ],
+      "source_title": "Bootstrap a new project-stream workspace"
+    },
+    {
+      "orchestration_id": "workstream_plan_dispatch",
+      "title": "Validate and dispatch supplied bounded workstreams",
+      "version": "0.1.0",
+      "trigger": "explicit-or-policy-scheduled",
+      "project_binding": "required unless workspace bootstrap",
+      "skills": [
+        "capability-graph",
+        "orchestration-dependency-graph",
+        "workstream-dispatcher"
+      ],
+      "required_context": [
+        "workspace_id",
+        "agent_id",
+        "session_id",
+        "intent_id",
+        "correlation_id"
+      ],
+      "preflight": [
+        "constitution_resolved",
+        "lease_valid",
+        "scope_resolved",
+        "side_effect_budget_set"
+      ],
+      "outcomes": [
+        "workstreams_assigned"
+      ],
+      "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
+      "audit": true,
+      "source_status": "adapted-bounded-runtime",
+      "integration_status": "executable_bounded_scope_with_deferred_enhancements",
+      "runtime_owner": "orchestrate-engineering-loop",
+      "missing_capabilities": [],
+      "source_path": "project_stream_engineering_os/07_ORCHESTRATIONS/workstream_plan_dispatch.yaml",
+      "source_sha256": "8fd8a3f5c243ff69f33483a7f525ba5b271b116326d642879cf6efcdc2cd20a2",
+      "deferred_capabilities": [
+        "agent-team-composer",
+        "duplicate-effort-detector"
+      ],
+      "source_title": "Decompose work and dispatch bounded packages"
+    }
+  ]
+}

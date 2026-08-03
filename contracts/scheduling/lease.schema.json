@@ -1,0 +1,36 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:scheduling:lease",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "expires_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "fencing_token": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "heartbeat_seconds": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "lease_id": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "worker_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "lease_id",
+    "task_id",
+    "worker_id",
+    "fencing_token",
+    "expires_at"
+  ],
+  "type": "object"
+}

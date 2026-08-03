@@ -1,0 +1,36 @@
+{
+  "id": "forge-skills-from-knowledge",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/forge-skills-from-knowledge/SKILL.md",
+  "body_sha256": "41f54564e2e956a31637525f3b9111538f7f83308ec4c4b16c1164487fdc561e",
+  "references": [
+    ".agents/skills/forge-skills-from-knowledge/references/foundry-contract.md"
+  ],
+  "capability_tags": [
+    "knowledge",
+    "compiler",
+    "skill",
+    "foundry",
+    "research",
+    "calculation",
+    "certification"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "clean_room_implementation_from_internal_design",
+    "basis": [
+      {
+        "path": "agent_memory_issues_to_explore/Skill Foundry.txt",
+        "sha256": "65d330b33dcbf1c5f2a66f0fa2b440de44571cd03490fea2883f51d47ed9c5e1"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_knowledge_foundry.py",
+  "evidence": "tests/test_knowledge_foundry.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

@@ -1,0 +1,39 @@
+[bootstrap]
+id = "engineering-loop-bootstrap"
+version = "0.1.0"
+mode = "proposal_first"
+fail_closed = true
+model_agnostic = true
+
+[trusted_roots]
+require_explicit_project_root = true
+allow_external_paths = false
+
+[startup_budget]
+max_initial_registry_records = 250
+max_initial_policy_summaries = 32
+max_active_capabilities = 3
+max_context_items = 24
+max_context_bytes = 262144
+max_planning_seconds = 45
+
+[deferred_by_default]
+repository_graph = true
+embeddings = true
+browser = true
+network = true
+tool_installation = true
+service_start = true
+full_policy_text = true
+skill_packages = true
+
+[effects]
+default = "read_local"
+approval_required = ["write_workspace", "install_tool", "network", "run_service", "secret_access", "migration", "destructive"]
+evidence_required = ["write_workspace", "install_tool", "network", "run_service", "migration", "destructive"]
+
+[lifecycle]
+checkpoint_after_each_step = true
+unload_after_step = true
+max_retries = 1
+retry_requires_new_evidence = true

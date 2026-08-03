@@ -1,0 +1,4 @@
+interface:
+  display_name: "Contained Execution Supervisor"
+  short_description: "Block actions outside approved scope"
+  default_prompt: "Use $supervise-contained-execution to authorize or block a proposed action against scope, effects, budget, and approvals."

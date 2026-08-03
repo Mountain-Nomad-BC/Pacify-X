@@ -1,0 +1,34 @@
+{
+  "id": "recovery-coordinator",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/recovery-coordinator/SKILL.md",
+  "body_sha256": "ae7271b82e2f6297b1d010b75248eaa6b7c3e7b693a694a4aef79ae7d3b0522f",
+  "references": [],
+  "capability_tags": [
+    "coordinator",
+    "orchestration",
+    "recovery"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_91fb6ed6.md",
+        "sha256": "2554b2d7216991718efa5f7463cd2135ec7b0357d8c87dd703e87f60c2728b83"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_25426b3f.yaml",
+        "sha256": "b7d66f15a1dc97a5e37352ab8dc88ae9ce285343ff0522c4c0b252ed47e191cb"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

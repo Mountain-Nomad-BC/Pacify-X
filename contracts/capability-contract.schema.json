@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:capability-contract",
+  "title": "Capability contract",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "owner",
+    "status",
+    "provenance",
+    "hash",
+    "license",
+    "provides",
+    "consumes",
+    "effects",
+    "permissions",
+    "dependencies",
+    "conflicts",
+    "cost",
+    "latency",
+    "risk",
+    "validation",
+    "evidence",
+    "approval",
+    "rollback"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "version": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "candidate",
+        "admitted",
+        "active",
+        "deprecated",
+        "rejected"
+      ]
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "license": {
+      "type": "string"
+    },
+    "provides": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "consumes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cost": {
+      "type": "object"
+    },
+    "latency": {
+      "type": "object"
+    },
+    "risk": {
+      "enum": [
+        "R0",
+        "R1",
+        "R2",
+        "R3",
+        "R4"
+      ]
+    },
+    "validation": {
+      "type": "object"
+    },
+    "evidence": {
+      "type": "object"
+    },
+    "approval": {
+      "type": "object"
+    },
+    "rollback": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

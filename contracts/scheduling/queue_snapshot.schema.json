@@ -1,0 +1,33 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:scheduling:queue_snapshot",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "blocked": {
+      "type": "object"
+    },
+    "queues": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "type": "object"
+    },
+    "running": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "timestamp": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "timestamp",
+    "queues"
+  ],
+  "type": "object"
+}

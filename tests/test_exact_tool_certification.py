@@ -1,0 +1,91 @@
+from __future__ import annotations
+
+import hashlib
+import json
+from pathlib import Path
+import tempfile
+import unittest
+
+from runtime.exact_tool_certification import ToolCase, _run, certify_exact_tools
+from runtime.python_surface_certification import certify_python_surfaces
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class ExactToolCertificationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.result = certify_exact_tools(ROOT)
+        cls.python_surfaces = certify_python_surfaces(ROOT, cls.result)
+
+    def test_every_admitted_tool_executes_from_its_hash_bound_file(self) -> None:
+        result = self.result
+        self.assertTrue(result["valid"], result["errors"])
+        self.assertEqual(result["admitted_tools"], 56)
+        self.assertEqual(result["directly_loaded"], 56)
+        self.assertEqual(result["positive_cases"], 56)
+        self.assertEqual(result["passed_tools"], 56)
+        self.assertEqual(result["negative_cases"], 11)
+        self.assertEqual(result["domain_wrappers"], 7)
+        self.assertEqual(result["passed_domain_wrappers"], 7)
+        for record in result["results"]:
+            target = ROOT / record["target"]
+            self.assertEqual(record["sha256"], hashlib.sha256(target.read_bytes()).hexdigest())
+
+    def test_fail_closed_cases_are_attached_to_security_critical_tools(self) -> None:
+        result = self.result
+        denied = {record["id"] for record in result["results"] if record["negative_behavior"] is not None}
+        self.assertEqual(
+            denied,
+            {
+                "archive-verifier",
+                "canary-compare",
+                "certification-aggregator",
+                "completion-cutline",
+                "ingestion-validator",
+                "memory-write-gate",
+                "permission-guard",
+                "prompt-injection-scanner",
+                "protocol-validator",
+                "secret-scanner",
+                "tool-policy-enforcer",
+            },
+        )
+
+    def test_timeout_is_attributed_without_erasing_a_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            script = root / "stall.py"
+            script.write_text("import time\ntime.sleep(2)\n", encoding="utf-8")
+            result = _run(script, ToolCase((), json_output=False), root, 0.05)
+            self.assertFalse(result["passed"])
+            self.assertTrue(result["timed_out"])
+            self.assertEqual(result["failure_class"], "timeout")
+
+    def test_cache_receipts_are_hash_sealed_and_forgery_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            receipt = Path(directory) / "progress.json"
+            cache = Path(directory) / "cache"
+            first = certify_exact_tools(ROOT, receipt_path=receipt, cache_dir=cache, allow_cache=True)
+            self.assertTrue(first["valid"], first["errors"])
+            self.assertTrue(receipt.is_file())
+            cache_file = next(cache.glob("*.json"))
+            forged = json.loads(cache_file.read_text(encoding="utf-8"))
+            forged["result"]["passed"] = False
+            cache_file.write_text(json.dumps(forged), encoding="utf-8")
+            second = certify_exact_tools(ROOT, cache_dir=cache, allow_cache=True)
+            self.assertTrue(second["valid"], second["errors"])
+            self.assertFalse(next(item for item in second["results"] if item["cache_key"] == cache_file.stem)["cache_hit"])
+
+    def test_every_python_file_is_owned_classified_and_validation_bound(self) -> None:
+        result = self.python_surfaces
+        self.assertTrue(result["valid"], result["errors"])
+        self.assertEqual(result["python_file_count"], result["syntax_valid_count"])
+        self.assertEqual(result["role_counts"].get("unknown", 0), 0)
+        self.assertEqual(result["role_counts"]["installed-skill-tool"], 83)
+        self.assertEqual(result["direct_behavior_count"], 63)
+
+
+if __name__ == "__main__":
+    unittest.main()

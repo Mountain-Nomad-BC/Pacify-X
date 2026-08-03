@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "active_capabilities": [
+    {
+      "id": "skill-navigator",
+      "version": "0.1.0",
+      "contract": "registry/skills/skill-navigator.json",
+      "implementation": "runtime/skill_navigator.py",
+      "evidence": "tests/test_skill_navigator.py",
+      "effects": ["read_local"]
+    },
+    {
+      "id": "execution-contract-enforcer",
+      "version": "0.1.0",
+      "contract": "registry/skills/execution-contract-enforcer.json",
+      "implementation": "runtime/execution_contract.py",
+      "evidence": "tests/test_execution_contract.py",
+      "effects": ["read_local"]
+    },
+    {
+      "id": "skill-admission-controller",
+      "version": "0.1.0",
+      "contract": "registry/skills/skill-admission-controller.json",
+      "implementation": "runtime/admission_controller.py",
+      "evidence": "tests/test_admission_controller.py",
+      "effects": ["read_local"]
+    },
+    {
+      "id": "outcome-verifier",
+      "version": "0.1.0",
+      "contract": "registry/skills/outcome-verifier.json",
+      "implementation": "runtime/outcome_verifier.py",
+      "evidence": "tests/test_outcome_verifier.py",
+      "effects": ["read_local"]
+    },
+    {
+      "id": "evidence-assembler",
+      "version": "0.2.0",
+      "contract": "registry/skills/evidence-assembler.json",
+      "implementation": "runtime/evidence_assembler.py",
+      "evidence": "tests/test_evidence_assembler.py",
+      "effects": ["read_local"]
+    },
+    {
+      "id": "workflow-orchestrator",
+      "version": "0.1.0",
+      "contract": "registry/skills/workflow-orchestrator.json",
+      "implementation": "runtime/orchestrator.py",
+      "evidence": "tests/test_orchestrator.py",
+      "effects": ["read_local"]
+    }
+  ],
+  "rule": "Only admitted and validated capabilities are listed here."
+}

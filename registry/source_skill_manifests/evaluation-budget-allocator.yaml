@@ -1,0 +1,65 @@
+id: evaluation-budget-allocator
+version: 0.1.0
+status: draft
+owner: framework owner
+category: evaluation
+priority: P1
+purpose: Allocate automated and human review by risk, disagreement, novelty, impact,
+  and evidence quality—not self-confidence.
+activation:
+  when:
+  - many runs/changes compete for review
+  not_when:
+  - policy requires full review
+inputs:
+  required:
+  - risk tier
+  - impact
+  - verifier disagreement
+  - failure history
+  - novelty
+  - budget
+outputs:
+  produces: &id001
+  - review allocation
+  - sampling plan
+  - residual risk
+  - thresholds
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- active selector
+- review queue
+- outcome verifier
+risk:
+  tier: R1
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- failures per review hour
+- high-risk miss
+- reviewer overload
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - audit-budget
+  - proeval

@@ -1,0 +1,12 @@
+schema_version = "1.0"
+id = "cloud-restricted"
+
+[resources]
+max_agents = 2
+max_heavy_lanes = 1
+max_context_bytes = 262144
+
+[routing]
+local_models = "optional"
+cloud_models = "metadata_only"
+sensitive_data = "local_only"

@@ -1,0 +1,35 @@
+{
+  "id": "execution-contract-enforcer",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/execution-contract-enforcer/SKILL.md",
+  "body_sha256": "8cf2f0511b2c1a4362448deb12945f79c6d38618b02a89751b77869b1ea86214",
+  "references": [],
+  "capability_tags": [
+    "contract",
+    "enforcer",
+    "execution",
+    "orchestration"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_68ac1367.md",
+        "sha256": "6e357a1da5fcdcbe1e0190ed441fa1b09fdcdab7dfb63fd81de62b673df059da"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_9c69399b.yaml",
+        "sha256": "50183dfe732c9cd1c521f33f4df0ee2393c8bb903832cbd503405e07689ca264"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

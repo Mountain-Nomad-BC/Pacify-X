@@ -1,0 +1,35 @@
+{
+  "id": "paper-mechanism-extractor",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/paper-mechanism-extractor/SKILL.md",
+  "body_sha256": "ac4463c1adf019ef167469f9ec90403011339d4be5791e597a2e9b25f577dc8e",
+  "references": [],
+  "capability_tags": [
+    "extractor",
+    "mechanism",
+    "paper",
+    "research-ops"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_9c1515bc.md",
+        "sha256": "5c4a00def3c7f679e5c7d138478b735df6ad9be620ff6fec95bbf1b8cb82fdf5"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_2176bb23.yaml",
+        "sha256": "c23ba4e4940a813726b8c45a589a3384b88902e1f0d3a2a7edccf816a2bf5031"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

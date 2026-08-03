@@ -1,0 +1,46 @@
+{
+  "id": "evaluate-retrieval-readiness",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/evaluate-retrieval-readiness/SKILL.md",
+  "body_sha256": "6a252addc62a76f46d9518eda00d1f4a60bc61cba829e3d593b245b4f06428d9",
+  "references": [
+    ".agents/skills/evaluate-retrieval-readiness/references/retrieval-evaluation-contract.md",
+    ".agents/skills/evaluate-retrieval-readiness/references/compressed-index-evaluation.md"
+  ],
+  "resources": [
+    ".agents/skills/evaluate-retrieval-readiness/scripts/evaluate_retrieval_strategy.py"
+  ],
+  "capability_tags": [
+    "retrieval",
+    "quality",
+    "recall",
+    "ranking",
+    "privacy",
+    "activation"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "clean_room_from_behavior_contracts",
+    "input_tree_sha256": "e312f3b7203ec6cd034d8eca6324ceba5df7f630dfbb6931af31b4359f670342",
+    "basis": [
+      {
+        "source_alias": "source-12",
+        "sha256": "ced0f6d4ecfdfdf8b4c6484eeb0a66fc22be448ce4b9eda406b3b9fbd1d4cca1",
+        "behavior": "retrieval quality gate"
+      },
+      {
+        "source_alias": "source-13",
+        "sha256": "576c88f641b936c64ad7d854e4b912a5ae8064c4a2b0836f0725ac70c7abb492",
+        "behavior": "drift edge-case review"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_foundation_assurance.py; tests/test_retrieval_strategy.py",
+  "evidence": "evidence/final-intake-assimilation.json",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

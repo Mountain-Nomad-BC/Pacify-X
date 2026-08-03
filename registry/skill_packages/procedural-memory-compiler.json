@@ -1,0 +1,34 @@
+{
+  "id": "procedural-memory-compiler",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/procedural-memory-compiler/SKILL.md",
+  "body_sha256": "b200a36457b8cb20ab13c641ecf91551650109a609fc1b965311f3b94394ce2d",
+  "references": [],
+  "capability_tags": [
+    "compiler",
+    "memory",
+    "procedural"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_c86c58b8.md",
+        "sha256": "d895e224b7a4e3fdf59ca0fd4a4593c45a58182648146230ec37644cc8f14c68"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_ae2a572b.yaml",
+        "sha256": "ec4fb383613ba69d20b374b2049701576aa2bde701cd8648629ca3b44dc2a603"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:workspace-registry",
+  "title": "Authoritative multi-project workspace registry projection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "workspace_id",
+    "revision",
+    "projects",
+    "updated_utc"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "workspace_id": {
+      "type": "string",
+      "pattern": "^wsp_[A-Za-z0-9_-]+$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "updated_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "project_id",
+          "name",
+          "state",
+          "path",
+          "commissioning_mode",
+          "classification",
+          "memory_namespace",
+          "memory_root",
+          "project_record_sha256",
+          "workspace_binding_sha256",
+          "project_management",
+          "registered_utc",
+          "cross_project_access"
+        ],
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "pattern": "^prj_[A-Za-z0-9_-]+$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "state": {
+            "enum": [
+              "registered",
+              "active",
+              "paused",
+              "archived"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^projects/[^/]+$"
+          },
+          "commissioning_mode": {
+            "enum": [
+              "new",
+              "existing"
+            ]
+          },
+          "classification": {
+            "enum": [
+              "public",
+              "internal",
+              "confidential",
+              "restricted"
+            ]
+          },
+          "memory_namespace": {
+            "type": "string",
+            "pattern": "^project/prj_"
+          },
+          "memory_root": {
+            "type": "string",
+            "pattern": "^projects_tracking/projects/prj_[^/]+/memory$"
+          },
+          "project_record_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "workspace_binding_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "project_management": {
+            "type": "string",
+            "pattern": "^projects/[^/]+/PROJECT_MANAGEMENT.md$"
+          },
+          "registered_utc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "cross_project_access": {
+            "const": "deny"
+          }
+        }
+      }
+    }
+  }
+}

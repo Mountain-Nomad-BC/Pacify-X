@@ -1,0 +1,33 @@
+{
+  "body": ".agents/skills/govern-metacognitive-evolution/SKILL.md",
+  "body_sha256": "fbf555b37234ecf0f84bbdf60982e08a4584ef5ecbc5de949c23dccc43af845d",
+  "capability_tags": [
+    "metacognition",
+    "uncertainty",
+    "introspection",
+    "optimization",
+    "knowledge-dynamics"
+  ],
+  "clean_room": false,
+  "context_budget_bytes": 32768,
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "evidence": "evidence/rel008-assimilation.json",
+  "id": "govern-metacognitive-evolution",
+  "provenance": {
+    "basis": [
+      "evidence/rel008-assimilation.json"
+    ],
+    "type": "sanitized_authoritative_assimilation"
+  },
+  "references": [
+    ".agents/skills/govern-metacognitive-evolution/references/capability-index.json",
+    ".agents/skills/govern-metacognitive-evolution/references/orchestration-index.json"
+  ],
+  "status": "active",
+  "tests": "tests/test_metacognitive_evolution.py",
+  "validation_freshness": "current",
+  "version": "1.0.0"
+}

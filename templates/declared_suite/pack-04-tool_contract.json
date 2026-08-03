@@ -1,0 +1,17 @@
+{
+  "destructive": false,
+  "idempotent": true,
+  "input_schema": "schemas/example.input.json",
+  "max_output_bytes": 200000,
+  "max_runtime_seconds": 30,
+  "name": "example-tool",
+  "network_scope": [],
+  "output_schema": "schemas/example.output.json",
+  "read_scope": [
+    "workspace/**"
+  ],
+  "requires_approval": false,
+  "risk_tier": "medium",
+  "rollback": null,
+  "write_scope": []
+}

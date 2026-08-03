@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "source_root": "Zips and files from builds",
+  "maps": [
+    {"id": "reference-catalog", "path": "catalog.csv", "records": 241, "purpose": "canonical reference primitives"},
+    {"id": "alias-index", "path": "alias-index.json", "records": 835, "purpose": "natural-language to reference resolution"},
+    {"id": "relationship-graph", "path": "reference-relationships.json", "records": 419, "purpose": "reference relationships"},
+    {"id": "task-reference-map", "path": "task-to-reference-map.json", "records": 25, "purpose": "task-to-reference routes"},
+    {"id": "selection-matrix", "path": "selection-matrix.json", "records": 14, "purpose": "domain decision and default-reference selection"},
+    {"id": "skill-index", "path": "LLM_hybrid_rag/SKILL_INDEX.csv", "records": 36, "purpose": "governed skill candidates"},
+    {"id": "skill-manifests", "path": "LLM_hybrid_rag/manifest*.yaml", "records": 40, "purpose": "skill contracts"},
+    {"id": "opportunity-matrix", "path": "LLM_hybrid_rag/opportunity_matrix.csv", "records": 14, "purpose": "research-to-operation candidates"},
+    {"id": "registry-patch", "path": "LLM_hybrid_rag/skills_registry_patch.yaml", "purpose": "proposed registry changes; admission required"},
+    {"id": "pack-map", "path": "PACK_MAP.md", "records": 160, "purpose": "cross-domain skill package map"}
+  ],
+  "activation_rule": "Map records are discovery inputs. Only admitted and validated records become active capabilities."
+}

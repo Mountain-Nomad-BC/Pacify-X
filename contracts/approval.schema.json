@@ -1,0 +1,36 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:approval",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "approver": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "expires_at": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "scope": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "status": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "scope",
+    "approver",
+    "status",
+    "expires_at"
+  ],
+  "title": "Approval",
+  "type": "object"
+}

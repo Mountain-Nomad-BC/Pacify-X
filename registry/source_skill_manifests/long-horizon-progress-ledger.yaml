@@ -1,0 +1,66 @@
+id: long-horizon-progress-ledger
+version: 0.1.0
+status: draft
+owner: framework owner
+category: evaluation
+priority: P1
+purpose: Represent long work as evidence-backed milestones with partial completion,
+  blockers, regression, and recoverability.
+activation:
+  when:
+  - work spans many steps/sessions/agents/hours
+  not_when:
+  - atomic task
+inputs:
+  required:
+  - goal
+  - milestones
+  - events
+  - evidence
+  - budgets
+  - owners
+outputs:
+  produces: &id001
+  - milestone status
+  - partial score
+  - blockers
+  - resume point
+  - remaining risk
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- intelligent system task store
+- handoff
+- trajectory sentinel
+- UI
+risk:
+  tier: R1
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- resume success
+- late recovery
+- false completion
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - long-horizon-bench

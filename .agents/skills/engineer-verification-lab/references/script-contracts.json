@@ -1,0 +1,312 @@
+{
+  "contracts": [
+    {
+      "authoritative_source_sha256": "802ca6fefa69d3537caefac32bbe3284da43a3c8f97e018e84fceadefc89b396",
+      "authority_and_safety": "Keep evaluation data, scoring rules, and implementation under test independently reviewable; do not certify from a self-authored happy path alone.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "benchmark-contamination-scan",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/engineer-verification-lab/scripts/authoritative_benchmark_contamination_scan.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "define-observable-claim",
+        "select-independent-oracle",
+        "generate-positive-and-adversarial-cases",
+        "run-and-minimize",
+        "score-and-promote-regressions"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/scripts/benchmark_contamination_scan.py"
+      ],
+      "trigger": "Use when the requested outcome is benchmark contamination scan or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "a715e538e695a6a0d27b99a6a573ea3637d0519119719c9fde291c2cc17f5586",
+      "authority_and_safety": "Keep evaluation data, scoring rules, and implementation under test independently reviewable; do not certify from a self-authored happy path alone.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "differential-tester",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/engineer-verification-lab/scripts/authoritative_differential_tester.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "define-observable-claim",
+        "select-independent-oracle",
+        "generate-positive-and-adversarial-cases",
+        "run-and-minimize",
+        "score-and-promote-regressions"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/scripts/differential_tester.py"
+      ],
+      "trigger": "Use when the requested outcome is differential tester or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "690255274143736e28097a24a76392c38aa8dc992c68e5c194f2f8d2e2db7a6b",
+      "authority_and_safety": "Keep evaluation data, scoring rules, and implementation under test independently reviewable; do not certify from a self-authored happy path alone.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "formula-property-tests",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/engineer-verification-lab/scripts/authoritative_formula_property_tests.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "define-observable-claim",
+        "select-independent-oracle",
+        "generate-positive-and-adversarial-cases",
+        "run-and-minimize",
+        "score-and-promote-regressions"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/scripts/formula_property_tests.py"
+      ],
+      "trigger": "Use when the requested outcome is formula property tests or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "54b27c6d461c9f8699bb0f6639011d218e8d29a6edab52f6f50ddb0bd4d8940a",
+      "authority_and_safety": "Keep evaluation data, scoring rules, and implementation under test independently reviewable; do not certify from a self-authored happy path alone.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "fuzz-json-runner",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/engineer-verification-lab/scripts/authoritative_fuzz_json_runner.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "define-observable-claim",
+        "select-independent-oracle",
+        "generate-positive-and-adversarial-cases",
+        "run-and-minimize",
+        "score-and-promote-regressions"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/scripts/fuzz_json_runner.py"
+      ],
+      "trigger": "Use when the requested outcome is fuzz json runner or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "a1f776f25e28078abba88bb30276bbaaf673a2952f8e30ea46fc0c657069fef4",
+      "authority_and_safety": "Keep evaluation data, scoring rules, and implementation under test independently reviewable; do not certify from a self-authored happy path alone.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "judge-calibrator",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/engineer-verification-lab/scripts/authoritative_judge_calibrator.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "define-observable-claim",
+        "select-independent-oracle",
+        "generate-positive-and-adversarial-cases",
+        "run-and-minimize",
+        "score-and-promote-regressions"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/scripts/judge_calibrator.py"
+      ],
+      "trigger": "Use when the requested outcome is judge calibrator or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "a46b56be296c6f224c4146b3a4ba6e7c15bdb386fc6582b097a18d1f5d0374cc",
+      "authority_and_safety": "Keep evaluation data, scoring rules, and implementation under test independently reviewable; do not certify from a self-authored happy path alone.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "metamorphic-runner",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/engineer-verification-lab/scripts/authoritative_metamorphic_runner.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "define-observable-claim",
+        "select-independent-oracle",
+        "generate-positive-and-adversarial-cases",
+        "run-and-minimize",
+        "score-and-promote-regressions"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/scripts/metamorphic_runner.py"
+      ],
+      "trigger": "Use when the requested outcome is metamorphic runner or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "696d65200ca5a9c9840ad9dd2d5bdd11c3c98dc1936012e72bf30c80c42e7e81",
+      "authority_and_safety": "Keep evaluation data, scoring rules, and implementation under test independently reviewable; do not certify from a self-authored happy path alone.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "mutation-operator",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/engineer-verification-lab/scripts/authoritative_mutation_operator.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "define-observable-claim",
+        "select-independent-oracle",
+        "generate-positive-and-adversarial-cases",
+        "run-and-minimize",
+        "score-and-promote-regressions"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/scripts/mutation_operator.py"
+      ],
+      "trigger": "Use when the requested outcome is mutation operator or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "956be951e2289f06938b020c57fdadb5e88f761734d39f61f0b6fc5f1544e6f7",
+      "authority_and_safety": "Keep evaluation data, scoring rules, and implementation under test independently reviewable; do not certify from a self-authored happy path alone.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "scenario-runner",
+      "implementation_disposition": "safe_replacement",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "define-observable-claim",
+        "select-independent-oracle",
+        "generate-positive-and-adversarial-cases",
+        "run-and-minimize",
+        "score-and-promote-regressions"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "rejection_reason": "uses shell=True; retained safe case-generation replacement",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/scripts/scenario_runner.py"
+      ],
+      "trigger": "Use when the requested outcome is scenario runner or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "c06bd347ee32d1a34ca1f89202fbd0bd4caa229374757dec55104b38a7c91000",
+      "authority_and_safety": "Keep evaluation data, scoring rules, and implementation under test independently reviewable; do not certify from a self-authored happy path alone.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "trajectory-scorer",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/engineer-verification-lab/scripts/authoritative_trajectory_scorer.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "define-observable-claim",
+        "select-independent-oracle",
+        "generate-positive-and-adversarial-cases",
+        "run-and-minimize",
+        "score-and-promote-regressions"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/scripts/trajectory_scorer.py"
+      ],
+      "trigger": "Use when the requested outcome is trajectory scorer or when that outcome is a required dependency."
+    }
+  ],
+  "owner": "engineer-verification-lab",
+  "schema_version": "1.0"
+}

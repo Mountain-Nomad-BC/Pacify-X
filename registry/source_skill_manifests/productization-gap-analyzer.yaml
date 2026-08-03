@@ -1,0 +1,61 @@
+id: productization-gap-analyzer
+version: 0.1.0
+status: draft
+owner: framework owner
+category: research-ops
+priority: P1
+purpose: Identify what a research prototype lacks before safe operational use.
+activation:
+  when:
+  - mechanism useful but immature
+  not_when:
+  - mature internal component already covers it
+inputs:
+  required:
+  - mechanism card
+  - available code
+  - existing architecture
+  - security/SRE requirements
+outputs:
+  produces: &id001
+  - gap list
+  - MVP approximation
+  - full path
+  - build/buy/reject recommendation
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- behavior map
+- architecture registry
+- research translator
+risk:
+  tier: R1
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- duplicate builds avoided
+- paper-to-MVP time
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - harness-handbook
+  - iii-agent-harness

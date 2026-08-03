@@ -1,0 +1,67 @@
+id: context-compactor
+version: 0.1.0
+status: draft
+owner: framework owner
+category: orchestration
+priority: P1
+purpose: Reduce active context while preserving goals, constraints, decisions, evidence,
+  unresolved questions, and state.
+activation:
+  when:
+  - context approaches budget
+  - long run crosses checkpoint
+  - branches merge
+  not_when:
+  - evidence can remain by reference
+  - required records would be discarded
+inputs:
+  required:
+  - events/conversation
+  - state
+  - evidence refs
+  - decision log
+  - unresolved requirements
+outputs:
+  produces: &id001
+  - compact state
+  - preserved refs
+  - discard index
+  - compaction confidence
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- session store
+- context assembler
+- checkpoint service
+risk:
+  tier: R1
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- token reduction
+- reconstruction accuracy
+- lost constraints
+- corrections
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - iii-agent-harness

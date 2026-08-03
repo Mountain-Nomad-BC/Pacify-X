@@ -1,0 +1,25 @@
+schema_version: "1.0"
+id: local-model-planning
+loading_rule: Inspect configuration as hostile data; never import a model or remote model code during planning.
+steps:
+  - id: inspect
+    skill: inspect-llm-architecture
+    depends_on: []
+    evidence: normalized configuration, contradictions, parameter and memory estimates
+  - id: plan
+    skill: plan-local-model-deployment
+    depends_on: [inspect]
+    evidence: ranked feasibility matrix, blockers, transformation budget, rollback
+  - id: data-gate
+    skill: gate-model-data-lifecycle
+    depends_on: [plan]
+    evidence: license, privacy, lineage, retention, and remote-boundary decision
+  - id: retrieval-gate
+    skill: evaluate-retrieval-readiness
+    depends_on: [plan]
+    evidence: exact-reference quality, forbidden exposure, latency, memory, and calibration results
+  - id: validate
+    skill: validate-engineering-outcomes
+    depends_on: [data-gate, retrieval-gate]
+    evidence: discriminating tests, operational checks, residual risks
+failure_policy: Missing hardware facts, privacy violations, failed calibration, or absent rollback keep the plan conditional and block deployment claims.

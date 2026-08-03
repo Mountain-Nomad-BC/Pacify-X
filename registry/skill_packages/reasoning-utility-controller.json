@@ -1,0 +1,35 @@
+{
+  "id": "reasoning-utility-controller",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/reasoning-utility-controller/SKILL.md",
+  "body_sha256": "d6bb472f7fc9013efd4076cc8d506b76a9fd032a6e4396bfbff04d49e9feaf02",
+  "references": [],
+  "capability_tags": [
+    "controller",
+    "evaluation",
+    "reasoning",
+    "utility"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_b6226585.md",
+        "sha256": "5925b823944c1f4df33b1256395be2bfdb7ef0edeb34baec0fea43f6dd512e7c"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_11b55646.yaml",
+        "sha256": "8851322e319cf45b770d8b8082104c4f84518c565dfd3a7f72a1b7decb35222e"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

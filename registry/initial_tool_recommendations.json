@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "loading_rule": "Assess project signals and local availability read-only; never install or configure a tool without a separate explicit approval.",
+  "tools": [
+    {
+      "id": "obsidian",
+      "display_name": "Obsidian",
+      "candidates": ["obsidian", "Obsidian.exe"],
+      "relevance": "optional_markdown_knowledge_workspace",
+      "recommend_when": {"minimum_markdown_files": 20, "or_directory": ".obsidian"},
+      "missing_disposition": "offer_optional_installation",
+      "install_effect": "install_global",
+      "approval_required": true,
+      "auto_install": false
+    },
+    {
+      "id": "graphify",
+      "display_name": "Graphify",
+      "candidates": ["graphify"],
+      "relevance": "optional_external_graph_visualization",
+      "recommend_when": {"minimum_source_files": 50},
+      "missing_disposition": "use_governed_built_in_alternatives",
+      "built_in_alternatives": ["validate-knowledge-relationships", "research-to-capability"],
+      "install_effect": "install_project",
+      "approval_required": true,
+      "auto_install": false,
+      "source_alias_disposition": "reference_only"
+    }
+  ]
+}
+

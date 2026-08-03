@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:orchestration_record",
+  "title": "Orchestration Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "orchestration_id",
+    "version",
+    "skills",
+    "preflight",
+    "outcomes"
+  ],
+  "properties": {
+    "orchestration_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "preflight": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "outcomes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "failure_policy": {
+      "type": "string"
+    },
+    "project_binding": {
+      "type": "string"
+    }
+  }
+}

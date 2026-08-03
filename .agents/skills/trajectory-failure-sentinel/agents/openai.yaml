@@ -1,0 +1,4 @@
+interface:
+  display_name: "Trajectory Failure Sentinel"
+  short_description: "Governed Trajectory Failure Sentinel workflow"
+  default_prompt: "Use $trajectory-failure-sentinel to evaluate this task with bounded evidence."

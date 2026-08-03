@@ -1,0 +1,36 @@
+{
+  "body": ".agents/skills/manage-revocable-certification/SKILL.md",
+  "body_sha256": "b86848859c54e7d5faf23859414317daec93af33f1c9ea163c8ecdc9c1eae6f7",
+  "capability_tags": [
+    "authoritative",
+    "certification",
+    "declared-suite",
+    "manage",
+    "revocable"
+  ],
+  "clean_room": false,
+  "context_budget_bytes": 32768,
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "evidence": "evidence/rel008-assimilation.json",
+  "id": "manage-revocable-certification",
+  "provenance": {
+    "basis": [
+      "registry/declared_suite_authoritative_tools.json",
+      "registry/declared_suite_schema_contracts.json",
+      "evidence/rel008-assimilation.json"
+    ],
+    "type": "authoritative_contract_and_safe_body_assimilation",
+    "unsafe_body_policy": "shell execution and hard deletion bodies rejected in favor of tested bounded replacements"
+  },
+  "references": [
+    ".agents/skills/manage-revocable-certification/references/capabilities-index.json",
+    ".agents/skills/manage-revocable-certification/references/scripts-index.json"
+  ],
+  "status": "active",
+  "tests": "tests/test_rel008_assimilation.py",
+  "validation_freshness": "current",
+  "version": "0.1.0"
+}

@@ -1,0 +1,35 @@
+{
+  "id": "govern-memory-fabric",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/govern-memory-fabric/SKILL.md",
+  "body_sha256": "056f8ee0ffb4877671b2723f5cb8983433657a56c271310750884e8071d0c9e9",
+  "references": [
+    ".agents/skills/govern-memory-fabric/references/memory-contract.md",
+    ".agents/skills/govern-memory-fabric/references/provider-certification.md"
+  ],
+  "capability_tags": [
+    "memory",
+    "provenance",
+    "isolation",
+    "sharding",
+    "repair"
+  ],
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "provenance": {
+    "type": "clean_room_source_synthesis",
+    "basis": [
+      "registry/project_stream_capabilities.json",
+      "runtime/memory_vault.py",
+      "tests/test_memory_vault.py"
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_workspace_manager.py",
+  "evidence": "tests/test_workspace_manager.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

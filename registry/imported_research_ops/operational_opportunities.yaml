@@ -1,0 +1,300 @@
+generated: '2026-08-01'
+opportunities:
+- id: OP-001
+  name: Behavior Graph Compiler
+  source_ids:
+  - harness-handbook
+  maturity: build now
+  priority: P0
+  primitive: Map behavior concepts to source, state, policy, tests, telemetry, and
+    skill ownership.
+  gap: Code maps usually stop at files/functions.
+  mvp: AST/import/route/state/manifest/test graph plus semantic labels and trace reconciliation.
+  full: Continuously synchronized behavior handbook with drift and impact analysis.
+  owner: engineering companion + intelligent system registry
+  value:
+  - debugging
+  - safe refactors
+  - architecture drift detection
+  metrics:
+  - behavior coverage
+  - time to locate
+  - escaped impact defects
+  risks:
+  - dynamic dispatch gaps
+  - stale graph
+- id: OP-002
+  name: Skill Bundle Resolver
+  source_ids:
+  - hyset
+  maturity: prototype next
+  priority: P1
+  primitive: Score complete sets of tools/skills using co-invocation structure.
+  gap: Planners select isolated tools and miss companion capabilities.
+  mvp: Capability-slot coverage with dependency/coexecution scoring.
+  full: Learned version/context-aware hypergraph retrieval.
+  owner: planner + intelligent system registry/policy
+  value:
+  - fewer missing-tool failures
+  - complete diagnostic chains
+  metrics:
+  - bundle completion
+  - verified outcome
+  - cost
+  risks:
+  - correlation mistaken for dependency
+  - rare cases
+- id: OP-003
+  name: Memory Reconstruction Gate
+  source_ids:
+  - memharness
+  maturity: prototype next
+  priority: P1
+  primitive: Critique retrieved experience and reconstruct a current plan.
+  gap: Memory systems replay summaries/actions without applicability analysis.
+  mvp: Structured match/mismatch/missing-evidence analysis.
+  full: Learned reconstruction on diagnostic/operational trajectories.
+  owner: intelligent system memory/reasoning
+  value:
+  - less negative transfer
+  - safer case reuse
+  metrics:
+  - old-action replay
+  - adapted-plan success
+  - corrections
+  risks:
+  - over-filtering
+  - reconstruction drift
+- id: OP-004
+  name: Intent Memory Firewall
+  source_ids:
+  - mind-memory-defense
+  maturity: build now
+  priority: P0
+  primitive: Filter memory using intent alignment and authority-aware information
+    bottleneck.
+  gap: Vector/graph memory does not distinguish data from embedded instructions.
+  mvp: Instruction detection, intent divergence, permission expansion, provenance,
+    sensitive-flow checks.
+  full: Domain-trained classifier and adversarial memory benchmark.
+  owner: framework policy gateway before intelligent system context
+  value:
+  - memory poisoning defense
+  - scope protection
+  metrics:
+  - attack success
+  - false positives
+  - quarantine accuracy
+  risks:
+  - obfuscation
+  - blocking valid procedures
+- id: OP-005
+  name: Trace-to-Skill Compiler
+  source_ids:
+  - procmem
+  maturity: gated prototype
+  priority: P2
+  primitive: Derive activation/execution/termination procedures from verified experience.
+  gap: Few tools emit fully governed skill packages from traces.
+  mvp: Cluster traces, derive stable steps, generate draft manifests/tests.
+  full: Controlled procedural optimization with promotion gates.
+  owner: engineering companion + intelligent system improvement
+  value:
+  - field history into reusable software
+  metrics:
+  - accepted drafts
+  - replay success
+  - duplicates avoided
+  risks:
+  - bad habits compiled
+  - unsafe self-modification
+- id: OP-006
+  name: Knowledge Navigation Compiler
+  source_ids:
+  - corpus2skill
+  - karpathy-llm-wiki
+  maturity: build next
+  priority: P1
+  primitive: Turn corpora into hierarchical navigable knowledge/skill structures.
+  gap: Flat RAG does not show what branch was or was not examined.
+  mvp: Canonical tree with scope, evidence IDs, contradictions, cross-links.
+  full: Learned navigation/backtracking over TurnBurn and source libraries.
+  owner: intelligent system retrieval + intelligent system graph ownership
+  value:
+  - multi-document reasoning
+  - lower context
+  - coverage visibility
+  metrics:
+  - navigation success
+  - evidence precision
+  - branch misses
+  risks:
+  - wrong hierarchy
+  - summary drift
+- id: OP-007
+  name: Active Evaluation Selector
+  source_ids:
+  - proeval
+  maturity: build next
+  priority: P1
+  primitive: Use risk, uncertainty, and diversity to select evaluation cases.
+  gap: Suites run everything or sample randomly.
+  mvp: Risk/change/disagreement/boundary scoring plus diversity.
+  full: Learned sampler tied to production outcome clusters.
+  owner: intelligent system evaluation/certification
+  value:
+  - more failures per compute hour
+  metrics:
+  - failures per case
+  - changed-path coverage
+  - missed regression
+  risks:
+  - sampling bias
+  - known-failure overfit
+- id: OP-008
+  name: Trajectory Failure Sentinel
+  source_ids:
+  - failure-process
+  maturity: prototype next
+  priority: P1
+  primitive: Detect failure onset before terminal failure.
+  gap: Observability often identifies failure after recovery window closes.
+  mvp: Rules for assumptions, ignored evidence, no-ops, lock-in, cost growth.
+  full: Sequence model trained on independent framework trajectories.
+  owner: intelligent system runtime monitor
+  value:
+  - early recovery
+  - lower waste
+  metrics:
+  - lead time
+  - recovery success
+  - false intervention
+  risks:
+  - interrupting legitimate exploration
+- id: OP-009
+  name: Reasoning Utility and Loop Controller
+  source_ids:
+  - overthinking
+  - tool-loop-attacks
+  maturity: build now
+  priority: P0
+  primitive: Stop using information gain, state change, decision impact, repetition,
+    cost, and risk.
+  gap: Token caps do not control structural loops.
+  mvp: Deterministic utility scoring and repeating call/state hashes.
+  full: Learned expected-value controller by task type.
+  owner: intelligent system budget/stop service
+  value:
+  - cost control
+  - latency
+  - loop defense
+  metrics:
+  - unnecessary calls
+  - cost saved
+  - premature stops
+  risks:
+  - stopping too early
+- id: OP-010
+  name: Read-Only Speculative Prefetch
+  source_ids:
+  - speculate-while-reason
+  maturity: experimental later
+  priority: P3
+  primitive: Predict the next tool call and start it before reasoning completes.
+  gap: Production harnesses lack quarantined safe speculation.
+  mvp: Trace-statistical prediction for manuals, metadata, telemetry, schemas.
+  full: Joint learned agent/speculator with domain adaptation.
+  owner: intelligent system tool gateway under framework policy
+  value:
+  - lower read latency
+  metrics:
+  - hit rate
+  - latency saved
+  - waste
+  - data exposure
+  risks:
+  - unneeded sensitive reads
+  - stale results
+- id: OP-011
+  name: Bounded Workflow Topology Selector
+  source_ids:
+  - manta
+  maturity: experimental later
+  priority: P3
+  primitive: Adapt roles, links, order, visibility, and validation.
+  gap: General dynamic topology is too unconstrained for enterprise use.
+  mvp: Select among validated templates using risk, novelty, disagreement.
+  full: Learned policy inside fixed authority boundaries.
+  owner: workflow router
+  value:
+  - fit workflow to task
+  metrics:
+  - success/cost by topology
+  - switches
+  risks:
+  - coordination cost
+  - policy complexity
+- id: OP-012
+  name: Skill Detonation Lab
+  source_ids:
+  - malicious-skills
+  - skill-detonate
+  maturity: build now
+  priority: P0
+  primitive: Execute skills with synthetic secrets and observe actual effects/data
+    flow.
+  gap: Static scans miss obfuscation, delay, and dependency-triggered behavior.
+  mvp: Container sandbox, deny network, process/file tracing, canaries, effect diff.
+  full: System-call and taint tracking across runtimes and MCP.
+  owner: intelligent system security/admission
+  value:
+  - secure large skill vault
+  metrics:
+  - undeclared effects
+  - escapes
+  - false rejects
+  risks:
+  - sandbox mismatch
+  - dormant payloads
+- id: OP-013
+  name: Dense Progress Grader
+  source_ids:
+  - long-horizon-bench
+  maturity: build next
+  priority: P1
+  primitive: Grade evidence-backed intermediate milestones and recoverability.
+  gap: Terminal pass/fail hides partial success and late-stage failures.
+  mvp: Milestone ledger with blockers, regressions, and resume points.
+  full: Task-specific progress models and milestone discovery.
+  owner: intelligent system durable task service
+  value:
+  - recovery
+  - long-run visibility
+  metrics:
+  - resume success
+  - late recovery
+  - false milestones
+  risks:
+  - activity-based milestones
+  - instrumentation burden
+- id: OP-014
+  name: Risk-Based Human Audit Allocator
+  source_ids:
+  - audit-budget
+  - proeval
+  maturity: build next
+  priority: P1
+  primitive: Allocate review by structural risk and correlated error rather than confidence.
+  gap: Confidence thresholds may be miscalibrated/correlated.
+  mvp: Risk, novelty, disagreement, evidence, reversibility, impact scoring.
+  full: Adaptive allocation optimized for failures per review hour.
+  owner: intelligent system assurance operations
+  value:
+  - better human review use
+  - fewer high-risk misses
+  metrics:
+  - failures/hour
+  - high-risk miss
+  risks:
+  - risk drift
+  - domain imbalance

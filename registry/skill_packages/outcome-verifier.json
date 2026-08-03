@@ -1,0 +1,34 @@
+{
+  "id": "outcome-verifier",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/outcome-verifier/SKILL.md",
+  "body_sha256": "301ab12a8005c41ec0d959bf33171fd17cf89d5c340e5f9ae98abc975dc43d3d",
+  "references": [],
+  "capability_tags": [
+    "assurance",
+    "outcome",
+    "verifier"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_b709f4a9.md",
+        "sha256": "7906b2d4f6d403dc9228fb7e641e6bdc434e908eaf2f3b4e4efb999671f29254"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_69c32df6.yaml",
+        "sha256": "6332084f7fa1cc17d6948ce93ada0ec1dc11427b97a9a68fa53824692877eee9"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

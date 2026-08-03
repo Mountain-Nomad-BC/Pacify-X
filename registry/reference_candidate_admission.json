@@ -1,0 +1,1256 @@
+{
+  "schema_version": "1.0",
+  "source_record_count": 52,
+  "delivery_counts": {
+    "active_composed": 5,
+    "candidate_staged": 20,
+    "partial_semantic_coverage": 27
+  },
+  "records": [
+    {
+      "id": "gremlin-nanny",
+      "title": "Gremlin Nanny",
+      "category": "governance",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "gremlin-nanny",
+      "purpose": "Supervise all proposed actions, enforce containment, scope, effect, budget, destination, and approval policies outside the model.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "supervise-contained-execution"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "project-commissioning-engine",
+      "title": "Project Commissioning Engine",
+      "category": "commissioning",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "project-commissioning-engine",
+      "purpose": "Establish repository truth before changes through inventory, architecture, dependencies, tests, contradictions, and unknowns.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "commission-evidence-first-project"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "environment-bootstrap-governor",
+      "title": "Environment Bootstrap Governor",
+      "category": "commissioning",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "environment-bootstrap-governor",
+      "purpose": "Detect tools, IDE, shells, package managers, containers, workspace settings, and propose permissioned setup changes.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "discover-environment-safely"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "external-tool-quarantine-controller",
+      "title": "External Tool Quarantine Controller",
+      "category": "security",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "external-tool-quarantine-controller",
+      "purpose": "Quarantine packages, extensions, MCPs, binaries, containers, and integrations until integrity, license, permissions, compatibility, and risk are reviewed.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "quarantine-external-tools"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "tool-health-manager",
+      "title": "Tool Health Manager",
+      "category": "operations",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "tool-health-manager",
+      "purpose": "Track tool versions, signatures, CVEs, rule packs, performance, compatibility, ownership, and replacement status.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "todo-stub-census",
+      "title": "TODO and Stub Census",
+      "category": "commissioning",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "todo-stub-census",
+      "purpose": "Find TODOs, stubs, placeholders, dead routes, unimplemented branches, and claimed-complete contradictions with evidence.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "dependency-shockwave-analyzer",
+      "title": "Dependency Shockwave Analyzer",
+      "category": "engineering",
+      "priority": "P0",
+      "source_status": "planned",
+      "source_disposition": "extend",
+      "canonical_id": "dependency-impact-tracer",
+      "purpose": "Predict downstream effects of a proposed change across code, APIs, data, caches, docs, tests, security, telemetry, UI, and migrations.",
+      "depends_on": [
+        "dependency-impact-tracer"
+      ],
+      "delivery_state": "active_composed",
+      "active_mappings": [
+        "dependency-impact-tracer"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "semantic-drift-detector",
+      "title": "Semantic Drift Detector",
+      "category": "engineering",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "semantic-drift-detector",
+      "purpose": "Compare old and new behavior, business rules, calculations, API meaning, UI meaning, and knowledge\u2014not merely syntax.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "analyze-engineering-intelligence"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.engineering_intelligence.semantic_drift"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "architecture-entropy-monitor",
+      "title": "Architecture Entropy Monitor",
+      "category": "engineering",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "architecture-entropy-monitor",
+      "purpose": "Measure coupling, cycles, hidden dependencies, complexity growth, duplication, boundary erosion, and future maintenance cost.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "analyze-engineering-intelligence"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.engineering_intelligence.architecture_drift"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "future-maintainability-reviewer",
+      "title": "Future Maintainability Reviewer",
+      "category": "engineering",
+      "priority": "P2",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "future-maintainability-reviewer",
+      "purpose": "Evaluate whether a change will create avoidable six-month maintenance pain and propose lower-debt alternatives.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "analyze-engineering-intelligence"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.engineering_intelligence.future_debt"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "cross-container-intelligence",
+      "title": "Cross-Container Intelligence",
+      "category": "engineering",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "cross-container-intelligence",
+      "purpose": "Trace changes across containers, services, governed_retrieval_system_with_deterministic_rails, APIs, telemetry, training, knowledge, UI, and shared contracts.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "living-architecture-synchronizer",
+      "title": "Living Architecture Synchronizer",
+      "category": "engineering",
+      "priority": "P1",
+      "source_status": "planned",
+      "source_disposition": "extend",
+      "canonical_id": "behavior-to-code-mapper",
+      "purpose": "Update architecture, sequence, dependency, API, flow, and behavior documentation from verified change evidence.",
+      "depends_on": [
+        "behavior-to-code-mapper"
+      ],
+      "delivery_state": "active_composed",
+      "active_mappings": [
+        "behavior-to-code-mapper"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "business-logic-collision-detector",
+      "title": "Business Logic Collision Detector",
+      "category": "engineering",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "business-logic-collision-detector",
+      "purpose": "Detect duplicate, contradictory, version-skewed, or differently defined business rules and calculations.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "analyze-engineering-intelligence"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.engineering_intelligence.knowledge_collisions"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "certifiable-engineering-controller",
+      "title": "Certifiable Engineering Controller",
+      "category": "assurance",
+      "priority": "P0",
+      "source_status": "planned",
+      "source_disposition": "compose",
+      "canonical_id": "certifiable-engineering-controller",
+      "purpose": "Require evidence, traceability, governance, postconditions, documentation, rollback, and residual-risk reporting before closeout.",
+      "depends_on": [
+        "execution-contract-enforcer",
+        "evidence-assembler",
+        "outcome-verifier"
+      ],
+      "delivery_state": "active_composed",
+      "active_mappings": [
+        "certify-skeptical-engineering",
+        "evidence-assembler",
+        "execution-contract-enforcer",
+        "outcome-verifier"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "engineering-memory-compactor",
+      "title": "Engineering Memory Compactor",
+      "category": "knowledge",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "engineering-memory-compactor",
+      "purpose": "Compress large change histories into durable architectural decisions, rejected alternatives, assumptions, and consequences.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "context-compactor",
+        "procedural-memory-compiler"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "intent-alignment-monitor",
+      "title": "Intent Alignment Monitor",
+      "category": "assurance",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "intent-alignment-monitor",
+      "purpose": "Continuously compare original requirements, approved plan, current implementation, and user-visible outcomes for drift.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "engineering-black-box-recorder",
+      "title": "Engineering Black Box Recorder",
+      "category": "assurance",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "engineering-black-box-recorder",
+      "purpose": "Record decisions, evidence, tools, alternatives, approvals, timing, changes, and verification without storing raw hidden reasoning.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "evidence-driven-closeout-enforcer",
+      "title": "Evidence Driven Closeout Enforcer",
+      "category": "assurance",
+      "priority": "P0",
+      "source_status": "planned",
+      "source_disposition": "alias",
+      "canonical_id": "certifiable-engineering-controller",
+      "purpose": "Prevent task closure without required benchmarks, logs, tests, hashes, screenshots, replay, and postconditions.",
+      "depends_on": [
+        "certifiable-engineering-controller"
+      ],
+      "delivery_state": "active_composed",
+      "active_mappings": [
+        "certify-skeptical-engineering",
+        "outcome-verifier"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "knowledge-collision-detector",
+      "title": "Knowledge Collision Detector",
+      "category": "knowledge",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "knowledge-collision-detector",
+      "purpose": "Detect conflicting facts, revisions, definitions, authority, and graph relationships across sources.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "analyze-engineering-intelligence"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.engineering_intelligence.knowledge_collisions"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "runtime-self-auditor",
+      "title": "Runtime Self Auditor",
+      "category": "operations",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "runtime-self-auditor",
+      "purpose": "Find slow, duplicated, unused, dead, undocumented, never-called, and never-verified runtime paths.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "audit-ai-runtime-assurance"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.cognitive_assurance.runtime_passport"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "autonomous-refactoring-planner",
+      "title": "Autonomous Refactoring Planner",
+      "category": "engineering",
+      "priority": "P2",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "autonomous-refactoring-planner",
+      "purpose": "Produce evidence-backed multi-wave refactoring roadmaps based on architecture fitness and risk.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "analyze-engineering-intelligence"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.engineering_intelligence.refactoring_plan"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "claim-grounding-trap",
+      "title": "Claim Grounding Trap",
+      "category": "assurance",
+      "priority": "P0",
+      "source_status": "planned",
+      "source_disposition": "compose",
+      "canonical_id": "claim-grounding-trap",
+      "purpose": "Require support, source, confidence, coverage, and verification for claims that influence code or action.",
+      "depends_on": [
+        "evidence-assembler",
+        "outcome-verifier"
+      ],
+      "delivery_state": "active_composed",
+      "active_mappings": [
+        "evidence-assembler",
+        "outcome-verifier"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "context-decay-detector",
+      "title": "Context Decay Detector",
+      "category": "assurance",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "context-decay-detector",
+      "purpose": "Measure loss of goals, constraints, decisions, evidence, and unresolved questions across long work.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "engineering-consistency-engine",
+      "title": "Engineering Consistency Engine",
+      "category": "engineering",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "engineering-consistency-engine",
+      "purpose": "Detect and repair drift in naming, logging, errors, architecture, folder layout, contracts, and patterns.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "analyze-engineering-intelligence"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.engineering_intelligence.engineering_health"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "intent-implementation-scorer",
+      "title": "Intent vs Implementation Scorer",
+      "category": "assurance",
+      "priority": "P1",
+      "source_status": "planned",
+      "source_disposition": "alias",
+      "canonical_id": "intent-alignment-monitor",
+      "purpose": "Score requirement-to-product alignment using the intent-alignment subsystem.",
+      "depends_on": [
+        "intent-alignment-monitor"
+      ],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "recursive-improvement-engine",
+      "title": "Recursive Improvement Engine",
+      "category": "improvement",
+      "priority": "P2",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "recursive-improvement-engine",
+      "purpose": "After each run, identify reusable improvements and stage them as patterns, tests, skills, or architecture changes.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "engineering-cognition-router",
+      "title": "Engineering Cognition Router",
+      "category": "orchestration",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "engineering-cognition-router",
+      "purpose": "Choose whether to plan, research, parallelize, stop, verify, benchmark, ask, compose skills, or create a capability request.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "orchestrate-engineering-loop",
+        "skill-navigator"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "skill-gap-resolver",
+      "title": "Skill Gap Resolver",
+      "category": "improvement",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "skill-gap-resolver",
+      "purpose": "Detect when canonical capabilities are insufficient and create a bounded capability request rather than forcing a poor fit.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "propose-change-intelligence"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "skill-foundry",
+      "title": "Skill Foundry",
+      "category": "improvement",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "skill-foundry",
+      "purpose": "Compile source material and repeated verified work into normalized knowledge, candidate skills, tests, schemas, graph updates, and benchmarks.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "research-to-capability",
+        "trace-to-skill-compiler"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "skill-composer",
+      "title": "Skill Composer",
+      "category": "improvement",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "skill-composer",
+      "purpose": "Compose canonical skills into domain or workflow profiles without copying their implementation.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "skill-bundle-resolver"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "skill-evolution-manager",
+      "title": "Skill Evolution Manager",
+      "category": "improvement",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "skill-evolution-manager",
+      "purpose": "Review merge, split, repair, deprecation, research updates, and version recommendations for active skills.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "analyze-engineering-intelligence"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.engineering_intelligence.opportunity_backlog"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "knowledge-compiler",
+      "title": "Knowledge Compiler",
+      "category": "knowledge",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "knowledge-compiler",
+      "purpose": "Normalize heterogeneous documents, code, calculations, transcripts, diagrams, and research into canonical knowledge objects and relationships.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "forge-skills-from-knowledge"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.knowledge_foundry.compile_foundry_bundle"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "knowledge-fitness-scorer",
+      "title": "Knowledge Fitness Scorer",
+      "category": "knowledge",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "knowledge-fitness-scorer",
+      "purpose": "Score provenance, confidence, usage, duplication, relationships, freshness, engineering value, and skill candidacy.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "analyze-engineering-intelligence"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.engineering_intelligence.project_fitness"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "ai-cognitive-assurance-framework",
+      "title": "AI Cognitive Assurance Framework",
+      "category": "assurance",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "ai-cognitive-assurance-framework",
+      "purpose": "Provide identity, persona, memory, knowledge, evidence, health, drift, benchmarks, explainability, passport, and correction controls.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "audit-ai-runtime-assurance"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "runtime-passport-manager",
+      "title": "Runtime Passport Manager",
+      "category": "assurance",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "runtime-passport-manager",
+      "purpose": "Produce a versioned runtime identity and certification record for every AI execution environment.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "audit-ai-runtime-assurance"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "runtime-ekg-monitor",
+      "title": "Runtime EKG Monitor",
+      "category": "assurance",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "runtime-ekg-monitor",
+      "purpose": "Compare current latency, retrieval, memory, planning, tool, evidence, correction, and outcome signals to healthy baselines.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "audit-ai-runtime-assurance"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "certified-memory-manager",
+      "title": "Certified Memory Manager",
+      "category": "memory",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "certified-memory-manager",
+      "purpose": "Govern memory states from observation through candidate, validated, certified, trusted, superseded, revoked, and expired.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "govern-memory-fabric"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.memory_vault.MemoryVault.transition"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "memory-health-monitor",
+      "title": "Memory Health Monitor",
+      "category": "memory",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "memory-health-monitor",
+      "purpose": "Monitor attribution, retrieval, conflict, staleness, poisoning, index, graph, cache, summarization, and correction health.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "govern-memory-fabric"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.memory_vault.MemoryVault.reconcile_indexes"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "memory-provider-reliability-adapter",
+      "title": "Memory Provider Reliability Adapter",
+      "category": "memory",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "memory-provider-reliability-adapter",
+      "purpose": "Isolate memory-provider failures, expose degraded states, reconcile derived data, and enforce safe lifecycle semantics.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "govern-memory-fabric"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.provider_certification.run_provider_isolation_suite"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "incremental-session-summarizer",
+      "title": "Incremental Session Summarizer",
+      "category": "memory",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "incremental-session-summarizer",
+      "purpose": "Summarize only new or changed observation ranges using hash-keyed partials, locks, debounce, and true session-end semantics.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "memory-index-reconciler",
+      "title": "Memory Index Reconciler",
+      "category": "memory",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "memory-index-reconciler",
+      "purpose": "Reconcile manifest-authoritative live generations and safely remove orphaned derived shards after backup and dry run.",
+      "depends_on": [],
+      "delivery_state": "partial_semantic_coverage",
+      "active_mappings": [
+        "govern-memory-fabric"
+      ],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb",
+      "runtime_symbols": [
+        "runtime.memory_vault.MemoryVault.reconcile_indexes"
+      ],
+      "boundary": "A bounded function exists; the broader named source capability remains unadmitted until its full contract and tests are implemented."
+    },
+    {
+      "id": "memory-worker-bulkhead",
+      "title": "Memory Worker Bulkhead",
+      "category": "memory",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "memory-worker-bulkhead",
+      "purpose": "Prevent one memory function, graph extraction, or search failure from unregistering or blocking unrelated functions.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "memory-graph-build-supervisor",
+      "title": "Memory Graph Build Supervisor",
+      "category": "memory",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "memory-graph-build-supervisor",
+      "purpose": "Run graph extraction in bounded batches with short state timeouts, checkpoints, backoff, alerts, and circuit breakers.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "memory-attribution-enforcer",
+      "title": "Memory Attribution Enforcer",
+      "category": "memory",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "memory-attribution-enforcer",
+      "purpose": "Require actor and source attribution for memory actions, leases, summaries, and generated records.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "memory-cluster-quality-controller",
+      "title": "Memory Cluster Quality Controller",
+      "category": "memory",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "memory-cluster-quality-controller",
+      "purpose": "Enforce correct seed iteration, bounded cluster size, efficient lookup, provenance, novelty, and deduplication.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "digital-user-director",
+      "title": "Digital User Director",
+      "category": "evaluation",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "digital-user-director",
+      "purpose": "Assign realistic roles, workflows, controls, data, and expected outcomes for end-to-end digital-user validation.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "chaos-operator",
+      "title": "Chaos Operator",
+      "category": "evaluation",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "chaos-operator",
+      "purpose": "Inject approved operational faults and verify containment, recovery, evidence, and state correctness.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "red-team-director",
+      "title": "Red-Team Director",
+      "category": "security",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "red-team-director",
+      "purpose": "Run scoped adversarial scenarios against identity, tools, memory, retrieval, data, prompts, APIs, and workflows.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "deployment-safety-governor",
+      "title": "Deployment Safety Governor",
+      "category": "security",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "deployment-safety-governor",
+      "purpose": "Block unsafe deployment states involving auth, secrets, defaults, migrations, permissions, rollback, and environment mismatches.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "repair-regression-coordinator",
+      "title": "Repair and Regression Coordinator",
+      "category": "evaluation",
+      "priority": "P0",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "repair-regression-coordinator",
+      "purpose": "Convert findings to repairs, targeted regressions, broad replay, evidence updates, and promotion decisions.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "documentation-graph-synchronizer",
+      "title": "Documentation and Graph Synchronizer",
+      "category": "knowledge",
+      "priority": "P1",
+      "source_status": "planned",
+      "source_disposition": "compose",
+      "canonical_id": "documentation-graph-synchronizer",
+      "purpose": "Synchronize accepted behavior, architecture, knowledge graph, documentation, and source traceability.",
+      "depends_on": [
+        "living-architecture-synchronizer",
+        "behavior-to-code-mapper"
+      ],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    },
+    {
+      "id": "pattern-library-manager",
+      "title": "Pattern Library Manager",
+      "category": "knowledge",
+      "priority": "P1",
+      "source_status": "proposed",
+      "source_disposition": "build",
+      "canonical_id": "pattern-library-manager",
+      "purpose": "Manage durable planner, verifier, retry, governance, RAG, memory, certification, correction, and workflow patterns.",
+      "depends_on": [],
+      "delivery_state": "candidate_staged",
+      "active_mappings": [],
+      "promotion_requirements": [
+        "typed_io_contract",
+        "effect_review",
+        "validation_evidence",
+        "owner",
+        "approval"
+      ],
+      "source_registry_sha256": "731cc4cc00b3d957981e412a46a738238740a242b4c259cbf5bd14f3c22d1cbb"
+    }
+  ],
+  "canonical_candidate_count": 50,
+  "duplicate_source_record_count": 2,
+  "runtime_reconciliation": "2026-08-02-structural-recertification"
+}

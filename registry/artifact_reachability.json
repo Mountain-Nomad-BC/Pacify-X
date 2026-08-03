@@ -1,0 +1,2277 @@
+{
+  "record_count": 321,
+  "records": [
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/admission_ledger.json",
+      "reachability": "release_validated",
+      "sha256": "9043bb2f536d982674fdb7df13e2305be9dbb32c3be2bbb5ba2903b880f42881"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/admission_queue.json",
+      "reachability": "release_validated",
+      "sha256": "e82e14739bd539be5b1dded83c0cea6e2b27a86359b2be03f53e7ce0037364f6"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/admission_reviews/wave-1-control-plane.json",
+      "reachability": "release_validated",
+      "sha256": "e8dce0d1f4b5935fd9987874dd22ecfe5f5e2d727c0d1b0832e740fad0876155"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/assurance_capabilities.json",
+      "reachability": "release_validated",
+      "sha256": "4296192969a38d076a3b9bcc5b747098d688253763c84b6c903abaeda2d86139"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/builders.json",
+      "reachability": "release_validated",
+      "sha256": "546a4a204ee0ddc8957934f70884021cbf53f648263cb4fe98c8ae4b7220e228"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/capability_aliases.json",
+      "reachability": "release_validated",
+      "sha256": "70b9e44c4f35cb9bfd642b5820c51f73ad97bd2653aa1443bc32a772b8cec421"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/capability_map.json",
+      "reachability": "release_validated",
+      "sha256": "4c742892820e384d857f29990e646584936799ac13b8ee5b793e97ac55c2f22f"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/capability_mining_admission.json",
+      "reachability": "release_validated",
+      "sha256": "b6b0027edb851bd89e74aa0fdec96411a8092522deeb3fd971332b41d0ff53fd"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/contracts.py",
+      "path": "registry/contract_ownership.json",
+      "reachability": "release_validated",
+      "sha256": "e149720656f2f4540b1026f93942ca90b8ba397d8de07c112a65a83ee6260664"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/corrective_release.py",
+      "path": "registry/corrective_release_ledger.json",
+      "reachability": "release_validated",
+      "sha256": "c59a7733ce76d2d3262ede6f828778c3e02f199b6503d133f6d490e481eaa39b"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/declared_capability_recovery_map.json",
+      "reachability": "release_validated",
+      "sha256": "e4a3bb1ab6e737959cd278b7a18effe60a531da39809a38b1c39d6f8e6e4b7c5"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/declared_outcome_owners.json",
+      "reachability": "release_validated",
+      "sha256": "9a83365d00037144a1b1a7a55a806d158c9f4c56913495ce3d52bef4ddeb0816"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/exact_tool_certification.py",
+      "path": "registry/declared_suite_authoritative_tools.json",
+      "reachability": "release_validated",
+      "sha256": "b05712e1b067955330e12672f82cf4132c7e086293efa50f9a73fa456424e494"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/declared_suite_behavior_cases.json",
+      "reachability": "release_validated",
+      "sha256": "13574174cce9a8db1d45c44de405f3da6834b97f798c96031c2fd15d66ad6b82"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/declared_suite_dependency_graph.json",
+      "reachability": "release_validated",
+      "sha256": "55bebce1eea4c4efbaea9298b51b1c9da00835332678f38b9630579c814fc2de"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/declared_suite_formulas.json",
+      "reachability": "release_validated",
+      "sha256": "173ef30aa485f6bb79216a8987c75dc3a8c8719514307b85613214fc076527c2"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/declared_suite_knowledge.json",
+      "reachability": "release_validated",
+      "sha256": "1ddda71cb86d3391bd8a20352dbb6d87bd303aea25b149daf9093b515b058b93"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/declared_suite_pack_index.json",
+      "reachability": "release_validated",
+      "sha256": "82068abbfaaa368e70780611db77ae919586e93e5d6c572b4f77fe10ec0e23de"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/declared_suite_pack_metadata.json",
+      "reachability": "release_validated",
+      "sha256": "f3af5ca28277eb234804e650a9b30cc6e8649a5f0bda27cabcd9578188fe4c8c"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/declared_suite_reconstruction.json",
+      "reachability": "release_validated",
+      "sha256": "e915aa692ab8a037325ce6bfcac3d774ed225d382907004cdfc1e122c2236723"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/declared_suite_schema_contracts.json",
+      "reachability": "release_validated",
+      "sha256": "4373109fcb373d968bbc417f1eb252068fdcd868287085c5fd401a3ad5c4c51a"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/effect_surface.py",
+      "path": "registry/effect_surface_ownership.json",
+      "reachability": "release_validated",
+      "sha256": "7d4f26a531881d3ae763a6a1d56a75bed31b14c4dbaf7b72aa4c4192896ef213"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/engineering_lifecycle.json",
+      "reachability": "release_validated",
+      "sha256": "3611efe1083a211827f15e7aad820a3f15005010cfd715e7c975e798e5c78b19"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/final_intake_candidate_dispositions.json",
+      "reachability": "release_validated",
+      "sha256": "e233fef5c31e4256ca4415b83eb4e2d7f35857748e68257b6b5f8d35c52d2738"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/final_intake_disposition_policy.json",
+      "reachability": "release_validated",
+      "sha256": "f4fa2e0a2625509ca90f00a5e52e0b84046947e28abfe882d93043464e348e1b"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/golden_capability_queries.json",
+      "reachability": "release_validated",
+      "sha256": "047225e2322d4ee43a0e369149b3375b2d140f475e948407e34e852c4eb26a7b"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/graphs/capability_graph.json",
+      "reachability": "release_validated",
+      "sha256": "84ffc4bbca0e29cb813a94220cc0270f6dac91c3af334d33bd430d67c481e1be"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/graphs/dependency_effect_graph.json",
+      "reachability": "release_validated",
+      "sha256": "638f34a9fcc56e13eff376d7a5d09ca3298855b7ab071b4f37d028b67a3cd407"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/graphs/graph_manifest.json",
+      "reachability": "release_validated",
+      "sha256": "8c733b3988f50a6b112c871129e8d939f7ad167d2b47050e468d70242cf1ec58"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/graphs/io_graph.json",
+      "reachability": "release_validated",
+      "sha256": "63bc8e6e4baab55c236f6cd0003ecfc58dbca3a92d2e8e78d20a6c170ec6a806"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/graphs/project_stream_dependency_graph.json",
+      "reachability": "release_validated",
+      "sha256": "a0276b85653ac57747b7685c691f02a0352c852b0f55cb0ddb1c26962c3b4a85"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/graphs/system_asset_graph.json",
+      "reachability": "release_validated",
+      "sha256": "5cc8dbc53c99e4051e36662be77e8cb0bfc62630d6822c06b52f04d5e0f0bf90"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/historical_external_references.json",
+      "reachability": "release_validated",
+      "sha256": "c8b60e99ccc6a93ad5b45cf3c29a42b7aaf5f5fb132d6bda63036ee0bb640099"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/imported_research_ops/initialization_sequence.yaml",
+      "reachability": "release_validated",
+      "sha256": "6d8e82fa72662ee8279c089983d0eb55a77ff118c0bc762b1f68749a191a3e7b"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/imported_research_ops/operational_opportunities.yaml",
+      "reachability": "release_validated",
+      "sha256": "f0500fadc17461c03387f1f6c2df5e4ee74d49cd930407dd2de2a593cc1e680d"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/imported_research_ops/skills_registry_patch.yaml",
+      "reachability": "release_validated",
+      "sha256": "6148b1cd9ae5ca62415325a11702157baec3536b552a6e34790d2be73148e1b8"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/incomplete_finding_reviews.json",
+      "reachability": "release_validated",
+      "sha256": "de3eb505446b603416b40d046326d7c9bfcc8191d956058d56f374d3b9f4eece"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/initial_tool_recommendations.json",
+      "reachability": "release_validated",
+      "sha256": "08cb9ca16e82f1524d08c6e2fc9bb704582a41e3fc06250e6d95d35e9a6a01fd"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/integration_registry.py",
+      "path": "registry/integrations.json",
+      "reachability": "release_validated",
+      "sha256": "ac14a36624b0bc9fc99aea0ac1d3b6a42bcf5d729c78befcd2020fd3c0556abc"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/knowledge_sources.json",
+      "reachability": "release_validated",
+      "sha256": "e5e854eb8f05147770bb4624069c348c53cac30a84399a74aef24ff649e70ad9"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/metacognitive_capabilities.json",
+      "reachability": "release_validated",
+      "sha256": "5c8dff1d250352318aa87c50dcdcea48c79cee4b0c988f64643d03bcd07afb5d"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/metacognitive_capability_owners.json",
+      "reachability": "release_validated",
+      "sha256": "99e94826b5da0ca0aa5dcaf87b627d15f745ddc50649a923a0ae31365b1b1f7b"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/metacognitive_dependency_graph.json",
+      "reachability": "release_validated",
+      "sha256": "c7041ace23821132a650119ad2779e55a33e71522bc2fdbc85209e70de092bce"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/metacognitive_formulas.json",
+      "reachability": "release_validated",
+      "sha256": "54756011728ad106f0a682f15452fcaf1e5f7abcdd8fb3386f91041a7d2d58a3"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/metacognitive_policies.json",
+      "reachability": "release_validated",
+      "sha256": "17ff1ac15480bd5532f110c1ce0a32747da615fa23527c578b6874bd711a84e8"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/models.json",
+      "reachability": "release_validated",
+      "sha256": "3c3e0311c579cd3f7b395445480bf05e2834c000f8483598acff1b151a4ec586"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/operational_capabilities.json",
+      "reachability": "release_validated",
+      "sha256": "2957914923d280985ba92ad822c1c3d7b2b0a0b585eae85eeaff0049f5ca1056"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/orchestrations/control-plane.json",
+      "reachability": "release_validated",
+      "sha256": "820441051879bd67b4c3eb22898fa74328ad5b0f81573e6d00c22721eb63181b"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/planning_card_coverage.json",
+      "reachability": "release_validated",
+      "sha256": "60dc769e7ad52b5807ab2501aa99efc6be990cd1029a5906275f74954f67f579"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/project_stream_capabilities.json",
+      "reachability": "release_validated",
+      "sha256": "b11e9bf764539a0ac166f21a4e6ef30ff634b9926a05c923cca642d96f94dc3e"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/project_stream_orchestrator.py",
+      "path": "registry/project_stream_handlers.json",
+      "reachability": "release_validated",
+      "sha256": "74dae7f849aec0add287b376a75a05e3fe1dbd0691f1003711b940be8948954f"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/project_stream_orchestrator.py",
+      "path": "registry/project_stream_orchestrations.json",
+      "reachability": "release_validated",
+      "sha256": "13fcbc3aef67ad01e36b30de5ec5ec5187f63c97ab0a49603877620af106d8ac"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/python_dependency_ownership.json",
+      "reachability": "release_validated",
+      "sha256": "31a5a7c1e46eda428fc4af9d5a33df572c042b409126a195c894d00cd1d12d07"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/python_surface_certification.py",
+      "path": "registry/python_surface_ownership.json",
+      "reachability": "release_validated",
+      "sha256": "067c1a6433995347dd707b92a6e48a37bbc55600cc9e08c5f2ef8e24b11f01ed"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/reference_candidate_admission.json",
+      "reachability": "release_validated",
+      "sha256": "39ef5749428a9c1eca265571e6771c1ed9b731ca0f68aa516f8206bcffa68fdb"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/registry_envelope.py",
+      "path": "registry/registry_envelope_inventory.json",
+      "reachability": "release_validated",
+      "sha256": "be42ff6388bd7f1fc4dd95cf57d34eaa8e6883d3c63be1712a311136acdd1d33"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/root_intake_admission.json",
+      "reachability": "release_validated",
+      "sha256": "698ed270b122babb0de8625119977f707a09d4939b4a03e0e3008c26dd826018"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/scheduling_capabilities.json",
+      "reachability": "release_validated",
+      "sha256": "67448b66a8c4cffa6e0ee6ae67adfdbbc60e712226ba02a70ce20c47d70a217e"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/scheduling_capability_owners.json",
+      "reachability": "release_validated",
+      "sha256": "bc78999160037bd5626e31479eee7e4e6d314335ab015c7e5bf18d99d2d0bada"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/scheduling_policies.json",
+      "reachability": "release_validated",
+      "sha256": "c7d01f40017df6b3c0e54ad57c579ce0f45d6cbddea2024dd67748cf79d2632f"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/semantic_index.py",
+      "path": "registry/semantic_capability_index.json",
+      "reachability": "release_validated",
+      "sha256": "6f6ce55f5aecad0257bf6b52408ace174a3d60129c061c5b0d8f2ef856880026"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/registry.py",
+      "path": "registry/skill_catalog.toml",
+      "reachability": "release_validated",
+      "sha256": "4c437344434aa39d0e9ae89dcc865a64946db09b1c3974f3c77eef94722e6e4f"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/skill_navigator.py",
+      "path": "registry/skill_orchestrations.json",
+      "reachability": "release_validated",
+      "sha256": "0b21096a7d9f19af2f7f4034892f68d85d5d04faec73ad421d7834a49a73ae90"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/active-evaluation-selector.json",
+      "reachability": "release_validated",
+      "sha256": "19d1ebfa06e9a4783a491f3bfa6888a3bfd876f0f2d0c394534527645af7afa0"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/analyze-engineering-intelligence.json",
+      "reachability": "release_validated",
+      "sha256": "c844832e210270c00b0e9de996779864ff1f4aba37f82dc33133860af35f5ec5"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/analyze-repository-intelligence.json",
+      "reachability": "release_validated",
+      "sha256": "cbb7f7e3efca2189a5958cc6551f19a76dc9011875cf6669f0cdd95d3030fe94"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/audit-ai-runtime-assurance.json",
+      "reachability": "release_validated",
+      "sha256": "e6a0389ee6e9f0f8cc3422c744a19b26c449b713489e6c2eab3d3ef689ee7fed"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/audit-incomplete-implementations.json",
+      "reachability": "release_validated",
+      "sha256": "bb766aed7f65f1d17ec4a430746606b027d6aa30f85cb5ccb1307deadede3297"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/audit-source-capabilities.json",
+      "reachability": "release_validated",
+      "sha256": "d546c31dea054c6e6fb3339ace3b1c4cc91bb028299008ae32f400b4bad39ebd"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/behavior-to-code-mapper.json",
+      "reachability": "release_validated",
+      "sha256": "4df5f600129eade78f9ebcc8aabed8b09a0238d4dcf956d9388271487fd2949e"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/benchmark-domain-adapter.json",
+      "reachability": "release_validated",
+      "sha256": "5fa9ccfbe02400587099f6bb69e4bfe18327fbb3d9c8f56ef0af7144a7356c8e"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/bounded-workflow-topology-selector.json",
+      "reachability": "release_validated",
+      "sha256": "1be0df24ae186be686bfda10dd725f65f33b3d4f1ef31032204ce080199a3013"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/candidate-memory-promoter.json",
+      "reachability": "release_validated",
+      "sha256": "8211a056a9b3db4465f580e13a534c28c18a30525a4acbb3064ddbee3994475b"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/certify-reversible-validation.json",
+      "reachability": "release_validated",
+      "sha256": "4284c24f6cb66415001c5c32985dac835664407e86909b5d0df13d7b4877ef55"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/certify-skeptical-engineering.json",
+      "reachability": "release_validated",
+      "sha256": "dc2d7817fe584e27fcb31307cfb5cd210351b5f73e4670b90a3ebfd2c0a4a014"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/commission-evidence-first-project.json",
+      "reachability": "release_validated",
+      "sha256": "3de7b2d0b2b7f518cfb71df66250d441c26e9790953a4111ee543a558911d934"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/context-compactor.json",
+      "reachability": "release_validated",
+      "sha256": "431f8122fe1a1b1c746223b6296b40be2fa8400532fdf93143678ab0da6c4608"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/corpus-to-skill-tree-compiler.json",
+      "reachability": "release_validated",
+      "sha256": "cc911517e2c0bb1b4bf611b2e394d658f56ccf1c82ac1eb0b50818b4be0325bd"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/cross-paper-mechanism-fuser.json",
+      "reachability": "release_validated",
+      "sha256": "8d7cdf5176e1c99bf3ac23a7b7262c4d3996d3bee51402ea73740a1a59e9b6bc"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/dependency-impact-tracer.json",
+      "reachability": "release_validated",
+      "sha256": "fbfca4a423e184233780ee8a293aad8c03f395e81145b910c575d850ebffad89"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/deploy-isolated-model-worker.json",
+      "reachability": "release_validated",
+      "sha256": "60b56c96c83f61fcab62f74e5a4ca9584a3ccc035e25357652974cd9e541e6a1"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/diagnose-python-repair.json",
+      "reachability": "release_validated",
+      "sha256": "5a175e4b548247668a3df1c9a3133d45b298a1b1f798b84c8f87b92b33ba2b3c"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/discover-environment-safely.json",
+      "reachability": "release_validated",
+      "sha256": "5a0b8eb0d4adce8db310fd5d2782dab966bf3d44c506bb953fda0c2f2d429106"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/dynamic-service-discovery.json",
+      "reachability": "release_validated",
+      "sha256": "29e34cc4b348a2793c7f42a81afdfcc8257d855e89fc736b04185a7d31393204"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/dynamic-skill-detonator.json",
+      "reachability": "release_validated",
+      "sha256": "a284a7350673c760507dd69be271d0add83b94876d22455f5d092564e6143e7d"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/enforce-governance-controls.json",
+      "reachability": "release_validated",
+      "sha256": "9ca758289c36b9ca975e7bd43f92b9532c23955a197f3ffeb0c0b818ff4c0c34"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/enforce-source-import-boundaries.json",
+      "reachability": "release_validated",
+      "sha256": "a82d1dd0c03ec9b882c0d23f27dfd693808dcbed9bbc1dc71572d08d53707889"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/engineer-hybrid-retrieval.json",
+      "reachability": "release_validated",
+      "sha256": "db90950335177aea020b222c0378cf1d90a840508249a59fdd977632f9de950e"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/engineer-verification-lab.json",
+      "reachability": "release_validated",
+      "sha256": "231fa0bf53bb54773326960d1f87fee069f97e39796cb020feb5e759a5e623a7"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/evaluate-retrieval-readiness.json",
+      "reachability": "release_validated",
+      "sha256": "cdc15166c5cfe162be6fc7ac12c5feb0b9a6ccf32a373ba388c7b5da69b60602"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/evaluation-budget-allocator.json",
+      "reachability": "release_validated",
+      "sha256": "63fb8c183578f7ef7c602af3c41ade4236a519946f72c29fce9a3c5738d76afe"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/evidence-assembler.json",
+      "reachability": "release_validated",
+      "sha256": "32596308dd4666dcd7b6c3f6ecb4890a95ac32223a96ba72f8f0c355539ec4fd"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/execution-contract-enforcer.json",
+      "reachability": "release_validated",
+      "sha256": "fea463fbad3a4737f751c92e51ead473010ebc4acda196c571d2db7fa7c5972d"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/experience-reconstructor.json",
+      "reachability": "release_validated",
+      "sha256": "7dca1d2b323bad2133b470ac5059b8952b3ea6ba05c41a4e8fd0f6c6542100dd"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/forge-skills-from-knowledge.json",
+      "reachability": "release_validated",
+      "sha256": "304f567bdeb1eb65015b789b6c2100c734b1dcb5459f1fdadc1b2e73cc180468"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/gate-model-data-lifecycle.json",
+      "reachability": "release_validated",
+      "sha256": "c63d829127924fa6ac0a9095cb535da23ceae8bfa27217f2eb8d06497fd3b890"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/govern-deployment-safety.json",
+      "reachability": "release_validated",
+      "sha256": "b91e3fc2b5e47843e821881ec71cc40add61e29d44d486127a418ddb7f4463a2"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/govern-memory-fabric.json",
+      "reachability": "release_validated",
+      "sha256": "25f194b76eed75fac103c417d251b5dfd8d5734a70b1113cf2a420f02a6f3e36"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/govern-metacognitive-evolution.json",
+      "reachability": "release_validated",
+      "sha256": "afeee5cd25481199034bcb9ef8ab940604a0adeafbd8808f019087e9d8e8ee2e"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/govern-operating-kernel.json",
+      "reachability": "release_validated",
+      "sha256": "90a168d37e7c00216e36a27cbd4f6bb559c254301ff92af520e31b9ecda914f3"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/govern-runtime-protocol-deployment.json",
+      "reachability": "release_validated",
+      "sha256": "cb6db446c7118dc17ac0cb5f40210eaa70e8040f9de3bbba660d98417e94d564"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/govern-visual-runtime-accessibility.json",
+      "reachability": "release_validated",
+      "sha256": "97dfcdb675b530c909fd0445543d085c96b1f415622dca78936c1de170f9f99d"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/harden-container-boundaries.json",
+      "reachability": "release_validated",
+      "sha256": "3756cb3ddd731c393613c7ff4aa03876ff1b3570d2415afa0fcb013b92f7bfcc"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/human-handoff-state-transfer.json",
+      "reachability": "release_validated",
+      "sha256": "1c6d0463a512f84280ab23ea8fe0d6f80d14bcf3c44e2ca669e689d7d47f365a"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/inspect-live-contracts.json",
+      "reachability": "release_validated",
+      "sha256": "05346722b5f4d9883729eb27bd8600f5fe50ff0a7ab337eb9cce44b7c08b2cf6"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/inspect-llm-architecture.json",
+      "reachability": "release_validated",
+      "sha256": "030e313b5ca8b8b492138d08f00fd1a8fc78c5a925f478072ff94b8eadca593f"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/isolate-project-streams.json",
+      "reachability": "release_validated",
+      "sha256": "1cbe963fbb81b93c0ca0b17315b8996624bfe0ac08b9639e979eb51449e08a81"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/long-horizon-progress-ledger.json",
+      "reachability": "release_validated",
+      "sha256": "6f42bf4efaa127ac5a6a2fc0c1e71397246c8921d4e7f0a5264870128b556ac3"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/manage-mcp-lifecycle.json",
+      "reachability": "release_validated",
+      "sha256": "4b78e49cb7938a55f994fff5886e361134d1b25362b3e87e2860124fb8073b30"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/manage-revocable-certification.json",
+      "reachability": "release_validated",
+      "sha256": "a913a7b4cbf463e79560f7905819170bf01b28effb85c0fd2c9c005cb78a40a7"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/memory-applicability-critic.json",
+      "reachability": "release_validated",
+      "sha256": "b0ae2007f785955a486499089e215ae60e50bc553258df16fc346ee68da330b6"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/memory-injection-firewall.json",
+      "reachability": "release_validated",
+      "sha256": "a1fb5ac5493dd9dc55608553967f53218f4aabe814d993b8d64cdb2b80a214bd"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/operate-memory-retrieval-observability.json",
+      "reachability": "release_validated",
+      "sha256": "5bbc16ecc3debe24d4ff1ec04ed91806a5eeabb58c554ff6ac4893146ae06a89"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/orchestrate-capability-scheduling.json",
+      "reachability": "release_validated",
+      "sha256": "e31b095fe46310832969a7bbd2fd68e5f2d9b23e003647b257ad0946bd768f8b"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/orchestrate-security-validation.json",
+      "reachability": "release_validated",
+      "sha256": "c9d76d66a0654a2e0a70c6bbfcef516194ee200ca7963c2fe519e74d48928cae"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/outcome-verifier.json",
+      "reachability": "release_validated",
+      "sha256": "d585ba81afbc972ed8f12c3bb0319e8bd6f1020f3182d64b4b6ed32ec2078cf9"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/paper-mechanism-extractor.json",
+      "reachability": "release_validated",
+      "sha256": "67e5eeb30b3dace5552bdaea698866f680f3094b833b93fdca4d13797b5e02ef"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/permission-diff-auditor.json",
+      "reachability": "release_validated",
+      "sha256": "1d1e1386b4b52ddd31aa68c65bf7fd61f4b6b9fbb7cfb03e2bade10aab52bd01"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/plan-local-model-deployment.json",
+      "reachability": "release_validated",
+      "sha256": "713e2ad28d40aebf159e53e781e73411c1e1f060626b5dfdce644d4cf3ac676b"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/procedural-memory-compiler.json",
+      "reachability": "release_validated",
+      "sha256": "5388997c087fd3cc6d171d2709c27ceb25f715a36b4971637f73d627523ff8d1"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/productization-gap-analyzer.json",
+      "reachability": "release_validated",
+      "sha256": "3ab0d0f441c84301a8a4e6ddf9e00303496c8a04c9b0977b391fc347ead32a11"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/propose-change-intelligence.json",
+      "reachability": "release_validated",
+      "sha256": "674e0fa4e4de229bae1a0c80f31258df4bc066258d05a358172a76cfee22d9a9"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/provenance-signature-verifier.json",
+      "reachability": "release_validated",
+      "sha256": "76d0855ab7d81c797041d4e469aaad7b4bc4e848e6c44ef4e959a012a53471a9"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/quarantine-external-tools.json",
+      "reachability": "release_validated",
+      "sha256": "57ad467ed62138eac664ff3ac502c5a58da0eba5d66d689f98b797a2fb913c10"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/read-only-speculation-controller.json",
+      "reachability": "release_validated",
+      "sha256": "02b9778b5b1cfcf2f047053d587844f58528d4b87f88cc884c46c887828ac46a"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/reasoning-utility-controller.json",
+      "reachability": "release_validated",
+      "sha256": "b4bc6d85bd5173a3583bd3cf02af79dbd7403608690bb11f0958707ae3dc509f"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/recovery-coordinator.json",
+      "reachability": "release_validated",
+      "sha256": "01b154a3c6fa945c035bc5cef3b2077dac45d0da366718a1f71f61187c1f84d1"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/repair-corrupted-text.json",
+      "reachability": "release_validated",
+      "sha256": "5d0bcb968c45a82c0ba43f1812450029ff1739574bde059fcc15c1b413a35821"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/research-to-capability.json",
+      "reachability": "release_validated",
+      "sha256": "ba0b5bcebb1c48279d197e768537636d9293f4092faadbc6328aa70111e49ae4"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/research-to-operation-translator.json",
+      "reachability": "release_validated",
+      "sha256": "176d1c1a62a566c22d7d539f93ee3547869ef5b852c6c226a89a27e37a3d27bb"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/run-evidence-campaigns.json",
+      "reachability": "release_validated",
+      "sha256": "9a1f7c48c3ec53a758a00462e0cc1582a79396cd89349d68afed1c6bd83d9a87"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/run-resilience-drills.json",
+      "reachability": "release_validated",
+      "sha256": "9f80817e9bf6fb6e3c4445e29ed8930cc3215464577f43be68696fd21d1b979a"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/scenario-audit-generator.json",
+      "reachability": "release_validated",
+      "sha256": "3c263677e326fcb7677edc467a7cc7d784dc319e7f04b92732a61a5af2e8e71d"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/secure-agent-supply-chain.json",
+      "reachability": "release_validated",
+      "sha256": "530b033ee8aa9f07ed2c580ab84bd68b624843cf5e1c99e215244d2278a2f98e"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/skill-admission-controller.json",
+      "reachability": "release_validated",
+      "sha256": "9eefbaa44a9dceb9c2ff0b45ec1716618429c7025da849292f4688fed670cca2"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/skill-bundle-resolver.json",
+      "reachability": "release_validated",
+      "sha256": "cb7979d0b62f09f98f93330f0a2e2014372a800e500f7983cf2718e9ebfd7fa8"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/skill-coexecution-graph-builder.json",
+      "reachability": "release_validated",
+      "sha256": "7daba4a321bd8bdf4477abafcb9ccfc640154b9240fc2ba01152a029ac16a8fb"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/skill-navigator.json",
+      "reachability": "release_validated",
+      "sha256": "10393012c22c3f9566c4cd48b671f4dc94c63525ae53d9cb3e155ef8397ca879"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/supervise-contained-execution.json",
+      "reachability": "release_validated",
+      "sha256": "6ad111ef3a75915837567937721ad133efcb0ad03e5036f3b44c772a23050b61"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/synchronize-derived-architecture.json",
+      "reachability": "release_validated",
+      "sha256": "06751e736b0071ea517aa519c777519f75e39bee9923099456b0473558c0a460"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/tool-loop-circuit-breaker.json",
+      "reachability": "release_validated",
+      "sha256": "51f58a024325c5848904b07213555ebfaec91d08d27dc52e20c55a64928832ca"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/trace-to-skill-compiler.json",
+      "reachability": "release_validated",
+      "sha256": "2536cdba329c69c74096d03230f8fce6972f061dec7a4774212a08d9304b9aff"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/trajectory-failure-sentinel.json",
+      "reachability": "release_validated",
+      "sha256": "4d1e87ffe7d33d7dda9edd05bb7af9fe77631ce6b81a85f6442bb441ca09bb08"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/triage-cross-surface-failures.json",
+      "reachability": "release_validated",
+      "sha256": "1edda9dbf4cfc47bb1dc38a451e503640c77b5d49d7298d2fedbf77bf6a056ab"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/validate-contract-boundaries.json",
+      "reachability": "release_validated",
+      "sha256": "e45f557165658aae5f63f0c2d1f357f90fa122919d1d394093e6c04749da465f"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/validate-engineering-outcomes.json",
+      "reachability": "release_validated",
+      "sha256": "b193120ed8933c0ce99a153d3d6b632c7fc84c256cba967c46dbcb091656e1ca"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/validate-knowledge-relationships.json",
+      "reachability": "release_validated",
+      "sha256": "dda0a711cfc16f917051517a2783fceba9889959b34e45a9bd1f2819ebe477d0"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skill_packages/validate-production-containers.json",
+      "reachability": "release_validated",
+      "sha256": "2104e9676f89aa453d787eed84d5deb561e2315d15baac8cfb1ecf7c99eec7c4"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skills/evidence-assembler.json",
+      "reachability": "release_validated",
+      "sha256": "ca20a579c9aeb9028842f88453cc9a7f743fbe97e8089220e6d7826c0f55a8d5"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skills/execution-contract-enforcer.json",
+      "reachability": "release_validated",
+      "sha256": "03d46d07d852caca20329d272d4878733c65362dbd5ba366e8a702c161510954"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skills/outcome-verifier.json",
+      "reachability": "release_validated",
+      "sha256": "8b5d9c815495b3a8934f85ccd62ee6f3349c76a86e70c8b7514f6f3dd4f96b83"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skills/skill-admission-controller.json",
+      "reachability": "release_validated",
+      "sha256": "496ec452ac47f12dabdcca34008cc3296006280b0836cbfdc8cf536075a8b5a7"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skills/skill-navigator.json",
+      "reachability": "release_validated",
+      "sha256": "399ac0398829bc2f287e9f9c21e66c9284fbc4caa11e4ccac2c6fba93aa69ffa"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/skills/workflow-orchestrator.json",
+      "reachability": "release_validated",
+      "sha256": "9d2e6b37757f69ecab5b718b7325806ae7cd4d9bfb84e7577ebba0acac9c07ac"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_asset_dispositions.json",
+      "reachability": "release_validated",
+      "sha256": "efe4c545747e9e6a00971320c3ae95bcf6a5a6ccdc4729cc1ce068e3e6a88589"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_incomplete_dispositions.json",
+      "reachability": "release_validated",
+      "sha256": "aee0b740c0ddcf5cc1b72f0142c120aa43416937d348cae1c6eb8adc5e338a02"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_map_index.json",
+      "reachability": "release_validated",
+      "sha256": "b219846f521d7965c5f61468ceacf8dfad0cba18c1e784d994e74a665cb32db0"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_mechanism_mappings.json",
+      "reachability": "release_validated",
+      "sha256": "dec8b1d1bae11fc4f08af1adf4ac65cdffb6f67a0b2f3c7fc5077ff0947448e2"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_reconciliation_rules.json",
+      "reachability": "release_validated",
+      "sha256": "a7281c12129bb22254f8622bcdc8b449aab78f9a5a0bb7b523d8180fe142cdd0"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_requirement_coverage.json",
+      "reachability": "release_validated",
+      "sha256": "25ac644140ecfc5ac0d0c985b137d162ca9e0a04f08098a8d5d48c001c83dde8"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_aliases.json",
+      "reachability": "release_validated",
+      "sha256": "a3110d46ec2d5e6a6301d2866ca64052851e75790b4706db1cbc268f20cb5883"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/active-evaluation-selector.yaml",
+      "reachability": "release_validated",
+      "sha256": "a5b21e2a85ef174675ba7043f5530dac3c5cca9ac5273e1948328bb9911e0703"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/behavior-to-code-mapper.yaml",
+      "reachability": "release_validated",
+      "sha256": "34f711f5f3a5ba33036f2916877ee811496e255bfc88a33d361de20c55daa2f3"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/benchmark-domain-adapter.yaml",
+      "reachability": "release_validated",
+      "sha256": "60b9c32f8164505e8f8973d7d29d382a234b54133169d999e8b1f093748d2472"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/bounded-workflow-topology-selector.yaml",
+      "reachability": "release_validated",
+      "sha256": "74fce969522ffdda76ea5ebeb80f2accfbadf8d8a1b4fb0c76a1221ce903a66a"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/candidate-memory-promoter.yaml",
+      "reachability": "release_validated",
+      "sha256": "a5c73384114b67acce4f7102b166c7149c7b0209a05a0ad4f8f0c478ceb712c7"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/context-compactor.yaml",
+      "reachability": "release_validated",
+      "sha256": "15ed4baeec1cc8c87f10c39507ebb18e1193cf726890a600e9bda03a85108d63"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/corpus-to-skill-tree-compiler.yaml",
+      "reachability": "release_validated",
+      "sha256": "ca933d065ea491c0ac557afe891623bc8a2c2d159503d76cf19132b1772c026d"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/cross-paper-mechanism-fuser.yaml",
+      "reachability": "release_validated",
+      "sha256": "3b2c3c7ed5fccdd07c556dd8491ec65ce806ec19482891dcb9219fcbaccdc3b1"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/dependency-impact-tracer.yaml",
+      "reachability": "release_validated",
+      "sha256": "55c5882e61e03ffb094b7051f72bce393f8fa44b0bed6e6ec6d821b36ca4f93c"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/dynamic-skill-detonator.yaml",
+      "reachability": "release_validated",
+      "sha256": "4ed9922790fbb9292a365b2ab1f65c567c816937e60e465f56eeaa11578f6c83"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/evaluation-budget-allocator.yaml",
+      "reachability": "release_validated",
+      "sha256": "b46ed5b2160cf6900789fc96e22388dd04343603c8ceeff5df9e232e2f41e846"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/evidence-assembler.yaml",
+      "reachability": "release_validated",
+      "sha256": "82e8634e3ec1e877cf5c6565864eb1bae0ec91a2e46ef40cf180f215c33b2d64"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/execution-contract-enforcer.yaml",
+      "reachability": "release_validated",
+      "sha256": "bf07a7ad1cbbeec5e1db135667cd059c94001f02454886bc2146a5325586b2c5"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/experience-reconstructor.yaml",
+      "reachability": "release_validated",
+      "sha256": "95682c58f16db069a59010c0f6eb2bb3748c43ec7faed2d1aa9f0cc173fcc775"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/human-handoff-state-transfer.yaml",
+      "reachability": "release_validated",
+      "sha256": "0384c9f7f0eb387d9050ee1be397dc9fc38f956c1b347e5171125d7474928476"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/long-horizon-progress-ledger.yaml",
+      "reachability": "release_validated",
+      "sha256": "2af01448fd59da0a3008c14456ed53f2589c2242f5c56089e27f924ff28e4d90"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/memory-applicability-critic.yaml",
+      "reachability": "release_validated",
+      "sha256": "3d5e2970bc7933d90709c83511c4cc415641a90fe82ddcfa40caaace890b095c"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/memory-injection-firewall.yaml",
+      "reachability": "release_validated",
+      "sha256": "674bc9b1c8b4a2973643a396d4bd789c946714edf135be04b8608305b2b77784"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/outcome-verifier.yaml",
+      "reachability": "release_validated",
+      "sha256": "a06c1ec822ded1f2e28e5fd8c02bae6c15daf8ff025d6c563590eef13c07c69c"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/paper-mechanism-extractor.yaml",
+      "reachability": "release_validated",
+      "sha256": "ec890263ca397f2cec0a8558d7efa8e44260a32e563eb413eea79604b726ae4f"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/permission-diff-auditor.yaml",
+      "reachability": "release_validated",
+      "sha256": "6f70c62a3fa6a3f51ba2f2e6fbbcee6f65cd541ad0dfbf1c769c87a5e9d0572b"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/procedural-memory-compiler.yaml",
+      "reachability": "release_validated",
+      "sha256": "9b52c4d2044031b05e4ceedebd725534563a59a306de0fc1c503ab127d00ce2d"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/productization-gap-analyzer.yaml",
+      "reachability": "release_validated",
+      "sha256": "cb2eb671f74beeac7fabfe3e748caece9c6afcc77a11ede3358fa9da53d7324d"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/provenance-signature-verifier.yaml",
+      "reachability": "release_validated",
+      "sha256": "a2450c20aa92320db03fdc8e0af2c53cae77b10cf552079625ceb524cce5f054"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/read-only-speculation-controller.yaml",
+      "reachability": "release_validated",
+      "sha256": "fb33ca711e9f391ba36481ccea98d449e6f2a2939cbcaffc9e121f09ae34ebdf"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/reasoning-utility-controller.yaml",
+      "reachability": "release_validated",
+      "sha256": "57f76e21c78abaad10a556de6eb8de40cc9d3a2c716d4220b847c1c262d9fbbc"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/recovery-coordinator.yaml",
+      "reachability": "release_validated",
+      "sha256": "a049c8b1f25b6a7e30d68a8562c10e61f5c465219084bbfd329fb6d6ee7fd1b0"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/research-to-operation-translator.yaml",
+      "reachability": "release_validated",
+      "sha256": "b0079c2590b15ad3e4c2f76e81b1bdac4989eedfad0e1e2abb4f1c1298935b27"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/scenario-audit-generator.yaml",
+      "reachability": "release_validated",
+      "sha256": "85fee03e977043416bf4af14b3e1de060dafee6a5132f40bad8307944248685c"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/skill-admission-controller.yaml",
+      "reachability": "release_validated",
+      "sha256": "58bfb0cd74aacdd586d277fc835525abcc5550dfd228376ce21b399221db1664"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/skill-bundle-resolver.yaml",
+      "reachability": "release_validated",
+      "sha256": "1855fec354c7e1487f21297c6a64d698f2f48c92fff1e7237f48dc6c657993a4"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/skill-coexecution-graph-builder.yaml",
+      "reachability": "release_validated",
+      "sha256": "5cb0ba65bf24d99800f5afbb0b0fb524be2565207d64a22ce9859a1a099ff837"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/skill-navigator.yaml",
+      "reachability": "release_validated",
+      "sha256": "521d446ff2c488df3a584697902070c748eca78751a0776c40a95aa00c3e0810"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/tool-loop-circuit-breaker.yaml",
+      "reachability": "release_validated",
+      "sha256": "56af9af21f05e9e09f264f2ad82e4227dd318006948f6e8a8462c0518db4b772"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/trace-to-skill-compiler.yaml",
+      "reachability": "release_validated",
+      "sha256": "6fdaad98f7ead356078aad0214a7850c49e390b244b46fc1d9de6bd94c108c47"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_skill_manifests/trajectory-failure-sentinel.yaml",
+      "reachability": "release_validated",
+      "sha256": "4a27ceb3d9f3ad730e28f825955258cd323fc05ac6aae20c1e7d9e267e3d19aa"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_specialty_admission.json",
+      "reachability": "release_validated",
+      "sha256": "7190a580d86399f42c70a9f1de2537aa20a2d9f96e1d5aa3631bed0b315b98ee"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/source_tool_aliases.json",
+      "reachability": "release_validated",
+      "sha256": "74699b377d56e39d4a4a065709ec33157cd3312aecc82c3e6f39601a1c336656"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/specialty_map.json",
+      "reachability": "release_validated",
+      "sha256": "d57bc89311f8b670476d6395472e8750a65855244b17a7b3b50a9b6439d6a916"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/structural_integrity_policy.json",
+      "reachability": "release_validated",
+      "sha256": "dcdda33f746f3335986076fd556f14812c633a5f66fd806a5b64546e181ebca0"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/test_profiles.py",
+      "path": "registry/test_profiles.json",
+      "reachability": "release_validated",
+      "sha256": "38ea2b7b9a089bcc9c5f2eae93157949accda05bbb5266a8b9ece96ee271add3"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/tools.json",
+      "reachability": "release_validated",
+      "sha256": "daccec7bc0ce5bb9f4b8200dde4da393f45087816f6912b893fd79090d9580fe"
+    },
+    {
+      "kind": "registry",
+      "owner": "runtime/structural_integrity.py",
+      "path": "registry/workflow_execution_bindings.json",
+      "reachability": "release_validated",
+      "sha256": "e97e96b5b6e7a2d4c354f6b2464d11707ed964c3b2ab396a40c8145fe5c535b5"
+    },
+    {
+      "entrypoint": "runtime.capability_assimilation:validate_capability_assimilation",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/capability-assimilation.yaml",
+      "reachability": "executable_validator",
+      "sha256": "6c87576f83e467aa8b43a15a40f3b8571b61d32f53591cf812036d73924d4c75"
+    },
+    {
+      "entrypoint": "runtime.capability_scheduler:validate_scheduling_layer",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/capability-scheduling.yaml",
+      "reachability": "executable_validator",
+      "sha256": "b58f0315b264c7f2a604dff293d4520246c08334b153e68a4cadac672fc1d17a"
+    },
+    {
+      "entrypoint": "runtime.orchestrator:Orchestrator.run",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/control-plane.yaml",
+      "reachability": "executable_runtime",
+      "sha256": "4c5797b40b4c3248626889b04a9884e9894042c64be6771cff64561e8c12ca2d"
+    },
+    {
+      "entrypoint": "runtime.declared_suite:validate_declared_suite",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/declared-suite.yaml",
+      "reachability": "executable_validator",
+      "sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "entrypoint": "runtime.models:rank_models",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/local-model-planning.yaml",
+      "reachability": "executable_runtime",
+      "sha256": "878a081f59ab60e23d634f716a00c13effa85cf8ffd3b9c78a33bc2eb9d5ebb1"
+    },
+    {
+      "entrypoint": "runtime.metacognitive_evolution.facade:validate_layer",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/metacognitive-evolution.yaml",
+      "reachability": "executable_validator",
+      "sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:agent_create_validate",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/agent_create_validate.yaml",
+      "reachability": "executable",
+      "sha256": "ac237ed3b8e18b386e3e2b4174ddd50b11bb9d5dfae79afef12ec68328baed08"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:chaos_resilience_cycle",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/chaos_resilience_cycle.yaml",
+      "reachability": "executable",
+      "sha256": "14f200cdc78e34e7b435c7c26339eed216032e28600cf1329ebce69c4073249d"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:continuous_improvement",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/continuous_improvement.yaml",
+      "reachability": "executable",
+      "sha256": "ac0242e44069f60b3c307e589b6f07c56af2835ec97cd32d6ebe9381a25d70f1"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:cross_project_transfer",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/cross_project_transfer.yaml",
+      "reachability": "executable",
+      "sha256": "e13a985e18da91452f13515e177ff38d76f358debe971ec56eb1eb83717acd3a"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:guarded_change",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/guarded_change.yaml",
+      "reachability": "executable",
+      "sha256": "7c3fca4c504df8e912c6b3ca9b50646a959683f8c1e79fa59c9fc42218192beb"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:incident_diagnose_recover",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/incident_diagnose_recover.yaml",
+      "reachability": "executable",
+      "sha256": "acc4e2d3e988e6005472da5d936ace9b4d501d7144bd4dc3756d84106ee24c42"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:memory_ingest_distill",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/memory_ingest_distill.yaml",
+      "reachability": "executable",
+      "sha256": "79281713033ce70c6963c8f98650142d8e82e78be4b53d730e58dec2fec1cf60"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:memory_maintenance",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/memory_maintenance.yaml",
+      "reachability": "executable",
+      "sha256": "90c9769a4f4395def52f9d40b9860f19b9630c1d4ab7196117f28fd029173245"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:nightly_project_health",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/nightly_project_health.yaml",
+      "reachability": "executable",
+      "sha256": "b2818a1292469f8dff060d6aa3d04853c17f65663ffb1e0969dd6fc39cf3271f"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:project_close",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/project_close.yaml",
+      "reachability": "executable",
+      "sha256": "ed94412e23f4d9070f37b89d5d8055be4628f395efbfb19729008791aa5273fe"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:project_onboard",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/project_onboard.yaml",
+      "reachability": "executable",
+      "sha256": "624c1c7660caa16ea19a198259eaa0b4ef8109e3e1906e1aa337a7b24c2db959"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:project_pause_resume",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/project_pause_resume.yaml",
+      "reachability": "executable",
+      "sha256": "e1d04824f895644c5f31b19da8b5c8b32b852f028f1f89d8b5c729e937e3a0b8"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:project_switch",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/project_switch.yaml",
+      "reachability": "executable",
+      "sha256": "ee4c96321af42857da5e70011cf87e20cdca67cc5651f40d1125588a29dd90ff"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:safe_cleanup",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/safe_cleanup.yaml",
+      "reachability": "executable",
+      "sha256": "e26e242258eee25fe29f5528881250cc1bcc36fe3a5bed306a07c949f88df0fd"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:shared_capability_promote",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/shared_capability_promote.yaml",
+      "reachability": "executable",
+      "sha256": "d693e15a66a85a0ff62a3c1dad4786616077f16ef41421d486cd9d1da56dfdc9"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:workspace_bootstrap",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/workspace_bootstrap.yaml",
+      "reachability": "executable",
+      "sha256": "6b72c03049bb944f390162d2cbbce6f6532e530f8b3c8f3796de1918293dcd65"
+    },
+    {
+      "entrypoint": "runtime.project_stream_orchestrator:workstream_plan_dispatch",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project_stream/workstream_plan_dispatch.yaml",
+      "reachability": "executable",
+      "sha256": "8fd8a3f5c243ff69f33483a7f525ba5b271b116326d642879cf6efcdc2cd20a2"
+    },
+    {
+      "entrypoint": "runtime.query_certification:certify_queries",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/semantic-capability-query.yaml",
+      "reachability": "executable_runtime",
+      "sha256": "17bb5fc32a349875c088afb22b02fe06b98f8993cb780e33ef9d8d1259fde6c7"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/active-evaluation-selector/SKILL.md",
+      "path": ".agents/skills/active-evaluation-selector/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "7f99fd685a66d593ef9d3b9760b46e60eed6d3a505e574f3ee1d74f474c8fdae"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/admit-capability/SKILL.md",
+      "path": ".agents/skills/admit-capability/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "528bbac1e5a9fac41743bd5fa0943461e5a3ec2c48197dd8e2049ba3adf56c0d"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/analyze-engineering-intelligence/SKILL.md",
+      "path": ".agents/skills/analyze-engineering-intelligence/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "c0d77d036be084ac826fb08ef4cd483c361aab527b9ef8af77e7798b35efb60f"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/analyze-repository-intelligence/SKILL.md",
+      "path": ".agents/skills/analyze-repository-intelligence/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "bafbe76cbd479436f83e8989833d4c6526d6ffdfa86f3e54292fbbc89def10c3"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/audit-ai-runtime-assurance/SKILL.md",
+      "path": ".agents/skills/audit-ai-runtime-assurance/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "b333f231c4c09232fcb1c35f3a4e40f3f79f89e5a77b4e08290a9ea715513c55"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/audit-incomplete-implementations/SKILL.md",
+      "path": ".agents/skills/audit-incomplete-implementations/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "8638496f9ac263b3b68f09945193f6c7323daab55e16e12fe80eda92f290825e"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/audit-source-capabilities/SKILL.md",
+      "path": ".agents/skills/audit-source-capabilities/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "3e93aa26ab9c306fbac92bc2f26ab7d404f2705fd0a6debdd665288b3a0768a8"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/behavior-to-code-mapper/SKILL.md",
+      "path": ".agents/skills/behavior-to-code-mapper/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "cb0be51f96bf0811af65ec1d54a51e099c46b295a94a5a32767b75beabce1a4e"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/benchmark-domain-adapter/SKILL.md",
+      "path": ".agents/skills/benchmark-domain-adapter/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "36a36d222616d9e6961ca95f68a87ee92ad64ebc7bb6f1b4dd6a2fe979df4a98"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/bounded-workflow-topology-selector/SKILL.md",
+      "path": ".agents/skills/bounded-workflow-topology-selector/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "479c5e11fe6bf18ca027dc609af7a30c875100f3fcf7e00be53d9951445a0de0"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/candidate-memory-promoter/SKILL.md",
+      "path": ".agents/skills/candidate-memory-promoter/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "31f19c4305fc1201f4371fb25b35b6c22ab8c0853a6450954279a91434a2e570"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/certify-reversible-validation/SKILL.md",
+      "path": ".agents/skills/certify-reversible-validation/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "f2508c878be32e176d0a1f268125e1e961eedd203d00de5e24aaf81aab11ef19"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/certify-skeptical-engineering/SKILL.md",
+      "path": ".agents/skills/certify-skeptical-engineering/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "402fd5e04e59409dd2fba3b87eb31e4d5793851eb0e9dad579d240076ccba543"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/commission-evidence-first-project/SKILL.md",
+      "path": ".agents/skills/commission-evidence-first-project/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "9ef6fad1c7f0505484f81105f68b3ba9f1b94006ee1a355fcfef987f8c5f8f3c"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/commission-project/SKILL.md",
+      "path": ".agents/skills/commission-project/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "f521b1993c5d51e609ce7f53e4c2db72e5dbf9aaf5f9b0061119c3e0ceebc7b7"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/context-compactor/SKILL.md",
+      "path": ".agents/skills/context-compactor/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "19b53a3bc41814781f7570e016794f531a8d0e82d609633806661e5b893c508e"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/corpus-to-skill-tree-compiler/SKILL.md",
+      "path": ".agents/skills/corpus-to-skill-tree-compiler/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "c3f66ccfced692d0b5ec523753d770da810b6dfb5831cf761e659d32bac66f9a"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/cross-paper-mechanism-fuser/SKILL.md",
+      "path": ".agents/skills/cross-paper-mechanism-fuser/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "b149552a8bcfabbd38ff13c443b6fd5f22285d3d4c5b02217d210088f60fc6e9"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/dependency-impact-tracer/SKILL.md",
+      "path": ".agents/skills/dependency-impact-tracer/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "dba32d3e142cba82d0e10550ca275a52f33e00f9e551f1a2dc5e6a1f642ba0ba"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/deploy-isolated-model-worker/SKILL.md",
+      "path": ".agents/skills/deploy-isolated-model-worker/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "92b7cf101009d63249043c2d5d2524ff768ce788074e8b3019ad00dd591dbefb"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/diagnose-python-repair/SKILL.md",
+      "path": ".agents/skills/diagnose-python-repair/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "79f66a3c7287cbfad4d05dce196a03e2306aa6af6761a09cc865ea8a237e520a"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/discover-environment-safely/SKILL.md",
+      "path": ".agents/skills/discover-environment-safely/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "de4ee8b666ad3e4b437c098d7a9b5f2f1ed6b5456f278d8bf4ef4e87ff98241a"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/dynamic-service-discovery/SKILL.md",
+      "path": ".agents/skills/dynamic-service-discovery/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "aafe2bd94e9ec339d111f1ce83d05f6afc2ea288e806dcccc96fb61ef58286db"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/dynamic-skill-detonator/SKILL.md",
+      "path": ".agents/skills/dynamic-skill-detonator/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "7d667a63e3431e6734fa2126668600e3effda7ab9fb9e5575ab98d2e92f5ac88"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/enforce-governance-controls/SKILL.md",
+      "path": ".agents/skills/enforce-governance-controls/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "5f80ca317a7153a39139cdd4c549e46c7e58afe26bac8f392ef6b4d63325dc47"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/enforce-source-import-boundaries/SKILL.md",
+      "path": ".agents/skills/enforce-source-import-boundaries/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "0d065f3f6682676091290aca6f33656acd4b118f7fd544516461a745b7a2efac"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/engineer-hybrid-retrieval/SKILL.md",
+      "path": ".agents/skills/engineer-hybrid-retrieval/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "5590e8bbce1b2110ee01489c5254ef3c74eef88e52bb3868841a148b6d7a629f"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/engineer-verification-lab/SKILL.md",
+      "path": ".agents/skills/engineer-verification-lab/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "4b7146101ea254cf51897a0146b41e6d43f47598aba1a0f8af8380d69f76a368"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/evaluate-retrieval-readiness/SKILL.md",
+      "path": ".agents/skills/evaluate-retrieval-readiness/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "12aafe30263194fe4c6e60903a4821bf492c1c2a24b7ca578c2f1a3081478b24"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/evaluation-budget-allocator/SKILL.md",
+      "path": ".agents/skills/evaluation-budget-allocator/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "f98242192f9f31b8436a4d482de1c851bb9514f2fcaaee1102bc3c7461de3d4a"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/evidence-assembler/SKILL.md",
+      "path": ".agents/skills/evidence-assembler/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "e88e738566b023ebb1e0ee7a359aebd1f3a8a5337834eaa0e8186dda7c6fb74f"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/execution-contract-enforcer/SKILL.md",
+      "path": ".agents/skills/execution-contract-enforcer/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "eda7423e07368445385fd5781155964c7440551d63bb9a490b22a6bd47909537"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/experience-reconstructor/SKILL.md",
+      "path": ".agents/skills/experience-reconstructor/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "755b9889111667b38a0d34bc967af363cbabdb5396eac9572654c414b8866aa0"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/forge-skills-from-knowledge/SKILL.md",
+      "path": ".agents/skills/forge-skills-from-knowledge/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "9cf0ce10937dc9a8963d71413f212f762fd9f6d82e30ba0a60cafb50d04e4e55"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/gate-model-data-lifecycle/SKILL.md",
+      "path": ".agents/skills/gate-model-data-lifecycle/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "8e82bbff713daf8a6cbc65e8b7aa7cfc8ab716cec148ba5eee1d14fc680b4972"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/govern-deployment-safety/SKILL.md",
+      "path": ".agents/skills/govern-deployment-safety/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "d17d8ed319b4a7e1a838cf084baa224efd8a216746e0247b249e459f618e962a"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/govern-memory-fabric/SKILL.md",
+      "path": ".agents/skills/govern-memory-fabric/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "74129e456cd41486747971e98bf66cc22318d358e71f6ae03fb0b61cb328804a"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/govern-metacognitive-evolution/SKILL.md",
+      "path": ".agents/skills/govern-metacognitive-evolution/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "b9ea3b8c8d617c798f35ce89e9968cd8cd6171bb776c850d536bdf0c2abc2e35"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/govern-operating-kernel/SKILL.md",
+      "path": ".agents/skills/govern-operating-kernel/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "5167a8658b9da10dabb949bb894ad71e83a3431718b162887b98275655cc8d7a"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/govern-runtime-protocol-deployment/SKILL.md",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "b651562214ee06700b839366d2ef7b4c355f5fec24d405e1e2880fc61240eb0c"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/govern-visual-runtime-accessibility/SKILL.md",
+      "path": ".agents/skills/govern-visual-runtime-accessibility/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "9c9d9f0c71e037a97bce1f009577e5f43063a59dd434f5ccc319617e0a26d639"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/harden-container-boundaries/SKILL.md",
+      "path": ".agents/skills/harden-container-boundaries/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "2daffb7f67c1e44e86c7eb6796a0a421e2b3599c8081c97616ef36b34860e7e7"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/human-handoff-state-transfer/SKILL.md",
+      "path": ".agents/skills/human-handoff-state-transfer/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "bc66278ee9454333cc2ef2af509dd71f189fb9505173755f5a5bb0ba75c7a85a"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/inspect-live-contracts/SKILL.md",
+      "path": ".agents/skills/inspect-live-contracts/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "74b223d4d4ae5e824f3e23a629f0b826d84e3dababa7bef6bc366585b6954937"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/inspect-llm-architecture/SKILL.md",
+      "path": ".agents/skills/inspect-llm-architecture/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "ca7dd782e04d58a61ba5543e3aee3128f5ebe216351cf70a0a1e2da035e62103"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/isolate-project-streams/SKILL.md",
+      "path": ".agents/skills/isolate-project-streams/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "4d745f3a2aff61cf19afc782c21ad2606ea0b8db79d9d6d0fa9ed61237843cbd"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/long-horizon-progress-ledger/SKILL.md",
+      "path": ".agents/skills/long-horizon-progress-ledger/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "f594a182bfc2b2f89b139c6fbe961114a04b739e80d6d62b2433d72bbb8b7499"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/manage-mcp-lifecycle/SKILL.md",
+      "path": ".agents/skills/manage-mcp-lifecycle/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "e897a2f042e369b69e1c9230f4a8e2739147530d4980167e7752d6ab077d5236"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/manage-revocable-certification/SKILL.md",
+      "path": ".agents/skills/manage-revocable-certification/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "8e4c8a296ba34f68cc1fdd04669ef309779c9de6f2fa82b74d706603edca526d"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/memory-applicability-critic/SKILL.md",
+      "path": ".agents/skills/memory-applicability-critic/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "ca63292cfd0889801a8e8fea674aa0ad41dde4ffed33c175d10f4884815fb4d7"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/memory-injection-firewall/SKILL.md",
+      "path": ".agents/skills/memory-injection-firewall/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "545987c15a191d6d6a56defd109672c1e3f6637960745fd5496983fa7697022f"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/operate-memory-retrieval-observability/SKILL.md",
+      "path": ".agents/skills/operate-memory-retrieval-observability/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "0079be089bf876e7f50a0d4caf25dc9245d9520c4ed3b06ab109898be1d093fb"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/orchestrate-capability-scheduling/SKILL.md",
+      "path": ".agents/skills/orchestrate-capability-scheduling/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "314152565493a7ea5aec3ee751ad09f8a662a84b3a003112cc6ba520625e13ff"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/orchestrate-engineering-loop/SKILL.md",
+      "path": ".agents/skills/orchestrate-engineering-loop/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "897c7e74bde4ba5ec1659fe069e75544dcb8ef377591aae14465ebc7ba473226"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/orchestrate-security-validation/SKILL.md",
+      "path": ".agents/skills/orchestrate-security-validation/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "3004d56c2e6bd88e3db432fd7a4ff281feee63f6679e82d1717493d06c10e61a"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/outcome-verifier/SKILL.md",
+      "path": ".agents/skills/outcome-verifier/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "ed184a8243c49011aab6f9206e9b81ed67f89c653014e03a7dcda82979101dc7"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/paper-mechanism-extractor/SKILL.md",
+      "path": ".agents/skills/paper-mechanism-extractor/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "02844531ec776e8502ac68d558e501e2c6f2a726f026ffb69fe3b90e2dff33d4"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/permission-diff-auditor/SKILL.md",
+      "path": ".agents/skills/permission-diff-auditor/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "5c6620104f09c0f8f7e6bf0c7c2275f4c343922ea6591132b6eaa1664f2ada00"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/plan-local-model-deployment/SKILL.md",
+      "path": ".agents/skills/plan-local-model-deployment/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "816da970541dc7ebc91a4261d499221d9790fdec045ef8a4f7228a65ef12c342"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/procedural-memory-compiler/SKILL.md",
+      "path": ".agents/skills/procedural-memory-compiler/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "46d37621c3eba6fa3a5f6688bc255b21c4ede5d9829c4b93abe488b0682c5718"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/productization-gap-analyzer/SKILL.md",
+      "path": ".agents/skills/productization-gap-analyzer/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "b1a5fd8c6490a07d3abbf04350ca9c1f2e393ac0b1e38b155d201b5c718bf113"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/propose-change-intelligence/SKILL.md",
+      "path": ".agents/skills/propose-change-intelligence/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "c607154e987a01d8e6444c2950b7a5cddc018e59253376961e68462cc21497b0"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/provenance-signature-verifier/SKILL.md",
+      "path": ".agents/skills/provenance-signature-verifier/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "c68788c9bfdb18af2242d4ecfc69ea3a86cd0f652d61465b1300a71ce884ff04"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/quarantine-external-tools/SKILL.md",
+      "path": ".agents/skills/quarantine-external-tools/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "dd59e95a7e97b9eb0904d77a42c358658e07cc707c042172fb34c47fc97e5792"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/read-only-speculation-controller/SKILL.md",
+      "path": ".agents/skills/read-only-speculation-controller/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "71fd22ab5a4fd2bdde7f4186fadf244982b3e87f0660fc649cfad8a7bdd7909c"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/reasoning-utility-controller/SKILL.md",
+      "path": ".agents/skills/reasoning-utility-controller/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "3102d689a4a67babb186208b5a408df7a23cd74f04d5c996f6b7abad48876392"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/recovery-coordinator/SKILL.md",
+      "path": ".agents/skills/recovery-coordinator/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "8936ca2d7f6079685e670c60b2402188003509620bf87c5e885ba3e0c33c7efb"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/repair-corrupted-text/SKILL.md",
+      "path": ".agents/skills/repair-corrupted-text/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "b4446f55fd9dc2512cbbad274c0567eaf536aee0e76a06e09817d507328eda36"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/research-to-capability/SKILL.md",
+      "path": ".agents/skills/research-to-capability/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "aa901abbe21b40c6dfcc0813d3d3be2221f1db2611359e252fa81538d9339443"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/research-to-operation-translator/SKILL.md",
+      "path": ".agents/skills/research-to-operation-translator/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "37b1f1edc421cbf7f151566a7df3a4e3d1cc1bdd05f95c7a14fadcd84656eb8d"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/run-evidence-campaigns/SKILL.md",
+      "path": ".agents/skills/run-evidence-campaigns/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "7d65f6b80d7a4650f445a3d3734a8b7ec94ea985185c1b860f218130acf6f5de"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/run-resilience-drills/SKILL.md",
+      "path": ".agents/skills/run-resilience-drills/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "6665ca0ccd7dd39f03c9d87304da8aaa59bddf7218aadeedf1b15b3dd521fbff"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/scenario-audit-generator/SKILL.md",
+      "path": ".agents/skills/scenario-audit-generator/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "759e7164492839d1a55f3cdf4cbfc33a7a1dfe9c65f5069dd9708cbcf65f1830"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/secure-agent-supply-chain/SKILL.md",
+      "path": ".agents/skills/secure-agent-supply-chain/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "a5142287944ed2e953091754f552e6138512ef771052e615754e4e78083e9645"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/skill-admission-controller/SKILL.md",
+      "path": ".agents/skills/skill-admission-controller/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "71894562be6a88349b6d01e590f859997b7933c314df5f8b5615af1fb3403270"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/skill-bundle-resolver/SKILL.md",
+      "path": ".agents/skills/skill-bundle-resolver/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "83861a74eba83e8cbd9e9737d29537aa907ebbe86db3bcef12896c2211d298c6"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/skill-coexecution-graph-builder/SKILL.md",
+      "path": ".agents/skills/skill-coexecution-graph-builder/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "1d5dbfd09bded684be6ae80ea1fea1dae7b19f52f4e7d56367a77e6612ca1f92"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/skill-navigator/SKILL.md",
+      "path": ".agents/skills/skill-navigator/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "243e113760cce4c15cdfa69e650d81b32aba54e2ecc2b9c9b7c4f34e7f9a6348"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/supervise-contained-execution/SKILL.md",
+      "path": ".agents/skills/supervise-contained-execution/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "9ad32d7c31b8037f1cd476ffda916d73ab31e297100c784015d6cf48af00655d"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/synchronize-derived-architecture/SKILL.md",
+      "path": ".agents/skills/synchronize-derived-architecture/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "b019df3c1ccf48eea5ec9bf5f0b083cb74c0a645f3388501e64832a9d85b25d6"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/tool-loop-circuit-breaker/SKILL.md",
+      "path": ".agents/skills/tool-loop-circuit-breaker/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "a39eda7bafb4cdc53fedb11e2349cd4b038d624200b8255c5c631a59ccc8744a"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/trace-to-skill-compiler/SKILL.md",
+      "path": ".agents/skills/trace-to-skill-compiler/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "9b3a414df9f40628a7ae790c9fb889905e7108f44216d7a406de0137d2f8951a"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/trajectory-failure-sentinel/SKILL.md",
+      "path": ".agents/skills/trajectory-failure-sentinel/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "960139cedcaa3afb18edd5449660acc244a40ff2c931b251118f3a835890f491"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/triage-cross-surface-failures/SKILL.md",
+      "path": ".agents/skills/triage-cross-surface-failures/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "ff1a3e8454d90cf39bf8c1bd698326cb4eec23e565d62b9a2b5046ef4e0a1ae0"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/validate-contract-boundaries/SKILL.md",
+      "path": ".agents/skills/validate-contract-boundaries/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "08c938c345d16552a2d44f80e50f90378d43bad6c6bf7f8a19bbf85989239664"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/validate-engineering-outcomes/SKILL.md",
+      "path": ".agents/skills/validate-engineering-outcomes/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "852509f3695f6211a26977a6b29703a67297fb88de3e2fce4d048f6d6de1b4f6"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/validate-knowledge-relationships/SKILL.md",
+      "path": ".agents/skills/validate-knowledge-relationships/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "0f82e1ba182b54a09223fc8898885fb1859ac26c23fd98846170068a7d1cc6d8"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/validate-production-containers/SKILL.md",
+      "path": ".agents/skills/validate-production-containers/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "08f8144a9b9bef864bc56a48f3cd3889a3cc11964aa76e73e4e406a4ed626ba3"
+    },
+    {
+      "kind": "yaml",
+      "owner": ".agents/skills/verify-outcome/SKILL.md",
+      "path": ".agents/skills/verify-outcome/agents/openai.yaml",
+      "reachability": "lazy_skill_interface",
+      "sha256": "0f9caf6f7cfcfcc22c947fa389d73b67aa41b49f70f4e9e2d30106b19a27ab7c"
+    },
+    {
+      "kind": "yaml",
+      "owner": "bootstrap/commissioning/reference/README_START_HERE.md",
+      "path": "bootstrap/commissioning/reference/questionnaire_answers.template.yaml",
+      "reachability": "documented_commissioning_template",
+      "sha256": "25ab7b469ace704648de0d8a4b17e9d4deb1186f216627d20086ccf504d6bdaf"
+    },
+    {
+      "kind": "yaml",
+      "owner": "runtime/project_control_plane.py",
+      "path": "templates/project_stream/agent.yaml",
+      "reachability": "runtime_validated_template",
+      "sha256": "b48f40e4d13885cb648afd9caf5fd1a1c0412726c10574670a7575c8abbaf985"
+    },
+    {
+      "kind": "yaml",
+      "owner": "runtime/project_control_plane.py",
+      "path": "templates/project_stream/project.yaml",
+      "reachability": "runtime_validated_template",
+      "sha256": "e4a3dd40501645c67c47c199e830c040af3d32f4948e895926aa60af39165f11"
+    },
+    {
+      "kind": "yaml",
+      "owner": "runtime/project_control_plane.py",
+      "path": "templates/project_stream/workstream.yaml",
+      "reachability": "runtime_validated_template",
+      "sha256": "ffe497372f7bc53ec62fa4625800dfd7b69e685dc829260c0522120c772d9abf"
+    }
+  ],
+  "schema_version": "1.0"
+}

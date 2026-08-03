@@ -1,0 +1,34 @@
+{
+  "id": "evidence-assembler",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/evidence-assembler/SKILL.md",
+  "body_sha256": "199a3fc7747232bef216b05961d7ac994dd97098c98b1fdb6d0fcc04c4dd24e1",
+  "references": [],
+  "capability_tags": [
+    "assembler",
+    "assurance",
+    "evidence"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_c71b0bd0.md",
+        "sha256": "389ce0f1ba99070521e19c82b3b6263d7faa72ab941c56a18ffde9e8c243a7a4"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_8e165656.yaml",
+        "sha256": "7fbfa717703bd940652e9051a9f270e1913216e33d706754c891c0e4781e62a1"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

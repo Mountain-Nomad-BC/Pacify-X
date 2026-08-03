@@ -1,0 +1,8 @@
+{
+  "id": "artifact-preservation",
+  "version": "1.0.0",
+  "status": "active",
+  "summary": "Preserve source, owned, unknown, superseded, failed, and generated artifacts through recoverable quarantine rather than hard deletion.",
+  "applies_to": ["source_intake", "cleanup", "migration", "generated_artifacts", "failed_evidence", "temporary_files", "caches"],
+  "enforcement": "Hard deletion is forbidden. Before removal from an active location, resolve the exact bounded target, record its path and SHA-256 inventory, move it to a recoverable quarantine, verify the post-move inventory, emit a recovery receipt, and retain it for human review. Intake sources may move only after explicit closure and two matching full-tree snapshots followed by an immediate equality check. Abort on drift."
+}

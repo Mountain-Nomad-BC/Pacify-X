@@ -1,0 +1,60 @@
+{
+  "count": 9,
+  "records": [
+    {
+      "id": "approval-request",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/scripts/approval-request.json",
+      "sha256": "f06eefe43a0520fedc599d0fc23a97431811e0afdb26e34781e77b261b40f25c",
+      "trigger": "Use when the requested outcome is approval request or when that outcome is a required dependency."
+    },
+    {
+      "id": "backend-probe",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/scripts/backend-probe.json",
+      "sha256": "26a0616084c3ce404770f5efa435b8af50e35d3b6b0e8e36fdc27aadd3d420e5",
+      "trigger": "Use when the requested outcome is backend probe or when that outcome is a required dependency."
+    },
+    {
+      "id": "benchmark-harness",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/scripts/benchmark-harness.json",
+      "sha256": "f9fbde058a0ea5b609af3b2ae1fe765f90caeb1b4db5f685ec92a781a1fa786e",
+      "trigger": "Use when the requested outcome is benchmark harness or when that outcome is a required dependency."
+    },
+    {
+      "id": "canary-compare",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/scripts/canary-compare.json",
+      "sha256": "702d503b6331f63b9eaf0705c5680126ec689ee7254add5110ea03476f2e3bca",
+      "trigger": "Use when the requested outcome is canary compare or when that outcome is a required dependency."
+    },
+    {
+      "id": "capacity-planner",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/scripts/capacity-planner.json",
+      "sha256": "4af35a2a1fccf54fecb07a04a7f1417addd9b43b2417a31a9be0d5dd3b4d4bff",
+      "trigger": "Use when the requested outcome is capacity planner or when that outcome is a required dependency."
+    },
+    {
+      "id": "hardware-probe",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/scripts/hardware-probe.json",
+      "sha256": "24792e0c66673123bc48390ddde59ec07068ef234299ce5cc917a2264193ea3a",
+      "trigger": "Use when the requested outcome is hardware probe or when that outcome is a required dependency."
+    },
+    {
+      "id": "model-router",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/scripts/model-router.json",
+      "sha256": "f241e13e040e825e747ac76111d81936014433e47c84ea35934b5ed137c3c4e9",
+      "trigger": "Use when the requested outcome is model router or when that outcome is a required dependency."
+    },
+    {
+      "id": "openapi-tool-importer",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/scripts/openapi-tool-importer.json",
+      "sha256": "a97b9589155cc4678c6f781f3475542061ba6304931401f0b4be68bae2fdef7f",
+      "trigger": "Use when the requested outcome is openapi tool importer or when that outcome is a required dependency."
+    },
+    {
+      "id": "protocol-validator",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/scripts/protocol-validator.json",
+      "sha256": "70af1af48d41994969c5644268d795ab130c0014a7989fed0db281dc87503d5f",
+      "trigger": "Use when the requested outcome is protocol validator or when that outcome is a required dependency."
+    }
+  ],
+  "schema_version": "1.0"
+}

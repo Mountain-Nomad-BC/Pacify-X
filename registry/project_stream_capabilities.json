@@ -1,0 +1,2027 @@
+{
+  "schema_version": "1.0",
+  "loading": "metadata_only_then_selected_owner",
+  "count": 71,
+  "capabilities": [
+    {
+      "id": "artifact-lifecycle-manager",
+      "title": "Artifact Lifecycle Manager",
+      "category": "Governance Kernel",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Classify artifacts as source, evidence, generated, cache, temporary, archive, or quarantine and manage each accordingly.",
+      "invariant": "Unknown artifacts are preserved until classified; generated artifacts never masquerade as canonical source.",
+      "inputs": [
+        "artifact metadata",
+        "producer",
+        "references",
+        "retention policy"
+      ],
+      "outputs": [
+        "classification",
+        "retention action",
+        "canonical pointer"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "enforce-governance-controls"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/01_governance_kernel/artifact-lifecycle-manager/manifest.yaml",
+      "source_sha256": "6abbda901a1582ea5bfc9b81b243755179cb8f2c43ad68607f935547444c36ad"
+    },
+    {
+      "id": "assumption-auditor",
+      "title": "Assumption Auditor",
+      "category": "Governance Kernel",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Extract, classify, and test assumptions embedded in plans, code changes, diagnostics, and agent reasoning.",
+      "invariant": "Assumptions must never be silently promoted to facts.",
+      "inputs": [
+        "plan",
+        "analysis",
+        "change intent",
+        "evidence set"
+      ],
+      "outputs": [
+        "assumption register",
+        "confidence levels",
+        "verification tasks"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "enforce-governance-controls"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/01_governance_kernel/assumption-auditor/manifest.yaml",
+      "source_sha256": "5ae7c48351f20dc4683271e2609b2c1ae0d0e65b5dea3ec25c0555c9c6d5f2e1"
+    },
+    {
+      "id": "audit-event-ledger",
+      "title": "Audit Event Ledger",
+      "category": "Governance Kernel",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Provide an append-only event history connecting requests, agents, tools, decisions, changes, validations, and outcomes.",
+      "invariant": "Every material state transition is attributable and chronologically reconstructable.",
+      "inputs": [
+        "event",
+        "actor identity",
+        "project identity",
+        "evidence pointers"
+      ],
+      "outputs": [
+        "immutable event record",
+        "correlation chain",
+        "timeline views"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "enforce-governance-controls"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/01_governance_kernel/audit-event-ledger/manifest.yaml",
+      "source_sha256": "0b4fd7d110bd61879a2b73ffa4bcae2de4363b5356ea634b32fa8ca0d6f018bc"
+    },
+    {
+      "id": "change-intent-ledger",
+      "title": "Change Intent Ledger",
+      "category": "Governance Kernel",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Record what an agent intends to change, why, expected effects, and rollback strategy before execution.",
+      "invariant": "No material change begins without a declared intent and bounded scope.",
+      "inputs": [
+        "task request",
+        "affected project",
+        "proposed paths",
+        "expected outcome"
+      ],
+      "outputs": [
+        "intent record",
+        "scope boundary",
+        "risk class",
+        "rollback pointer"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "enforce-governance-controls"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/01_governance_kernel/change-intent-ledger/manifest.yaml",
+      "source_sha256": "59b9d00cc90f7171f21d73bad2a74ae43bede723394d14d114b91e12054f18ab"
+    },
+    {
+      "id": "human-approval-matrix",
+      "title": "Human Approval Matrix",
+      "category": "Governance Kernel",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Map risk classes and action types to required human approvals without making every harmless action bureaucratic.",
+      "invariant": "Irreversible, cross-boundary, credential, production, and permanent-deletion actions require explicit approval.",
+      "inputs": [
+        "action type",
+        "risk score",
+        "environment",
+        "data classification"
+      ],
+      "outputs": [
+        "approval route",
+        "required approver role",
+        "approval expiry"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "enforce-governance-controls"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/01_governance_kernel/human-approval-matrix/manifest.yaml",
+      "source_sha256": "b5acffbd594e923732b5b45eb259ac4b4c5b48e4cc743dd548bcb90512717cb6"
+    },
+    {
+      "id": "non-destructive-quarantine",
+      "title": "Non-Destructive Quarantine",
+      "category": "Governance Kernel",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Replace hard deletion with an evidence-backed, reversible move into a global repository quarantine for human review.",
+      "invariant": "Automated workflows never permanently delete owned source, data, documentation, configuration, evidence, or unknown files.",
+      "inputs": [
+        "candidate path",
+        "classification evidence",
+        "project identity",
+        "move reason"
+      ],
+      "outputs": [
+        "dry-run plan",
+        "quarantine manifest",
+        "pre-move integrity hash",
+        "restore instructions"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "enforce-governance-controls"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/01_governance_kernel/non-destructive-quarantine/manifest.yaml",
+      "source_sha256": "47629e60e9efeea36043572fe1ed327fcdd97ca6f006903a9af86825b38186fa"
+    },
+    {
+      "id": "repository-constitution",
+      "title": "Repository Constitution",
+      "category": "Governance Kernel",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Define the non-negotiable operating laws that every agent, skill, orchestration, and tool must obey before touching a project.",
+      "invariant": "No lower-level prompt, agent preference, or convenience may override the constitution.",
+      "inputs": [
+        "workspace policy",
+        "project policy overlays",
+        "tool capability declarations"
+      ],
+      "outputs": [
+        "resolved policy set",
+        "allow/deny decision",
+        "policy evidence record"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "enforce-governance-controls"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/01_governance_kernel/repository-constitution/manifest.yaml",
+      "source_sha256": "b8881c5ee0e0138e178d0bc196b08044f777c90bbc030156ec13da877c4b93c6"
+    },
+    {
+      "id": "secret-boundary-manager",
+      "title": "Secret and Sensitive Boundary Manager",
+      "category": "Governance Kernel",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Prevent secrets, sensitive data, and project-private context from leaking into logs, memories, prompts, or other projects.",
+      "invariant": "Sensitive material is never copied into a broader trust zone than its source.",
+      "inputs": [
+        "data classification",
+        "destination trust zone",
+        "requested operation"
+      ],
+      "outputs": [
+        "allow/redact/deny decision",
+        "redaction evidence",
+        "boundary alert"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "enforce-governance-controls"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/01_governance_kernel/secret-boundary-manager/manifest.yaml",
+      "source_sha256": "c919bf97283c42072465485e6f555a2c41b8f73700c20f48a8e3049427761c02"
+    },
+    {
+      "id": "side-effect-budgeter",
+      "title": "Side-Effect Budgeter",
+      "category": "Governance Kernel",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Declare and enforce the maximum expected writes, file moves, API calls, restarts, and resource consumption for a run.",
+      "invariant": "A task that exceeds its side-effect budget pauses instead of quietly widening its blast radius.",
+      "inputs": [
+        "change intent",
+        "estimated effects",
+        "resource limits"
+      ],
+      "outputs": [
+        "effect budget",
+        "runtime counters",
+        "budget breach event"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "enforce-governance-controls"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/01_governance_kernel/side-effect-budgeter/manifest.yaml",
+      "source_sha256": "38f332fcf11264be64ed68e36cdafdeda22192124f78db74c4664b45a10ee55e"
+    },
+    {
+      "id": "why-evidence-gate",
+      "title": "Why and Evidence Gate",
+      "category": "Governance Kernel",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Force every material recommendation or change to state why it is needed and what evidence supports it.",
+      "invariant": "An agent may not make a consequential change solely because it appears cleaner, newer, or more elegant.",
+      "inputs": [
+        "proposed action",
+        "supporting evidence",
+        "alternatives"
+      ],
+      "outputs": [
+        "justification record",
+        "evidence links",
+        "gate decision"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "enforce-governance-controls"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/01_governance_kernel/why-evidence-gate/manifest.yaml",
+      "source_sha256": "820830199691dcecda9bfd87c54034791d86304a2883f568fe914a2d63ee38a2"
+    },
+    {
+      "id": "branch-worktree-manager",
+      "title": "Branch and Worktree Manager",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Give parallel agents isolated Git work surfaces while preserving a clean integration path.",
+      "invariant": "Concurrent agents do not edit the same working tree unless explicitly coordinated.",
+      "inputs": [
+        "workstream",
+        "repository",
+        "base revision"
+      ],
+      "outputs": [
+        "branch",
+        "worktree path",
+        "integration metadata"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/branch-worktree-manager/manifest.yaml",
+      "source_sha256": "c755a824383ec538b245d9dc28c4b4e5b2e86af1748d3087dadfb17a24835e99"
+    },
+    {
+      "id": "checkpoint-resume-manager",
+      "title": "Checkpoint and Resume Manager",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Capture enough project and agent state to safely pause work and resume without relying on conversational memory.",
+      "invariant": "A resumable checkpoint contains evidence of completed work, open risks, exact repo state, and next actions.",
+      "inputs": [
+        "session state",
+        "repo state",
+        "workstream state",
+        "test results"
+      ],
+      "outputs": [
+        "checkpoint bundle",
+        "resume instructions",
+        "integrity manifest"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/checkpoint-resume-manager/manifest.yaml",
+      "source_sha256": "c0401cb2bf0028276923927a93f26d104dcc66262d2e688ec752ad8e927099d7"
+    },
+    {
+      "id": "concurrency-lock-manager",
+      "title": "Concurrency and Lock Manager",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Prevent conflicting changes to files, schemas, migrations, environments, and shared resources across agents.",
+      "invariant": "A lock has an owner, scope, reason, expiry, and recovery rule.",
+      "inputs": [
+        "requested resource scope",
+        "agent lease",
+        "workstream"
+      ],
+      "outputs": [
+        "lock grant",
+        "wait/deny response",
+        "stale-lock recovery task"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/concurrency-lock-manager/manifest.yaml",
+      "source_sha256": "d3d4acfff48b0ce2afc7cd236febe8a6196e474103d8fb8dd96c537ee88872a8"
+    },
+    {
+      "id": "cross-project-transfer-broker",
+      "title": "Cross-Project Transfer Broker",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Move reusable knowledge or artifacts between projects only through explicit, sanitized, reviewable transfer packages.",
+      "invariant": "Direct project-to-project context reads and writes are prohibited.",
+      "inputs": [
+        "source project artifact",
+        "destination project",
+        "transfer purpose"
+      ],
+      "outputs": [
+        "sanitized transfer package",
+        "provenance record",
+        "import decision"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/cross-project-transfer-broker/manifest.yaml",
+      "source_sha256": "c2300c8c841b2606380a3a6037b10d0f11af50fdf7828f50d411285da40c01d3"
+    },
+    {
+      "id": "multi-repo-tracker",
+      "title": "Multi-Repository Project Tracker",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Represent projects that span multiple repositories while preserving repository-specific roots and responsibilities.",
+      "invariant": "A project may contain many repos, but each repo has a declared role and independent change boundary.",
+      "inputs": [
+        "project manifest",
+        "repo records",
+        "dependency relationships"
+      ],
+      "outputs": [
+        "project topology",
+        "repo role map",
+        "dependency edges"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/multi-repo-tracker/manifest.yaml",
+      "source_sha256": "b65b2ff57b3d3e83ba3c148fdeec097d77696e5afda08554345ef42d6b79e053"
+    },
+    {
+      "id": "project-closure-autopsy",
+      "title": "Project Closure and Autopsy",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Close a project with a validated final state and extract reusable lessons, failures, capabilities, and unresolved risks.",
+      "invariant": "Closure produces a durable knowledge package rather than merely abandoning the repo.",
+      "inputs": [
+        "final project state",
+        "decision history",
+        "metrics",
+        "incident records"
+      ],
+      "outputs": [
+        "closure report",
+        "lesson graph",
+        "promotion candidates",
+        "archive manifest"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/project-closure-autopsy/manifest.yaml",
+      "source_sha256": "0e8f180c576dd174481011aa84c70596f8ce735a247c15bb66b1979545ea3bcc"
+    },
+    {
+      "id": "project-dormancy-archive",
+      "title": "Project Dormancy and Archive Manager",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Pause inactive projects safely while preserving their state, knowledge, dependencies, and restart path.",
+      "invariant": "Dormant does not mean deleted or forgotten.",
+      "inputs": [
+        "activity history",
+        "owner decision",
+        "dependency map"
+      ],
+      "outputs": [
+        "archive bundle",
+        "dormancy status",
+        "reactivation plan"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/project-dormancy-archive/manifest.yaml",
+      "source_sha256": "bdd8da37f82b1bc5be070f156c7d51b1eec32ecd395d15ed9c49f5452c920917"
+    },
+    {
+      "id": "project-health-scorecard",
+      "title": "Project Health Scorecard",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Summarize project status across build, tests, security, docs, drift, agent work, risks, and operational readiness.",
+      "invariant": "Scores link to evidence and never hide failing critical gates behind averages.",
+      "inputs": [
+        "test evidence",
+        "risk register",
+        "workstream status",
+        "drift metrics"
+      ],
+      "outputs": [
+        "health scorecard",
+        "critical blockers",
+        "trend history"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/project-health-scorecard/manifest.yaml",
+      "source_sha256": "a509aacc441b3a85a68b2f948fec70892fb496fbda44d0f56f0dc43afa646ffb"
+    },
+    {
+      "id": "project-registry",
+      "title": "Project Registry",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Maintain authoritative records of where projects live, their identities, policies, repositories, owners, and current state.",
+      "invariant": "A filesystem path alone is never treated as project identity.",
+      "inputs": [
+        "repository discovery",
+        "project manifest",
+        "owner confirmation"
+      ],
+      "outputs": [
+        "project record",
+        "stable project ID",
+        "namespace assignment"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/project-registry/manifest.yaml",
+      "source_sha256": "7465f721c001a796b2a4dfbe855701c5e83ff5a63c6d9cc4033820814ab9f6cc"
+    },
+    {
+      "id": "project-session-router",
+      "title": "Project Session Router",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Start, pause, resume, and switch agent sessions without carrying stale state between projects.",
+      "invariant": "One execution session has one active project identity.",
+      "inputs": [
+        "requested project",
+        "agent identity",
+        "workstream"
+      ],
+      "outputs": [
+        "session lease",
+        "scoped tool configuration",
+        "context teardown receipt"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/project-session-router/manifest.yaml",
+      "source_sha256": "04310af382c36cc955eb64e40af0a69473430f15e9954df4355fe3e834247729"
+    },
+    {
+      "id": "repo-onboarding-autodiscovery",
+      "title": "Repository Onboarding and Autodiscovery",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Inspect a new repository, identify its stack and operational surfaces, then propose a bounded onboarding plan.",
+      "invariant": "Discovery is read-only until the project is registered and approved for modification.",
+      "inputs": [
+        "repo path",
+        "discovery limits",
+        "ignore policies"
+      ],
+      "outputs": [
+        "stack inventory",
+        "risk inventory",
+        "proposed project manifest"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/repo-onboarding-autodiscovery/manifest.yaml",
+      "source_sha256": "bb534830b346ddce79f02bce564740e94251a6b91a80a883d928829767571ec5"
+    },
+    {
+      "id": "semantic-context-firewall",
+      "title": "Semantic Context Firewall",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Prevent memories, documents, embeddings, prompts, and agent state from one project bleeding into another.",
+      "invariant": "Context retrieval is default-deny outside the active project namespace and approved global policies.",
+      "inputs": [
+        "agent session",
+        "active project ID",
+        "requested context source"
+      ],
+      "outputs": [
+        "scoped context set",
+        "deny event",
+        "contamination alert"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/semantic-context-firewall/manifest.yaml",
+      "source_sha256": "68ec03a6f8e2988669fb432e34a50ecca2a9ea987ecb16758e7aa953a3d4023f"
+    },
+    {
+      "id": "shared-capability-promotion",
+      "title": "Shared Capability Promotion",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Promote a proven project-local pattern into a reusable global skill or library without leaking project semantics.",
+      "invariant": "Shared capabilities are generalized, sanitized, independently tested, and versioned.",
+      "inputs": [
+        "candidate project capability",
+        "usage evidence",
+        "sanitization rules"
+      ],
+      "outputs": [
+        "shared capability package",
+        "compatibility contract",
+        "promotion receipt"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/shared-capability-promotion/manifest.yaml",
+      "source_sha256": "26982008ffdc7349523ffb426e2e08dcda01c8ffbe3a56ffa94c152e164b61fd"
+    },
+    {
+      "id": "workspace-bootstrap",
+      "title": "Workspace Bootstrap",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Create the standard projects, tracking, quarantine, shared-capability, and runtime control-plane layout.",
+      "invariant": "Project source and control-plane state remain physically and semantically separate.",
+      "inputs": [
+        "workspace root",
+        "path policy",
+        "platform constraints"
+      ],
+      "outputs": [
+        "workspace tree",
+        "workspace configuration",
+        "health report"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/workspace-bootstrap/manifest.yaml",
+      "source_sha256": "78fb735d3b6c335eb9e4c0b059d7c302ce553994d9604ea34effd6bb1c62c02d"
+    },
+    {
+      "id": "workstream-dispatcher",
+      "title": "Workstream Dispatcher",
+      "category": "Project Control Plane",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Break project goals into isolated workstreams and route them to agents with dependencies, priorities, and acceptance criteria.",
+      "invariant": "Agents receive bounded work packages, not vague permission to roam the repository.",
+      "inputs": [
+        "project goal",
+        "dependency graph",
+        "available agents"
+      ],
+      "outputs": [
+        "workstream queue",
+        "agent assignments",
+        "dependency gates"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "commission-project",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/02_project_control_plane/workstream-dispatcher/manifest.yaml",
+      "source_sha256": "ef64abb4c1a185339196552fe057f1728c909e7bf3495c4b93731c8a040813ac"
+    },
+    {
+      "id": "agent-conflict-arbiter",
+      "title": "Agent Conflict Arbiter",
+      "category": "Agent Factory and Management",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Resolve disagreements between agents about plans, facts, ownership, or changes using evidence and defined authority.",
+      "invariant": "Conflicts are surfaced; they are never settled by whichever agent writes last.",
+      "inputs": [
+        "conflicting claims",
+        "evidence sets",
+        "role authority"
+      ],
+      "outputs": [
+        "resolution decision",
+        "unresolved issue",
+        "escalation task"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/03_agent_factory_management/agent-conflict-arbiter/manifest.yaml",
+      "source_sha256": "e2093cc3b5143e1c3d231123748a2ac8218302e066203df350cb3f1ab181d9ad"
+    },
+    {
+      "id": "agent-factory",
+      "title": "Agent Factory",
+      "category": "Agent Factory and Management",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Create bounded agents from reusable role, capability, tool, memory, and governance templates.",
+      "invariant": "An agent is a declared operational identity, not an untracked prompt instance.",
+      "inputs": [
+        "role request",
+        "required capabilities",
+        "project policy",
+        "risk class"
+      ],
+      "outputs": [
+        "agent manifest",
+        "sandbox configuration",
+        "validation plan"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/03_agent_factory_management/agent-factory/manifest.yaml",
+      "source_sha256": "04f0275a3c9901f7e96e2ae25cd0839010ab0593670ca746fe94b0fda0150d42"
+    },
+    {
+      "id": "agent-identity-permissions",
+      "title": "Agent Identity and Permissions",
+      "category": "Agent Factory and Management",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Issue least-privilege identities and scoped capabilities to agents per project, session, and workstream.",
+      "invariant": "Agent identity, project identity, and human sponsor are always distinguishable.",
+      "inputs": [
+        "agent record",
+        "project policy",
+        "workstream scope"
+      ],
+      "outputs": [
+        "permission grant",
+        "tool token references",
+        "access decision"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/03_agent_factory_management/agent-identity-permissions/manifest.yaml",
+      "source_sha256": "4a24732c11a4f124b6ea39356a709caebf46e949d6c7f23c7f94bf6a08dd2ca2"
+    },
+    {
+      "id": "agent-lease-manager",
+      "title": "Agent Lease Manager",
+      "category": "Agent Factory and Management",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Bind an agent to a project, workstream, worktree, tools, paths, and time window for a specific execution session.",
+      "invariant": "No agent acts without a valid, renewable, and revocable lease.",
+      "inputs": [
+        "agent ID",
+        "project ID",
+        "workstream ID",
+        "requested resources"
+      ],
+      "outputs": [
+        "session lease",
+        "expiry",
+        "revocation event"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/03_agent_factory_management/agent-lease-manager/manifest.yaml",
+      "source_sha256": "1735a6e3c8dc68dd21df88ac84bf93fe584330d82027fac917eda5476007ee2c"
+    },
+    {
+      "id": "agent-performance-health",
+      "title": "Agent Performance and Health",
+      "category": "Agent Factory and Management",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Measure agent accuracy, safety, completion rate, regressions, resource use, and human correction burden.",
+      "invariant": "Agent quality is judged by validated outcomes, not fluent output or activity volume.",
+      "inputs": [
+        "workstream outcomes",
+        "validation results",
+        "resource metrics",
+        "human corrections"
+      ],
+      "outputs": [
+        "agent scorecard",
+        "trend",
+        "probation or retraining action"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/03_agent_factory_management/agent-performance-health/manifest.yaml",
+      "source_sha256": "38d17bee75a1ab60dfe4ea33a75e4ee5ca61dc594c5546db2055f067a5edde0c"
+    },
+    {
+      "id": "agent-registry-lifecycle",
+      "title": "Agent Registry and Lifecycle",
+      "category": "Agent Factory and Management",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Track every agent from proposal through sandbox, probation, active use, pause, retirement, or revocation.",
+      "invariant": "Only registered active agents may receive work or tool leases.",
+      "inputs": [
+        "agent manifest",
+        "validation evidence",
+        "owner"
+      ],
+      "outputs": [
+        "agent record",
+        "lifecycle state",
+        "status events"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/03_agent_factory_management/agent-registry-lifecycle/manifest.yaml",
+      "source_sha256": "855032aea7b9eec16f82ddd94a79ad3554dd82fd5501c172abc7fa9c56450103"
+    },
+    {
+      "id": "agent-retirement-handoff",
+      "title": "Agent Retirement and Memory Handoff",
+      "category": "Agent Factory and Management",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Retire an agent cleanly while preserving useful validated knowledge and revoking all operational access.",
+      "invariant": "Agent-specific noise is not promoted into durable memory merely because the agent is retired.",
+      "inputs": [
+        "agent history",
+        "open leases",
+        "validated lessons"
+      ],
+      "outputs": [
+        "retirement receipt",
+        "revocation confirmation",
+        "distilled handoff package"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/03_agent_factory_management/agent-retirement-handoff/manifest.yaml",
+      "source_sha256": "1b83695f008777fc64705d83c7d19f1cce5a23f7b0100966159ebcff3c44e1c3"
+    },
+    {
+      "id": "agent-team-composer",
+      "title": "Agent Team Composer",
+      "category": "Agent Factory and Management",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Build temporary multi-agent teams with complementary roles, handoff contracts, and a single accountable coordinator.",
+      "invariant": "Every team has a clear decision authority and conflict-resolution path.",
+      "inputs": [
+        "project goal",
+        "workstream graph",
+        "available agents"
+      ],
+      "outputs": [
+        "team manifest",
+        "role assignments",
+        "communication protocol"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/03_agent_factory_management/agent-team-composer/manifest.yaml",
+      "source_sha256": "946d7af41a56f26d0a38dd28f688a2541e0fe6f393f5f79b211a645065f43ef3"
+    },
+    {
+      "id": "agent-template-catalog",
+      "title": "Agent Template Catalog",
+      "category": "Agent Factory and Management",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Maintain versioned templates for planner, implementer, reviewer, tester, researcher, diagnostician, and other agent roles.",
+      "invariant": "Templates define defaults; project manifests define bounded overrides.",
+      "inputs": [
+        "role pattern",
+        "tool contract",
+        "behavioral constraints"
+      ],
+      "outputs": [
+        "versioned template",
+        "compatibility metadata",
+        "test fixtures"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/03_agent_factory_management/agent-template-catalog/manifest.yaml",
+      "source_sha256": "c3b30657ae724032fd28d0e7a957ee5ce2b729ca390f1953630d8588ced1acde"
+    },
+    {
+      "id": "duplicate-effort-detector",
+      "title": "Duplicate Effort Detector",
+      "category": "Agent Factory and Management",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Detect when agents or workstreams are independently solving the same problem or editing overlapping scopes.",
+      "invariant": "Parallelism should increase throughput, not multiply contradictory work.",
+      "inputs": [
+        "active intents",
+        "workstream scopes",
+        "changed paths",
+        "semantic summaries"
+      ],
+      "outputs": [
+        "overlap alert",
+        "merge recommendation",
+        "scope adjustment"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/03_agent_factory_management/duplicate-effort-detector/manifest.yaml",
+      "source_sha256": "b512e13bcc5eaac96d2449b924bc3d406ac0c2689ed9488daa0a89d611bad801"
+    },
+    {
+      "id": "model-calibration-router",
+      "title": "Model Calibration and Router",
+      "category": "Agent Factory and Management",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Benchmark available models against task types and route work by capability, privacy, latency, cost, and reliability.",
+      "invariant": "Model selection is evidence-based and may differ by project and task.",
+      "inputs": [
+        "task profile",
+        "model benchmark registry",
+        "privacy constraints",
+        "resource budget"
+      ],
+      "outputs": [
+        "model route",
+        "fallback chain",
+        "routing rationale"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "isolate-project-streams",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/03_agent_factory_management/model-calibration-router/manifest.yaml",
+      "source_sha256": "13e3c9f2944e75a92ceab63c28fd904324c5bd6c13a4f60097a2b246353ddbba"
+    },
+    {
+      "id": "adaptive-minimum-bit-sharder",
+      "title": "Adaptive Minimum-Bit Hash and Alphabetic Sharder",
+      "category": "Knowledge and Memory",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Assign the smallest collision-safe addressing width needed for a local memory namespace and map prefixes into deterministic alphabetic directory buckets.",
+      "invariant": "Addressing optimization is not confused with cryptographic integrity; content integrity uses a separate strong hash.",
+      "inputs": [
+        "normalized memory key",
+        "namespace occupancy",
+        "collision policy",
+        "alphabetic mapping table"
+      ],
+      "outputs": [
+        "short address",
+        "bucket path",
+        "collision expansion record",
+        "integrity hash"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "govern-memory-fabric"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/04_knowledge_memory/adaptive-minimum-bit-sharder/manifest.yaml",
+      "source_sha256": "6736972ced3b8bbbb66b4c5baea661c94e62d2a79401bc967512dfb53551872b"
+    },
+    {
+      "id": "assumption-decay",
+      "title": "Assumption Decay",
+      "category": "Knowledge and Memory",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Reduce confidence in assumptions as their evidence ages or their environment changes, then trigger re-verification.",
+      "invariant": "Unverified assumptions do not remain permanently high-confidence.",
+      "inputs": [
+        "assumption record",
+        "verification date",
+        "change signals",
+        "decay policy"
+      ],
+      "outputs": [
+        "updated confidence",
+        "stale flag",
+        "verification task"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "govern-memory-fabric"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/04_knowledge_memory/assumption-decay/manifest.yaml",
+      "source_sha256": "102947045fad022313b17563fc28316910551be0d867ca97014bc6595150dae1"
+    },
+    {
+      "id": "context-budget-compiler",
+      "title": "Context Budget Compiler",
+      "category": "Knowledge and Memory",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Compile the smallest task-specific context bundle that satisfies evidence, dependency, and policy requirements.",
+      "invariant": "Context is selected by need and authority, not by dumping the entire project history.",
+      "inputs": [
+        "task intent",
+        "project graph",
+        "token/resource budget",
+        "required evidence"
+      ],
+      "outputs": [
+        "context bundle",
+        "omission rationale",
+        "budget report"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "govern-memory-fabric"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/04_knowledge_memory/context-budget-compiler/manifest.yaml",
+      "source_sha256": "248aa13d1561d1aef55224521230703614d497915298c80c51e7c9fcedfd0d49"
+    },
+    {
+      "id": "continuous-knowledge-compression",
+      "title": "Continuous Knowledge Compression",
+      "category": "Knowledge and Memory",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Merge overlapping knowledge, preserve deltas, and reduce context size without erasing evidence or meaningful distinctions.",
+      "invariant": "Compression may reduce duplication, never provenance or historical truth.",
+      "inputs": [
+        "memory cluster",
+        "usage history",
+        "contradiction records"
+      ],
+      "outputs": [
+        "canonical summary",
+        "delta notes",
+        "redirect map"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "govern-memory-fabric"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/04_knowledge_memory/continuous-knowledge-compression/manifest.yaml",
+      "source_sha256": "6551253e48186b13ba6f6a676ad932626f30e4610ba04e978ff0ccfb6b279679"
+    },
+    {
+      "id": "contradiction-engine",
+      "title": "Contradiction Engine",
+      "category": "Knowledge and Memory",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Detect conflicting facts, rules, decisions, measurements, and documentation before they silently coexist.",
+      "invariant": "Contradictions create explicit review states; they are not resolved by recency alone.",
+      "inputs": [
+        "new memory or document",
+        "existing knowledge graph",
+        "domain rules"
+      ],
+      "outputs": [
+        "contradiction record",
+        "candidate resolution",
+        "blocked merge"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "govern-memory-fabric"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/04_knowledge_memory/contradiction-engine/manifest.yaml",
+      "source_sha256": "16be79384ba004dcfac61028a592c6ab0332c1ef7082db8980cbce8f7a0dce1e"
+    },
+    {
+      "id": "evidence-freshness-verifier",
+      "title": "Evidence Freshness Verifier",
+      "category": "Knowledge and Memory",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Determine whether evidence is still current enough for the decision that depends on it.",
+      "invariant": "Evidence validity is contextual; age alone does not decide freshness.",
+      "inputs": [
+        "evidence record",
+        "dependent claim",
+        "change signals",
+        "freshness policy"
+      ],
+      "outputs": [
+        "fresh/stale/unknown status",
+        "revalidation task",
+        "dependency alerts"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "govern-memory-fabric"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/04_knowledge_memory/evidence-freshness-verifier/manifest.yaml",
+      "source_sha256": "43e1cc85a5e16f47967e1546cdba3c41ee683b91f56a53ecf053ea701e7240bd"
+    },
+    {
+      "id": "knowledge-coverage",
+      "title": "Knowledge Coverage",
+      "category": "Knowledge and Memory",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Measure which project components, decisions, interfaces, and risks have sufficient current documentation and memory coverage.",
+      "invariant": "Coverage measures evidence-backed understanding, not raw document count.",
+      "inputs": [
+        "project topology",
+        "knowledge graph",
+        "evidence freshness"
+      ],
+      "outputs": [
+        "coverage map",
+        "undocumented areas",
+        "priority queue"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "govern-memory-fabric"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/04_knowledge_memory/knowledge-coverage/manifest.yaml",
+      "source_sha256": "255be3e3f4b4f49a85e06673911799711a34c8a59c5ad01ea6ae0b6a5fcdf1e0"
+    },
+    {
+      "id": "knowledge-distillation",
+      "title": "Knowledge Distillation",
+      "category": "Knowledge and Memory",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Convert noisy conversations, logs, and documents into minimal factual memory objects with provenance and confidence.",
+      "invariant": "Store the smallest sufficient knowledge, not the entire surrounding conversation.",
+      "inputs": [
+        "source material",
+        "project namespace",
+        "memory policy"
+      ],
+      "outputs": [
+        "distilled memory notes",
+        "evidence pointers",
+        "discard decisions"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "govern-memory-fabric"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/04_knowledge_memory/knowledge-distillation/manifest.yaml",
+      "source_sha256": "a5629555dd79e6d32173169f14375173ef0ddff320e6d64e44da4ea0fa8cb849"
+    },
+    {
+      "id": "memory-provenance",
+      "title": "Memory Provenance and Evidence",
+      "category": "Knowledge and Memory",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Trace every durable memory to its source, extraction method, confidence, and subsequent revisions.",
+      "invariant": "A memory without provenance is treated as unverified context, not durable knowledge.",
+      "inputs": [
+        "memory note",
+        "source references",
+        "extractor identity"
+      ],
+      "outputs": [
+        "provenance chain",
+        "confidence record",
+        "revision history"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "govern-memory-fabric"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/04_knowledge_memory/memory-provenance/manifest.yaml",
+      "source_sha256": "b0cfaab81e92e52fa70c2734edb6d0d2a1d5ff8f9d400825fee18c610c464476"
+    },
+    {
+      "id": "memory-self-healer",
+      "title": "Memory Self-Healer",
+      "category": "Knowledge and Memory",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Repair broken links, duplicate notes, stale indexes, invalid hashes, and orphaned graph edges without inventing content.",
+      "invariant": "Automated repair changes structure and metadata only unless factual content is independently verified.",
+      "inputs": [
+        "memory vault",
+        "graph index",
+        "integrity manifests"
+      ],
+      "outputs": [
+        "repair plan",
+        "quarantine moves",
+        "rebuilt indexes"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "govern-memory-fabric"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/04_knowledge_memory/memory-self-healer/manifest.yaml",
+      "source_sha256": "32358456c60a13f598bbc549ba091b272711b34d5fc8f6c8441a396b782a6b1d"
+    },
+    {
+      "id": "obsidian-memory-mapper",
+      "title": "Obsidian-Style Memory Mapper",
+      "category": "Knowledge and Memory",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Store durable memories as human-readable mapped notes with typed bidirectional links and graph indexes.",
+      "invariant": "The markdown note is the inspectable source of truth; indexes are rebuildable projections.",
+      "inputs": [
+        "distilled memory",
+        "relationship types",
+        "namespace"
+      ],
+      "outputs": [
+        "markdown note",
+        "backlinks",
+        "graph edges"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "govern-memory-fabric"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/04_knowledge_memory/obsidian-memory-mapper/manifest.yaml",
+      "source_sha256": "af89eb252ec79a74e2d00795018c7c79a9ed16a6133b8081501e8718c3231dbc"
+    },
+    {
+      "id": "uncertainty-registry",
+      "title": "Uncertainty Registry",
+      "category": "Knowledge and Memory",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Track unresolved questions, disputed facts, confidence gaps, and unknown dependencies as first-class project objects.",
+      "invariant": "Unknown is a valid state and must not be replaced by a plausible guess.",
+      "inputs": [
+        "analysis output",
+        "contradiction record",
+        "failed validation"
+      ],
+      "outputs": [
+        "uncertainty item",
+        "impact score",
+        "resolution task"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "govern-memory-fabric"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/04_knowledge_memory/uncertainty-registry/manifest.yaml",
+      "source_sha256": "0afe563500a04af61ba786a98c7e2b7f069d2694ea6cf0c7a9ccae0261180f5d"
+    },
+    {
+      "id": "capability-gap-skill-foundry",
+      "title": "Capability Gap and Skill Foundry Trigger",
+      "category": "Evolution Intelligence",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Detect missing capabilities and launch a governed skill-design process only when reuse and composition cannot satisfy the need.",
+      "invariant": "The system searches, composes, and adapts before creating another skill.",
+      "inputs": [
+        "unmet capability request",
+        "capability graph",
+        "existing skills"
+      ],
+      "outputs": [
+        "reuse plan",
+        "composition plan",
+        "new-skill proposal"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "skill-admission-controller",
+        "skill-coexecution-graph-builder",
+        "propose-change-intelligence"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/05_evolution_intelligence/capability-gap-skill-foundry/manifest.yaml",
+      "source_sha256": "3138ec5afef41aed8a723d46eea10ebde575339007e379f98f3a2117d59a2072"
+    },
+    {
+      "id": "capability-graph",
+      "title": "Capability Graph",
+      "category": "Evolution Intelligence",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Represent what the system can do independently of which specific skill or model currently implements it.",
+      "invariant": "Orchestrations request capabilities; routing resolves compatible implementations.",
+      "inputs": [
+        "skill manifests",
+        "tool contracts",
+        "agent profiles"
+      ],
+      "outputs": [
+        "capability nodes",
+        "implementation mappings",
+        "gap report"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "skill-admission-controller",
+        "skill-coexecution-graph-builder",
+        "propose-change-intelligence"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/05_evolution_intelligence/capability-graph/manifest.yaml",
+      "source_sha256": "449007891612e12c9152a66ace506f1ebe2becb209e78db6a7620c76da2a328f"
+    },
+    {
+      "id": "decision-graph",
+      "title": "Decision Graph",
+      "category": "Evolution Intelligence",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Connect architectural and operational decisions to evidence, assumptions, alternatives, implementations, and later outcomes.",
+      "invariant": "A decision is not just prose; it has dependencies and consequences that remain queryable.",
+      "inputs": [
+        "decision record",
+        "evidence",
+        "affected capabilities"
+      ],
+      "outputs": [
+        "decision node",
+        "typed relationships",
+        "supersession alerts"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "skill-admission-controller",
+        "skill-coexecution-graph-builder",
+        "propose-change-intelligence"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/05_evolution_intelligence/decision-graph/manifest.yaml",
+      "source_sha256": "ff630820517bfb82a141a9d89633cec2de94a3bda5ba4f3d1bd3cf659f970922"
+    },
+    {
+      "id": "drift-radar",
+      "title": "Drift Radar",
+      "category": "Evolution Intelligence",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Compare declared architecture, documentation, memory, tests, policies, and runtime behavior to detect divergence.",
+      "invariant": "Passing tests do not prove the system still matches its declared design.",
+      "inputs": [
+        "declared contracts",
+        "runtime observations",
+        "repo state",
+        "knowledge graph"
+      ],
+      "outputs": [
+        "drift findings",
+        "severity",
+        "repair workstreams"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "skill-admission-controller",
+        "skill-coexecution-graph-builder",
+        "propose-change-intelligence"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/05_evolution_intelligence/drift-radar/manifest.yaml",
+      "source_sha256": "20a8e894b5b3019edf07404fd8ac5a0d2d1f2d089a9413f76bfe97791b007af7"
+    },
+    {
+      "id": "engineering-receipts",
+      "title": "Engineering Receipts",
+      "category": "Evolution Intelligence",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Generate compact, durable receipts for changes, decisions, validations, deployments, and incidents.",
+      "invariant": "A receipt states what happened, why, evidence, tradeoffs, validation, and recovery path.",
+      "inputs": [
+        "intent",
+        "execution events",
+        "validation results",
+        "decision records"
+      ],
+      "outputs": [
+        "human-readable receipt",
+        "machine record",
+        "linked evidence"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "skill-admission-controller",
+        "skill-coexecution-graph-builder",
+        "propose-change-intelligence"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/05_evolution_intelligence/engineering-receipts/manifest.yaml",
+      "source_sha256": "a3363b4df4398cf614b07b5166a61d61f7d207e23d1d804469105eea73d52d1d"
+    },
+    {
+      "id": "framework-dna",
+      "title": "Framework DNA Extractor",
+      "category": "Evolution Intelligence",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Extract reusable architectural principles, governance, naming, testing, and operational patterns from a successful project.",
+      "invariant": "Framework DNA captures principles and contracts, not a blind copy of project-specific files.",
+      "inputs": [
+        "project topology",
+        "decision graph",
+        "validated patterns"
+      ],
+      "outputs": [
+        "DNA profile",
+        "bootstrap modules",
+        "project-specific exclusions"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "analyze-engineering-intelligence",
+        "forge-skills-from-knowledge"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/05_evolution_intelligence/framework-dna/manifest.yaml",
+      "source_sha256": "261eea7ccaf7a4d2f33eb913a8b90b7270c3fb155e3bfe637fdfb5b12e6de712"
+    },
+    {
+      "id": "opportunity-miner",
+      "title": "Opportunity Miner",
+      "category": "Evolution Intelligence",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Identify where repeated effort, manual review, latency, or error concentration justifies a new skill, tool, or orchestration.",
+      "invariant": "Automation opportunities are prioritized by measured value and risk, not novelty.",
+      "inputs": [
+        "work metrics",
+        "human correction logs",
+        "pattern candidates",
+        "bottlenecks"
+      ],
+      "outputs": [
+        "opportunity backlog",
+        "value estimate",
+        "automation hypothesis"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "analyze-engineering-intelligence",
+        "forge-skills-from-knowledge"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/05_evolution_intelligence/opportunity-miner/manifest.yaml",
+      "source_sha256": "bafb0a89f5a56f18c15629d8898c16befe8b709c5beca2d0a27d68e185f8ae9f"
+    },
+    {
+      "id": "orchestration-dependency-graph",
+      "title": "Orchestration Dependency Graph",
+      "category": "Evolution Intelligence",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Map orchestrations to their skills, tools, data, policies, outputs, side effects, and downstream consumers.",
+      "invariant": "No orchestration is treated as an isolated script when other workflows depend on it.",
+      "inputs": [
+        "orchestration manifests",
+        "runtime traces",
+        "artifact references"
+      ],
+      "outputs": [
+        "dependency graph",
+        "cycle alerts",
+        "impact queries"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "skill-admission-controller",
+        "skill-coexecution-graph-builder",
+        "propose-change-intelligence"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/05_evolution_intelligence/orchestration-dependency-graph/manifest.yaml",
+      "source_sha256": "7a37de7abe92e08a47d7dc1af16b09fc60cc3162308543e5987cad766a3091eb"
+    },
+    {
+      "id": "pattern-miner",
+      "title": "Pattern Miner",
+      "category": "Evolution Intelligence",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Find recurring implementation, validation, diagnostic, and orchestration patterns across workstreams.",
+      "invariant": "Patterns are candidates until validated; repetition alone does not prove good design.",
+      "inputs": [
+        "change histories",
+        "workstream artifacts",
+        "runtime traces"
+      ],
+      "outputs": [
+        "pattern candidates",
+        "supporting examples",
+        "generalization proposal"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "analyze-engineering-intelligence",
+        "forge-skills-from-knowledge"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/05_evolution_intelligence/pattern-miner/manifest.yaml",
+      "source_sha256": "8f2a26f6d829236b0a5c620206f6ace8379293b607909a153a08d64ab7e7951c"
+    },
+    {
+      "id": "skill-evolution-lineage",
+      "title": "Skill Evolution and Lineage",
+      "category": "Evolution Intelligence",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Track skill ancestry, forks, merges, replacements, compatibility, and deprecation over time.",
+      "invariant": "Skill identity and lineage survive renames and reorganizations.",
+      "inputs": [
+        "skill versions",
+        "promotion records",
+        "merge decisions"
+      ],
+      "outputs": [
+        "lineage graph",
+        "upgrade path",
+        "deprecated mappings"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "skill-admission-controller",
+        "skill-coexecution-graph-builder",
+        "propose-change-intelligence"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/05_evolution_intelligence/skill-evolution-lineage/manifest.yaml",
+      "source_sha256": "9e9b1b08c6278da9132b889989beb1f8676faad8a0029118d1cd391a668d8733"
+    },
+    {
+      "id": "skill-health-entropy",
+      "title": "Skill Health and Entropy Manager",
+      "category": "Evolution Intelligence",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Detect stale, duplicated, drifting, over-broad, or unused skills and recommend merge, repair, deprecation, or quarantine.",
+      "invariant": "A large skill count is not automatically healthy; every active skill needs a current purpose and evidence.",
+      "inputs": [
+        "skill registry",
+        "usage telemetry",
+        "test results",
+        "overlap analysis"
+      ],
+      "outputs": [
+        "health score",
+        "entropy alerts",
+        "lifecycle recommendation"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "skill-admission-controller",
+        "skill-coexecution-graph-builder",
+        "propose-change-intelligence"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/05_evolution_intelligence/skill-health-entropy/manifest.yaml",
+      "source_sha256": "a4e2862a02651ac3a5697bc78c5bb9feb64d90cce7630ad775e1fb72dfc11c54"
+    },
+    {
+      "id": "acceptance-gate-controller",
+      "title": "Acceptance Gate Controller",
+      "category": "Validation and Resilience",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Coordinate all required policy, test, security, outcome, documentation, and approval gates before integration or deployment.",
+      "invariant": "A gate cannot be marked passed without attached current evidence.",
+      "inputs": [
+        "workstream result",
+        "risk class",
+        "required gates"
+      ],
+      "outputs": [
+        "gate status",
+        "blockers",
+        "release receipt"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "validate-engineering-outcomes",
+        "outcome-verifier"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/06_validation_resilience/acceptance-gate-controller/manifest.yaml",
+      "source_sha256": "b6f6a7cc7019a5a9988e864e8619c9ab98cb0aa3ae7dd58d9c3f9bda1959bafa"
+    },
+    {
+      "id": "autonomous-benchmark-lab",
+      "title": "Autonomous Benchmark Lab",
+      "category": "Validation and Resilience",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Benchmark skills, agents, models, and orchestrations for quality, latency, cost, resource use, and regression.",
+      "invariant": "Benchmarks use versioned fixtures and report uncertainty; one cherry-picked run proves nothing.",
+      "inputs": [
+        "candidate implementation",
+        "benchmark suite",
+        "resource environment"
+      ],
+      "outputs": [
+        "benchmark report",
+        "comparison",
+        "regression gate"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "analyze-engineering-intelligence",
+        "audit-ai-runtime-assurance",
+        "outcome-verifier"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/06_validation_resilience/autonomous-benchmark-lab/manifest.yaml",
+      "source_sha256": "4445e2f1195e88da090c27f2e9f712cd0d6c41fae38dd81a8aed0a8dba5db47c"
+    },
+    {
+      "id": "change-blast-radius-predictor",
+      "title": "Change Blast-Radius Predictor",
+      "category": "Validation and Resilience",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Predict which components, tests, data, agents, docs, and deployments may be affected by a proposed change.",
+      "invariant": "Prediction informs testing and approval; it never substitutes for validation.",
+      "inputs": [
+        "change intent",
+        "digital twin",
+        "dependency graph",
+        "historical changes"
+      ],
+      "outputs": [
+        "affected surface set",
+        "risk score",
+        "required validation plan"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "validate-engineering-outcomes",
+        "outcome-verifier"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/06_validation_resilience/change-blast-radius-predictor/manifest.yaml",
+      "source_sha256": "8e45110a8d1e55094938d53f41f51aad816dce78f3314948e1a6e72570fbd605"
+    },
+    {
+      "id": "chaos-architect",
+      "title": "Chaos Architect",
+      "category": "Validation and Resilience",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Design bounded failure experiments for services, dependencies, agents, storage, networks, and corrupted inputs.",
+      "invariant": "Chaos testing never exceeds the declared sandbox, safety envelope, or recovery capacity.",
+      "inputs": [
+        "system topology",
+        "failure hypotheses",
+        "environment policy"
+      ],
+      "outputs": [
+        "experiment plan",
+        "abort conditions",
+        "resilience findings"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "analyze-engineering-intelligence",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/06_validation_resilience/chaos-architect/manifest.yaml",
+      "source_sha256": "43d9b3b2c463e77407aeafa011424cdd7476e59c93c2d63c90908fb75df4d19c"
+    },
+    {
+      "id": "interface-contract-catalog",
+      "title": "Interface Contract Catalog",
+      "category": "Validation and Resilience",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Catalog APIs, events, schemas, CLI commands, files, queues, and human handoffs with versioned behavioral contracts.",
+      "invariant": "Interfaces are defined by observable behavior and compatibility, not only type signatures.",
+      "inputs": [
+        "source definitions",
+        "runtime traces",
+        "consumer expectations"
+      ],
+      "outputs": [
+        "contract records",
+        "consumer map",
+        "compatibility alerts"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "validate-engineering-outcomes",
+        "outcome-verifier"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/06_validation_resilience/interface-contract-catalog/manifest.yaml",
+      "source_sha256": "5e7dab9e5cd4b1710969882c3d82ba5288a1492bfa0b9c50e90c2f6abeb9f82a"
+    },
+    {
+      "id": "outcome-contract-validator",
+      "title": "Outcome Contract Validator",
+      "category": "Validation and Resilience",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Verify that actions achieved the intended business and system effect, not merely that commands returned success.",
+      "invariant": "A change passes only when its declared outcome and downstream effects are correct.",
+      "inputs": [
+        "change intent",
+        "outcome contract",
+        "observed system state"
+      ],
+      "outputs": [
+        "pass/fail evidence",
+        "partial-success diagnosis",
+        "remediation task"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "validate-engineering-outcomes",
+        "outcome-verifier"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/06_validation_resilience/outcome-contract-validator/manifest.yaml",
+      "source_sha256": "9805bd3884a3fad7d13fdfdd7e70a04ec11735f33f3a6d6bbc3d2a223a6df33c"
+    },
+    {
+      "id": "regression-causality-engine",
+      "title": "Regression Causality Engine",
+      "category": "Validation and Resilience",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Correlate failures with changes, environment shifts, dependency updates, and agent actions to identify likely causes.",
+      "invariant": "Correlation is reported with confidence and does not become blame without evidence.",
+      "inputs": [
+        "failure evidence",
+        "change history",
+        "environment events",
+        "dependency graph"
+      ],
+      "outputs": [
+        "ranked causes",
+        "supporting evidence",
+        "experiments to discriminate causes"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "analyze-engineering-intelligence"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/06_validation_resilience/regression-causality-engine/manifest.yaml",
+      "source_sha256": "bde5f05d3d5371198c1bf67395ce2c0a0842d5e34a1782bc9bbebde0ec758f79"
+    },
+    {
+      "id": "repository-digital-twin",
+      "title": "Repository Digital Twin",
+      "category": "Validation and Resilience",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Build an analyzable graph model of files, symbols, services, APIs, data, skills, agents, docs, and operational dependencies.",
+      "invariant": "The twin is a derived model for simulation and impact analysis, not a replacement for source-of-truth repositories.",
+      "inputs": [
+        "repository inventory",
+        "manifests",
+        "static analysis",
+        "runtime evidence"
+      ],
+      "outputs": [
+        "versioned twin graph",
+        "inconsistency alerts",
+        "simulation interface"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "analyze-engineering-intelligence",
+        "orchestrate-engineering-loop"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/06_validation_resilience/repository-digital-twin/manifest.yaml",
+      "source_sha256": "b4a57716d400a33a181f989e8f73a84752765d508d5bc711853d0035eb4d9c77"
+    },
+    {
+      "id": "reproducibility-manifest",
+      "title": "Reproducibility Manifest",
+      "category": "Validation and Resilience",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Capture the exact code, data, environment, models, tools, configuration, and commands needed to reproduce a result.",
+      "invariant": "Results without reproducibility metadata are treated as provisional.",
+      "inputs": [
+        "execution environment",
+        "repo revisions",
+        "tool versions",
+        "data references"
+      ],
+      "outputs": [
+        "reproducibility manifest",
+        "environment fingerprint",
+        "replay instructions"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "validate-engineering-outcomes",
+        "outcome-verifier"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/06_validation_resilience/reproducibility-manifest/manifest.yaml",
+      "source_sha256": "d42d5408f4c0cc61fc54e19488a5b2a014861c4cde15e9918a0acf8428efbaea"
+    },
+    {
+      "id": "rollback-rehearsal",
+      "title": "Rollback Rehearsal",
+      "category": "Validation and Resilience",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Prove that rollback, restore, and quarantine recovery procedures work before they are needed in an incident.",
+      "invariant": "A rollback plan is not considered valid until exercised against a representative state.",
+      "inputs": [
+        "change plan",
+        "backup or quarantine artifacts",
+        "test environment"
+      ],
+      "outputs": [
+        "rehearsal evidence",
+        "recovery time",
+        "procedure fixes"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "validate-engineering-outcomes",
+        "outcome-verifier"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/06_validation_resilience/rollback-rehearsal/manifest.yaml",
+      "source_sha256": "7d9e2e444cddf6a0aeb9c1e96eea076c9b04b4af9bf1dfc521aa1da18c11fd47"
+    },
+    {
+      "id": "semantic-contamination-detector",
+      "title": "Semantic Contamination Detector",
+      "category": "Validation and Resilience",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Detect project names, private assumptions, schemas, memories, or embeddings appearing in another project or shared capability.",
+      "invariant": "Cross-project similarity is not automatically evidence of contamination, but unexplained provenance is blocked.",
+      "inputs": [
+        "artifact or context bundle",
+        "project namespaces",
+        "transfer manifests"
+      ],
+      "outputs": [
+        "contamination findings",
+        "provenance gaps",
+        "quarantine action"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "validate-engineering-outcomes",
+        "outcome-verifier"
+      ],
+      "implementation_level": "operational_control_or_validator",
+      "integration_state": "mapped_tested_owner",
+      "source_path": "project_stream_engineering_os/06_validation_resilience/semantic-contamination-detector/manifest.yaml",
+      "source_sha256": "5e32a3c84e4e5504f7d0969e5e7b3888d5a6fccd9aa38fcecf4380ecbc2a5e8c"
+    },
+    {
+      "id": "supply-chain-sentinel",
+      "title": "Supply-Chain Sentinel",
+      "category": "Validation and Resilience",
+      "version": "0.1.0",
+      "source_state": "specification-only",
+      "purpose": "Track third-party packages, tools, models, containers, licenses, provenance, and vulnerability state.",
+      "invariant": "New dependencies are not trusted merely because a package manager can install them.",
+      "inputs": [
+        "dependency manifests",
+        "SBOMs",
+        "model metadata",
+        "policy"
+      ],
+      "outputs": [
+        "risk findings",
+        "approval requirements",
+        "upgrade or removal plan"
+      ],
+      "risk_default": "medium",
+      "target_owners": [
+        "validate-engineering-outcomes",
+        "outcome-verifier"
+      ],
+      "implementation_level": "orchestrated_reference",
+      "integration_state": "mapped_to_existing_owner",
+      "source_path": "project_stream_engineering_os/06_validation_resilience/supply-chain-sentinel/manifest.yaml",
+      "source_sha256": "9292f6d19a5db0102b611da9b381c6976b83f099a88071b590dfd45350ac2069"
+    }
+  ]
+}

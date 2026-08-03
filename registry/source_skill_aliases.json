@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "vendor_source_prefixes": ["reference-"],
+  "aliases": [
+    {"source_id": "config-drift-guardian", "targets": ["enforce-source-import-boundaries", "synchronize-derived-architecture"], "disposition": "merge"},
+    {"source_id": "dependency-graph", "targets": ["dependency-impact-tracer", "validate-knowledge-relationships"], "disposition": "merge"},
+    {"source_id": "framework-health-auditor", "targets": ["audit-source-capabilities", "validate-engineering-outcomes"], "disposition": "merge"},
+    {"source_id": "full-system-validation", "targets": ["run-evidence-campaigns", "validate-engineering-outcomes"], "disposition": "merge"},
+    {"source_id": "goal-definition-gate", "targets": ["commission-project", "orchestrate-engineering-loop"], "disposition": "merge"},
+    {"source_id": "governed-retrieval-system-with-deterministic-rails-activation-gate", "targets": ["evaluate-retrieval-readiness", "engineer-hybrid-retrieval"], "disposition": "merge"},
+    {"source_id": "governed-retrieval-system-with-deterministic-rails-capability-integrator", "targets": ["research-to-capability", "enforce-governance-controls"], "disposition": "merge"},
+    {"source_id": "governed-retrieval-system-with-deterministic-rails-query-bridge", "targets": ["engineer-hybrid-retrieval", "memory-injection-firewall"], "disposition": "merge"},
+    {"source_id": "graphify", "targets": ["validate-knowledge-relationships", "research-to-capability"], "disposition": "reference_only"},
+    {"source_id": "knowledge-graph", "targets": ["validate-knowledge-relationships"], "disposition": "merge"},
+    {"source_id": "performance-check", "targets": ["run-evidence-campaigns", "validate-engineering-outcomes"], "disposition": "merge"},
+    {"source_id": "security-scan", "targets": ["orchestrate-security-validation"], "disposition": "merge"},
+    {"source_id": "skill-supply-chain-auditor", "targets": ["audit-source-capabilities", "quarantine-external-tools"], "disposition": "merge"},
+    {"source_id": "ui-audit", "targets": ["run-evidence-campaigns", "govern-visual-runtime-accessibility"], "disposition": "merge"},
+    {"source_id": "wrapper-contract-tester", "targets": ["manage-mcp-lifecycle", "inspect-live-contracts"], "disposition": "merge"}
+  ]
+}

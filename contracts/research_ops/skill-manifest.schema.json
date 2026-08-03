@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:research_ops:skill-manifest",
+  "title": "intelligent system Governed Skill Manifest",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "owner",
+    "category",
+    "purpose",
+    "activation",
+    "inputs",
+    "outputs",
+    "effects",
+    "permissions",
+    "risk",
+    "budgets",
+    "postconditions",
+    "tests",
+    "provenance"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "activation": {
+      "type": "object"
+    },
+    "inputs": {
+      "type": "object"
+    },
+    "outputs": {
+      "type": "object"
+    },
+    "effects": {
+      "type": "object"
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "risk": {
+      "type": "object"
+    },
+    "budgets": {
+      "type": "object"
+    },
+    "idempotency": {
+      "type": "object"
+    },
+    "postconditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "memory_policy": {
+      "type": "object"
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "type": "object"
+    }
+  }
+}

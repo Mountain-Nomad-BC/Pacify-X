@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:engineering-process-record",
+  "title": "Verified engineering process record",
+  "type": "object",
+  "required": ["schema_version", "goal", "outcome", "decisions", "tools", "steps", "failures", "verification", "reusable_pattern", "evidence"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "goal": {"type": "string", "minLength": 1},
+    "outcome": {"type": "string", "minLength": 1},
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["decision", "reason", "alternatives"],
+        "properties": {
+          "decision": {"type": "string"},
+          "reason": {"type": "string"},
+          "alternatives": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["tool", "reason", "effects"],
+        "properties": {
+          "tool": {"type": "string"},
+          "reason": {"type": "string"},
+          "effects": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "steps": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["failure", "recovery", "verified"],
+        "properties": {
+          "failure": {"type": "string"},
+          "recovery": {"type": "string"},
+          "verified": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "verification": {
+      "type": "object",
+      "required": ["outcome_met", "checks"],
+      "properties": {
+        "outcome_met": {"type": "boolean"},
+        "checks": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      },
+      "additionalProperties": false
+    },
+    "reusable_pattern": {"type": "string", "minLength": 1},
+    "evidence": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true}
+  },
+  "additionalProperties": false
+}

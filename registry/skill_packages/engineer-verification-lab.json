@@ -1,0 +1,36 @@
+{
+  "body": ".agents/skills/engineer-verification-lab/SKILL.md",
+  "body_sha256": "268b6dabad70bf2dddac2991040b5f7caf92724395ddbd670d2d54521020f130",
+  "capability_tags": [
+    "authoritative",
+    "declared-suite",
+    "engineer",
+    "lab",
+    "verification"
+  ],
+  "clean_room": false,
+  "context_budget_bytes": 32768,
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "evidence": "evidence/external-audit-disposition-20260803.json",
+  "id": "engineer-verification-lab",
+  "provenance": {
+    "basis": [
+      "registry/declared_suite_authoritative_tools.json",
+      "registry/declared_suite_schema_contracts.json",
+      "evidence/rel008-assimilation.json"
+    ],
+    "type": "authoritative_contract_and_safe_body_assimilation",
+    "unsafe_body_policy": "shell execution and hard deletion bodies rejected in favor of tested bounded replacements"
+  },
+  "references": [
+    ".agents/skills/engineer-verification-lab/references/capabilities-index.json",
+    ".agents/skills/engineer-verification-lab/references/scripts-index.json"
+  ],
+  "status": "active",
+  "tests": "tests/test_exact_tool_certification.py",
+  "validation_freshness": "current",
+  "version": "0.2.0"
+}

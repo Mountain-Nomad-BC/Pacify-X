@@ -1,0 +1,37 @@
+id: control-plane-workflow
+version: 0.1.0
+status: active
+inputs:
+  - request_envelope
+  - identity_scope
+  - policy_context
+steps:
+  - id: classify
+    produces: [intent, risk]
+  - id: navigate
+    capability: skill-navigator
+    consumes: [intent, risk, capability_index]
+    produces: [candidate_bundle, selection_trace]
+  - id: admit
+    capability: skill-admission-controller
+    consumes: [candidate_bundle, provenance, policy_context]
+    produces: [admission_decision]
+  - id: authorize
+    capability: execution-contract-enforcer
+    consumes: [admission_decision, effects, budgets]
+    produces: [execution_envelope]
+  - id: assemble-evidence
+    capability: evidence-assembler
+    consumes: [execution_envelope, tool_results, source_records]
+    produces: [evidence_package]
+  - id: verify
+    capability: outcome-verifier
+    consumes: [request_envelope, evidence_package, postconditions]
+    produces: [verification_decision]
+  - id: checkpoint-and-unload
+    produces: [checkpoint, unload_plan]
+gates:
+  - admission_decision == admit
+  - execution_envelope.approved == true
+  - verification_decision.status in [verified, partial, blocked, failed]
+effects: [read_local]

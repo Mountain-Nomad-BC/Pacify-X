@@ -1,0 +1,69 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:scheduling:capability_advertisement",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "capability_id": {
+      "type": "string"
+    },
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "execution_targets": {
+      "items": {
+        "enum": [
+          "deterministic",
+          "local_cpu",
+          "local_gpu",
+          "private_remote",
+          "cloud"
+        ]
+      },
+      "type": "array"
+    },
+    "failure_modes": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "latency_p50_seconds": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "policy_tags": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "provides": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "quality": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "resource_request": {
+      "$ref": "resource_request.schema.json"
+    },
+    "success_rate": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    }
+  },
+  "required": [
+    "capability_id",
+    "provides",
+    "execution_targets",
+    "quality"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "classification": "optional domain reference pack; excluded from the independent bootstrap runtime",
+  "source_files": 26,
+  "unique_content_hashes": 19,
+  "duplicate_files": 7,
+  "runtime_loaded": false,
+  "reason": "domain-specific physical-system material is not a general bootstrap dependency",
+  "operationalized_controls": [
+    "runtime/foundation_assurance.py",
+    ".agents/skills/validate-engineering-outcomes/SKILL.md",
+    ".agents/skills/validate-engineering-outcomes/references/calculation-evidence.md"
+  ],
+  "custody_index": "evidence/externalized-payload-index.json"
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "cases": [
+    {
+      "id": "source-reconciliation",
+      "goal": "audit every source file and reconcile staged capabilities",
+      "must_include": ["audit-source-capabilities"],
+      "must_exclude": ["dynamic-skill-detonator"],
+      "max_candidates": 3,
+      "constraints": {"max_risk": "R2"}
+    },
+    {
+      "id": "project-isolation",
+      "goal": "manage multiple project streams without memory bleeding across projects",
+      "must_include": ["isolate-project-streams"],
+      "must_exclude": [],
+      "max_candidates": 3,
+      "constraints": {"max_risk": "R2"}
+    },
+    {
+      "id": "retrieval-readiness",
+      "goal": "build governed hybrid retrieval and measure ranking recall",
+      "must_include": ["engineer-hybrid-retrieval", "evaluate-retrieval-readiness"],
+      "must_exclude": [],
+      "max_candidates": 3,
+      "constraints": {"max_risk": "R2"}
+    },
+    {
+      "id": "deployment-recovery",
+      "goal": "validate deployment rollback and resilience recovery",
+      "must_include": ["govern-deployment-safety"],
+      "must_exclude": [],
+      "max_candidates": 3,
+      "constraints": {"max_risk": "R2"}
+    },
+    {
+      "id": "model-architecture-inspection",
+      "goal": "inspect an untrusted LLM config and estimate parameters KV cache and memory without importing model code",
+      "must_include": ["inspect-llm-architecture"],
+      "must_exclude": ["deploy-isolated-model-worker"],
+      "max_candidates": 3,
+      "constraints": {"max_risk": "R2"}
+    },
+    {
+      "id": "local-model-feasibility",
+      "goal": "rank quantization offload streaming retrieval and remote alternatives for local model deployment with privacy and hardware constraints",
+      "must_include": ["plan-local-model-deployment"],
+      "must_exclude": [],
+      "max_candidates": 3,
+      "constraints": {"max_risk": "R2"}
+    }
+  ]
+}

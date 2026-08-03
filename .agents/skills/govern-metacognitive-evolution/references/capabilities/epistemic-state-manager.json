@@ -1,0 +1,67 @@
+{
+  "dependencies": [
+    "claim-evidence-ledger",
+    "unknown-field-guardian"
+  ],
+  "domain": "reasoning-kernel",
+  "failure_modes": [
+    "false certainty",
+    "evidence double counting",
+    "premature convergence",
+    "scope or timestamp collapse"
+  ],
+  "formula_refs": [
+    "bayes-update",
+    "shannon-entropy",
+    "temporal-evidence-decay"
+  ],
+  "id": "epistemic-state-manager",
+  "inputs": [
+    "claims/evidence",
+    "task context",
+    "scope and time metadata"
+  ],
+  "invariants": [
+    "Unknowns are never silently converted to facts.",
+    "Confidence changes require evidence lineage.",
+    "High-impact uncertainty triggers testing, abstention, or escalation."
+  ],
+  "outputs": [
+    "machine-readable reasoning artifact",
+    "uncertainty and provenance record",
+    "decision or next-test recommendation"
+  ],
+  "procedure": [
+    "Normalize inputs and scope.",
+    "Separate observations, inferences, assumptions, unknowns, and policy choices.",
+    "Apply the referenced method with visible component values.",
+    "Test alternatives, contradictions, and failure conditions.",
+    "Emit a bounded result with provenance and residual uncertainty."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Represent observations, inferences, assumptions, disputes, hypotheses, unknowns, confidence, and provenance as an explicit decision-safe state.",
+  "title": "Epistemic State Manager",
+  "version": "1.0.0",
+  "when_to_use": "Use whenever material information is incomplete, conflicting, probabilistic, stale, or scope-sensitive."
+}

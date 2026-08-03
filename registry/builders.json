@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "builders": [
+    {"id": "skill-builder", "module": "engineering_bootstrap.builders.skill_builder", "provides": ["skill_candidate"], "consumes": ["capability_gap"], "effects": ["read_local"], "uses": ["skill-admission-controller"]},
+    {"id": "orchestration-builder", "module": "engineering_bootstrap.builders.orchestration_builder", "provides": ["orchestration_candidate"], "consumes": ["capability_contracts"], "effects": ["read_local"], "uses": ["workflow-orchestrator"]},
+    {"id": "adapter-builder", "module": "engineering_bootstrap.builders.adapter_builder", "provides": ["adapter_candidate"], "consumes": ["type_contracts"], "effects": ["read_local"], "uses": []},
+    {"id": "repair-pattern-builder", "module": "engineering_bootstrap.builders.repair_pattern_builder", "provides": ["repair_pattern_candidate"], "consumes": ["failure_record"], "effects": ["read_local"], "uses": ["diagnose-python-repair"]},
+    {"id": "test-evidence-builder", "module": "engineering_bootstrap.builders.test_evidence_builder", "provides": ["test_evidence_candidate"], "consumes": ["test_results"], "effects": ["read_local"], "uses": ["evidence-assembler", "outcome-verifier"]}
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "classification": "closed external-source admission evidence; not runtime input",
+  "indexed_files": 6353,
+  "source_alias_count": 27,
+  "source_tree_sha256": "e312f3b7203ec6cd034d8eca6324ceba5df7f630dfbb6931af31b4359f670342",
+  "text_metadata_records": 5558,
+  "parse_failure_count": 0,
+  "candidate_manifests": 561,
+  "clean_room_contract_candidates": 36,
+  "reference_metadata_only": 525,
+  "catalog_skills_at_final_plan": 58,
+  "final_plan_sha256": "c691701961e2fd09dad50ffee58024eef74bfa7e9ecf92a6567d9a6201fd18d2",
+  "superseded_plan_sha256": "dd168358b0f9c5b93a22a7111a9d06fce25cd8d5ef647373275747397b4402c7",
+  "requirement_cards": 75,
+  "requirement_disposition_sha256": "1a9ec3d948029348867daccbdad3dd3ca89d3da3136ca4b2afab5d51d270861e",
+  "runtime_truth": "Only active/admitted skill catalog records can be selected or hydrated. Candidate and mapped-deferred records remain inert.",
+  "owners": [
+    "registry/skill_catalog.toml",
+    "registry/admission_ledger.json",
+    "registry/reference_candidate_admission.json",
+    "runtime/registry.py",
+    "runtime/lazy_loader.py"
+  ],
+  "custody_index": "evidence/externalized-payload-index.json"
+}

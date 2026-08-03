@@ -1,0 +1,52 @@
+{
+  "id": "audit-incomplete-implementations",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/audit-incomplete-implementations/SKILL.md",
+  "body_sha256": "220e3e23f737071eff9060e5b1fe9866c77759088791586e86d72b4c3b4693c7",
+  "references": [],
+  "resources": [
+    ".agents/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
+    ".agents/skills/audit-incomplete-implementations/scripts/reconcile_incomplete_findings.py"
+  ],
+  "capability_tags": [
+    "completeness",
+    "stub",
+    "fallback",
+    "audit"
+  ],
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "provenance": {
+    "type": "clean_room",
+    "basis": [
+      {
+        "receipt": "broad-reference-and-code-snapshot",
+        "report_sha256": "3b22626a09aa2b00075f86312fcc5080f055cf2d6a0b2817b7ec9fab9a2bec2a"
+      },
+      {
+        "receipt": "control-plane-focus-pass",
+        "report_sha256": "a2dd7eeb2c7cd5028e450a285473f01627861b6d8d904524a238c7255bdc3a32"
+      },
+      {
+        "receipt": "tooling-audit-intake-pass",
+        "report_sha256": "72d873f6e4268dfba718aa41b31150658774163974ca8335e86080cbf4fa9b39"
+      },
+      {
+        "receipt": "simulation-skill-focus-pass",
+        "report_sha256": "4c7bbec98dcccda2066b7b57aeb54530c574ce4c2ee80583ad6c13aaf5816107"
+      },
+      {
+        "receipt": "engineering-skill-focus-pass",
+        "report_sha256": "6142489104e2b9e51b8d3a3b16821242c60e7846f52a6d2b42d731a9f7711833"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_capability_mining_skills.py; tests/test_capability_assimilation.py",
+  "evidence": "evidence/capability-mining-receipt.json",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

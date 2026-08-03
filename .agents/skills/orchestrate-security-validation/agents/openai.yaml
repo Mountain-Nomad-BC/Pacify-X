@@ -1,0 +1,4 @@
+interface:
+  display_name: "Orchestrate Security Validation"
+  short_description: "Order scanners and summarize safe findings"
+  default_prompt: "Use $orchestrate-security-validation to perform this workflow with explicit evidence and safety boundaries."

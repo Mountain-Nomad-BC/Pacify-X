@@ -1,0 +1,34 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:evaluation-case",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "input": {
+      "type": "object"
+    },
+    "oracle": {
+      "type": "object"
+    },
+    "tags": {
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "id",
+    "input",
+    "oracle",
+    "tags"
+  ],
+  "title": "Evaluation Case",
+  "type": "object"
+}

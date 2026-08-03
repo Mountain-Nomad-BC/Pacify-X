@@ -1,0 +1,36 @@
+{
+  "id": "trace-to-skill-compiler",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/trace-to-skill-compiler/SKILL.md",
+  "body_sha256": "609452f65cb671be3d8efab56dd3c14843b438de5b731618aaa15495ea9605c1",
+  "references": [],
+  "capability_tags": [
+    "compiler",
+    "improvement",
+    "skill",
+    "to",
+    "trace"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_bc463d0d.md",
+        "sha256": "ff883a871cc04573749f9f23b727c49ddc3a6cddd61341538b50c140ec20faa6"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_8a125c1a.yaml",
+        "sha256": "773e8e6625e553945b000d1843ffae8bf15f6c5fb430c984a3e43db2edcb0f5d"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

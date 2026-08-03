@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "release": "REL-010",
+  "status": "passed",
+  "source_cards": 23,
+  "child_findings": 12,
+  "total_cards": 35,
+  "duplicate_card_ids": 0,
+  "omitted_source_cards": 0,
+  "unknown_source_cards": 0,
+  "closed_without_receipt": 0,
+  "validation": {
+    "command": "python -m pytest -q -p no:cacheprovider tests/test_corrective_release.py",
+    "tests": 4,
+    "failures": 0
+  }
+}

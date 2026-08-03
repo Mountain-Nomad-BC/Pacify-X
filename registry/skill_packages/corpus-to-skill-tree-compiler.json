@@ -1,0 +1,37 @@
+{
+  "id": "corpus-to-skill-tree-compiler",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/corpus-to-skill-tree-compiler/SKILL.md",
+  "body_sha256": "8dc0bedfb2dc97319ff2d5a8048a2cee8bd61ead2bb2baaa522a0fad5fd3d824",
+  "references": [],
+  "capability_tags": [
+    "compiler",
+    "corpus",
+    "knowledge",
+    "skill",
+    "to",
+    "tree"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_e0a6569e.md",
+        "sha256": "7fcd380876f3f132bfef10570281d2a1132fe26f1453d91477a096ee19410fed"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_39d51c09.yaml",
+        "sha256": "c4f7ce403f9e39bae66bb4a437da43f9d9c55268c8a6e0dd1dcbe1fa47872fcb"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

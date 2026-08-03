@@ -1,0 +1,67 @@
+id: dependency-impact-tracer
+version: 0.1.0
+status: draft
+owner: framework owner
+category: engineering
+priority: P1
+purpose: Predict downstream effects of changing a skill, tool, schema, state, model,
+  policy, or data contract.
+activation:
+  when:
+  - component change proposed
+  - deprecation or migration planned
+  not_when:
+  - documentation-only change has no executable effect
+inputs:
+  required:
+  - behavior graph
+  - dependency graph
+  - registry refs
+  - tests
+  - telemetry consumers
+  - versions
+outputs:
+  produces: &id001
+  - affected components
+  - required tests
+  - migration steps
+  - risk
+  - rollback dependencies
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- behavior mapper
+- registries
+- CI gates
+- promotion
+risk:
+  tier: R1
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- escaped impact defects
+- false positives
+- test selection accuracy
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - harness-handbook

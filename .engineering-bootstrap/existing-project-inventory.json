@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "mode": "read_only",
+  "root_name": "Pacify-X",
+  "file_count": 632,
+  "truncated": false,
+  "inventory_sha256": "f35c0ad33c8534d178851e2407efad8e40202e13b9055b557914a0e39ed58e52",
+  "languages": {
+    "python": 134
+  },
+  "frameworks": [
+    "python"
+  ],
+  "tests": [
+    "builders/test_evidence_builder.py",
+    "knowledge/project_stream_reference/examples/example_isolation_test.md",
+    "tests/test_admission_controller.py",
+    "tests/test_archive_inventory.py",
+    "tests/test_assurance_controls.py",
+    "tests/test_bootstrap_cli.py",
+    "tests/test_cache_quarantine.py",
+    "tests/test_cli_commands.py",
+    "tests/test_closed_intake_quarantine.py",
+    "tests/test_cognitive_assurance.py",
+    "tests/test_commissioning_apply.py",
+    "tests/test_config_and_registry.py",
+    "tests/test_corpus_pipeline.py",
+    "tests/test_drop_in_bootstrap.py",
+    "tests/test_engineering_intelligence.py",
+    "tests/test_evidence_assembler.py",
+    "tests/test_execution_contract.py",
+    "tests/test_external_behavior_intake.py",
+    "tests/test_foundation_assurance.py",
+    "tests/test_graphs_and_orchestrations.py",
+    "tests/test_installed_wheel_e2e.py",
+    "tests/test_intake_lifecycle.py",
+    "tests/test_integration_acceptance.py",
+    "tests/test_knowledge_foundry.py",
+    "tests/test_memory_fabric.py",
+    "tests/test_memory_operations.py",
+    "tests/test_memory_vault.py",
+    "tests/test_operational_controls.py",
+    "tests/test_orchestrator.py",
+    "tests/test_outcome_verifier.py",
+    "tests/test_project_control_plane.py",
+    "tests/test_project_onboarding.py",
+    "tests/test_project_stream_controls.py",
+    "tests/test_project_stream_orchestrator.py",
+    "tests/test_provider_certification.py",
+    "tests/test_retrieval_and_models.py",
+    "tests/test_root_intake_reconciliation.py",
+    "tests/test_runtime_wave4.py",
+    "tests/test_sanitization_audit.py",
+    "tests/test_sanitize_tree.py",
+    "tests/test_skill_library.py",
+    "tests/test_skill_navigator.py",
+    "tests/test_skills_bootstrap_migration.py",
+    "tests/test_source_build_migration.py",
+    "tests/test_specialty_map.py",
+    "tests/test_system_graph.py",
+    "tests/test_temp2_completeness.py",
+    "tests/test_temp2_integration.py",
+    "tests/test_wave5_builders.py",
+    "tests/test_workspace_root_reconciliation.py"
+  ],
+  "security_assets": [
+    ".agents/skills/diagnose-python-repair/references/security-data.md",
+    ".agents/skills/enforce-governance-controls/references/authorization-visibility.md",
+    "bootstrap/commissioning/reference/04_GOVERNANCE_SECURITY_ACCESSIBILITY_AND_OPERATIONS.md",
+    "contracts/policy-contract.schema.json",
+    "knowledge/project_stream_reference/foundations/07_THREAT_MODEL_AND_FAILURE_MODES.md",
+    "models/benchmark-policy.json",
+    "models/routing-policy.json",
+    "policies/policy_index.json"
+  ],
+  "ci_assets": [],
+  "canonical_owner_candidates": [
+    "AGENTS.md",
+    "knowledge/research_operations/pyproject.toml",
+    "pyproject.toml"
+  ],
+  "gap_matrix": [
+    "CI discovery produced no candidates"
+  ],
+  "proposed_integrations": [
+    "project-scoped metadata registry",
+    "bounded validation profile"
+  ],
+  "minimal_patch_path": [
+    "add .engineering-bootstrap metadata",
+    "preserve existing owners",
+    "install no tools"
+  ]
+}

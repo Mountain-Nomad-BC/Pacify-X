@@ -1,0 +1,68 @@
+id: scenario-audit-generator
+version: 0.1.0
+status: draft
+owner: framework owner
+category: evaluation
+priority: P1
+purpose: Generate realistic pressure, injection, stale-data, conflict, permission,
+  and deception scenarios.
+activation:
+  when:
+  - capability/model/policy/tool promoted
+  - security gap suspected
+  not_when:
+  - live sensitive data or uncontrolled effects required
+inputs:
+  required:
+  - capability map
+  - risk model
+  - incident history
+  - policy
+  - tool effects
+  - data classes
+outputs:
+  produces: &id001
+  - versioned scenarios
+  - invariants
+  - rubric
+  - fixtures
+  - coverage
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- intelligent system evaluation
+- security testing
+- skill detonation
+- CI
+risk:
+  tier: R1
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- unique failures
+- reproducibility
+- regression recurrence
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - gram
+  - honeypot-evals

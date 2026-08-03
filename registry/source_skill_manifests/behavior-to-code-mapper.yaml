@@ -1,0 +1,70 @@
+id: behavior-to-code-mapper
+version: 0.1.0
+status: draft
+owner: framework owner
+category: engineering
+priority: P0
+purpose: Map runtime behaviors to code, states, tools, policies, tests, telemetry,
+  and dependencies.
+activation:
+  when:
+  - behavior must be changed/audited/debugged
+  - harness logic is distributed
+  not_when:
+  - known isolated function needs no impact map
+inputs:
+  required:
+  - repositories
+  - AST/call graphs
+  - routes
+  - state machines
+  - manifests
+  - traces
+  - tests
+outputs:
+  produces: &id001
+  - behavior graph
+  - source locations
+  - impact set
+  - coverage gaps
+  - handbook entries
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- engineering companion
+- Graphify
+- Obsidian
+- intelligent system registry
+- test inventory
+risk:
+  tier: R2
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- mapping coverage
+- impact precision
+- stale edges
+- time to locate
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - harness-handbook

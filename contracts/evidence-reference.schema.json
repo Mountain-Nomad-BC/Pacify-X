@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:evidence-reference",
+  "title": "External Evidence Reference",
+  "type": "object",
+  "required": ["reference_id", "required_for", "availability", "bundle_id", "manifest", "sha256", "retention", "verification_mode", "runtime_required"],
+  "additionalProperties": false,
+  "properties": {
+    "reference_id": {"type": "string", "minLength": 1},
+    "required_for": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "availability": {"type": "string", "enum": ["bundled_inventory", "bundled_complete", "external_optional", "unavailable_historical"]},
+    "bundle_id": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "manifest": {"type": "string", "pattern": "^evidence/bundles/[A-Za-z0-9._/-]+\\.json$"},
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "retention": {"type": "string", "minLength": 1},
+    "verification_mode": {"type": "string", "enum": ["bundled_manifest_and_inventory_hash", "bundled_complete_hash", "external_content_address"]},
+    "runtime_required": {"type": "boolean"}
+  }
+}

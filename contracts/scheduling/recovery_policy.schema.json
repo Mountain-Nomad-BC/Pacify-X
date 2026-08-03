@@ -1,0 +1,46 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:scheduling:recovery_policy",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "actions": {
+      "items": {
+        "enum": [
+          "retry",
+          "alternate_capability",
+          "alternate_target",
+          "degraded_mode",
+          "human_escalation",
+          "rollback",
+          "safe_stop"
+        ]
+      },
+      "type": "array"
+    },
+    "backoff_seconds": {
+      "items": {
+        "minimum": 0,
+        "type": "number"
+      },
+      "type": "array"
+    },
+    "max_attempts": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "requires_idempotency": {
+      "type": "boolean"
+    },
+    "retryable_errors": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "max_attempts",
+    "actions"
+  ],
+  "type": "object"
+}

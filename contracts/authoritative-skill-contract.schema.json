@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:authoritative-skill-contract",
+  "title": "Authoritative Skill Contract",
+  "type": "object",
+  "required": ["id", "name", "summary", "version"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$"},
+    "name": {"type": "string", "minLength": 1},
+    "summary": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "category": {"type": "string", "minLength": 1},
+    "security_class": {"type": "string", "enum": ["low", "moderate", "high", "critical"]},
+    "permissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "filesystem_read": {"type": "array", "items": {"type": "string"}, "maxItems": 64},
+        "filesystem_write": {"type": "array", "items": {"type": "string"}, "maxItems": 64},
+        "network": {"type": "array", "items": {"type": "string"}, "maxItems": 64},
+        "process": {"type": "array", "items": {"type": "string"}, "maxItems": 64}
+      }
+    }
+  }
+}

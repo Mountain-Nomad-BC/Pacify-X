@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project-management",
+  "title": "Governed project-management state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project",
+    "lifecycle",
+    "controls",
+    "work",
+    "knowledge",
+    "governance",
+    "checkpoint",
+    "evidence",
+    "commissioning_outputs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "root",
+        "mode"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "root": {
+          "const": "."
+        },
+        "mode": {
+          "enum": [
+            "new",
+            "existing"
+          ]
+        },
+        "workspace_id": {
+          "type": "string",
+          "pattern": "^wsp_"
+        },
+        "workspace_binding": {
+          "const": ".engineering-bootstrap/workspace-binding.json"
+        },
+        "central_tracking": {
+          "type": "string",
+          "pattern": "^projects_tracking/projects/prj_"
+        },
+        "memory_namespace": {
+          "type": "string",
+          "pattern": "^project/prj_"
+        }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "required": [
+        "phase",
+        "status",
+        "next_action"
+      ],
+      "properties": {
+        "phase": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "next_action": {
+          "type": "string"
+        }
+      }
+    },
+    "controls": {
+      "type": "object",
+      "required": [
+        "proposal_before_mutation",
+        "explicit_approval_for_writes",
+        "quarantine_only_cleanup",
+        "metadata_only_startup",
+        "maximum_selected_skills",
+        "checkpoint_after_material_steps"
+      ]
+    },
+    "work": {
+      "type": "object",
+      "required": [
+        "objective",
+        "scope",
+        "active_punch_card",
+        "milestones",
+        "backlog"
+      ]
+    },
+    "knowledge": {
+      "type": "object",
+      "required": [
+        "facts",
+        "assumptions",
+        "contradictions",
+        "unknowns"
+      ]
+    },
+    "governance": {
+      "type": "object",
+      "required": [
+        "assumptions",
+        "risks",
+        "decisions",
+        "pending_approvals"
+      ]
+    },
+    "checkpoint": {
+      "type": "object",
+      "required": [
+        "revision",
+        "repository",
+        "versions",
+        "approved_effects",
+        "active_skills",
+        "tool_versions",
+        "runtime_version",
+        "changed_file_sha256",
+        "validation",
+        "budgets",
+        "failures",
+        "retries",
+        "degraded_components",
+        "open_circuits",
+        "next_safe_action"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "required": [
+        "commissioning_receipt",
+        "existing_project_inventory",
+        "validation_receipt"
+      ]
+    },
+    "commissioning_outputs": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

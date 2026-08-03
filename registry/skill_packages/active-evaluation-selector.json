@@ -1,0 +1,34 @@
+{
+  "id": "active-evaluation-selector",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/active-evaluation-selector/SKILL.md",
+  "body_sha256": "4ae28d38833be838da409fd01ea4c45cdeb6b47e21ca20d469fe45fd5a34faa4",
+  "references": [],
+  "capability_tags": [
+    "active",
+    "evaluation",
+    "selector"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_e49891c7.md",
+        "sha256": "ff7cbc709a46c299e61d626ea4f448158b2c32effc63fd7120f87908697c5ac6"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_c50a37dd.yaml",
+        "sha256": "3db32d083ad9893cc0ef546b2de9a17c313afcff3270eca2045fa7125781a647"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

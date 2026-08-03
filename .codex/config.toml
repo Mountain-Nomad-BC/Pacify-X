@@ -1,0 +1,5 @@
+# Project-scoped settings only. Provider, credentials, model, and global profile stay user-owned.
+project_doc_max_bytes = 32768
+
+[agents]
+max_concurrent_threads_per_session = 2

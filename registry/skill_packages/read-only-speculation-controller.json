@@ -1,0 +1,36 @@
+{
+  "id": "read-only-speculation-controller",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/read-only-speculation-controller/SKILL.md",
+  "body_sha256": "9f80c8f11157a2fa0a97293ef0affaf01ae1eb5904a4d2352a661c97e714852e",
+  "references": [],
+  "capability_tags": [
+    "advanced",
+    "controller",
+    "only",
+    "read",
+    "speculation"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_171d9e8d.md",
+        "sha256": "040bd208cf50f5226c8492ae7ce828c0097ec437c52edefb41f18981c42cd5fa"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_e9e1cb7f.yaml",
+        "sha256": "887c6029495849b97893e387646cfdcdc6373af406aa82f792acecbd7dcdf563"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

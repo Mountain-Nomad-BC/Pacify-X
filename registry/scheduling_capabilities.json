@@ -1,0 +1,546 @@
+{
+  "capabilities": [
+    {
+      "authoritative_contract": "# Adaptive Performance Router Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: adaptive-performance-router\ndescription: Learn from runtime outcomes and update routing preferences without silently changing acceptance requirements.\nversion: 1.0.0\n---\n\n# Adaptive Performance Router\n\n## Purpose\nLearn from runtime outcomes and update routing preferences without silently changing acceptance requirements.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Learn from runtime outcomes and update routing preferences without silently changing acceptance requirements.",
+      "id": "adaptive-performance-router",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "3ac2e07fd3f6661ba2f7327c2e98c4797f84ebb0c43c2f8ca3d5d2b4352dd868",
+      "source_contract_sha256": "440c31977f101badea4cecea7e8bfc8ab1e84814ba083e6a64e3c1c95f7ee73f",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Blackboard Work Coordinator Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: blackboard-work-coordinator\ndescription: Coordinate loosely coupled agents through task publication, claims, leases, evidence returns, and next-wave generation.\nversion: 1.0.0\n---\n\n# Blackboard Work Coordinator\n\n## Purpose\nCoordinate loosely coupled agents through task publication, claims, leases, evidence returns, and next-wave generation.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Coordinate loosely coupled agents through task publication, claims, leases, evidence returns, and next-wave generation.",
+      "id": "blackboard-work-coordinator",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "5b687c882633d3d0cbe73f4ca4e1a674dbe1fa240751bd874cf20c7bdce03107",
+      "source_contract_sha256": "a93d784fd77681cfd052b47fbd81005ba041be60566894fb094da930735a00f4",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Capability Marketplace Broker Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: capability-marketplace-broker\ndescription: Support claim/bid/award execution where capabilities advertise contracts and compete for tasks.\nversion: 1.0.0\n---\n\n# Capability Marketplace Broker\n\n## Purpose\nSupport claim/bid/award execution where capabilities advertise contracts and compete for tasks.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Support claim/bid/award execution where capabilities advertise contracts and compete for tasks.",
+      "id": "capability-marketplace-broker",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "6608843ab7f4218af7e676d289a78033a70e985d351159560e3036b6d750537b",
+      "source_contract_sha256": "2415c3c3dbf4aa42215b92040d23225feb30bc8af916f4e5f61870041a4ff02e",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Concurrency Rate Limit Governor Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: concurrency-rate-limit-governor\ndescription: Enforce global, provider, model, endpoint, tenant, and resource-specific concurrency and rate limits.\nversion: 1.0.0\n---\n\n# Concurrency Rate Limit Governor\n\n## Purpose\nEnforce global, provider, model, endpoint, tenant, and resource-specific concurrency and rate limits.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Enforce global, provider, model, endpoint, tenant, and resource-specific concurrency and rate limits.",
+      "id": "concurrency-rate-limit-governor",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "73414ee15efc9af1e5370e66bc8a032096c82208859f1166c7ff2c29f2246709",
+      "source_contract_sha256": "f4c290e5a65365aafd329f506b368b72c289dcfc2b81747056e8e96b4aa29722",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Confidence Aware Scheduler Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: confidence-aware-scheduler\ndescription: Allocate verification and alternative paths according to confidence, uncertainty, evidence quality, and consequence.\nversion: 1.0.0\n---\n\n# Confidence Aware Scheduler\n\n## Purpose\nAllocate verification and alternative paths according to confidence, uncertainty, evidence quality, and consequence.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Allocate verification and alternative paths according to confidence, uncertainty, evidence quality, and consequence.",
+      "id": "confidence-aware-scheduler",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "1ecc201e4b84ab7911704fc1af12459fc92b6d3c1f02001e02262eaac4effba9",
+      "source_contract_sha256": "43f4176696953e6b9f23da85fd8a63c91e868522c8ba37b4ce27057058faae42",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Cost Token Budget Scheduler Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: cost-token-budget-scheduler\ndescription: Enforce money, token, API-call, compute-minute, and storage budgets while preserving acceptance criteria.\nversion: 1.0.0\n---\n\n# Cost Token Budget Scheduler\n\n## Purpose\nEnforce money, token, API-call, compute-minute, and storage budgets while preserving acceptance criteria.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Enforce money, token, API-call, compute-minute, and storage budgets while preserving acceptance criteria.",
+      "id": "cost-token-budget-scheduler",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "ce6cc4d8dd6b861cebe17203fa90a59362c1d2b87ba0e495df96b3d893a9011a",
+      "source_contract_sha256": "a1c27713b5d0c85bed631ce7bd610bcabf8730469473402d47816773fb94456f",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Critical Path Optimizer Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: critical-path-optimizer\ndescription: Identify schedule bottlenecks and reduce makespan through reordering, resource boosts, and alternate implementations.\nversion: 1.0.0\n---\n\n# Critical Path Optimizer\n\n## Purpose\nIdentify schedule bottlenecks and reduce makespan through reordering, resource boosts, and alternate implementations.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Identify schedule bottlenecks and reduce makespan through reordering, resource boosts, and alternate implementations.",
+      "id": "critical-path-optimizer",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "be2e9ecc4583b8228beda2aaa5f6eb8656bd39cb640a7e1b55c45e48ac147118",
+      "source_contract_sha256": "d6b24a9d544bb59d4981838d63e7c606001a1af3b67d76758c0a5cf70f3de040",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Deadline Sla Scheduler Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: deadline-sla-scheduler\ndescription: Schedule work against deadlines, SLAs, time windows, lateness penalties, and estimated completion risk.\nversion: 1.0.0\n---\n\n# Deadline Sla Scheduler\n\n## Purpose\nSchedule work against deadlines, SLAs, time windows, lateness penalties, and estimated completion risk.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Schedule work against deadlines, SLAs, time windows, lateness penalties, and estimated completion risk.",
+      "id": "deadline-sla-scheduler",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "25662ab5c9b48fd44d43cabbf876a67ad2bc904cb58cee1137f585f062834fac",
+      "source_contract_sha256": "259de3a8bd29d3f64510cbdedefe1edfb26bebea415eec51fb0ab82cd1707e2b",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Dependency Dag Scheduler Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: dependency-dag-scheduler\ndescription: Build and execute dependency-safe task graphs with cycle detection, readiness gates, fan-out, fan-in, and critical-path awareness.\nversion: 1.0.0\n---\n\n# Dependency Dag Scheduler\n\n## Purpose\nBuild and execute dependency-safe task graphs with cycle detection, readiness gates, fan-out, fan-in, and critical-path awareness.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Build and execute dependency-safe task graphs with cycle detection, readiness gates, fan-out, fan-in, and critical-path awareness.",
+      "id": "dependency-dag-scheduler",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "9a39ca8b1551e02054e8a15188b7e2b523c7d584df1f0eb8c44769d49a037516",
+      "source_contract_sha256": "fced5d09587b5db345d643064a355786a7d8e97a8849f410ba21056a1ae2766c",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Distributed Lease Lock Manager Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: distributed-lease-lock-manager\ndescription: Coordinate claims and locks with fencing tokens, heartbeats, expirations, duplicate suppression, and split-brain defenses.\nversion: 1.0.0\n---\n\n# Distributed Lease Lock Manager\n\n## Purpose\nCoordinate claims and locks with fencing tokens, heartbeats, expirations, duplicate suppression, and split-brain defenses.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Coordinate claims and locks with fencing tokens, heartbeats, expirations, duplicate suppression, and split-brain defenses.",
+      "id": "distributed-lease-lock-manager",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "97d649a51d23999df5e7dc1ded16adf2c5482c1b9d4110ec80aa108ad56fc6e2",
+      "source_contract_sha256": "f0204e0e6916d4ae3d6b78bc4793ff057549b543c7442570c01f93efb8351f6f",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Evidence Completion Scheduler Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: evidence-completion-scheduler\ndescription: Treat missing evidence, tests, receipts, and certification artifacts as explicit schedulable dependencies.\nversion: 1.0.0\n---\n\n# Evidence Completion Scheduler\n\n## Purpose\nTreat missing evidence, tests, receipts, and certification artifacts as explicit schedulable dependencies.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Treat missing evidence, tests, receipts, and certification artifacts as explicit schedulable dependencies.",
+      "id": "evidence-completion-scheduler",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "649c832a2b2a0347532414c74866638d32b67ebba224745ca67fd5479ec5e909",
+      "source_contract_sha256": "571a8720a9aed7cd0164afba931a204c7241b6838d0fbfb81fd24f493a987150",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Failure Recovery Scheduler Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: failure-recovery-scheduler\ndescription: Apply retry, backoff, alternate skill, alternate model, degraded mode, escalation, rollback, or safe stop policies.\nversion: 1.0.0\n---\n\n# Failure Recovery Scheduler\n\n## Purpose\nApply retry, backoff, alternate skill, alternate model, degraded mode, escalation, rollback, or safe stop policies.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Apply retry, backoff, alternate skill, alternate model, degraded mode, escalation, rollback, or safe stop policies.",
+      "id": "failure-recovery-scheduler",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "5501ef904bae188ff8fa0a9e59152f79a576acd1b11046eaf10c4fb12785c4ad",
+      "source_contract_sha256": "9dd310ef147432703341bb7660a4a8379524d254f85025cb1d6a74917158cd51",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Heterogeneous Compute Router Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: heterogeneous-compute-router\ndescription: Route work across CPU, GPU, accelerator, local model, cloud model, and deterministic tooling.\nversion: 1.0.0\n---\n\n# Heterogeneous Compute Router\n\n## Purpose\nRoute work across CPU, GPU, accelerator, local model, cloud model, and deterministic tooling.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Route work across CPU, GPU, accelerator, local model, cloud model, and deterministic tooling.",
+      "id": "heterogeneous-compute-router",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "f93973a1d55be4bd4f30d82e78dff6e719d19263e710397c28bc778d546a86ac",
+      "source_contract_sha256": "b7336c1db951ea25e93be1cfbe4f9d6008b59c57d25a5d37d005a9f1953b5dc5",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Human Approval Gate Scheduler Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: human-approval-gate-scheduler\ndescription: Pause, bundle, route, expire, and resume approval-dependent work without losing state or provenance.\nversion: 1.0.0\n---\n\n# Human Approval Gate Scheduler\n\n## Purpose\nPause, bundle, route, expire, and resume approval-dependent work without losing state or provenance.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Pause, bundle, route, expire, and resume approval-dependent work without losing state or provenance.",
+      "id": "human-approval-gate-scheduler",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "20b12b1b9f2d848c43557d4dafe163fe89fdc051eed53588e941a16eb70b44be",
+      "source_contract_sha256": "692eb3323a451bc6ea02b77c1c851970071076db9a2f7897e709fa8b006f6d03",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Latency Aware Scheduler Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: latency-aware-scheduler\ndescription: Optimize interactive, batch, streaming, and background work against latency objectives.\nversion: 1.0.0\n---\n\n# Latency Aware Scheduler\n\n## Purpose\nOptimize interactive, batch, streaming, and background work against latency objectives.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Optimize interactive, batch, streaming, and background work against latency objectives.",
+      "id": "latency-aware-scheduler",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "0769872632d039067cb57dac9ab553772f7f0cb88346210dfccb7c11f53678c7",
+      "source_contract_sha256": "55d9fc4d7251738102092552776e4eee0ea683f277cb43193ce735a453c336a9",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Local Cloud Execution Router Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: local-cloud-execution-router\ndescription: Choose local, private, remote, or hybrid execution based on privacy, egress, cost, latency, quality, and availability.\nversion: 1.0.0\n---\n\n# Local Cloud Execution Router\n\n## Purpose\nChoose local, private, remote, or hybrid execution based on privacy, egress, cost, latency, quality, and availability.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Choose local, private, remote, or hybrid execution based on privacy, egress, cost, latency, quality, and availability.",
+      "id": "local-cloud-execution-router",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "e1a62d561e295476f13bc62454db9433bd6f2600aeda0859a50fa89804b48215",
+      "source_contract_sha256": "84a3a3a012ad07435d855188c363574e132dd25173bc59bc7133f2165d230228",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Maintenance Idle Work Scheduler Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: maintenance-idle-work-scheduler\ndescription: Use idle capacity for indexing, cleanup, benchmarks, cache warming, documentation, and low-risk maintenance.\nversion: 1.0.0\n---\n\n# Maintenance Idle Work Scheduler\n\n## Purpose\nUse idle capacity for indexing, cleanup, benchmarks, cache warming, documentation, and low-risk maintenance.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Use idle capacity for indexing, cleanup, benchmarks, cache warming, documentation, and low-risk maintenance.",
+      "id": "maintenance-idle-work-scheduler",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "fcc8128e5b103f4aa0b5e55d4b7b9cbdc37657051a467cfbc0681fc72c97a522",
+      "source_contract_sha256": "0ff55043685e8a7f8acee487f4f6b15adac176f5d7ad64ae7cec4d72ae912b9c",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Opportunistic Backfill Scheduler Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: opportunistic-backfill-scheduler\ndescription: Fill resource fragmentation and blocked intervals with useful preemptible work.\nversion: 1.0.0\n---\n\n# Opportunistic Backfill Scheduler\n\n## Purpose\nFill resource fragmentation and blocked intervals with useful preemptible work.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Fill resource fragmentation and blocked intervals with useful preemptible work.",
+      "id": "opportunistic-backfill-scheduler",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "8f5e76cffe34eeb658f1b10e04518990f05bbcb6e30c6cf21c8fe42d99f19898",
+      "source_contract_sha256": "dc110d11c368dd52b38eefdcf9fa3de16777d80f4fb04d8cd30129f78207e8d9",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Parallelism Opportunity Detector Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: parallelism-opportunity-detector\ndescription: Find safe parallel branches, serialization hazards, shared-state conflicts, and optimal fan-out limits.\nversion: 1.0.0\n---\n\n# Parallelism Opportunity Detector\n\n## Purpose\nFind safe parallel branches, serialization hazards, shared-state conflicts, and optimal fan-out limits.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Find safe parallel branches, serialization hazards, shared-state conflicts, and optimal fan-out limits.",
+      "id": "parallelism-opportunity-detector",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "0ea55bec12daade01108e94444e05b066e97e2b85ab180e93fb31324fc4610d5",
+      "source_contract_sha256": "0ec34dd2879d7051de40c69e0f08e79fa3ac67a22d57802d3639dae5079cb563",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Preemption Checkpoint Manager Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: preemption-checkpoint-manager\ndescription: Safely pause and resume work using checkpoints, leases, idempotency keys, and compensation semantics.\nversion: 1.0.0\n---\n\n# Preemption Checkpoint Manager\n\n## Purpose\nSafely pause and resume work using checkpoints, leases, idempotency keys, and compensation semantics.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Safely pause and resume work using checkpoints, leases, idempotency keys, and compensation semantics.",
+      "id": "preemption-checkpoint-manager",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "d5fabb687b508e23d91a95bb6e64927324db0f4e3e08f8d83fac9791d44740fb",
+      "source_contract_sha256": "dbab68b22d3b918078055dc76e912a5e0b3f6937f5e2f9e6ef27a0704aeac573",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Priority Queue Scheduler Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: priority-queue-scheduler\ndescription: Assign and continuously recompute task priority using urgency, impact, dependency pressure, aging, and starvation prevention.\nversion: 1.0.0\n---\n\n# Priority Queue Scheduler\n\n## Purpose\nAssign and continuously recompute task priority using urgency, impact, dependency pressure, aging, and starvation prevention.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Assign and continuously recompute task priority using urgency, impact, dependency pressure, aging, and starvation prevention.",
+      "id": "priority-queue-scheduler",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "86e5acb6263265b0af0325f01715927e70c9196d030ba73ee8e419bae1399f9c",
+      "source_contract_sha256": "4df8d367028307844994fe698c59015897eb0584b9780983d7771a5913a1e0e2",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Queue Starvation Fairness Guard Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: queue-starvation-fairness-guard\ndescription: Prevent indefinite postponement through aging, weighted fairness, tenant quotas, and bounded priority inversion.\nversion: 1.0.0\n---\n\n# Queue Starvation Fairness Guard\n\n## Purpose\nPrevent indefinite postponement through aging, weighted fairness, tenant quotas, and bounded priority inversion.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Prevent indefinite postponement through aging, weighted fairness, tenant quotas, and bounded priority inversion.",
+      "id": "queue-starvation-fairness-guard",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "011942f19caa134169b9cc1e9be48512de5703aeed0a468dbba65e329b446ad6",
+      "source_contract_sha256": "3b7a5886910e6f45ce36fdc1afea52c8aef6765e60e337a30308ba28c0e7cd93",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Resource Aware Scheduler Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: resource-aware-scheduler\ndescription: Place work using CPU, RAM, GPU, disk, network, model, and concurrency constraints.\nversion: 1.0.0\n---\n\n# Resource Aware Scheduler\n\n## Purpose\nPlace work using CPU, RAM, GPU, disk, network, model, and concurrency constraints.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Place work using CPU, RAM, GPU, disk, network, model, and concurrency constraints.",
+      "id": "resource-aware-scheduler",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "963cb55fc583bc4705e83d63d6ce33a08a8e4d4622ab076bb4ed806f4988a80d",
+      "source_contract_sha256": "63fd13532753e0b17d5b0f5b61fa5a32eba1fa02b836f7290f41084e35469c18",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Risk Aware Scheduler Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: risk-aware-scheduler\ndescription: Prioritize and gate tasks according to safety, security, irreversibility, blast radius, and failure consequence.\nversion: 1.0.0\n---\n\n# Risk Aware Scheduler\n\n## Purpose\nPrioritize and gate tasks according to safety, security, irreversibility, blast radius, and failure consequence.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Prioritize and gate tasks according to safety, security, irreversibility, blast radius, and failure consequence.",
+      "id": "risk-aware-scheduler",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "08a8f9f1cf130a6d3704b619f984530964c80592ca1a1e0cd3e9edcf219b9666",
+      "source_contract_sha256": "c3566ce8e522a405c4629fc1611edd26acbbd280f3ca6b68f8bbeb6164a75e32",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Schedule Observability Auditor Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: schedule-observability-auditor\ndescription: Emit traces, queue metrics, utilization, wait time, decision reasons, overrides, and replayable scheduling evidence.\nversion: 1.0.0\n---\n\n# Schedule Observability Auditor\n\n## Purpose\nEmit traces, queue metrics, utilization, wait time, decision reasons, overrides, and replayable scheduling evidence.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Emit traces, queue metrics, utilization, wait time, decision reasons, overrides, and replayable scheduling evidence.",
+      "id": "schedule-observability-auditor",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "758aad03a425f070f4592d683b84936e027f0026b26ec8276df83a30143e4a5d",
+      "source_contract_sha256": "c7c5233a4ced91719f591ff9270a55de1a1f78c02430f588044f3864fb76bb71",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Schedule Simulation Planner Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: schedule-simulation-planner\ndescription: Simulate candidate schedules, bottlenecks, failures, and resource contention before execution.\nversion: 1.0.0\n---\n\n# Schedule Simulation Planner\n\n## Purpose\nSimulate candidate schedules, bottlenecks, failures, and resource contention before execution.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Simulate candidate schedules, bottlenecks, failures, and resource contention before execution.",
+      "id": "schedule-simulation-planner",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "82e275b6de46a58754b2dae80fc72b80da1deb769d935c2d0218a97fe30d4f1a",
+      "source_contract_sha256": "4027453b1f0b210d0a2bd44e5bdc1f1fa82b6344cfe075d7af9403d73c7e9bdf",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Scheduler Certification Manager Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: scheduler-certification-manager\ndescription: Certify scheduler configuration, implementation, tests, evidence, rollback, and integration readiness.\nversion: 1.0.0\n---\n\n# Scheduler Certification Manager\n\n## Purpose\nCertify scheduler configuration, implementation, tests, evidence, rollback, and integration readiness.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Certify scheduler configuration, implementation, tests, evidence, rollback, and integration readiness.",
+      "id": "scheduler-certification-manager",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "7cb445510ebc5b721ed01a50e3fa1246f7b8ce1db42c5b8eade80dbd5550117d",
+      "source_contract_sha256": "234efe9912f8ac19d5a7da572356373313925e79cf15beaa486f2277ed880d65",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Scheduler Chaos Resilience Tester Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: scheduler-chaos-resilience-tester\ndescription: Inject worker loss, model outage, lock expiry, delayed completion, resource pressure, and duplicate delivery.\nversion: 1.0.0\n---\n\n# Scheduler Chaos Resilience Tester\n\n## Purpose\nInject worker loss, model outage, lock expiry, delayed completion, resource pressure, and duplicate delivery.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Inject worker loss, model outage, lock expiry, delayed completion, resource pressure, and duplicate delivery.",
+      "id": "scheduler-chaos-resilience-tester",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "974b8518f01c59b6a797450d799017a291143a78931d81c49bde26d236da2f1b",
+      "source_contract_sha256": "7311aa6bc01fb20d09fb099f4bae64bbb96c97be560d806a8aa2b8f63b8627b6",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Scheduler Policy Validator Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: scheduler-policy-validator\ndescription: Validate policy consistency, impossible constraints, unsafe fallbacks, hidden egress, and non-deterministic priority rules.\nversion: 1.0.0\n---\n\n# Scheduler Policy Validator\n\n## Purpose\nValidate policy consistency, impossible constraints, unsafe fallbacks, hidden egress, and non-deterministic priority rules.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Validate policy consistency, impossible constraints, unsafe fallbacks, hidden egress, and non-deterministic priority rules.",
+      "id": "scheduler-policy-validator",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "3314bc4ed6378763eb6dda1c781b1c9ee76caa7bc6a2a482a62d9efb53258717",
+      "source_contract_sha256": "01c5e62429075a5d0af6cca8650c740832ea0abef8cb2c2ebc58a602cdb62407",
+      "version": "1.0.0"
+    },
+    {
+      "authoritative_contract": "# Skill Arbitration Engine Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+      "authoritative_skill_body": "---\nname: skill-arbitration-engine\ndescription: Score competing skills and implementations by fit, confidence, history, resource needs, policy, and expected utility.\nversion: 1.0.0\n---\n\n# Skill Arbitration Engine\n\n## Purpose\nScore competing skills and implementations by fit, confidence, history, resource needs, policy, and expected utility.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+      "canonical_owner": "orchestrate-capability-scheduling",
+      "composed_with": [
+        "skill-navigator",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "description": "Score competing skills and implementations by fit, confidence, history, resource needs, policy, and expected utility.",
+      "id": "skill-arbitration-engine",
+      "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+      "source_body_sha256": "739c128b36be730631be1e8a24af847c41e18efea542495ac530ddb9a4391b61",
+      "source_contract_sha256": "b8fa5a32166f2abafbb34c81906dafe2f8f1407a4cefe7fb8d3c2de82fac3666",
+      "version": "1.0.0"
+    }
+  ],
+  "count": 30,
+  "schema_version": "1.0"
+}

@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:agent-memory-provider-certificate",
+  "title": "Executed external memory provider isolation certificate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "certificate_id",
+    "provider_id",
+    "provider_version",
+    "project_id",
+    "executed_utc",
+    "harness_version",
+    "config_sha256",
+    "tests",
+    "evidence_refs",
+    "decision"
+  ],
+  "properties": {
+    "certificate_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "provider_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "executed_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "harness_version": {
+      "const": "provider-isolation-harness-v1"
+    },
+    "config_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "tests": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "passed",
+          "execution_id",
+          "observed_sha256",
+          "error_code"
+        ],
+        "properties": {
+          "name": {
+            "enum": [
+              "foreign_read_denied",
+              "foreign_write_denied",
+              "foreign_prompt_log_denied",
+              "global_slot_isolated",
+              "attribution_preserved",
+              "backend_errors_propagated",
+              "correction_non_retrieval_proved"
+            ]
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "execution_id": {
+            "type": "string",
+            "minLength": 16
+          },
+          "observed_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "error_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decision": {
+      "enum": [
+        "certified_accelerator",
+        "disabled"
+      ]
+    }
+  }
+}

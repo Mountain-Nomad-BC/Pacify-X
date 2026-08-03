@@ -1,0 +1,606 @@
+{
+  "schema_version": "1.0",
+  "workflow_count": 15,
+  "workflows": [
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "reason-under-uncertainty",
+      "outputs": [
+        "epistemic snapshot",
+        "ranked hypotheses",
+        "discriminating test plan",
+        "decision with residual uncertainty"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "epistemic-state-manager"
+        },
+        {
+          "order": 2,
+          "skill_id": "assumption-lineage-ledger"
+        },
+        {
+          "order": 3,
+          "skill_id": "hypothesis-portfolio-manager"
+        },
+        {
+          "order": 4,
+          "skill_id": "evidence-weighting-engine"
+        },
+        {
+          "order": 5,
+          "skill_id": "uncertainty-calibration-engine"
+        },
+        {
+          "order": 6,
+          "skill_id": "explanation-provenance-builder"
+        }
+      ],
+      "title": "Reason Under Uncertainty",
+      "trigger": "A decision has incomplete, conflicting, stale, or probabilistic evidence.",
+      "version": "1.0.0"
+    },
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "resolve-conflicting-evidence-forensically",
+      "outputs": [
+        "contradiction graph",
+        "resolution dispositions",
+        "unresolved conflict register"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "contradiction-resolution-engine"
+        },
+        {
+          "order": 2,
+          "skill_id": "evidence-weighting-engine"
+        },
+        {
+          "order": 3,
+          "skill_id": "causal-reasoning-planner"
+        },
+        {
+          "order": 4,
+          "skill_id": "epistemic-state-manager"
+        },
+        {
+          "order": 5,
+          "skill_id": "explanation-provenance-builder"
+        }
+      ],
+      "title": "Resolve Conflicting Evidence Forensically",
+      "trigger": "Sources, memories, tests, documentation, or runtime observations disagree.",
+      "version": "1.0.0"
+    },
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "manage-hypothesis-diagnostic-portfolio",
+      "outputs": [
+        "discriminating test sequence",
+        "updated hypothesis portfolio",
+        "retirement reasons"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "hypothesis-portfolio-manager"
+        },
+        {
+          "order": 2,
+          "skill_id": "assumption-lineage-ledger"
+        },
+        {
+          "order": 3,
+          "skill_id": "causal-reasoning-planner"
+        },
+        {
+          "order": 4,
+          "skill_id": "uncertainty-reduction-contract"
+        },
+        {
+          "order": 5,
+          "skill_id": "epistemic-state-manager"
+        }
+      ],
+      "title": "Manage Hypothesis Diagnostic Portfolio",
+      "trigger": "A diagnosis, incident, or research question has multiple plausible mechanisms.",
+      "version": "1.0.0"
+    },
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "design-and-verify-semantic-effect-contract",
+      "outputs": [
+        "admitted semantic contract",
+        "mutation evidence",
+        "rollback obligations"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "semantic-effect-contract-designer"
+        },
+        {
+          "order": 2,
+          "skill_id": "semantic-contract-linter"
+        },
+        {
+          "order": 3,
+          "skill_id": "state-mutation-auditor"
+        },
+        {
+          "order": 4,
+          "skill_id": "uncertainty-reduction-contract"
+        }
+      ],
+      "title": "Design and Verify Semantic Effect Contract",
+      "trigger": "A capability may alter persistent, epistemic, permission, external, or derived state.",
+      "version": "1.0.0"
+    },
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "inspect-reasoning-brain-mri",
+      "outputs": [
+        "compact introspection report",
+        "forensic report",
+        "decision graph"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "reasoning-trace-recorder"
+        },
+        {
+          "order": 2,
+          "skill_id": "decision-path-reconstructor"
+        },
+        {
+          "order": 3,
+          "skill_id": "memory-influence-auditor"
+        },
+        {
+          "order": 4,
+          "skill_id": "alternative-path-analyzer"
+        },
+        {
+          "order": 5,
+          "skill_id": "introspection-report-builder"
+        }
+      ],
+      "title": "Inspect Reasoning Brain MRI",
+      "trigger": "A workflow requires debugging, audit, certification, dispute resolution, or human explanation.",
+      "version": "1.0.0"
+    },
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "reconstruct-and-repair-failed-decision",
+      "outputs": [
+        "failure mechanism",
+        "repair plan",
+        "replay and rollback evidence"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "decision-path-reconstructor"
+        },
+        {
+          "order": 2,
+          "skill_id": "memory-influence-auditor"
+        },
+        {
+          "order": 3,
+          "skill_id": "contradiction-resolution-engine"
+        },
+        {
+          "order": 4,
+          "skill_id": "alternative-path-analyzer"
+        },
+        {
+          "order": 5,
+          "skill_id": "assumption-lineage-ledger"
+        },
+        {
+          "order": 6,
+          "skill_id": "regression-rollback-controller"
+        }
+      ],
+      "title": "Reconstruct and Repair Failed Decision",
+      "trigger": "A decision or workflow produced a surprising, unsafe, or incorrect outcome.",
+      "version": "1.0.0"
+    },
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "build-and-evolve-capability-genome",
+      "outputs": [
+        "versioned genome",
+        "relation review queue",
+        "merge and gap plan"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "capability-genome-builder"
+        },
+        {
+          "order": 2,
+          "skill_id": "capability-relation-inferencer"
+        },
+        {
+          "order": 3,
+          "skill_id": "capability-dependency-health"
+        },
+        {
+          "order": 4,
+          "skill_id": "duplication-supersession-resolver"
+        },
+        {
+          "order": 5,
+          "skill_id": "capability-gap-mutation-planner"
+        }
+      ],
+      "title": "Build and Evolve Capability Genome",
+      "trigger": "Capabilities are imported, generated, merged, refactored, or recertified.",
+      "version": "1.0.0"
+    },
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "route-profiled-multi-agent-team",
+      "outputs": [
+        "team topology",
+        "authority envelopes",
+        "fallback route"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "agent-cognitive-profile-designer"
+        },
+        {
+          "order": 2,
+          "skill_id": "agent-failure-mode-calibrator"
+        },
+        {
+          "order": 3,
+          "skill_id": "agent-risk-budgeter"
+        },
+        {
+          "order": 4,
+          "skill_id": "agent-profile-router"
+        },
+        {
+          "order": 5,
+          "skill_id": "multi-agent-composition-planner"
+        }
+      ],
+      "title": "Route Profiled Multi-Agent Team",
+      "trigger": "A task benefits from specialized model routing or multiple bounded agents.",
+      "version": "1.0.0"
+    },
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "run-closed-loop-optimization-cycle",
+      "outputs": [
+        "reproducible experiment",
+        "promotion disposition",
+        "post-promotion rollback monitoring"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "workflow-autotuning-advisor"
+        },
+        {
+          "order": 2,
+          "skill_id": "optimization-experiment-manager"
+        },
+        {
+          "order": 3,
+          "skill_id": "closed-loop-system-optimizer"
+        },
+        {
+          "order": 4,
+          "skill_id": "pareto-improvement-selector"
+        },
+        {
+          "order": 5,
+          "skill_id": "regression-rollback-controller"
+        }
+      ],
+      "title": "Run Closed-Loop Optimization Cycle",
+      "trigger": "A stable workflow has measurable quality, cost, latency, memory, or reliability opportunities.",
+      "version": "1.0.0"
+    },
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "induce-and-certify-meta-capability",
+      "outputs": [
+        "meta-capability proposal",
+        "held-out validation",
+        "child migration map"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "concept-cluster-inducer"
+        },
+        {
+          "order": 2,
+          "skill_id": "shared-mechanism-extractor"
+        },
+        {
+          "order": 3,
+          "skill_id": "meta-capability-proposer"
+        },
+        {
+          "order": 4,
+          "skill_id": "theory-validation-gate"
+        },
+        {
+          "order": 5,
+          "skill_id": "capability-genome-builder"
+        }
+      ],
+      "title": "Induce and Certify Meta Capability",
+      "trigger": "Multiple capabilities repeatedly exhibit the same underlying mechanism.",
+      "version": "1.0.0"
+    },
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "profile-and-transfer-engineering-dna",
+      "outputs": [
+        "evidence-backed project profile",
+        "transfer candidates",
+        "do-not-transfer list"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "engineering-dna-profiler"
+        },
+        {
+          "order": 2,
+          "skill_id": "architecture-habit-detector"
+        },
+        {
+          "order": 3,
+          "skill_id": "anti-pattern-lineage-tracer"
+        },
+        {
+          "order": 4,
+          "skill_id": "team-pattern-transfer-controller"
+        }
+      ],
+      "title": "Profile and Transfer Engineering DNA",
+      "trigger": "Project history should inform a new project or improvement cycle.",
+      "version": "1.0.0"
+    },
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "simulate-knowledge-ecosystem",
+      "outputs": [
+        "scenario comparison",
+        "stability risks",
+        "intervention plan"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "knowledge-dynamics-modeler"
+        },
+        {
+          "order": 2,
+          "skill_id": "trust-decay-controller"
+        },
+        {
+          "order": 3,
+          "skill_id": "capability-entropy-monitor"
+        },
+        {
+          "order": 4,
+          "skill_id": "capability-attractor-detector"
+        },
+        {
+          "order": 5,
+          "skill_id": "contradiction-pressure-monitor"
+        },
+        {
+          "order": 6,
+          "skill_id": "knowledge-stability-simulator"
+        }
+      ],
+      "title": "Simulate Knowledge Ecosystem",
+      "trigger": "A source removal, dependency change, merge, or policy update may destabilize knowledge.",
+      "version": "1.0.0"
+    },
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "schedule-risk-based-revalidation",
+      "outputs": [
+        "ranked validation campaign",
+        "deferment risks"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "trust-decay-controller"
+        },
+        {
+          "order": 2,
+          "skill_id": "contradiction-pressure-monitor"
+        },
+        {
+          "order": 3,
+          "skill_id": "capability-dependency-health"
+        },
+        {
+          "order": 4,
+          "skill_id": "revalidation-scheduler"
+        }
+      ],
+      "title": "Schedule Risk-Based Revalidation",
+      "trigger": "Capabilities age, dependencies change, contradictions rise, or certification becomes stale.",
+      "version": "1.0.0"
+    },
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "integrate-metacognitive-pack-safely",
+      "outputs": [
+        "dry-run conflict map",
+        "ordered merge plan",
+        "post-merge certification requirements"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "cache-transient-release-cleaner"
+        },
+        {
+          "order": 2,
+          "skill_id": "integration-conflict-mapper"
+        },
+        {
+          "order": 3,
+          "skill_id": "duplication-supersession-resolver"
+        },
+        {
+          "order": 4,
+          "skill_id": "semantic-contract-linter"
+        },
+        {
+          "order": 5,
+          "skill_id": "metacognitive-certification"
+        }
+      ],
+      "title": "Integrate Metacognitive Pack Safely",
+      "trigger": "This pack is applied to an existing engineering bootstrap.",
+      "version": "1.0.0"
+    },
+    {
+      "guards": [
+        "Honor target permission, containment, memory, and evidence policies.",
+        "Record a sanitized operational trace.",
+        "Stop or escalate on unresolved high-severity semantic effects.",
+        "Preserve rollback evidence."
+      ],
+      "id": "certify-metacognitive-evolution-layer",
+      "outputs": [
+        "revocable certificate",
+        "limitations and revocation triggers",
+        "manifest and hashes"
+      ],
+      "rollback": "Use the target recovery coordinator; never silently discard failed evidence.",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "semantic-contract-linter"
+        },
+        {
+          "order": 2,
+          "skill_id": "state-mutation-auditor"
+        },
+        {
+          "order": 3,
+          "skill_id": "capability-dependency-health"
+        },
+        {
+          "order": 4,
+          "skill_id": "metacognitive-certification"
+        },
+        {
+          "order": 5,
+          "skill_id": "cache-transient-release-cleaner"
+        }
+      ],
+      "title": "Certify Metacognitive Evolution Layer",
+      "trigger": "The pack or integrated target is ready for release.",
+      "version": "1.0.0"
+    }
+  ]
+}

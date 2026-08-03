@@ -1,0 +1,37 @@
+{
+  "body": ".agents/skills/secure-agent-supply-chain/SKILL.md",
+  "body_sha256": "d818a9df088f22044de0cc03707394b7b22a837dcb91cb397a265411d767b4d5",
+  "capability_tags": [
+    "agent",
+    "authoritative",
+    "chain",
+    "declared-suite",
+    "secure",
+    "supply"
+  ],
+  "clean_room": false,
+  "context_budget_bytes": 32768,
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "evidence": "evidence/rel008-assimilation.json",
+  "id": "secure-agent-supply-chain",
+  "provenance": {
+    "basis": [
+      "registry/declared_suite_authoritative_tools.json",
+      "registry/declared_suite_schema_contracts.json",
+      "evidence/rel008-assimilation.json"
+    ],
+    "type": "authoritative_contract_and_safe_body_assimilation",
+    "unsafe_body_policy": "shell execution and hard deletion bodies rejected in favor of tested bounded replacements"
+  },
+  "references": [
+    ".agents/skills/secure-agent-supply-chain/references/capabilities-index.json",
+    ".agents/skills/secure-agent-supply-chain/references/scripts-index.json"
+  ],
+  "status": "active",
+  "tests": "tests/test_rel008_assimilation.py",
+  "validation_freshness": "current",
+  "version": "0.1.0"
+}

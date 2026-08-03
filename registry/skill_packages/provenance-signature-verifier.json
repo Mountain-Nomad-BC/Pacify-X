@@ -1,0 +1,35 @@
+{
+  "id": "provenance-signature-verifier",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/provenance-signature-verifier/SKILL.md",
+  "body_sha256": "ceac102c75f849394636149588855b05acde19f806e1b8c5c1ba077cb7969125",
+  "references": [],
+  "capability_tags": [
+    "provenance",
+    "security",
+    "signature",
+    "verifier"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_b3154710.md",
+        "sha256": "5c1d34494e43310bd26a4bd7a0ec8a4a8655d4b2a5edb37f63925ce5371000e0"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_1486b24a.yaml",
+        "sha256": "f339d54fb72d83d647ffd9b07b12496e6f61f8c40548590ee5d451ab83347b0f"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

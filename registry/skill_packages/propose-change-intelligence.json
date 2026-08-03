@@ -1,0 +1,35 @@
+{
+  "id": "propose-change-intelligence",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/propose-change-intelligence/SKILL.md",
+  "body_sha256": "371219134666efd26b9b48f800bb97c7ba2d74fedd9e7748bc053f2c75bf2937",
+  "references": [],
+  "capability_tags": [
+    "change",
+    "architecture",
+    "drift",
+    "candidate"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "clean_room",
+    "basis": [
+      {
+        "path": "skills_bootstrap_stuff/suggested skills to build.txt",
+        "sha256": "80e547c543fd1a815eccbf6f31fd7a7934b2d18e93601597c020c81b0d13ee88"
+      },
+      {
+        "path": "skills_bootstrap_stuff/The actual lifecycle I see is.txt",
+        "sha256": "efee5005724cc8e7db378730bfbd644a0c08e01c4990ace87fe3f6d5ce2def8f"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_assurance_controls.py",
+  "evidence": "tests/test_assurance_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

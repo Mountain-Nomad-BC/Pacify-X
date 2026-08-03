@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:knowledge-source",
+  "title": "Knowledge source contract",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "owner",
+    "status",
+    "provenance",
+    "license",
+    "sensitivity",
+    "freshness"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "license": {
+      "type": "string"
+    },
+    "sensitivity": {
+      "type": "string"
+    },
+    "freshness": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

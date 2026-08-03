@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "mode": "capability_and_availability",
+  "eligibility": {
+    "unavailable_is_ineligible": true,
+    "required_traits_must_all_match": true,
+    "minimum_context_must_match": true,
+    "sensitive_privacy": ["local", "isolated"]
+  },
+  "scoring": {
+    "trait_weight": 10.0,
+    "privacy_weights": {"local": 3.0, "isolated": 2.0, "policy_gated": 0.0},
+    "cost_weights": {"free": 0.0, "low": 1.0, "medium": 2.0, "high": 4.0},
+    "latency_weights": {"low": 0.0, "medium": 1.0, "high": 3.0},
+    "cold_cost_weight": 1.0
+  },
+  "fallback": {
+    "when_no_eligible_model": "return_explicit_fallback_required",
+    "silent_privacy_downgrade": false,
+    "silent_context_downgrade": false,
+    "auto_download": false
+  }
+}

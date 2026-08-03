@@ -1,0 +1,67 @@
+{
+  "dependencies": [
+    "dynamic-skill-detonator",
+    "forge-skills-from-knowledge"
+  ],
+  "domain": "capability-genome",
+  "failure_modes": [
+    "name-only deduplication",
+    "silent supersession",
+    "untyped graph edges",
+    "god-capability creation"
+  ],
+  "formula_refs": [
+    "novelty-score",
+    "merge-value-score",
+    "expected-plan-utility"
+  ],
+  "id": "capability-gap-mutation-planner",
+  "inputs": [
+    "skill and orchestration registries",
+    "contracts/tests/runtime paths",
+    "execution and evidence records"
+  ],
+  "invariants": [
+    "Similarity never authorizes deletion.",
+    "Inferred edges are labeled and reviewable.",
+    "Stronger tests, contracts, behavior, evidence, and aliases survive reconciliation."
+  ],
+  "outputs": [
+    "typed capability graph",
+    "overlap/dependency findings",
+    "reviewed evolution or merge plan"
+  ],
+  "procedure": [
+    "Normalize capability identity, aliases, versions, and owners.",
+    "Extract dependencies, semantic effects, tests, and runtime paths.",
+    "Infer typed relations with evidence and confidence.",
+    "Detect cycles, orphans, fragile hubs, duplication, and gaps.",
+    "Require review and recertification for destructive or superseding changes."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Propose the smallest safe reuse, composition, extension, mutation, or new capability needed to close an evidenced gap without uncontrolled skill proliferation.",
+  "title": "Capability Gap Mutation Planner",
+  "version": "1.0.0",
+  "when_to_use": "Use when admitted capabilities cannot satisfy a workflow contract."
+}

@@ -1,0 +1,12 @@
+schema_version = "1.0"
+id = "default"
+
+[resources]
+max_agents = 2
+max_heavy_lanes = 1
+max_context_bytes = 262144
+
+[routing]
+local_models = "optional"
+cloud_models = "optional"
+sensitive_data = "policy_gated"

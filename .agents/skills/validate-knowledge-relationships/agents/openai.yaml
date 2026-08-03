@@ -1,0 +1,4 @@
+interface:
+  display_name: "Validate Knowledge Relationships"
+  short_description: "Detect knowledge orphans conflicts and drift"
+  default_prompt: "Use $validate-knowledge-relationships to perform this workflow with explicit evidence and safety boundaries."

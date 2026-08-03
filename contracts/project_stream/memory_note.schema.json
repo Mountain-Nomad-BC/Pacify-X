@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:memory_note",
+  "title": "Canonical project-scoped memory note metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "memory_id",
+    "workspace_id",
+    "project_id",
+    "owner_id",
+    "session_id",
+    "lease_id",
+    "title",
+    "memory_type",
+    "summary",
+    "source_artifact",
+    "source_sha256",
+    "evidence_locator",
+    "epistemic_status",
+    "confidence",
+    "confidence_method",
+    "classification",
+    "acl",
+    "observed_at",
+    "effective_at",
+    "supersedes",
+    "relationships",
+    "revision",
+    "certification_status",
+    "retrieval_enabled",
+    "address"
+  ],
+  "properties": {
+    "memory_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lease_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "memory_type": {
+      "enum": [
+        "fact",
+        "decision",
+        "failure",
+        "pattern",
+        "preference",
+        "skill",
+        "architecture",
+        "risk",
+        "assumption",
+        "lesson",
+        "relationship",
+        "procedure"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_artifact": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evidence_locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "epistemic_status": {
+      "enum": [
+        "observation",
+        "inference",
+        "proposal"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "confidence_method": {
+      "type": "string",
+      "minLength": 1
+    },
+    "classification": {
+      "type": "string",
+      "minLength": 1
+    },
+    "acl": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "effective_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "certification_status": {
+      "enum": [
+        "candidate",
+        "validated",
+        "certified",
+        "trusted",
+        "revoked",
+        "superseded"
+      ]
+    },
+    "retrieval_enabled": {
+      "type": "boolean"
+    },
+    "address": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scheme_version",
+        "bucket_path",
+        "short_address",
+        "bit_width",
+        "integrity_algorithm",
+        "integrity_hash"
+      ],
+      "properties": {
+        "scheme_version": {
+          "const": "adaptive-minimum-bit-alphabetic-v1"
+        },
+        "bucket_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "short_address": {
+          "type": "string",
+          "pattern": "^[A-P]+$"
+        },
+        "bit_width": {
+          "type": "integer",
+          "minimum": 4,
+          "maximum": 256,
+          "multipleOf": 4
+        },
+        "integrity_algorithm": {
+          "const": "sha256"
+        },
+        "integrity_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "retrieval_enabled": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "certification_status": {
+            "enum": [
+              "certified",
+              "trusted"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

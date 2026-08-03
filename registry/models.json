@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "models": [
+    {
+      "model_id": "local-coding-small",
+      "runtime": "local-runtime",
+      "available": false,
+      "context_tokens": 8192,
+      "traits": ["coding", "reasoning"],
+      "supports_tools": false,
+      "privacy": "local",
+      "cost_class": "free",
+      "latency_class": "low",
+      "warm_cost": 1.0,
+      "cold_cost": 4.0,
+      "failure_modes": ["runtime_absent", "insufficient_context"]
+    },
+    {
+      "model_id": "remote-general-reasoning",
+      "runtime": "provider-adapter",
+      "available": false,
+      "context_tokens": 32768,
+      "traits": ["coding", "reasoning", "tools", "vision"],
+      "supports_tools": true,
+      "privacy": "policy_gated",
+      "cost_class": "medium",
+      "latency_class": "medium",
+      "warm_cost": 0.0,
+      "cold_cost": 1.0,
+      "failure_modes": ["provider_unavailable", "policy_denied", "rate_limited"]
+    }
+  ]
+}

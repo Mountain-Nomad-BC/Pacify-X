@@ -1,0 +1,65 @@
+id: procedural-memory-compiler
+version: 0.1.0
+status: draft
+owner: framework owner
+category: memory
+priority: P2
+purpose: Compile repeated successful patterns into candidate procedures with activation,
+  execution, and termination.
+activation:
+  when:
+  - multiple verified traces share stable success
+  not_when:
+  - traces sparse/contradictory/unverified
+inputs:
+  required:
+  - successful traces
+  - failure traces
+  - domain variables
+  - approved skills
+  - outcomes
+outputs:
+  produces: &id001
+  - candidate procedure
+  - activation
+  - steps
+  - termination
+  - exceptions
+  - tests
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- trace-to-skill compiler
+- intelligent system improvement
+- skill registry
+risk:
+  tier: R1
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- replay success
+- edge failures
+- human acceptance
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - procmem

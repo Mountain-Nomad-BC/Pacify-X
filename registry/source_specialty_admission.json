@@ -1,0 +1,726 @@
+{
+  "schema_version": "1.0",
+  "source_record_count": 36,
+  "delivery_counts": {
+    "backend_deferred": 15,
+    "candidate_staged": 21
+  },
+  "records": [
+    {
+      "id": "api-contract-validator",
+      "family": "automation",
+      "description": "Validate frontend-backend API contracts across the staged services.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "recovery-coordinator",
+        "validate-engineering-outcomes",
+        "quarantine-external-tools"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/automation/api-contract-validator/SKILL.md",
+      "source_sha256": "f876f7d512567d1310d1bc2b55c124c124547d852d1164de9fabe2e1dacb61c8"
+    },
+    {
+      "id": "docker-lifecycle",
+      "family": "automation",
+      "description": "Validate container lifecycle behavior across the staged Docker stacks.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "recovery-coordinator",
+        "validate-engineering-outcomes",
+        "quarantine-external-tools"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/automation/docker-lifecycle/SKILL.md",
+      "source_sha256": "79e920c2cb48ad1be34ca057044b740edaa815c4d799c2a3f2b515630b0f98b3"
+    },
+    {
+      "id": "self-healing-dev-loop",
+      "family": "automation",
+      "description": "Run the bounded self-healing development loop for failing systems in this repo.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "recovery-coordinator",
+        "validate-engineering-outcomes",
+        "quarantine-external-tools"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/automation/self-healing-dev-loop/SKILL.md",
+      "source_sha256": "7beafb77ecf962fd60f9fbaa7bf5bf80f57275b8c1566f58b786aff828fdf6e1"
+    },
+    {
+      "id": "system-validation",
+      "family": "automation",
+      "description": "Run the grouped full-system engineering validation workflow.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "recovery-coordinator",
+        "validate-engineering-outcomes",
+        "quarantine-external-tools"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/automation/system-validation/SKILL.md",
+      "source_sha256": "8e32cf553ce3c46f373991309f913d1a2606dec18f4fb5e316f88d7967df94fa"
+    },
+    {
+      "id": "architecture-review",
+      "family": "dev",
+      "description": "Review architecture quality, coupling, and design risk in the intelligent_integrations_and_engines workspace.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "certify-skeptical-engineering",
+        "dependency-impact-tracer",
+        "validate-engineering-outcomes"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/dev/architecture-review/SKILL.md",
+      "source_sha256": "60e7f5495ba3ab4566dfdb2399e071577643e778140d6a77be9893eb0fff6f13"
+    },
+    {
+      "id": "production-readiness",
+      "family": "dev",
+      "description": "Simulate CI and deployment readiness using the repo",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "certify-skeptical-engineering",
+        "dependency-impact-tracer",
+        "validate-engineering-outcomes"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/dev/production-readiness/SKILL.md",
+      "source_sha256": "32ab334adc30dcc64534bbf06a243b76ae3058bfbe44a0a8e9f644ccc62b8789"
+    },
+    {
+      "id": "slow-thinking",
+      "family": "dev",
+      "description": "Force the analyze-plan-execute-verify loop on complex work in this repo.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "certify-skeptical-engineering",
+        "dependency-impact-tracer",
+        "validate-engineering-outcomes"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/dev/slow-thinking/SKILL.md",
+      "source_sha256": "3da07ee79aca352118d8f324675bdb56b98367de868326c266809dfdb8617f3e"
+    },
+    {
+      "id": "diagnostic-logic-explainer",
+      "family": "engineering",
+      "description": "Explain how diagnostic rules turn inputs into flags and recommendations.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "diagnose-python-repair",
+        "commission-project",
+        "behavior-to-code-mapper"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/engineering/diagnostic-logic-explainer/SKILL.md",
+      "source_sha256": "1cb723e1dd689774402046ac24be90923694fae6bc9fe51af347f18af58f022c"
+    },
+    {
+      "id": "diagnostic-system-interpreter",
+      "family": "engineering",
+      "description": "Interpret the full diagnostics system across data ingestion, calculations, flags, UI, and governed_retrieval_system_with_deterministic_rails explanation paths.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "diagnose-python-repair",
+        "commission-project",
+        "behavior-to-code-mapper"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/engineering/diagnostic-system-interpreter/SKILL.md",
+      "source_sha256": "1975c7e1e5a460137b33eb2b9e36f1c973aa68db91e6d03af0bd85633c3fdb7a"
+    },
+    {
+      "id": "engineering-context",
+      "family": "engineering",
+      "description": "Load engineering fundamentals relevant to diagnostics work in this repo.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "diagnose-python-repair",
+        "commission-project",
+        "behavior-to-code-mapper"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/engineering/engineering-context/SKILL.md",
+      "source_sha256": "1db9fbf28776bece5893be8393e8467f3e1e05db5be5b792c0496176ef44c161"
+    },
+    {
+      "id": "units-checker",
+      "family": "engineering",
+      "description": "Perform dimensional analysis on formulas and thresholds.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "diagnose-python-repair",
+        "commission-project",
+        "behavior-to-code-mapper"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/engineering/units-checker/SKILL.md",
+      "source_sha256": "decfdc8b90fda20c904519eaa9c7f519bf4ff079b43f703f124268698e4534d3"
+    },
+    {
+      "id": "context-assembler",
+      "family": "rag",
+      "description": "Assemble final grounded retrieval context for governed_retrieval_system_with_deterministic_rails answers.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "memory-applicability-critic",
+        "evidence-assembler",
+        "outcome-verifier"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/rag/context-assembler/SKILL.md",
+      "source_sha256": "63321c41a816d0b9555f96a60b1651cfcef98992850910cf370fc179a2eb9ae7"
+    },
+    {
+      "id": "domain-knowledge-loader",
+      "family": "rag",
+      "description": "Load foundational engineering knowledge into the governed_retrieval_system_with_deterministic_rails corpus.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "memory-applicability-critic",
+        "evidence-assembler",
+        "outcome-verifier"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/rag/domain-knowledge-loader/SKILL.md",
+      "source_sha256": "e856ead81bdf6a3e597ac793aeda05f6b69936dbcb3a3817000c3ecb1397d358"
+    },
+    {
+      "id": "embedding-optimizer",
+      "family": "rag",
+      "description": "Optimize embeddings, normalization, duplicate detection, and distance thresholds for the governed_retrieval_system_with_deterministic_rails corpus.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "memory-applicability-critic",
+        "evidence-assembler",
+        "outcome-verifier"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/rag/embedding-optimizer/SKILL.md",
+      "source_sha256": "533262e0be8e95cd62a13db2c8e7dcd7e4b6d0549cd7fe0253c03e11fda3ed64"
+    },
+    {
+      "id": "knowledge-graph-builder",
+      "family": "rag",
+      "description": "Design or build a knowledge graph layer on top of the governed_retrieval_system_with_deterministic_rails corpus.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "memory-applicability-critic",
+        "evidence-assembler",
+        "outcome-verifier"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/rag/knowledge-graph-builder/SKILL.md",
+      "source_sha256": "8511487b9e94b91d6d2c9fe4a2d32583e691cbfe9914a3c37fdf70f29c2142e9"
+    },
+    {
+      "id": "rag-aware-codex",
+      "family": "rag",
+      "description": "Make Codex consult governed_retrieval_system_with_deterministic_rails knowledge before editing diagnostics logic.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "memory-applicability-critic",
+        "evidence-assembler",
+        "outcome-verifier"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/rag/rag-aware-codex/SKILL.md",
+      "source_sha256": "4df2c51d968cf175e230c905d901941ec33acc97249215ebd770ef7f6831d958"
+    },
+    {
+      "id": "rag-builder",
+      "family": "rag",
+      "description": "Build or reason about the governed_retrieval_system_with_deterministic_rails RAG pipeline around the current Stage 3 and Stage 7 implementation surfaces.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "memory-applicability-critic",
+        "evidence-assembler",
+        "outcome-verifier"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/rag/rag-builder/SKILL.md",
+      "source_sha256": "e208b8095882cf0eba70a8270fcdba83667cf7b4af4d97d4b0fe33651263d4cf"
+    },
+    {
+      "id": "rag-performance-analyzer",
+      "family": "rag",
+      "description": "Analyze retrieval latency, drift, and knowledge-system performance.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "memory-applicability-critic",
+        "evidence-assembler",
+        "outcome-verifier"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/rag/rag-performance-analyzer/SKILL.md",
+      "source_sha256": "b97452b602d42e11ad2b07f9ba6c3f620bb0e721e68561ede758ae4fd2e5411a"
+    },
+    {
+      "id": "rag-self-healing",
+      "family": "rag",
+      "description": "Drive the diagnose-fix-verify loop when retrieval quality is poor.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "memory-applicability-critic",
+        "evidence-assembler",
+        "outcome-verifier"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/rag/rag-self-healing/SKILL.md",
+      "source_sha256": "66839bce2e5c2a9be60648f082c7c2f0ca95217e82eea55fed1ed899efdfed83"
+    },
+    {
+      "id": "retrieval-quality-tester",
+      "family": "rag",
+      "description": "Validate governed_retrieval_system_with_deterministic_rails retrieval with domain queries and measurable metrics.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "memory-applicability-critic",
+        "evidence-assembler",
+        "outcome-verifier"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/rag/retrieval-quality-tester/SKILL.md",
+      "source_sha256": "53e7053dd095fe9f08e3420637dc185530114becfbc70ec65829f623ae458bbf"
+    },
+    {
+      "id": "semantic-cluster-mapper",
+      "family": "rag",
+      "description": "Cluster the knowledge corpus into interpretable domain groups.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "memory-applicability-critic",
+        "evidence-assembler",
+        "outcome-verifier"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/rag/semantic-cluster-mapper/SKILL.md",
+      "source_sha256": "3ae0d16d3fbd54d070c84bd09482cfd37b2485db2113eb51d8c19be02147d724"
+    },
+    {
+      "id": "smart-chunker",
+      "family": "rag",
+      "description": "Choose chunking strategies per document type for governed_retrieval_system_with_deterministic_rails and training-library retrieval.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "memory-applicability-critic",
+        "evidence-assembler",
+        "outcome-verifier"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/rag/smart-chunker/SKILL.md",
+      "source_sha256": "6fdaa32169344fce89a0b29690bbbf055698cc06617429eb5dba726e388d70f0"
+    },
+    {
+      "id": "code-quality-enforcer",
+      "family": "repo",
+      "description": "Enforce formatting, lint, type, and unsafe-pattern checks across affected subprojects.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "commission-project",
+        "dependency-impact-tracer",
+        "validate-engineering-outcomes"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/repo/code-quality-enforcer/SKILL.md",
+      "source_sha256": "a5b0165443ee71e8abbb73da48fa728e7cb1045e32e060c96b712fd90993793c"
+    },
+    {
+      "id": "completion-enforcer",
+      "family": "repo",
+      "description": "Verify that a requested task is actually complete before closing it.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "commission-project",
+        "dependency-impact-tracer",
+        "validate-engineering-outcomes"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/repo/completion-enforcer/SKILL.md",
+      "source_sha256": "795e987683e762d538b89c1769112108cfe6abe436f371c34411ea9d7565cbd5"
+    },
+    {
+      "id": "migration-planner",
+      "family": "repo",
+      "description": "Plan safe, dependency-aware migrations for architecture, ownership, or service-boundary changes.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "commission-project",
+        "dependency-impact-tracer",
+        "validate-engineering-outcomes"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/repo/migration-planner/SKILL.md",
+      "source_sha256": "3afd45d1210f1f48ac83a4dcce87bb18cd763887bb083f188d857db402476f19"
+    },
+    {
+      "id": "repo-doctor",
+      "family": "repo",
+      "description": "Deep repository audit for the intelligent_integrations_and_engines workspace.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "commission-project",
+        "dependency-impact-tracer",
+        "validate-engineering-outcomes"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/repo/repo-doctor/SKILL.md",
+      "source_sha256": "96a8c64e8b5760d279afeeaa97d1af9e44fe4cf7b2173fb60b18dc5e29470691"
+    },
+    {
+      "id": "architecture-mapper",
+      "family": "system",
+      "description": "Map the runtime architecture of the intelligent_integrations_and_engines workspace before major edits, refactors, or integration work.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "behavior-to-code-mapper",
+        "dependency-impact-tracer",
+        "commission-project"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/system/architecture-mapper/SKILL.md",
+      "source_sha256": "93c11b3fe7fb7b2dcb822bd804b86e149532d4a301a486f7f0c85401741138fd"
+    },
+    {
+      "id": "calculation-graph",
+      "family": "system",
+      "description": "Trace calculation dependencies before changing formulas, thresholds, or diagnostics flags.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "behavior-to-code-mapper",
+        "dependency-impact-tracer",
+        "commission-project"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/system/calculation-graph/SKILL.md",
+      "source_sha256": "4ef49c51767cbcfb736f31dc1861f513626082f5dc91e0d5ef30ba6ffe59cae3"
+    },
+    {
+      "id": "dependency-graph-builder",
+      "family": "system",
+      "description": "Build a dependency graph for Python, TypeScript, compose wiring, and cross-service calls in this repo.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "behavior-to-code-mapper",
+        "dependency-impact-tracer",
+        "commission-project"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/system/dependency-graph-builder/SKILL.md",
+      "source_sha256": "2d2cddb0c50cb443d30fdd05d486273c55fc56a6340c31667ade37a6c0f64043"
+    },
+    {
+      "id": "pipeline-interpreter",
+      "family": "system",
+      "description": "Interpret telemetry, retrieval, and orchestration pipelines in repo terms before editing them.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "behavior-to-code-mapper",
+        "dependency-impact-tracer",
+        "commission-project"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/system/pipeline-interpreter/SKILL.md",
+      "source_sha256": "4d904914e6efa91a213bf14225be132d2c3646471c48bc1bb115a48f05fa8b9c"
+    },
+    {
+      "id": "system-overview-loader",
+      "family": "system",
+      "description": "Load the repo system knowledge file before architecture, diagnostics, or cross-service work.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "behavior-to-code-mapper",
+        "dependency-impact-tracer",
+        "commission-project"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/system/system-overview-loader/SKILL.md",
+      "source_sha256": "4c9a65429d5a8f5b08628cf92cecf102b5023436d43feb9cbbbf5cbcacf8a587"
+    },
+    {
+      "id": "system-state-inspector",
+      "family": "system",
+      "description": "Inspect current runtime state before debugging or validation work.",
+      "delivery_state": "candidate_staged",
+      "active_semantic_mappings": [
+        "behavior-to-code-mapper",
+        "dependency-impact-tracer",
+        "commission-project"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/system/system-state-inspector/SKILL.md",
+      "source_sha256": "54cb977149af3e6a3226a47ba70a376b92c42153fb74ad4061c4eeaf3fab0969"
+    },
+    {
+      "id": "autonomous-ui-auditor",
+      "family": "ui",
+      "description": "Run a self-healing UI audit loop across routes and workflows.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "validate-engineering-outcomes",
+        "scenario-audit-generator"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/ui/autonomous-ui-auditor/SKILL.md",
+      "source_sha256": "33c175b1af09fbaa12b5ed86b3b75f395a3fdeb8aa45fdca6907d5d7d534e5ab"
+    },
+    {
+      "id": "ui-behavior-tests",
+      "family": "ui",
+      "description": "Run behavior-driven Playwright tests across the intelligent_integrations_and_engines frontends.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "validate-engineering-outcomes",
+        "scenario-audit-generator"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/ui/ui-behavior-tests/SKILL.md",
+      "source_sha256": "5350ac8552970935c5bfb1467da994645e2fb6ce6030ee5a7ad232ada0dad217"
+    },
+    {
+      "id": "ui-explorer",
+      "family": "ui",
+      "description": "Explore and map the intelligent_integrations_and_engines frontends with Playwright or source inspection.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "validate-engineering-outcomes",
+        "scenario-audit-generator"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/ui/ui-explorer/SKILL.md",
+      "source_sha256": "040542e489af1164836f75baa7f85f9aa447cc44f28bdf82590170f5794e725a"
+    },
+    {
+      "id": "ui-failure-analyzer",
+      "family": "ui",
+      "description": "Analyze UI failures with console, network, DOM, and screenshot evidence.",
+      "delivery_state": "backend_deferred",
+      "active_semantic_mappings": [
+        "validate-engineering-outcomes",
+        "scenario-audit-generator"
+      ],
+      "promotion_requirements": [
+        "target_backend",
+        "typed_io_contract",
+        "effect_review",
+        "forward_test",
+        "approval"
+      ],
+      "source_path": "imports/source_governance/skill_staging/skills/ui/ui-failure-analyzer/SKILL.md",
+      "source_sha256": "cf9b8e062c96c0682c6c985e6b357afc0a9bcc11c955283b08751647109c613c"
+    }
+  ]
+}

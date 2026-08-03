@@ -1,0 +1,16 @@
+agent_id: agt_CHANGE_ME
+template_id: implementer-v1
+project_id: prj_CHANGE_ME
+state: sandbox
+human_sponsor: CHANGE_ME
+capabilities:
+- CHANGE_ME
+permissions:
+- read:project
+tools:
+- CHANGE_ME
+stop_conditions:
+- boundary_violation
+- scope_expansion
+- unexpected_repo_change
+- secret_exposure

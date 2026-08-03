@@ -1,0 +1,40 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:memory-record",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "content": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "project_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "status": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "subject": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "project_id",
+    "subject",
+    "content",
+    "provenance",
+    "status"
+  ],
+  "title": "Memory Record",
+  "type": "object"
+}

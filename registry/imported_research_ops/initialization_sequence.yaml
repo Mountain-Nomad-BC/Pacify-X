@@ -1,0 +1,103 @@
+schema_version: '1.0'
+sequence_id: intelligent system-intelligent system-bootstrap-overlay
+fail_closed: true
+phases:
+- id: preflight
+  purpose: Establish trusted roots and execution constraints.
+  steps:
+  - resolve repository and environment
+  - verify deployment-safety controls
+  - load identity and authorization policy
+  - verify secrets remain external
+  - create correlation and evidence IDs
+  required_outputs:
+  - preflight_report
+  - trusted_roots
+  - policy_context
+- id: discovery
+  purpose: Map the existing architecture before proposing changes.
+  steps:
+  - discover registries and schemas
+  - discover graph, taxonomy, and knowledge systems
+  - discover intelligent system and intelligent system runtime boundaries
+  - discover tests, traces, and promotion gates
+  - build behavior-to-code map
+  required_outputs:
+  - system_map
+  - registry_inventory
+  - behavior_map
+  - test_inventory
+- id: merge-planning
+  purpose: Resolve every candidate against existing capabilities.
+  steps:
+  - run exact and semantic duplicate matching
+  - assign reuse/extend/alias/replace/create/defer/reject
+  - calculate dependency and permission differences
+  - produce non-destructive registry patch
+  required_outputs:
+  - merge_decisions
+  - dependency_impact
+  - permission_diff
+- id: core-platform
+  purpose: Validate platform foundations before intelligent behavior.
+  steps:
+  - validate auth/security
+  - validate canonical registries
+  - validate taxonomy/navigation
+  - validate persistence and state
+  - validate queues/checkpoints/idempotency
+  required_outputs:
+  - foundation_gate
+- id: capability-layer
+  purpose: Stage governed skills and execution contracts.
+  steps:
+  - register candidate manifests
+  - validate schemas and dependencies
+  - classify tool effects
+  - attach policy and approval requirements
+  - bind telemetry and postconditions
+  required_outputs:
+  - candidate_registry
+  - execution_contract_report
+- id: intelligent system-integration
+  purpose: Connect navigation, evidence, memory, planning, and actions.
+  steps:
+  - bind hierarchical skill navigation
+  - bind set-level bundle resolution
+  - bind evidence and citation assembly
+  - bind memory applicability and injection controls
+  - bind stopping and recovery policies
+  required_outputs:
+  - intelligent system_binding_report
+- id: assurance
+  purpose: Validate outcomes independently.
+  steps:
+  - bind verifier contract
+  - run golden and adversarial cases
+  - run permission and side-effect tests
+  - run trajectory and loop controls
+  - verify human handoff state
+  required_outputs:
+  - assurance_report
+  - failure_ledger
+- id: observability-and-ui
+  purpose: Make behavior inspectable before promotion.
+  steps:
+  - validate traces and event taxonomy
+  - validate outcome and cost metrics
+  - validate evidence viewers
+  - validate role-aware UI and accessibility
+  required_outputs:
+  - observability_gate
+  - ui_gate
+- id: promotion
+  purpose: Promote only verified, reversible changes.
+  steps:
+  - run certification gates
+  - produce signed bundle manifest
+  - canary approved components
+  - monitor outcome regressions
+  - promote or rollback
+  required_outputs:
+  - certification_report
+  - promotion_decision

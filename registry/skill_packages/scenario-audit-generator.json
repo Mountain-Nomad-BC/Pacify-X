@@ -1,0 +1,35 @@
+{
+  "id": "scenario-audit-generator",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/scenario-audit-generator/SKILL.md",
+  "body_sha256": "dedda0940d634d43ade2f6c57296829c9fc3546475ef063c74e243c82b4978df",
+  "references": [],
+  "capability_tags": [
+    "audit",
+    "evaluation",
+    "generator",
+    "scenario"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_701e6de8.md",
+        "sha256": "fcf133bb27b5d00234f61bc46f8c91f31b104b55897ed96678e6310703b31f10"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_5b5b91b0.yaml",
+        "sha256": "162f737d98b8e75d4ed31ba4c21ab979930e3126ad7c749328a43350b40d4ce6"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

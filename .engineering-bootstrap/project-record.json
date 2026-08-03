@@ -1,0 +1,29 @@
+{
+  "project_id": "prj_pacify-x",
+  "name": "Pacify-X",
+  "state": "registered",
+  "classification": "internal",
+  "repositories": [
+    {
+      "repository_id": "repo_pacify-x",
+      "logical_root": ".",
+      "role": "application"
+    }
+  ],
+  "owners": [
+    "AGENTS.md",
+    "knowledge/research_operations/pyproject.toml",
+    "pyproject.toml"
+  ],
+  "policy_overlay": null,
+  "memory_namespace": "project/prj_pacify-x",
+  "cross_project_access": "deny",
+  "required_gates": [
+    "constitution",
+    "boundary",
+    "tests",
+    "outcome",
+    "evidence"
+  ],
+  "commissioning_mode": "existing"
+}

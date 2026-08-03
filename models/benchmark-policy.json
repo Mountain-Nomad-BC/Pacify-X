@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0",
+  "promotion_required": true,
+  "required_evidence": ["model_identity", "version", "task_dataset", "quality", "latency", "safety", "privacy", "tool_behavior", "failure_modes"],
+  "missing_evidence_state": "uncertified",
+  "drift_requires_recheck": true,
+  "registered_benchmarks": []
+}

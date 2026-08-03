@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:runtime-assurance",
+  "title": "Opt-in AI runtime assurance record",
+  "type": "object",
+  "required": [
+    "opt_in",
+    "retention_days",
+    "telemetry"
+  ],
+  "properties": {
+    "opt_in": {
+      "type": "boolean"
+    },
+    "retention_days": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "telemetry": {
+      "type": "object",
+      "required": [
+        "runtime_id",
+        "model_version",
+        "evidence_coverage",
+        "latency_ms",
+        "drift",
+        "benchmark"
+      ],
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "raw_prompt"
+            ]
+          },
+          {
+            "required": [
+              "raw_response"
+            ]
+          },
+          {
+            "required": [
+              "secret"
+            ]
+          },
+          {
+            "required": [
+              "token"
+            ]
+          },
+          {
+            "required": [
+              "credential"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,35 @@
+{
+  "id": "productization-gap-analyzer",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/productization-gap-analyzer/SKILL.md",
+  "body_sha256": "9e9c6ddcd6b2642ac527bee6b76e5637348146f1b817de9fa00755b10e4195e5",
+  "references": [],
+  "capability_tags": [
+    "analyzer",
+    "gap",
+    "productization",
+    "research-ops"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_421af3e6.md",
+        "sha256": "1e12797373164faee8af025d20c95ee4fc01dde04b0cbf538e1acbb9e2b9ffdf"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_73c308e8.yaml",
+        "sha256": "ed2f0c007d1d51ed4346c9740b8ccbeda1cd5b2b64d5538fb4579e84ea8bdc8a"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

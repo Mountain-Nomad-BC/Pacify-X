@@ -1,0 +1,3316 @@
+{
+  "admitted_tools": 56,
+  "aggregate_timeout_seconds": 1200,
+  "completed_utc": "2026-08-03T18:45:57.117437+00:00",
+  "directly_loaded": 56,
+  "domain_wrappers": 7,
+  "duration_seconds": 22.758107,
+  "environment_fingerprint": "370730539e3bde81cbf9237c128dfe2d74d48be1c4307fe298ab2f465c4c020c",
+  "errors": [],
+  "events": [
+    {
+      "source_sha256": "2d0c69c73eb3fb835b2d4b6a3de4544fbf44fe8191dd69d8f4f616264f7175b3",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:34.390565+00:00",
+      "tool_id": "agents-md-generator"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.24284,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:34.724780+00:00",
+      "tool_id": "agents-md-generator"
+    },
+    {
+      "source_sha256": "f68a1e39efc793de2687fe055de081d9fab7ece0010c34be3eda23abe983994b",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:34.725602+00:00",
+      "tool_id": "ai-bom"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 1.762099,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:36.489492+00:00",
+      "tool_id": "ai-bom"
+    },
+    {
+      "source_sha256": "c589451189be9615e2dcbed5d64b9e59e095d0360698883f50f766de9ee21efa",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:36.491677+00:00",
+      "tool_id": "approval-request"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.464406,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:36.959779+00:00",
+      "tool_id": "approval-request"
+    },
+    {
+      "source_sha256": "86ec40330adff1bdbbdaf36abe8887beefc61efe68450aa2833ac85afc54aa22",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:36.960947+00:00",
+      "tool_id": "archive-verifier"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.489814,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:37.452582+00:00",
+      "tool_id": "archive-verifier"
+    },
+    {
+      "source_sha256": "e5eceaeda4a42c876561fbf5ed4a3ada61408097c55e09135a6dc2155a532ee4",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:37.453017+00:00",
+      "tool_id": "backend-probe"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.17464,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:37.628416+00:00",
+      "tool_id": "backend-probe"
+    },
+    {
+      "source_sha256": "802ca6fefa69d3537caefac32bbe3284da43a3c8f97e018e84fceadefc89b396",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:37.628956+00:00",
+      "tool_id": "benchmark-contamination-scan"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.172926,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:37.802659+00:00",
+      "tool_id": "benchmark-contamination-scan"
+    },
+    {
+      "source_sha256": "72fad372e79cee8bb426d3caf21a6d15a2c4876c9afb77f314f79e5d60b83e4d",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:37.803142+00:00",
+      "tool_id": "canary-compare"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.229215,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:38.033098+00:00",
+      "tool_id": "canary-compare"
+    },
+    {
+      "source_sha256": "2e6d990be494ef10d0d97110da24dd6bea36c1e122ceda824a4b9f126e4616bd",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:38.033586+00:00",
+      "tool_id": "capability-router"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 1.472471,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:39.507109+00:00",
+      "tool_id": "capability-router"
+    },
+    {
+      "source_sha256": "6dbd9d3257fba880c304913ecc9739934c8c93d1a5dfe6d57e6fd349d3066435",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:39.510578+00:00",
+      "tool_id": "capacity-planner"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.373379,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:39.887232+00:00",
+      "tool_id": "capacity-planner"
+    },
+    {
+      "source_sha256": "3843cffe375074a8686c23a3f47ed15f248151ca8b5206e93687de7b3545bde0",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:39.887899+00:00",
+      "tool_id": "certification-aggregator"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.356471,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:40.246038+00:00",
+      "tool_id": "certification-aggregator"
+    },
+    {
+      "source_sha256": "37a11f168f869a452e04cc56318c860eef8d2d59baae28563826546b723b0692",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:40.246655+00:00",
+      "tool_id": "change-impact"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.239948,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:40.487631+00:00",
+      "tool_id": "change-impact"
+    },
+    {
+      "source_sha256": "3fea365348823a1f589949fa38d7009935ec827188e248ac1bbb598fb1ed65ac",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:40.488395+00:00",
+      "tool_id": "claim-ledger"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.229099,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:40.718533+00:00",
+      "tool_id": "claim-ledger"
+    },
+    {
+      "source_sha256": "29712ef5d76e7e5f34e0249b7e8daa3ce462eb3ea1f452c427c641bb33a2d505",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:40.719048+00:00",
+      "tool_id": "collision-merge-planner"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.169942,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:40.889781+00:00",
+      "tool_id": "collision-merge-planner"
+    },
+    {
+      "source_sha256": "b6dbef7545066966b9f1e05fd0c602471c0678bdc9e59545e65b76de4243f34c",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:40.890312+00:00",
+      "tool_id": "completion-cutline"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.232018,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:41.123285+00:00",
+      "tool_id": "completion-cutline"
+    },
+    {
+      "source_sha256": "08e7faae66ab45e9baf4c995160d8a971393ba1467406575cd31da5c9369174c",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:41.123886+00:00",
+      "tool_id": "config-trace"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.152484,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:41.277356+00:00",
+      "tool_id": "config-trace"
+    },
+    {
+      "source_sha256": "68f82ca91cc6b09804182b74dedff7519a3026a464ca66a1c88813f9e088078d",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:41.277974+00:00",
+      "tool_id": "context-budget"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.152508,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:41.431245+00:00",
+      "tool_id": "context-budget"
+    },
+    {
+      "source_sha256": "4e8513ad63ab44ff8a9f8cb9a80d9815ee1c9521d3ddcf111037e906bc946d54",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:41.431777+00:00",
+      "tool_id": "deterministic-archive"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.173882,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:41.606587+00:00",
+      "tool_id": "deterministic-archive"
+    },
+    {
+      "source_sha256": "a715e538e695a6a0d27b99a6a573ea3637d0519119719c9fde291c2cc17f5586",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:41.607151+00:00",
+      "tool_id": "differential-tester"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.735157,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:42.343443+00:00",
+      "tool_id": "differential-tester"
+    },
+    {
+      "source_sha256": "2be1da5a490d2ac90985480a7a49dcda9a0bb8fbe8bf2611df69b7b7514180b5",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:42.350656+00:00",
+      "tool_id": "drift-monitor"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 1.240045,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:43.600907+00:00",
+      "tool_id": "drift-monitor"
+    },
+    {
+      "source_sha256": "042d5098eb5d3502db7e938e7de087183d9f577c2d84dabe27f41be763baadc0",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:43.602223+00:00",
+      "tool_id": "duplicate-detector"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.247507,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:43.851770+00:00",
+      "tool_id": "duplicate-detector"
+    },
+    {
+      "source_sha256": "2eaf1de1416488dca24b1765da135a862b69b7ec39f1e9eed94bab0f7816d15d",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:43.852467+00:00",
+      "tool_id": "durable-state"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.188622,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:44.042178+00:00",
+      "tool_id": "durable-state"
+    },
+    {
+      "source_sha256": "480d11614568a3f919be0dc864c1245fad64abcef37615c1bfa99323613c9597",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:44.042982+00:00",
+      "tool_id": "evidence-bundle"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.207946,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:44.252072+00:00",
+      "tool_id": "evidence-bundle"
+    },
+    {
+      "source_sha256": "6c4d9c2c1ceca211906bec091f11689811eee65eebcc9bf74cd9a653346c8720",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:44.252917+00:00",
+      "tool_id": "failure-normalizer"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.160254,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:44.414329+00:00",
+      "tool_id": "failure-normalizer"
+    },
+    {
+      "source_sha256": "690255274143736e28097a24a76392c38aa8dc992c68e5c194f2f8d2e2db7a6b",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:44.414982+00:00",
+      "tool_id": "formula-property-tests"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.153015,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:44.568800+00:00",
+      "tool_id": "formula-property-tests"
+    },
+    {
+      "source_sha256": "29346bb71e3991a228fab75b6c89a67b16a580815ba9acb5f940f67b8c45665b",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:44.569414+00:00",
+      "tool_id": "fuzz-json-runner"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.15762,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:44.727849+00:00",
+      "tool_id": "fuzz-json-runner"
+    },
+    {
+      "source_sha256": "310583f15d3bbb75a24be7a7e9df9e9c863d63775f220742784d3164ae0cf9c5",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:44.728486+00:00",
+      "tool_id": "hardware-probe"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.391751,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:45.121170+00:00",
+      "tool_id": "hardware-probe"
+    },
+    {
+      "source_sha256": "19bc948f91a1178604c2ccb335cd084f40ee79501a41e7901d60bbf7a65088c3",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:45.121824+00:00",
+      "tool_id": "hybrid-retrieval"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.182109,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:45.304755+00:00",
+      "tool_id": "hybrid-retrieval"
+    },
+    {
+      "source_sha256": "4522e0a170a1b204ba67d3c441d893729fe37e20bc9b0c5ff3db6a2b06767911",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:45.305397+00:00",
+      "tool_id": "ingestion-validator"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.244073,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:45.550405+00:00",
+      "tool_id": "ingestion-validator"
+    },
+    {
+      "source_sha256": "a1f776f25e28078abba88bb30276bbaaf673a2952f8e30ea46fc0c657069fef4",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:45.551257+00:00",
+      "tool_id": "judge-calibrator"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.190311,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:45.742810+00:00",
+      "tool_id": "judge-calibrator"
+    },
+    {
+      "source_sha256": "4e7370f4892fdc226eae7c4a2a0a40903ffc7cf5a853143bfab24207ef5478ca",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:45.743663+00:00",
+      "tool_id": "manifest-reconciler"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.15312,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:45.897750+00:00",
+      "tool_id": "manifest-reconciler"
+    },
+    {
+      "source_sha256": "6572e07f74910d741f62f4fcbf31afa6e389abf34be7d5d4aca3c1b2890a5637",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:45.898372+00:00",
+      "tool_id": "memory-write-gate"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.208937,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:46.108266+00:00",
+      "tool_id": "memory-write-gate"
+    },
+    {
+      "source_sha256": "a46b56be296c6f224c4146b3a4ba6e7c15bdb386fc6582b097a18d1f5d0374cc",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:46.108934+00:00",
+      "tool_id": "metamorphic-runner"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.146782,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:46.256580+00:00",
+      "tool_id": "metamorphic-runner"
+    },
+    {
+      "source_sha256": "0b430f29f8c9b0cdc4ad3d1c1773e997e5550a964819916ff4456c541731c0ee",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:46.257360+00:00",
+      "tool_id": "model-router"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 1.673297,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:47.932293+00:00",
+      "tool_id": "model-router"
+    },
+    {
+      "source_sha256": "696d65200ca5a9c9840ad9dd2d5bdd11c3c98dc1936012e72bf30c80c42e7e81",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:47.934646+00:00",
+      "tool_id": "mutation-operator"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.545915,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:48.484054+00:00",
+      "tool_id": "mutation-operator"
+    },
+    {
+      "source_sha256": "6eb31babeeecd56967a1d964b8b015c88fc445d375a2cc10bd793108a61fe6bd",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:48.485302+00:00",
+      "tool_id": "openapi-tool-importer"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.28955,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:48.776713+00:00",
+      "tool_id": "openapi-tool-importer"
+    },
+    {
+      "source_sha256": "a1ff2ba1c6b3f17a57386a8578c4c159f670613fb8dbb499713a67a8ee2a3b3c",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:48.778018+00:00",
+      "tool_id": "patch-scope-guard"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.198004,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:48.978317+00:00",
+      "tool_id": "patch-scope-guard"
+    },
+    {
+      "source_sha256": "3e821875f1b424f5f4e923e716c044d8fed90b388a467d3c1e8c5528da3ccb08",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:48.979038+00:00",
+      "tool_id": "permission-guard"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.241842,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:49.221950+00:00",
+      "tool_id": "permission-guard"
+    },
+    {
+      "source_sha256": "c8809af93e1b881fca164d70a1085c42fde25b2091fb4784ac608b2087066ece",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:49.222676+00:00",
+      "tool_id": "prompt-injection-scanner"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.243607,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:49.467376+00:00",
+      "tool_id": "prompt-injection-scanner"
+    },
+    {
+      "source_sha256": "2b4d4b60e61cc8a0afd6ad03a48e1b174a1d51d55700434598bf706337ae5889",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:49.468165+00:00",
+      "tool_id": "protocol-validator"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.268816,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:49.737984+00:00",
+      "tool_id": "protocol-validator"
+    },
+    {
+      "source_sha256": "a28f14962222c41e887cbf2cabcaa254b34eb161a4603f7feb7cbac0d01aaae1",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:49.738799+00:00",
+      "tool_id": "provenance-generator"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.24715,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:49.986986+00:00",
+      "tool_id": "provenance-generator"
+    },
+    {
+      "source_sha256": "12a05d2f7192ed0f8c8b9ee1abbd2fbe719117a1ca0b8ce7dadba8dc937f53df",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:49.987713+00:00",
+      "tool_id": "recertification-impact"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.15033,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:50.139043+00:00",
+      "tool_id": "recertification-impact"
+    },
+    {
+      "source_sha256": "cee34a30b78de1d794d22a59c778be47c372b11b666cef7fdd77ab62aae9a834",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:50.139847+00:00",
+      "tool_id": "replay-bundle"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.163388,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:50.304292+00:00",
+      "tool_id": "replay-bundle"
+    },
+    {
+      "source_sha256": "a5f18ea59e7545d5f21e12bd76af9981e75e51b52a5a131f2e21336427dc8fdf",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:50.305027+00:00",
+      "tool_id": "repo-mapper"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.167607,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:50.473619+00:00",
+      "tool_id": "repo-mapper"
+    },
+    {
+      "source_sha256": "125db72ad7bcbfe56ca9f7eb0dcf82add59be7bc24a7eab352d8b6f5a21bcfe9",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:50.474616+00:00",
+      "tool_id": "reproduction-scaffold"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 1.459718,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:51.936568+00:00",
+      "tool_id": "reproduction-scaffold"
+    },
+    {
+      "source_sha256": "99752daf496f83ac9a5f1f84d8af12dcbda4896408969a9ddd9293cb6cd7b85c",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:51.944983+00:00",
+      "tool_id": "retrieval-evaluator"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.546207,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:52.497695+00:00",
+      "tool_id": "retrieval-evaluator"
+    },
+    {
+      "source_sha256": "f4012d2fead3020e710683f6b710eb0cd23225d5519b345a9a3d66ea9fca190e",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:52.499590+00:00",
+      "tool_id": "runtime-path"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.302399,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:52.804295+00:00",
+      "tool_id": "runtime-path"
+    },
+    {
+      "source_sha256": "7e24a659e013dad91d62c932280068cfc77eae99c914aa3c737280adc3830a9c",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:52.805253+00:00",
+      "tool_id": "sandbox-profile"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.195862,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:53.002539+00:00",
+      "tool_id": "sandbox-profile"
+    },
+    {
+      "source_sha256": "886e041017b3608e43266846cbf641ebbdf44af3a2bb9cb6cc426e3989515f67",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:53.003453+00:00",
+      "tool_id": "sbom-lite"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.192225,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:53.196957+00:00",
+      "tool_id": "sbom-lite"
+    },
+    {
+      "source_sha256": "7363b9cffee8dda22039aad5b7ccc6c6d8fd26b8d0f3d80c18a6378a29116515",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:53.197775+00:00",
+      "tool_id": "scoped-memory"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.155774,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:53.354659+00:00",
+      "tool_id": "scoped-memory"
+    },
+    {
+      "source_sha256": "086b52b3cfecab8d79e169763530be274a5bfe82437d04ee760ca062e05a62af",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:53.355494+00:00",
+      "tool_id": "secret-scanner"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 1.639698,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:54.996953+00:00",
+      "tool_id": "secret-scanner"
+    },
+    {
+      "source_sha256": "8db61c719fef8d2f0ba2ce04ebff86875595147d688185a4d9720ac33744238f",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:54.998517+00:00",
+      "tool_id": "skill-compiler"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.400434,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:55.401637+00:00",
+      "tool_id": "skill-compiler"
+    },
+    {
+      "source_sha256": "f53194a2b6fc12443fc042138f21728b4f60d6923601807a3dbfd20102a75af9",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:55.402907+00:00",
+      "tool_id": "symbol-index"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.224092,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:55.628666+00:00",
+      "tool_id": "symbol-index"
+    },
+    {
+      "source_sha256": "df397a024a570fc568ba256d3700cd34ab50af4194c0a9dbdf38e3f114d76bc0",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:55.629639+00:00",
+      "tool_id": "threat-model"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.201792,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:55.832810+00:00",
+      "tool_id": "threat-model"
+    },
+    {
+      "source_sha256": "11fb537732a0e5ca20f9ecd869479daadcd09fcc12a253e23bade36a4f5fb2b2",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:55.833738+00:00",
+      "tool_id": "tool-policy-enforcer"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.295689,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:56.130881+00:00",
+      "tool_id": "tool-policy-enforcer"
+    },
+    {
+      "source_sha256": "93098e87152340c41f1964c3d9cd430b47ddd8c45bd35eccb75e1eed0d3edcdc",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:56.131720+00:00",
+      "tool_id": "trace-recorder"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.139987,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:56.272836+00:00",
+      "tool_id": "trace-recorder"
+    },
+    {
+      "source_sha256": "c06bd347ee32d1a34ca1f89202fbd0bd4caa229374757dec55104b38a7c91000",
+      "status": "started",
+      "timestamp_utc": "2026-08-03T18:45:56.273732+00:00",
+      "tool_id": "trajectory-scorer"
+    },
+    {
+      "cache_hit": false,
+      "duration_seconds": 0.180613,
+      "status": "passed",
+      "timestamp_utc": "2026-08-03T18:45:56.455444+00:00",
+      "tool_id": "trajectory-scorer"
+    },
+    {
+      "status": "started",
+      "surface": "domain_wrapper",
+      "timestamp_utc": "2026-08-03T18:45:56.456763+00:00",
+      "tool_id": "govern-operating-kernel"
+    },
+    {
+      "duration_seconds": 0.112058,
+      "status": "passed",
+      "surface": "domain_wrapper",
+      "timestamp_utc": "2026-08-03T18:45:56.569876+00:00",
+      "tool_id": "govern-operating-kernel"
+    },
+    {
+      "status": "started",
+      "surface": "domain_wrapper",
+      "timestamp_utc": "2026-08-03T18:45:56.570703+00:00",
+      "tool_id": "analyze-repository-intelligence"
+    },
+    {
+      "duration_seconds": 0.088942,
+      "status": "passed",
+      "surface": "domain_wrapper",
+      "timestamp_utc": "2026-08-03T18:45:56.660554+00:00",
+      "tool_id": "analyze-repository-intelligence"
+    },
+    {
+      "status": "started",
+      "surface": "domain_wrapper",
+      "timestamp_utc": "2026-08-03T18:45:56.661404+00:00",
+      "tool_id": "engineer-verification-lab"
+    },
+    {
+      "duration_seconds": 0.089525,
+      "status": "passed",
+      "surface": "domain_wrapper",
+      "timestamp_utc": "2026-08-03T18:45:56.751837+00:00",
+      "tool_id": "engineer-verification-lab"
+    },
+    {
+      "status": "started",
+      "surface": "domain_wrapper",
+      "timestamp_utc": "2026-08-03T18:45:56.752647+00:00",
+      "tool_id": "operate-memory-retrieval-observability"
+    },
+    {
+      "duration_seconds": 0.086938,
+      "status": "passed",
+      "surface": "domain_wrapper",
+      "timestamp_utc": "2026-08-03T18:45:56.840564+00:00",
+      "tool_id": "operate-memory-retrieval-observability"
+    },
+    {
+      "status": "started",
+      "surface": "domain_wrapper",
+      "timestamp_utc": "2026-08-03T18:45:56.841568+00:00",
+      "tool_id": "secure-agent-supply-chain"
+    },
+    {
+      "duration_seconds": 0.086994,
+      "status": "passed",
+      "surface": "domain_wrapper",
+      "timestamp_utc": "2026-08-03T18:45:56.929573+00:00",
+      "tool_id": "secure-agent-supply-chain"
+    },
+    {
+      "status": "started",
+      "surface": "domain_wrapper",
+      "timestamp_utc": "2026-08-03T18:45:56.930503+00:00",
+      "tool_id": "govern-runtime-protocol-deployment"
+    },
+    {
+      "duration_seconds": 0.084378,
+      "status": "passed",
+      "surface": "domain_wrapper",
+      "timestamp_utc": "2026-08-03T18:45:57.015829+00:00",
+      "tool_id": "govern-runtime-protocol-deployment"
+    },
+    {
+      "status": "started",
+      "surface": "domain_wrapper",
+      "timestamp_utc": "2026-08-03T18:45:57.016723+00:00",
+      "tool_id": "manage-revocable-certification"
+    },
+    {
+      "duration_seconds": 0.087856,
+      "status": "passed",
+      "surface": "domain_wrapper",
+      "timestamp_utc": "2026-08-03T18:45:57.105594+00:00",
+      "tool_id": "manage-revocable-certification"
+    }
+  ],
+  "harness_sha256": "349a8935e8a76bb6fcae7bf8df8f5baee1da16d9ceb0a7558d35e1eb0a9da79d",
+  "negative_cases": 11,
+  "passed_domain_wrappers": 7,
+  "passed_tools": 56,
+  "per_tool_timeout_seconds": 15.0,
+  "policy_version": "2.0",
+  "positive_cases": 56,
+  "results": [
+    {
+      "cache_hit": false,
+      "cache_key": "de2321249d331551a410cfad5a1a65dae9724c03573e6e114eecd8a578a00b97",
+      "direct_load": {
+        "duration_seconds": 0.101187,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "fe775e9138a68256e7eaa8188cc5fac1ac53377d16712f3dc36c7f54c41c3c1c",
+        "timed_out": false
+      },
+      "id": "agents-md-generator",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.141653,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "27301b21c294f9ae59ec50ddca32055973ceb629c9cb31f1e80e428bfe48778f",
+        "timed_out": false
+      },
+      "sha256": "2d0c69c73eb3fb835b2d4b6a3de4544fbf44fe8191dd69d8f4f616264f7175b3",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "2367cebf1dd84bfd9dd9dabd383d359c0099eb0f6a9cc58c98d5f51e05695bb6",
+      "direct_load": {
+        "duration_seconds": 0.825736,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "5ddcce40b0f8c89951359d4cbe55e017ba370321aa92178a81c46087ff8a4ba4",
+        "timed_out": false
+      },
+      "id": "ai-bom",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.936363,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "f63944a7f6b63b61e476692bf50de9baa11607d41f56bc51d133cbd3ebadc229",
+        "timed_out": false
+      },
+      "sha256": "f68a1e39efc793de2687fe055de081d9fab7ece0010c34be3eda23abe983994b",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_ai_bom.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "45ac01dc8ec0cb855f1c43b45ae969d72015a77d161f744d466c1dfd0e1951c9",
+      "direct_load": {
+        "duration_seconds": 0.284142,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "f016a3282565d81a7d8ed0bb9f1b33aa97a9be070302509d10bdbadd5b9f765c",
+        "timed_out": false
+      },
+      "id": "approval-request",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.180264,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "d097aaddb024fced8a709f29aa2fe171cd5db9a2b4e278b417618794ac635a8a",
+        "timed_out": false
+      },
+      "sha256": "c589451189be9615e2dcbed5d64b9e59e095d0360698883f50f766de9ee21efa",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_approval_request.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "8e329a31a67f8e28423f2fb1e0e6650d8c471edb27c4e3b2b55b06121c8e5b6e",
+      "direct_load": {
+        "duration_seconds": 0.174731,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "ceb1d4edf985000f9ae7f91ddffd54de677d1e6da8d69d52925150cc21f68e4f",
+        "timed_out": false
+      },
+      "id": "archive-verifier",
+      "negative_behavior": {
+        "duration_seconds": 0.133686,
+        "exit_code": 1,
+        "expected_exit_codes": [
+          1
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7b6c20a0c148a9a8b6e6eb3268ee9301de990334ade24d9c11459331c971a974",
+        "timed_out": false
+      },
+      "positive_behavior": {
+        "duration_seconds": 0.181397,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "84c158550e93b1484c4fdcf5e38565b51cc07e86199a171ee169a3d425e12343",
+        "timed_out": false
+      },
+      "sha256": "86ec40330adff1bdbbdaf36abe8887beefc61efe68450aa2833ac85afc54aa22",
+      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_archive_verifier.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "5bdfd01c8fe43afb5c847dcf30830c61c7155a8033c2e01525a853b6c9cb2c65",
+      "direct_load": {
+        "duration_seconds": 0.087496,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "5c40ba628f37ec7b20c4a307223800ee15d9fa7ffc10f69e6364d963ef9e2a86",
+        "timed_out": false
+      },
+      "id": "backend-probe",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.087144,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "d2b82ddf74d6608dbfe5ef628fa66eac79abc53d1b4feb8e89ed382d847a280b",
+        "timed_out": false
+      },
+      "sha256": "e5eceaeda4a42c876561fbf5ed4a3ada61408097c55e09135a6dc2155a532ee4",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_backend_probe.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "41e655f39de12cda0ca536284ef4d1c5f6a08fcc16d062213378d663ddf102f0",
+      "direct_load": {
+        "duration_seconds": 0.083586,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "197219567549106dbc1e6c7936646cd316a637acfa70d5072f93f18ab814ae80",
+        "timed_out": false
+      },
+      "id": "benchmark-contamination-scan",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.08934,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "3c647c8ac4fbb59bf5f49abd166fe2f8bca137bec3ed78eddb87135f93ca141d",
+        "timed_out": false
+      },
+      "sha256": "802ca6fefa69d3537caefac32bbe3284da43a3c8f97e018e84fceadefc89b396",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_benchmark_contamination_scan.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "f8b96c3baaf57e5ebbcbb852f2c594f349790ddf1f89cc8b227be62c47775ea2",
+      "direct_load": {
+        "duration_seconds": 0.074568,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "0ab47799a8e1cc95412d872a0be3c51061aa8315d7e9f042242e01d6ef5b0323",
+        "timed_out": false
+      },
+      "id": "canary-compare",
+      "negative_behavior": {
+        "duration_seconds": 0.074561,
+        "exit_code": 4,
+        "expected_exit_codes": [
+          4
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "55ff3c265358eebe93880f186bd5777c07fe31c5b97756c82aacc44ba805bc22",
+        "timed_out": false
+      },
+      "positive_behavior": {
+        "duration_seconds": 0.080086,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "4a0358ff1e4f8bff7c3cb0c29889975b30268c0b11c03a5780628d30d538b4e8",
+        "timed_out": false
+      },
+      "sha256": "72fad372e79cee8bb426d3caf21a6d15a2c4876c9afb77f314f79e5d60b83e4d",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_canary_compare.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "ec643fd671828e3407f3d1c8cb1f4024b85c9c0ca78b3517bee81ea431d6c5f5",
+      "direct_load": {
+        "duration_seconds": 0.562429,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "aef2cecaad4577ca2dbae5f9e321aa4d9ebab99682144905832b898787714d18",
+        "timed_out": false
+      },
+      "id": "capability-router",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.910042,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "a3bdc69e1a30d5704df6aaef0199dcfb2e81f8627021f470c6aaaea8eda4ebeb",
+        "timed_out": false
+      },
+      "sha256": "2e6d990be494ef10d0d97110da24dd6bea36c1e122ceda824a4b9f126e4616bd",
+      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_capability_router.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "50daf8ca65d535371cb61eadea91008efe26050aa1a6760cddb3837456acd085",
+      "direct_load": {
+        "duration_seconds": 0.244019,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "5adfe4cbb7e852090710280945ba7972799a1944c4860befb49bf2916b840012",
+        "timed_out": false
+      },
+      "id": "capacity-planner",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.12936,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "076902d66d705fb15032d780e29d7729f83ff545d2bffe364cb258b4793867a5",
+        "timed_out": false
+      },
+      "sha256": "6dbd9d3257fba880c304913ecc9739934c8c93d1a5dfe6d57e6fd349d3066435",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_capacity_planner.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "960ae6637bc5f1b25207370951a9961e58e08a2623669a293bf37504a7506d67",
+      "direct_load": {
+        "duration_seconds": 0.129964,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "581729d5529e5a4cbb971addd7f5ec7ccd836de38e84a855e8f1700faf9d0976",
+        "timed_out": false
+      },
+      "id": "certification-aggregator",
+      "negative_behavior": {
+        "duration_seconds": 0.101281,
+        "exit_code": 1,
+        "expected_exit_codes": [
+          1
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "6c5570a0930996f42c7e48fc150469fe4c0b36314a28c50912c93a387acd09ad",
+        "timed_out": false
+      },
+      "positive_behavior": {
+        "duration_seconds": 0.125226,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "395fefb1861f208872cfe1e807ea2113e1da00da5c0a8f90632d1a9312a9c43b",
+        "timed_out": false
+      },
+      "sha256": "3843cffe375074a8686c23a3f47ed15f248151ca8b5206e93687de7b3545bde0",
+      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_certification_aggregator.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "2cc839f63d3f710b0f8c4dacbeb94e1cd0820150d84f1a71790cbe0daa72f2fc",
+      "direct_load": {
+        "duration_seconds": 0.090151,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "4e7e665552b70a769b136168e0369c27a8871bbe1b4934ce23cac7f270abf5fc",
+        "timed_out": false
+      },
+      "id": "change-impact",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.149797,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "b4f3fbc248f9bac4c865b8ab00dad978ca94b842016ae16bf3100d3acf0faa36",
+        "timed_out": false
+      },
+      "sha256": "37a11f168f869a452e04cc56318c860eef8d2d59baae28563826546b723b0692",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "cecce4f8c14b18e83196d80f1dba028a0365168a31e59e7aee41dda6add2af03",
+      "direct_load": {
+        "duration_seconds": 0.110347,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7111cce2f5141421bcf732cb517aea8ff5820acc5d9e198649ac39e9ccd6be55",
+        "timed_out": false
+      },
+      "id": "claim-ledger",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.118752,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "40ae60a7ed863aaf5b775a860d91da3388353dc4b3a8be141a264fd67f34f512",
+        "timed_out": false
+      },
+      "sha256": "3fea365348823a1f589949fa38d7009935ec827188e248ac1bbb598fb1ed65ac",
+      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_claim_ledger.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "c68d7221cbc84a79a3e33370b152ea856cc43a7a13e827973ae281548f59a71f",
+      "direct_load": {
+        "duration_seconds": 0.070049,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "e8925f717cfe9954f19d41ed418cd409e38d639343341b1cb8781b49bcaee55b",
+        "timed_out": false
+      },
+      "id": "collision-merge-planner",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.099893,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "66afb0a742c0d057f1ae7ed6d796865bb002f00179c8ce2808fef652628a9788",
+        "timed_out": false
+      },
+      "sha256": "29712ef5d76e7e5f34e0249b7e8daa3ce462eb3ea1f452c427c641bb33a2d505",
+      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_collision_merge_planner.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "1f17acbb7dc460fd3fad2a3da6349cfd4d34bee1345d6648103fb1ee27a5209f",
+      "direct_load": {
+        "duration_seconds": 0.07532,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "cccd2246c69a399943b0da68a3eb48d61818e0edf4b1b2914e62f261648e42eb",
+        "timed_out": false
+      },
+      "id": "completion-cutline",
+      "negative_behavior": {
+        "duration_seconds": 0.081409,
+        "exit_code": 2,
+        "expected_exit_codes": [
+          2
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "e7f7913329350aaf1a3ab35a29ae0721cd47b3c60bbb9735d6acbcee8a970303",
+        "timed_out": false
+      },
+      "positive_behavior": {
+        "duration_seconds": 0.075289,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "b30d730e4d78a792366818c2a500665b935277f53052ddf31a84bd169dc51507",
+        "timed_out": false
+      },
+      "sha256": "b6dbef7545066966b9f1e05fd0c602471c0678bdc9e59545e65b76de4243f34c",
+      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_completion_cutline.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "cb6cab4a88d650a65296d2433f7c3c796a96a3a118c4b60dd98428f7a6500ebb",
+      "direct_load": {
+        "duration_seconds": 0.077499,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "a61dc2584e46060c527ecc555721a6a7ba1bba3e74ca063b2c0beaf1c3ae72d8",
+        "timed_out": false
+      },
+      "id": "config-trace",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.074985,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "5922641164279a5210a7dad5b0aa07f9985741fcbe0022f3e6e99f39ae37eb8c",
+        "timed_out": false
+      },
+      "sha256": "08e7faae66ab45e9baf4c995160d8a971393ba1467406575cd31da5c9369174c",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_config_trace.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "546576dd927502d16e035ef7e838e05b2e0369d83d58d481af81d0d654bcef32",
+      "direct_load": {
+        "duration_seconds": 0.069791,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "c7c15cf367aa57e11f8c366902d0dca105a3410283fa5ef7cc518518cb7b7ff9",
+        "timed_out": false
+      },
+      "id": "context-budget",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.082717,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "be52c20ff682b1e497a9de632c36f86a83e549c692e0c8384ad0cbfe4b87eb42",
+        "timed_out": false
+      },
+      "sha256": "68f82ca91cc6b09804182b74dedff7519a3026a464ca66a1c88813f9e088078d",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_context_budget.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "9e56fc8c532c908b389eb54b1f057a1d9239c957f0d006224e034ae6c3444e66",
+      "direct_load": {
+        "duration_seconds": 0.072838,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "edc890e07430e4a87f4e58afc49e6c1f2c0c890a9ac626881f4a96c43854e109",
+        "timed_out": false
+      },
+      "id": "deterministic-archive",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.101044,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "8899290ca4aff1b73f66600bc68f6c3777d13e88cd81e84336f63f3ee882a50c",
+        "timed_out": false
+      },
+      "sha256": "4e8513ad63ab44ff8a9f8cb9a80d9815ee1c9521d3ddcf111037e906bc946d54",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_deterministic_archive.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "4b91672ea093f3375b1de6c9339946f659e3dab85ed35bc6d1b27bc872e4f979",
+      "direct_load": {
+        "duration_seconds": 0.081803,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "a0a0814a03486dc11f2ec98f7c36433cc04b36e802a24aed50809fa511a29b45",
+        "timed_out": false
+      },
+      "id": "differential-tester",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.653354,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "fa950bc178f02f874787c4a94385efb5b5d9d274d6349ae4bae26fdb67456842",
+        "timed_out": false
+      },
+      "sha256": "a715e538e695a6a0d27b99a6a573ea3637d0519119719c9fde291c2cc17f5586",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_differential_tester.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "d6a143504432db0dd8cebe5fa78360d8e4bd43ecc81b5d80dce38dbc3c37d643",
+      "direct_load": {
+        "duration_seconds": 0.939049,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "6e9535da98caec6156418c6af301ee30b6f8c19e12e4560414a4136cd17eee86",
+        "timed_out": false
+      },
+      "id": "drift-monitor",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.300996,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "0ac6710acb1b0bbcc10a8d2b9f89d2466bb912ff8a7188cb4d858ea8187ae374",
+        "timed_out": false
+      },
+      "sha256": "2be1da5a490d2ac90985480a7a49dcda9a0bb8fbe8bf2611df69b7b7514180b5",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_drift_monitor.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "7912bcfb53bf86b2fdfac83ff7b151738ef97f4c7acdc46b40159c7599edfc25",
+      "direct_load": {
+        "duration_seconds": 0.137869,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "6e822e09696d882aa0f4c4d7c938533a32588130eb29c753f0c65393ee9ab7e3",
+        "timed_out": false
+      },
+      "id": "duplicate-detector",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.109638,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "2810a029a3aceb4772c026c695a939522ad81b16b3b0f3156c37330431a3f9d1",
+        "timed_out": false
+      },
+      "sha256": "042d5098eb5d3502db7e938e7de087183d9f577c2d84dabe27f41be763baadc0",
+      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_duplicate_detector.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "a5858d87b8d1e2c80ceafb2aa55ad836f1cf729c1c4d293ab5b6d2117784631b",
+      "direct_load": {
+        "duration_seconds": 0.09906,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "a75789a185f5a6fc9dce9268a25ec8c66804db42adcdbe885b15651fb1a36948",
+        "timed_out": false
+      },
+      "id": "durable-state",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.089562,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "cc86d295dc265a22ef620efdecfacdae21185a89b517365a951df80a075c301b",
+        "timed_out": false
+      },
+      "sha256": "2eaf1de1416488dca24b1765da135a862b69b7ec39f1e9eed94bab0f7816d15d",
+      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_durable_state.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "67507e255d928870058f5a6cd3abf6972bb6205d5d6f2ed2f130d471923fa76a",
+      "direct_load": {
+        "duration_seconds": 0.102534,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "64b12363d5c389786f44635cfed7b52ac23ab41c06e433e476ae3848445b0b67",
+        "timed_out": false
+      },
+      "id": "evidence-bundle",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.105412,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "09e2b6b73311e845b06c4ad7db0fd2efa9f7f3460757809f314143281632bd85",
+        "timed_out": false
+      },
+      "sha256": "480d11614568a3f919be0dc864c1245fad64abcef37615c1bfa99323613c9597",
+      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_evidence_bundle.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "bafd0aee0f26277d5ffe151154cecf77814664bc286f32a3929d2e565a0b43ae",
+      "direct_load": {
+        "duration_seconds": 0.082108,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "47ddb23b276b673db984cb1dd52892825a2e7d4fe8a2d8ea451e84e8620c203b",
+        "timed_out": false
+      },
+      "id": "failure-normalizer",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.078146,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "721da56c48ca4bd54ab3ce1aeb5fe49ef5e731a96344f554dc3a407d7d4235e8",
+        "timed_out": false
+      },
+      "sha256": "6c4d9c2c1ceca211906bec091f11689811eee65eebcc9bf74cd9a653346c8720",
+      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_failure_normalizer.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "bfef62f24dccdaf2faf6e37139b97ad1a884d27ba89226ce53454e20de524c5f",
+      "direct_load": {
+        "duration_seconds": 0.073513,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "dc32c2ca2c1a3019fa5e57ef24a64863f3e1eab1346a81428685f96ef437a891",
+        "timed_out": false
+      },
+      "id": "formula-property-tests",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.079502,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "d0e4e50eb48fc5ab7c38892d8c7c292bd722b18638a5b9c3451ca9f7cd913d86",
+        "timed_out": false
+      },
+      "sha256": "690255274143736e28097a24a76392c38aa8dc992c68e5c194f2f8d2e2db7a6b",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_formula_property_tests.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "d53ad7c1104723b064493dd369385ff0edc1efcad34907741e98ddccff11a212",
+      "direct_load": {
+        "duration_seconds": 0.079838,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "1696ce3a52db177ea4d951f0f2168e1cb80137f30a8f82b0a1aaa8336c7021c9",
+        "timed_out": false
+      },
+      "id": "fuzz-json-runner",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.077782,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "539dfcd37d83b5e8b3183433f1830c196487d9c0fff323cef572a5f3c4ee0e9f",
+        "timed_out": false
+      },
+      "sha256": "29346bb71e3991a228fab75b6c89a67b16a580815ba9acb5f940f67b8c45665b",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_fuzz_json_runner.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "bb4a283c24e51dafd168bd56c2e6820575f21179bc2becc1f8d7da0568d9ac14",
+      "direct_load": {
+        "duration_seconds": 0.182899,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7cffe0398079603d080eb6c8f74268156460d7fc0522aae0221f9e9993dede5c",
+        "timed_out": false
+      },
+      "id": "hardware-probe",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.208852,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7cffe0398079603d080eb6c8f74268156460d7fc0522aae0221f9e9993dede5c",
+        "timed_out": false
+      },
+      "sha256": "310583f15d3bbb75a24be7a7e9df9e9c863d63775f220742784d3164ae0cf9c5",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_hardware_probe.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "cbed9f4111377b26a4f6ab626fef184439b55f74cc4ab9e528a6a9560a122462",
+      "direct_load": {
+        "duration_seconds": 0.080308,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "f7752b0e8290c4cfe6e8f02ce355c448bf1172923c495c6d3ef162c954491593",
+        "timed_out": false
+      },
+      "id": "hybrid-retrieval",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.101801,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "9d832fbb02bccd7b6bab932a09b8c4d4a4cff7deea9658f509285908a1c503e0",
+        "timed_out": false
+      },
+      "sha256": "19bc948f91a1178604c2ccb335cd084f40ee79501a41e7901d60bbf7a65088c3",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_hybrid_retrieval.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "734501f18ea4fa7681f801d3a09d16a2f2c23a91985a21db978e33700876052a",
+      "direct_load": {
+        "duration_seconds": 0.075005,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7316fdad379c448aca009e58b2a0133b3de7f9560d847f8be8caa787335fd6aa",
+        "timed_out": false
+      },
+      "id": "ingestion-validator",
+      "negative_behavior": {
+        "duration_seconds": 0.08972,
+        "exit_code": 2,
+        "expected_exit_codes": [
+          2
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "9491c35e7294687306069b5a898e455e624074f444f1e0d26853fecac3d74b09",
+        "timed_out": false
+      },
+      "positive_behavior": {
+        "duration_seconds": 0.079348,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "258f9bd0b3cdfcca34e378bb2122c9f35eada342e19db715ad23a453f342a809",
+        "timed_out": false
+      },
+      "sha256": "4522e0a170a1b204ba67d3c441d893729fe37e20bc9b0c5ff3db6a2b06767911",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_ingestion_validator.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "161ec1e7d4dfb571572e452556d5c1f83d5015cff2765be98392acef3b7c57f2",
+      "direct_load": {
+        "duration_seconds": 0.091201,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "df6d676f7b847730ae379157405dc2926b8d4b5cdd15036e74152401870b83a9",
+        "timed_out": false
+      },
+      "id": "judge-calibrator",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.09911,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "def05e08d3847213ab91a8743ac4c3020111f0a618f035a57a3ec436b6330784",
+        "timed_out": false
+      },
+      "sha256": "a1f776f25e28078abba88bb30276bbaaf673a2952f8e30ea46fc0c657069fef4",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_judge_calibrator.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "1203c9cc4689d764705c8d321787ab608a44416a241c2752fc17da83447a6025",
+      "direct_load": {
+        "duration_seconds": 0.075675,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "4639eae1aa9bd03657be540e0b316b6105a842d530433661a32b30e5504a3edd",
+        "timed_out": false
+      },
+      "id": "manifest-reconciler",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.077445,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "07efa4f7d62772c0719c9eab079721238acd48875e65b54357daca09facf2a1f",
+        "timed_out": false
+      },
+      "sha256": "4e7370f4892fdc226eae7c4a2a0a40903ffc7cf5a853143bfab24207ef5478ca",
+      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_manifest_reconciler.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "48bbbab2481bc6c38b0d39a7eb0af71421c9b7f66bcc0586274805da49a249f3",
+      "direct_load": {
+        "duration_seconds": 0.074165,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "c621685d25d16c89b5776fb78b18102a165be0b4a4e42b69b7f7e14357221673",
+        "timed_out": false
+      },
+      "id": "memory-write-gate",
+      "negative_behavior": {
+        "duration_seconds": 0.067198,
+        "exit_code": 3,
+        "expected_exit_codes": [
+          3
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "fab2208b0bd2bfdc38fea35dac9342b5adfbea820ad048aafc48438ad4e4eca3",
+        "timed_out": false
+      },
+      "positive_behavior": {
+        "duration_seconds": 0.067574,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "77f10b09eae78ee33268660530a9ac04395602a6e9276473e3366e397c382127",
+        "timed_out": false
+      },
+      "sha256": "6572e07f74910d741f62f4fcbf31afa6e389abf34be7d5d4aca3c1b2890a5637",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_memory_write_gate.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "4d242e4ba51ec116130871092a392b0c13023b84c3c1ee7b872bdd135813a61a",
+      "direct_load": {
+        "duration_seconds": 0.067083,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "e392d8dde67aec4d20d0eff9824e0644583020d8a2d61b563e9699e4347fb86b",
+        "timed_out": false
+      },
+      "id": "metamorphic-runner",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.079699,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "3bb5db58bb036fb5959e60436ec47a2c6c81a98d568feeb47ed6e4603985d4a6",
+        "timed_out": false
+      },
+      "sha256": "a46b56be296c6f224c4146b3a4ba6e7c15bdb386fc6582b097a18d1f5d0374cc",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_metamorphic_runner.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "0006595a565ea4ebf0e9b7623996744c4214a843d5955fb744bcbc0a5c551483",
+      "direct_load": {
+        "duration_seconds": 0.754175,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "c5130ae88be92c5f4b89523c277dbef0f5fb464a30a146aedb3c990c527400c4",
+        "timed_out": false
+      },
+      "id": "model-router",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.919122,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7eba4de9b804aa5b8c5e5f3712047b32cf6a19d2135e8ddd11ad730397c6e61f",
+        "timed_out": false
+      },
+      "sha256": "0b430f29f8c9b0cdc4ad3d1c1773e997e5550a964819916ff4456c541731c0ee",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_model_router.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "fd6d6d19698719479e110f6bb0060d6d721680db6c4a2e12d19fa3dd61b6055b",
+      "direct_load": {
+        "duration_seconds": 0.31298,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "0b829d1e78749e5e24b2ab118c74b2209f48c524491a8782fef7d9764cd96cc4",
+        "timed_out": false
+      },
+      "id": "mutation-operator",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.232935,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "8044dd74a15891f3a48bb73dbbeea4a7d97f673d063c3e76c1e7a90170f369ee",
+        "timed_out": false
+      },
+      "sha256": "696d65200ca5a9c9840ad9dd2d5bdd11c3c98dc1936012e72bf30c80c42e7e81",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_mutation_operator.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "80815c172c4b6c420d875986413d3c79e30c7e18e1e7c0fd655f35491face10f",
+      "direct_load": {
+        "duration_seconds": 0.140023,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "e7942aa2458f88bda253563c71788e031238f133f1d6fef83a29af22711240d8",
+        "timed_out": false
+      },
+      "id": "openapi-tool-importer",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.149527,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "a0552df94b6859b4ffbfd91b693ffd7848a4622c59acaa8df84e82e7ab7689b8",
+        "timed_out": false
+      },
+      "sha256": "6eb31babeeecd56967a1d964b8b015c88fc445d375a2cc10bd793108a61fe6bd",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_openapi_tool_importer.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "47ff3131d8fdcdc23fd68879438ed46d5076611b1ff80d7c95e38b1b0c6f48bc",
+      "direct_load": {
+        "duration_seconds": 0.10227,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "89834591ee32dc88a6150df63764acdfd178e3b8c01c96a43a846280dcb87233",
+        "timed_out": false
+      },
+      "id": "patch-scope-guard",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.095734,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "8ca7d225043b9794b905fa14ca49494ff2bd43feb9fc998dae4a5be8cf9f7e69",
+        "timed_out": false
+      },
+      "sha256": "a1ff2ba1c6b3f17a57386a8578c4c159f670613fb8dbb499713a67a8ee2a3b3c",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_patch_scope_guard.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "f19201d59b4551978f1ab69a90ce82f3523fbb79f9e0273aca79cb06f4ca1d15",
+      "direct_load": {
+        "duration_seconds": 0.077745,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "8b6c0bc082f5a2d8ec2b158c6203604996e09e2f0e3622a0e67a321699b73506",
+        "timed_out": false
+      },
+      "id": "permission-guard",
+      "negative_behavior": {
+        "duration_seconds": 0.082321,
+        "exit_code": 3,
+        "expected_exit_codes": [
+          3
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "60ac34daa524caa3da01c7e804815835d9b62ae4575ce8917f65118409eb7655",
+        "timed_out": false
+      },
+      "positive_behavior": {
+        "duration_seconds": 0.081776,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "96601dc25c809fbc62d969e3f931afb33f3137914c2173a39f58807685d9cca3",
+        "timed_out": false
+      },
+      "sha256": "3e821875f1b424f5f4e923e716c044d8fed90b388a467d3c1e8c5528da3ccb08",
+      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_permission_guard.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "0d57c84fde3c9774a02708432d72690e28e07d48d718885653e02374ca956a20",
+      "direct_load": {
+        "duration_seconds": 0.076777,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "295c6916e5491a6c92447da9dcf224186ec6cf98788f8354f432fe69c364ead3",
+        "timed_out": false
+      },
+      "id": "prompt-injection-scanner",
+      "negative_behavior": {
+        "duration_seconds": 0.084652,
+        "exit_code": 2,
+        "expected_exit_codes": [
+          2
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "e35789df68286343f8ed2c50ca3ad45f169bda29c17d901b7f2350f1773b0e39",
+        "timed_out": false
+      },
+      "positive_behavior": {
+        "duration_seconds": 0.082178,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "2ccbeb3a88e1a4c2b7617a7eadff6328bd6db47fe1dc77fd3aaaaf1ee7b32160",
+        "timed_out": false
+      },
+      "sha256": "c8809af93e1b881fca164d70a1085c42fde25b2091fb4784ac608b2087066ece",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_prompt_injection_scanner.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "a7a07dae2579bb490662d1efbc3cdeadf83acb8112d4e2cb3c5155d32ddaad5c",
+      "direct_load": {
+        "duration_seconds": 0.078667,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "a3a206f454f8464156bdc7eb78862d68a928a967474cac34500cf350a7761317",
+        "timed_out": false
+      },
+      "id": "protocol-validator",
+      "negative_behavior": {
+        "duration_seconds": 0.111872,
+        "exit_code": 2,
+        "expected_exit_codes": [
+          2
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "3b68352316081808447844f34dbfc6f35d364d1f8cb1be29fbbcb162de99dd2c",
+        "timed_out": false
+      },
+      "positive_behavior": {
+        "duration_seconds": 0.078277,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "4230a3117170c2b7ac2f1c57eb46088aa24d4a13f21189cf75e1f0d67fb2ff03",
+        "timed_out": false
+      },
+      "sha256": "2b4d4b60e61cc8a0afd6ad03a48e1b174a1d51d55700434598bf706337ae5889",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_protocol_validator.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "d8261d46e44ac87f38185660752f5341e6a12b72527caf9f3e0132d39b5d1dc8",
+      "direct_load": {
+        "duration_seconds": 0.084474,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "bf1954f512befc1765354068aa2ed8ec601c5d2c4828f06daa813e3ecd4d785d",
+        "timed_out": false
+      },
+      "id": "provenance-generator",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.162676,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "2841b3accf5d52e298be38f0d705d89e845c0f182ce9ca94dcb3f722665554dd",
+        "timed_out": false
+      },
+      "sha256": "a28f14962222c41e887cbf2cabcaa254b34eb161a4603f7feb7cbac0d01aaae1",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_provenance_generator.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "8aa626ca3b5f9590beb97e75409e1ecdfb2854a478f553a98f6cb49636a02218",
+      "direct_load": {
+        "duration_seconds": 0.072799,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "9ea455c427ca9e7d1c4f1b87623ae3baae4ecee76ec33474cf73fe4e07f45e9f",
+        "timed_out": false
+      },
+      "id": "recertification-impact",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.077531,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "99dde229c776f87750b346b7a31a3b5f9e9989ad8152854730fcbf32602b7690",
+        "timed_out": false
+      },
+      "sha256": "12a05d2f7192ed0f8c8b9ee1abbd2fbe719117a1ca0b8ce7dadba8dc937f53df",
+      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_recertification_impact.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "c3738b95fda802a3af81425c908b556a0cb028ebc652551e827b817ced454965",
+      "direct_load": {
+        "duration_seconds": 0.08294,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "d4356f178c0dc23d2b3551af4cf15ae765f22b8eacfc536ae6bfded5d819e682",
+        "timed_out": false
+      },
+      "id": "replay-bundle",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.080448,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "70287e33944de77c0a29fd05adc20b08d9f4e95144c7c61bb2a883f038c8f1c2",
+        "timed_out": false
+      },
+      "sha256": "cee34a30b78de1d794d22a59c778be47c372b11b666cef7fdd77ab62aae9a834",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_replay_bundle.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "40e49858a6fe2976e780f0ff96b11a558d6507a690c094b6a40f375ff2ae1687",
+      "direct_load": {
+        "duration_seconds": 0.081721,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "d128610b5f04ef242a9758a88bb4abe9bc2cfa9c024f75ee515cb1f10d3881a6",
+        "timed_out": false
+      },
+      "id": "repo-mapper",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.085886,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "timed_out": false
+      },
+      "sha256": "a5f18ea59e7545d5f21e12bd76af9981e75e51b52a5a131f2e21336427dc8fdf",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_repo_mapper.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "54d2d056a4fe2c91d45f494811e1250938bd7e9ff6aaf53875e6d7ff4b6d1791",
+      "direct_load": {
+        "duration_seconds": 0.874314,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "f559fbbf2c92c3f1268581b4b15f264709ed981d7c54f377bb53057de7d00b16",
+        "timed_out": false
+      },
+      "id": "reproduction-scaffold",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.585404,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "868b905a41f458b2f8d46a10930044978266e2c85d8df41a0e4e8016f2f8bbef",
+        "timed_out": false
+      },
+      "sha256": "125db72ad7bcbfe56ca9f7eb0dcf82add59be7bc24a7eab352d8b6f5a21bcfe9",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_reproduction_scaffold.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "00bb5efacde5364ec0da5f240581a7f8d692424388989cbfd76edeed5488b0d4",
+      "direct_load": {
+        "duration_seconds": 0.302129,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "c2226a0a03d49e05f0df1bba78fe58280b53438942c6112cd0900dcbf5a645b7",
+        "timed_out": false
+      },
+      "id": "retrieval-evaluator",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.244078,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "ef7de8883413f620ea4c412d6664e297b6ed79414f33baba469afb73ab162c61",
+        "timed_out": false
+      },
+      "sha256": "99752daf496f83ac9a5f1f84d8af12dcbda4896408969a9ddd9293cb6cd7b85c",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_retrieval_evaluator.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "3a08c1e75900e51ab50fe463016d0b090d9f59ebe6b43a38b70b916d632d7fbd",
+      "direct_load": {
+        "duration_seconds": 0.168349,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "9e570a8e1eeb6b27213c2d77165243707a3ef12e4f546c36e3a46d4163597b4c",
+        "timed_out": false
+      },
+      "id": "runtime-path",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.13405,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "4325899e3b0400bb1fa19918b9c9a3c17430460975fe400657a2785c2095028f",
+        "timed_out": false
+      },
+      "sha256": "f4012d2fead3020e710683f6b710eb0cd23225d5519b345a9a3d66ea9fca190e",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_runtime_path.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "5c7bf6242794cd9a692f32ac6e9ca47bd7a5b882ece0b56e5886165ea9bb06b9",
+      "direct_load": {
+        "duration_seconds": 0.090783,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7c9d7165a12868894d359b4a4a7ca518e2563caf1937ca0525adb5683cdbbd0c",
+        "timed_out": false
+      },
+      "id": "sandbox-profile",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.105079,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7e43ebfe11c619e2b31c4dd5508657e12fedfd41d0751c435c6f0c1cffbbde32",
+        "timed_out": false
+      },
+      "sha256": "7e24a659e013dad91d62c932280068cfc77eae99c914aa3c737280adc3830a9c",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_sandbox_profile.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "59e29f67992dc2fc7430d6633af53709ae1b7bddc4f122a3faf395483f865bc5",
+      "direct_load": {
+        "duration_seconds": 0.094626,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "95486f7b5ae32e673501ce196683a07eb2470bcb0c290ae0add6fc718c45cef9",
+        "timed_out": false
+      },
+      "id": "sbom-lite",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.097599,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "908cf7aee094002bda49803c30fbdf8100ee33bedd7d06533c3b8a06a346aba4",
+        "timed_out": false
+      },
+      "sha256": "886e041017b3608e43266846cbf641ebbdf44af3a2bb9cb6cc426e3989515f67",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_sbom_lite.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "fc8ca2112745b68d79c48bc08edd2fa8a55aede0018df2ed7055cb6663ee1fe9",
+      "direct_load": {
+        "duration_seconds": 0.080894,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "0711973562cc4ad07aeed4b44d87e5c9120512018c3cc8373b55a9b354fc12d7",
+        "timed_out": false
+      },
+      "id": "scoped-memory",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.07488,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "55c50b0555b4c7b0c15e6925c9cb810452107957fd8630eac3ad040e54269259",
+        "timed_out": false
+      },
+      "sha256": "7363b9cffee8dda22039aad5b7ccc6c6d8fd26b8d0f3d80c18a6378a29116515",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_scoped_memory.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "2826c3ca428596f1ad7cb74f479aac9a1f8574575a7b950b9752aece89dcf048",
+      "direct_load": {
+        "duration_seconds": 0.08254,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "fb9f60fdef65340314c809b49195ac72bb1479b7abd07d98fcbfa771eeba1120",
+        "timed_out": false
+      },
+      "id": "secret-scanner",
+      "negative_behavior": {
+        "duration_seconds": 0.556631,
+        "exit_code": 2,
+        "expected_exit_codes": [
+          2
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "f314420c55dfe0bccd90d2f72592065d9bc884024434de460c9f854a1a62ff1c",
+        "timed_out": false
+      },
+      "positive_behavior": {
+        "duration_seconds": 1.000527,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "06917e5c09065ddaf3c8c7d94fb573311409777b5ca21c96ea1f33bbfafd40e1",
+        "timed_out": false
+      },
+      "sha256": "086b52b3cfecab8d79e169763530be274a5bfe82437d04ee760ca062e05a62af",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "8bb30ef0ae4c74d369af051da90075af7453bb82d10a088f25a1562742907c57",
+      "direct_load": {
+        "duration_seconds": 0.160647,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "cfe6a0a5f109eafe409f20cdf7a3943a12d1a074f595611322eda5318dcd5717",
+        "timed_out": false
+      },
+      "id": "skill-compiler",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.239787,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "543520c8ee648aa721a1e2e54c0bd57bcb47d7f479ee9c7f38a5a34472606c3a",
+        "timed_out": false
+      },
+      "sha256": "8db61c719fef8d2f0ba2ce04ebff86875595147d688185a4d9720ac33744238f",
+      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "245dfca3cc0e7202b21146a946923e7331be4e2031b154a4bb0c498d7fb5cf4a",
+      "direct_load": {
+        "duration_seconds": 0.12534,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "93d276f108ae3e757c302fbecd82685b691d03f95e4784b8e2900d47e1564056",
+        "timed_out": false
+      },
+      "id": "symbol-index",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.098752,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "8f7038386b2af5be7d3fc99a937e5208204ea52d04a9cdc2c0913615ef917df4",
+        "timed_out": false
+      },
+      "sha256": "f53194a2b6fc12443fc042138f21728b4f60d6923601807a3dbfd20102a75af9",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_symbol_index.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "88be56bdfe2b391e7ecd3094e36f4cfdef4845c6bf3d354e9cf39ef7fe27ab6d",
+      "direct_load": {
+        "duration_seconds": 0.099614,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "055e068a2544c534f4adfeae2090126fb8362bbc1b5e4dde6f26e5f4a1868441",
+        "timed_out": false
+      },
+      "id": "threat-model",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.102178,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "fd058c19b1e1f9b6830dcb119deb2d00b4b7a4a038b970a580c2ac1a210d7610",
+        "timed_out": false
+      },
+      "sha256": "df397a024a570fc568ba256d3700cd34ab50af4194c0a9dbdf38e3f114d76bc0",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_threat_model.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "ee2d03798e5c81205aa0494de3228e9397c0e59e6638bc8d1414166cc15cc6f9",
+      "direct_load": {
+        "duration_seconds": 0.095627,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "9604869bfb8d153dbb2a500b7f4b5c5ff9310893051b5f65a4fe90ab54d8b4a8",
+        "timed_out": false
+      },
+      "id": "tool-policy-enforcer",
+      "negative_behavior": {
+        "duration_seconds": 0.075944,
+        "exit_code": 3,
+        "expected_exit_codes": [
+          3
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "b9527b78486dd1946229e5a9e467b6b8799e52e4cff213caa036894264b0591c",
+        "timed_out": false
+      },
+      "positive_behavior": {
+        "duration_seconds": 0.124118,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "87454f9484d2ee86fd27349c238bfb952b23aa095b597b835eb8c120d29aab4e",
+        "timed_out": false
+      },
+      "sha256": "11fb537732a0e5ca20f9ecd869479daadcd09fcc12a253e23bade36a4f5fb2b2",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_tool_policy_enforcer.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "02e889c5e27eb63f40a64cbdff6699a76c3bee7f164fc961f46a8cce02245410",
+      "direct_load": {
+        "duration_seconds": 0.070795,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "2799aa35ede5d466699d0c465f2c30734a21f1e5ed79426d03623162a0804f00",
+        "timed_out": false
+      },
+      "id": "trace-recorder",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.069192,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "742fc8fe67226f0fa5bb2e3fb5579a88e57e24808e6feb8f6f178059caa4c720",
+        "timed_out": false
+      },
+      "sha256": "93098e87152340c41f1964c3d9cd430b47ddd8c45bd35eccb75e1eed0d3edcdc",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_trace_recorder.py"
+    },
+    {
+      "cache_hit": false,
+      "cache_key": "daa31c684d81909d17dad59f475f959b19e067782e4b1eb5e19010db465bf0cc",
+      "direct_load": {
+        "duration_seconds": 0.084146,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "bf1cbc69d2bc5809c4939ea075e6dc65bb341befa1941c65c1a630447b1c1373",
+        "timed_out": false
+      },
+      "id": "trajectory-scorer",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "duration_seconds": 0.096467,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "a934cdb26cdeee926b76eefc9c1b78d8008ad8583e2ec44ed7f84d8b7c3a3545",
+        "timed_out": false
+      },
+      "sha256": "c06bd347ee32d1a34ca1f89202fbd0bd4caa229374757dec55104b38a7c91000",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_trajectory_scorer.py"
+    }
+  ],
+  "schema_version": "1.0",
+  "slowest_tools": [
+    {
+      "id": "ai-bom",
+      "seconds": 1.762099
+    },
+    {
+      "id": "model-router",
+      "seconds": 1.673297
+    },
+    {
+      "id": "secret-scanner",
+      "seconds": 1.6396979999999999
+    },
+    {
+      "id": "capability-router",
+      "seconds": 1.472471
+    },
+    {
+      "id": "reproduction-scaffold",
+      "seconds": 1.459718
+    },
+    {
+      "id": "drift-monitor",
+      "seconds": 1.240045
+    },
+    {
+      "id": "differential-tester",
+      "seconds": 0.735157
+    },
+    {
+      "id": "retrieval-evaluator",
+      "seconds": 0.546207
+    },
+    {
+      "id": "mutation-operator",
+      "seconds": 0.5459149999999999
+    },
+    {
+      "id": "archive-verifier",
+      "seconds": 0.48981399999999997
+    }
+  ],
+  "started_utc": "2026-08-03T18:45:34.359349+00:00",
+  "valid": true,
+  "wrapper_results": [
+    {
+      "behavior": {
+        "duration_seconds": 0.112058,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "37e27474e2e6b3d7ce70d44e97ad413b997d153bb0a3319e6fdb7e0a9042f9c3",
+        "timed_out": false
+      },
+      "outcome": "capability-router",
+      "owner": "govern-operating-kernel",
+      "sha256": "7255910fa9360ca3eaf2bc635f745a120aaad84bfac2d70351caacb03851028a",
+      "target": ".agents/skills/govern-operating-kernel/scripts/domain_tool.py"
+    },
+    {
+      "behavior": {
+        "duration_seconds": 0.088942,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "363255190cdfa4d3754c09903e0577a4bd8b2d9ca0355d03e379d8081ec4f88e",
+        "timed_out": false
+      },
+      "outcome": "repo-mapper",
+      "owner": "analyze-repository-intelligence",
+      "sha256": "7255910fa9360ca3eaf2bc635f745a120aaad84bfac2d70351caacb03851028a",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/domain_tool.py"
+    },
+    {
+      "behavior": {
+        "duration_seconds": 0.089525,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7bdd1db1fcdbdf538cffde1d585894233f9628a2901f1d08e1c126a0fc8c17bf",
+        "timed_out": false
+      },
+      "outcome": "differential-tester",
+      "owner": "engineer-verification-lab",
+      "sha256": "7255910fa9360ca3eaf2bc635f745a120aaad84bfac2d70351caacb03851028a",
+      "target": ".agents/skills/engineer-verification-lab/scripts/domain_tool.py"
+    },
+    {
+      "behavior": {
+        "duration_seconds": 0.086938,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "5f1907c70222754200da1059d81918a2b86d5102fb59bd7ef6bfca8c3e90716f",
+        "timed_out": false
+      },
+      "outcome": "hybrid-retrieval",
+      "owner": "operate-memory-retrieval-observability",
+      "sha256": "7255910fa9360ca3eaf2bc635f745a120aaad84bfac2d70351caacb03851028a",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/domain_tool.py"
+    },
+    {
+      "behavior": {
+        "duration_seconds": 0.086994,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "95a8c1516e19e3ce25caa1e58af66b76fc6038569609696292279823ba334afa",
+        "timed_out": false
+      },
+      "outcome": "secret-scanner",
+      "owner": "secure-agent-supply-chain",
+      "sha256": "7255910fa9360ca3eaf2bc635f745a120aaad84bfac2d70351caacb03851028a",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/domain_tool.py"
+    },
+    {
+      "behavior": {
+        "duration_seconds": 0.084378,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "600ad5aff1622c8563b5f15452d1072393ace5923c2e12e5a218e00bb4bab839",
+        "timed_out": false
+      },
+      "outcome": "model-router",
+      "owner": "govern-runtime-protocol-deployment",
+      "sha256": "7255910fa9360ca3eaf2bc635f745a120aaad84bfac2d70351caacb03851028a",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/domain_tool.py"
+    },
+    {
+      "behavior": {
+        "duration_seconds": 0.087856,
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "failure_class": null,
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "4eaf0b55708957f86a40a3456e289551c9b4e8cece9d622eefd5fc15e40a86fa",
+        "timed_out": false
+      },
+      "outcome": "manifest-reconciler",
+      "owner": "manage-revocable-certification",
+      "sha256": "7255910fa9360ca3eaf2bc635f745a120aaad84bfac2d70351caacb03851028a",
+      "target": ".agents/skills/manage-revocable-certification/scripts/domain_tool.py"
+    }
+  ]
+}

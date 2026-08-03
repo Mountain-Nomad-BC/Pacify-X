@@ -1,0 +1,74 @@
+{
+  "edges": [
+    {
+      "from": "govern-operating-kernel",
+      "relation": "governs-execution",
+      "to": "analyze-repository-intelligence"
+    },
+    {
+      "from": "govern-operating-kernel",
+      "relation": "governs-execution",
+      "to": "engineer-verification-lab"
+    },
+    {
+      "from": "govern-operating-kernel",
+      "relation": "governs-execution",
+      "to": "govern-runtime-protocol-deployment"
+    },
+    {
+      "from": "govern-operating-kernel",
+      "relation": "governs-execution",
+      "to": "manage-revocable-certification"
+    },
+    {
+      "from": "govern-operating-kernel",
+      "relation": "governs-execution",
+      "to": "operate-memory-retrieval-observability"
+    },
+    {
+      "from": "govern-operating-kernel",
+      "relation": "governs-execution",
+      "to": "secure-agent-supply-chain"
+    },
+    {
+      "from": "analyze-repository-intelligence",
+      "relation": "supplies-evidence",
+      "to": "manage-revocable-certification"
+    },
+    {
+      "from": "engineer-verification-lab",
+      "relation": "supplies-evidence",
+      "to": "manage-revocable-certification"
+    },
+    {
+      "from": "govern-operating-kernel",
+      "relation": "supplies-evidence",
+      "to": "manage-revocable-certification"
+    },
+    {
+      "from": "govern-runtime-protocol-deployment",
+      "relation": "supplies-evidence",
+      "to": "manage-revocable-certification"
+    },
+    {
+      "from": "operate-memory-retrieval-observability",
+      "relation": "supplies-evidence",
+      "to": "manage-revocable-certification"
+    },
+    {
+      "from": "secure-agent-supply-chain",
+      "relation": "supplies-evidence",
+      "to": "manage-revocable-certification"
+    }
+  ],
+  "nodes": [
+    "analyze-repository-intelligence",
+    "engineer-verification-lab",
+    "govern-operating-kernel",
+    "govern-runtime-protocol-deployment",
+    "manage-revocable-certification",
+    "operate-memory-retrieval-observability",
+    "secure-agent-supply-chain"
+  ],
+  "schema_version": "1.0"
+}

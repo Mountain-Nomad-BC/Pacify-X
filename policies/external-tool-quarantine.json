@@ -1,0 +1,8 @@
+{
+  "id": "external-tool-quarantine",
+  "version": "1.0.0",
+  "status": "active",
+  "summary": "External packages, extensions, integrations, binaries, and containers remain non-executable until reviewed and approved.",
+  "applies_to": ["packages", "extensions", "mcp", "binaries", "containers", "third_party_integrations"],
+  "enforcement": "Require provenance, hash, license, dependency, vulnerability, permission, policy, and explicit-approval evidence; dynamic analysis requires a separately approved isolated phase."
+}

@@ -1,0 +1,22 @@
+{
+  "id": "outcome-verifier",
+  "version": "0.1.0",
+  "owner": "independent-bootstrap-runtime",
+  "status": "active",
+  "provenance": {"type": "clean_room", "basis": ["reviewed assurance patterns", "local requirements"]},
+  "hash": "8ad22f40ffd648d05a3d9fe618aa66c65bddd9e59e10d885bc9f56bf6c13ff71",
+  "license": "Apache-2.0",
+  "provides": ["independent verification decision"],
+  "consumes": ["postconditions", "evidence records", "policy decision", "executor claim"],
+  "effects": ["read_local"],
+  "permissions": ["read_local"],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {"class": "bounded", "max_tool_calls": 0},
+  "latency": {"class": "local", "max_seconds": 1},
+  "risk": "R1",
+  "validation": {"suite": "tests/test_outcome_verifier.py", "passed": 5, "failed": 0},
+  "approval": {"deployment": "required", "runtime": "not required for verification-only operation"},
+  "evidence": {"suite": "tests/test_outcome_verifier.py", "status": "current"},
+  "rollback": {"strategy": "remove from active capability map"}
+}

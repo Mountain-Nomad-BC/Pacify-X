@@ -1,0 +1,34 @@
+{
+  "id": "context-compactor",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/context-compactor/SKILL.md",
+  "body_sha256": "d8676a0faafdb5be6128fcb09aaded3ec2ed90f2a38026b7e259e98798a55c11",
+  "references": [],
+  "capability_tags": [
+    "compactor",
+    "context",
+    "orchestration"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_8bf6da91.md",
+        "sha256": "9e488d44605877983085ee13df9d4480c304087843203bb4cb08274e8698660d"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_cfa8999f.yaml",
+        "sha256": "dfc7588f8615edc648d855f6ddfd6c944c1bcb79503e45d73abeb0110a60b64a"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

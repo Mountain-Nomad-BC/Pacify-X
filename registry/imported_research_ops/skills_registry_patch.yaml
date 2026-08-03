@@ -1,0 +1,395 @@
+schema_version: '1.0'
+patch_id: research-ops-skills-2026-08-01
+mode: discover-then-merge
+activation_default: candidate
+skills:
+- candidate_id: skill-navigator
+  category: orchestration
+  priority: P0
+  purpose: Progressively locate the smallest relevant capability branch without loading
+    the full catalog.
+  source_path: registry/source_skill_manifests/skill-navigator.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: skill-bundle-resolver
+  category: orchestration
+  priority: P1
+  purpose: Select a compatible set of skills and tools that jointly satisfies all
+    required outcomes.
+  source_path: registry/source_skill_manifests/skill-bundle-resolver.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: execution-contract-enforcer
+  category: orchestration
+  priority: P0
+  purpose: Wrap every skill with validation, authorization, budget, idempotency, execution,
+    verification, and trace controls.
+  source_path: registry/source_skill_manifests/execution-contract-enforcer.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: outcome-verifier
+  category: assurance
+  priority: P0
+  purpose: Independently determine whether evidence, policy, and actual postconditions
+    support the claimed result.
+  source_path: registry/source_skill_manifests/outcome-verifier.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: recovery-coordinator
+  category: orchestration
+  priority: P0
+  purpose: Classify failures and choose retry, alternate path, rollback, escalation,
+    or stop.
+  source_path: registry/source_skill_manifests/recovery-coordinator.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: human-handoff-state-transfer
+  category: orchestration
+  priority: P1
+  purpose: Transfer complete resumable operational state to a human or bounded agent.
+  source_path: registry/source_skill_manifests/human-handoff-state-transfer.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: context-compactor
+  category: orchestration
+  priority: P1
+  purpose: Reduce active context while preserving goals, constraints, decisions, evidence,
+    unresolved questions, and state.
+  source_path: registry/source_skill_manifests/context-compactor.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: behavior-to-code-mapper
+  category: engineering
+  priority: P0
+  purpose: Map runtime behaviors to code, states, tools, policies, tests, telemetry,
+    and dependencies.
+  source_path: registry/source_skill_manifests/behavior-to-code-mapper.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: dependency-impact-tracer
+  category: engineering
+  priority: P1
+  purpose: Predict downstream effects of changing a skill, tool, schema, state, model,
+    policy, or data contract.
+  source_path: registry/source_skill_manifests/dependency-impact-tracer.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: memory-applicability-critic
+  category: memory
+  priority: P0
+  purpose: Determine which parts of a retrieved case apply now and which must be rejected.
+  source_path: registry/source_skill_manifests/memory-applicability-critic.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: experience-reconstructor
+  category: memory
+  priority: P1
+  purpose: Rebuild a current procedure from reusable principles rather than replaying
+    old actions.
+  source_path: registry/source_skill_manifests/experience-reconstructor.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: memory-injection-firewall
+  category: security
+  priority: P0
+  purpose: Quarantine retrieved memory that redirects intent, expands permissions,
+    exposes secrets, or alters policy hierarchy.
+  source_path: registry/source_skill_manifests/memory-injection-firewall.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: intelligent system
+  activation: candidate
+- candidate_id: candidate-memory-promoter
+  category: memory
+  priority: P0
+  purpose: Decide whether a trace-derived observation, claim, or procedure may enter
+    a wider memory scope.
+  source_path: registry/source_skill_manifests/candidate-memory-promoter.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: procedural-memory-compiler
+  category: memory
+  priority: P2
+  purpose: Compile repeated successful patterns into candidate procedures with activation,
+    execution, and termination.
+  source_path: registry/source_skill_manifests/procedural-memory-compiler.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: active-evaluation-selector
+  category: evaluation
+  priority: P1
+  purpose: Choose the most informative evaluation cases under fixed time, compute,
+    or review budget.
+  source_path: registry/source_skill_manifests/active-evaluation-selector.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: intelligent system
+  activation: candidate
+- candidate_id: trajectory-failure-sentinel
+  category: evaluation
+  priority: P1
+  purpose: Detect failure onset early enough to recover before cost or state damage
+    accumulates.
+  source_path: registry/source_skill_manifests/trajectory-failure-sentinel.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: intelligent system
+  activation: candidate
+- candidate_id: reasoning-utility-controller
+  category: evaluation
+  priority: P0
+  purpose: Decide whether another reasoning, retrieval, verification, or tool step
+    has enough expected value.
+  source_path: registry/source_skill_manifests/reasoning-utility-controller.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: intelligent system
+  activation: candidate
+- candidate_id: long-horizon-progress-ledger
+  category: evaluation
+  priority: P1
+  purpose: Represent long work as evidence-backed milestones with partial completion,
+    blockers, regression, and recoverability.
+  source_path: registry/source_skill_manifests/long-horizon-progress-ledger.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: intelligent system
+  activation: candidate
+- candidate_id: scenario-audit-generator
+  category: evaluation
+  priority: P1
+  purpose: Generate realistic pressure, injection, stale-data, conflict, permission,
+    and deception scenarios.
+  source_path: registry/source_skill_manifests/scenario-audit-generator.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: intelligent system
+  activation: candidate
+- candidate_id: skill-admission-controller
+  category: security
+  priority: P0
+  purpose: Control whether a skill may enter registry, sandbox, canary, or production.
+  source_path: registry/source_skill_manifests/skill-admission-controller.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: intelligent system
+  activation: candidate
+- candidate_id: dynamic-skill-detonator
+  category: security
+  priority: P0
+  purpose: Execute a skill in an instrumented sandbox with synthetic secrets and observe
+    real behavior.
+  source_path: registry/source_skill_manifests/dynamic-skill-detonator.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: intelligent system
+  activation: candidate
+- candidate_id: permission-diff-auditor
+  category: security
+  priority: P0
+  purpose: Identify new permissions, scopes, side effects, and destinations between
+    versions.
+  source_path: registry/source_skill_manifests/permission-diff-auditor.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: intelligent system
+  activation: candidate
+- candidate_id: provenance-signature-verifier
+  category: security
+  priority: P0
+  purpose: Verify package identity, source, signature, hash, build chain, and owner.
+  source_path: registry/source_skill_manifests/provenance-signature-verifier.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: intelligent system
+  activation: candidate
+- candidate_id: tool-loop-circuit-breaker
+  category: security
+  priority: P0
+  purpose: Detect cyclic tool calls, repeated no-op state, and cost amplification,
+    then stop or isolate.
+  source_path: registry/source_skill_manifests/tool-loop-circuit-breaker.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: intelligent system
+  activation: candidate
+- candidate_id: paper-mechanism-extractor
+  category: research-ops
+  priority: P1
+  purpose: Extract the actual mechanism, assumptions, data, evidence, and limitations
+    from a paper.
+  source_path: registry/source_skill_manifests/paper-mechanism-extractor.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: productization-gap-analyzer
+  category: research-ops
+  priority: P1
+  purpose: Identify what a research prototype lacks before safe operational use.
+  source_path: registry/source_skill_manifests/productization-gap-analyzer.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: research-to-operation-translator
+  category: research-ops
+  priority: P1
+  purpose: Convert a validated research mechanism into a bounded skill, service, workflow,
+    or evaluation.
+  source_path: registry/source_skill_manifests/research-to-operation-translator.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: benchmark-domain-adapter
+  category: research-ops
+  priority: P1
+  purpose: Translate an academic benchmark into independent framework domain cases, outcomes, risks,
+    and evidence requirements.
+  source_path: registry/source_skill_manifests/benchmark-domain-adapter.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: cross-paper-mechanism-fuser
+  category: research-ops
+  priority: P2
+  purpose: Combine compatible research primitives into a stronger subsystem while
+    exposing conflicts.
+  source_path: registry/source_skill_manifests/cross-paper-mechanism-fuser.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: read-only-speculation-controller
+  category: advanced
+  priority: P3
+  purpose: Predict and prefetch likely next read-only tool results into a quarantined
+    cache.
+  source_path: registry/source_skill_manifests/read-only-speculation-controller.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: bounded-workflow-topology-selector
+  category: advanced
+  priority: P3
+  purpose: Select among approved workflow templates based on complexity, novelty,
+    risk, and evidence conflict.
+  source_path: registry/source_skill_manifests/bounded-workflow-topology-selector.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: corpus-to-skill-tree-compiler
+  category: knowledge
+  priority: P1
+  purpose: Compile large corpora into navigable hierarchical skill/knowledge trees
+    with evidence-linked nodes.
+  source_path: registry/source_skill_manifests/corpus-to-skill-tree-compiler.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: trace-to-skill-compiler
+  category: improvement
+  priority: P2
+  purpose: Convert repeated verified trajectories into candidate governed skill packages.
+  source_path: registry/source_skill_manifests/trace-to-skill-compiler.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: skill-coexecution-graph-builder
+  category: knowledge
+  priority: P1
+  purpose: Build a typed graph of skills/tools used together, order, context, outcomes,
+    cost, and latency.
+  source_path: registry/source_skill_manifests/skill-coexecution-graph-builder.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate
+- candidate_id: evaluation-budget-allocator
+  category: evaluation
+  priority: P1
+  purpose: Allocate automated and human review by risk, disagreement, novelty, impact,
+    and evidence quality—not self-confidence.
+  source_path: registry/source_skill_manifests/evaluation-budget-allocator.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: intelligent system
+  activation: candidate
+- candidate_id: evidence-assembler
+  category: assurance
+  priority: P0
+  purpose: Build a typed evidence package distinguishing measurement, source text,
+    tool output, inference, assumption, and precedent.
+  source_path: registry/source_skill_manifests/evidence-assembler.yaml
+  merge_decision: unresolved
+  canonical_id: null
+  aliases: []
+  owner_hint: independent framework shared
+  activation: candidate

@@ -1,0 +1,30 @@
+{
+  "id": "workflow-orchestrator",
+  "version": "0.1.0",
+  "owner": "independent-bootstrap-runtime",
+  "status": "active",
+  "provenance": {"type": "clean_room", "basis": ["reviewed orchestration patterns", "local requirements"]},
+  "hash": "95813f931d5839cfedd555d971ae448b28429ad44649c924c38e5fd339a15d42",
+  "license": "Apache-2.0",
+  "provides": ["bounded task lifecycle", "lazy capability activation", "checkpointed verified result"],
+  "consumes": ["task request", "policy decision", "runtime handler resolver"],
+  "effects": ["read_local"],
+  "permissions": ["read_local"],
+  "dependencies": ["skill-navigator", "execution-contract-enforcer", "evidence-assembler", "outcome-verifier"],
+  "conflicts": [],
+  "cost": {"class": "bounded", "max_tool_calls": 12},
+  "latency": {"class": "bounded", "max_seconds": 120},
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_orchestrator.py",
+    "passed": 7,
+    "failed": 0,
+    "covers": ["happy path", "late activation", "policy denial", "missing inputs", "failed verification", "failure capture", "checkpoints"]
+  },
+  "approval": {
+    "deployment": "required",
+    "runtime": "follows selected capability effects"
+  },
+  "evidence": {"suite": "tests/test_orchestrator.py", "status": "current"},
+  "rollback": {"strategy": "remove from active capability map and use component APIs directly"}
+}

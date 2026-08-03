@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "generator": "engineering_bootstrap.graph_registry/1.0.0",
+  "policy": "derived metadata projection; regenerate and byte-compare before release",
+  "sources": [
+    {
+      "path": "registry/builders.json",
+      "sha256": "546a4a204ee0ddc8957934f70884021cbf53f648263cb4fe98c8ae4b7220e228"
+    },
+    {
+      "path": "registry/capability_map.json",
+      "sha256": "4c742892820e384d857f29990e646584936799ac13b8ee5b793e97ac55c2f22f"
+    },
+    {
+      "path": "registry/integrations.json",
+      "sha256": "ac14a36624b0bc9fc99aea0ac1d3b6a42bcf5d729c78befcd2020fd3c0556abc"
+    },
+    {
+      "path": "registry/knowledge_sources.json",
+      "sha256": "e5e854eb8f05147770bb4624069c348c53cac30a84399a74aef24ff649e70ad9"
+    },
+    {
+      "path": "registry/models.json",
+      "sha256": "3c3e0311c579cd3f7b395445480bf05e2834c000f8483598acff1b151a4ec586"
+    },
+    {
+      "path": "registry/project_stream_orchestrations.json",
+      "sha256": "13fcbc3aef67ad01e36b30de5ec5ec5187f63c97ab0a49603877620af106d8ac"
+    },
+    {
+      "path": "registry/skill_catalog.toml",
+      "sha256": "4c437344434aa39d0e9ae89dcc865a64946db09b1c3974f3c77eef94722e6e4f"
+    },
+    {
+      "path": "registry/skills/evidence-assembler.json",
+      "sha256": "ca20a579c9aeb9028842f88453cc9a7f743fbe97e8089220e6d7826c0f55a8d5"
+    },
+    {
+      "path": "registry/skills/execution-contract-enforcer.json",
+      "sha256": "03d46d07d852caca20329d272d4878733c65362dbd5ba366e8a702c161510954"
+    },
+    {
+      "path": "registry/skills/outcome-verifier.json",
+      "sha256": "8b5d9c815495b3a8934f85ccd62ee6f3349c76a86e70c8b7514f6f3dd4f96b83"
+    },
+    {
+      "path": "registry/skills/skill-admission-controller.json",
+      "sha256": "496ec452ac47f12dabdcca34008cc3296006280b0836cbfdc8cf536075a8b5a7"
+    },
+    {
+      "path": "registry/skills/skill-navigator.json",
+      "sha256": "399ac0398829bc2f287e9f9c21e66c9284fbc4caa11e4ccac2c6fba93aa69ffa"
+    },
+    {
+      "path": "registry/skills/workflow-orchestrator.json",
+      "sha256": "9d2e6b37757f69ecab5b718b7325806ae7cd4d9bfb84e7577ebba0acac9c07ac"
+    },
+    {
+      "path": "registry/tools.json",
+      "sha256": "daccec7bc0ce5bb9f4b8200dde4da393f45087816f6912b893fd79090d9580fe"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "registry/graphs/capability_graph.json",
+      "sha256": "84ffc4bbca0e29cb813a94220cc0270f6dac91c3af334d33bd430d67c481e1be"
+    },
+    {
+      "path": "registry/graphs/dependency_effect_graph.json",
+      "sha256": "638f34a9fcc56e13eff376d7a5d09ca3298855b7ab071b4f37d028b67a3cd407"
+    },
+    {
+      "path": "registry/graphs/io_graph.json",
+      "sha256": "63bc8e6e4baab55c236f6cd0003ecfc58dbca3a92d2e8e78d20a6c170ec6a806"
+    },
+    {
+      "path": "registry/graphs/project_stream_dependency_graph.json",
+      "sha256": "a0276b85653ac57747b7685c691f02a0352c852b0f55cb0ddb1c26962c3b4a85"
+    },
+    {
+      "path": "registry/graphs/system_asset_graph.json",
+      "sha256": "5cc8dbc53c99e4051e36662be77e8cb0bfc62630d6822c06b52f04d5e0f0bf90"
+    }
+  ]
+}

@@ -1,0 +1,295 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:commissioning-questionnaire",
+  "title": "Evidence-first commissioning questionnaire",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "mode",
+    "answers",
+    "facts",
+    "preferences",
+    "assumptions",
+    "unknowns",
+    "contradictions",
+    "decisions_requiring_approval",
+    "human_acceptance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "mode": {
+      "enum": [
+        "new",
+        "existing"
+      ]
+    },
+    "answers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "goal",
+        "users",
+        "scope",
+        "data",
+        "accessibility",
+        "security",
+        "integrations",
+        "operations",
+        "cost_timeline",
+        "acceptance"
+      ],
+      "properties": {
+        "goal": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "users": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "scope": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "data": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "accessibility": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "security": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "integrations": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "operations": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cost_timeline": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "acceptance": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "facts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/fact"
+      }
+    },
+    "preferences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/statement"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/assumption"
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/riskStatement"
+      }
+    },
+    "contradictions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/riskStatement"
+      }
+    },
+    "decisions_requiring_approval": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/riskStatement"
+      }
+    },
+    "human_acceptance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "architecture",
+        "security_governance",
+        "accessibility",
+        "data_integrations",
+        "cost",
+        "execution_waves",
+        "acceptance_criteria"
+      ],
+      "properties": {
+        "scope": {
+          "type": "boolean"
+        },
+        "architecture": {
+          "type": "boolean"
+        },
+        "security_governance": {
+          "type": "boolean"
+        },
+        "accessibility": {
+          "type": "boolean"
+        },
+        "data_integrations": {
+          "type": "boolean"
+        },
+        "cost": {
+          "type": "boolean"
+        },
+        "execution_waves": {
+          "type": "boolean"
+        },
+        "acceptance_criteria": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "statement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "riskStatement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "risk"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "risk": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        }
+      }
+    },
+    "assumption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "confidence",
+        "risk",
+        "confirmed"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "risk": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        "confirmed": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

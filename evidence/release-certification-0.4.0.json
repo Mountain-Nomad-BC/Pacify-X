@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "release": "0.4.0",
+  "created_utc": "2026-08-02T22:57:40.0172570Z",
+  "status": "certified",
+  "scope": "sanitized drop-in source tree and exact isolated installed wheel",
+  "source_validation": {
+    "tests_passed": 258,
+    "tests_failed": 0,
+    "skill_packages_validated": 20,
+    "skill_package_validation_failed": 0,
+    "composed_audit_checks_passed": 14,
+    "composed_audit_checks_failed": 0,
+    "strict_external_manifests_verified": 30
+  },
+  "source_assimilation": {
+    "scan_count": 5,
+    "largest_complete_snapshot_files": 111139,
+    "largest_complete_snapshot_text_files": 44726,
+    "oversize_review_required": 411,
+    "scan_errors": 0,
+    "explicit_dispositions": 35,
+    "new_clean_room_skills": 20,
+    "lazy_skill_workflows": 5,
+    "raw_input_quarantined": true,
+    "raw_reports_quarantined": true,
+    "hard_delete": false
+  },
+  "control_plane": {
+    "contracts_owned": 44,
+    "contracts_total": 44,
+    "skill_packages": 78,
+    "selectable_skills": 48,
+    "inert_skills": 30,
+    "registered_project_workflows": 17,
+    "capability_assimilation_workflows": 5,
+    "generated_graph_artifacts": 6,
+    "active_integrations": 1,
+    "model_weights_bundled": false
+  },
+  "integrity_bindings": {
+    "pyproject_sha256": "6000bb624011aa9e90f0c7553341d429eca2951964aebfbccfe71db29e9a9338",
+    "capability_admission_sha256": "758444e45974f2f00e750e0e1839675502cbb4d1ce578fba8ac9261bb85ca989",
+    "skill_orchestrations_sha256": "641bd3f2bf35fa34a63bf0224633f312dbeaecce465738704d3241d65c3f0469",
+    "skill_catalog_sha256": "65da30ea21281f031b4588a1baf2f47ea215d491b4425336918a57a574a03658",
+    "contract_ownership_sha256": "398d5e307cae931468e14cda28b3eefc0d83fc0952667b2809c14cc8fa75c090",
+    "graph_manifest_sha256": "68d9ac740a6560dd4cada1ab85937224863ca19ed4a245be6cc22c43e8910b87",
+    "externalized_payload_index_sha256": "adc5fc6f3354cb055a62eaf8843d113abdd2ca7645e7ee4e161e138c39b03ac2"
+  },
+  "installed_wheel": {
+    "version": "0.4.0",
+    "artifact_custody_index": "evidence/externalized-payload-index.json",
+    "sha256": "ecddc088b45e34fa0786c68368d29ffe0cdf765669b8cc828158dbe246306538",
+    "bytes": 893713,
+    "member_count": 612,
+    "forbidden_member_count": 0,
+    "bytecode_member_count": 0,
+    "required_capability_resources_present": true,
+    "registry_validation": "passed",
+    "diagnostics": "passed",
+    "new_project_commissioning": "passed",
+    "existing_project_commissioning": "passed",
+    "existing_owner_preservation": "passed",
+    "metadata_only_startup": "passed"
+  },
+  "sanitization": {
+    "identifier_hits": 0,
+    "legacy_placeholder_hits": 0,
+    "active_zip_archives": 0,
+    "scan_errors": 0
+  },
+  "dynamic_service_discovery": {
+    "canonical_skill": "dynamic-service-discovery",
+    "principle": "Treat every cached network address as a lease and revalidate identity after resolution.",
+    "proxy_configuration_role": "implementation_example_only"
+  },
+  "release_rule": "Any material source, contract, registry, orchestration, skill, packaging, policy, or evidence-index change invalidates this receipt until every gate is rerun."
+}

@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:research_ops:operationalization-record",
+  "title": "Research Operationalization Record",
+  "type": "object",
+  "required": [
+    "opportunity_id",
+    "research_records",
+    "primitive",
+    "productization_gap",
+    "mvp",
+    "controls",
+    "evaluation",
+    "decision"
+  ],
+  "properties": {
+    "opportunity_id": {
+      "type": "string"
+    },
+    "research_records": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "primitive": {
+      "type": "string"
+    },
+    "productization_gap": {
+      "type": "string"
+    },
+    "existing_capability_matches": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "mvp": {
+      "type": "object",
+      "required": [
+        "scope",
+        "inputs",
+        "outputs",
+        "implementation_steps"
+      ],
+      "properties": {
+        "scope": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "implementation_steps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "excluded": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "controls": {
+      "type": "object",
+      "required": [
+        "permissions",
+        "rollback",
+        "human_review"
+      ],
+      "properties": {
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rollback": {
+          "type": "string"
+        },
+        "human_review": {
+          "type": "string"
+        },
+        "security_tests": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "required": [
+        "hypothesis",
+        "baseline",
+        "metrics",
+        "stop_conditions"
+      ],
+      "properties": {
+        "hypothesis": {
+          "type": "string"
+        },
+        "baseline": {
+          "type": "string"
+        },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "datasets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "stop_conditions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "decision": {
+      "enum": [
+        "backlog",
+        "prototype",
+        "pilot",
+        "promote",
+        "revise",
+        "reject",
+        "retire"
+      ]
+    },
+    "owner": {
+      "type": "string"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "risk_tier": {
+      "enum": [
+        "low",
+        "moderate",
+        "high",
+        "critical"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

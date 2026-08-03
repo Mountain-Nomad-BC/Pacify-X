@@ -1,0 +1,41 @@
+# Python bytecode and test/tool caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Build and packaging output
+build/
+dist/
+*.egg-info/
+*.whl
+
+# Virtual environments and local environment files
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# IDE and operating-system residue not owned by this framework
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+
+# Framework-local transient release controls
+.engineering-bootstrap/release.lock
+.engineering-bootstrap/release-transaction.json
+
+# Recoverable intake/quarantine belongs outside the deployable product
+temp/
+temp_*/
+quarantine/
+repo_quarantine/
+

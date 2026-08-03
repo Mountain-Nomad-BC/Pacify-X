@@ -1,0 +1,823 @@
+{
+  "schema_version": "1.0",
+  "count": 43,
+  "capabilities": [
+    {
+      "id": "active-evaluation-selector",
+      "status": "mapped_deferred",
+      "family": "evaluation",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/active-evaluation-selector/SKILL.md",
+      "package": "registry/skill_packages/active-evaluation-selector.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_e49891c7.md",
+        "sha256": "ff7cbc709a46c299e61d626ea4f448158b2c32effc63fd7120f87908697c5ac6"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_c50a37dd.yaml",
+        "sha256": "3db32d083ad9893cc0ef546b2de9a17c313afcff3270eca2045fa7125781a647"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "behavior-to-code-mapper",
+      "status": "mapped_deferred",
+      "family": "impact",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/behavior-to-code-mapper/SKILL.md",
+      "package": "registry/skill_packages/behavior-to-code-mapper.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_e16f1578.md",
+        "sha256": "e1666f2c836f6a0ca5fb1508fb8bb499723dbbaa1d0dd1b493f382e5772d4c70"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_1901a3ea.yaml",
+        "sha256": "2a6829bf3b8838e84008c161eca6efb9869d6267fd65c7279e366e5ef2abdc4c"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "benchmark-domain-adapter",
+      "status": "mapped_deferred",
+      "family": "research",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/benchmark-domain-adapter/SKILL.md",
+      "package": "registry/skill_packages/benchmark-domain-adapter.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_a0f656c0.md",
+        "sha256": "d084f66d3ceeaf09c88f215a170ddcca63f08a44310a81855094602a9d7cced8"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_0be8b3e1.yaml",
+        "sha256": "6b2dc736290b0ad0f02e13e58b99ef792df2d7b8baca24f4d1db81b283e43dcf"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "bounded-workflow-topology-selector",
+      "status": "mapped_deferred",
+      "family": "topology",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/bounded-workflow-topology-selector/SKILL.md",
+      "package": "registry/skill_packages/bounded-workflow-topology-selector.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL.md",
+        "sha256": "ee1b0711d444692896c3376be60411c8b40ce00b3ae5f8808d96931e451091c3"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest.yaml",
+        "sha256": "4dae83b1f518bb95c4bd122b0731289692cf0a98a53085fc25204b8f1119e41a"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "candidate-memory-promoter",
+      "status": "mapped_deferred",
+      "family": "memory",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/candidate-memory-promoter/SKILL.md",
+      "package": "registry/skill_packages/candidate-memory-promoter.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_461a56bc.md",
+        "sha256": "a44f1ec857589740d27ebdc49729277e61616c652923bd17355210b576e4643f"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_26368719.yaml",
+        "sha256": "a8d4d0e62f82cf37f9c5e24be5b6f11d1b327137e4fb62796f9717fc02a277d2"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "context-compactor",
+      "status": "mapped_deferred",
+      "family": "delegated",
+      "handler": "runtime/startup.py",
+      "skill_body": ".agents/skills/context-compactor/SKILL.md",
+      "package": "registry/skill_packages/context-compactor.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_8bf6da91.md",
+        "sha256": "9e488d44605877983085ee13df9d4480c304087843203bb4cb08274e8698660d"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_cfa8999f.yaml",
+        "sha256": "dfc7588f8615edc648d855f6ddfd6c944c1bcb79503e45d73abeb0110a60b64a"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "corpus-to-skill-tree-compiler",
+      "status": "mapped_deferred",
+      "family": "compile",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/corpus-to-skill-tree-compiler/SKILL.md",
+      "package": "registry/skill_packages/corpus-to-skill-tree-compiler.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_e0a6569e.md",
+        "sha256": "7fcd380876f3f132bfef10570281d2a1132fe26f1453d91477a096ee19410fed"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_39d51c09.yaml",
+        "sha256": "c4f7ce403f9e39bae66bb4a437da43f9d9c55268c8a6e0dd1dcbe1fa47872fcb"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "cross-paper-mechanism-fuser",
+      "status": "mapped_deferred",
+      "family": "research",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/cross-paper-mechanism-fuser/SKILL.md",
+      "package": "registry/skill_packages/cross-paper-mechanism-fuser.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_3247dec4.md",
+        "sha256": "92a38441e4ae7f6c4317dc3dc4a21ec78d0852cd582b6d645fcad0902630edac"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_61d22a06.yaml",
+        "sha256": "9f9753b0453c0e4f538d9ff4a25649b7d75a594112f7e25ec409762fb5ecbc84"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "dependency-impact-tracer",
+      "status": "mapped_deferred",
+      "family": "impact",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/dependency-impact-tracer/SKILL.md",
+      "package": "registry/skill_packages/dependency-impact-tracer.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_a5d034b4.md",
+        "sha256": "a1b90a8c9b49fcd0cc5df1749e7d76f30cf9b8fceb4c3a1358ced80acf6c371e"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_59d422a7.yaml",
+        "sha256": "99bc86cd350bb0e46eb1d5482ff6e2442d1870e48dbbf83f38c0cefde2a77488"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "dynamic-skill-detonator",
+      "status": "mapped_deferred",
+      "family": "supply_chain",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/dynamic-skill-detonator/SKILL.md",
+      "package": "registry/skill_packages/dynamic-skill-detonator.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_d2514976.md",
+        "sha256": "c3322dac78844ee630ef22d24e7512c1f8f116fb9556404c4f7c49bfdb57d548"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_c16877d2.yaml",
+        "sha256": "7b22096a379f9aa3465607b65e34332ff16f68ba6762d331411ea99e0b703667"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "evaluation-budget-allocator",
+      "status": "mapped_deferred",
+      "family": "evaluation",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/evaluation-budget-allocator/SKILL.md",
+      "package": "registry/skill_packages/evaluation-budget-allocator.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_9b2aeda9.md",
+        "sha256": "f4203489f61c7f03ef81606f4b46abddccc9f5d0f37bc72a3df59017f8876922"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_d5733a87.yaml",
+        "sha256": "ce2181ebe016de8999414fbd966c72296bf576328021d4458da16a0c48953b86"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "evidence-assembler",
+      "status": "active",
+      "family": "delegated",
+      "handler": "runtime/evidence_assembler.py",
+      "skill_body": ".agents/skills/evidence-assembler/SKILL.md",
+      "package": "registry/skill_packages/evidence-assembler.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_c71b0bd0.md",
+        "sha256": "389ce0f1ba99070521e19c82b3b6263d7faa72ab941c56a18ffde9e8c243a7a4"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_8e165656.yaml",
+        "sha256": "7fbfa717703bd940652e9051a9f270e1913216e33d706754c891c0e4781e62a1"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "execution-contract-enforcer",
+      "status": "active",
+      "family": "delegated",
+      "handler": "runtime/execution_contract.py",
+      "skill_body": ".agents/skills/execution-contract-enforcer/SKILL.md",
+      "package": "registry/skill_packages/execution-contract-enforcer.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_68ac1367.md",
+        "sha256": "6e357a1da5fcdcbe1e0190ed441fa1b09fdcdab7dfb63fd81de62b673df059da"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_9c69399b.yaml",
+        "sha256": "50183dfe732c9cd1c521f33f4df0ee2393c8bb903832cbd503405e07689ca264"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "experience-reconstructor",
+      "status": "mapped_deferred",
+      "family": "memory",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/experience-reconstructor/SKILL.md",
+      "package": "registry/skill_packages/experience-reconstructor.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_bd8b7e6f.md",
+        "sha256": "0130f7fe826c7901629bd59382bd20c3c5c0402bf02ab009fa526a0344e1ebbb"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_ac953d94.yaml",
+        "sha256": "41c7acc31deff88ed74aee902e9c014e1bf36bc0725b4855816e7c39846822d5"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "human-handoff-state-transfer",
+      "status": "mapped_deferred",
+      "family": "progress",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/human-handoff-state-transfer/SKILL.md",
+      "package": "registry/skill_packages/human-handoff-state-transfer.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_076e92c4.md",
+        "sha256": "71e01c9546b3fa70e76bbc54b899afc55f67b231c00e3c692a576d42a1679df0"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_0e21ee81.yaml",
+        "sha256": "9722dfd1f39632ae400eb56843777cd8e37044a86a2e77db997f9eb5994168ad"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "long-horizon-progress-ledger",
+      "status": "mapped_deferred",
+      "family": "progress",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/long-horizon-progress-ledger/SKILL.md",
+      "package": "registry/skill_packages/long-horizon-progress-ledger.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_b93a03e3.md",
+        "sha256": "952a45497b5c8bb3b9199cf8558a49eeedb04227d6f7fcf3e18c692792e94036"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_0fd7e844.yaml",
+        "sha256": "ea013a56274ac4910981e1488cf250f9d20b82774621382f48a91b1ed839fc8e"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "memory-applicability-critic",
+      "status": "mapped_deferred",
+      "family": "memory",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/memory-applicability-critic/SKILL.md",
+      "package": "registry/skill_packages/memory-applicability-critic.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_01bd61a8.md",
+        "sha256": "0b911df2f98c007366e9c0f2ac3492009e7f2c9a56b75f2a5558a00834ec2010"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_45ffad09.yaml",
+        "sha256": "eda030b43d75b128b360afa29ce71e0ffb5d55514e04524c1276d96a247577ab"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "memory-injection-firewall",
+      "status": "mapped_deferred",
+      "family": "memory",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/memory-injection-firewall/SKILL.md",
+      "package": "registry/skill_packages/memory-injection-firewall.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_d57e9699.md",
+        "sha256": "5c8687eb5fc720d801521c96b33b166f982cd15aed3e243a3888e49a1b51c7e3"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_fcaa2f0e.yaml",
+        "sha256": "98f4324bf66603e3bf8db29d641038b9802f708af1da16ab46c3ccefd98c05e9"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "outcome-verifier",
+      "status": "active",
+      "family": "delegated",
+      "handler": "runtime/outcome_verifier.py",
+      "skill_body": ".agents/skills/outcome-verifier/SKILL.md",
+      "package": "registry/skill_packages/outcome-verifier.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_b709f4a9.md",
+        "sha256": "7906b2d4f6d403dc9228fb7e641e6bdc434e908eaf2f3b4e4efb999671f29254"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_69c32df6.yaml",
+        "sha256": "6332084f7fa1cc17d6948ce93ada0ec1dc11427b97a9a68fa53824692877eee9"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "paper-mechanism-extractor",
+      "status": "mapped_deferred",
+      "family": "research",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/paper-mechanism-extractor/SKILL.md",
+      "package": "registry/skill_packages/paper-mechanism-extractor.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_9c1515bc.md",
+        "sha256": "5c4a00def3c7f679e5c7d138478b735df6ad9be620ff6fec95bbf1b8cb82fdf5"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_2176bb23.yaml",
+        "sha256": "c23ba4e4940a813726b8c45a589a3384b88902e1f0d3a2a7edccf816a2bf5031"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "permission-diff-auditor",
+      "status": "mapped_deferred",
+      "family": "supply_chain",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/permission-diff-auditor/SKILL.md",
+      "package": "registry/skill_packages/permission-diff-auditor.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_b1a7c72d.md",
+        "sha256": "0c19932ef4e3cbb8bbc6a33f4f72d6642f401c096f7b2f3d7fb2e6e22c133b1d"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_0c3d93f7.yaml",
+        "sha256": "7f7799d175d4deee04c9e8fcaf4024cd5194286cf05b2a72429effdedc1b360d"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "procedural-memory-compiler",
+      "status": "mapped_deferred",
+      "family": "compile",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/procedural-memory-compiler/SKILL.md",
+      "package": "registry/skill_packages/procedural-memory-compiler.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_c86c58b8.md",
+        "sha256": "d895e224b7a4e3fdf59ca0fd4a4593c45a58182648146230ec37644cc8f14c68"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_ae2a572b.yaml",
+        "sha256": "ec4fb383613ba69d20b374b2049701576aa2bde701cd8648629ca3b44dc2a603"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "productization-gap-analyzer",
+      "status": "mapped_deferred",
+      "family": "research",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/productization-gap-analyzer/SKILL.md",
+      "package": "registry/skill_packages/productization-gap-analyzer.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_421af3e6.md",
+        "sha256": "1e12797373164faee8af025d20c95ee4fc01dde04b0cbf538e1acbb9e2b9ffdf"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_73c308e8.yaml",
+        "sha256": "ed2f0c007d1d51ed4346c9740b8ccbeda1cd5b2b64d5538fb4579e84ea8bdc8a"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "provenance-signature-verifier",
+      "status": "mapped_deferred",
+      "family": "supply_chain",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/provenance-signature-verifier/SKILL.md",
+      "package": "registry/skill_packages/provenance-signature-verifier.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_b3154710.md",
+        "sha256": "5c1d34494e43310bd26a4bd7a0ec8a4a8655d4b2a5edb37f63925ce5371000e0"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_1486b24a.yaml",
+        "sha256": "f339d54fb72d83d647ffd9b07b12496e6f61f8c40548590ee5d451ab83347b0f"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "read-only-speculation-controller",
+      "status": "mapped_deferred",
+      "family": "topology",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/read-only-speculation-controller/SKILL.md",
+      "package": "registry/skill_packages/read-only-speculation-controller.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_171d9e8d.md",
+        "sha256": "040bd208cf50f5226c8492ae7ce828c0097ec437c52edefb41f18981c42cd5fa"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_e9e1cb7f.yaml",
+        "sha256": "887c6029495849b97893e387646cfdcdc6373af406aa82f792acecbd7dcdf563"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "reasoning-utility-controller",
+      "status": "mapped_deferred",
+      "family": "loop",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/reasoning-utility-controller/SKILL.md",
+      "package": "registry/skill_packages/reasoning-utility-controller.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_b6226585.md",
+        "sha256": "5925b823944c1f4df33b1256395be2bfdb7ef0edeb34baec0fea43f6dd512e7c"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_11b55646.yaml",
+        "sha256": "8851322e319cf45b770d8b8082104c4f84518c565dfd3a7f72a1b7decb35222e"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "recovery-coordinator",
+      "status": "mapped_deferred",
+      "family": "delegated",
+      "handler": "runtime/recovery.py",
+      "skill_body": ".agents/skills/recovery-coordinator/SKILL.md",
+      "package": "registry/skill_packages/recovery-coordinator.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_91fb6ed6.md",
+        "sha256": "2554b2d7216991718efa5f7463cd2135ec7b0357d8c87dd703e87f60c2728b83"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_25426b3f.yaml",
+        "sha256": "b7d66f15a1dc97a5e37352ab8dc88ae9ce285343ff0522c4c0b252ed47e191cb"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "research-to-operation-translator",
+      "status": "mapped_deferred",
+      "family": "research",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/research-to-operation-translator/SKILL.md",
+      "package": "registry/skill_packages/research-to-operation-translator.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_dd7ced01.md",
+        "sha256": "f41b7063f125839eb954c9f467020737e7ad34244fd4ac5c2d9eae18016929b0"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_bc8e2013.yaml",
+        "sha256": "92fb7235a872227f4bcf77e34f6a7ba27e227d17df603f9bbe15b969e295292d"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "scenario-audit-generator",
+      "status": "mapped_deferred",
+      "family": "evaluation",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/scenario-audit-generator/SKILL.md",
+      "package": "registry/skill_packages/scenario-audit-generator.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_701e6de8.md",
+        "sha256": "fcf133bb27b5d00234f61bc46f8c91f31b104b55897ed96678e6310703b31f10"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_5b5b91b0.yaml",
+        "sha256": "162f737d98b8e75d4ed31ba4c21ab979930e3126ad7c749328a43350b40d4ce6"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "skill-admission-controller",
+      "status": "active",
+      "family": "delegated",
+      "handler": "runtime/admission_controller.py",
+      "skill_body": ".agents/skills/skill-admission-controller/SKILL.md",
+      "package": "registry/skill_packages/skill-admission-controller.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_aaf7393a.md",
+        "sha256": "29713bbb1a45a4124719c7b5d022d3c813937d8a872f0ca8c357775577d29347"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_6536c6db.yaml",
+        "sha256": "f3363ab5c43d0a01237581572f3b6410037feb28646ac6b4ef12a9eee4d7b988"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "skill-bundle-resolver",
+      "status": "mapped_deferred",
+      "family": "bundle",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/skill-bundle-resolver/SKILL.md",
+      "package": "registry/skill_packages/skill-bundle-resolver.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_dd257f1c.md",
+        "sha256": "f144df02fe7025c94ac4080c3902968549279967883ddc8fd101238c6831e385"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_342a98d5.yaml",
+        "sha256": "d63ef4023ec3593166ca919f1c6ac5d0259590b884d16511ea5e8f96c75cd8f3"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "skill-coexecution-graph-builder",
+      "status": "mapped_deferred",
+      "family": "impact",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/skill-coexecution-graph-builder/SKILL.md",
+      "package": "registry/skill_packages/skill-coexecution-graph-builder.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_c0638280.md",
+        "sha256": "4b144d18f7316c8e0177fbd4b60bf34077ec9012d2b5495f5a4dc0939bc84964"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_3959f3eb.yaml",
+        "sha256": "847bbf66cb6c69c3edc4fe1248ae0d27926fda47afbfaf2429e88b831f638e80"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "skill-navigator",
+      "status": "active",
+      "family": "delegated",
+      "handler": "runtime/skill_navigator.py",
+      "skill_body": ".agents/skills/skill-navigator/SKILL.md",
+      "package": "registry/skill_packages/skill-navigator.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_a325fa3f.md",
+        "sha256": "ab3d951bcc983f04176966cd50481ad3907482fa8af0d2ad0fabb7402f49482e"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_b4a46ed2.yaml",
+        "sha256": "d49412df0f3082a01c5382bdf562cd7f86b001003a8f42ef96d2062fcf2bfeaa"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "tool-loop-circuit-breaker",
+      "status": "mapped_deferred",
+      "family": "loop",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/tool-loop-circuit-breaker/SKILL.md",
+      "package": "registry/skill_packages/tool-loop-circuit-breaker.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_47b68265.md",
+        "sha256": "fba3499378921533e97e7ea25c435fc7b65429a4099bc587e08f7642112dc47c"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_3c3fd40b.yaml",
+        "sha256": "eec57940351558019f025a363eaed40173fbefc44c1ee7e9ce465cbb6fc6b56b"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "trace-to-skill-compiler",
+      "status": "active",
+      "family": "compile",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/trace-to-skill-compiler/SKILL.md",
+      "package": "registry/skill_packages/trace-to-skill-compiler.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_bc463d0d.md",
+        "sha256": "ff883a871cc04573749f9f23b727c49ddc3a6cddd61341538b50c140ec20faa6"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_8a125c1a.yaml",
+        "sha256": "773e8e6625e553945b000d1843ffae8bf15f6c5fb430c984a3e43db2edcb0f5d"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "trajectory-failure-sentinel",
+      "status": "mapped_deferred",
+      "family": "loop",
+      "handler": "runtime.operational_controls.run_control",
+      "skill_body": ".agents/skills/trajectory-failure-sentinel/SKILL.md",
+      "package": "registry/skill_packages/trajectory-failure-sentinel.json",
+      "source_skill": {
+        "path": "LLM_hybrid_rag/SKILL_e3c01da6.md",
+        "sha256": "7b205f8e775f6b2b8478cbf64bf0bbd61697ecdf7556288e3939603882214a1a"
+      },
+      "source_manifest": {
+        "path": "LLM_hybrid_rag/manifest_117a6015.yaml",
+        "sha256": "4be21d195be76be025971c1d6ac538401823fc53f9181ebe7c503c6f69cc3a48"
+      },
+      "evidence": [
+        "tests/test_operational_controls.py"
+      ]
+    },
+    {
+      "id": "isolate-project-streams",
+      "status": "active",
+      "family": "delegated",
+      "handler": "runtime/project_stream_controls.py",
+      "skill_body": ".agents/skills/isolate-project-streams/SKILL.md",
+      "package": "registry/skill_packages/isolate-project-streams.json",
+      "source_skill": {
+        "path": "staged_design_pack/project-stream-isolation",
+        "sha256": "compiled-in-source-disposition"
+      },
+      "source_manifest": {
+        "path": "registry/project_stream_capabilities.json",
+        "sha256": "generated-and-validated"
+      },
+      "evidence": [
+        "tests/test_project_stream_controls.py"
+      ]
+    },
+    {
+      "id": "govern-memory-fabric",
+      "status": "active",
+      "family": "delegated",
+      "handler": "runtime/memory_fabric.py",
+      "skill_body": ".agents/skills/govern-memory-fabric/SKILL.md",
+      "package": "registry/skill_packages/govern-memory-fabric.json",
+      "source_skill": {
+        "path": "staged_design_pack/memory-fabric",
+        "sha256": "compiled-in-source-disposition"
+      },
+      "source_manifest": {
+        "path": "registry/project_stream_capabilities.json",
+        "sha256": "generated-and-validated"
+      },
+      "evidence": [
+        "tests/test_memory_fabric.py"
+      ]
+    },
+    {
+      "id": "forge-skills-from-knowledge",
+      "status": "active",
+      "family": "delegated",
+      "handler": "runtime/knowledge_foundry.py",
+      "skill_body": ".agents/skills/forge-skills-from-knowledge/SKILL.md",
+      "package": "registry/skill_packages/forge-skills-from-knowledge.json",
+      "source_skill": {
+        "path": "agent_memory_issues_to_explore/Skill Foundry.txt",
+        "sha256": "65d330b33dcbf1c5f2a66f0fa2b440de44571cd03490fea2883f51d47ed9c5e1"
+      },
+      "source_manifest": {
+        "path": "registry/skill_packages/forge-skills-from-knowledge.json",
+        "sha256": "self-described-package"
+      },
+      "evidence": [
+        "tests/test_knowledge_foundry.py"
+      ]
+    },
+    {
+      "id": "analyze-engineering-intelligence",
+      "status": "active",
+      "family": "delegated",
+      "handler": "runtime/engineering_intelligence.py",
+      "skill_body": ".agents/skills/analyze-engineering-intelligence/SKILL.md",
+      "package": "registry/skill_packages/analyze-engineering-intelligence.json",
+      "source_skill": {
+        "path": "agent_memory_issues_to_explore/\ud83d\udce6 Pack 8 AI Runtime & Cognitive As.txt",
+        "sha256": "be252cfb2c073c5246c40c09ee6ec8f51c67490958058b28fd21ef33bfac9834"
+      },
+      "source_manifest": {
+        "path": "registry/skill_packages/analyze-engineering-intelligence.json",
+        "sha256": "self-described-package"
+      },
+      "evidence": [
+        "tests/test_engineering_intelligence.py"
+      ]
+    },
+    {
+      "id": "validate-contract-boundaries",
+      "status": "active",
+      "family": "assurance",
+      "handler": "runtime.foundation_assurance.compare_contract_surfaces",
+      "skill_body": ".agents/skills/validate-contract-boundaries/SKILL.md",
+      "package": "registry/skill_packages/validate-contract-boundaries.json",
+      "source_skill": {
+        "path": "source-12:automation/api-contract-validator/SKILL.md",
+        "sha256": "f876f7d512567d1310d1bc2b55c124c124547d852d1164de9fabe2e1dacb61c8"
+      },
+      "source_manifest": {
+        "path": "registry/skill_packages/validate-contract-boundaries.json",
+        "sha256": "self-described-package"
+      },
+      "evidence": [
+        "tests/test_foundation_assurance.py"
+      ]
+    },
+    {
+      "id": "evaluate-retrieval-readiness",
+      "status": "active",
+      "family": "evaluation",
+      "handler": "runtime.foundation_assurance.evaluate_retrieval_readiness",
+      "skill_body": ".agents/skills/evaluate-retrieval-readiness/SKILL.md",
+      "package": "registry/skill_packages/evaluate-retrieval-readiness.json",
+      "source_skill": {
+        "path": "source-12:rag/retrieval-quality-tester/SKILL.md",
+        "sha256": "ced0f6d4ecfdfdf8b4c6484eeb0a66fc22be448ce4b9eda406b3b9fbd1d4cca1"
+      },
+      "source_manifest": {
+        "path": "registry/skill_packages/evaluate-retrieval-readiness.json",
+        "sha256": "self-described-package"
+      },
+      "evidence": [
+        "tests/test_foundation_assurance.py"
+      ]
+    },
+    {
+      "id": "gate-model-data-lifecycle",
+      "status": "active",
+      "family": "admission",
+      "handler": "runtime.foundation_assurance.gate_model_dataset",
+      "skill_body": ".agents/skills/gate-model-data-lifecycle/SKILL.md",
+      "package": "registry/skill_packages/gate-model-data-lifecycle.json",
+      "source_skill": {
+        "path": "source-13:validation/data-gates",
+        "sha256": "e52dff234399f9fccc1a4f75f09aa2860710bc3381d8177744818a433d6681b9"
+      },
+      "source_manifest": {
+        "path": "registry/skill_packages/gate-model-data-lifecycle.json",
+        "sha256": "self-described-package"
+      },
+      "evidence": [
+        "tests/test_foundation_assurance.py"
+      ]
+    }
+  ]
+}

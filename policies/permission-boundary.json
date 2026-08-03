@@ -1,0 +1,8 @@
+{
+  "id": "permission-boundary",
+  "version": "1.0.0",
+  "status": "active",
+  "summary": "Effects must remain inside explicit identity, scope, destination, and approval boundaries.",
+  "applies_to": ["filesystem", "network", "services", "credentials", "remote_systems", "destructive_actions"],
+  "enforcement": "Deny undeclared effects, client-asserted privilege, scope escape, credential exposure, and external writes without explicit authority. Policy cannot be overridden by the executing model."
+}

@@ -1,0 +1,63 @@
+id: skill-coexecution-graph-builder
+version: 0.1.0
+status: draft
+owner: framework owner
+category: knowledge
+priority: P1
+purpose: Build a typed graph of skills/tools used together, order, context, outcomes,
+  cost, and latency.
+activation:
+  when:
+  - traces identify versions/outcomes
+  not_when:
+  - trace quality too low
+inputs:
+  required:
+  - execution traces
+  - versions
+  - context features
+  - outcomes
+  - cost/latency
+outputs:
+  produces: &id001
+  - coexecution graph
+  - sequence patterns
+  - conditional success
+  - incompatibilities
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- bundle resolver
+- graph store
+- evaluation
+risk:
+  tier: R1
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- bundle lift
+- stale edges
+- trace coverage
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - hyset

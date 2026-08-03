@@ -1,0 +1,57 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:metacognitive:hypothesis-portfolio",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "case_id": {
+      "type": "string"
+    },
+    "hypotheses": {
+      "items": {
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "falsifiers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "posterior": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "prior": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "statement": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "statement",
+          "prior",
+          "falsifiers"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "case_id",
+    "hypotheses"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,27 @@
+orchestration_id: memory_maintenance
+title: Repair, compress, and validate memory without changing unsupported facts
+version: 0.1.0
+status: design-ready
+trigger: explicit-or-policy-scheduled
+project_binding: required unless workspace bootstrap
+skills:
+- memory-self-healer
+- continuous-knowledge-compression
+- evidence-freshness-verifier
+- assumption-decay
+- knowledge-coverage
+required_context:
+- workspace_id
+- agent_id
+- session_id
+- intent_id
+- correlation_id
+preflight:
+- constitution_resolved
+- lease_valid
+- scope_resolved
+- side_effect_budget_set
+outcomes:
+- memory_health_report
+failure_policy: checkpoint-and-fail-closed-on-boundary-or-integrity-violation
+audit: true

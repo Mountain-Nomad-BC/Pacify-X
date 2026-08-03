@@ -1,0 +1,8 @@
+{
+  "id": "canonical-owner",
+  "version": "1.0.0",
+  "status": "active",
+  "summary": "Every responsibility, contract, state record, and generated artifact has one canonical owner.",
+  "applies_to": ["architecture", "registries", "schemas", "generated_artifacts", "documentation"],
+  "enforcement": "Block promotion when ownership is absent or conflicting. Treat aliases and derived views as references to the canonical owner, never as competing sources of truth."
+}

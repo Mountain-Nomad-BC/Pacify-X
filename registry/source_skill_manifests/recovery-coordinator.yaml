@@ -1,0 +1,69 @@
+id: recovery-coordinator
+version: 0.1.0
+status: draft
+owner: framework owner
+category: orchestration
+priority: P0
+purpose: Classify failures and choose retry, alternate path, rollback, escalation,
+  or stop.
+activation:
+  when:
+  - execution/tool/policy/verification/persistence fails
+  not_when:
+  - policy violation requires stop
+  - irreversible effect lacks idempotency
+inputs:
+  required:
+  - failure class
+  - state
+  - trace
+  - retry budget
+  - fallbacks
+  - rollback capability
+outputs:
+  produces: &id001
+  - recovery decision
+  - next state
+  - retry parameters
+  - rollback plan
+  - escalation packet
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- turn orchestrator
+- tool gateway
+- circuit breaker
+- handoff
+risk:
+  tier: R2
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- recovery rate
+- repeat failures
+- rollback success
+- attempts before escalation
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - iii-loop-engineering
+  - failure-process

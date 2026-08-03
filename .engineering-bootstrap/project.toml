@@ -1,0 +1,14 @@
+[project]
+mode = "existing"
+framework = "engineering-loop-bootstrap"
+project_management = "PROJECT_MANAGEMENT.md"
+
+[startup]
+metadata_only = true
+max_selected_capabilities = 3
+
+[lifecycle]
+checkpoint_after_each_step = true
+unload_after_step = true
+retry_requires_new_evidence = true
+cleanup_mode = "quarantine_only"

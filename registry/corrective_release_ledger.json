@@ -1,0 +1,759 @@
+{
+  "allowed_statuses": [
+    "open",
+    "in_progress",
+    "blocked",
+    "passed",
+    "rejected_with_evidence",
+    "deferred_with_owner"
+  ],
+  "card_count": 35,
+  "cards": [
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_declared_suite_support.py",
+        "python -m runtime.cli release verify"
+      ],
+      "dependencies": [],
+      "disposition": "The live failure was reproduced and 0.6.1 was retained as historical but revoked before implementation repair.",
+      "id": "REL-010-A",
+      "owning_paths": [
+        "PROJECT_MANAGEMENT.md",
+        ".engineering-bootstrap/project-management/state.json",
+        "evidence/release-revocation-0.6.1.json"
+      ],
+      "priority": "P0",
+      "receipts": [
+        "evidence/release-revocation-0.6.1.json"
+      ],
+      "status": "passed",
+      "title": "Revoke stale deployment certification"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_corrective_release.py"
+      ],
+      "dependencies": [
+        "REL-010-A"
+      ],
+      "disposition": "All 23 source cards and one newly discovered blocking child finding are explicitly represented.",
+      "id": "REL-010-B",
+      "owning_paths": [
+        "registry/corrective_release_ledger.json",
+        "runtime/corrective_release.py",
+        "tests/test_corrective_release.py"
+      ],
+      "priority": "P0",
+      "receipts": [
+        "evidence/rel010-coverage-ledger-validation.json"
+      ],
+      "status": "passed",
+      "title": "Establish the corrective-release coverage ledger"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_declared_suite_support.py tests/test_declared_suite_reconstruction.py tests/test_config_and_registry.py"
+      ],
+      "dependencies": [
+        "REL-010-A",
+        "REL-010-B"
+      ],
+      "disposition": "formula_count is generated from len(formulas); canonical, missing, mismatched, legacy-name, duplicate-ID, missing-implementation, and deterministic-output cases pass.",
+      "id": "REG-010-A",
+      "owning_paths": [
+        "registry/declared_suite_formulas.json",
+        "builders/last_round_assimilation_builder.py",
+        "runtime/declared_suite_formulas.py",
+        "tests/test_declared_suite_support.py"
+      ],
+      "priority": "P0",
+      "receipts": [
+        "evidence/rel010-registry-envelope-repair.json"
+      ],
+      "status": "passed",
+      "title": "Resolve the declared formula registry contract drift"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_registry_envelopes.py"
+      ],
+      "dependencies": [
+        "REG-010-A"
+      ],
+      "disposition": "All 42 count-like fields across 25 registries have explicit collection, derivation, schema, builder, and consumer ownership; deliberate corruption of each field fails.",
+      "id": "REG-010-B",
+      "owning_paths": [
+        "runtime/registry_envelope.py",
+        "registry/registry_envelope_inventory.json",
+        "tests/test_registry_envelopes.py"
+      ],
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-registry-envelope-repair.json"
+      ],
+      "status": "passed",
+      "title": "Introduce a shared registry-envelope invariant"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_release_certification.py",
+        "engineering-bootstrap release verify"
+      ],
+      "dependencies": [
+        "REG-010-A",
+        "REG-010-B"
+      ],
+      "disposition": "Passed only through the atomic clean-workspace finalizer bound to the published product and harness digests.",
+      "id": "REL-010-C",
+      "owning_paths": [
+        "runtime/release_certification.py",
+        "runtime/cli.py",
+        "tests/test_release_certification.py"
+      ],
+      "priority": "P0",
+      "receipts": [
+        "evidence/release-certification-0.6.2.json"
+      ],
+      "status": "passed",
+      "title": "Build one authoritative release-finalization command"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_release_artifacts.py"
+      ],
+      "dependencies": [
+        "REL-010-C"
+      ],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "REL-010-D",
+      "owning_paths": [
+        "policies/release-artifact-policy.json",
+        "runtime/release_artifacts.py",
+        "tests/test_release_artifacts.py"
+      ],
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Separate product inputs, evidence outputs, and generated intermediates"
+    },
+    {
+      "acceptance_commands": [
+        "engineering-bootstrap test-profile run fast",
+        "engineering-bootstrap test-profile run full",
+        "engineering-bootstrap test-profile run release"
+      ],
+      "dependencies": [
+        "REG-010-A"
+      ],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "TST-010-A",
+      "owning_paths": [
+        "registry/test_profiles.json",
+        "runtime/test_profiles.py",
+        "tests/test_test_profiles.py"
+      ],
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Add explicit fast, full, and release test profiles"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_exact_tool_certification.py"
+      ],
+      "dependencies": [
+        "TST-010-A"
+      ],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "TST-010-B",
+      "owning_paths": [
+        "runtime/exact_tool_certification.py",
+        "tests/test_exact_tool_certification.py"
+      ],
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Instrument and bound exact-tool certification"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_exact_tool_certification.py"
+      ],
+      "dependencies": [
+        "TST-010-B",
+        "REL-010-D"
+      ],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "TST-010-C",
+      "owning_paths": [
+        "runtime/exact_tool_certification.py",
+        "registry/declared_suite_authoritative_tools.json",
+        "tests/test_exact_tool_certification.py"
+      ],
+      "priority": "P2",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Add exact-hash certification caching safely"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q"
+      ],
+      "dependencies": [
+        "TST-010-B",
+        "ENV-010-B"
+      ],
+      "disposition": "The finalizer reran the complete staged-tree profile and bound its zero-failure result to the published product and harness digests.",
+      "id": "TST-010-D",
+      "owning_paths": [
+        "tests",
+        "runtime/test_profiles.py"
+      ],
+      "priority": "P0",
+      "receipts": [
+        "evidence/rel010-final-full-profile.json",
+        "evidence/release-certification-0.6.2.json"
+      ],
+      "status": "passed",
+      "title": "Mandatory post-repair full discovery sweep"
+    },
+    {
+      "acceptance_commands": [
+        "engineering-bootstrap release environment"
+      ],
+      "dependencies": [],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "ENV-010-A",
+      "owning_paths": [
+        "pyproject.toml",
+        "requirements-release.lock",
+        "runtime/release_environment.py"
+      ],
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Define complete release dependency groups"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_installed_wheel_e2e.py"
+      ],
+      "dependencies": [
+        "ENV-010-A",
+        "REL-010-D"
+      ],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "ENV-010-B",
+      "owning_paths": [
+        "tests/test_installed_wheel_e2e.py",
+        "runtime/release_certification.py"
+      ],
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Certify from a clean built artifact"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_knowledge_foundry.py"
+      ],
+      "dependencies": [],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "SEC-010-A",
+      "owning_paths": [
+        "runtime/knowledge_foundry.py",
+        "tests/test_knowledge_foundry.py"
+      ],
+      "priority": "P2",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Replace AST-filtered eval with a bounded interpreter"
+    },
+    {
+      "acceptance_commands": [
+        "python scripts/build_domain_tool_projections.py --root . --check"
+      ],
+      "dependencies": [],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "GEN-010-A",
+      "owning_paths": [
+        "templates/generated/domain_tool.py",
+        "scripts/build_domain_tool_projections.py",
+        ".agents/skills"
+      ],
+      "priority": "P2",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Canonicalize seven identical domain wrappers"
+    },
+    {
+      "acceptance_commands": [
+        "python scripts/build_declared_suite_template_projections.py --root . --check"
+      ],
+      "dependencies": [],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "GEN-010-B",
+      "owning_paths": [
+        "templates/declared_suite",
+        "scripts/build_declared_suite_template_projections.py",
+        ".agents/skills"
+      ],
+      "priority": "P3",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Canonicalize duplicated declared-suite templates"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_test_profiles.py"
+      ],
+      "dependencies": [],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "CFG-010-A",
+      "owning_paths": [
+        "bootstrap/profiles",
+        ".engineering-bootstrap/profiles",
+        "runtime/profiles.py"
+      ],
+      "priority": "P2",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Establish one canonical runtime-profile home"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_release_certification.py"
+      ],
+      "dependencies": [
+        "REL-010-D"
+      ],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "HYG-010-A",
+      "owning_paths": [
+        "runtime/release_certification.py",
+        "tests/test_release_certification.py"
+      ],
+      "priority": "P2",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Run release validation in a disposable clean workspace"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_generated_artifacts.py"
+      ],
+      "dependencies": [
+        "HYG-010-A"
+      ],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "HYG-010-B",
+      "owning_paths": [
+        "runtime/generated_artifacts.py",
+        "tests/test_generated_artifacts.py"
+      ],
+      "priority": "P2",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Add deterministic generated-artifact reconciliation"
+    },
+    {
+      "acceptance_commands": [
+        "engineering-bootstrap audit structure"
+      ],
+      "dependencies": [],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "AUD-010-A",
+      "owning_paths": [
+        "registry/incomplete_finding_reviews.json",
+        ".agents/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
+        "tests/test_structural_integrity.py"
+      ],
+      "priority": "P3",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Replace raw incomplete-marker counting with semantic dispositions"
+    },
+    {
+      "acceptance_commands": [
+        "engineering-bootstrap audit structure"
+      ],
+      "dependencies": [],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "SEC-010-B",
+      "owning_paths": [
+        "registry/effect_surface_ownership.json",
+        "runtime/effect_surface.py",
+        "tests/test_effect_surface.py"
+      ],
+      "priority": "P2",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Reconcile process, network, and mutation execution surfaces"
+    },
+    {
+      "acceptance_commands": [
+        "engineering-bootstrap release verify"
+      ],
+      "dependencies": [
+        "REL-010-C",
+        "TST-010-D"
+      ],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "DOC-010-A",
+      "owning_paths": [
+        "README.md",
+        "PROJECT_MANAGEMENT.md",
+        ".engineering-bootstrap/project-management/state.json"
+      ],
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Synchronize release claims with executable truth"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_release_certification.py"
+      ],
+      "dependencies": [],
+      "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
+      "id": "OBS-010-A",
+      "owning_paths": [
+        "runtime/release_certification.py",
+        "tests/test_release_certification.py"
+      ],
+      "priority": "P2",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Produce one release gate summary with drill-down receipts"
+    },
+    {
+      "acceptance_commands": [
+        "engineering-bootstrap release finalize --release 0.6.2",
+        "engineering-bootstrap release verify --release 0.6.2"
+      ],
+      "dependencies": [
+        "REL-010-C",
+        "TST-010-D",
+        "DOC-010-A"
+      ],
+      "disposition": "Passed only through the atomic clean-workspace finalizer bound to the published product and harness digests.",
+      "id": "REL-010-E",
+      "owning_paths": [
+        "runtime/release_certification.py",
+        "evidence/release-certification-0.6.2.json",
+        ".engineering-bootstrap/project-management/state.json"
+      ],
+      "priority": "P0",
+      "receipts": [
+        "evidence/release-certification-0.6.2.json"
+      ],
+      "status": "passed",
+      "title": "Execute final release certification from the final tree"
+    },
+    {
+      "acceptance_commands": [
+        "engineering-bootstrap project-check --project ."
+      ],
+      "dependencies": [
+        "REL-010-B"
+      ],
+      "disposition": "Newly discovered during REL-010 containment; project-check must pass from the final tree.",
+      "id": "REL-010-F01",
+      "owning_paths": [
+        ".engineering-bootstrap/project-registry.json",
+        ".agents/skills/audit-source-capabilities/SKILL.md",
+        "tests/test_commissioning_apply.py"
+      ],
+      "parent": "TST-010-D",
+      "priority": "P0",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Repair stale commissioned audit-source-capabilities skill hash"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_specialty_map.py tests/test_registry_envelopes.py"
+      ],
+      "dependencies": [
+        "REL-010-B"
+      ],
+      "disposition": "The shared count inventory found active_candidate_count=6/deferred_candidate_count=30 while the live specialty records contain 7 active and 29 deferred entries.",
+      "id": "REL-010-F02",
+      "owning_paths": [
+        "registry/specialty_map.json",
+        "scripts/reconcile_skill_lifecycle_states.py",
+        "tests/test_specialty_map.py"
+      ],
+      "parent": "REG-010-B",
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-registry-envelope-repair.json"
+      ],
+      "status": "passed",
+      "title": "Repair stale specialty-map derived counts"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_release_certification.py"
+      ],
+      "dependencies": [
+        "REL-010-D"
+      ],
+      "disposition": "Second-pass F-018: release verification must execute in a disposable tree and prove that certification did not mutate product inputs.",
+      "id": "CERT-018",
+      "owning_paths": [
+        "runtime/release_certification.py",
+        "runtime/release_audit.py",
+        "tests/test_release_certification.py"
+      ],
+      "parent": "HYG-010-A",
+      "priority": "P0",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Self-isolating release audit and mutation proof"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_external_evidence.py"
+      ],
+      "dependencies": [
+        "REL-010-D"
+      ],
+      "disposition": "Second-pass F-019: strict verification may not depend on an undocumented sibling-directory layout.",
+      "id": "EVID-019",
+      "owning_paths": [
+        "contracts/evidence-reference.schema.json",
+        "evidence/externalized-payload-index.json",
+        "runtime/external_evidence.py"
+      ],
+      "parent": "REL-010-D",
+      "priority": "P0",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Portable external evidence bundle contract"
+    },
+    {
+      "acceptance_commands": [
+        "engineering-bootstrap release environment"
+      ],
+      "dependencies": [
+        "ENV-010-A"
+      ],
+      "disposition": "Second-pass F-020: build and release tools must be declared and preflighted rather than inherited from ambient global state.",
+      "id": "BUILD-020",
+      "owning_paths": [
+        "pyproject.toml",
+        "requirements-release.lock",
+        "runtime/release_environment.py"
+      ],
+      "parent": "ENV-010-A",
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Reproducible declared build/test/release dependencies"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_authoritative_skill_compiler.py"
+      ],
+      "dependencies": [
+        "ENV-010-A"
+      ],
+      "disposition": "Second-pass F-021: missing parser, malformed YAML, duplicate keys, unsupported tags, and alias expansion must fail closed.",
+      "id": "SEC-021",
+      "owning_paths": [
+        ".agents/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py",
+        "tests/test_authoritative_skill_compiler.py"
+      ],
+      "parent": "SEC-010-A",
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Fail-closed authoritative YAML compiler"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_dependency_audit.py tests/test_installed_wheel_e2e.py"
+      ],
+      "dependencies": [
+        "ENV-010-A",
+        "SEC-021"
+      ],
+      "disposition": "Second-pass F-022: every packaged executable import requires a standard, required, optional-gated, test-only, or forbidden disposition.",
+      "id": "PKG-022",
+      "owning_paths": [
+        "registry/python_dependency_ownership.json",
+        "runtime/dependency_audit.py",
+        "tests/test_dependency_audit.py"
+      ],
+      "parent": "ENV-010-B",
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Packaged executable dependency closure"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_external_evidence.py"
+      ],
+      "dependencies": [
+        "EVID-019"
+      ],
+      "disposition": "Second-pass F-023: every external reference needs required_for, availability, bundle ID, digest, retention, and verification mode.",
+      "id": "EVID-023",
+      "owning_paths": [
+        "contracts/evidence-reference.schema.json",
+        "evidence/externalized-payload-index.json",
+        "runtime/external_evidence.py"
+      ],
+      "parent": "REL-010-D",
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Typed lifecycle for external evidence references"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_sanitize_tree.py"
+      ],
+      "dependencies": [],
+      "disposition": "Second-pass F-025: every unreadable or unscannable path must be reported and apply mode must fail closed without an approved exclusion.",
+      "id": "SAN-025",
+      "owning_paths": [
+        "scripts/sanitize_tree.py",
+        "tests/test_sanitize_tree.py"
+      ],
+      "parent": "AUD-010-A",
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Sanitization unreadable-file accounting"
+    },
+    {
+      "acceptance_commands": [
+        "python -m pytest -q tests/test_provider_certification.py"
+      ],
+      "dependencies": [],
+      "disposition": "Second-pass F-026: injected backend failures must preserve the expected typed exception, code, causal chain, and operation identity.",
+      "id": "PROV-026",
+      "owning_paths": [
+        "runtime/provider_certification.py",
+        "tests/test_provider_certification.py"
+      ],
+      "parent": "SEC-010-B",
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Typed provider failure-propagation proof"
+    },
+    {
+      "acceptance_commands": [
+        "engineering-bootstrap test-profile run full",
+        "python -m pytest -q tests/test_release_certification.py"
+      ],
+      "dependencies": [
+        "TST-010-A",
+        "TST-010-B"
+      ],
+      "disposition": "Second-pass F-027: every long-running gate and subprocess needs attributable duration, timeout, partial receipt, and descendant cleanup evidence.",
+      "id": "TST-027",
+      "owning_paths": [
+        "runtime/test_profiles.py",
+        "runtime/release_certification.py",
+        "tests/test_test_profiles.py"
+      ],
+      "parent": "TST-010-D",
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Remaining-suite duration timeout and hang localization"
+    },
+    {
+      "acceptance_commands": [
+        "engineering-bootstrap audit structure"
+      ],
+      "dependencies": [
+        "GEN-010-A",
+        "GEN-010-B",
+        "AUD-010-A",
+        "SEC-010-B"
+      ],
+      "disposition": "User-required final pass covering duplicate implementations/orchestrations/skills/logic, dead or orphaned skills/YAML/contracts/registries/files, unreachable workflows, stale docs/examples, version drift, dependency/import cycles, copy-paste divergence, missing registry targets, and discoverable-but-nonexecutable behavior.",
+      "id": "ARCH-028",
+      "owning_paths": [
+        "runtime/structural_integrity.py",
+        "registry/structural_integrity_policy.json",
+        "registry/artifact_reachability.json",
+        "tests/test_structural_integrity.py"
+      ],
+      "parent": "TST-010-D",
+      "priority": "P1",
+      "receipts": [
+        "evidence/rel010-repair-validation.json"
+      ],
+      "status": "passed",
+      "title": "Final structural reachability duplication and drift audit"
+    }
+  ],
+  "child_finding_count": 12,
+  "product_version_target": "0.6.2",
+  "release": "REL-010",
+  "schema_version": "1.0",
+  "source_card_count": 23,
+  "sources": [
+    "temp/engineering_loop_repair_optimization_punch_cards.md",
+    "temp/engineering_loop_second_pass_findings.md"
+  ]
+}

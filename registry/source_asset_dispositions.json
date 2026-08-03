@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "terminal_classes": {
+    "duplicate": {"disposition": "exact_duplicate_externalized", "targets": []},
+    "not_applicable": {"disposition": "non_capability_rejected", "targets": []},
+    "knowledge_reference_only": {"disposition": "knowledge_reference_externalized", "targets": ["validate-knowledge-relationships"]},
+    "unsafe_untrusted": {"disposition": "unsafe_source_rejected", "targets": ["quarantine-external-tools"]}
+  },
+  "capability_classes": {
+    "builder": {"disposition": "merge_to_capability_family", "targets": ["research-to-capability", "corpus-to-skill-tree-compiler"]},
+    "clean_room_required": {"disposition": "clean_room_translation_required", "targets": ["research-to-capability", "enforce-source-import-boundaries"]},
+    "repair_pattern": {"disposition": "merge_to_capability_family", "targets": ["diagnose-python-repair", "certify-reversible-validation"]},
+    "test_pattern": {"disposition": "merge_to_capability_family", "targets": ["validate-engineering-outcomes", "run-evidence-campaigns"]},
+    "contract": {"disposition": "merge_to_capability_family", "targets": ["validate-contract-boundaries"]},
+    "skill": {"disposition": "skill_package_resource", "targets": ["audit-source-capabilities", "forge-skills-from-knowledge"]},
+    "evidence_pattern": {"disposition": "merge_to_capability_family", "targets": ["run-evidence-campaigns", "verify-outcome"]},
+    "orchestration": {"disposition": "merge_to_capability_family", "targets": ["orchestrate-engineering-loop"]},
+    "template": {"disposition": "merge_to_capability_family", "targets": ["commission-project", "procedural-memory-compiler"]},
+    "policy": {"disposition": "merge_to_capability_family", "targets": ["enforce-governance-controls"]},
+    "research_extraction": {"disposition": "merge_to_capability_family", "targets": ["research-to-operation-translator", "research-to-capability"]}
+  },
+  "inventory_error_classes": [
+    {"id": "transient-runtime-handle", "contains": "Singleton", "disposition": "non_capability_runtime_artifact"},
+    {"id": "missing-vendor-reference", "path_suffixes": [".svelte", ".ts"], "disposition": "missing_vendor_reference"},
+    {"id": "broken-source-pointer", "contains": "FileNotFoundError", "disposition": "broken_source_pointer"}
+  ],
+  "default_inventory_error_disposition": "unresolved_inventory_error"
+}

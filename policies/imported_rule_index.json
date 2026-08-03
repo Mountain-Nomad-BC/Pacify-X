@@ -1,0 +1,343 @@
+{
+  "schema_version": "1.0",
+  "source_rule_count": 36,
+  "records": [
+    {
+      "source_rule": "00_rule_loader.md",
+      "source_sha256": "12b6c2d30e810bfa13e25852ccc549d9b7602a336114b0e451e70291aba01395",
+      "summary": "Persistent Rule Loader",
+      "canonical_policy_ids": [
+        "analyze-plan-execute-verify"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "01_engineering_execution_standard.md",
+      "source_sha256": "5d84bdefdc1016456824b681be4e5596ab640619bdbbf50e6c131093f92025bf",
+      "summary": "Engineering Execution Standard",
+      "canonical_policy_ids": [
+        "analyze-plan-execute-verify"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "02_architecture_integrity.md",
+      "source_sha256": "996a512a9610c7e16cb736af9a88e769a0eb0da644d7a4ce45e2f735ab7609b3",
+      "summary": "Architecture Integrity",
+      "canonical_policy_ids": [
+        "canonical-owner"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "03_quality_validation.md",
+      "source_sha256": "08d55d9995de756124f3a1f64392340feb4108d6290eebeeba5e29a89821b4b6",
+      "summary": "Quality Validation",
+      "canonical_policy_ids": [
+        "evidence-required"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "04_security_and_permissions.md",
+      "source_sha256": "a2addc2641f532be9e004a3ac82fb7a9f07ff6d0eeb39438246f277b0613402e",
+      "summary": "Security And Permissions",
+      "canonical_policy_ids": [
+        "permission-boundary"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "05_ui_stability_rules.md",
+      "source_sha256": "6163b6386d9a06fde0c3ff61ee3af69534ba90f3b3aa9aca9cf973b479c002a8",
+      "summary": "UI Stability Rules",
+      "canonical_policy_ids": [
+        "change-control"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "06_refactor_safety.md",
+      "source_sha256": "84246f3b43c2904f4f34a88e25f12e250681a1c919006c7319b11b313cacd791",
+      "summary": "Refactor Safety",
+      "canonical_policy_ids": [
+        "change-control"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "07_tool_usage_rules.md",
+      "source_sha256": "27e4ebba52bcc3c99d078ecb8fa5778f3876fac482dfc805120128b4a8626779",
+      "summary": "Tool Usage Rules",
+      "canonical_policy_ids": [
+        "external-tool-quarantine"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "08_failure_memory_policy.md",
+      "source_sha256": "30aa98878635eda5764facca4e6700b4a2ccd22b39a383b22e1084b758883a35",
+      "summary": "Failure Memory Policy",
+      "canonical_policy_ids": [
+        "recovery"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "09_environment_integrity.md",
+      "source_sha256": "4d4d2d09b63b71b22d914b1229d718902517707387c7689408966b5fbde56d13",
+      "summary": "Environment Integrity",
+      "canonical_policy_ids": [
+        "contained-execution"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "10_completion_standard.md",
+      "source_sha256": "7073f4052a0e661f27f5194c196f1e3dd30a30106f84c0ea95b52ce608d2acfc",
+      "summary": "Completion Standard",
+      "canonical_policy_ids": [
+        "evidence-required"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "11_risk_classification.md",
+      "source_sha256": "1911f205f254a36107cd157eda93e03bcf7bcc79bdbf48ca348605978863adf0",
+      "summary": "Risk Classification",
+      "canonical_policy_ids": [
+        "risk-classification"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "12_dependency_protection.md",
+      "source_sha256": "9d331d7fc5180576eb9e0e7abbce1aa95e01882697a6a60eaa6dc48071c67e24",
+      "summary": "Dependency Protection",
+      "canonical_policy_ids": [
+        "canonical-owner",
+        "change-control"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "13_data_integrity.md",
+      "source_sha256": "5c4c5f52ad4a62d003376eb9744c8a222210db7d239a7d0b9b7ea03f163e7335",
+      "summary": "Data Integrity",
+      "canonical_policy_ids": [
+        "evidence-required"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "14_observability_policy.md",
+      "source_sha256": "b69b1de32f09cbe1059c257157a11189947103f43bf6ae29120e7519aa88a7d1",
+      "summary": "Observability Policy",
+      "canonical_policy_ids": [
+        "evidence-required"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "15_ai_behavior_constraints.md",
+      "source_sha256": "6139ccc5713ef86be353959978393fc54c6da42459b2b9469a1b9ca9d8136192",
+      "summary": "AI Behavior Constraints",
+      "canonical_policy_ids": [
+        "runtime-assurance-privacy",
+        "permission-boundary"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "16_architecture_drift_policy.md",
+      "source_sha256": "ecc3b692f936c1678993196d75c71b636f369e8fa32452673ad83a5efc09308f",
+      "summary": "Architecture Drift Policy",
+      "canonical_policy_ids": [
+        "canonical-owner",
+        "change-control"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "17_release_gate_policy.md",
+      "source_sha256": "96b85298c96ce4e437ecb400bcdf70a3daa6cef7f58aad058b77559561a71f22",
+      "summary": "Release Gate Policy",
+      "canonical_policy_ids": [
+        "change-control",
+        "evidence-required"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "18_migration_safety_policy.md",
+      "source_sha256": "df85e6d1948334571a351973f29aebddc3b0455b55e87be9583c178573f59544",
+      "summary": "Migration Safety Policy",
+      "canonical_policy_ids": [
+        "change-control",
+        "recovery"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "19_code_generation_constraints.md",
+      "source_sha256": "1739206a46c50d5158f17603d252eb20cea25fed6883e2f61919b6968cfb1506",
+      "summary": "Code Generation Constraints",
+      "canonical_policy_ids": [
+        "change-control",
+        "permission-boundary"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "20_testing_strategy_policy.md",
+      "source_sha256": "8ad86e1e8957dc7513560b544e2d373d90f48d07c01461f203227f68bb6e1788",
+      "summary": "Testing Strategy Policy",
+      "canonical_policy_ids": [
+        "evidence-required"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "21_diagnostics_validation_policy.md",
+      "source_sha256": "391b929dcbe78fc7c243783b676131a5b286c0c2436cb006d0cbd0a36bea418a",
+      "summary": "Diagnostics Validation Policy",
+      "canonical_policy_ids": [
+        "evidence-required"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "22_schema_contract_policy.md",
+      "source_sha256": "715198f285bb3001098b520502cf6624e9c7a9d104beef8bfa03d7c36f864f9d",
+      "summary": "Schema Contract Policy",
+      "canonical_policy_ids": [
+        "canonical-owner",
+        "evidence-required"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "23_notification_and_event_policy.md",
+      "source_sha256": "c5f1d64ff5b4fbb906eda89ea055ebd8c4a80365023b5411b6472410855abfba",
+      "summary": "Notification And Event Policy",
+      "canonical_policy_ids": [
+        "canonical-owner",
+        "change-control"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "24_permission_boundary_policy.md",
+      "source_sha256": "4be64117d13def658c2e60315b234490e67651b4c04909fc052f19a30e57c4e8",
+      "summary": "Permission Boundary Policy",
+      "canonical_policy_ids": [
+        "permission-boundary"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "25_operational_resilience_policy.md",
+      "source_sha256": "f65ae3e9fc007ac1ab4769665c614ca83bfc1e0c3488109ee6874a7bb3203356",
+      "summary": "Operational Resilience Policy",
+      "canonical_policy_ids": [
+        "recovery"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "26_documentation_truth_policy.md",
+      "source_sha256": "b7758d0ee1f628cb34195605747c9e7625ac91c98aae8ff1994180bec816a108",
+      "summary": "Documentation Truth Policy",
+      "canonical_policy_ids": [
+        "canonical-owner",
+        "evidence-required"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "27_state_and_cache_integrity_policy.md",
+      "source_sha256": "1cdafcf85e8a6553d967e30bf2770ebba952eb287dc95d9e27b5969cd5befbbf",
+      "summary": "State And Cache Integrity Policy",
+      "canonical_policy_ids": [
+        "canonical-owner",
+        "recovery"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "28_change_control_policy.md",
+      "source_sha256": "c8d968c309d3929235d552a6869c68f2e1636345440f1d8d2637de6e59aef1b8",
+      "summary": "Change Control Policy",
+      "canonical_policy_ids": [
+        "change-control"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "29_performance_regression_policy.md",
+      "source_sha256": "d74d3b2a59e8ec7439921b010c45572fc0e5ee31afc2032aeb1837ef8571534d",
+      "summary": "Performance Regression Policy",
+      "canonical_policy_ids": [
+        "risk-classification",
+        "evidence-required"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "30_incident_recovery_policy.md",
+      "source_sha256": "208735969d1bbab28903c0f54b0e9278106cca7173602c00675ddd816bc696c8",
+      "summary": "Incident Recovery Policy",
+      "canonical_policy_ids": [
+        "recovery"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "31_no_duplication_policy.md",
+      "source_sha256": "ce5df6006c4620d109a214dc50eea06746c161b14c4dbe91f8cae626b1fc3136",
+      "summary": "No Duplication Policy",
+      "canonical_policy_ids": [
+        "canonical-owner"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "32_canonical_source_of_truth_policy.md",
+      "source_sha256": "52ea6f7ad3dc58225332d0514acbf7bc21d46c04157ff75b2bae99a84a825ffe",
+      "summary": "Canonical Source Of Truth Policy",
+      "canonical_policy_ids": [
+        "canonical-owner"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "33_repo_hygiene_policy.md",
+      "source_sha256": "10d5b6dd3cc3e36d856bb962b418fa528232ed5cde5f68a8c32b0a09b1cae925",
+      "summary": "Repo Hygiene Policy",
+      "canonical_policy_ids": [
+        "canonical-owner",
+        "change-control"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "34_prompt_and_instruction_precedence_policy.md",
+      "source_sha256": "bcf721070b5e0a2070c80f272d1f739325132259e45fb61df7a5c4fb2e1f3175",
+      "summary": "Prompt And Instruction Precedence Policy",
+      "canonical_policy_ids": [
+        "permission-boundary"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    },
+    {
+      "source_rule": "35_autonomous_limits_policy.md",
+      "source_sha256": "0e1f5471aec160bac6699c83a51d0d9719b44aed176527e838d43667faa85c30",
+      "summary": "Autonomous Limits Policy",
+      "canonical_policy_ids": [
+        "permission-boundary",
+        "contained-execution"
+      ],
+      "disposition": "merged_into_lazy_policy_bodies"
+    }
+  ]
+}

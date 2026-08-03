@@ -1,0 +1,37 @@
+{
+  "id": "plan-local-model-deployment",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/plan-local-model-deployment/SKILL.md",
+  "body_sha256": "ec6b4862e0633512a7d29328a1cfe4b1ff0cf28730b199aff770c6acc28f8792",
+  "references": [
+    ".agents/skills/plan-local-model-deployment/references/local-model-planning-contract.md"
+  ],
+  "resources": [
+    ".agents/skills/plan-local-model-deployment/scripts/plan_local_model_deployment.py"
+  ],
+  "capability_tags": [
+    "model",
+    "deployment",
+    "feasibility",
+    "resources",
+    "local-inference"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "clean_room_from_behavior_contracts",
+    "basis": [
+      {
+        "receipt": "final-intake-assimilation",
+        "evidence": "evidence/final-intake-assimilation.json"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_local_model_capabilities.py",
+  "evidence": "evidence/final-intake-assimilation.json",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

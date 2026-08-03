@@ -1,0 +1,107 @@
+{
+  "created_utc": "2026-08-03T04:47:12.623736+00:00",
+  "evidence_hashes": {
+    "evidence/exact-tool-certification-0.6.1.json": "7f786fb274ddabb9a5748e369ec4e19c74f024b6bb92e654e749597d221bc51a",
+    "evidence/final-sanitization-audit.json": "ce0225e3b067b640c11b287c2bb380aaea4e7cc45f2de79bd462917aadecb235",
+    "evidence/python-surface-certification-0.6.1.json": "d08e15ff5e4ba13ae915a458256780d33b336a52b0b68bd310678665282c476e",
+    "registry/python_surface_ownership.json": "8421b8a520637151c365651c898e2fe12be386b3819a755152e703051531aeb2"
+  },
+  "gates": {
+    "contracts": {
+      "owned": 80,
+      "total": 80,
+      "valid": true
+    },
+    "declared_suite": {
+      "valid": true
+    },
+    "exact_tools": {
+      "admitted_tools": 56,
+      "directly_loaded": 56,
+      "domain_wrappers": 7,
+      "negative_cases": 11,
+      "passed_domain_wrappers": 7,
+      "passed_tools": 56,
+      "positive_cases": 56
+    },
+    "external_archive_custody": {
+      "bytes": 47818159,
+      "errors": 0,
+      "exclusions": 0,
+      "files": 9681
+    },
+    "file_dispositions": {
+      "closed_source": 2192,
+      "expanded_intake": 2195,
+      "generated_caches_quarantined": 3,
+      "open": 0
+    },
+    "graphs": {
+      "artifacts": 6,
+      "valid": true
+    },
+    "integrations": {
+      "active": 3,
+      "smoke_tested": true,
+      "valid": true
+    },
+    "metacognitive": {
+      "valid": true
+    },
+    "python_surfaces": {
+      "direct_behavior_count": 63,
+      "direct_test_reference_count": 33,
+      "map_current": true,
+      "packaged_file_count": 257,
+      "python_file_count": 294,
+      "source_only_structural_count": 31,
+      "syntax_valid_count": 294
+    },
+    "registry": {
+      "active": 6,
+      "valid": true
+    },
+    "release_audit": {
+      "checks": 16,
+      "strict_external_evidence": true,
+      "valid": true
+    },
+    "sanitization": {
+      "active_zip_files": 0,
+      "errors": 0,
+      "files_scanned": 1280,
+      "identifier_hits": 0,
+      "legacy_placeholder_hits": 0,
+      "valid": true
+    },
+    "scheduling": {
+      "valid": true
+    }
+  },
+  "release": "0.6.1",
+  "revocation_triggers": [
+    "material product code, contract, registry, policy, model, integration, workflow, package, or evidence change",
+    "failed dependency or stale validation",
+    "scope or project-isolation violation"
+  ],
+  "schema_version": "1.0",
+  "scope": "Complete model-agnostic engineering-loop bootstrap product, including commissioning, project isolation, governed memory, lazy skills, orchestration, deterministic tools, contracts, policies, validation, and recovery controls.",
+  "status": "deployment_ready",
+  "supersedes": [
+    "release-certification-0.6.0.json (revoked)"
+  ],
+  "test_evidence": {
+    "installed_wheel": {
+      "failures": 0,
+      "historical_log_custody_index": "evidence/externalized-payload-index.json",
+      "sha256": "d572b5ec004872873370c8d133b067ec8d334bfdc135d15d23b78ddea89d1377",
+      "tests": 1
+    },
+    "source": {
+      "failures": 0,
+      "historical_log_custody_index": "evidence/externalized-payload-index.json",
+      "sha256": "fdd75b1cbbccf2ea2b96b50c61c03bc4d8020f392a5ad4d23413941b334ee91a",
+      "tests": 327
+    }
+  }
+}

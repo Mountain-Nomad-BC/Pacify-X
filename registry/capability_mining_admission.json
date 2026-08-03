@@ -1,0 +1,358 @@
+{
+  "schema_version": "1.0",
+  "coverage_denominator_policy": "Use the largest complete snapshot; focused scans overlap and are not added to the denominator.",
+  "scan_receipts": [
+    {
+      "schema_version": "1.0",
+      "id": "broad-reference-and-code-snapshot",
+      "files_accounted": 111139,
+      "text_scanned": 44726,
+      "excluded_directories": 506,
+      "oversize_review_required": 411,
+      "error_count": 0,
+      "inventory_sha256": "d556939c1c03c61c521d6de8c1cdc240c719ba765d4edcad1c07e5d0a1e98d96",
+      "report_sha256": "3b22626a09aa2b00075f86312fcc5080f055cf2d6a0b2817b7ec9fab9a2bec2a",
+      "complete": true
+    },
+    {
+      "schema_version": "1.0",
+      "id": "control-plane-focus-pass",
+      "files_accounted": 8203,
+      "text_scanned": 3939,
+      "excluded_directories": 60,
+      "oversize_review_required": 282,
+      "error_count": 0,
+      "inventory_sha256": "04a509d2360c43608204cf1e086caca01a674d8bba1a9882e9ce5083d59adfc5",
+      "report_sha256": "a2dd7eeb2c7cd5028e450a285473f01627861b6d8d904524a238c7255bdc3a32",
+      "complete": true
+    },
+    {
+      "schema_version": "1.0",
+      "id": "tooling-audit-intake-pass",
+      "files_accounted": 16,
+      "text_scanned": 16,
+      "excluded_directories": 0,
+      "oversize_review_required": 0,
+      "error_count": 0,
+      "inventory_sha256": "c9dc21d6ad9ef82e58b49cc96a84d90ab70efe955977344d8d947ac07c315e00",
+      "report_sha256": "72d873f6e4268dfba718aa41b31150658774163974ca8335e86080cbf4fa9b39",
+      "complete": true
+    },
+    {
+      "schema_version": "1.0",
+      "id": "simulation-skill-focus-pass",
+      "files_accounted": 14,
+      "text_scanned": 14,
+      "excluded_directories": 0,
+      "oversize_review_required": 0,
+      "error_count": 0,
+      "inventory_sha256": "2ae46679356baae18a9f98c3f9355b9a5346096f4f10756900fd7e6d0df72e82",
+      "report_sha256": "4c7bbec98dcccda2066b7b57aeb54530c574ce4c2ee80583ad6c13aaf5816107",
+      "complete": true
+    },
+    {
+      "schema_version": "1.0",
+      "id": "engineering-skill-focus-pass",
+      "files_accounted": 75,
+      "text_scanned": 75,
+      "excluded_directories": 0,
+      "oversize_review_required": 0,
+      "error_count": 0,
+      "inventory_sha256": "ecefc9891211f66afbf81e445d663ae1d33217de0e115ee4c2042bac50637da5",
+      "report_sha256": "6142489104e2b9e51b8d3a3b16821242c60e7846f52a6d2b42d731a9f7711833",
+      "complete": true
+    },
+    {
+      "schema_version": "1.0",
+      "id": "temporary-corpus-completeness-pass",
+      "files_accounted": 16890,
+      "bytes_accounted": 1435492427,
+      "text_scanned": 3036,
+      "excluded_directories": 91,
+      "excluded_files_hashed": 13821,
+      "oversize_review_required": 27,
+      "oversize_stream_scanned": 27,
+      "error_count": 0,
+      "inventory_sha256": "1d964ef49fcc64888ccd140bbd02c0e74064e6ac02d51cc6582abb33d76a3679",
+      "report_sha256": "3699fe69988a30d9b8eb7deefe28d471e6d906398d0cc53ead304958ccb72fe9",
+      "complete": true
+    }
+  ],
+  "dispositions": [
+    {
+      "id": "source-audit-scanner",
+      "disposition": "adopt",
+      "targets": [
+        "audit-source-capabilities"
+      ]
+    },
+    {
+      "id": "source-audit-analysis",
+      "disposition": "merge",
+      "targets": [
+        "audit-source-capabilities",
+        "validate-knowledge-relationships"
+      ]
+    },
+    {
+      "id": "dependency-aware-security-pipeline",
+      "disposition": "adopt",
+      "targets": [
+        "orchestrate-security-validation"
+      ]
+    },
+    {
+      "id": "enterprise-completion-punch-card",
+      "disposition": "merge",
+      "targets": [
+        "orchestrate-engineering-loop",
+        "run-evidence-campaigns"
+      ]
+    },
+    {
+      "id": "isolated-accelerated-worker",
+      "disposition": "adopt",
+      "targets": [
+        "deploy-isolated-model-worker"
+      ]
+    },
+    {
+      "id": "isolated-container-validation",
+      "disposition": "adopt",
+      "targets": [
+        "validate-production-containers"
+      ]
+    },
+    {
+      "id": "container-injected-contract-audit",
+      "disposition": "merge",
+      "targets": [
+        "harden-container-boundaries",
+        "inspect-live-contracts"
+      ]
+    },
+    {
+      "id": "database-isolation-hardening",
+      "disposition": "merge",
+      "targets": [
+        "harden-container-boundaries"
+      ]
+    },
+    {
+      "id": "hybrid-retrieval-pipeline",
+      "disposition": "adopt",
+      "targets": [
+        "engineer-hybrid-retrieval"
+      ]
+    },
+    {
+      "id": "least-privilege-builds",
+      "disposition": "merge",
+      "targets": [
+        "harden-container-boundaries",
+        "govern-deployment-safety"
+      ]
+    },
+    {
+      "id": "dynamic-name-resolution",
+      "disposition": "adopt",
+      "targets": [
+        "dynamic-service-discovery"
+      ]
+    },
+    {
+      "id": "reversible-interface-certification",
+      "disposition": "adopt",
+      "targets": [
+        "certify-reversible-validation"
+      ]
+    },
+    {
+      "id": "corrupted-text-repair",
+      "disposition": "adopt",
+      "targets": [
+        "repair-corrupted-text"
+      ]
+    },
+    {
+      "id": "architecture-document-sync",
+      "disposition": "adopt",
+      "targets": [
+        "synchronize-derived-architecture"
+      ]
+    },
+    {
+      "id": "visual-runtime-accessibility",
+      "disposition": "adopt",
+      "targets": [
+        "govern-visual-runtime-accessibility"
+      ]
+    },
+    {
+      "id": "security-result-aggregation",
+      "disposition": "merge",
+      "targets": [
+        "orchestrate-security-validation"
+      ]
+    },
+    {
+      "id": "mcp-server-lifecycle",
+      "disposition": "adopt",
+      "targets": [
+        "manage-mcp-lifecycle"
+      ]
+    },
+    {
+      "id": "source-import-boundaries",
+      "disposition": "adopt",
+      "targets": [
+        "enforce-source-import-boundaries"
+      ]
+    },
+    {
+      "id": "document-relationship-synchronization",
+      "disposition": "merge",
+      "targets": [
+        "synchronize-derived-architecture",
+        "validate-knowledge-relationships"
+      ]
+    },
+    {
+      "id": "deployment-safety-governor",
+      "disposition": "adopt",
+      "targets": [
+        "govern-deployment-safety"
+      ]
+    },
+    {
+      "id": "approval-gated-resilience",
+      "disposition": "adopt",
+      "targets": [
+        "run-resilience-drills"
+      ]
+    },
+    {
+      "id": "incomplete-implementation-census",
+      "disposition": "adopt",
+      "targets": [
+        "audit-incomplete-implementations"
+      ]
+    },
+    {
+      "id": "runtime-route-access-drift",
+      "disposition": "merge",
+      "targets": [
+        "validate-contract-boundaries",
+        "inspect-live-contracts"
+      ]
+    },
+    {
+      "id": "fallback-truth-classification",
+      "disposition": "merge",
+      "targets": [
+        "audit-incomplete-implementations",
+        "validate-engineering-outcomes"
+      ]
+    },
+    {
+      "id": "full-evidence-campaign",
+      "disposition": "adopt",
+      "targets": [
+        "run-evidence-campaigns"
+      ]
+    },
+    {
+      "id": "cross-surface-failure-triage",
+      "disposition": "adopt",
+      "targets": [
+        "triage-cross-surface-failures"
+      ]
+    },
+    {
+      "id": "knowledge-relationship-validation",
+      "disposition": "adopt",
+      "targets": [
+        "validate-knowledge-relationships"
+      ]
+    },
+    {
+      "id": "api-producer-consumer-parity",
+      "disposition": "merge",
+      "targets": [
+        "validate-contract-boundaries"
+      ]
+    },
+    {
+      "id": "secret-safe-retrieval",
+      "disposition": "merge",
+      "targets": [
+        "memory-injection-firewall"
+      ]
+    },
+    {
+      "id": "artifact-bound-release-certification",
+      "disposition": "merge",
+      "targets": [
+        "certify-skeptical-engineering",
+        "provenance-signature-verifier"
+      ]
+    },
+    {
+      "id": "changed-area-validation-routing",
+      "disposition": "merge",
+      "targets": [
+        "dependency-impact-tracer",
+        "active-evaluation-selector"
+      ]
+    },
+    {
+      "id": "oversize-derived-payload-bucket",
+      "disposition": "reference_only",
+      "targets": [
+        "audit-source-capabilities",
+        "run-evidence-campaigns",
+        "validate-knowledge-relationships"
+      ]
+    },
+    {
+      "id": "prototype-loader-without-lifecycle",
+      "disposition": "reject",
+      "targets": [
+        "quarantine-external-tools"
+      ]
+    },
+    {
+      "id": "unexecuted-proof-generator",
+      "disposition": "reject",
+      "targets": [
+        "certify-skeptical-engineering"
+      ]
+    },
+    {
+      "id": "blanket-card-closure",
+      "disposition": "reject",
+      "targets": [
+        "run-evidence-campaigns"
+      ]
+    }
+  ],
+  "oversize_review": {
+    "record_count": 411,
+    "bytes": 7283852942,
+    "extensions": {
+      "json": 389,
+      "markdown": 15,
+      "text": 7
+    },
+    "categories": {
+      "derived_code_index_cache": 121,
+      "domain_data_and_derived_index": 85,
+      "generated_audit_and_run_evidence": 172,
+      "simulation_fixture_and_run_ledger": 3,
+      "other_manifest_inventory_or_domain_payload": 30
+    },
+    "disposition": "reference_only",
+    "reason": "The bucket contains derived indexes, data payloads, generated evidence, inventories, manifests, fixtures, and run ledgers. Headings and path classes were reviewed; reusable mechanisms are represented by admitted audit, evidence, knowledge, retrieval, and synchronization skills."
+  },
+  "rejection_policy": "Generated reports, caches, backups, old snapshots, unexecuted proof, blanket completion, and lifecycle-free loaders are evidence or quarantine inputs, never active behavior."
+}

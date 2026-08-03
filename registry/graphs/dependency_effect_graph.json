@@ -1,0 +1,146 @@
+{
+  "schema_version": "1.0",
+  "generator": "engineering_bootstrap.graph_registry/1.0.0",
+  "nodes": [
+    "evidence-assembler",
+    "execution-contract-enforcer",
+    "outcome-verifier",
+    "skill-admission-controller",
+    "skill-navigator",
+    "workflow-orchestrator"
+  ],
+  "edges": [
+    {
+      "source": "evidence-assembler",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "evidence-assembler",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "evidence-assembler",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "execution-contract-enforcer",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "execution-contract-enforcer",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "execution-contract-enforcer",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "outcome-verifier",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "outcome-verifier",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "outcome-verifier",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "skill-admission-controller",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "skill-admission-controller",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "skill-admission-controller",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "skill-navigator",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "skill-navigator",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "skill-navigator",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "workflow-orchestrator",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "workflow-orchestrator",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "workflow-orchestrator",
+      "target": "evidence-assembler",
+      "relation": "hard_dependency",
+      "detail": ""
+    },
+    {
+      "source": "workflow-orchestrator",
+      "target": "execution-contract-enforcer",
+      "relation": "hard_dependency",
+      "detail": ""
+    },
+    {
+      "source": "workflow-orchestrator",
+      "target": "outcome-verifier",
+      "relation": "hard_dependency",
+      "detail": ""
+    },
+    {
+      "source": "workflow-orchestrator",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "workflow-orchestrator",
+      "target": "skill-navigator",
+      "relation": "hard_dependency",
+      "detail": ""
+    }
+  ]
+}

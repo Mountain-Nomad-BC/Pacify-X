@@ -1,0 +1,35 @@
+{
+  "id": "permission-diff-auditor",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/permission-diff-auditor/SKILL.md",
+  "body_sha256": "cc82a82308a63a7323dd59e9e08c0326a3441116e741ce97409f0346eb2bfa39",
+  "references": [],
+  "capability_tags": [
+    "auditor",
+    "diff",
+    "permission",
+    "security"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_b1a7c72d.md",
+        "sha256": "0c19932ef4e3cbb8bbc6a33f4f72d6642f401c096f7b2f3d7fb2e6e22c133b1d"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_0c3d93f7.yaml",
+        "sha256": "7f7799d175d4deee04c9e8fcaf4024cd5194286cf05b2a72429effdedc1b360d"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

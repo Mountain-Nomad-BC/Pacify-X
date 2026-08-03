@@ -1,0 +1,44 @@
+{
+  "id": "audit-ai-runtime-assurance",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/audit-ai-runtime-assurance/SKILL.md",
+  "body_sha256": "d18841059bd959631f0ec4bd1b5d19b941aee0f1400d23dd092cf35e21fc6313",
+  "references": [],
+  "capability_tags": [
+    "ai",
+    "assurance",
+    "drift",
+    "privacy",
+    "benchmark"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "clean_room",
+    "basis": [
+      {
+        "path": "skills_bootstrap_stuff/EKG_CORRECTION_SKILL_ABD_BUILDER.txt",
+        "sha256": "2445cda06e857812779fefcfba6ff065c0d09f542cd520efdb8dffa5eec11feb"
+      },
+      {
+        "path": "skills_bootstrap_stuff/The actual lifecycle I see is.txt",
+        "sha256": "efee5005724cc8e7db378730bfbd644a0c08e01c4990ace87fe3f6d5ce2def8f"
+      },
+      {
+        "path": "agent_memory_issues_to_explore/Layer 1 \u2014 Agent Memory (existing pr.txt",
+        "sha256": "43044e0c56ff6eb033b3075bbb965540395769c6516212913b1aa6e91f72e6fd"
+      },
+      {
+        "path": "agent_memory_issues_to_explore/\ud83d\udce6 Pack 8 AI Runtime & Cognitive As.txt",
+        "sha256": "be252cfb270a91e1c7b3801efc0f71aac6de9afc96e40377dd330f90534f7080"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_assurance_controls.py; tests/test_cognitive_assurance.py",
+  "evidence": "tests/test_cognitive_assurance.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

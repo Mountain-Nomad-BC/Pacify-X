@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:skill-package",
+  "title": "Lazy-loaded skill package contract",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "status",
+    "body",
+    "body_sha256",
+    "references",
+    "capability_tags",
+    "effects",
+    "provenance",
+    "clean_room",
+    "tests",
+    "evidence",
+    "validation_freshness",
+    "context_budget_bytes"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "candidate",
+        "admitted",
+        "active",
+        "reference_only",
+        "quarantined"
+      ]
+    },
+    "body": {
+      "type": "string"
+    },
+    "body_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "resources": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "capability_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "clean_room": {
+      "type": "boolean"
+    },
+    "tests": {
+      "type": "string"
+    },
+    "evidence": {
+      "type": "string"
+    },
+    "validation_freshness": {
+      "enum": [
+        "current",
+        "stale",
+        "unknown"
+      ]
+    },
+    "context_budget_bytes": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "additionalProperties": false
+}

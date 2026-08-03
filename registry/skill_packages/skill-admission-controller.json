@@ -1,0 +1,35 @@
+{
+  "id": "skill-admission-controller",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/skill-admission-controller/SKILL.md",
+  "body_sha256": "4cd825291afb398cca48757ab0f549028a1984677140c3083fa1c8564d9bff32",
+  "references": [],
+  "capability_tags": [
+    "admission",
+    "controller",
+    "security",
+    "skill"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_aaf7393a.md",
+        "sha256": "29713bbb1a45a4124719c7b5d022d3c813937d8a872f0ca8c357775577d29347"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_6536c6db.yaml",
+        "sha256": "f3363ab5c43d0a01237581572f3b6410037feb28646ac6b4ef12a9eee4d7b988"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

@@ -1,0 +1,34 @@
+{
+  "id": "memory-applicability-critic",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/memory-applicability-critic/SKILL.md",
+  "body_sha256": "3cccbe70c81d6e174e8e835e3af2d0f6df7e20c0cd609f2f96fa8d16891968bb",
+  "references": [],
+  "capability_tags": [
+    "applicability",
+    "critic",
+    "memory"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_01bd61a8.md",
+        "sha256": "0b911df2f98c007366e9c0f2ac3492009e7f2c9a56b75f2a5558a00834ec2010"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_45ffad09.yaml",
+        "sha256": "eda030b43d75b128b360afa29ce71e0ffb5d55514e04524c1276d96a247577ab"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

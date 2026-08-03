@@ -1,0 +1,67 @@
+{
+  "dependencies": [
+    "bounded-workflow-topology-selector",
+    "human-handoff-state-transfer"
+  ],
+  "domain": "agent-genetics",
+  "failure_modes": [
+    "single IQ score",
+    "model-size routing",
+    "stale profile",
+    "agent swarm theater"
+  ],
+  "formula_refs": [
+    "team-complementarity",
+    "coordination-overhead",
+    "routing-utility"
+  ],
+  "id": "multi-agent-composition-planner",
+  "inputs": [
+    "task-class benchmarks",
+    "agent/model/provider version",
+    "permissions, cost, latency, and failure evidence"
+  ],
+  "invariants": [
+    "Profiles are task-class and version specific.",
+    "Self-description and marketing claims are not benchmark evidence.",
+    "Permissions and safety are hard gates."
+  ],
+  "outputs": [
+    "versioned cognitive profile",
+    "bounded routing or team plan",
+    "risk budget and fallback"
+  ],
+  "procedure": [
+    "Define task demand and measurable profile dimensions.",
+    "Filter by permissions and hard safety constraints.",
+    "Score fit with confidence and version-specific failure evidence.",
+    "Penalize correlated blind spots and coordination overhead.",
+    "Assign primary, verifier, fallback, authority envelope, and recertification triggers."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Compose bounded teams with complementary strengths, explicit roles, information boundaries, independent verification, fallback, and stop conditions.",
+  "title": "Multi-Agent Composition Planner",
+  "version": "1.0.0",
+  "when_to_use": "Use when planning, execution, critique, and verification require different profiles."
+}

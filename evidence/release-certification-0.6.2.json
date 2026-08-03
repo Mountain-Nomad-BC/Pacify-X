@@ -1,0 +1,153 @@
+{
+  "artifact_policy_sha256": "d4d4c315923f8668a1647a42d2afff9a260c9f11eb6b7e3cfcce488fa0199ce2",
+  "certificate_sha256": "0e3988e5666bc2e5e690d91eedd31d935fcabb9b9b66e87a743b427ec925f0f9",
+  "created_utc": "2026-08-03T18:46:56.682838+00:00",
+  "gate_summary": "evidence/release-runs/rel-0.6.2-0a059f670913/gate-summary.json",
+  "gates": {
+    "duration_seconds": 1199.775471,
+    "gate_count": 23,
+    "gates": {
+      "clean_build": {
+        "artifact_count": 2,
+        "custody_class": "external_temporary_quarantine",
+        "custody_id": "build-r0m8qtjz",
+        "duration_seconds": 39.880969,
+        "exit_code": 0,
+        "hard_delete": false,
+        "stderr": "* Getting build dependencies for wheel...\n* Building wheel...\nwarning: build_py: byte-compiling is disabled, skipping.\n\nwarning: install_lib: byte-compiling is disabled, skipping.\n\n* Getting build dependencies for sdist...\n* Building sdist...\n",
+        "timed_out": false,
+        "valid": true
+      },
+      "contracts": {
+        "errors": [],
+        "valid": true
+      },
+      "corrective_release": {
+        "errors": [],
+        "valid": true
+      },
+      "dependency_ownership": {
+        "errors": [],
+        "valid": true
+      },
+      "effect_surfaces": {
+        "errors": [],
+        "valid": true
+      },
+      "evidence_portability": {
+        "errors": [],
+        "valid": true
+      },
+      "exact_tools": {
+        "denominator": 63,
+        "duration_seconds": 22.758107,
+        "errors": [],
+        "passed": 63,
+        "valid": true
+      },
+      "external_evidence": {
+        "errors": [],
+        "valid": true
+      },
+      "full_tests": {
+        "duration_seconds": 1027.265729,
+        "errors": 0,
+        "exit_code": 0,
+        "failures": 0,
+        "log": "evidence/release-runs/rel-0.6.2-0a059f670913/full-tests.log",
+        "skipped": 0,
+        "tests": 769,
+        "timed_out": false,
+        "valid": true
+      },
+      "generated_artifacts": {
+        "errors": [],
+        "valid": true
+      },
+      "graphs": {
+        "errors": [],
+        "valid": true
+      },
+      "installed_wheel": {
+        "errors": 0,
+        "failures": 0,
+        "marker": "test_installed_wheel_e2e",
+        "skipped": 0,
+        "tests": 1,
+        "valid": true
+      },
+      "integrations": {
+        "errors": [],
+        "valid": true
+      },
+      "junit_metadata_portability": {
+        "errors": [],
+        "hostname_count": 0,
+        "nonportable_path_count": 0,
+        "valid": true
+      },
+      "licensing": {
+        "errors": [],
+        "valid": true
+      },
+      "publishable_evidence_portability": {
+        "errors": [],
+        "nonportable_path_count": 0,
+        "valid": true
+      },
+      "registry": {
+        "errors": [],
+        "valid": true
+      },
+      "registry_envelopes": {
+        "errors": [],
+        "valid": true
+      },
+      "release_audit": {
+        "errors": [],
+        "valid": true
+      },
+      "release_environment": {
+        "errors": [],
+        "valid": true
+      },
+      "release_toolchain": {
+        "custody_class": "external_temporary_quarantine",
+        "custody_id": "environment-w6gm98tc",
+        "duration_seconds": 64.355013,
+        "exit_code": 0,
+        "hard_delete": false,
+        "stderr": "",
+        "valid": true
+      },
+      "sanitization": {
+        "active_zip_files": 0,
+        "errors": [],
+        "files_scanned": 1363,
+        "identifier_hits": 0,
+        "legacy_placeholder_hits": 0,
+        "valid": true
+      },
+      "structural_integrity": {
+        "errors": [],
+        "valid": true
+      }
+    },
+    "schema_version": "1.0",
+    "valid": true
+  },
+  "harness_digest": "d56f193fc775425e705644816a31521771493d946e1ac67e12aa630799cdbc8c",
+  "manifest_file_count": 1299,
+  "product_digest": "eb0ffad0e596e1d883423a5eae101ce94695ae8ee4b176a16aeafa16619db215",
+  "publication_receipt": "evidence/release-runs/rel-0.6.2-0a059f670913/publication-receipt.json",
+  "release": "0.6.2",
+  "revocation_triggers": [
+    "product digest mismatch",
+    "harness digest mismatch",
+    "certificate seal mismatch",
+    "project state not deployment-certified"
+  ],
+  "run_id": "rel-0.6.2-0a059f670913",
+  "schema_version": "2.0",
+  "status": "deployment_ready"
+}

@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:project_record",
+  "title": "Project Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "project_id",
+    "name",
+    "state",
+    "repositories",
+    "classification"
+  ],
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "pattern": "^prj_[A-Za-z0-9_-]+$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state": {
+      "enum": [
+        "discovered",
+        "registered",
+        "active",
+        "paused",
+        "dormant",
+        "archived",
+        "retired"
+      ]
+    },
+    "classification": {
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted"
+      ]
+    },
+    "repositories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "repository_id",
+          "logical_root",
+          "role"
+        ],
+        "properties": {
+          "repository_id": {
+            "type": "string",
+            "pattern": "^repo_"
+          },
+          "logical_root": {
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "application",
+              "service",
+              "infrastructure",
+              "data",
+              "documentation",
+              "shared-library",
+              "tooling",
+              "other"
+            ]
+          }
+        }
+      }
+    },
+    "owners": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "policy_overlay": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "memory_namespace": {
+      "type": "string"
+    },
+    "cross_project_access": {
+      "enum": [
+        "deny",
+        "explicit-only"
+      ]
+    },
+    "required_gates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "commissioning_mode": {
+      "enum": [
+        "new",
+        "existing"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

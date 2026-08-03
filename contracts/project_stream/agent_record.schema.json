@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:agent_record",
+  "title": "Agent Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "agent_id",
+    "template_id",
+    "project_id",
+    "state",
+    "capabilities",
+    "permissions"
+  ],
+  "properties": {
+    "agent_id": {
+      "type": "string",
+      "pattern": "^agt_"
+    },
+    "template_id": {
+      "type": "string"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^prj_"
+    },
+    "state": {
+      "enum": [
+        "proposed",
+        "sandbox",
+        "probation",
+        "active",
+        "paused",
+        "retired",
+        "revoked"
+      ]
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "stop_conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "model_route": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "human_sponsor": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

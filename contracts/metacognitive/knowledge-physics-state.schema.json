@@ -1,0 +1,53 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:metacognitive:knowledge-physics-state",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "attractor_strength": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "capability_id": {
+      "type": "string"
+    },
+    "contradiction_pressure": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "entropy": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "events": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "stability": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "trust": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "volatility": {
+      "minimum": 0,
+      "type": "number"
+    }
+  },
+  "required": [
+    "capability_id",
+    "trust",
+    "entropy",
+    "stability",
+    "volatility",
+    "attractor_strength",
+    "contradiction_pressure",
+    "events"
+  ],
+  "type": "object"
+}

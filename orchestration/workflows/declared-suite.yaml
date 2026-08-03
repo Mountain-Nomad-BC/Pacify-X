@@ -1,0 +1,4533 @@
+{
+  "schema_version": "1.0",
+  "status": "authoritative_contracts_assimilated",
+  "workflow_count": 62,
+  "workflows": [
+    {
+      "authoritative_contract": {
+        "id": "audit-ai-supply-chain",
+        "name": "Audit AI Supply Chain",
+        "path": "orchestrations/audit-ai-supply-chain.json",
+        "summary": "Trace risk across models, datasets, adapters, packages, tools, and builders.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7083a272961db3bb3df4ef9037546b4d28a081d51291ad8254b84232a10ffd0c",
+      "authoritative_source": "packs/05-security-sandbox-supply-chain_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "audit-ai-supply-chain",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "secure-agent-supply-chain",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate audit ai supply chain across explicit ordered dependencies within security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/audit-ai-supply-chain.json",
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/audit-ai-supply-chain.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "classify-assets-and-trust-boundaries",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "classify-assets-and-trust-boundaries"
+          ],
+          "id": "enumerate-threats-and-authority",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "enumerate-threats-and-authority"
+          ],
+          "id": "scan-and-contain",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "scan-and-contain"
+          ],
+          "id": "verify-provenance-and-reproducibility",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "verify-provenance-and-reproducibility"
+          ],
+          "id": "release-or-quarantine-with-evidence",
+          "skill": "secure-agent-supply-chain"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "audit-pack-completeness",
+        "name": "Audit Pack Completeness",
+        "path": "orchestrations/audit-pack-completeness.json",
+        "summary": "Check that every capability has contracts, tests, evidence, permissions, telemetry, and lifecycle metadata.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "eb6cba9d9841a99f5fd4e01cb7cc947fe41ef8302d33709c97637990e60e0024",
+      "authoritative_source": "packs/07-revocable-certification-integration_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "audit-pack-completeness",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "manage-revocable-certification",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate audit pack completeness across explicit ordered dependencies within completeness, collision handling, revocable certification, recertification, and release trust, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/audit-pack-completeness.json",
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/audit-pack-completeness.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "freeze-scope-and-denominators",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "freeze-scope-and-denominators"
+          ],
+          "id": "reconcile-owners-and-artifacts",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "reconcile-owners-and-artifacts"
+          ],
+          "id": "run-independent-completion-gates",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "run-independent-completion-gates"
+          ],
+          "id": "issue-hash-bound-certificate",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "issue-hash-bound-certificate"
+          ],
+          "id": "monitor-revoke-and-recertify",
+          "skill": "manage-revocable-certification"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "benchmark-serving-backends",
+        "name": "Benchmark Serving Backends",
+        "path": "orchestrations/benchmark-serving-backends.json",
+        "summary": "Compare serving engines on a normalized model and workload.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "cff01e8167d30cdb499d83942ac248207a7e350d67a2d7efc0a6c14acd5f03ad",
+      "authoritative_source": "packs/06-runtime-protocols-deployment_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "benchmark-serving-backends",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-runtime-protocol-deployment",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate benchmark serving backends across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/benchmark-serving-backends.json",
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/benchmark-serving-backends.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "probe-live-capabilities",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "probe-live-capabilities"
+          ],
+          "id": "validate-contract-and-compatibility",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "validate-contract-and-compatibility"
+          ],
+          "id": "model-capacity-cost-and-quality",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "model-capacity-cost-and-quality"
+          ],
+          "id": "stage-canary-with-fallback",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "stage-canary-with-fallback"
+          ],
+          "id": "observe-decide-and-handoff",
+          "skill": "govern-runtime-protocol-deployment"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "build-sandbox-profile",
+        "name": "Build Sandbox Profile",
+        "path": "orchestrations/build-sandbox-profile.json",
+        "summary": "Generate and test a least-privilege execution environment.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7083a272961db3bb3df4ef9037546b4d28a081d51291ad8254b84232a10ffd0c",
+      "authoritative_source": "packs/05-security-sandbox-supply-chain_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "build-sandbox-profile",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "secure-agent-supply-chain",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate build sandbox profile across explicit ordered dependencies within security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/build-sandbox-profile.json",
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/build-sandbox-profile.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "classify-assets-and-trust-boundaries",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "classify-assets-and-trust-boundaries"
+          ],
+          "id": "enumerate-threats-and-authority",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "enumerate-threats-and-authority"
+          ],
+          "id": "scan-and-contain",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "scan-and-contain"
+          ],
+          "id": "verify-provenance-and-reproducibility",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "verify-provenance-and-reproducibility"
+          ],
+          "id": "release-or-quarantine-with-evidence",
+          "skill": "secure-agent-supply-chain"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "build-verification-plan",
+        "name": "Build Verification Plan",
+        "path": "orchestrations/build-verification-plan.json",
+        "summary": "Select the test families needed to prove a capability rather than merely exercise it.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "2814d481c8bdb2f1e6fadb66ea179f0a0d4f7c0e609d12b62fc8e0d338f6afca",
+      "authoritative_source": "packs/03-verification-evaluation-lab_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "build-verification-plan",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "engineer-verification-lab",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate build verification plan across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/build-verification-plan.json",
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/build-verification-plan.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "define-observable-claim",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "define-observable-claim"
+          ],
+          "id": "select-independent-oracle",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "select-independent-oracle"
+          ],
+          "id": "generate-positive-and-adversarial-cases",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "generate-positive-and-adversarial-cases"
+          ],
+          "id": "run-and-minimize",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "run-and-minimize"
+          ],
+          "id": "score-and-promote-regressions",
+          "skill": "engineer-verification-lab"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "calibrate-llm-judge",
+        "name": "Calibrate LLM Judge",
+        "path": "orchestrations/calibrate-llm-judge.json",
+        "summary": "Validate a model judge before trusting its scores.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "2814d481c8bdb2f1e6fadb66ea179f0a0d4f7c0e609d12b62fc8e0d338f6afca",
+      "authoritative_source": "packs/03-verification-evaluation-lab_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "calibrate-llm-judge",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "engineer-verification-lab",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate calibrate llm judge across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/calibrate-llm-judge.json",
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/calibrate-llm-judge.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "define-observable-claim",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "define-observable-claim"
+          ],
+          "id": "select-independent-oracle",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "select-independent-oracle"
+          ],
+          "id": "generate-positive-and-adversarial-cases",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "generate-positive-and-adversarial-cases"
+          ],
+          "id": "run-and-minimize",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "run-and-minimize"
+          ],
+          "id": "score-and-promote-regressions",
+          "skill": "engineer-verification-lab"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "compile-and-register-skill",
+        "name": "Compile And Register Skill",
+        "path": "orchestrations/compile-and-register-skill.json",
+        "summary": "Turn a canonical skill contract into synchronized runtime artifacts.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "dc0a13ab5cbd13810659286f75465c9c30949561c009fc3dbae909a68aa783a7",
+      "authoritative_source": "packs/01-expert-operating-kernel_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "compile-and-register-skill",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-operating-kernel",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate compile and register skill across explicit ordered dependencies within governed execution, evidence, permission, recovery, and durable task control, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/compile-and-register-skill.json",
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/compile-and-register-skill.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "establish-scope",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "establish-scope"
+          ],
+          "id": "authorize-effects",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "authorize-effects"
+          ],
+          "id": "execute-bounded-work",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "execute-bounded-work"
+          ],
+          "id": "independently-verify",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "independently-verify"
+          ],
+          "id": "commit-evidence-and-state",
+          "skill": "govern-operating-kernel"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "convert-incident-to-regression",
+        "name": "Convert Incident To Regression",
+        "path": "orchestrations/convert-incident-to-regression.json",
+        "summary": "Turn field evidence into a stable test and prevention control.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "2814d481c8bdb2f1e6fadb66ea179f0a0d4f7c0e609d12b62fc8e0d338f6afca",
+      "authoritative_source": "packs/03-verification-evaluation-lab_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "convert-incident-to-regression",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "engineer-verification-lab",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate convert incident to regression across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/convert-incident-to-regression.json",
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/convert-incident-to-regression.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "define-observable-claim",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "define-observable-claim"
+          ],
+          "id": "select-independent-oracle",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "select-independent-oracle"
+          ],
+          "id": "generate-positive-and-adversarial-cases",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "generate-positive-and-adversarial-cases"
+          ],
+          "id": "run-and-minimize",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "run-and-minimize"
+          ],
+          "id": "score-and-promote-regressions",
+          "skill": "engineer-verification-lab"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "curate-memory-from-runs",
+        "name": "Curate Memory From Runs",
+        "path": "orchestrations/curate-memory-from-runs.json",
+        "summary": "Convert run history into validated reusable memory.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7c826b63c60d5063af321ee23eb61b884653fdb0944ebef59138d6048976f34b",
+      "authoritative_source": "packs/04-memory-retrieval-observability_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "curate-memory-from-runs",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "operate-memory-retrieval-observability",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate curate memory from runs across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/curate-memory-from-runs.json",
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/curate-memory-from-runs.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "bind-project-and-subject-scope",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "bind-project-and-subject-scope"
+          ],
+          "id": "validate-ingestion-and-provenance",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "validate-ingestion-and-provenance"
+          ],
+          "id": "retrieve-and-budget-context",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "retrieve-and-budget-context"
+          ],
+          "id": "record-trace-and-quality",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "record-trace-and-quality"
+          ],
+          "id": "retain-promote-or-purge-by-policy",
+          "skill": "operate-memory-retrieval-observability"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "debug-retrieval-failure",
+        "name": "Debug Retrieval Failure",
+        "path": "orchestrations/debug-retrieval-failure.json",
+        "summary": "Separate corpus, parsing, indexing, query, ranking, and synthesis failures.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7c826b63c60d5063af321ee23eb61b884653fdb0944ebef59138d6048976f34b",
+      "authoritative_source": "packs/04-memory-retrieval-observability_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "debug-retrieval-failure",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "operate-memory-retrieval-observability",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate debug retrieval failure across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/debug-retrieval-failure.json",
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/debug-retrieval-failure.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "bind-project-and-subject-scope",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "bind-project-and-subject-scope"
+          ],
+          "id": "validate-ingestion-and-provenance",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "validate-ingestion-and-provenance"
+          ],
+          "id": "retrieve-and-budget-context",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "retrieve-and-budget-context"
+          ],
+          "id": "record-trace-and-quality",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "record-trace-and-quality"
+          ],
+          "id": "retain-promote-or-purge-by-policy",
+          "skill": "operate-memory-retrieval-observability"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "degrade-safely",
+        "name": "Degrade Safely",
+        "path": "orchestrations/degrade-safely.json",
+        "summary": "Continue partial service without hiding lost capability.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "cff01e8167d30cdb499d83942ac248207a7e350d67a2d7efc0a6c14acd5f03ad",
+      "authoritative_source": "packs/06-runtime-protocols-deployment_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "degrade-safely",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-runtime-protocol-deployment",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate degrade safely across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/degrade-safely.json",
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/degrade-safely.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "probe-live-capabilities",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "probe-live-capabilities"
+          ],
+          "id": "validate-contract-and-compatibility",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "validate-contract-and-compatibility"
+          ],
+          "id": "model-capacity-cost-and-quality",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "model-capacity-cost-and-quality"
+          ],
+          "id": "stage-canary-with-fallback",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "stage-canary-with-fallback"
+          ],
+          "id": "observe-decide-and-handoff",
+          "skill": "govern-runtime-protocol-deployment"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "deploy-canary-and-compare",
+        "name": "Deploy Canary And Compare",
+        "path": "orchestrations/deploy-canary-and-compare.json",
+        "summary": "Release a model or runtime change with measurable stop and rollback controls.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "cff01e8167d30cdb499d83942ac248207a7e350d67a2d7efc0a6c14acd5f03ad",
+      "authoritative_source": "packs/06-runtime-protocols-deployment_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "deploy-canary-and-compare",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-runtime-protocol-deployment",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate deploy canary and compare across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/deploy-canary-and-compare.json",
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/deploy-canary-and-compare.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "probe-live-capabilities",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "probe-live-capabilities"
+          ],
+          "id": "validate-contract-and-compatibility",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "validate-contract-and-compatibility"
+          ],
+          "id": "model-capacity-cost-and-quality",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "model-capacity-cost-and-quality"
+          ],
+          "id": "stage-canary-with-fallback",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "stage-canary-with-fallback"
+          ],
+          "id": "observe-decide-and-handoff",
+          "skill": "govern-runtime-protocol-deployment"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "design-memory-system",
+        "name": "Design Memory System",
+        "path": "orchestrations/design-memory-system.json",
+        "summary": "Design scoped memory around write manage read and delete controls.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7c826b63c60d5063af321ee23eb61b884653fdb0944ebef59138d6048976f34b",
+      "authoritative_source": "packs/04-memory-retrieval-observability_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "design-memory-system",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "operate-memory-retrieval-observability",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate design memory system across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/design-memory-system.json",
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/design-memory-system.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "bind-project-and-subject-scope",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "bind-project-and-subject-scope"
+          ],
+          "id": "validate-ingestion-and-provenance",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "validate-ingestion-and-provenance"
+          ],
+          "id": "retrieve-and-budget-context",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "retrieve-and-budget-context"
+          ],
+          "id": "record-trace-and-quality",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "record-trace-and-quality"
+          ],
+          "id": "retain-promote-or-purge-by-policy",
+          "skill": "operate-memory-retrieval-observability"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "detect-and-plan-conflict-merges",
+        "name": "Detect And Plan Conflict Merges",
+        "path": "orchestrations/detect-and-plan-conflict-merges.json",
+        "summary": "Prepare a safe integration plan against an existing capability library.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "eb6cba9d9841a99f5fd4e01cb7cc947fe41ef8302d33709c97637990e60e0024",
+      "authoritative_source": "packs/07-revocable-certification-integration_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "detect-and-plan-conflict-merges",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "manage-revocable-certification",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate detect and plan conflict merges across explicit ordered dependencies within completeness, collision handling, revocable certification, recertification, and release trust, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/detect-and-plan-conflict-merges.json",
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/detect-and-plan-conflict-merges.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "freeze-scope-and-denominators",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "freeze-scope-and-denominators"
+          ],
+          "id": "reconcile-owners-and-artifacts",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "reconcile-owners-and-artifacts"
+          ],
+          "id": "run-independent-completion-gates",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "run-independent-completion-gates"
+          ],
+          "id": "issue-hash-bound-certificate",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "issue-hash-bound-certificate"
+          ],
+          "id": "monitor-revoke-and-recertify",
+          "skill": "manage-revocable-certification"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "diagnose-root-cause",
+        "name": "Diagnose Root Cause",
+        "path": "orchestrations/diagnose-root-cause.json",
+        "summary": "Isolate the defect mechanism using competing hypotheses and discriminating tests.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "6a7d5584d4e99dbe3ea693fb134ffebd333629c219cd4d9dec3a3756eaa75144",
+      "authoritative_source": "packs/02-repository-intelligence-aci_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "diagnose-root-cause",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "analyze-repository-intelligence",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate diagnose root cause across explicit ordered dependencies within repository mapping, runtime tracing, impact analysis, reproduction, and safe change planning, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/diagnose-root-cause.json",
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/diagnose-root-cause.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "inventory-repository",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "inventory-repository"
+          ],
+          "id": "trace-relationships",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "trace-relationships"
+          ],
+          "id": "form-testable-hypotheses",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "form-testable-hypotheses"
+          ],
+          "id": "measure-change-impact",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "measure-change-impact"
+          ],
+          "id": "propose-minimal-safe-action",
+          "skill": "analyze-repository-intelligence"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "evaluate-agent-end-to-end",
+        "name": "Evaluate Agent End To End",
+        "path": "orchestrations/evaluate-agent-end-to-end.json",
+        "summary": "Evaluate an agent in a real sandbox with outcome and trajectory scoring.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "2814d481c8bdb2f1e6fadb66ea179f0a0d4f7c0e609d12b62fc8e0d338f6afca",
+      "authoritative_source": "packs/03-verification-evaluation-lab_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "evaluate-agent-end-to-end",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "engineer-verification-lab",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate evaluate agent end to end across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/evaluate-agent-end-to-end.json",
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/evaluate-agent-end-to-end.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "define-observable-claim",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "define-observable-claim"
+          ],
+          "id": "select-independent-oracle",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "select-independent-oracle"
+          ],
+          "id": "generate-positive-and-adversarial-cases",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "generate-positive-and-adversarial-cases"
+          ],
+          "id": "run-and-minimize",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "run-and-minimize"
+          ],
+          "id": "score-and-promote-regressions",
+          "skill": "engineer-verification-lab"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "execute-controlled-capability",
+        "name": "Execute Controlled Capability",
+        "path": "orchestrations/execute-controlled-capability.json",
+        "summary": "Execute a capability only inside its typed authority and evidence contract.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "dc0a13ab5cbd13810659286f75465c9c30949561c009fc3dbae909a68aa783a7",
+      "authoritative_source": "packs/01-expert-operating-kernel_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "execute-controlled-capability",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-operating-kernel",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate execute controlled capability across explicit ordered dependencies within governed execution, evidence, permission, recovery, and durable task control, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/execute-controlled-capability.json",
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/execute-controlled-capability.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "establish-scope",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "establish-scope"
+          ],
+          "id": "authorize-effects",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "authorize-effects"
+          ],
+          "id": "execute-bounded-work",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "execute-bounded-work"
+          ],
+          "id": "independently-verify",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "independently-verify"
+          ],
+          "id": "commit-evidence-and-state",
+          "skill": "govern-operating-kernel"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "field-feedback-to-regression",
+        "name": "Field Feedback To Regression",
+        "path": "orchestrations/field-feedback-to-regression.json",
+        "summary": "Turn production evidence into maintained certification tests.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "eb6cba9d9841a99f5fd4e01cb7cc947fe41ef8302d33709c97637990e60e0024",
+      "authoritative_source": "packs/07-revocable-certification-integration_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "field-feedback-to-regression",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "manage-revocable-certification",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate field feedback to regression across explicit ordered dependencies within completeness, collision handling, revocable certification, recertification, and release trust, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/field-feedback-to-regression.json",
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/field-feedback-to-regression.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "freeze-scope-and-denominators",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "freeze-scope-and-denominators"
+          ],
+          "id": "reconcile-owners-and-artifacts",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "reconcile-owners-and-artifacts"
+          ],
+          "id": "run-independent-completion-gates",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "run-independent-completion-gates"
+          ],
+          "id": "issue-hash-bound-certificate",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "issue-hash-bound-certificate"
+          ],
+          "id": "monitor-revoke-and-recertify",
+          "skill": "manage-revocable-certification"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "final-capability-certification",
+        "name": "Final Capability Certification",
+        "path": "orchestrations/final-capability-certification.json",
+        "summary": "Run the full tiered certification ladder and issue a scoped disposition.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "eb6cba9d9841a99f5fd4e01cb7cc947fe41ef8302d33709c97637990e60e0024",
+      "authoritative_source": "packs/07-revocable-certification-integration_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "final-capability-certification",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "manage-revocable-certification",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate final capability certification across explicit ordered dependencies within completeness, collision handling, revocable certification, recertification, and release trust, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/final-capability-certification.json",
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/final-capability-certification.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "freeze-scope-and-denominators",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "freeze-scope-and-denominators"
+          ],
+          "id": "reconcile-owners-and-artifacts",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "reconcile-owners-and-artifacts"
+          ],
+          "id": "run-independent-completion-gates",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "run-independent-completion-gates"
+          ],
+          "id": "issue-hash-bound-certificate",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "issue-hash-bound-certificate"
+          ],
+          "id": "monitor-revoke-and-recertify",
+          "skill": "manage-revocable-certification"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "freeze-foundational-scope",
+        "name": "Freeze Foundational Scope",
+        "path": "orchestrations/freeze-foundational-scope.json",
+        "summary": "Declare the completion cut line and reject unbounded final-pass expansion.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "eb6cba9d9841a99f5fd4e01cb7cc947fe41ef8302d33709c97637990e60e0024",
+      "authoritative_source": "packs/07-revocable-certification-integration_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "freeze-foundational-scope",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "manage-revocable-certification",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate freeze foundational scope across explicit ordered dependencies within completeness, collision handling, revocable certification, recertification, and release trust, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/freeze-foundational-scope.json",
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/freeze-foundational-scope.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "freeze-scope-and-denominators",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "freeze-scope-and-denominators"
+          ],
+          "id": "reconcile-owners-and-artifacts",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "reconcile-owners-and-artifacts"
+          ],
+          "id": "run-independent-completion-gates",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "run-independent-completion-gates"
+          ],
+          "id": "issue-hash-bound-certificate",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "issue-hash-bound-certificate"
+          ],
+          "id": "monitor-revoke-and-recertify",
+          "skill": "manage-revocable-certification"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "fuzz-and-minimize",
+        "name": "Fuzz And Minimize",
+        "path": "orchestrations/fuzz-and-minimize.json",
+        "summary": "Fuzz a parser, schema, tool, or service and minimize actionable failures.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "2814d481c8bdb2f1e6fadb66ea179f0a0d4f7c0e609d12b62fc8e0d338f6afca",
+      "authoritative_source": "packs/03-verification-evaluation-lab_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "fuzz-and-minimize",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "engineer-verification-lab",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate fuzz and minimize across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/fuzz-and-minimize.json",
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/fuzz-and-minimize.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "define-observable-claim",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "define-observable-claim"
+          ],
+          "id": "select-independent-oracle",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "select-independent-oracle"
+          ],
+          "id": "generate-positive-and-adversarial-cases",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "generate-positive-and-adversarial-cases"
+          ],
+          "id": "run-and-minimize",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "run-and-minimize"
+          ],
+          "id": "score-and-promote-regressions",
+          "skill": "engineer-verification-lab"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "handle-ai-security-incident",
+        "name": "Handle AI Security Incident",
+        "path": "orchestrations/handle-ai-security-incident.json",
+        "summary": "Respond to a suspected model, tool, memory, or agent compromise.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7083a272961db3bb3df4ef9037546b4d28a081d51291ad8254b84232a10ffd0c",
+      "authoritative_source": "packs/05-security-sandbox-supply-chain_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "handle-ai-security-incident",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "secure-agent-supply-chain",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate handle ai security incident across explicit ordered dependencies within security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/handle-ai-security-incident.json",
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/handle-ai-security-incident.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "classify-assets-and-trust-boundaries",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "classify-assets-and-trust-boundaries"
+          ],
+          "id": "enumerate-threats-and-authority",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "enumerate-threats-and-authority"
+          ],
+          "id": "scan-and-contain",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "scan-and-contain"
+          ],
+          "id": "verify-provenance-and-reproducibility",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "verify-provenance-and-reproducibility"
+          ],
+          "id": "release-or-quarantine-with-evidence",
+          "skill": "secure-agent-supply-chain"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "human-review-and-handoff",
+        "name": "Human Review And Handoff",
+        "path": "orchestrations/human-review-and-handoff.json",
+        "summary": "Package work for a human decision or another engineer.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "cff01e8167d30cdb499d83942ac248207a7e350d67a2d7efc0a6c14acd5f03ad",
+      "authoritative_source": "packs/06-runtime-protocols-deployment_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "human-review-and-handoff",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-runtime-protocol-deployment",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate human review and handoff across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/human-review-and-handoff.json",
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/human-review-and-handoff.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "probe-live-capabilities",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "probe-live-capabilities"
+          ],
+          "id": "validate-contract-and-compatibility",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "validate-contract-and-compatibility"
+          ],
+          "id": "model-capacity-cost-and-quality",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "model-capacity-cost-and-quality"
+          ],
+          "id": "stage-canary-with-fallback",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "stage-canary-with-fallback"
+          ],
+          "id": "observe-decide-and-handoff",
+          "skill": "govern-runtime-protocol-deployment"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "implement-verified-change",
+        "name": "Implement Verified Change",
+        "path": "orchestrations/implement-verified-change.json",
+        "summary": "Apply the smallest supported repair and prove its outcome.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "6a7d5584d4e99dbe3ea693fb134ffebd333629c219cd4d9dec3a3756eaa75144",
+      "authoritative_source": "packs/02-repository-intelligence-aci_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "implement-verified-change",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "analyze-repository-intelligence",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate implement verified change across explicit ordered dependencies within repository mapping, runtime tracing, impact analysis, reproduction, and safe change planning, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/implement-verified-change.json",
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/implement-verified-change.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "inventory-repository",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "inventory-repository"
+          ],
+          "id": "trace-relationships",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "trace-relationships"
+          ],
+          "id": "form-testable-hypotheses",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "form-testable-hypotheses"
+          ],
+          "id": "measure-change-impact",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "measure-change-impact"
+          ],
+          "id": "propose-minimal-safe-action",
+          "skill": "analyze-repository-intelligence"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "import-and-govern-tool",
+        "name": "Import And Govern Tool",
+        "path": "orchestrations/import-and-govern-tool.json",
+        "summary": "Turn an API or protocol capability into a bounded tool.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "cff01e8167d30cdb499d83942ac248207a7e350d67a2d7efc0a6c14acd5f03ad",
+      "authoritative_source": "packs/06-runtime-protocols-deployment_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "import-and-govern-tool",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-runtime-protocol-deployment",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate import and govern tool across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/import-and-govern-tool.json",
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/import-and-govern-tool.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "probe-live-capabilities",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "probe-live-capabilities"
+          ],
+          "id": "validate-contract-and-compatibility",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "validate-contract-and-compatibility"
+          ],
+          "id": "model-capacity-cost-and-quality",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "model-capacity-cost-and-quality"
+          ],
+          "id": "stage-canary-with-fallback",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "stage-canary-with-fallback"
+          ],
+          "id": "observe-decide-and-handoff",
+          "skill": "govern-runtime-protocol-deployment"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "independent-verify-result",
+        "name": "Independent Verify Result",
+        "path": "orchestrations/independent-verify-result.json",
+        "summary": "Verify outcome through a separate path from the producer.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "dc0a13ab5cbd13810659286f75465c9c30949561c009fc3dbae909a68aa783a7",
+      "authoritative_source": "packs/01-expert-operating-kernel_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "independent-verify-result",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-operating-kernel",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate independent verify result across explicit ordered dependencies within governed execution, evidence, permission, recovery, and durable task control, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/independent-verify-result.json",
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/independent-verify-result.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "establish-scope",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "establish-scope"
+          ],
+          "id": "authorize-effects",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "authorize-effects"
+          ],
+          "id": "execute-bounded-work",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "execute-bounded-work"
+          ],
+          "id": "independently-verify",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "independently-verify"
+          ],
+          "id": "commit-evidence-and-state",
+          "skill": "govern-operating-kernel"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "ingest-and-index-corpus",
+        "name": "Ingest And Index Corpus",
+        "path": "orchestrations/ingest-and-index-corpus.json",
+        "summary": "Ingest documents without silently losing structure or permissions.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7c826b63c60d5063af321ee23eb61b884653fdb0944ebef59138d6048976f34b",
+      "authoritative_source": "packs/04-memory-retrieval-observability_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "ingest-and-index-corpus",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "operate-memory-retrieval-observability",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate ingest and index corpus across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/ingest-and-index-corpus.json",
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/ingest-and-index-corpus.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "bind-project-and-subject-scope",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "bind-project-and-subject-scope"
+          ],
+          "id": "validate-ingestion-and-provenance",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "validate-ingestion-and-provenance"
+          ],
+          "id": "retrieve-and-budget-context",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "retrieve-and-budget-context"
+          ],
+          "id": "record-trace-and-quality",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "record-trace-and-quality"
+          ],
+          "id": "retain-promote-or-purge-by-policy",
+          "skill": "operate-memory-retrieval-observability"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "instrument-agent-workflow",
+        "name": "Instrument Agent Workflow",
+        "path": "orchestrations/instrument-agent-workflow.json",
+        "summary": "Add end-to-end telemetry without leaking sensitive content.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7c826b63c60d5063af321ee23eb61b884653fdb0944ebef59138d6048976f34b",
+      "authoritative_source": "packs/04-memory-retrieval-observability_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "instrument-agent-workflow",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "operate-memory-retrieval-observability",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate instrument agent workflow across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/instrument-agent-workflow.json",
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/instrument-agent-workflow.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "bind-project-and-subject-scope",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "bind-project-and-subject-scope"
+          ],
+          "id": "validate-ingestion-and-provenance",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "validate-ingestion-and-provenance"
+          ],
+          "id": "retrieve-and-budget-context",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "retrieve-and-budget-context"
+          ],
+          "id": "record-trace-and-quality",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "record-trace-and-quality"
+          ],
+          "id": "retain-promote-or-purge-by-policy",
+          "skill": "operate-memory-retrieval-observability"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "issue-to-minimal-reproduction",
+        "name": "Issue To Minimal Reproduction",
+        "path": "orchestrations/issue-to-minimal-reproduction.json",
+        "summary": "Turn an issue into a small deterministic failure case.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "6a7d5584d4e99dbe3ea693fb134ffebd333629c219cd4d9dec3a3756eaa75144",
+      "authoritative_source": "packs/02-repository-intelligence-aci_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "issue-to-minimal-reproduction",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "analyze-repository-intelligence",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate issue to minimal reproduction across explicit ordered dependencies within repository mapping, runtime tracing, impact analysis, reproduction, and safe change planning, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/issue-to-minimal-reproduction.json",
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/issue-to-minimal-reproduction.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "inventory-repository",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "inventory-repository"
+          ],
+          "id": "trace-relationships",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "trace-relationships"
+          ],
+          "id": "form-testable-hypotheses",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "form-testable-hypotheses"
+          ],
+          "id": "measure-change-impact",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "measure-change-impact"
+          ],
+          "id": "propose-minimal-safe-action",
+          "skill": "analyze-repository-intelligence"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "monitor-quality-drift",
+        "name": "Monitor Quality Drift",
+        "path": "orchestrations/monitor-quality-drift.json",
+        "summary": "Continuously compare field behavior to approved baselines.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7c826b63c60d5063af321ee23eb61b884653fdb0944ebef59138d6048976f34b",
+      "authoritative_source": "packs/04-memory-retrieval-observability_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "monitor-quality-drift",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "operate-memory-retrieval-observability",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate monitor quality drift across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/monitor-quality-drift.json",
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/monitor-quality-drift.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "bind-project-and-subject-scope",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "bind-project-and-subject-scope"
+          ],
+          "id": "validate-ingestion-and-provenance",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "validate-ingestion-and-provenance"
+          ],
+          "id": "retrieve-and-budget-context",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "retrieve-and-budget-context"
+          ],
+          "id": "record-trace-and-quality",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "record-trace-and-quality"
+          ],
+          "id": "retain-promote-or-purge-by-policy",
+          "skill": "operate-memory-retrieval-observability"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "mutation-quality-gate",
+        "name": "Mutation Quality Gate",
+        "path": "orchestrations/mutation-quality-gate.json",
+        "summary": "Determine whether a test suite detects plausible implementation defects.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "2814d481c8bdb2f1e6fadb66ea179f0a0d4f7c0e609d12b62fc8e0d338f6afca",
+      "authoritative_source": "packs/03-verification-evaluation-lab_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "mutation-quality-gate",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "engineer-verification-lab",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate mutation quality gate across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/mutation-quality-gate.json",
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/mutation-quality-gate.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "define-observable-claim",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "define-observable-claim"
+          ],
+          "id": "select-independent-oracle",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "select-independent-oracle"
+          ],
+          "id": "generate-positive-and-adversarial-cases",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "generate-positive-and-adversarial-cases"
+          ],
+          "id": "run-and-minimize",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "run-and-minimize"
+          ],
+          "id": "score-and-promote-regressions",
+          "skill": "engineer-verification-lab"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "perform-security-review",
+        "name": "Perform Security Review",
+        "path": "orchestrations/perform-security-review.json",
+        "summary": "Review an AI capability from threat model through evidence-backed remediation.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7083a272961db3bb3df4ef9037546b4d28a081d51291ad8254b84232a10ffd0c",
+      "authoritative_source": "packs/05-security-sandbox-supply-chain_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "perform-security-review",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "secure-agent-supply-chain",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate perform security review across explicit ordered dependencies within security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/perform-security-review.json",
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/perform-security-review.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "classify-assets-and-trust-boundaries",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "classify-assets-and-trust-boundaries"
+          ],
+          "id": "enumerate-threats-and-authority",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "enumerate-threats-and-authority"
+          ],
+          "id": "scan-and-contain",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "scan-and-contain"
+          ],
+          "id": "verify-provenance-and-reproducibility",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "verify-provenance-and-reproducibility"
+          ],
+          "id": "release-or-quarantine-with-evidence",
+          "skill": "secure-agent-supply-chain"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "performance-regression-gate",
+        "name": "Performance Regression Gate",
+        "path": "orchestrations/performance-regression-gate.json",
+        "summary": "Block releases that exceed explicit resource or latency budgets.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "2814d481c8bdb2f1e6fadb66ea179f0a0d4f7c0e609d12b62fc8e0d338f6afca",
+      "authoritative_source": "packs/03-verification-evaluation-lab_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "performance-regression-gate",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "engineer-verification-lab",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate performance regression gate across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/performance-regression-gate.json",
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/performance-regression-gate.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "define-observable-claim",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "define-observable-claim"
+          ],
+          "id": "select-independent-oracle",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "select-independent-oracle"
+          ],
+          "id": "generate-positive-and-adversarial-cases",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "generate-positive-and-adversarial-cases"
+          ],
+          "id": "run-and-minimize",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "run-and-minimize"
+          ],
+          "id": "score-and-promote-regressions",
+          "skill": "engineer-verification-lab"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "plan-capacity-and-cost",
+        "name": "Plan Capacity And Cost",
+        "path": "orchestrations/plan-capacity-and-cost.json",
+        "summary": "Translate workload assumptions into measured infrastructure requirements.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "cff01e8167d30cdb499d83942ac248207a7e350d67a2d7efc0a6c14acd5f03ad",
+      "authoritative_source": "packs/06-runtime-protocols-deployment_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "plan-capacity-and-cost",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-runtime-protocol-deployment",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate plan capacity and cost across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/plan-capacity-and-cost.json",
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/plan-capacity-and-cost.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "probe-live-capabilities",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "probe-live-capabilities"
+          ],
+          "id": "validate-contract-and-compatibility",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "validate-contract-and-compatibility"
+          ],
+          "id": "model-capacity-cost-and-quality",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "model-capacity-cost-and-quality"
+          ],
+          "id": "stage-canary-with-fallback",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "stage-canary-with-fallback"
+          ],
+          "id": "observe-decide-and-handoff",
+          "skill": "govern-runtime-protocol-deployment"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "plan-safe-migration",
+        "name": "Plan Safe Migration",
+        "path": "orchestrations/plan-safe-migration.json",
+        "summary": "Create a reversible migration with compatibility and observability.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "6a7d5584d4e99dbe3ea693fb134ffebd333629c219cd4d9dec3a3756eaa75144",
+      "authoritative_source": "packs/02-repository-intelligence-aci_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "plan-safe-migration",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "analyze-repository-intelligence",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate plan safe migration across explicit ordered dependencies within repository mapping, runtime tracing, impact analysis, reproduction, and safe change planning, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/plan-safe-migration.json",
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/plan-safe-migration.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "inventory-repository",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "inventory-repository"
+          ],
+          "id": "trace-relationships",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "trace-relationships"
+          ],
+          "id": "form-testable-hypotheses",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "form-testable-hypotheses"
+          ],
+          "id": "measure-change-impact",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "measure-change-impact"
+          ],
+          "id": "propose-minimal-safe-action",
+          "skill": "analyze-repository-intelligence"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "prepare-agent-instructions",
+        "name": "Prepare Agent Instructions",
+        "path": "orchestrations/prepare-agent-instructions.json",
+        "summary": "Generate repository-specific agent operating instructions from evidence.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "6a7d5584d4e99dbe3ea693fb134ffebd333629c219cd4d9dec3a3756eaa75144",
+      "authoritative_source": "packs/02-repository-intelligence-aci_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "prepare-agent-instructions",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "analyze-repository-intelligence",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate prepare agent instructions across explicit ordered dependencies within repository mapping, runtime tracing, impact analysis, reproduction, and safe change planning, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/prepare-agent-instructions.json",
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/prepare-agent-instructions.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "inventory-repository",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "inventory-repository"
+          ],
+          "id": "trace-relationships",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "trace-relationships"
+          ],
+          "id": "form-testable-hypotheses",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "form-testable-hypotheses"
+          ],
+          "id": "measure-change-impact",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "measure-change-impact"
+          ],
+          "id": "propose-minimal-safe-action",
+          "skill": "analyze-repository-intelligence"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "promote-validated-learning",
+        "name": "Promote Validated Learning",
+        "path": "orchestrations/promote-validated-learning.json",
+        "summary": "Promote a successful run into reusable knowledge only after validation.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "dc0a13ab5cbd13810659286f75465c9c30949561c009fc3dbae909a68aa783a7",
+      "authoritative_source": "packs/01-expert-operating-kernel_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "promote-validated-learning",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-operating-kernel",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate promote validated learning across explicit ordered dependencies within governed execution, evidence, permission, recovery, and durable task control, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/promote-validated-learning.json",
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/promote-validated-learning.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "establish-scope",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "establish-scope"
+          ],
+          "id": "authorize-effects",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "authorize-effects"
+          ],
+          "id": "execute-bounded-work",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "execute-bounded-work"
+          ],
+          "id": "independently-verify",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "independently-verify"
+          ],
+          "id": "commit-evidence-and-state",
+          "skill": "govern-operating-kernel"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "publish-a2a-capability",
+        "name": "Publish A2A Capability",
+        "path": "orchestrations/publish-a2a-capability.json",
+        "summary": "Expose an independently governed agent capability to peers.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "cff01e8167d30cdb499d83942ac248207a7e350d67a2d7efc0a6c14acd5f03ad",
+      "authoritative_source": "packs/06-runtime-protocols-deployment_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "publish-a2a-capability",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-runtime-protocol-deployment",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate publish a2a capability across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/publish-a2a-capability.json",
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/publish-a2a-capability.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "probe-live-capabilities",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "probe-live-capabilities"
+          ],
+          "id": "validate-contract-and-compatibility",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "validate-contract-and-compatibility"
+          ],
+          "id": "model-capacity-cost-and-quality",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "model-capacity-cost-and-quality"
+          ],
+          "id": "stage-canary-with-fallback",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "stage-canary-with-fallback"
+          ],
+          "id": "observe-decide-and-handoff",
+          "skill": "govern-runtime-protocol-deployment"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "purge-scoped-memory",
+        "name": "Purge Scoped Memory",
+        "path": "orchestrations/purge-scoped-memory.json",
+        "summary": "Delete memory and derived indexes completely within a declared scope.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7c826b63c60d5063af321ee23eb61b884653fdb0944ebef59138d6048976f34b",
+      "authoritative_source": "packs/04-memory-retrieval-observability_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "purge-scoped-memory",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "operate-memory-retrieval-observability",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate purge scoped memory across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/purge-scoped-memory.json",
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/purge-scoped-memory.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "bind-project-and-subject-scope",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "bind-project-and-subject-scope"
+          ],
+          "id": "validate-ingestion-and-provenance",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "validate-ingestion-and-provenance"
+          ],
+          "id": "retrieve-and-budget-context",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "retrieve-and-budget-context"
+          ],
+          "id": "record-trace-and-quality",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "record-trace-and-quality"
+          ],
+          "id": "retain-promote-or-purge-by-policy",
+          "skill": "operate-memory-retrieval-observability"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "recertify-after-change",
+        "name": "Recertify After Change",
+        "path": "orchestrations/recertify-after-change.json",
+        "summary": "Select only the necessary suites after a change while preserving confidence.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "eb6cba9d9841a99f5fd4e01cb7cc947fe41ef8302d33709c97637990e60e0024",
+      "authoritative_source": "packs/07-revocable-certification-integration_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "recertify-after-change",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "manage-revocable-certification",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate recertify after change across explicit ordered dependencies within completeness, collision handling, revocable certification, recertification, and release trust, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/recertify-after-change.json",
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/recertify-after-change.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "freeze-scope-and-denominators",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "freeze-scope-and-denominators"
+          ],
+          "id": "reconcile-owners-and-artifacts",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "reconcile-owners-and-artifacts"
+          ],
+          "id": "run-independent-completion-gates",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "run-independent-completion-gates"
+          ],
+          "id": "issue-hash-bound-certificate",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "issue-hash-bound-certificate"
+          ],
+          "id": "monitor-revoke-and-recertify",
+          "skill": "manage-revocable-certification"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "reconstruct-task-context",
+        "name": "Reconstruct Task Context",
+        "path": "orchestrations/reconstruct-task-context.json",
+        "summary": "Rebuild the minimum sufficient task state after restart or compaction.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7c826b63c60d5063af321ee23eb61b884653fdb0944ebef59138d6048976f34b",
+      "authoritative_source": "packs/04-memory-retrieval-observability_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "reconstruct-task-context",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "operate-memory-retrieval-observability",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate reconstruct task context across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/reconstruct-task-context.json",
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/reconstruct-task-context.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "bind-project-and-subject-scope",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "bind-project-and-subject-scope"
+          ],
+          "id": "validate-ingestion-and-provenance",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "validate-ingestion-and-provenance"
+          ],
+          "id": "retrieve-and-budget-context",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "retrieve-and-budget-context"
+          ],
+          "id": "record-trace-and-quality",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "record-trace-and-quality"
+          ],
+          "id": "retain-promote-or-purge-by-policy",
+          "skill": "operate-memory-retrieval-observability"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "recover-failed-workflow",
+        "name": "Recover Failed Workflow",
+        "path": "orchestrations/recover-failed-workflow.json",
+        "summary": "Recover a durable workflow without duplicating side effects.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "dc0a13ab5cbd13810659286f75465c9c30949561c009fc3dbae909a68aa783a7",
+      "authoritative_source": "packs/01-expert-operating-kernel_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "recover-failed-workflow",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-operating-kernel",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate recover failed workflow across explicit ordered dependencies within governed execution, evidence, permission, recovery, and durable task control, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/recover-failed-workflow.json",
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/recover-failed-workflow.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "establish-scope",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "establish-scope"
+          ],
+          "id": "authorize-effects",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "authorize-effects"
+          ],
+          "id": "execute-bounded-work",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "execute-bounded-work"
+          ],
+          "id": "independently-verify",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "independently-verify"
+          ],
+          "id": "commit-evidence-and-state",
+          "skill": "govern-operating-kernel"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "red-team-agent-system",
+        "name": "Red Team Agent System",
+        "path": "orchestrations/red-team-agent-system.json",
+        "summary": "Exercise realistic adversarial chains while containing blast radius.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7083a272961db3bb3df4ef9037546b4d28a081d51291ad8254b84232a10ffd0c",
+      "authoritative_source": "packs/05-security-sandbox-supply-chain_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "red-team-agent-system",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "secure-agent-supply-chain",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate red team agent system across explicit ordered dependencies within security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/red-team-agent-system.json",
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/red-team-agent-system.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "classify-assets-and-trust-boundaries",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "classify-assets-and-trust-boundaries"
+          ],
+          "id": "enumerate-threats-and-authority",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "enumerate-threats-and-authority"
+          ],
+          "id": "scan-and-contain",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "scan-and-contain"
+          ],
+          "id": "verify-provenance-and-reproducibility",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "verify-provenance-and-reproducibility"
+          ],
+          "id": "release-or-quarantine-with-evidence",
+          "skill": "secure-agent-supply-chain"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "release-completion-suite",
+        "name": "Release Completion Suite",
+        "path": "orchestrations/release-completion-suite.json",
+        "summary": "Produce final clean packs and an aggregate evidence index.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "eb6cba9d9841a99f5fd4e01cb7cc947fe41ef8302d33709c97637990e60e0024",
+      "authoritative_source": "packs/07-revocable-certification-integration_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "release-completion-suite",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "manage-revocable-certification",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate release completion suite across explicit ordered dependencies within completeness, collision handling, revocable certification, recertification, and release trust, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/release-completion-suite.json",
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/release-completion-suite.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "freeze-scope-and-denominators",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "freeze-scope-and-denominators"
+          ],
+          "id": "reconcile-owners-and-artifacts",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "reconcile-owners-and-artifacts"
+          ],
+          "id": "run-independent-completion-gates",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "run-independent-completion-gates"
+          ],
+          "id": "issue-hash-bound-certificate",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "issue-hash-bound-certificate"
+          ],
+          "id": "monitor-revoke-and-recertify",
+          "skill": "manage-revocable-certification"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "release-trusted-artifact",
+        "name": "Release Trusted Artifact",
+        "path": "orchestrations/release-trusted-artifact.json",
+        "summary": "Produce a clean, reproducible, inventoried, and verifiable release.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7083a272961db3bb3df4ef9037546b4d28a081d51291ad8254b84232a10ffd0c",
+      "authoritative_source": "packs/05-security-sandbox-supply-chain_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "release-trusted-artifact",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "secure-agent-supply-chain",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate release trusted artifact across explicit ordered dependencies within security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/release-trusted-artifact.json",
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/release-trusted-artifact.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "classify-assets-and-trust-boundaries",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "classify-assets-and-trust-boundaries"
+          ],
+          "id": "enumerate-threats-and-authority",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "enumerate-threats-and-authority"
+          ],
+          "id": "scan-and-contain",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "scan-and-contain"
+          ],
+          "id": "verify-provenance-and-reproducibility",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "verify-provenance-and-reproducibility"
+          ],
+          "id": "release-or-quarantine-with-evidence",
+          "skill": "secure-agent-supply-chain"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "replay-failed-run",
+        "name": "Replay Failed Run",
+        "path": "orchestrations/replay-failed-run.json",
+        "summary": "Reconstruct and compare a failed trajectory under controlled conditions.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7c826b63c60d5063af321ee23eb61b884653fdb0944ebef59138d6048976f34b",
+      "authoritative_source": "packs/04-memory-retrieval-observability_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "replay-failed-run",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "operate-memory-retrieval-observability",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate replay failed run across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/replay-failed-run.json",
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/replay-failed-run.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "bind-project-and-subject-scope",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "bind-project-and-subject-scope"
+          ],
+          "id": "validate-ingestion-and-provenance",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "validate-ingestion-and-provenance"
+          ],
+          "id": "retrieve-and-budget-context",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "retrieve-and-budget-context"
+          ],
+          "id": "record-trace-and-quality",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "record-trace-and-quality"
+          ],
+          "id": "retain-promote-or-purge-by-policy",
+          "skill": "operate-memory-retrieval-observability"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "reproduce-and-verify-build",
+        "name": "Reproduce And Verify Build",
+        "path": "orchestrations/reproduce-and-verify-build.json",
+        "summary": "Verify that a release can be recreated from declared inputs.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7083a272961db3bb3df4ef9037546b4d28a081d51291ad8254b84232a10ffd0c",
+      "authoritative_source": "packs/05-security-sandbox-supply-chain_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "reproduce-and-verify-build",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "secure-agent-supply-chain",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate reproduce and verify build across explicit ordered dependencies within security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/reproduce-and-verify-build.json",
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/reproduce-and-verify-build.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "classify-assets-and-trust-boundaries",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "classify-assets-and-trust-boundaries"
+          ],
+          "id": "enumerate-threats-and-authority",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "enumerate-threats-and-authority"
+          ],
+          "id": "scan-and-contain",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "scan-and-contain"
+          ],
+          "id": "verify-provenance-and-reproducibility",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "verify-provenance-and-reproducibility"
+          ],
+          "id": "release-or-quarantine-with-evidence",
+          "skill": "secure-agent-supply-chain"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "research-with-evidence",
+        "name": "Research With Evidence",
+        "path": "orchestrations/research-with-evidence.json",
+        "summary": "Research a question while preserving provenance and uncertainty.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "dc0a13ab5cbd13810659286f75465c9c30949561c009fc3dbae909a68aa783a7",
+      "authoritative_source": "packs/01-expert-operating-kernel_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "research-with-evidence",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-operating-kernel",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate research with evidence across explicit ordered dependencies within governed execution, evidence, permission, recovery, and durable task control, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/research-with-evidence.json",
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/research-with-evidence.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "establish-scope",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "establish-scope"
+          ],
+          "id": "authorize-effects",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "authorize-effects"
+          ],
+          "id": "execute-bounded-work",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "execute-bounded-work"
+          ],
+          "id": "independently-verify",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "independently-verify"
+          ],
+          "id": "commit-evidence-and-state",
+          "skill": "govern-operating-kernel"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "resolve-conflicting-evidence",
+        "name": "Resolve Conflicting Evidence",
+        "path": "orchestrations/resolve-conflicting-evidence.json",
+        "summary": "Handle contradictory evidence without averaging it into fiction.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "dc0a13ab5cbd13810659286f75465c9c30949561c009fc3dbae909a68aa783a7",
+      "authoritative_source": "packs/01-expert-operating-kernel_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "resolve-conflicting-evidence",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-operating-kernel",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate resolve conflicting evidence across explicit ordered dependencies within governed execution, evidence, permission, recovery, and durable task control, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/resolve-conflicting-evidence.json",
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/resolve-conflicting-evidence.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "establish-scope",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "establish-scope"
+          ],
+          "id": "authorize-effects",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "authorize-effects"
+          ],
+          "id": "execute-bounded-work",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "execute-bounded-work"
+          ],
+          "id": "independently-verify",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "independently-verify"
+          ],
+          "id": "commit-evidence-and-state",
+          "skill": "govern-operating-kernel"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "retrieve-with-grounding",
+        "name": "Retrieve With Grounding",
+        "path": "orchestrations/retrieve-with-grounding.json",
+        "summary": "Answer from governed sources with claim-level provenance.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7c826b63c60d5063af321ee23eb61b884653fdb0944ebef59138d6048976f34b",
+      "authoritative_source": "packs/04-memory-retrieval-observability_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "retrieve-with-grounding",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "operate-memory-retrieval-observability",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate retrieve with grounding across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/retrieve-with-grounding.json",
+        "packs/04-memory-retrieval-observability_v1.0.0/orchestrations/retrieve-with-grounding.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "bind-project-and-subject-scope",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "bind-project-and-subject-scope"
+          ],
+          "id": "validate-ingestion-and-provenance",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "validate-ingestion-and-provenance"
+          ],
+          "id": "retrieve-and-budget-context",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "retrieve-and-budget-context"
+          ],
+          "id": "record-trace-and-quality",
+          "skill": "operate-memory-retrieval-observability"
+        },
+        {
+          "depends_on": [
+            "record-trace-and-quality"
+          ],
+          "id": "retain-promote-or-purge-by-policy",
+          "skill": "operate-memory-retrieval-observability"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "review-change-impact",
+        "name": "Review Change Impact",
+        "path": "orchestrations/review-change-impact.json",
+        "summary": "Review a proposed diff against the repository model and downstream contracts.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "6a7d5584d4e99dbe3ea693fb134ffebd333629c219cd4d9dec3a3756eaa75144",
+      "authoritative_source": "packs/02-repository-intelligence-aci_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "review-change-impact",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "analyze-repository-intelligence",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate review change impact across explicit ordered dependencies within repository mapping, runtime tracing, impact analysis, reproduction, and safe change planning, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/review-change-impact.json",
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/review-change-impact.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "inventory-repository",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "inventory-repository"
+          ],
+          "id": "trace-relationships",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "trace-relationships"
+          ],
+          "id": "form-testable-hypotheses",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "form-testable-hypotheses"
+          ],
+          "id": "measure-change-impact",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "measure-change-impact"
+          ],
+          "id": "propose-minimal-safe-action",
+          "skill": "analyze-repository-intelligence"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "revoke-certification",
+        "name": "Revoke Certification",
+        "path": "orchestrations/revoke-certification.json",
+        "summary": "Revoke or narrow a certification when evidence or dependencies no longer support it.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "eb6cba9d9841a99f5fd4e01cb7cc947fe41ef8302d33709c97637990e60e0024",
+      "authoritative_source": "packs/07-revocable-certification-integration_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "revoke-certification",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "manage-revocable-certification",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate revoke certification across explicit ordered dependencies within completeness, collision handling, revocable certification, recertification, and release trust, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/revoke-certification.json",
+        "packs/07-revocable-certification-integration_v1.0.0/orchestrations/revoke-certification.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "freeze-scope-and-denominators",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "freeze-scope-and-denominators"
+          ],
+          "id": "reconcile-owners-and-artifacts",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "reconcile-owners-and-artifacts"
+          ],
+          "id": "run-independent-completion-gates",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "run-independent-completion-gates"
+          ],
+          "id": "issue-hash-bound-certificate",
+          "skill": "manage-revocable-certification"
+        },
+        {
+          "depends_on": [
+            "issue-hash-bound-certificate"
+          ],
+          "id": "monitor-revoke-and-recertify",
+          "skill": "manage-revocable-certification"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "route-and-budget-task",
+        "name": "Route And Budget Task",
+        "path": "orchestrations/route-and-budget-task.json",
+        "summary": "Choose the least expensive capable execution plan that satisfies risk and quality requirements.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "dc0a13ab5cbd13810659286f75465c9c30949561c009fc3dbae909a68aa783a7",
+      "authoritative_source": "packs/01-expert-operating-kernel_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "route-and-budget-task",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-operating-kernel",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate route and budget task across explicit ordered dependencies within governed execution, evidence, permission, recovery, and durable task control, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/route-and-budget-task.json",
+        "packs/01-expert-operating-kernel_v1.0.0/orchestrations/route-and-budget-task.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "establish-scope",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "establish-scope"
+          ],
+          "id": "authorize-effects",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "authorize-effects"
+          ],
+          "id": "execute-bounded-work",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "execute-bounded-work"
+          ],
+          "id": "independently-verify",
+          "skill": "govern-operating-kernel"
+        },
+        {
+          "depends_on": [
+            "independently-verify"
+          ],
+          "id": "commit-evidence-and-state",
+          "skill": "govern-operating-kernel"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "route-model-by-policy",
+        "name": "Route Model By Policy",
+        "path": "orchestrations/route-model-by-policy.json",
+        "summary": "Select a model and backend per task under budgets and constraints.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "cff01e8167d30cdb499d83942ac248207a7e350d67a2d7efc0a6c14acd5f03ad",
+      "authoritative_source": "packs/06-runtime-protocols-deployment_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "route-model-by-policy",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-runtime-protocol-deployment",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate route model by policy across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/route-model-by-policy.json",
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/route-model-by-policy.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "probe-live-capabilities",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "probe-live-capabilities"
+          ],
+          "id": "validate-contract-and-compatibility",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "validate-contract-and-compatibility"
+          ],
+          "id": "model-capacity-cost-and-quality",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "model-capacity-cost-and-quality"
+          ],
+          "id": "stage-canary-with-fallback",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "stage-canary-with-fallback"
+          ],
+          "id": "observe-decide-and-handoff",
+          "skill": "govern-runtime-protocol-deployment"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "run-behavioral-certification",
+        "name": "Run Behavioral Certification",
+        "path": "orchestrations/run-behavioral-certification.json",
+        "summary": "Execute representative hidden and degraded scenarios against a capability.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "2814d481c8bdb2f1e6fadb66ea179f0a0d4f7c0e609d12b62fc8e0d338f6afca",
+      "authoritative_source": "packs/03-verification-evaluation-lab_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "run-behavioral-certification",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "engineer-verification-lab",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate run behavioral certification across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/run-behavioral-certification.json",
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/run-behavioral-certification.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "define-observable-claim",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "define-observable-claim"
+          ],
+          "id": "select-independent-oracle",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "select-independent-oracle"
+          ],
+          "id": "generate-positive-and-adversarial-cases",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "generate-positive-and-adversarial-cases"
+          ],
+          "id": "run-and-minimize",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "run-and-minimize"
+          ],
+          "id": "score-and-promote-regressions",
+          "skill": "engineer-verification-lab"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "run-long-horizon-evaluation",
+        "name": "Run Long Horizon Evaluation",
+        "path": "orchestrations/run-long-horizon-evaluation.json",
+        "summary": "Test goal alignment and recovery over checkpoints and context resets.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "2814d481c8bdb2f1e6fadb66ea179f0a0d4f7c0e609d12b62fc8e0d338f6afca",
+      "authoritative_source": "packs/03-verification-evaluation-lab_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "run-long-horizon-evaluation",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "engineer-verification-lab",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate run long horizon evaluation across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/run-long-horizon-evaluation.json",
+        "packs/03-verification-evaluation-lab_v1.0.0/orchestrations/run-long-horizon-evaluation.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "define-observable-claim",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "define-observable-claim"
+          ],
+          "id": "select-independent-oracle",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "select-independent-oracle"
+          ],
+          "id": "generate-positive-and-adversarial-cases",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "generate-positive-and-adversarial-cases"
+          ],
+          "id": "run-and-minimize",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "run-and-minimize"
+          ],
+          "id": "score-and-promote-regressions",
+          "skill": "engineer-verification-lab"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "select-serving-backend",
+        "name": "Select Serving Backend",
+        "path": "orchestrations/select-serving-backend.json",
+        "summary": "Choose a backend from evidence rather than brand preference.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "cff01e8167d30cdb499d83942ac248207a7e350d67a2d7efc0a6c14acd5f03ad",
+      "authoritative_source": "packs/06-runtime-protocols-deployment_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "select-serving-backend",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-runtime-protocol-deployment",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate select serving backend across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/select-serving-backend.json",
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/select-serving-backend.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "probe-live-capabilities",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "probe-live-capabilities"
+          ],
+          "id": "validate-contract-and-compatibility",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "validate-contract-and-compatibility"
+          ],
+          "id": "model-capacity-cost-and-quality",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "model-capacity-cost-and-quality"
+          ],
+          "id": "stage-canary-with-fallback",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "stage-canary-with-fallback"
+          ],
+          "id": "observe-decide-and-handoff",
+          "skill": "govern-runtime-protocol-deployment"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "test-prompt-injection-resistance",
+        "name": "Test Prompt Injection Resistance",
+        "path": "orchestrations/test-prompt-injection-resistance.json",
+        "summary": "Test direct and indirect prompt injection across retrieval and tools.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7083a272961db3bb3df4ef9037546b4d28a081d51291ad8254b84232a10ffd0c",
+      "authoritative_source": "packs/05-security-sandbox-supply-chain_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "test-prompt-injection-resistance",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "secure-agent-supply-chain",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate test prompt injection resistance across explicit ordered dependencies within security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/test-prompt-injection-resistance.json",
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/test-prompt-injection-resistance.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "classify-assets-and-trust-boundaries",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "classify-assets-and-trust-boundaries"
+          ],
+          "id": "enumerate-threats-and-authority",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "enumerate-threats-and-authority"
+          ],
+          "id": "scan-and-contain",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "scan-and-contain"
+          ],
+          "id": "verify-provenance-and-reproducibility",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "verify-provenance-and-reproducibility"
+          ],
+          "id": "release-or-quarantine-with-evidence",
+          "skill": "secure-agent-supply-chain"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "trace-runtime-request",
+        "name": "Trace Runtime Request",
+        "path": "orchestrations/trace-runtime-request.json",
+        "summary": "Trace one user or system action through all observable layers.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "6a7d5584d4e99dbe3ea693fb134ffebd333629c219cd4d9dec3a3756eaa75144",
+      "authoritative_source": "packs/02-repository-intelligence-aci_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "trace-runtime-request",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "analyze-repository-intelligence",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate trace runtime request across explicit ordered dependencies within repository mapping, runtime tracing, impact analysis, reproduction, and safe change planning, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/trace-runtime-request.json",
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/trace-runtime-request.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "inventory-repository",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "inventory-repository"
+          ],
+          "id": "trace-relationships",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "trace-relationships"
+          ],
+          "id": "form-testable-hypotheses",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "form-testable-hypotheses"
+          ],
+          "id": "measure-change-impact",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "measure-change-impact"
+          ],
+          "id": "propose-minimal-safe-action",
+          "skill": "analyze-repository-intelligence"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "understand-repository",
+        "name": "Understand Repository",
+        "path": "orchestrations/understand-repository.json",
+        "summary": "Build a navigable structural and runtime model before making changes.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "6a7d5584d4e99dbe3ea693fb134ffebd333629c219cd4d9dec3a3756eaa75144",
+      "authoritative_source": "packs/02-repository-intelligence-aci_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "understand-repository",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "analyze-repository-intelligence",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate understand repository across explicit ordered dependencies within repository mapping, runtime tracing, impact analysis, reproduction, and safe change planning, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/understand-repository.json",
+        "packs/02-repository-intelligence-aci_v1.0.0/orchestrations/understand-repository.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "inventory-repository",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "inventory-repository"
+          ],
+          "id": "trace-relationships",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "trace-relationships"
+          ],
+          "id": "form-testable-hypotheses",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "form-testable-hypotheses"
+          ],
+          "id": "measure-change-impact",
+          "skill": "analyze-repository-intelligence"
+        },
+        {
+          "depends_on": [
+            "measure-change-impact"
+          ],
+          "id": "propose-minimal-safe-action",
+          "skill": "analyze-repository-intelligence"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "validate-protocol-compatibility",
+        "name": "Validate Protocol Compatibility",
+        "path": "orchestrations/validate-protocol-compatibility.json",
+        "summary": "Test MCP A2A OpenAPI and JSON Schema adapters across declared versions.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "cff01e8167d30cdb499d83942ac248207a7e350d67a2d7efc0a6c14acd5f03ad",
+      "authoritative_source": "packs/06-runtime-protocols-deployment_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "validate-protocol-compatibility",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "govern-runtime-protocol-deployment",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate validate protocol compatibility across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/validate-protocol-compatibility.json",
+        "packs/06-runtime-protocols-deployment_v1.0.0/orchestrations/validate-protocol-compatibility.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "probe-live-capabilities",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "probe-live-capabilities"
+          ],
+          "id": "validate-contract-and-compatibility",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "validate-contract-and-compatibility"
+          ],
+          "id": "model-capacity-cost-and-quality",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "model-capacity-cost-and-quality"
+          ],
+          "id": "stage-canary-with-fallback",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "stage-canary-with-fallback"
+          ],
+          "id": "observe-decide-and-handoff",
+          "skill": "govern-runtime-protocol-deployment"
+        }
+      ]
+    },
+    {
+      "authoritative_contract": {
+        "id": "validate-tool-authority",
+        "name": "Validate Tool Authority",
+        "path": "orchestrations/validate-tool-authority.json",
+        "summary": "Prove that every tool action is bounded by independent authorization.",
+        "version": "1.0.0"
+      },
+      "authoritative_sha256": "7083a272961db3bb3df4ef9037546b4d28a081d51291ad8254b84232a10ffd0c",
+      "authoritative_source": "packs/05-security-sandbox-supply-chain_v1.0.0/registry/orchestrations.json",
+      "evidence_outputs": [
+        "execution-plan",
+        "step-results",
+        "failure-or-success-status",
+        "verification-receipt",
+        "affected-hashes"
+      ],
+      "failure_policy": "stop at the first failed precondition or evidence gate; retain structured failure and last valid checkpoint",
+      "id": "validate-tool-authority",
+      "inputs": [
+        "target",
+        "constraints",
+        "evidence_context"
+      ],
+      "owner": "secure-agent-supply-chain",
+      "preconditions": [
+        "explicit target scope",
+        "resolved project identity",
+        "declared authority and budgets",
+        "available verification oracle"
+      ],
+      "purpose": "Coordinate validate tool authority across explicit ordered dependencies within security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with preconditions, budgets, failure policy, rollback or compensation, and evidence outputs.",
+      "rollback_or_compensation": "restore the last verified state or execute the declared compensation; quarantine untrusted intermediates",
+      "source_paths": [
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/validate-tool-authority.json",
+        "packs/05-security-sandbox-supply-chain_v1.0.0/orchestrations/validate-tool-authority.yaml"
+      ],
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "classify-assets-and-trust-boundaries",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "classify-assets-and-trust-boundaries"
+          ],
+          "id": "enumerate-threats-and-authority",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "enumerate-threats-and-authority"
+          ],
+          "id": "scan-and-contain",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "scan-and-contain"
+          ],
+          "id": "verify-provenance-and-reproducibility",
+          "skill": "secure-agent-supply-chain"
+        },
+        {
+          "depends_on": [
+            "verify-provenance-and-reproducibility"
+          ],
+          "id": "release-or-quarantine-with-evidence",
+          "skill": "secure-agent-supply-chain"
+        }
+      ]
+    }
+  ]
+}

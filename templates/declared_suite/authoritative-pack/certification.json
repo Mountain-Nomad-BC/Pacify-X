@@ -1,0 +1,17 @@
+{
+  "certification_status": "provisional",
+  "certification_version": "1.0",
+  "evidence": [],
+  "issued_at": "2026-08-02",
+  "limitations": [
+    "Production field validation not yet completed."
+  ],
+  "review_due": "2026-11-02",
+  "revocation_triggers": [
+    "critical-security-failure",
+    "behavioral-regression",
+    "dependency-major-version-change",
+    "schema-breaking-change"
+  ],
+  "scope": []
+}

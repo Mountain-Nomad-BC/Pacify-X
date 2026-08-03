@@ -1,0 +1,37 @@
+{
+  "schema_version": "2.0",
+  "knowledge_sources": [
+    {
+      "id": "repair-pattern-library",
+      "status": "active",
+      "kind": "lazy_skill_references",
+      "visibility": ["local"],
+      "location": ".agents/skills/diagnose-python-repair/references",
+      "uses": []
+    },
+    {
+      "id": "corpus-intake-receipt",
+      "status": "active",
+      "kind": "aggregate_provenance_receipt",
+      "visibility": ["maintainer"],
+      "location": "evidence/corpus-intake-receipt.json",
+      "uses": []
+    },
+    {
+      "id": "restricted-lineage",
+      "status": "reference_only",
+      "kind": "lineage_manifest",
+      "visibility": ["maintainer"],
+      "location": "evidence/source-migration-receipt.json",
+      "uses": []
+    },
+    {
+      "id": "source-requirement-coverage",
+      "status": "active",
+      "kind": "operational_coverage_registry",
+      "visibility": ["maintainer"],
+      "location": "registry/source_requirement_coverage.json",
+      "uses": ["skill-admission-controller", "workflow-orchestrator"]
+    }
+  ]
+}

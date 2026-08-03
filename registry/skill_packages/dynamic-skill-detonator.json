@@ -1,0 +1,35 @@
+{
+  "id": "dynamic-skill-detonator",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/dynamic-skill-detonator/SKILL.md",
+  "body_sha256": "a127f68bcfdc25065088b98a424b3384f142d4f59036f6d23278bda91c0e01e9",
+  "references": [],
+  "capability_tags": [
+    "detonator",
+    "dynamic",
+    "security",
+    "skill"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_d2514976.md",
+        "sha256": "c3322dac78844ee630ef22d24e7512c1f8f116fb9556404c4f7c49bfdb57d548"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_c16877d2.yaml",
+        "sha256": "7b22096a379f9aa3465607b65e34332ff16f68ba6762d331411ea99e0b703667"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

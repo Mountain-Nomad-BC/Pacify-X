@@ -1,0 +1,4 @@
+interface:
+  display_name: "Enforce Source Import Boundaries"
+  short_description: "Reject imports that violate owner boundaries"
+  default_prompt: "Use $enforce-source-import-boundaries to perform this workflow with explicit evidence and safety boundaries."

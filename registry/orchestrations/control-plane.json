@@ -1,0 +1,18 @@
+{
+  "id": "control-plane-workflow",
+  "version": "0.1.0",
+  "status": "active",
+  "inputs": ["request_envelope", "identity_scope", "policy_context"],
+  "outputs": ["verification_decision", "checkpoint", "unload_plan"],
+  "steps": [
+    {"id": "navigate", "capability": "skill-navigator", "depends_on": [], "effects": ["read_local"]},
+    {"id": "admit", "capability": "skill-admission-controller", "depends_on": ["navigate"], "effects": ["read_local"]},
+    {"id": "authorize", "capability": "execution-contract-enforcer", "depends_on": ["admit"], "effects": ["read_local"]},
+    {"id": "assemble-evidence", "capability": "evidence-assembler", "depends_on": ["authorize"], "effects": ["read_local"]},
+    {"id": "verify", "capability": "outcome-verifier", "depends_on": ["assemble-evidence"], "effects": ["read_local"]},
+    {"id": "orchestrate", "capability": "workflow-orchestrator", "depends_on": ["verify"], "effects": ["read_local"]}
+  ],
+  "parallelism": {"max_agents": 1, "max_test_runners": 1},
+  "stop_conditions": ["unknown_mutation", "secret_exposure", "validation_contract_unresolvable"],
+  "resource_budget": {"max_tool_calls": 12, "max_seconds": 120}
+}

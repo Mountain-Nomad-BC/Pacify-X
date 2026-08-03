@@ -1,0 +1,12 @@
+{
+  "review_id": "wave-1-control-plane",
+  "status": "reviewed_not_active",
+  "records": [
+    {"id": "skill-navigator", "disposition": "merge", "reason": "Portable bounded-selection pattern; replace product dependencies with local registry and I/O contracts."},
+    {"id": "execution-contract-enforcer", "disposition": "merge", "reason": "Required control-plane wrapper; implement against local effects, approval, checkpoint, and evidence contracts."},
+    {"id": "skill-admission-controller", "disposition": "merge", "reason": "Required admission state machine; sandbox execution remains deferred until an approved adapter exists."},
+    {"id": "evidence-assembler", "disposition": "merge", "reason": "Required typed claim/evidence boundary; start with local structured evidence only."},
+    {"id": "outcome-verifier", "disposition": "merge", "reason": "Required independent postcondition decision; start deterministic and evidence-only."}
+  ],
+  "promotion_blockers": ["local contract implementation", "unit tests", "negative tests", "validation evidence", "approval"]
+}

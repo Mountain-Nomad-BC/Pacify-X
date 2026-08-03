@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "canonical_model_registry": "registry/models.json",
+  "loading_rule": "Load model routing, adapter, or benchmark configuration only when a selected workflow requires a model route.",
+  "documents": [
+    {"id": "routing-policy", "path": "models/routing-policy.json"},
+    {"id": "provider-adapters", "path": "models/provider-adapters.json"},
+    {"id": "benchmark-policy", "path": "models/benchmark-policy.json"}
+  ],
+  "bundled_model_weights": false
+}

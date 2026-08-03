@@ -1,0 +1,27 @@
+orchestration_id: nightly_project_health
+title: Evaluate drift, health, stale evidence, dependencies, and agent state
+version: 0.1.0
+status: design-ready
+trigger: explicit-or-policy-scheduled
+project_binding: required unless workspace bootstrap
+skills:
+- project-health-scorecard
+- drift-radar
+- evidence-freshness-verifier
+- agent-performance-health
+- supply-chain-sentinel
+required_context:
+- workspace_id
+- agent_id
+- session_id
+- intent_id
+- correlation_id
+preflight:
+- constitution_resolved
+- lease_valid
+- scope_resolved
+- side_effect_budget_set
+outcomes:
+- health_scorecards
+failure_policy: checkpoint-and-fail-closed-on-boundary-or-integrity-violation
+audit: true

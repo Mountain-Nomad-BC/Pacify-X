@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:active-session",
+  "title": "Single active project lease projection",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "status",
+    "workspace_id",
+    "project_id",
+    "project_root",
+    "memory_namespace",
+    "memory_root",
+    "scope",
+    "writable_roots",
+    "created_utc",
+    "expires_utc",
+    "cross_project_access"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "released",
+        "revoked"
+      ]
+    },
+    "workspace_id": {
+      "type": "string",
+      "pattern": "^wsp_"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^prj_"
+    },
+    "project_root": {
+      "type": "string",
+      "pattern": "^projects/"
+    },
+    "memory_namespace": {
+      "type": "string",
+      "pattern": "^project/prj_"
+    },
+    "memory_root": {
+      "type": "string",
+      "pattern": "^projects_tracking/projects/"
+    },
+    "scope": {
+      "$ref": "project-scope-envelope.schema.json"
+    },
+    "writable_roots": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^projects/"
+      }
+    },
+    "created_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "cross_project_access": {
+      "const": "deny"
+    }
+  }
+}

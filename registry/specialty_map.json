@@ -1,0 +1,366 @@
+{
+  "active_candidate_count": 7,
+  "candidate_count": 36,
+  "categories": [
+    {
+      "id": "advanced",
+      "specialties": [
+        {
+          "activation": "admission_required",
+          "id": "bounded-workflow-topology-selector",
+          "priority": "P3",
+          "purpose": "Select among approved workflow templates based on complexity, novelty, risk, and evidence conflict.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "read-only-speculation-controller",
+          "priority": "P3",
+          "purpose": "Predict and prefetch likely next read-only tool results into a quarantined cache.",
+          "state": "mapped_deferred"
+        }
+      ]
+    },
+    {
+      "id": "assurance",
+      "specialties": [
+        {
+          "activation": "registry",
+          "id": "evidence-assembler",
+          "priority": "P0",
+          "purpose": "Build a typed evidence package distinguishing measurement, source text, tool output, inference, assumption, and precedent.",
+          "state": "active"
+        },
+        {
+          "activation": "registry",
+          "id": "outcome-verifier",
+          "priority": "P0",
+          "purpose": "Independently determine whether evidence, policy, and actual postconditions support the claimed result.",
+          "state": "active"
+        }
+      ]
+    },
+    {
+      "id": "engineering",
+      "specialties": [
+        {
+          "activation": "admission_required",
+          "id": "behavior-to-code-mapper",
+          "priority": "P0",
+          "purpose": "Map runtime behaviors to code, states, tools, policies, tests, telemetry, and dependencies.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "dependency-impact-tracer",
+          "priority": "P1",
+          "purpose": "Predict downstream effects of changing a skill, tool, schema, state, model, policy, or data contract.",
+          "state": "mapped_deferred"
+        }
+      ]
+    },
+    {
+      "id": "evaluation",
+      "specialties": [
+        {
+          "activation": "admission_required",
+          "id": "reasoning-utility-controller",
+          "priority": "P0",
+          "purpose": "Decide whether another reasoning, retrieval, verification, or tool step has enough expected value.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "active-evaluation-selector",
+          "priority": "P1",
+          "purpose": "Choose the most informative evaluation cases under fixed time, compute, or review budget.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "evaluation-budget-allocator",
+          "priority": "P1",
+          "purpose": "Allocate automated and human review by risk, disagreement, novelty, impact, and evidence quality\u2014not self-confidence.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "long-horizon-progress-ledger",
+          "priority": "P1",
+          "purpose": "Represent long work as evidence-backed milestones with partial completion, blockers, regression, and recoverability.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "scenario-audit-generator",
+          "priority": "P1",
+          "purpose": "Generate realistic pressure, injection, stale-data, conflict, permission, and deception scenarios.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "trajectory-failure-sentinel",
+          "priority": "P1",
+          "purpose": "Detect failure onset early enough to recover before cost or state damage accumulates.",
+          "state": "mapped_deferred"
+        }
+      ]
+    },
+    {
+      "id": "improvement",
+      "specialties": [
+        {
+          "activation": "registry",
+          "id": "trace-to-skill-compiler",
+          "priority": "P2",
+          "purpose": "Convert repeated verified trajectories into candidate governed skill packages.",
+          "state": "active"
+        }
+      ]
+    },
+    {
+      "id": "knowledge",
+      "specialties": [
+        {
+          "activation": "admission_required",
+          "id": "corpus-to-skill-tree-compiler",
+          "priority": "P1",
+          "purpose": "Compile large corpora into navigable hierarchical skill/knowledge trees with evidence-linked nodes.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "skill-coexecution-graph-builder",
+          "priority": "P1",
+          "purpose": "Build a typed graph of skills/tools used together, order, context, outcomes, cost, and latency.",
+          "state": "mapped_deferred"
+        }
+      ]
+    },
+    {
+      "id": "memory",
+      "specialties": [
+        {
+          "activation": "admission_required",
+          "id": "candidate-memory-promoter",
+          "priority": "P0",
+          "purpose": "Decide whether a trace-derived observation, claim, or procedure may enter a wider memory scope.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "memory-applicability-critic",
+          "priority": "P0",
+          "purpose": "Determine which parts of a retrieved case apply now and which must be rejected.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "experience-reconstructor",
+          "priority": "P1",
+          "purpose": "Rebuild a current procedure from reusable principles rather than replaying old actions.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "procedural-memory-compiler",
+          "priority": "P2",
+          "purpose": "Compile repeated successful patterns into candidate procedures with activation, execution, and termination.",
+          "state": "mapped_deferred"
+        }
+      ]
+    },
+    {
+      "id": "orchestration",
+      "specialties": [
+        {
+          "activation": "registry",
+          "id": "execution-contract-enforcer",
+          "priority": "P0",
+          "purpose": "Wrap every skill with validation, authorization, budget, idempotency, execution, verification, and trace controls.",
+          "state": "active"
+        },
+        {
+          "activation": "admission_required",
+          "id": "recovery-coordinator",
+          "priority": "P0",
+          "purpose": "Classify failures and choose retry, alternate path, rollback, escalation, or stop.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "registry",
+          "id": "skill-navigator",
+          "priority": "P0",
+          "purpose": "Progressively locate the smallest relevant capability branch without loading the full catalog.",
+          "state": "active"
+        },
+        {
+          "activation": "admission_required",
+          "id": "context-compactor",
+          "priority": "P1",
+          "purpose": "Reduce active context while preserving goals, constraints, decisions, evidence, unresolved questions, and state.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "human-handoff-state-transfer",
+          "priority": "P1",
+          "purpose": "Transfer complete resumable operational state to a human or bounded agent.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "lazy_after_selection",
+          "id": "skill-bundle-resolver",
+          "priority": "P1",
+          "purpose": "Select a compatible set of skills and tools that jointly satisfies all required outcomes.",
+          "state": "active"
+        }
+      ]
+    },
+    {
+      "id": "research-ops",
+      "specialties": [
+        {
+          "activation": "admission_required",
+          "id": "benchmark-domain-adapter",
+          "priority": "P1",
+          "purpose": "Translate an academic benchmark into intelligent system/intelligent system domain cases, outcomes, risks, and evidence requirements.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "paper-mechanism-extractor",
+          "priority": "P1",
+          "purpose": "Extract the actual mechanism, assumptions, data, evidence, and limitations from a paper.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "productization-gap-analyzer",
+          "priority": "P1",
+          "purpose": "Identify what a research prototype lacks before safe operational use.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "research-to-operation-translator",
+          "priority": "P1",
+          "purpose": "Convert a validated research mechanism into a bounded skill, service, workflow, or evaluation.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "cross-paper-mechanism-fuser",
+          "priority": "P2",
+          "purpose": "Combine compatible research primitives into a stronger subsystem while exposing conflicts.",
+          "state": "mapped_deferred"
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "specialties": [
+        {
+          "activation": "admission_required",
+          "id": "dynamic-skill-detonator",
+          "priority": "P0",
+          "purpose": "Execute a skill in an instrumented sandbox with synthetic secrets and observe real behavior.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "memory-injection-firewall",
+          "priority": "P0",
+          "purpose": "Quarantine retrieved memory that redirects intent, expands permissions, exposes secrets, or alters policy hierarchy.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "permission-diff-auditor",
+          "priority": "P0",
+          "purpose": "Identify new permissions, scopes, side effects, and destinations between versions.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "admission_required",
+          "id": "provenance-signature-verifier",
+          "priority": "P0",
+          "purpose": "Verify package identity, source, signature, hash, build chain, and owner.",
+          "state": "mapped_deferred"
+        },
+        {
+          "activation": "registry",
+          "id": "skill-admission-controller",
+          "priority": "P0",
+          "purpose": "Control whether a skill may enter registry, sandbox, canary, or production.",
+          "state": "active"
+        },
+        {
+          "activation": "admission_required",
+          "id": "tool-loop-circuit-breaker",
+          "priority": "P0",
+          "purpose": "Detect cyclic tool calls, repeated no-op state, and cost amplification, then stop or isolate.",
+          "state": "mapped_deferred"
+        }
+      ]
+    }
+  ],
+  "deferred_candidate_count": 29,
+  "framework_only_active": [
+    "admit-capability",
+    "analyze-engineering-intelligence",
+    "analyze-repository-intelligence",
+    "audit-ai-runtime-assurance",
+    "audit-incomplete-implementations",
+    "audit-source-capabilities",
+    "certify-reversible-validation",
+    "certify-skeptical-engineering",
+    "commission-evidence-first-project",
+    "commission-project",
+    "deploy-isolated-model-worker",
+    "diagnose-python-repair",
+    "discover-environment-safely",
+    "dynamic-service-discovery",
+    "enforce-governance-controls",
+    "enforce-source-import-boundaries",
+    "engineer-hybrid-retrieval",
+    "engineer-verification-lab",
+    "evaluate-retrieval-readiness",
+    "forge-skills-from-knowledge",
+    "gate-model-data-lifecycle",
+    "govern-deployment-safety",
+    "govern-memory-fabric",
+    "govern-metacognitive-evolution",
+    "govern-operating-kernel",
+    "govern-runtime-protocol-deployment",
+    "govern-visual-runtime-accessibility",
+    "harden-container-boundaries",
+    "inspect-live-contracts",
+    "inspect-llm-architecture",
+    "isolate-project-streams",
+    "manage-mcp-lifecycle",
+    "manage-revocable-certification",
+    "operate-memory-retrieval-observability",
+    "orchestrate-capability-scheduling",
+    "orchestrate-engineering-loop",
+    "orchestrate-security-validation",
+    "plan-local-model-deployment",
+    "propose-change-intelligence",
+    "quarantine-external-tools",
+    "repair-corrupted-text",
+    "research-to-capability",
+    "run-evidence-campaigns",
+    "run-resilience-drills",
+    "secure-agent-supply-chain",
+    "supervise-contained-execution",
+    "synchronize-derived-architecture",
+    "triage-cross-surface-failures",
+    "validate-contract-boundaries",
+    "validate-engineering-outcomes",
+    "validate-knowledge-relationships",
+    "validate-production-containers",
+    "verify-outcome"
+  ],
+  "loading_rule": "Expose category and purpose metadata at startup; load a skill body only after selection and admission.",
+  "schema_version": "1.0"
+}

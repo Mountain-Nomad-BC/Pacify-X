@@ -1,0 +1,713 @@
+{
+  "schema_version": "1.0",
+  "generator": "engineering_bootstrap.graph_registry/1.0.0",
+  "nodes": [
+    {
+      "node_id": "adapter-builder",
+      "asset_type": "builder",
+      "status": "active"
+    },
+    {
+      "node_id": "orchestration-builder",
+      "asset_type": "builder",
+      "status": "active"
+    },
+    {
+      "node_id": "repair-pattern-builder",
+      "asset_type": "builder",
+      "status": "active"
+    },
+    {
+      "node_id": "skill-builder",
+      "asset_type": "builder",
+      "status": "active"
+    },
+    {
+      "node_id": "test-evidence-builder",
+      "asset_type": "builder",
+      "status": "active"
+    },
+    {
+      "node_id": "evidence-assembler",
+      "asset_type": "capability",
+      "status": "active"
+    },
+    {
+      "node_id": "execution-contract-enforcer",
+      "asset_type": "capability",
+      "status": "active"
+    },
+    {
+      "node_id": "outcome-verifier",
+      "asset_type": "capability",
+      "status": "active"
+    },
+    {
+      "node_id": "skill-admission-controller",
+      "asset_type": "capability",
+      "status": "active"
+    },
+    {
+      "node_id": "skill-navigator",
+      "asset_type": "capability",
+      "status": "active"
+    },
+    {
+      "node_id": "workflow-orchestrator",
+      "asset_type": "capability",
+      "status": "active"
+    },
+    {
+      "node_id": "capability-scheduling-runtime",
+      "asset_type": "integration",
+      "status": "active"
+    },
+    {
+      "node_id": "governed-retrieval-adapter",
+      "asset_type": "integration",
+      "status": "active"
+    },
+    {
+      "node_id": "metacognitive-evolution-runtime",
+      "asset_type": "integration",
+      "status": "active"
+    },
+    {
+      "node_id": "corpus-intake-receipt",
+      "asset_type": "knowledge",
+      "status": "active"
+    },
+    {
+      "node_id": "repair-pattern-library",
+      "asset_type": "knowledge",
+      "status": "active"
+    },
+    {
+      "node_id": "restricted-lineage",
+      "asset_type": "knowledge",
+      "status": "reference_only"
+    },
+    {
+      "node_id": "source-requirement-coverage",
+      "asset_type": "knowledge",
+      "status": "active"
+    },
+    {
+      "node_id": "local-coding-small",
+      "asset_type": "model",
+      "status": "unavailable"
+    },
+    {
+      "node_id": "remote-general-reasoning",
+      "asset_type": "model",
+      "status": "unavailable"
+    },
+    {
+      "node_id": "active-evaluation-selector",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "admit-capability",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "analyze-engineering-intelligence",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "analyze-repository-intelligence",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "audit-ai-runtime-assurance",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "audit-incomplete-implementations",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "audit-source-capabilities",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "behavior-to-code-mapper",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "benchmark-domain-adapter",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "bounded-workflow-topology-selector",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "candidate-memory-promoter",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "certify-reversible-validation",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "certify-skeptical-engineering",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "commission-evidence-first-project",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "commission-project",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "context-compactor",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "corpus-to-skill-tree-compiler",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "cross-paper-mechanism-fuser",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "dependency-impact-tracer",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "deploy-isolated-model-worker",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "diagnose-python-repair",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "discover-environment-safely",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "dynamic-service-discovery",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "dynamic-skill-detonator",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "enforce-governance-controls",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "enforce-source-import-boundaries",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "engineer-hybrid-retrieval",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "engineer-verification-lab",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "evaluate-retrieval-readiness",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "evaluation-budget-allocator",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "experience-reconstructor",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "forge-skills-from-knowledge",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "gate-model-data-lifecycle",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "govern-deployment-safety",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "govern-memory-fabric",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "govern-metacognitive-evolution",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "govern-operating-kernel",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "govern-runtime-protocol-deployment",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "govern-visual-runtime-accessibility",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "harden-container-boundaries",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "human-handoff-state-transfer",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "inspect-live-contracts",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "inspect-llm-architecture",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "isolate-project-streams",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "long-horizon-progress-ledger",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "manage-mcp-lifecycle",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "manage-revocable-certification",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "memory-applicability-critic",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "memory-injection-firewall",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "operate-memory-retrieval-observability",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "orchestrate-capability-scheduling",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "orchestrate-engineering-loop",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "orchestrate-security-validation",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "paper-mechanism-extractor",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "permission-diff-auditor",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "plan-local-model-deployment",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "procedural-memory-compiler",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "productization-gap-analyzer",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "propose-change-intelligence",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "provenance-signature-verifier",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "quarantine-external-tools",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "read-only-speculation-controller",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "reasoning-utility-controller",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "recovery-coordinator",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "repair-corrupted-text",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "research-to-capability",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "research-to-operation-translator",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "run-evidence-campaigns",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "run-resilience-drills",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "scenario-audit-generator",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "secure-agent-supply-chain",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "skill-bundle-resolver",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "skill-coexecution-graph-builder",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "supervise-contained-execution",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "synchronize-derived-architecture",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "tool-loop-circuit-breaker",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "trace-to-skill-compiler",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "trajectory-failure-sentinel",
+      "asset_type": "skill",
+      "status": "mapped_deferred"
+    },
+    {
+      "node_id": "triage-cross-surface-failures",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "validate-contract-boundaries",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "validate-engineering-outcomes",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "validate-knowledge-relationships",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "validate-production-containers",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "verify-outcome",
+      "asset_type": "skill",
+      "status": "active"
+    },
+    {
+      "node_id": "agent-runtime",
+      "asset_type": "tool",
+      "status": "optional"
+    },
+    {
+      "node_id": "browser-automation",
+      "asset_type": "tool",
+      "status": "optional"
+    },
+    {
+      "node_id": "container-runtime",
+      "asset_type": "tool",
+      "status": "optional"
+    },
+    {
+      "node_id": "language-runtime",
+      "asset_type": "tool",
+      "status": "optional"
+    },
+    {
+      "node_id": "network-client",
+      "asset_type": "tool",
+      "status": "optional"
+    },
+    {
+      "node_id": "package-manager",
+      "asset_type": "tool",
+      "status": "optional"
+    },
+    {
+      "node_id": "repository-search",
+      "asset_type": "tool",
+      "status": "optional"
+    },
+    {
+      "node_id": "security-scanner",
+      "asset_type": "tool",
+      "status": "optional"
+    },
+    {
+      "node_id": "test-runner",
+      "asset_type": "tool",
+      "status": "optional"
+    },
+    {
+      "node_id": "tool-protocol-server",
+      "asset_type": "tool",
+      "status": "optional"
+    },
+    {
+      "node_id": "version-control",
+      "asset_type": "tool",
+      "status": "optional"
+    }
+  ],
+  "edges": [
+    {
+      "source": "admit-capability",
+      "target": "skill-admission-controller",
+      "relation": "uses"
+    },
+    {
+      "source": "capability-scheduling-runtime",
+      "target": "execution-contract-enforcer",
+      "relation": "uses"
+    },
+    {
+      "source": "capability-scheduling-runtime",
+      "target": "isolate-project-streams",
+      "relation": "uses"
+    },
+    {
+      "source": "capability-scheduling-runtime",
+      "target": "orchestrate-capability-scheduling",
+      "relation": "uses"
+    },
+    {
+      "source": "capability-scheduling-runtime",
+      "target": "outcome-verifier",
+      "relation": "uses"
+    },
+    {
+      "source": "capability-scheduling-runtime",
+      "target": "recovery-coordinator",
+      "relation": "uses"
+    },
+    {
+      "source": "commission-project",
+      "target": "workflow-orchestrator",
+      "relation": "uses"
+    },
+    {
+      "source": "governed-retrieval-adapter",
+      "target": "corpus-intake-receipt",
+      "relation": "uses"
+    },
+    {
+      "source": "governed-retrieval-adapter",
+      "target": "restricted-lineage",
+      "relation": "uses"
+    },
+    {
+      "source": "metacognitive-evolution-runtime",
+      "target": "govern-memory-fabric",
+      "relation": "uses"
+    },
+    {
+      "source": "metacognitive-evolution-runtime",
+      "target": "govern-metacognitive-evolution",
+      "relation": "uses"
+    },
+    {
+      "source": "metacognitive-evolution-runtime",
+      "target": "manage-revocable-certification",
+      "relation": "uses"
+    },
+    {
+      "source": "metacognitive-evolution-runtime",
+      "target": "validate-knowledge-relationships",
+      "relation": "uses"
+    },
+    {
+      "source": "orchestrate-engineering-loop",
+      "target": "workflow-orchestrator",
+      "relation": "uses"
+    },
+    {
+      "source": "orchestration-builder",
+      "target": "workflow-orchestrator",
+      "relation": "uses"
+    },
+    {
+      "source": "repair-pattern-builder",
+      "target": "diagnose-python-repair",
+      "relation": "uses"
+    },
+    {
+      "source": "skill-builder",
+      "target": "skill-admission-controller",
+      "relation": "uses"
+    },
+    {
+      "source": "source-requirement-coverage",
+      "target": "skill-admission-controller",
+      "relation": "uses"
+    },
+    {
+      "source": "source-requirement-coverage",
+      "target": "workflow-orchestrator",
+      "relation": "uses"
+    },
+    {
+      "source": "test-evidence-builder",
+      "target": "evidence-assembler",
+      "relation": "uses"
+    },
+    {
+      "source": "test-evidence-builder",
+      "target": "outcome-verifier",
+      "relation": "uses"
+    },
+    {
+      "source": "verify-outcome",
+      "target": "outcome-verifier",
+      "relation": "uses"
+    },
+    {
+      "source": "workflow-orchestrator",
+      "target": "evidence-assembler",
+      "relation": "uses"
+    },
+    {
+      "source": "workflow-orchestrator",
+      "target": "execution-contract-enforcer",
+      "relation": "uses"
+    },
+    {
+      "source": "workflow-orchestrator",
+      "target": "outcome-verifier",
+      "relation": "uses"
+    },
+    {
+      "source": "workflow-orchestrator",
+      "target": "skill-navigator",
+      "relation": "uses"
+    }
+  ]
+}

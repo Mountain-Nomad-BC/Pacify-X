@@ -1,0 +1,16 @@
+{
+  "chatgpt.commentCodeLensEnabled": true,
+  "chatgpt.openOnStartup": false,
+  "chatgpt.followUpQueueMode": "queue",
+  "files.watcherExclude": {
+    "**/raw/**": true,
+    "**/quarantine/**": true,
+    "**/evidence/**": true,
+    "**/planning/inventory/**": true
+  },
+  "search.exclude": {
+    "**/raw/**": true,
+    "**/quarantine/**": true,
+    "**/evidence/**": true
+  }
+}

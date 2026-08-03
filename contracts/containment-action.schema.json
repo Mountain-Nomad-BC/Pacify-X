@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:containment-action",
+  "title": "Contained action request",
+  "type": "object",
+  "required": [
+    "action_id",
+    "effects",
+    "allowed_effects",
+    "target_paths",
+    "owned_paths",
+    "budget",
+    "limits",
+    "approval"
+  ],
+  "properties": {
+    "action_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "allowed_effects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "target_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "owned_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "budget": {
+      "type": "object"
+    },
+    "limits": {
+      "type": "object"
+    },
+    "approval": {
+      "type": "boolean"
+    },
+    "policy_override_requested": {
+      "type": "boolean",
+      "const": false
+    }
+  },
+  "additionalProperties": true
+}

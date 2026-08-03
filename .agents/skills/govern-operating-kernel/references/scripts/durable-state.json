@@ -1,0 +1,34 @@
+{
+  "authoritative_source_sha256": "2eaf1de1416488dca24b1765da135a862b69b7ec39f1e9eed94bab0f7816d15d",
+  "authority_and_safety": "Deny effects outside the approved task scope; preserve prior durable state and require idempotency or compensation for repeatable work.",
+  "evidence": [
+    "normalized inputs",
+    "owner and dependency resolution",
+    "structured result",
+    "negative-case result",
+    "content hashes",
+    "verification receipt"
+  ],
+  "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+  "id": "durable-state",
+  "implementation_disposition": "namespaced_exact_body",
+  "implementation_target": ".agents/skills/govern-operating-kernel/scripts/authoritative_durable_state.py",
+  "inputs": {
+    "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+    "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+    "target": "Explicit file, repository, service, record set, or artifact scope."
+  },
+  "kind": "script",
+  "procedure": [
+    "establish-scope",
+    "authorize-effects",
+    "execute-bounded-work",
+    "independently-verify",
+    "commit-evidence-and-state"
+  ],
+  "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+  "source_paths": [
+    "packs/01-expert-operating-kernel_v1.0.0/scripts/durable_state.py"
+  ],
+  "trigger": "Use when the requested outcome is durable state or when that outcome is a required dependency."
+}

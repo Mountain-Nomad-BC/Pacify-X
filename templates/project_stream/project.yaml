@@ -1,0 +1,18 @@
+project_id: prj_CHANGE_ME
+name: CHANGE_ME
+state: registered
+classification: internal
+repositories:
+- repository_id: repo_CHANGE_ME
+  logical_root: projects/CHANGE_ME
+  role: application
+memory_namespace: project/prj_CHANGE_ME
+cross_project_access: deny
+owners:
+- CHANGE_ME
+required_gates:
+- constitution
+- boundary
+- tests
+- outcome
+- evidence

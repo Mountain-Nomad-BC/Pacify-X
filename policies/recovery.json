@@ -1,0 +1,8 @@
+{
+  "id": "recovery",
+  "version": "1.0.0",
+  "status": "active",
+  "summary": "Long-running and effectful work must be resumable without unsafe replay.",
+  "applies_to": ["orchestration", "partial_failure", "retry", "rollback", "handoff"],
+  "enforcement": "Checkpoint inputs, decisions, completed postconditions, evidence, remaining work, and idempotency keys. Classify retry safety and escalate when recovery would repeat an unverified effect."
+}

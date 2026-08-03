@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "policy_version": "1.0.0",
+  "active_release_files": ["README.md", "START_HERE_FOR_AI.md", "PROJECT_BLUEPRINT.md", "ARCHITECTURE_GOVERNANCE_AND_RISK.md", "EXECUTION_PLAN_PUNCH_CARDS_AND_ACCEPTANCE.md", "pyproject.toml", "runtime/cli.py", "runtime/project_management.py", "runtime/release_certification.py", "runtime/version.py", "PROJECT_MANAGEMENT.md", ".engineering-bootstrap/project-management/state.json"],
+  "duplicate_classes": [
+    {"id": "empty-package-markers", "rationale": "Empty package markers intentionally expose separate Python namespaces."},
+    {"id": "generated-domain-tool-projections", "rationale": "Portable skill projections are generated and byte-reconciled to one canonical owner."},
+    {"id": "generated-declared-suite-projections", "rationale": "Pack-local templates are generated and byte-reconciled to authoritative templates."},
+    {"id": "generated-profile-projections", "rationale": "Installed profile projections are generated from bootstrap profile owners."},
+    {"id": "portable-skill-hash-helpers", "rationale": "Small hashing helpers remain self-contained inside independently portable skill tools."},
+    {"id": "bounded-cli-boilerplate", "rationale": "CLI entry functions share bounded argument/check/apply scaffolding without domain behavior."},
+    {"id": "digest-adapters", "rationale": "Tiny SHA-256 adapters have identical standard-library behavior but distinct ownership boundaries."}
+  ],
+  "marker_review_registry": "registry/incomplete_finding_reviews.json",
+  "forbidden_active_claims_while_open": ["Status: Certified deployment-ready", "Status: deployment-ready"],
+  "required_audit_items": [
+    {"id": "duplicated_implementations", "categories": ["duplicate_files", "duplicate_logic"]},
+    {"id": "duplicated_orchestrations", "categories": ["duplicate_files", "orchestrations"]},
+    {"id": "duplicated_skills", "categories": ["duplicate_files", "skills"]},
+    {"id": "dead_skills", "categories": ["skills", "registries"]},
+    {"id": "dead_yaml", "categories": ["reachability"]},
+    {"id": "dead_contracts", "categories": ["contracts"]},
+    {"id": "orphan_registries", "categories": ["reachability", "registries"]},
+    {"id": "unreachable_orchestrations", "categories": ["orchestrations", "reachability"]},
+    {"id": "stale_documentation", "categories": ["documentation", "examples"]},
+    {"id": "version_drift", "categories": ["documentation"]},
+    {"id": "circular_dependencies", "categories": ["dependencies", "orchestrations"]},
+    {"id": "import_cycles", "categories": ["imports"]},
+    {"id": "hidden_duplicate_logic", "categories": ["duplicate_logic"]},
+    {"id": "unfinished_marker_remnants", "categories": ["markers"]},
+    {"id": "copy_paste_divergence", "categories": ["duplicate_logic", "generated_artifacts"]},
+    {"id": "registry_targets_missing", "categories": ["reachability", "registries", "corrective_release"]},
+    {"id": "unreferenced_files", "categories": ["reachability", "skills", "contracts", "registries", "corrective_release"]},
+    {"id": "examples_mismatch_implementation", "categories": ["examples"]},
+    {"id": "undiscoverable_skills", "categories": ["skills", "registries"]},
+    {"id": "discoverable_unexecutable_orchestrations", "categories": ["orchestrations", "reachability"]},
+    {"id": "documentation_behavior_drift", "categories": ["documentation", "examples", "generated_artifacts", "corrective_release"]}
+  ]
+}

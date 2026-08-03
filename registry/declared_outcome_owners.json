@@ -1,0 +1,1549 @@
+{
+  "record_count": 257,
+  "records": [
+    {
+      "kind": "orchestration",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "audit-ai-supply-chain",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "manage-revocable-certification",
+      "source_id": "audit-pack-completeness",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "benchmark-serving-backends",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "build-sandbox-profile",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "engineer-verification-lab",
+      "source_id": "build-verification-plan",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "engineer-verification-lab",
+      "source_id": "calibrate-llm-judge",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-operating-kernel",
+      "source_id": "compile-and-register-skill",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "engineer-verification-lab",
+      "source_id": "convert-incident-to-regression",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "curate-memory-from-runs",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "debug-retrieval-failure",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "degrade-safely",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "deploy-canary-and-compare",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "design-memory-system",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "manage-revocable-certification",
+      "source_id": "detect-and-plan-conflict-merges",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "diagnose-root-cause",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "engineer-verification-lab",
+      "source_id": "evaluate-agent-end-to-end",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-operating-kernel",
+      "source_id": "execute-controlled-capability",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "manage-revocable-certification",
+      "source_id": "field-feedback-to-regression",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "manage-revocable-certification",
+      "source_id": "final-capability-certification",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "manage-revocable-certification",
+      "source_id": "freeze-foundational-scope",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "engineer-verification-lab",
+      "source_id": "fuzz-and-minimize",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "handle-ai-security-incident",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "human-review-and-handoff",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "implement-verified-change",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "import-and-govern-tool",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-operating-kernel",
+      "source_id": "independent-verify-result",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "ingest-and-index-corpus",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "instrument-agent-workflow",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "issue-to-minimal-reproduction",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "monitor-quality-drift",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "engineer-verification-lab",
+      "source_id": "mutation-quality-gate",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "perform-security-review",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "engineer-verification-lab",
+      "source_id": "performance-regression-gate",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "plan-capacity-and-cost",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "plan-safe-migration",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "prepare-agent-instructions",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-operating-kernel",
+      "source_id": "promote-validated-learning",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "publish-a2a-capability",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "purge-scoped-memory",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "manage-revocable-certification",
+      "source_id": "recertify-after-change",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "reconstruct-task-context",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-operating-kernel",
+      "source_id": "recover-failed-workflow",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "red-team-agent-system",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "manage-revocable-certification",
+      "source_id": "release-completion-suite",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "release-trusted-artifact",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "replay-failed-run",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "reproduce-and-verify-build",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-operating-kernel",
+      "source_id": "research-with-evidence",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-operating-kernel",
+      "source_id": "resolve-conflicting-evidence",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "retrieve-with-grounding",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "review-change-impact",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "manage-revocable-certification",
+      "source_id": "revoke-certification",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-operating-kernel",
+      "source_id": "route-and-budget-task",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "route-model-by-policy",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "engineer-verification-lab",
+      "source_id": "run-behavioral-certification",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "engineer-verification-lab",
+      "source_id": "run-long-horizon-evaluation",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "select-serving-backend",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "test-prompt-injection-resistance",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "trace-runtime-request",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "understand-repository",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "validate-protocol-compatibility",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "orchestration",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "validate-tool-authority",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "agents-md-generator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "ai-bom",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "approval-request",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "manage-revocable-certification",
+      "source_id": "archive-hygiene",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "manage-revocable-certification",
+      "source_id": "archive-verifier",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "backend-probe",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "engineer-verification-lab",
+      "source_id": "benchmark-contamination-scan",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "benchmark-harness",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "canary-compare",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-operating-kernel",
+      "source_id": "capability-router",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "capacity-planner",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "manage-revocable-certification",
+      "source_id": "certification-aggregator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "change-impact",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-operating-kernel",
+      "source_id": "claim-ledger",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "manage-revocable-certification",
+      "source_id": "collision-merge-planner",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "manage-revocable-certification",
+      "source_id": "completion-cutline",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "config-trace",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "context-budget",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "deterministic-archive",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "engineer-verification-lab",
+      "source_id": "differential-tester",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "drift-monitor",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "manage-revocable-certification",
+      "source_id": "duplicate-detector",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-operating-kernel",
+      "source_id": "durable-state",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-operating-kernel",
+      "source_id": "evidence-bundle",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-operating-kernel",
+      "source_id": "failure-normalizer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "engineer-verification-lab",
+      "source_id": "formula-property-tests",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "engineer-verification-lab",
+      "source_id": "fuzz-json-runner",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "hardware-probe",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "hybrid-retrieval",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "ingestion-validator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "engineer-verification-lab",
+      "source_id": "judge-calibrator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "manage-revocable-certification",
+      "source_id": "manifest-reconciler",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "memory-write-gate",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "engineer-verification-lab",
+      "source_id": "metamorphic-runner",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "model-router",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "engineer-verification-lab",
+      "source_id": "mutation-operator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "openapi-tool-importer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "patch-scope-guard",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-operating-kernel",
+      "source_id": "permission-guard",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "prompt-injection-scanner",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "protocol-validator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "provenance-generator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "manage-revocable-certification",
+      "source_id": "recertification-impact",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "replay-bundle",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "repo-mapper",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "reproduction-scaffold",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "retrieval-evaluator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-operating-kernel",
+      "source_id": "run-smoke-tests",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "runtime-path",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "sandbox-profile",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "sbom-lite",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "engineer-verification-lab",
+      "source_id": "scenario-runner",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "scoped-memory",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "secret-scanner",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-operating-kernel",
+      "source_id": "skill-compiler",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "symbol-index",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "threat-model",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "tool-policy-enforcer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "trace-recorder",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "engineer-verification-lab",
+      "source_id": "trajectory-scorer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "script",
+      "owner": "govern-operating-kernel",
+      "source_id": "validate-pack",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "a2a-agent-adapter",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "abstention-and-escalation",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "adversarial-robustness-certifier",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "agent-computer-interface-designer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "agent-identity-authentication",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "agent-red-teaming",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "agent-trajectory-evaluator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "ai-bom-generator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "ai-threat-modeling",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "archive-hygiene",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "artifact-signer-verifier",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "assumption-register",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "authorization-policy",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "backend-capability-prober",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "batching-policy-selector",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "behavioral-competence-certifier",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "benchmark-contamination-auditor",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "cache-policy-selector",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "call-graph-builder",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "capability-discovery-negotiation",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "capability-router",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "capacity-planner",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "change-reviewer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "chaos-scenario-designer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "claim-evidence-ledger",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "collision-and-merge-planner",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "completion-cutline-enforcer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "confidence-calibrator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "configuration-resolution-tracer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "context-budget-manager",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "context-injection-defender",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "contract-test-designer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "control-mapping",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "cost-resource-budget-manager",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "data-classification",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "data-flow-tracer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "dependency-impact-analyzer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "dependency-risk-scorer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "deployment-canary-manager",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "deterministic-correctness-certifier",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "differential-test-designer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "document-ingestion-validator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "duplicate-capability-detector",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "durable-task-state",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "egress-policy-enforcer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "episodic-memory-manager",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "evaluation-design",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "failure-taxonomy-normalizer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "fallback-and-degradation",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "fault-injection-operator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "field-validation-monitor",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "flaky-test-diagnoser",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "fuzz-test-operator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "genai-telemetry-instrumentation",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "golden-master-manager",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "graph-retrieval",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "handoff-package-author",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "hardware-topology-inspector",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "hidden-test-manager",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "human-approval-ux",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "hybrid-retrieval",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "idempotency-and-compensation",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "independent-verification-gate",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "integration-test-designer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "issue-to-reproduction",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "json-schema-tool-validator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "license-compliance",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "llm-judge-calibrator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "long-horizon-reliability-certifier",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "manifest-reconciler",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "mcp-client-server-adapter",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "memory-compaction",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "memory-conflict-resolution",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "memory-isolation",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "memory-poisoning-defense",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "memory-provenance",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "memory-retention-deletion",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "memory-retrieval-planner",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "memory-write-gate",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "metamorphic-test-designer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "migration-planner",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "model-compatibility-prober",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "model-router",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "mutation-test-operator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "openapi-tool-importer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "operational-resilience-certifier",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "output-sanitization",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "ownership-history-mapper",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "package-integrity-validator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "patch-scope-guardian",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "patch-to-test-plan",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "performance-regression-tester",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "permission-scope-designer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "privacy-impact-analysis",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "procedural-memory-manager",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "prompt-injection-defense",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "property-based-test-designer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "provenance-generator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "quality-drift-monitor",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "quantization-quality-evaluator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "recertification-impact-analyzer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "regression-suite-curator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "release-trust-certifier",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "replay-and-forensics",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "repository-cartographer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "reproducible-build-validator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "reproduction-minimizer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "reranking",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "retrieval-evaluator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "manage-revocable-certification",
+      "source_id": "revocable-certification-manager",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "root-cause-hypothesis-manager",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "runtime-path-tracer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "runtime-regression-tester",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "sandbox-profile-designer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "sbom-generator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "secret-handling",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "security-boundary-mapper",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "security-incident-response",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "semantic-memory-manager",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "serving-backend-selector",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "skill-compiler",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "source-conflict-resolver",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "source-quality-assessor",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "symbol-reference-navigator",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "analyze-repository-intelligence",
+      "source_id": "test-coverage-mapper",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "test-quality-auditor",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "throughput-latency-benchmarker",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "secure-agent-supply-chain",
+      "source_id": "tool-abuse-defense",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-runtime-protocol-deployment",
+      "source_id": "tool-output-sanitizer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "trace-correlation",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "typed-capability-contract",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "engineer-verification-lab",
+      "source_id": "unit-test-designer",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "govern-operating-kernel",
+      "source_id": "unknown-field-guardian",
+      "state": "implemented_verified"
+    },
+    {
+      "kind": "skill",
+      "owner": "operate-memory-retrieval-observability",
+      "source_id": "working-memory-manager",
+      "state": "implemented_verified"
+    }
+  ],
+  "schema_version": "1.0",
+  "status": "implemented_verified"
+}

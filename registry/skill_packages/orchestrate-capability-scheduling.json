@@ -1,0 +1,33 @@
+{
+  "body": ".agents/skills/orchestrate-capability-scheduling/SKILL.md",
+  "body_sha256": "6a698cfe38d3578b6e7ed0cd7110b1f903416e9b4f0a4df96d459d7acb2d0990",
+  "capability_tags": [
+    "scheduling",
+    "orchestration",
+    "resources",
+    "budgets",
+    "recovery"
+  ],
+  "clean_room": false,
+  "context_budget_bytes": 32768,
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "evidence": "evidence/rel008-assimilation.json",
+  "id": "orchestrate-capability-scheduling",
+  "provenance": {
+    "basis": [
+      "evidence/rel008-assimilation.json"
+    ],
+    "type": "sanitized_authoritative_assimilation"
+  },
+  "references": [
+    ".agents/skills/orchestrate-capability-scheduling/references/capability-index.json",
+    ".agents/skills/orchestrate-capability-scheduling/references/workflow-index.json"
+  ],
+  "status": "active",
+  "tests": "tests/test_capability_scheduler.py",
+  "validation_freshness": "current",
+  "version": "1.0.0"
+}

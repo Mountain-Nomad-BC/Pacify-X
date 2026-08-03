@@ -1,0 +1,12 @@
+schema_version = "1.0"
+id = "constrained"
+
+[resources]
+max_agents = 1
+max_heavy_lanes = 1
+max_context_bytes = 131072
+
+[routing]
+local_models = "disabled"
+cloud_models = "optional"
+sensitive_data = "policy_gated"

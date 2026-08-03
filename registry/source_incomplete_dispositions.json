@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "rules": [
+    {"id": "installed-product-snapshot", "path_glob": "*/site-packages/engineering_bootstrap/*", "disposition": "superseded_installed_product_snapshot", "targets": ["audit-incomplete-implementations", "validate-engineering-outcomes"]},
+    {"id": "installed-dependency", "path_glob": "*/site-packages/*", "disposition": "external_dependency_implementation_convention", "targets": ["audit-incomplete-implementations"]},
+    {"id": "packaged-product-snapshot", "path_glob": "*/share/engineering-bootstrap/*", "disposition": "superseded_packaged_product_snapshot", "targets": ["audit-incomplete-implementations", "validate-engineering-outcomes"]},
+    {"id": "validation-package-copy", "path_glob": "validation/*/engineering_bootstrap/*", "disposition": "superseded_validation_package_copy", "targets": ["audit-incomplete-implementations"]},
+    {"id": "historical-source-reference", "path_glob": "validated-workspace-root-sources-*/*", "disposition": "quarantined_historical_source_reference", "targets": ["audit-source-capabilities", "audit-incomplete-implementations"]}
+  ]
+}

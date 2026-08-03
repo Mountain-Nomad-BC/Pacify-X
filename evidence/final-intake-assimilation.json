@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "status": "reconstruction_in_progress",
+  "deployment_certification_allowed": false,
+  "source_intake": {
+    "root_alias": "final-intake",
+    "files": 539,
+    "bytes": 4947488,
+    "tree_sha256": "3e58a1d2b7035ffbd52c4b83f80b67a269dde5b919614781268b9c8a36132b26",
+    "semantic_source_files": 495,
+    "generated_cache_files": 44,
+    "inventory_errors": 0,
+    "state": "closed_after_two_matching_snapshots",
+    "closure_event_sequence": 4
+  },
+  "archives": {
+    "count": 2,
+    "executed": false,
+    "extracted": false,
+    "maps_complete": true,
+    "notes": "Archives were central-directory inventoried only. One reference archive contains a symbolic-link entry and remains nonexecutable input."
+  },
+  "capability_reconciliation": {
+    "candidates": 374,
+    "physical_candidates": 113,
+    "manifest_only_candidates": 261,
+    "resolved": 114,
+    "unresolved": 260,
+    "dispositions": {
+      "MERGE": 111,
+      "DEFER": 260,
+      "REJECT": 2,
+      "WRAP": 1
+    },
+    "ledger": "registry/final_intake_candidate_dispositions.json",
+    "ledger_sha256": "c59588743c10d1ac7f8d3c3d835404eb7fff33b8a12bb85681a96bca53c7a815",
+    "declared_outcomes_routed_to_canonical_owners": 260,
+    "declared_outcomes_proven_implemented_wired_and_tested": 0,
+    "declared_outcome_recovery_map": "registry/declared_capability_recovery_map.json",
+    "declared_outcome_recovery_map_sha256": "f82c8939c190aee78785541a4aef1ba2488328a639fdccfde93e994e353d63cf"
+  },
+  "declared_suite_recovery": {
+    "manifest_declared_files": 1305,
+    "present_and_hash_matching": 72,
+    "missing_declared_files": 1233,
+    "exact_cross_tree_recoveries": 100,
+    "genuinely_absent_declared_files": 1133,
+    "hash_or_size_mismatches": 0,
+    "unexpected_files": 0,
+    "backlog_sha256": "250e7082390c9c747fdfa707af1339f69afd1752fba14ec7c79f3cea52cf465d",
+    "rule": "Missing bodies cannot count as implementation or historical validation. They require authoritative recovery or clean-room reconstruction, mapping, and current evidence."
+  },
+  "implemented_changes": [
+    "metadata-only semantic capability index and deterministic policy-aware navigation",
+    "golden capability-query certification",
+    "hostile-input LLM architecture inspection",
+    "constraint-first local model deployment planning",
+    "compressed retrieval index calibration and exact-reference readiness gates",
+    "manifest/filesystem reconciliation and typed recovery ledger",
+    "field-level durability, mutation, concurrency, and adapter-parity controls"
+  ],
+  "validation": {
+    "framework_tests": {"passed": 282, "failed": 0},
+    "official_modified_skill_validation": {"passed": 9, "failed": 0},
+    "golden_capability_queries": {"passed": 6, "failed": 0},
+    "declared_outcome_routes": {"passed": 260, "failed": 0},
+    "release_audit": {"passed": 14, "failed": 0, "strict_external_evidence": true},
+    "sanitization": {"identifier_hits": 0, "legacy_placeholder_hits": 0, "active_zips": 0, "errors": 0},
+    "installed_wheel": "built, installed, validated, commissioned in new and existing modes, and exercised with isolated multi-project memory"
+  },
+  "certification_blockers": [
+    "All 260 absent-body operational outcomes require explicit behavior reconstruction, implementation disposition, orchestration wiring, and current acceptance evidence.",
+    "All 1,133 genuinely absent declared files require exact assignment to reconstruction cards or an evidence-backed consolidation/replacement disposition.",
+    "Release certification must be regenerated only after the reconstruction ledger has no unverified cards and all final gates are rerun."
+  ],
+  "non_claims": [
+    "No byte-for-byte reconstruction is claimed for the 1,133 manifest-declared files that were absent from packs 01 through 07.",
+    "No historical validation is claimed for absent source bodies; the release relies on current clean-room canonical owners and current product tests."
+  ]
+}

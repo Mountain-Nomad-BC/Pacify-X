@@ -1,0 +1,35 @@
+{
+  "id": "memory-injection-firewall",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/memory-injection-firewall/SKILL.md",
+  "body_sha256": "753137baa8d89328c072dfc417b081c03f5bbf1b9131da90980971f8092e512d",
+  "references": [],
+  "capability_tags": [
+    "firewall",
+    "injection",
+    "memory",
+    "security"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_d57e9699.md",
+        "sha256": "5c8687eb5fc720d801521c96b33b166f982cd15aed3e243a3888e49a1b51c7e3"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_fcaa2f0e.yaml",
+        "sha256": "98f4324bf66603e3bf8db29d641038b9802f708af1da16ab46c3ccefd98c05e9"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

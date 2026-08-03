@@ -1,0 +1,2792 @@
+{
+  "schema_version": "1.0",
+  "loading_rule": "metadata_only",
+  "revision": "39935b9861ffcd467e926616b7a24ababe2b2bfce0179aa1512029fa79092c20",
+  "record_count": 89,
+  "records": [
+    {
+      "id": "active-evaluation-selector",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Choose the most informative evaluation cases under fixed time, compute, or review budget. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "active",
+        "evaluation",
+        "selector"
+      ],
+      "intents": [],
+      "concepts": [
+        "active",
+        "evaluation",
+        "selector"
+      ],
+      "synonyms": [
+        "active evaluation selector"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "4ae28d38833be838da409fd01ea4c45cdeb6b47e21ca20d469fe45fd5a34faa4"
+    },
+    {
+      "id": "admit-capability",
+      "kind": "skill",
+      "status": "active",
+      "description": "Review, restrict, quarantine, reject, or admit a reusable skill or runtime capability using provenance, license, dependency, effect, duplication, safety, and test evidence. Use when importing reference material, promoting a candidate skill, updating the capability registry, or deciding whether external tooling may execute.",
+      "domains": [
+        "admission",
+        "governance"
+      ],
+      "intents": [
+        "admit/restrict/quarantine/reject decision"
+      ],
+      "concepts": [
+        "admission",
+        "admit",
+        "capability",
+        "governance"
+      ],
+      "synonyms": [
+        "admit capability"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "12d9f91601589f440f246a0a5d003f341cd16b3845a99cbe8fe54d957baf3a7f"
+    },
+    {
+      "id": "analyze-engineering-intelligence",
+      "kind": "skill",
+      "status": "active",
+      "description": "Detect architecture drift, dependency shockwaves, semantic contract changes, knowledge collisions, future debt, code structure changes, engineering health gaps, and refactoring candidates. Use when assessing the impact or fitness of a repository or proposed change from bounded manifests and source excerpts.",
+      "domains": [
+        "architecture",
+        "dependency",
+        "engineering-health",
+        "refactoring",
+        "research",
+        "semantic-drift"
+      ],
+      "intents": [],
+      "concepts": [
+        "analyze",
+        "architecture",
+        "dependency",
+        "engineering",
+        "engineering-health",
+        "intelligence",
+        "refactoring",
+        "research",
+        "semantic-drift"
+      ],
+      "synonyms": [
+        "analyze engineering intelligence"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "17746bfc6c684ee185521a91353dd8999e7d0636c86fe89dd5675050cea40981"
+    },
+    {
+      "id": "analyze-repository-intelligence",
+      "kind": "skill",
+      "status": "active",
+      "description": "Map repositories, symbols, dependencies, configuration, runtime paths, ownership, change impact, reproductions, migrations, and test scope. Use before modifying an unfamiliar codebase or when a defect or change crosses files, services, or configuration layers.",
+      "domains": [
+        "analyze",
+        "declared-suite",
+        "intelligence",
+        "repository"
+      ],
+      "intents": [],
+      "concepts": [
+        "analyze",
+        "declared-suite",
+        "intelligence",
+        "repository"
+      ],
+      "synonyms": [
+        "agent computer interface designer",
+        "agents md generator",
+        "analyze repository intelligence",
+        "call graph builder",
+        "change impact",
+        "change reviewer",
+        "config trace",
+        "configuration resolution tracer",
+        "data flow tracer",
+        "dependency impact analyzer",
+        "diagnose root cause",
+        "implement verified change",
+        "issue to minimal reproduction",
+        "issue to reproduction",
+        "migration planner",
+        "ownership history mapper",
+        "patch scope guard",
+        "patch scope guardian",
+        "patch to test plan",
+        "plan safe migration",
+        "prepare agent instructions",
+        "repo mapper",
+        "repository cartographer",
+        "reproduction minimizer",
+        "reproduction scaffold",
+        "review change impact",
+        "root cause hypothesis manager",
+        "runtime path",
+        "runtime path tracer",
+        "security boundary mapper",
+        "symbol index",
+        "symbol reference navigator",
+        "test coverage mapper",
+        "trace runtime request",
+        "understand repository"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "abee2ceeb4486f5fea39402fb7cd1f3223c2d09260c98bcecfc46384de282341"
+    },
+    {
+      "id": "audit-ai-runtime-assurance",
+      "kind": "skill",
+      "status": "active",
+      "description": "Produce an opt-in, privacy-bounded cognitive assurance result and runtime passport from redacted identity, memory, knowledge, reasoning, correction, evidence, health, certification, drift, version, and benchmark signals. Use when an AI runtime, memory retrieval, persona, or model integration needs trust, poison, drift, health, or golden-benchmark certification.",
+      "domains": [
+        "ai",
+        "assurance",
+        "benchmark",
+        "drift",
+        "privacy"
+      ],
+      "intents": [],
+      "concepts": [
+        "ai",
+        "assurance",
+        "audit",
+        "benchmark",
+        "drift",
+        "privacy",
+        "runtime"
+      ],
+      "synonyms": [
+        "audit ai runtime assurance"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "d18841059bd959631f0ec4bd1b5d19b941aee0f1400d23dd092cf35e21fc6313"
+    },
+    {
+      "id": "audit-incomplete-implementations",
+      "kind": "skill",
+      "status": "active",
+      "description": "Find and classify unfinished-task markers, stubs, placeholder returns, unimplemented branches, mocks, fabricated fallbacks, and silent degradation using syntax-aware and text-aware scans with deterministic evidence. Use for completeness audits, production-readiness reviews, inherited repositories, or verifying that unfinished behavior is not hidden behind passing tests.",
+      "domains": [
+        "audit",
+        "completeness",
+        "fallback",
+        "stub"
+      ],
+      "intents": [],
+      "concepts": [
+        "audit",
+        "completeness",
+        "fallback",
+        "implementations",
+        "incomplete",
+        "stub"
+      ],
+      "synonyms": [
+        "audit incomplete implementations"
+      ],
+      "tools": [
+        "audit_incomplete",
+        "reconcile_incomplete_findings"
+      ],
+      "relations": [
+        "source-capability-assimilation"
+      ],
+      "body_sha256": "220e3e23f737071eff9060e5b1fe9866c77759088791586e86d72b4c3b4693c7"
+    },
+    {
+      "id": "audit-source-capabilities",
+      "kind": "skill",
+      "status": "active",
+      "description": "Inventory a large source or reference tree without mutation, identify reusable engineering mechanisms across skills, code, configuration, and process documents, reconcile candidates against an existing skill catalog, and produce deterministic coverage and disposition evidence. Use for source mining, migration intake, capability-gap audits, or any task where sampling could miss valuable operational behavior.",
+      "domains": [
+        "audit",
+        "coverage",
+        "reconciliation",
+        "source"
+      ],
+      "intents": [],
+      "concepts": [
+        "audit",
+        "capabilities",
+        "coverage",
+        "reconciliation",
+        "source"
+      ],
+      "synonyms": [
+        "audit source capabilities"
+      ],
+      "tools": [
+        "audit_source_capabilities",
+        "build_declared_suite_reconstruction",
+        "build_manifest_recovery_ledger",
+        "certify_declared_suite_reconstruction",
+        "reconcile_classified_assets",
+        "reconcile_mechanism_records",
+        "reconcile_skill_identities",
+        "reconcile_source_inventory",
+        "reconcile_staged_capabilities",
+        "validate_planning_card_coverage"
+      ],
+      "relations": [
+        "external-tool-lifecycle",
+        "source-capability-assimilation"
+      ],
+      "body_sha256": "1c97d9ecc6b2c657609c5f1df7d8510b885332073d72ad6e21b1f82f70dba286"
+    },
+    {
+      "id": "behavior-to-code-mapper",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Map runtime behaviors to code, states, tools, policies, tests, telemetry, and dependencies. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "behavior",
+        "code",
+        "engineering",
+        "mapper",
+        "to"
+      ],
+      "intents": [],
+      "concepts": [
+        "behavior",
+        "code",
+        "engineering",
+        "mapper",
+        "to"
+      ],
+      "synonyms": [
+        "behavior to code mapper"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "5accb85afc143ea3e5f0ad732ac4c93cc39e37d49a5523669f04d9586f2554f5"
+    },
+    {
+      "id": "benchmark-domain-adapter",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Translate an academic benchmark into independent framework domain cases, outcomes, risks, and evidence requirements. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "adapter",
+        "benchmark",
+        "domain",
+        "research-ops"
+      ],
+      "intents": [],
+      "concepts": [
+        "adapter",
+        "benchmark",
+        "domain",
+        "research-ops"
+      ],
+      "synonyms": [
+        "benchmark domain adapter"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "d09d5a78d6505caa56f1c412e38af37228e7c7e1940e79ebe092a638e985db1a"
+    },
+    {
+      "id": "bounded-workflow-topology-selector",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Select among approved workflow templates based on complexity, novelty, risk, and evidence conflict. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "advanced",
+        "bounded",
+        "selector",
+        "topology",
+        "workflow"
+      ],
+      "intents": [],
+      "concepts": [
+        "advanced",
+        "bounded",
+        "selector",
+        "topology",
+        "workflow"
+      ],
+      "synonyms": [
+        "bounded workflow topology selector"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "4481a54785bcb1af84202092e177ca4db29575e85c759e6a481798e3283570a4"
+    },
+    {
+      "id": "candidate-memory-promoter",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Decide whether a trace-derived observation, claim, or procedure may enter a wider memory scope. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "candidate",
+        "memory",
+        "promoter"
+      ],
+      "intents": [],
+      "concepts": [
+        "candidate",
+        "memory",
+        "promoter"
+      ],
+      "synonyms": [
+        "candidate memory promoter"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "f5296d359fd40ef7f2b45a4e5d6cba92032e5bff91e8e28435b63e2d9caa0b05"
+    },
+    {
+      "id": "certify-reversible-validation",
+      "kind": "skill",
+      "status": "active",
+      "description": "Validate UI, authentication, database, migration, or runtime behavior that requires temporary state changes while proving exact restoration afterward. Use for live or semi-live certification where test setup changes protected state and failures, cancellation, or interruption must not leave residue.",
+      "domains": [
+        "recovery",
+        "reversible",
+        "ui",
+        "validation"
+      ],
+      "intents": [],
+      "concepts": [
+        "certify",
+        "recovery",
+        "reversible",
+        "ui",
+        "validation"
+      ],
+      "synonyms": [
+        "certify reversible validation"
+      ],
+      "tools": [],
+      "relations": [
+        "failure-and-recovery"
+      ],
+      "body_sha256": "9503b0a9b26cad46ed756614d709eed63920f017e13d44f931a09637591509fb"
+    },
+    {
+      "id": "certify-skeptical-engineering",
+      "kind": "skill",
+      "status": "active",
+      "description": "Evaluate engineering maturity using invalidation-first evidence, discovery denominators, contradictions, unknown classification, and L0-L7 requirements. Use for completion, release, readiness, or certification claims.",
+      "domains": [
+        "certification",
+        "evidence",
+        "maturity",
+        "skeptical"
+      ],
+      "intents": [],
+      "concepts": [
+        "certification",
+        "certify",
+        "engineering",
+        "evidence",
+        "maturity",
+        "skeptical"
+      ],
+      "synonyms": [
+        "certify skeptical engineering",
+        "generate certification report"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "4ed66c6cb86bd3b0d658420a8de323e9f1ea26f2c240bf53cd9b3ac536591451"
+    },
+    {
+      "id": "commission-evidence-first-project",
+      "kind": "skill",
+      "status": "active",
+      "description": "Commission a new or existing project from structured facts, assumptions, unknowns, accessibility, security, integration, operations, and acceptance inputs. Use before implementation when project intent or risk boundaries need an evidence-backed brief.",
+      "domains": [
+        "accessibility",
+        "assumptions",
+        "commissioning",
+        "risk"
+      ],
+      "intents": [],
+      "concepts": [
+        "accessibility",
+        "assumptions",
+        "commission",
+        "commissioning",
+        "evidence",
+        "first",
+        "project",
+        "risk"
+      ],
+      "synonyms": [
+        "commission evidence first project"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "b8d815891db4740a8d5a28c420f13cedf857418a904093ea987ad5f8e1bee73d"
+    },
+    {
+      "id": "commission-project",
+      "kind": "skill",
+      "status": "active",
+      "description": "Commission a new repository or safely adopt an existing repository with bounded configuration, durable project-management controls, a read-only inventory, collision-preserving integration, two model-neutral startup prompts, and metadata-first skill routing. Use when establishing this bootstrap in a new project or adding it to an existing codebase without overwriting local owners.",
+      "domains": [
+        "bootstrap",
+        "onboarding"
+      ],
+      "intents": [
+        "bounded task lifecycle",
+        "checkpointed verified result",
+        "lazy capability activation"
+      ],
+      "concepts": [
+        "bootstrap",
+        "commission",
+        "onboarding",
+        "project"
+      ],
+      "synonyms": [
+        "commission project"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "26cc3a21835c8e5fd52610ad3b85cf50467588ef0fc8cc4789972b38b79b1b53"
+    },
+    {
+      "id": "context-compactor",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Reduce active context while preserving goals, constraints, decisions, evidence, unresolved questions, and state. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "compactor",
+        "context",
+        "orchestration"
+      ],
+      "intents": [],
+      "concepts": [
+        "compactor",
+        "context",
+        "orchestration"
+      ],
+      "synonyms": [
+        "context compactor"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "d8676a0faafdb5be6128fcb09aaded3ec2ed90f2a38026b7e259e98798a55c11"
+    },
+    {
+      "id": "corpus-to-skill-tree-compiler",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Compile large corpora into navigable hierarchical skill/knowledge trees with evidence-linked nodes. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "compiler",
+        "corpus",
+        "knowledge",
+        "skill",
+        "to",
+        "tree"
+      ],
+      "intents": [],
+      "concepts": [
+        "compiler",
+        "corpus",
+        "knowledge",
+        "skill",
+        "to",
+        "tree"
+      ],
+      "synonyms": [
+        "corpus to skill tree compiler"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "8dc0bedfb2dc97319ff2d5a8048a2cee8bd61ead2bb2baaa522a0fad5fd3d824"
+    },
+    {
+      "id": "cross-paper-mechanism-fuser",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Combine compatible research primitives into a stronger subsystem while exposing conflicts. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "cross",
+        "fuser",
+        "mechanism",
+        "paper",
+        "research-ops"
+      ],
+      "intents": [],
+      "concepts": [
+        "cross",
+        "fuser",
+        "mechanism",
+        "paper",
+        "research-ops"
+      ],
+      "synonyms": [
+        "cross paper mechanism fuser"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "2fa7268a2870e550c02103ab0bf38b583f945bec75c4b5a3c9a4a3a6cf3187b6"
+    },
+    {
+      "id": "dependency-impact-tracer",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Predict downstream effects of changing a skill, tool, schema, state, model, policy, or data contract. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "dependency",
+        "engineering",
+        "impact",
+        "tracer"
+      ],
+      "intents": [],
+      "concepts": [
+        "dependency",
+        "engineering",
+        "impact",
+        "tracer"
+      ],
+      "synonyms": [
+        "dependency impact tracer"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "ed588fbe233a0d4efe300fd0403f4e706544326e55930864097aea480fa54a7a"
+    },
+    {
+      "id": "deploy-isolated-model-worker",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design, provision, validate, and recover an isolated accelerator-backed worker for inference, embedding, or reranking without coupling model dependencies to the primary application. Use when a project needs a local GPU/accelerator service, model warmup, health contracts, or a replaceable ML worker boundary.",
+      "domains": [
+        "container",
+        "gpu",
+        "isolation",
+        "model",
+        "worker"
+      ],
+      "intents": [],
+      "concepts": [
+        "container",
+        "deploy",
+        "gpu",
+        "isolated",
+        "isolation",
+        "model",
+        "worker"
+      ],
+      "synonyms": [
+        "deploy isolated model worker"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "936a84618047127e17ce58c73ca1d6e00f4ea001254edd4051323401a0da8927"
+    },
+    {
+      "id": "diagnose-python-repair",
+      "kind": "skill",
+      "status": "active",
+      "description": "Diagnose and repair Python service, async, authorization, schema, retry, transaction, logging, subprocess, path, test-isolation, container-readiness, and evidence failures. Use when a Python defect needs a root-cause explanation, focused patch, negative tests, rollback, and sanitized proof.",
+      "domains": [
+        "diagnosis",
+        "python",
+        "repair"
+      ],
+      "intents": [],
+      "concepts": [
+        "diagnose",
+        "diagnosis",
+        "python",
+        "repair"
+      ],
+      "synonyms": [
+        "diagnose python repair"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "ea007c2ecce3c4f3b00cba4d4d0856b1584d6c53853f258104ba6cc4d2ef10f9"
+    },
+    {
+      "id": "discover-environment-safely",
+      "kind": "skill",
+      "status": "active",
+      "description": "Inventory project-local tools, runtimes, IDE support, dependencies, and setup gaps without installing or changing anything. Use for bounded environment discovery, tool recommendations, unfinished-marker/stub census, and credential-storage guidance.",
+      "domains": [
+        "bootstrap",
+        "discovery",
+        "environment",
+        "tools"
+      ],
+      "intents": [],
+      "concepts": [
+        "bootstrap",
+        "discover",
+        "discovery",
+        "environment",
+        "safely",
+        "tools"
+      ],
+      "synonyms": [
+        "discover environment safely"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "0b4895410f80dfddefdf8eed60ca3f1af72da0b68b162db951f952e819aeb503"
+    },
+    {
+      "id": "dynamic-service-discovery",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design or audit service clients and proxies so cached network identity is never trusted beyond its validity window. Use for DNS, registries, orchestrators, proxies, sidecars, container networks, endpoint caches, failover, or recurring stale-address failures; NGINX variable-based DNS is one implementation, not the scope of the skill.",
+      "domains": [
+        "cache",
+        "dns",
+        "identity",
+        "network",
+        "service-discovery"
+      ],
+      "intents": [],
+      "concepts": [
+        "cache",
+        "discovery",
+        "dns",
+        "dynamic",
+        "identity",
+        "network",
+        "service",
+        "service-discovery"
+      ],
+      "synonyms": [
+        "dynamic service discovery"
+      ],
+      "tools": [
+        "audit_service_discovery"
+      ],
+      "relations": [
+        "secure-service-release"
+      ],
+      "body_sha256": "42f3408df8e7f2e2b9178f1ef960fbf6c21cc61a7ae5c3e7d8a4807722aa7bfe"
+    },
+    {
+      "id": "dynamic-skill-detonator",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Execute a skill in an instrumented sandbox with synthetic secrets and observe real behavior. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "detonator",
+        "dynamic",
+        "security",
+        "skill"
+      ],
+      "intents": [],
+      "concepts": [
+        "detonator",
+        "dynamic",
+        "security",
+        "skill"
+      ],
+      "synonyms": [
+        "dynamic skill detonator"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "a127f68bcfdc25065088b98a424b3384f142d4f59036f6d23278bda91c0e01e9"
+    },
+    {
+      "id": "enforce-governance-controls",
+      "kind": "skill",
+      "status": "active",
+      "description": "Apply fail-closed authorization, source visibility, service-only mutation, lifecycle proof, workflow integrity, staged admission, containment, trace sanitization, evidence immutability, cleanup selection, and freshness controls. Use for privileged workflows, retrieval, imports, cleanup, or completion certification.",
+      "domains": [
+        "authorization",
+        "governance",
+        "security"
+      ],
+      "intents": [],
+      "concepts": [
+        "authorization",
+        "controls",
+        "enforce",
+        "governance",
+        "security"
+      ],
+      "synonyms": [
+        "enforce governance controls"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "bd4deaf4923623c8b1411995a824c4073f6be5825a6a1a687aa82121eeb02784"
+    },
+    {
+      "id": "enforce-source-import-boundaries",
+      "kind": "skill",
+      "status": "active",
+      "description": "Detect and reject imports that escape package roots, reach internal implementation paths, cross declared service/container ownership, or consume mirrored contracts without parity proof. Use for monorepos, shared packages, generated clients, service extraction, or architecture-boundary certification.",
+      "domains": [
+        "architecture",
+        "boundaries",
+        "contracts",
+        "imports"
+      ],
+      "intents": [],
+      "concepts": [
+        "architecture",
+        "boundaries",
+        "contracts",
+        "enforce",
+        "import",
+        "imports",
+        "source"
+      ],
+      "synonyms": [
+        "enforce source import boundaries"
+      ],
+      "tools": [
+        "audit_import_boundaries"
+      ],
+      "relations": [
+        "source-capability-assimilation"
+      ],
+      "body_sha256": "70a2ffba4a09e0266f32752de47cc20562021ff7c60118fb77e75ed5e9bd9169"
+    },
+    {
+      "id": "engineer-hybrid-retrieval",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design or improve retrieval pipelines that combine dense and lexical retrieval, bounded routing, rank fusion, reranking, active-record hydration, metadata intersection, context assembly, and measurable quality gates. Use when building RAG/search systems or diagnosing corpus, chunking, embedding, ranking, filtering, or citation failures.",
+      "domains": [
+        "governance",
+        "graph",
+        "ranking",
+        "retrieval"
+      ],
+      "intents": [],
+      "concepts": [
+        "engineer",
+        "governance",
+        "graph",
+        "hybrid",
+        "ranking",
+        "retrieval"
+      ],
+      "synonyms": [
+        "engineer hybrid retrieval"
+      ],
+      "tools": [],
+      "relations": [
+        "retrieval-readiness"
+      ],
+      "body_sha256": "a4b0eb434dc9fd552d9c54838bd9e0a70e0424f1aa1b9f04654ab97bd3892ad8"
+    },
+    {
+      "id": "engineer-verification-lab",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design and run unit, integration, contract, differential, property, metamorphic, fuzz, mutation, performance, judge-calibration, trajectory, and long-horizon evaluations. Use when correctness or behavioral quality needs adversarial, independent, or regression-grade evidence.",
+      "domains": [
+        "declared-suite",
+        "engineer",
+        "lab",
+        "verification"
+      ],
+      "intents": [],
+      "concepts": [
+        "declared-suite",
+        "engineer",
+        "lab",
+        "verification"
+      ],
+      "synonyms": [
+        "agent trajectory evaluator",
+        "benchmark contamination auditor",
+        "benchmark contamination scan",
+        "build verification plan",
+        "calibrate llm judge",
+        "chaos scenario designer",
+        "contract test designer",
+        "convert incident to regression",
+        "differential test designer",
+        "differential tester",
+        "engineer verification lab",
+        "evaluate agent end to end",
+        "evaluation design",
+        "fault injection operator",
+        "flaky test diagnoser",
+        "formula property tests",
+        "fuzz and minimize",
+        "fuzz json runner",
+        "fuzz test operator",
+        "golden master manager",
+        "hidden test manager",
+        "integration test designer",
+        "judge calibrator",
+        "llm judge calibrator",
+        "metamorphic runner",
+        "metamorphic test designer",
+        "mutation operator",
+        "mutation quality gate",
+        "mutation test operator",
+        "performance regression gate",
+        "performance regression tester",
+        "property based test designer",
+        "regression suite curator",
+        "run behavioral certification",
+        "run long horizon evaluation",
+        "scenario runner",
+        "test quality auditor",
+        "trajectory scorer",
+        "unit test designer"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "268b6dabad70bf2dddac2991040b5f7caf92724395ddbd670d2d54521020f130"
+    },
+    {
+      "id": "evaluate-retrieval-readiness",
+      "kind": "skill",
+      "status": "active",
+      "description": "Measure retrieval coverage, recall at k, reciprocal rank, forbidden-source exposure, source lineage, chunking regressions, and activation readiness. Use when building, changing, rebuilding, or certifying search, semantic retrieval, embeddings, chunkers, rerankers, indexes, knowledge graphs, or grounded-answer pipelines.",
+      "domains": [
+        "activation",
+        "privacy",
+        "quality",
+        "ranking",
+        "recall",
+        "retrieval"
+      ],
+      "intents": [],
+      "concepts": [
+        "activation",
+        "evaluate",
+        "privacy",
+        "quality",
+        "ranking",
+        "readiness",
+        "recall",
+        "retrieval"
+      ],
+      "synonyms": [
+        "evaluate retrieval readiness"
+      ],
+      "tools": [
+        "evaluate_retrieval_strategy"
+      ],
+      "relations": [
+        "local-model-planning",
+        "retrieval-readiness"
+      ],
+      "body_sha256": "6a252addc62a76f46d9518eda00d1f4a60bc61cba829e3d593b245b4f06428d9"
+    },
+    {
+      "id": "evaluation-budget-allocator",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Allocate automated and human review by risk, disagreement, novelty, impact, and evidence quality\\u2014not self-confidence. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "allocator",
+        "budget",
+        "evaluation"
+      ],
+      "intents": [],
+      "concepts": [
+        "allocator",
+        "budget",
+        "evaluation"
+      ],
+      "synonyms": [
+        "evaluation budget allocator"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "1c808edce803d1cdc944a94fb6071511370f650b52357403baf966e241266208"
+    },
+    {
+      "id": "evidence-assembler",
+      "kind": "skill",
+      "status": "active",
+      "description": "Build a typed evidence package distinguishing measurement, source text, tool output, inference, assumption, and precedent. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "assembler",
+        "assurance",
+        "evidence"
+      ],
+      "intents": [],
+      "concepts": [
+        "assembler",
+        "assurance",
+        "evidence"
+      ],
+      "synonyms": [
+        "evidence assembler"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "199a3fc7747232bef216b05961d7ac994dd97098c98b1fdb6d0fcc04c4dd24e1"
+    },
+    {
+      "id": "execution-contract-enforcer",
+      "kind": "skill",
+      "status": "active",
+      "description": "Wrap every skill with validation, authorization, budget, idempotency, execution, verification, and trace controls. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "contract",
+        "enforcer",
+        "execution",
+        "orchestration"
+      ],
+      "intents": [],
+      "concepts": [
+        "contract",
+        "enforcer",
+        "execution",
+        "orchestration"
+      ],
+      "synonyms": [
+        "execution contract enforcer"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "8cf2f0511b2c1a4362448deb12945f79c6d38618b02a89751b77869b1ea86214"
+    },
+    {
+      "id": "experience-reconstructor",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Rebuild a current procedure from reusable principles rather than replaying old actions. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "experience",
+        "memory",
+        "reconstructor"
+      ],
+      "intents": [],
+      "concepts": [
+        "experience",
+        "memory",
+        "reconstructor"
+      ],
+      "synonyms": [
+        "experience reconstructor"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "fd78e2e52f43263d492bae39e59e67db29a9fe73a5d284b6cd0fdeffd4f1cf20"
+    },
+    {
+      "id": "forge-skills-from-knowledge",
+      "kind": "skill",
+      "status": "active",
+      "description": "Compile documents, engineering notes, code-adjacent text, calculations, transcripts, standards, or research into normalized evidence-linked knowledge, candidate skills, schemas, executable calculation packages, tests, graph updates, documentation, benchmarks, and certification evidence. Use when turning a mixed corpus into reusable capabilities or when composing, repairing, splitting, merging, or reevaluating skills; never activate generated work without separate admission.",
+      "domains": [
+        "calculation",
+        "certification",
+        "compiler",
+        "foundry",
+        "knowledge",
+        "research",
+        "skill"
+      ],
+      "intents": [],
+      "concepts": [
+        "calculation",
+        "certification",
+        "compiler",
+        "forge",
+        "foundry",
+        "from",
+        "knowledge",
+        "research",
+        "skill",
+        "skills"
+      ],
+      "synonyms": [
+        "forge skills from knowledge"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "41f54564e2e956a31637525f3b9111538f7f83308ec4c4b16c1164487fdc561e"
+    },
+    {
+      "id": "gate-model-data-lifecycle",
+      "kind": "skill",
+      "status": "active",
+      "description": "Gate training, evaluation, fine-tuning, adapter, and conversion inputs by provenance, license, consent, privacy, content hashes, split leakage, labels, drift, supply-chain integrity, and rollback evidence. Use before preparing datasets, behavior packs, model adapters, conversion jobs, or model promotion.",
+      "domains": [
+        "dataset",
+        "leakage",
+        "model",
+        "privacy",
+        "provenance",
+        "supply-chain",
+        "training"
+      ],
+      "intents": [],
+      "concepts": [
+        "data",
+        "dataset",
+        "gate",
+        "leakage",
+        "lifecycle",
+        "model",
+        "privacy",
+        "provenance",
+        "supply-chain",
+        "training"
+      ],
+      "synonyms": [
+        "gate model data lifecycle"
+      ],
+      "tools": [],
+      "relations": [
+        "local-model-planning"
+      ],
+      "body_sha256": "c09424ce8a07145ec061fa6c2e82ad365d1ea8b6d9c02d39f7e0ae70422371f4"
+    },
+    {
+      "id": "govern-deployment-safety",
+      "kind": "skill",
+      "status": "active",
+      "description": "Certify release hygiene, environment contracts, migration state, persistence across restart, artifact identity, health, rollback, and cryptographic evidence before deployment. Use when declaring an application or package production-ready, promoting images, applying migrations, or validating a deployment candidate.",
+      "domains": [
+        "deployment",
+        "migration",
+        "release",
+        "rollback"
+      ],
+      "intents": [],
+      "concepts": [
+        "deployment",
+        "govern",
+        "migration",
+        "release",
+        "rollback",
+        "safety"
+      ],
+      "synonyms": [
+        "govern deployment safety"
+      ],
+      "tools": [],
+      "relations": [
+        "failure-and-recovery",
+        "secure-service-release"
+      ],
+      "body_sha256": "9d7f59ed09ed21233a8a0c1cae4eb51a1c4548c23420876863e078b72f5f2dc3"
+    },
+    {
+      "id": "govern-memory-fabric",
+      "kind": "skill",
+      "status": "active",
+      "description": "Govern project-scoped factual memory with provenance, confidence, deltas, graph links, compact candidate indexing, correction invalidation, and provider isolation. Use when ingesting, retrieving, repairing, transferring, or certifying memory and derived indexes.",
+      "domains": [
+        "isolation",
+        "memory",
+        "provenance",
+        "repair",
+        "sharding"
+      ],
+      "intents": [],
+      "concepts": [
+        "fabric",
+        "govern",
+        "isolation",
+        "memory",
+        "provenance",
+        "repair",
+        "sharding"
+      ],
+      "synonyms": [
+        "govern memory fabric"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "056f8ee0ffb4877671b2723f5cb8983433657a56c271310750884e8071d0c9e9"
+    },
+    {
+      "id": "govern-metacognitive-evolution",
+      "kind": "skill",
+      "status": "active",
+      "description": "Govern explicit uncertainty, contradiction handling, sanitized decision reconstruction, capability-graph evolution, evidence-based agent routing, bounded optimization, theory induction, observable engineering-practice analysis, and decomposed knowledge-dynamics signals. Use when reasoning quality or the engineering system itself must be inspected, compared, improved, or revalidated without capturing private chain-of-thought or creating a second control plane.",
+      "domains": [
+        "introspection",
+        "knowledge-dynamics",
+        "metacognition",
+        "optimization",
+        "uncertainty"
+      ],
+      "intents": [],
+      "concepts": [
+        "evolution",
+        "govern",
+        "introspection",
+        "knowledge-dynamics",
+        "metacognition",
+        "metacognitive",
+        "optimization",
+        "uncertainty"
+      ],
+      "synonyms": [
+        "agent cognitive profile designer",
+        "agent failure mode calibrator",
+        "agent profile router",
+        "agent risk budgeter",
+        "alternative path analyzer",
+        "anti pattern lineage tracer",
+        "architecture habit detector",
+        "assumption lineage ledger",
+        "cache transient release cleaner",
+        "capability attractor detector",
+        "capability dependency health",
+        "capability entropy monitor",
+        "capability gap mutation planner",
+        "capability genome builder",
+        "capability relation inferencer",
+        "causal reasoning planner",
+        "closed loop system optimizer",
+        "concept cluster inducer",
+        "contradiction pressure monitor",
+        "contradiction resolution engine",
+        "decision path reconstructor",
+        "duplication supersession resolver",
+        "engineering dna profiler",
+        "epistemic state manager",
+        "evidence weighting engine",
+        "explanation provenance builder",
+        "govern metacognitive evolution",
+        "hypothesis portfolio manager",
+        "integration conflict mapper",
+        "introspection report builder",
+        "knowledge dynamics modeler",
+        "knowledge stability simulator",
+        "memory influence auditor",
+        "meta capability proposer",
+        "metacognitive certification",
+        "multi agent composition planner",
+        "optimization experiment manager",
+        "pareto improvement selector",
+        "reasoning trace recorder",
+        "regression rollback controller",
+        "revalidation scheduler",
+        "semantic contract linter",
+        "semantic effect contract designer",
+        "shared mechanism extractor",
+        "state mutation auditor",
+        "team pattern transfer controller",
+        "theory validation gate",
+        "trust decay controller",
+        "uncertainty calibration engine",
+        "uncertainty reduction contract",
+        "workflow autotuning advisor"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "fbf555b37234ecf0f84bbdf60982e08a4584ef5ecbc5de949c23dccc43af845d"
+    },
+    {
+      "id": "govern-operating-kernel",
+      "kind": "skill",
+      "status": "active",
+      "description": "Govern capability routing, typed execution, permissions, assumptions, claims, durable state, recovery, learning promotion, and independent verification. Use when a task needs explicit authority, evidence, failure handling, or resumable control-plane state.",
+      "domains": [
+        "declared-suite",
+        "govern",
+        "kernel",
+        "operating"
+      ],
+      "intents": [],
+      "concepts": [
+        "declared-suite",
+        "govern",
+        "kernel",
+        "operating"
+      ],
+      "synonyms": [
+        "abstention and escalation",
+        "assumption register",
+        "capability router",
+        "claim evidence ledger",
+        "claim ledger",
+        "compile and register skill",
+        "confidence calibrator",
+        "durable state",
+        "durable task state",
+        "evidence bundle",
+        "execute controlled capability",
+        "failure normalizer",
+        "failure taxonomy normalizer",
+        "govern operating kernel",
+        "idempotency and compensation",
+        "independent verification gate",
+        "independent verify result",
+        "permission guard",
+        "permission scope designer",
+        "promote validated learning",
+        "recover failed workflow",
+        "research with evidence",
+        "resolve conflicting evidence",
+        "route and budget task",
+        "run smoke tests",
+        "skill compiler",
+        "source conflict resolver",
+        "source quality assessor",
+        "typed capability contract",
+        "unknown field guardian",
+        "validate pack"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "ad1bf0a4f9807a40e43a6226a2aff663fc04987418805d37815f1904b70a7eb6"
+    },
+    {
+      "id": "govern-runtime-protocol-deployment",
+      "kind": "skill",
+      "status": "active",
+      "description": "Probe hardware and serving backends, plan capacity and cost, validate model and protocol compatibility, import governed tools, route models, manage caches and batching, compare canaries, degrade safely, and package human handoffs. Use for runtime selection, protocol integration, or deployment decisions.",
+      "domains": [
+        "declared-suite",
+        "deployment",
+        "govern",
+        "protocol",
+        "runtime"
+      ],
+      "intents": [],
+      "concepts": [
+        "declared-suite",
+        "deployment",
+        "govern",
+        "protocol",
+        "runtime"
+      ],
+      "synonyms": [
+        "a2a agent adapter",
+        "approval request",
+        "backend capability prober",
+        "backend probe",
+        "batching policy selector",
+        "benchmark harness",
+        "benchmark serving backends",
+        "cache policy selector",
+        "canary compare",
+        "capability discovery negotiation",
+        "capacity planner",
+        "cost resource budget manager",
+        "degrade safely",
+        "deploy canary and compare",
+        "deployment canary manager",
+        "fallback and degradation",
+        "govern runtime protocol deployment",
+        "handoff package author",
+        "hardware probe",
+        "hardware topology inspector",
+        "human approval ux",
+        "human review and handoff",
+        "import and govern tool",
+        "json schema tool validator",
+        "mcp client server adapter",
+        "model compatibility prober",
+        "model router",
+        "openapi tool importer",
+        "plan capacity and cost",
+        "protocol validator",
+        "publish a2a capability",
+        "quantization quality evaluator",
+        "route model by policy",
+        "runtime regression tester",
+        "select serving backend",
+        "serving backend selector",
+        "throughput latency benchmarker",
+        "tool output sanitizer",
+        "validate protocol compatibility"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "5718a6c60791ca0ffe47d9794abb9abe6b09a00628aee877fdc9ef9111a98484"
+    },
+    {
+      "id": "govern-visual-runtime-accessibility",
+      "kind": "skill",
+      "status": "active",
+      "description": "Audit or implement WebGL, canvas, SVG, animation, and embedded visual surfaces so motion preferences, GPU/memory budgets, keyboard access, state freshness, and cross-frame settings are enforced. Use for Three.js, graph renderers, animation loops, export buffers, or iframe-hosted visualizations.",
+      "domains": [
+        "accessibility",
+        "runtime",
+        "visual",
+        "webgl"
+      ],
+      "intents": [],
+      "concepts": [
+        "accessibility",
+        "govern",
+        "runtime",
+        "visual",
+        "webgl"
+      ],
+      "synonyms": [
+        "govern visual runtime accessibility"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "ad3cd975cd7b6cbb7a42b2e1950620d707ef44c28009e8912738e45f4b713605"
+    },
+    {
+      "id": "harden-container-boundaries",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design or audit container images and service definitions for non-root execution, explicit Linux capabilities, immutable filesystems, isolated networks, bounded resources, health checks, and minimal build context. Use when editing Dockerfiles, Compose files, Kubernetes workloads, or container security baselines.",
+      "domains": [
+        "container",
+        "database",
+        "isolation",
+        "least-privilege"
+      ],
+      "intents": [],
+      "concepts": [
+        "boundaries",
+        "container",
+        "database",
+        "harden",
+        "isolation",
+        "least-privilege"
+      ],
+      "synonyms": [
+        "harden container boundaries"
+      ],
+      "tools": [],
+      "relations": [
+        "secure-service-release"
+      ],
+      "body_sha256": "f5814185400bb02296f582e49521cf67ca14f59b3e9fac94b58cec1c3799e0ed"
+    },
+    {
+      "id": "human-handoff-state-transfer",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Transfer complete resumable operational state to a human or bounded agent. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "handoff",
+        "human",
+        "orchestration",
+        "state",
+        "transfer"
+      ],
+      "intents": [],
+      "concepts": [
+        "handoff",
+        "human",
+        "orchestration",
+        "state",
+        "transfer"
+      ],
+      "synonyms": [
+        "human handoff state transfer"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "d547f50aa5bcd149fda972330aee1278b58eaa9dd7a22c4619cf09f676269300"
+    },
+    {
+      "id": "inspect-live-contracts",
+      "kind": "skill",
+      "status": "active",
+      "description": "Inspect authorized running services to derive effective API, schema, route, and access contracts, then compare them with declared owners and consumers. Use when dynamic registration, runtime configuration, ORM metadata, redirects, or role enforcement makes static contract analysis insufficient.",
+      "domains": [
+        "contract",
+        "dependency",
+        "introspection",
+        "runtime"
+      ],
+      "intents": [],
+      "concepts": [
+        "contract",
+        "contracts",
+        "dependency",
+        "inspect",
+        "introspection",
+        "live",
+        "runtime"
+      ],
+      "synonyms": [
+        "inspect live contracts"
+      ],
+      "tools": [],
+      "relations": [
+        "secure-service-release"
+      ],
+      "body_sha256": "8cd04d2feb62521d9313d044f9277a9cb8383717183ab7b1b02fd3ae43443626"
+    },
+    {
+      "id": "inspect-llm-architecture",
+      "kind": "skill",
+      "status": "active",
+      "description": "Inspect an LLM configuration without importing model code, normalize architecture fields, classify attention and model topology, and estimate parameter, weight, and KV-cache requirements with explicit assumptions. Use for unknown model configs, architecture comparisons, VRAM estimates, long-context feasibility, quantization planning, MoE review, or evidence-backed local deployment analysis.",
+      "domains": [
+        "architecture",
+        "inspection",
+        "local-inference",
+        "memory",
+        "model"
+      ],
+      "intents": [],
+      "concepts": [
+        "architecture",
+        "inspect",
+        "inspection",
+        "llm",
+        "local-inference",
+        "memory",
+        "model"
+      ],
+      "synonyms": [
+        "inspect llm architecture",
+        "inspect model config",
+        "llm architecture calculator"
+      ],
+      "tools": [
+        "inspect_llm_architecture"
+      ],
+      "relations": [
+        "local-model-planning"
+      ],
+      "body_sha256": "594294286c2e9f5031e41c87fafdc97a69445e9731f3368a62f03ab996ea859b"
+    },
+    {
+      "id": "isolate-project-streams",
+      "kind": "skill",
+      "status": "active",
+      "description": "Enforce single-project execution sessions, scoped agent leases, context teardown, and explicit sanitized transfers. Use when starting, switching, pausing, resuming, or coordinating project work, or when checking that memory, tools, prompts, logs, and artifacts cannot cross project boundaries.",
+      "domains": [
+        "isolation",
+        "lease",
+        "project",
+        "session",
+        "transfer"
+      ],
+      "intents": [],
+      "concepts": [
+        "isolate",
+        "isolation",
+        "lease",
+        "project",
+        "session",
+        "streams",
+        "transfer"
+      ],
+      "synonyms": [
+        "isolate project streams"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "f9e9b72e34dccf638d7fe7022a987f23a92cea4f1e76686f1ce08bf353b998cc"
+    },
+    {
+      "id": "long-horizon-progress-ledger",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Represent long work as evidence-backed milestones with partial completion, blockers, regression, and recoverability. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "evaluation",
+        "horizon",
+        "ledger",
+        "long",
+        "progress"
+      ],
+      "intents": [],
+      "concepts": [
+        "evaluation",
+        "horizon",
+        "ledger",
+        "long",
+        "progress"
+      ],
+      "synonyms": [
+        "long horizon progress ledger"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "07b54ae4bcb43633195f75eb8423b0ba3dee57129a9478388ab9c9b15ed6a267"
+    },
+    {
+      "id": "manage-mcp-lifecycle",
+      "kind": "skill",
+      "status": "active",
+      "description": "Discover, register, prioritize, probe, certify, disable, and recover Model Context Protocol servers without loading all tools at startup. Use when bootstrapping MCP configuration, verifying stdio servers, reconciling registered servers, pruning stale entries, or preventing tool catalogs from exhausting context or startup resources.",
+      "domains": [
+        "lazy-loading",
+        "lifecycle",
+        "mcp",
+        "tooling"
+      ],
+      "intents": [],
+      "concepts": [
+        "lazy-loading",
+        "lifecycle",
+        "manage",
+        "mcp",
+        "tooling"
+      ],
+      "synonyms": [
+        "manage mcp lifecycle"
+      ],
+      "tools": [],
+      "relations": [
+        "external-tool-lifecycle"
+      ],
+      "body_sha256": "416f2d4353bad6355206665f955b9eec00bab95df5756ea1e3ffd3a10e8986af"
+    },
+    {
+      "id": "manage-revocable-certification",
+      "kind": "skill",
+      "status": "active",
+      "description": "Reconcile manifests, detect duplicates and collisions, enforce completion cutlines, verify archives and packages, aggregate evidence, certify capabilities, revoke stale claims, calculate recertification impact, and convert field feedback into regressions. Use for integration and release readiness.",
+      "domains": [
+        "certification",
+        "declared-suite",
+        "manage",
+        "revocable"
+      ],
+      "intents": [],
+      "concepts": [
+        "certification",
+        "declared-suite",
+        "manage",
+        "revocable"
+      ],
+      "synonyms": [
+        "adversarial robustness certifier",
+        "archive hygiene",
+        "archive verifier",
+        "audit pack completeness",
+        "behavioral competence certifier",
+        "certification aggregator",
+        "collision and merge planner",
+        "collision merge planner",
+        "completion cutline",
+        "completion cutline enforcer",
+        "detect and plan conflict merges",
+        "deterministic correctness certifier",
+        "duplicate capability detector",
+        "duplicate detector",
+        "field feedback to regression",
+        "field validation monitor",
+        "final capability certification",
+        "freeze foundational scope",
+        "long horizon reliability certifier",
+        "manage revocable certification",
+        "manifest reconciler",
+        "operational resilience certifier",
+        "package integrity validator",
+        "recertification impact",
+        "recertification impact analyzer",
+        "recertify after change",
+        "release completion suite",
+        "release trust certifier",
+        "revocable certification manager",
+        "revoke certification"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "b86848859c54e7d5faf23859414317daec93af33f1c9ea163c8ecdc9c1eae6f7"
+    },
+    {
+      "id": "memory-applicability-critic",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Determine which parts of a retrieved case apply now and which must be rejected. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "applicability",
+        "critic",
+        "memory"
+      ],
+      "intents": [],
+      "concepts": [
+        "applicability",
+        "critic",
+        "memory"
+      ],
+      "synonyms": [
+        "memory applicability critic"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "3cccbe70c81d6e174e8e835e3af2d0f6df7e20c0cd609f2f96fa8d16891968bb"
+    },
+    {
+      "id": "memory-injection-firewall",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Quarantine retrieved memory that redirects intent, expands permissions, exposes secrets, or alters policy hierarchy. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "firewall",
+        "injection",
+        "memory",
+        "security"
+      ],
+      "intents": [],
+      "concepts": [
+        "firewall",
+        "injection",
+        "memory",
+        "security"
+      ],
+      "synonyms": [
+        "memory injection firewall"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "753137baa8d89328c072dfc417b081c03f5bbf1b9131da90980971f8092e512d"
+    },
+    {
+      "id": "operate-memory-retrieval-observability",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design isolated memory, ingestion, indexing, hybrid retrieval, reranking, context budgeting, provenance, retention, trace correlation, replay, and quality-drift controls. Use for grounded retrieval, agent memory, run reconstruction, telemetry, or scoped deletion.",
+      "domains": [
+        "declared-suite",
+        "memory",
+        "observability",
+        "operate",
+        "retrieval"
+      ],
+      "intents": [],
+      "concepts": [
+        "declared-suite",
+        "memory",
+        "observability",
+        "operate",
+        "retrieval"
+      ],
+      "synonyms": [
+        "context budget",
+        "context budget manager",
+        "context injection defender",
+        "curate memory from runs",
+        "debug retrieval failure",
+        "design memory system",
+        "document ingestion validator",
+        "drift monitor",
+        "episodic memory manager",
+        "genai telemetry instrumentation",
+        "graph retrieval",
+        "hybrid retrieval",
+        "ingest and index corpus",
+        "ingestion validator",
+        "instrument agent workflow",
+        "memory compaction",
+        "memory conflict resolution",
+        "memory isolation",
+        "memory provenance",
+        "memory retention deletion",
+        "memory retrieval planner",
+        "memory write gate",
+        "monitor quality drift",
+        "operate memory retrieval observability",
+        "procedural memory manager",
+        "purge scoped memory",
+        "quality drift monitor",
+        "reconstruct task context",
+        "replay and forensics",
+        "replay bundle",
+        "replay failed run",
+        "reranking",
+        "retrieval evaluator",
+        "retrieve with grounding",
+        "scoped memory",
+        "semantic memory manager",
+        "trace correlation",
+        "trace recorder",
+        "working memory manager"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "3e41f74c9ef68980603481113754b8aa667e06ddd6fe67aafd106eb7688706b7"
+    },
+    {
+      "id": "orchestrate-capability-scheduling",
+      "kind": "skill",
+      "status": "active",
+      "description": "Plan, prioritize, place, arbitrate, simulate, observe, and recover bounded engineering or agent work across dependencies, approvals, budgets, deadlines, resources, privacy boundaries, retries, and fallbacks. Use when multiple ready tasks or implementations compete for finite capacity and the scheduling decision must be explainable, replayable, acceptance-preserving, and isolated by project.",
+      "domains": [
+        "budgets",
+        "orchestration",
+        "recovery",
+        "resources",
+        "scheduling"
+      ],
+      "intents": [],
+      "concepts": [
+        "budgets",
+        "capability",
+        "orchestrate",
+        "orchestration",
+        "recovery",
+        "resources",
+        "scheduling"
+      ],
+      "synonyms": [
+        "adaptive performance router",
+        "blackboard work coordinator",
+        "capability marketplace broker",
+        "concurrency rate limit governor",
+        "confidence aware scheduler",
+        "cost token budget scheduler",
+        "critical path optimizer",
+        "deadline sla scheduler",
+        "dependency dag scheduler",
+        "distributed lease lock manager",
+        "evidence completion scheduler",
+        "failure recovery scheduler",
+        "heterogeneous compute router",
+        "human approval gate scheduler",
+        "latency aware scheduler",
+        "local cloud execution router",
+        "maintenance idle work scheduler",
+        "opportunistic backfill scheduler",
+        "orchestrate capability scheduling",
+        "parallelism opportunity detector",
+        "preemption checkpoint manager",
+        "priority queue scheduler",
+        "queue starvation fairness guard",
+        "resource aware scheduler",
+        "risk aware scheduler",
+        "schedule observability auditor",
+        "schedule simulation planner",
+        "scheduler certification manager",
+        "scheduler chaos resilience tester",
+        "scheduler policy validator",
+        "skill arbitration engine"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "6a698cfe38d3578b6e7ed0cd7110b1f903416e9b4f0a4df96d459d7acb2d0990"
+    },
+    {
+      "id": "orchestrate-engineering-loop",
+      "kind": "skill",
+      "status": "active",
+      "description": "Route and execute a bounded engineering task through admitted capabilities, explicit effects, checkpoints, evidence assembly, independent verification, and unload. Use for multi-step repository work that must be planned, governed, resumed safely, or proven complete without loading every skill at startup.",
+      "domains": [
+        "orchestration",
+        "workflow"
+      ],
+      "intents": [
+        "bounded task lifecycle",
+        "checkpointed verified result",
+        "lazy capability activation"
+      ],
+      "concepts": [
+        "engineering",
+        "loop",
+        "orchestrate",
+        "orchestration",
+        "workflow"
+      ],
+      "synonyms": [
+        "orchestrate engineering loop"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "677b5d3a75054b902e701bb212c1b769a81f5a8425983eaf45ca8309e0b39003"
+    },
+    {
+      "id": "orchestrate-security-validation",
+      "kind": "skill",
+      "status": "active",
+      "description": "Plan and run dependency-aware security validation across secret, source, infrastructure, supply-chain, dynamic, accessibility, fuzz, and load scanners, then aggregate payload-minimized findings. Use when a security campaign involves multiple tools, prerequisites, execution barriers, partial scanner failures, or a unified evidence report.",
+      "domains": [
+        "aggregation",
+        "pipeline",
+        "security",
+        "validation"
+      ],
+      "intents": [],
+      "concepts": [
+        "aggregation",
+        "orchestrate",
+        "pipeline",
+        "security",
+        "validation"
+      ],
+      "synonyms": [
+        "orchestrate security validation"
+      ],
+      "tools": [
+        "aggregate_security_findings"
+      ],
+      "relations": [
+        "secure-service-release"
+      ],
+      "body_sha256": "226c50f4689dbe0e46f5948b94b8318e6b23af9e1bf4f3181c2670fe0b08a34d"
+    },
+    {
+      "id": "outcome-verifier",
+      "kind": "skill",
+      "status": "active",
+      "description": "Independently determine whether evidence, policy, and actual postconditions support the claimed result. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "assurance",
+        "outcome",
+        "verifier"
+      ],
+      "intents": [],
+      "concepts": [
+        "assurance",
+        "outcome",
+        "verifier"
+      ],
+      "synonyms": [
+        "outcome verifier"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "301ab12a8005c41ec0d959bf33171fd17cf89d5c340e5f9ae98abc975dc43d3d"
+    },
+    {
+      "id": "paper-mechanism-extractor",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Extract the actual mechanism, assumptions, data, evidence, and limitations from a paper. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "extractor",
+        "mechanism",
+        "paper",
+        "research-ops"
+      ],
+      "intents": [],
+      "concepts": [
+        "extractor",
+        "mechanism",
+        "paper",
+        "research-ops"
+      ],
+      "synonyms": [
+        "paper mechanism extractor"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "ac4463c1adf019ef167469f9ec90403011339d4be5791e597a2e9b25f577dc8e"
+    },
+    {
+      "id": "permission-diff-auditor",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Identify new permissions, scopes, side effects, and destinations between versions. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "auditor",
+        "diff",
+        "permission",
+        "security"
+      ],
+      "intents": [],
+      "concepts": [
+        "auditor",
+        "diff",
+        "permission",
+        "security"
+      ],
+      "synonyms": [
+        "permission diff auditor"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "cc82a82308a63a7323dd59e9e08c0326a3441116e741ce97409f0346eb2bfa39"
+    },
+    {
+      "id": "plan-local-model-deployment",
+      "kind": "skill",
+      "status": "active",
+      "description": "Build a constraint-first feasibility matrix for local model inference, conversion, offload, streaming, quantization, retrieval augmentation, or remote fallback. Use when selecting a local model/runtime strategy, checking RAM/VRAM/disk fit, planning transformation caches, ranking constrained execution options, or defining validation and rollback gates before deployment.",
+      "domains": [
+        "deployment",
+        "feasibility",
+        "local-inference",
+        "model",
+        "resources"
+      ],
+      "intents": [],
+      "concepts": [
+        "deployment",
+        "feasibility",
+        "local",
+        "local-inference",
+        "model",
+        "plan",
+        "resources"
+      ],
+      "synonyms": [
+        "plan local model deployment"
+      ],
+      "tools": [
+        "plan_local_model_deployment"
+      ],
+      "relations": [
+        "local-model-planning"
+      ],
+      "body_sha256": "ec6b4862e0633512a7d29328a1cfe4b1ff0cf28730b199aff770c6acc28f8792"
+    },
+    {
+      "id": "procedural-memory-compiler",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Compile repeated successful patterns into candidate procedures with activation, execution, and termination. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "compiler",
+        "memory",
+        "procedural"
+      ],
+      "intents": [],
+      "concepts": [
+        "compiler",
+        "memory",
+        "procedural"
+      ],
+      "synonyms": [
+        "procedural memory compiler"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "b200a36457b8cb20ab13c641ecf91551650109a609fc1b965311f3b94394ce2d"
+    },
+    {
+      "id": "productization-gap-analyzer",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Identify what a research prototype lacks before safe operational use. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "analyzer",
+        "gap",
+        "productization",
+        "research-ops"
+      ],
+      "intents": [],
+      "concepts": [
+        "analyzer",
+        "gap",
+        "productization",
+        "research-ops"
+      ],
+      "synonyms": [
+        "productization gap analyzer"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "9e9c6ddcd6b2642ac527bee6b76e5637348146f1b817de9fa00755b10e4195e5"
+    },
+    {
+      "id": "propose-change-intelligence",
+      "kind": "skill",
+      "status": "active",
+      "description": "Stage proposal-only capabilities for dependency impact, semantic drift, architecture entropy, business-rule collision, and living documentation. Use when repeated change-analysis work suggests a new reusable capability.",
+      "domains": [
+        "architecture",
+        "candidate",
+        "change",
+        "drift"
+      ],
+      "intents": [],
+      "concepts": [
+        "architecture",
+        "candidate",
+        "change",
+        "drift",
+        "intelligence",
+        "propose"
+      ],
+      "synonyms": [
+        "propose change intelligence"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "371219134666efd26b9b48f800bb97c7ba2d74fedd9e7748bc053f2c75bf2937"
+    },
+    {
+      "id": "provenance-signature-verifier",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Verify package identity, source, signature, hash, build chain, and owner. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "provenance",
+        "security",
+        "signature",
+        "verifier"
+      ],
+      "intents": [],
+      "concepts": [
+        "provenance",
+        "security",
+        "signature",
+        "verifier"
+      ],
+      "synonyms": [
+        "provenance signature verifier"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "ceac102c75f849394636149588855b05acde19f806e1b8c5c1ba077cb7969125"
+    },
+    {
+      "id": "quarantine-external-tools",
+      "kind": "skill",
+      "status": "active",
+      "description": "Quarantine and assess packages, extensions, MCPs, binaries, containers, dependencies, and third-party integrations before execution. Use when proposing installation, connection, upgrade, or adoption of external tooling.",
+      "domains": [
+        "quarantine",
+        "security",
+        "supply-chain",
+        "tools"
+      ],
+      "intents": [],
+      "concepts": [
+        "external",
+        "quarantine",
+        "security",
+        "supply-chain",
+        "tools"
+      ],
+      "synonyms": [
+        "quarantine external tools"
+      ],
+      "tools": [],
+      "relations": [
+        "external-tool-lifecycle"
+      ],
+      "body_sha256": "d6dfe57ca49e8131f93c8d9b7cb28967f343939d85c627928a249c5db2818d41"
+    },
+    {
+      "id": "read-only-speculation-controller",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Predict and prefetch likely next read-only tool results into a quarantined cache. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "advanced",
+        "controller",
+        "only",
+        "read",
+        "speculation"
+      ],
+      "intents": [],
+      "concepts": [
+        "advanced",
+        "controller",
+        "only",
+        "read",
+        "speculation"
+      ],
+      "synonyms": [
+        "read only speculation controller"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "9f80c8f11157a2fa0a97293ef0affaf01ae1eb5904a4d2352a661c97e714852e"
+    },
+    {
+      "id": "reasoning-utility-controller",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Decide whether another reasoning, retrieval, verification, or tool step has enough expected value. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "controller",
+        "evaluation",
+        "reasoning",
+        "utility"
+      ],
+      "intents": [],
+      "concepts": [
+        "controller",
+        "evaluation",
+        "reasoning",
+        "utility"
+      ],
+      "synonyms": [
+        "reasoning utility controller"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "d6bb472f7fc9013efd4076cc8d506b76a9fd032a6e4396bfbff04d49e9feaf02"
+    },
+    {
+      "id": "recovery-coordinator",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Classify failures and choose retry, alternate path, rollback, escalation, or stop. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "coordinator",
+        "orchestration",
+        "recovery"
+      ],
+      "intents": [],
+      "concepts": [
+        "coordinator",
+        "orchestration",
+        "recovery"
+      ],
+      "synonyms": [
+        "recovery coordinator"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "ae7271b82e2f6297b1d010b75248eaa6b7c3e7b693a694a4aef79ae7d3b0522f"
+    },
+    {
+      "id": "repair-corrupted-text",
+      "kind": "skill",
+      "status": "active",
+      "description": "Detect, repair, and verify OCR/PDF/encoding corruption with deterministic mappings, bounded heuristics, provenance, and reversible outputs before indexing or model ingestion. Use for garbled text, repeated-character artifacts, broken tokens, encoding substitutions, or large corpora where unconstrained generative correction is unsafe.",
+      "domains": [
+        "ocr",
+        "provenance",
+        "repair",
+        "text"
+      ],
+      "intents": [],
+      "concepts": [
+        "corrupted",
+        "ocr",
+        "provenance",
+        "repair",
+        "text"
+      ],
+      "synonyms": [
+        "repair corrupted text"
+      ],
+      "tools": [
+        "repair_text"
+      ],
+      "relations": [
+        "retrieval-readiness"
+      ],
+      "body_sha256": "226ddc1e8bcb13403c99047cccd043e9c02ac1a2c5a95f54243564bc2771a9a0"
+    },
+    {
+      "id": "research-to-capability",
+      "kind": "skill",
+      "status": "active",
+      "description": "Convert papers, standards, benchmarks, and sourced technical research into bounded candidate capabilities with claims, methods, assumptions, prerequisites, operational value, lineage, limitations, tests, and admission evidence. Use when research may inform tooling or orchestration without treating publication as production proof.",
+      "domains": [
+        "capability-building",
+        "provenance",
+        "research"
+      ],
+      "intents": [],
+      "concepts": [
+        "capability",
+        "capability-building",
+        "provenance",
+        "research",
+        "to"
+      ],
+      "synonyms": [
+        "research to capability"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "ffd5fce65c1dfb58b7f7bac560c10e8cd24d2e4ad6009b72a60e8172217d234c"
+    },
+    {
+      "id": "research-to-operation-translator",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Convert a validated research mechanism into a bounded skill, service, workflow, or evaluation. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "operation",
+        "research",
+        "research-ops",
+        "to",
+        "translator"
+      ],
+      "intents": [],
+      "concepts": [
+        "operation",
+        "research",
+        "research-ops",
+        "to",
+        "translator"
+      ],
+      "synonyms": [
+        "research to operation translator"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "eb10bf6f136275a0c9d8d55b314fce65d6d41d4a282b65a82383124a9b0e5528"
+    },
+    {
+      "id": "run-evidence-campaigns",
+      "kind": "skill",
+      "status": "active",
+      "description": "Plan, execute, resume, score, and report bounded validation campaigns across source, API, browser, data, accessibility, security, performance, and recovery surfaces. Use when shallow smoke tests are insufficient or when a release claim needs transparent pass/fail/blocked/skipped/uncertain evidence and exact coverage denominators.",
+      "domains": [
+        "campaign",
+        "coverage",
+        "evidence",
+        "validation"
+      ],
+      "intents": [],
+      "concepts": [
+        "campaign",
+        "campaigns",
+        "coverage",
+        "evidence",
+        "run",
+        "validation"
+      ],
+      "synonyms": [
+        "run evidence campaigns"
+      ],
+      "tools": [],
+      "relations": [
+        "retrieval-readiness",
+        "secure-service-release",
+        "semantic-capability-query-certification",
+        "source-capability-assimilation"
+      ],
+      "body_sha256": "24ded8f3900b2029b624a5c22d28a239bfa92bf671ae802cc742fe796b7c0e1c"
+    },
+    {
+      "id": "run-resilience-drills",
+      "kind": "skill",
+      "status": "active",
+      "description": "Plan and execute approval-gated fault, restart, dependency-loss, latency, load, and recovery experiments with before/during/after probes and recovery-time evidence. Use for chaos testing, resilience certification, soak recovery, restore drills, or validating degraded-mode and failover claims.",
+      "domains": [
+        "chaos",
+        "fault",
+        "recovery",
+        "resilience"
+      ],
+      "intents": [],
+      "concepts": [
+        "chaos",
+        "drills",
+        "fault",
+        "recovery",
+        "resilience",
+        "run"
+      ],
+      "synonyms": [
+        "run resilience drills"
+      ],
+      "tools": [],
+      "relations": [
+        "failure-and-recovery"
+      ],
+      "body_sha256": "9c4112ba2a93de91ad6b89a7d43fca9070e6969b607330b6b9280ff7a8494a23"
+    },
+    {
+      "id": "scenario-audit-generator",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Generate realistic pressure, injection, stale-data, conflict, permission, and deception scenarios. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "audit",
+        "evaluation",
+        "generator",
+        "scenario"
+      ],
+      "intents": [],
+      "concepts": [
+        "audit",
+        "evaluation",
+        "generator",
+        "scenario"
+      ],
+      "synonyms": [
+        "scenario audit generator"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "dedda0940d634d43ade2f6c57296829c9fc3546475ef063c74e243c82b4978df"
+    },
+    {
+      "id": "secure-agent-supply-chain",
+      "kind": "skill",
+      "status": "active",
+      "description": "Threat-model agent systems, enforce identity and tool authority, scan secrets and injection, design sandboxes and egress controls, generate software and AI bills of materials, prove provenance, reproduce builds, and handle security incidents. Use for security review, external tools, artifacts, models, or data flows.",
+      "domains": [
+        "agent",
+        "chain",
+        "declared-suite",
+        "secure",
+        "supply"
+      ],
+      "intents": [],
+      "concepts": [
+        "agent",
+        "chain",
+        "declared-suite",
+        "secure",
+        "supply"
+      ],
+      "synonyms": [
+        "agent identity authentication",
+        "agent red teaming",
+        "ai bom",
+        "ai bom generator",
+        "ai threat modeling",
+        "artifact signer verifier",
+        "audit ai supply chain",
+        "authorization policy",
+        "build sandbox profile",
+        "control mapping",
+        "data classification",
+        "dependency risk scorer",
+        "deterministic archive",
+        "egress policy enforcer",
+        "handle ai security incident",
+        "license compliance",
+        "memory poisoning defense",
+        "output sanitization",
+        "perform security review",
+        "privacy impact analysis",
+        "prompt injection defense",
+        "prompt injection scanner",
+        "provenance generator",
+        "red team agent system",
+        "release trusted artifact",
+        "reproduce and verify build",
+        "reproducible build validator",
+        "sandbox profile",
+        "sandbox profile designer",
+        "sbom generator",
+        "sbom lite",
+        "secret handling",
+        "secret scanner",
+        "secure agent supply chain",
+        "security incident response",
+        "test prompt injection resistance",
+        "threat model",
+        "tool abuse defense",
+        "tool policy enforcer",
+        "validate tool authority"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "d818a9df088f22044de0cc03707394b7b22a837dcb91cb397a265411d767b4d5"
+    },
+    {
+      "id": "skill-admission-controller",
+      "kind": "skill",
+      "status": "active",
+      "description": "Control whether a skill may enter registry, sandbox, canary, or production. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "admission",
+        "controller",
+        "security",
+        "skill"
+      ],
+      "intents": [],
+      "concepts": [
+        "admission",
+        "controller",
+        "security",
+        "skill"
+      ],
+      "synonyms": [
+        "skill admission controller"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "4cd825291afb398cca48757ab0f549028a1984677140c3083fa1c8564d9bff32"
+    },
+    {
+      "id": "skill-bundle-resolver",
+      "kind": "skill",
+      "status": "active",
+      "description": "Select a compatible set of skills and tools that jointly satisfies all required outcomes. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "bundle",
+        "orchestration",
+        "resolver",
+        "skill"
+      ],
+      "intents": [],
+      "concepts": [
+        "bundle",
+        "orchestration",
+        "resolver",
+        "skill"
+      ],
+      "synonyms": [
+        "skill bundle resolver"
+      ],
+      "tools": [],
+      "relations": [
+        "semantic-capability-query-certification"
+      ],
+      "body_sha256": "f713ba80888d80b6db7a81468b0a0c34893f0629b7842a28cf8953691d6193aa"
+    },
+    {
+      "id": "skill-coexecution-graph-builder",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Build a typed graph of skills/tools used together, order, context, outcomes, cost, and latency. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "builder",
+        "coexecution",
+        "graph",
+        "knowledge",
+        "skill"
+      ],
+      "intents": [],
+      "concepts": [
+        "builder",
+        "coexecution",
+        "graph",
+        "knowledge",
+        "skill"
+      ],
+      "synonyms": [
+        "skill coexecution graph builder"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "1bd8885c4437a041084bfa8d088bb5f350ad188fa0837cb06d05001cd7a54973"
+    },
+    {
+      "id": "skill-navigator",
+      "kind": "skill",
+      "status": "active",
+      "description": "Progressively locate the smallest relevant capability branch without loading the full catalog. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "navigator",
+        "orchestration",
+        "skill"
+      ],
+      "intents": [],
+      "concepts": [
+        "navigator",
+        "orchestration",
+        "skill"
+      ],
+      "synonyms": [
+        "skill navigator"
+      ],
+      "tools": [
+        "golden_capability_queries",
+        "query_certification",
+        "semantic_capability_index",
+        "semantic_index",
+        "skill_navigator"
+      ],
+      "relations": [
+        "semantic-capability-query-certification"
+      ],
+      "body_sha256": "e0cf9587ff6a24c928f706417b505565f9c591503b128b935436c45a828beda8"
+    },
+    {
+      "id": "supervise-contained-execution",
+      "kind": "skill",
+      "status": "active",
+      "description": "Authorize, block, or escalate a proposed action against declared effects, owned paths, resource budgets, policy, and human approvals. Use before installations, network access, services, migrations, destructive operations, load tests, chaos, or red-team activity.",
+      "domains": [
+        "authorization",
+        "containment",
+        "safety",
+        "scope"
+      ],
+      "intents": [],
+      "concepts": [
+        "authorization",
+        "contained",
+        "containment",
+        "execution",
+        "safety",
+        "scope",
+        "supervise"
+      ],
+      "synonyms": [
+        "supervise contained execution"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "18ec489a204669e2eb2392caa73e00432813b88c665e5150688b94fc433eb91e"
+    },
+    {
+      "id": "synchronize-derived-architecture",
+      "kind": "skill",
+      "status": "active",
+      "description": "Keep routes, service ownership, contracts, generated code, diagrams, and documentation synchronized from declared canonical sources. Use when changing architecture maps, generated clients, route registries, documentation graphs, or when duplicate/stale derived artifacts may drift from their owner.",
+      "domains": [
+        "architecture",
+        "documents",
+        "graph",
+        "synchronization"
+      ],
+      "intents": [],
+      "concepts": [
+        "architecture",
+        "derived",
+        "documents",
+        "graph",
+        "synchronization",
+        "synchronize"
+      ],
+      "synonyms": [
+        "synchronize derived architecture"
+      ],
+      "tools": [],
+      "relations": [
+        "source-capability-assimilation"
+      ],
+      "body_sha256": "fef2e5475c6a8f2d0c434ecd5891b8fe2c2d20b99ba17496de9535a70a8f2a3d"
+    },
+    {
+      "id": "tool-loop-circuit-breaker",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Detect cyclic tool calls, repeated no-op state, and cost amplification, then stop or isolate. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "breaker",
+        "circuit",
+        "loop",
+        "security",
+        "tool"
+      ],
+      "intents": [],
+      "concepts": [
+        "breaker",
+        "circuit",
+        "loop",
+        "security",
+        "tool"
+      ],
+      "synonyms": [
+        "tool loop circuit breaker"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "4530197c21703b061c79d13b725f41cd187d26ebba7f88f08b3ea3a8df5adbae"
+    },
+    {
+      "id": "trace-to-skill-compiler",
+      "kind": "skill",
+      "status": "active",
+      "description": "Convert repeated verified trajectories into candidate governed skill packages. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "compiler",
+        "improvement",
+        "skill",
+        "to",
+        "trace"
+      ],
+      "intents": [],
+      "concepts": [
+        "compiler",
+        "improvement",
+        "skill",
+        "to",
+        "trace"
+      ],
+      "synonyms": [
+        "trace to skill compiler"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "609452f65cb671be3d8efab56dd3c14843b438de5b731618aaa15495ea9605c1"
+    },
+    {
+      "id": "trajectory-failure-sentinel",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Detect failure onset early enough to recover before cost or state damage accumulates. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "domains": [
+        "evaluation",
+        "failure",
+        "sentinel",
+        "trajectory"
+      ],
+      "intents": [],
+      "concepts": [
+        "evaluation",
+        "failure",
+        "sentinel",
+        "trajectory"
+      ],
+      "synonyms": [
+        "trajectory failure sentinel"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "79da68a94e6db3d29028b22c6dc538d68c529db82d0252987630458f4c965cd8"
+    },
+    {
+      "id": "triage-cross-surface-failures",
+      "kind": "skill",
+      "status": "active",
+      "description": "Correlate a failure across browser, API, service health, logs, traces, data state, commits, dependency changes, and resource pressure without silently repairing it. Use for flaky scenarios, multi-service incidents, blocked campaigns, ambiguous ownership, or evidence-backed rerun planning.",
+      "domains": [
+        "correlation",
+        "diagnosis",
+        "failure",
+        "triage"
+      ],
+      "intents": [],
+      "concepts": [
+        "correlation",
+        "cross",
+        "diagnosis",
+        "failure",
+        "failures",
+        "surface",
+        "triage"
+      ],
+      "synonyms": [
+        "triage cross surface failures"
+      ],
+      "tools": [],
+      "relations": [
+        "failure-and-recovery"
+      ],
+      "body_sha256": "474618a8b085690466a075b3b2812b9c5c3e5d701a9477c1745ae252092264ef"
+    },
+    {
+      "id": "validate-contract-boundaries",
+      "kind": "skill",
+      "status": "active",
+      "description": "Compare provider and consumer ownership, routes, methods, versions, schemas, required fields, authorization scopes, and negative-path tests. Use for OpenAPI or JSON Schema changes, frontend/backend payload mismatches, event contracts, database-facing interfaces, API integration failures, or any shared contract migration.",
+      "domains": [
+        "api",
+        "contract",
+        "event",
+        "integration",
+        "permission",
+        "schema"
+      ],
+      "intents": [],
+      "concepts": [
+        "api",
+        "boundaries",
+        "contract",
+        "event",
+        "integration",
+        "permission",
+        "schema",
+        "validate"
+      ],
+      "synonyms": [
+        "validate contract boundaries"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "12e41b4b444f396dd69d0f3a7c3a05b09b63ea01bbc49e79a9f2492cf1ac505c"
+    },
+    {
+      "id": "validate-engineering-outcomes",
+      "kind": "skill",
+      "status": "active",
+      "description": "Discover repositories, map architecture and contracts, validate calculations and runtime surfaces, test result-aware interfaces, enforce data-readiness and ambient-write gates, validate deployment safety, run focused rebuilds, reconcile evidence, and adapt validation to resource pressure. Use for implementation review, integration testing, or release acceptance.",
+      "domains": [
+        "architecture",
+        "deployment",
+        "testing"
+      ],
+      "intents": [],
+      "concepts": [
+        "architecture",
+        "deployment",
+        "engineering",
+        "outcomes",
+        "testing",
+        "validate"
+      ],
+      "synonyms": [
+        "validate engineering outcomes"
+      ],
+      "tools": [
+        "audit_bootstrap"
+      ],
+      "relations": [
+        "local-model-planning"
+      ],
+      "body_sha256": "f8f5202a618e921ffa1996b197278773449a7a754b77eb76527052e2c725dca1"
+    },
+    {
+      "id": "validate-knowledge-relationships",
+      "kind": "skill",
+      "status": "active",
+      "description": "Validate documents, entities, aliases, versions, provenance, units, rules, catalogs, and cross-source relationships using deterministic graph constraints and visible coverage. Use when a knowledge corpus may contain orphans, duplicates, conflicting revisions, invalid references, prohibited cycles, or scope leakage.",
+      "domains": [
+        "graph",
+        "integrity",
+        "knowledge",
+        "provenance"
+      ],
+      "intents": [],
+      "concepts": [
+        "graph",
+        "integrity",
+        "knowledge",
+        "provenance",
+        "relationships",
+        "validate"
+      ],
+      "synonyms": [
+        "validate knowledge relationships"
+      ],
+      "tools": [],
+      "relations": [
+        "retrieval-readiness",
+        "source-capability-assimilation"
+      ],
+      "body_sha256": "b287f2332cc74c0a1a57c316ca3ca8eb08259543e671aeca1f7045ae8d226126"
+    },
+    {
+      "id": "validate-production-containers",
+      "kind": "skill",
+      "status": "active",
+      "description": "Validate production container images with isolated, temporary test harnesses while keeping test dependencies out of the shipped image and proving cleanup. Use for container-native integration tests, runtime import checks, health probes, or contract tests that must execute in the image environment.",
+      "domains": [
+        "container",
+        "isolation",
+        "production",
+        "validation"
+      ],
+      "intents": [],
+      "concepts": [
+        "container",
+        "containers",
+        "isolation",
+        "production",
+        "validate",
+        "validation"
+      ],
+      "synonyms": [
+        "validate production containers"
+      ],
+      "tools": [],
+      "relations": [
+        "secure-service-release"
+      ],
+      "body_sha256": "8ecc926bf157bf8e5c7ce32232e443cb2ffdad29fb6dca606f577782a7ad5b64"
+    },
+    {
+      "id": "verify-outcome",
+      "kind": "skill",
+      "status": "active",
+      "description": "Independently verify completion claims against declared postconditions and current, valid, task-scoped evidence. Use after implementation, repair, migration, deployment preparation, or any task where an executor claims success and the result must be proven rather than assumed.",
+      "domains": [
+        "evidence",
+        "validation"
+      ],
+      "intents": [
+        "independent verification decision"
+      ],
+      "concepts": [
+        "evidence",
+        "outcome",
+        "validation",
+        "verify"
+      ],
+      "synonyms": [
+        "verify outcome"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "579e51b14922148aab54a344eb1e44b43fa2fc068b4d8dc658fe56edc09167de"
+    }
+  ]
+}

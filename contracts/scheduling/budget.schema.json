@@ -1,0 +1,33 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:scheduling:budget",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "api_calls": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "cost_usd": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "gpu_minutes": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "retries": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "tokens": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "wall_seconds": {
+      "minimum": 0,
+      "type": "number"
+    }
+  },
+  "title": "ExecutionBudget",
+  "type": "object"
+}

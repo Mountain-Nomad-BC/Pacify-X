@@ -1,0 +1,427 @@
+{
+  "schema_version": "1.0",
+  "mode": "existing",
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "plan": [
+    {
+      "path": ".ai/assistant.toml",
+      "scope": "integration",
+      "proposed_sha256": "9f10f78ed1d8dc38926ebd04123f5928d4fc848b9f2d646d3c6a19b337c21b53",
+      "action": "preserve_existing",
+      "existing_sha256": "49e113f962c401e1ade6087b027f16f430dcc6cc3240102700212ec77daeeeee",
+      "diff": [
+        "--- existing/.ai/assistant.toml",
+        "+++ bootstrap/.ai/assistant.toml",
+        "@@ -1,12 +1,9 @@",
+        " schema_version = \"1.0\"",
+        "-entrypoint = \"AI_ASSISTANT.md\"",
+        "-repository_contract = \"AGENTS.md\"",
+        "-startup_config = \"bootstrap/startup.toml\"",
+        "-skill_catalog = \"registry/skill_catalog.toml\"",
+        "-policy_index = \"policies/policy_index.json\"",
+        "+entrypoint = \".engineering-bootstrap/AI_ASSISTANT.md\"",
+        "+repository_contract = \".engineering-bootstrap/AGENTS.md\"",
+        "+project_management = \"PROJECT_MANAGEMENT.md\"",
+        " model_agnostic = true",
+        " metadata_only_at_startup = true",
+        " max_selected_capabilities = 3",
+        " cross_project_default = \"deny\"",
+        " cleanup_mode = \"quarantine_only\"",
+        "-"
+      ]
+    },
+    {
+      "path": ".codex/config.toml",
+      "scope": "integration",
+      "proposed_sha256": "4aab2d74f30e1bff9545d42734429805f8399d275da7a20646755a4452bda801",
+      "action": "preserve_existing",
+      "existing_sha256": "c38bd2c73a7fe836a9ac83f4ccb62eedc7da1b5a908cdcb50a48a7c5003412d1",
+      "diff": [
+        "--- existing/.codex/config.toml",
+        "+++ bootstrap/.codex/config.toml",
+        "@@ -1,4 +1,4 @@",
+        "-# Project-scoped settings only. Provider, credentials, model, and global profile stay user-owned.",
+        "+# Project-scoped Codex settings. Provider, credentials, model, and global profile stay user-owned.",
+        " project_doc_max_bytes = 32768",
+        " ",
+        " [agents]"
+      ]
+    },
+    {
+      "path": ".engineering-bootstrap/AGENTS.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "b0fe2bce084de0b73ca6ed4366fcd8761a244172bc08382995ba9dc0a44a7b0b",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/AI_ASSISTANT.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "ff51c0c0ac7ec1931a1d28c512c0a97e850cb9314d6169c2b4379934468959dc",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/DEPLOYMENT_GUARDRAILS.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "35436d0572109a0a229de8bcdcf3e99032cce980f2f765ef196e7cd992520cbc",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/EVIDENCE_BASELINE.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "02004a9ba1ce0006a2ff43bd7f318fd329893d88c5426836ee6ad9dd09f1c4a3",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/SECURITY_BASELINE.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "77a64f9a588df63f39216737bd2d3b552702118435661d933668e21c082a55c1",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/TEST_BASELINE.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "2b467469b1a2e114c360a127af177e715e8bbd07d0c181b2cf99b728a5c3914a",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/bootstrap-manifest.json",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "301329e17973dd96f839874534ef3ea4431882eada7b43e9ea0c7b5d206cc090",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/existing-project-inventory.json",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "bf6a247107efc75707268c283b86b55835d0a08f03759b0b4758a18b703107df",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/profiles/cloud-restricted.toml",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "24695d5c0d54ecbc0fbd3bb409a94c15df2abf2bcdba0dc1845424b800b770d4",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/profiles/constrained.toml",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "79a6c506cb75098b3eed92c20875a58a9740ecdad4b26a7b9936afdd0a0001a6",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/profiles/default.toml",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "d07f6243f6630aa9f0d9f0f7004889aa4949597fd991ed0dd8ec1130661182a4",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/profiles/large-workstation.toml",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "78cccc25188d34360e63e9feaf7addfc77cb27ed6fe74cd0b6ea403464a16de0",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/profiles/local-model.toml",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "fea366b9bfa1ffae071cb0d3c1032fe8474ae50e8b4b109bb21e591626119e5c",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/project-management/ACCEPTANCE_CRITERIA.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "078d084138825bd446c15a1d0bb98b202049a9fe16e80effdcb5f70187977edb",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/project-management/ASSUMPTIONS.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "bd7a117743016054b8d7f49fc3442c917ec09e0a15b58dc770fd82cc2ba7a255",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/project-management/EXECUTION_PLAN.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "5c39e9905b7e6024fb070a4c1a0d520ec42eccaa124708bacff46924078e036b",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/project-management/ORCHESTRATION.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "7bcc0bffce00b4d990bb756338389391146d70bdce9213d9a9ca68dbdc1b5ef9",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/project-management/PROJECT_CONTEXT.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "b5f1c3467d36f5ff99cedfaee520fe46ffdb7a3dd28752158823130a3508db15",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/project-management/PUNCH_CARDS.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "ea5d621e7e22b24340f869859306223c3310acbaa14e363af112671cc090c479",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/project-management/RISKS.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "9c19f76e610ceefa209f14d910fd479068d694f0da4c640d5f52599be6be760f",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/project-management/state.json",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "e328369651804655e66c2b15dd053e59d46c02e2677e96b3bd0b9d0c061a56dd",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/project-record.json",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "313b1b1d030d6054723f8a92c3de866644fb9492b74c31818d95f7aa0f8a2e45",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/project-registry.json",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "6120cae10721549c6c4937631dc93be800b4d6130e8f81f6167f936825cd9166",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/project.toml",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "a94cf495cfaac8ea923c0d7315aa9e03ccc4aa476879a532dbf183a5fa9beddb",
+      "action": "unchanged"
+    },
+    {
+      "path": ".engineering-bootstrap/prompts/existing-project.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "36b001236c521d56a8d128f52c197baa7c589067b0fb69469060f2774d172746",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/prompts/new-project.md",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "1d7f473460a4b8df27992dd7a64a02e574ea41731ea0b22386a28f3457b25efd",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/vscode.settings.json",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "989385d101392391a8a012052f13efb7b47f923dfee88d898af15307cc925659",
+      "action": "create"
+    },
+    {
+      "path": ".engineering-bootstrap/vscode.tasks.json",
+      "scope": "bootstrap_owned",
+      "proposed_sha256": "cff593cb8e1198aea27e5ec687c8562a869a3982b90387dcdb0ca34b975fb44e",
+      "action": "create"
+    },
+    {
+      "path": ".github/copilot-instructions.md",
+      "scope": "integration",
+      "proposed_sha256": "da2a0d9537d191bebc3369371edf23fc632553a7fe48df664574b87ccb0f13c1",
+      "action": "preserve_existing",
+      "existing_sha256": "e75110fc53596299210f6b616f8139b46bd23ddd3cdd02b396d4ebfa62b7a93b",
+      "diff": [
+        "--- existing/.github/copilot-instructions.md",
+        "+++ bootstrap/.github/copilot-instructions.md",
+        "@@ -1,4 +1,3 @@",
+        " # Repository assistant contract",
+        " ",
+        "-Follow `AI_ASSISTANT.md` and `AGENTS.md`. Start from compact metadata, load skill bodies lazily, bind work to one project namespace, declare side effects before execution, preserve evidence, and quarantine instead of deleting.",
+        "-",
+        "+Follow `.engineering-bootstrap/AI_ASSISTANT.md` and existing repository instructions."
+      ]
+    },
+    {
+      "path": ".vscode/settings.json",
+      "scope": "integration",
+      "proposed_sha256": "989385d101392391a8a012052f13efb7b47f923dfee88d898af15307cc925659",
+      "action": "preserve_existing",
+      "existing_sha256": "59feeba7239cd847d739214134c149e19db431026b60130dbbfa528fbc0e66e8",
+      "diff": [
+        "--- existing/.vscode/settings.json",
+        "+++ bootstrap/.vscode/settings.json",
+        "@@ -6,7 +6,8 @@",
+        "     \"**/raw/**\": true,",
+        "     \"**/quarantine/**\": true,",
+        "     \"**/evidence/**\": true,",
+        "-    \"**/planning/inventory/**\": true",
+        "+    \"**/planning/inventory/**\": true,",
+        "+    \"**/.engineering-bootstrap/cache/**\": true",
+        "   },",
+        "   \"search.exclude\": {",
+        "     \"**/raw/**\": true,"
+      ]
+    },
+    {
+      "path": ".vscode/tasks.json",
+      "scope": "integration",
+      "proposed_sha256": "cff593cb8e1198aea27e5ec687c8562a869a3982b90387dcdb0ca34b975fb44e",
+      "action": "preserve_existing",
+      "existing_sha256": "5c14a09c06bc2fcc500786ca101bd88e509ebdd77dd182f8853c697611fc17ae",
+      "diff": [
+        "--- existing/.vscode/tasks.json",
+        "+++ bootstrap/.vscode/tasks.json",
+        "@@ -8,9 +8,15 @@",
+        "       \"problemMatcher\": []",
+        "     },",
+        "     {",
+        "-      \"label\": \"Bootstrap: source tests\",",
+        "+      \"label\": \"Bootstrap: check project\",",
+        "       \"type\": \"shell\",",
+        "-      \"command\": \"python -m unittest discover -s tests -v\",",
+        "+      \"command\": \"engineering-bootstrap project-check --project .\",",
+        "+      \"problemMatcher\": []",
+        "+    },",
+        "+    {",
+        "+      \"label\": \"Bootstrap: bounded startup\",",
+        "+      \"type\": \"shell\",",
+        "+      \"command\": \"engineering-bootstrap startup --project .\",",
+        "       \"problemMatcher\": []",
+        "     },",
+        "     {"
+      ]
+    },
+    {
+      "path": "AGENTS.md",
+      "scope": "integration",
+      "proposed_sha256": "b0fe2bce084de0b73ca6ed4366fcd8761a244172bc08382995ba9dc0a44a7b0b",
+      "action": "preserve_existing",
+      "existing_sha256": "c602197b2fa4d043be4445861e32f97a01a1c80725e3702d4f7b6635b15c098a",
+      "diff": [
+        "--- existing/AGENTS.md",
+        "+++ bootstrap/AGENTS.md",
+        "@@ -1,9 +1,9 @@",
+        " # Repository engineering contract",
+        " ",
+        "-- Keep startup bounded: inspect compact metadata before loading detailed skills or policy text.",
+        "-- Use only admitted capabilities and declare effects before execution.",
+        "-- Ask for approval before writes, installs, network access, services, migrations, or destructive work.",
+        "-- Checkpoint material steps and retain evidence for completion claims.",
+        "-- Run `python -m unittest discover -s tests -v` and `python -m runtime.cli validate` after control-plane changes.",
+        "-- Never hard-delete source, owned, unknown, generated, failed, superseded, temporary, cache, or bytecode artifacts. Inventory, hash, move to recoverable quarantine, verify, and retain a recovery receipt.",
+        "-- Treat staged intake as open until the user explicitly closes it. Require two matching full-tree snapshots and an immediate pre-move equality check before sanitization or quarantine.",
+        "+- Begin with `PROJECT_MANAGEMENT.md` and `.engineering-bootstrap/AI_ASSISTANT.md`.",
+        "+- Keep startup bounded: inspect compact metadata before loading a selected skill body.",
+        "+- Preserve existing owners and use only admitted capabilities.",
+        "+- Declare effects and obtain approval before writes, installs, network access, services, migrations, privileged actions, or destructive work.",
+        "+- Checkpoint material steps and retain current evidence for completion claims.",
+        "+- Quarantine instead of deleting.",
+        "+- Run `engineering-bootstrap project-check --project .` before declaring bootstrap changes complete."
+      ]
+    },
+    {
+      "path": "AI_ASSISTANT.md",
+      "scope": "integration",
+      "proposed_sha256": "6e4d19f950dd1e4f499dc15dca6b25cd8ba725ee6534f733f5adfd8b4ba10ea4",
+      "action": "preserve_existing",
+      "existing_sha256": "2ecbd31ec63fdfa7b6bb8084cdf8b94bd3b5933a2d2e0621ff81db034f02fd25",
+      "diff": [
+        "--- existing/AI_ASSISTANT.md",
+        "+++ bootstrap/AI_ASSISTANT.md",
+        "@@ -1,26 +1,3 @@",
+        "-# Model-neutral assistant entry point",
+        "+# Assistant entry point",
+        " ",
+        "-This repository is model-agnostic. Any coding assistant must follow `AGENTS.md`, then load only the minimum metadata needed from `bootstrap/startup.toml`, `registry/skill_catalog.toml`, and `policies/policy_index.json`.",
+        "-",
+        "-## Startup",
+        "-",
+        "-1. Resolve one explicit project root and one project namespace.",
+        "-2. Read compact registry and policy summaries only.",
+        "-3. Select at most three relevant capabilities.",
+        "-4. Load a selected skill body only after admission and scope checks.",
+        "-5. Declare effects, budgets, evidence, approval, rollback, and stop conditions before execution.",
+        "-6. Checkpoint and unload selected task context after the bounded step.",
+        "-",
+        "-## Non-negotiable boundaries",
+        "-",
+        "-- Default-deny untagged or foreign-project context.",
+        "-- Never place private memory, embeddings, prompts, logs, or source into shared indexes.",
+        "-- Never hard-delete owned or unknown material. Plan, dry-run, hash, quarantine, verify, and await review.",
+        "-- Never treat an index, model, or external memory provider as the canonical source of truth.",
+        "-- Never report success from command exit alone; verify revision-bound downstream outcomes.",
+        "-- Ask for approval before writes, installs, network calls, services, migrations, or destructive effects.",
+        "-",
+        "-## Validation",
+        "-",
+        "-Run `python -m runtime.cli validate` and `python -m unittest discover -s tests -v` after control-plane changes. Use `engineering-bootstrap project-check --project .` in a commissioned project.",
+        "-",
+        "+Follow `.engineering-bootstrap/AI_ASSISTANT.md`, `PROJECT_MANAGEMENT.md`, and existing repository instructions."
+      ]
+    },
+    {
+      "path": "ARCHITECTURE_GOVERNANCE_AND_RISK.md",
+      "scope": "integration",
+      "proposed_sha256": "f6f2d35adda06ba0b54bf7fa68d37d1e4f60238baed4bbda7f33a867091a6aa9",
+      "action": "create"
+    },
+    {
+      "path": "CLAUDE.md",
+      "scope": "integration",
+      "proposed_sha256": "e7718f4daa7d17c17120c05eb801fdb73c2f4c0952bbf2620e9eea62ef2a504f",
+      "action": "preserve_existing",
+      "existing_sha256": "8690a50c1c3e0048d20efdb3a28f1c9f20ad3df4d4b1c34f8e665722886936ab",
+      "diff": [
+        "--- existing/CLAUDE.md",
+        "+++ bootstrap/CLAUDE.md",
+        "@@ -1,4 +1,3 @@",
+        " # Assistant instructions",
+        " ",
+        "-Read and follow `AI_ASSISTANT.md` and `AGENTS.md`. Treat those files as the canonical model-neutral contract. Do not preload the skill library; select and load only the minimum admitted skill body for the current task.",
+        "-",
+        "+Follow `.engineering-bootstrap/AI_ASSISTANT.md` and existing repository instructions."
+      ]
+    },
+    {
+      "path": "EXECUTION_PLAN_PUNCH_CARDS_AND_ACCEPTANCE.md",
+      "scope": "integration",
+      "proposed_sha256": "cf35c272eb2bcff4430ab17f8d7d3c543e7e5d409e6b249158d1105f77a9f545",
+      "action": "create"
+    },
+    {
+      "path": "GEMINI.md",
+      "scope": "integration",
+      "proposed_sha256": "e7718f4daa7d17c17120c05eb801fdb73c2f4c0952bbf2620e9eea62ef2a504f",
+      "action": "preserve_existing",
+      "existing_sha256": "01146a543250aa07e42553ed866ffb36ca37905ab7a1b5286627e680c2f87921",
+      "diff": [
+        "--- existing/GEMINI.md",
+        "+++ bootstrap/GEMINI.md",
+        "@@ -1,4 +1,3 @@",
+        " # Assistant instructions",
+        " ",
+        "-Read and follow `AI_ASSISTANT.md` and `AGENTS.md`. Treat those files as the canonical model-neutral contract. Keep project context isolated and use quarantine instead of deletion.",
+        "-",
+        "+Follow `.engineering-bootstrap/AI_ASSISTANT.md` and existing repository instructions."
+      ]
+    },
+    {
+      "path": "PROJECT_BLUEPRINT.md",
+      "scope": "integration",
+      "proposed_sha256": "2e7a7ca3b2af283c357699852f5df1a55f005d742a278b6c03c929ec572806c9",
+      "action": "create"
+    },
+    {
+      "path": "PROJECT_MANAGEMENT.md",
+      "scope": "integration",
+      "proposed_sha256": "03dbed76165472372d46c9666f3aaf0e15038cdf095518fab50c6fbb9e4467ca",
+      "action": "create"
+    }
+  ],
+  "blocking_conflicts": [],
+  "preserved_existing": [
+    ".ai/assistant.toml",
+    ".codex/config.toml",
+    ".github/copilot-instructions.md",
+    ".vscode/settings.json",
+    ".vscode/tasks.json",
+    "AGENTS.md",
+    "AI_ASSISTANT.md",
+    "CLAUDE.md",
+    "GEMINI.md"
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deploy Isolated Model Worker"
+  short_description: "Plan an isolated accelerator-backed worker"
+  default_prompt: "Use $deploy-isolated-model-worker to perform this workflow with explicit evidence and safety boundaries."

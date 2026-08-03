@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "generator": "engineering_bootstrap.graph_registry/1.0.0",
+  "nodes": [
+    "evidence-assembler",
+    "execution-contract-enforcer",
+    "outcome-verifier",
+    "skill-admission-controller",
+    "skill-navigator",
+    "workflow-orchestrator"
+  ],
+  "edges": [
+    {
+      "source": "workflow-orchestrator",
+      "target": "evidence-assembler",
+      "relation": "depends_on",
+      "detail": ""
+    },
+    {
+      "source": "workflow-orchestrator",
+      "target": "execution-contract-enforcer",
+      "relation": "depends_on",
+      "detail": ""
+    },
+    {
+      "source": "workflow-orchestrator",
+      "target": "outcome-verifier",
+      "relation": "depends_on",
+      "detail": ""
+    },
+    {
+      "source": "workflow-orchestrator",
+      "target": "skill-navigator",
+      "relation": "depends_on",
+      "detail": ""
+    }
+  ]
+}

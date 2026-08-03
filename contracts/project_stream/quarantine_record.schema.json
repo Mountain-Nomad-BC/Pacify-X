@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:quarantine_record",
+  "title": "Quarantine Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "quarantine_id",
+    "project_id",
+    "original_path",
+    "quarantine_path",
+    "reason",
+    "pre_move_hash",
+    "state"
+  ],
+  "properties": {
+    "quarantine_id": {
+      "type": "string",
+      "pattern": "^qtn_"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^prj_"
+    },
+    "original_path": {
+      "type": "string"
+    },
+    "quarantine_path": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "pre_move_hash": {
+      "type": "string"
+    },
+    "hash_algorithm": {
+      "type": "string",
+      "default": "sha256"
+    },
+    "size_bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "state": {
+      "enum": [
+        "planned",
+        "moved",
+        "verified",
+        "restore-tested",
+        "approved-for-retention",
+        "approved-for-deletion",
+        "restored"
+      ]
+    },
+    "intent_id": {
+      "type": "string",
+      "pattern": "^int_"
+    },
+    "actor_id": {
+      "type": "string"
+    },
+    "moved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "restore_instructions": {
+      "type": "string"
+    },
+    "reviewer": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

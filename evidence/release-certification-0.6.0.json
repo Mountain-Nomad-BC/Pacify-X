@@ -1,0 +1,138 @@
+{
+  "created_utc": "2026-08-03T03:03:33.321466+00:00",
+  "evidence_hashes": {
+    "evidence/rel008-assimilation.json": "82a6c338eb0606e6993124554476065f848654da360e4a170896eba8a8188774",
+    "pyproject.toml": "35bfed8701f18cfcfc194bc4aabc63161f920605018e76cdf766a1eea723287a",
+    "registry/contract_ownership.json": "7bdc29456f727ba3fe3df67aeb4f992e54ca34ade428145c9ef61deb3440d844",
+    "registry/declared_capability_recovery_map.json": "ee71ac7baa5c8f858831d7b0d942226286be3490fd7592c5c691249169b98b67",
+    "registry/graphs/graph_manifest.json": "d739c3db740674d93db9940754e84c377de30912cb8368460be0a83407ca0e03",
+    "registry/metacognitive_capabilities.json": "5c8dff1d250352318aa87c50dcdcea48c79cee4b0c988f64643d03bcd07afb5d",
+    "registry/scheduling_capabilities.json": "67448b66a8c4cffa6e0ee6ae67adfdbbc60e712226ba02a70ce20c47d70a217e",
+    "registry/semantic_capability_index.json": "788f1d5c3987ea281f9476ef5b10a60f1a796a324a8a7b53682bf07b28e3c3d6",
+    "temp/quarantine/rel008-last-round-source-20260802/QUARANTINE_MANIFEST.json": "c1b8145dababcb24d3121d8c4d4c3e7d519bf1aa04660a941e89d5b221827f34",
+    "temp_audit_work/last_round_work/REL008_FILE_DISPOSITIONS.json": "abbe74145e02778447141956a050dae889c7e08928687304fbc0627bdae52252",
+    "temp_audit_work/last_round_work/REL008_INSTALLED_WHEEL_060.json": "92a892bc3620355bc8d3974c361ed14b20203aa7aec800333940b4eb97f066eb",
+    "temp_audit_work/last_round_work/source_audit_final.json": "9befda34fab259f383a91c6bf67650366c036c66196b99a0e2f8f6e1becc6890"
+  },
+  "gates": {
+    "catalog": {
+      "active": 60,
+      "mapped_deferred": 29,
+      "maximum_selected": 3,
+      "records": 89,
+      "startup_hydrated_bodies": 0
+    },
+    "contracts": {
+      "owned": 80,
+      "total": 80,
+      "valid": true
+    },
+    "declared_suite": {
+      "authoritative_contracts": 257,
+      "outcomes": 257,
+      "safe_exact_tools": 56,
+      "unsafe_bodies_rejected": 3,
+      "workflows": 62
+    },
+    "framework_tests": {
+      "failed": 0,
+      "passed": 300
+    },
+    "graphs": {
+      "artifacts": 6,
+      "deterministic": true,
+      "fresh": true
+    },
+    "installed_wheel": {
+      "command": "python -m unittest discover -s tests -p test_installed_wheel_e2e.py -v",
+      "elapsed_seconds": 120.107,
+      "release": "0.6.0",
+      "schema_version": "1.0",
+      "status": "PASS",
+      "tests_run": 1,
+      "verified_behaviors": [
+        "wheel_build",
+        "clean_environment_install",
+        "registry_validation",
+        "new_project_commissioning",
+        "existing_project_owner_preservation",
+        "multi_project_isolation",
+        "project_scoped_memory"
+      ]
+    },
+    "integrations": {
+      "active": 3,
+      "smoke_tested": true
+    },
+    "metacognitive": {
+      "formulas": 79,
+      "policies": 9,
+      "private_reasoning_capture": "hard_block",
+      "protected_trait_inference": "hard_block",
+      "schemas": 14,
+      "skills": 50,
+      "workflows": 15
+    },
+    "official_modified_skill_validation": {
+      "failed": 0,
+      "passed": 9
+    },
+    "registry": {
+      "core_active_capabilities": 6,
+      "valid": true
+    },
+    "release_audit": {
+      "strict_external_evidence": true,
+      "valid": true
+    },
+    "sanitization": {
+      "active_zip_files": 0,
+      "errors": 0,
+      "files_scanned": 1268,
+      "identifier_hits": 0,
+      "legacy_placeholder_hits": 0
+    },
+    "scheduling": {
+      "execution_authority": "none",
+      "policies": 3,
+      "runtime": "deterministic_observe_only",
+      "schemas": 8,
+      "skills": 30,
+      "workflows": 5
+    }
+  },
+  "last_round_intake": {
+    "expanded_file_denominator": 2195,
+    "generated_cache_files_externalized": 3,
+    "hard_delete": false,
+    "intake_closed": true,
+    "operation": "recoverable_move_to_quarantine",
+    "post_move_inventory_reconciled": true,
+    "pre_move_equality_verified": true,
+    "quarantine_manifest_sha256": "c1b8145dababcb24d3121d8c4d4c3e7d519bf1aa04660a941e89d5b221827f34",
+    "quarantine_path": "temp/quarantine/rel008-last-round-source-20260802",
+    "recovery": "Move the quarantined source tree back to its recorded source path only after an approved reopen operation.",
+    "schema_version": "1.0",
+    "source_alias": "last-round",
+    "source_audit_inventory_sha256": "b17a0a78944938500ab4000e01c895687e1f5862185a21153bd013c9e9307c54",
+    "source_byte_count": 4626519,
+    "source_file_count": 2192,
+    "source_path": "temp_audit_work/last_round",
+    "source_tree_sha256": "e7fb7dbdc79f120f3510beb0e9ec40944daaca11afd93e053aeaf3c590d524f3"
+  },
+  "recovery": "Move the quarantined source tree back to its recorded source path only after an approved reopen operation.",
+  "release": "0.6.0",
+  "revocation_triggers": [
+    "material code, contract, registry, policy, model, integration, workflow, package, or evidence change",
+    "failed dependency or stale validation",
+    "scope or project-isolation violation"
+  ],
+  "schema_version": "1.0",
+  "scope": "Independent, model-agnostic engineering-loop bootstrap with bounded new/existing project commissioning, isolated multi-project management, governed memory, authoritative expert capability contracts, metacognitive controls, and observe-only capability scheduling.",
+  "status": "deployment_ready",
+  "supersedes": [
+    "release-certification-0.3.0.json",
+    "release-certification-0.4.0.json",
+    "revoked release-certification-0.5.0.json"
+  ]
+}

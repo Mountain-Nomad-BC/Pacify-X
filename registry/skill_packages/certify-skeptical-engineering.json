@@ -1,0 +1,39 @@
+{
+  "id": "certify-skeptical-engineering",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/certify-skeptical-engineering/SKILL.md",
+  "body_sha256": "4ed66c6cb86bd3b0d658420a8de323e9f1ea26f2c240bf53cd9b3ac536591451",
+  "references": [],
+  "capability_tags": [
+    "certification",
+    "evidence",
+    "skeptical",
+    "maturity"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "clean_room",
+    "basis": [
+      {
+        "path": "skills_bootstrap_stuff/# Engineering Philosophy Skeptical.txt",
+        "sha256": "5ad0e37eec252fc54bb32e64d8168ef7b5872fa4263099270e847b021ce69253"
+      },
+      {
+        "path": "skills_bootstrap_stuff/skeptial engineering.txt",
+        "sha256": "d13ff90cf0e2747accf54b65f78e97ab38a3e308c79a819c9e011f2a6c77be6d"
+      },
+      {
+        "path": "skills_bootstrap_stuff/The actual lifecycle I see is.txt",
+        "sha256": "efee5005724cc8e7db378730bfbd644a0c08e01c4990ace87fe3f6d5ce2def8f"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_assurance_controls.py",
+  "evidence": "tests/test_assurance_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "release": "REL-010",
+  "status": "passed",
+  "final_full_profile_pending": false,
+  "validations": [
+    {
+      "surface": "targeted_corrective_controls",
+      "tests": 58,
+      "passed": 58,
+      "failed": 0
+    },
+    {
+      "surface": "exact_tool_certification",
+      "tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "admitted_exact_tools": 56,
+      "generated_domain_wrappers": 7,
+      "cache_forgery_timeout_and_failure_receipts_tested": true
+    },
+    {
+      "surface": "installed_wheel_end_to_end",
+      "tests": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "surface": "release_finalizer_external_evidence_and_structural_focus",
+      "tests": 13,
+      "passed": 13,
+      "failed": 0
+    },
+    {
+      "surface": "final_full_profile",
+      "tests": 391,
+      "subtests": 360,
+      "passed": 391,
+      "failed": 0,
+      "skipped": 0,
+      "receipt": "evidence/rel010-final-full-profile.json"
+    }
+  ],
+  "denominators": {
+    "skills": 60,
+    "contracts": 82,
+    "python_files": 331,
+    "packaged_python_files": 284,
+    "direct_behavior_python_files": 63,
+    "registry_count_envelopes": 46,
+    "effect_surfaces": 387,
+    "artifact_reachability_records": 320,
+    "historical_external_references": 16,
+    "structural_categories": 15,
+    "mature_framework_audit_items": 21
+  },
+  "structural_result": {
+    "valid": true,
+    "unreviewed_exact_duplicate_groups": 0,
+    "unreviewed_duplicate_logic_groups": 0,
+    "import_cycles": 0,
+    "unreachable_orchestrations": 0,
+    "undiscoverable_skills": 0,
+    "orphan_governed_artifacts": 0
+  },
+  "sanitization_receipt": "evidence/rel010-sanitization-repair.json",
+  "hard_delete": false
+}

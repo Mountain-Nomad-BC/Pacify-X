@@ -1,0 +1,36 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:trace-link",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "evidence": {
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      },
+      "type": "array"
+    },
+    "relation": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "target_id": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_id",
+    "target_id",
+    "relation",
+    "evidence"
+  ],
+  "title": "Trace Link",
+  "type": "object"
+}

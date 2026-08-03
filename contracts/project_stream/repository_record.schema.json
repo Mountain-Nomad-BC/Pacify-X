@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:repository_record",
+  "title": "Repository Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "repository_id",
+    "project_id",
+    "logical_root",
+    "physical_root",
+    "role"
+  ],
+  "properties": {
+    "repository_id": {
+      "type": "string",
+      "pattern": "^repo_"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^prj_"
+    },
+    "logical_root": {
+      "type": "string"
+    },
+    "physical_root": {
+      "type": "string"
+    },
+    "role": {
+      "enum": [
+        "application",
+        "service",
+        "infrastructure",
+        "data",
+        "documentation",
+        "shared-library",
+        "tooling",
+        "other"
+      ]
+    },
+    "remote_fingerprints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "default_branch": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "nested_repository_policy": {
+      "enum": [
+        "deny",
+        "explicit-only"
+      ]
+    }
+  }
+}

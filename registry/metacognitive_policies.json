@@ -1,0 +1,88 @@
+{
+  "policies": [
+    {
+      "enforcement": "fail_or_escalate",
+      "id": "no-false-certainty",
+      "rules": [
+        "Unknowns remain explicit.",
+        "Confidence requires evidence and method.",
+        "Precise probabilities require calibration evidence or clearly labeled subjective status."
+      ]
+    },
+    {
+      "enforcement": "hard_block",
+      "id": "no-private-chain-of-thought-capture",
+      "rules": [
+        "Record operational events and artifacts only.",
+        "Do not request or store hidden private reasoning.",
+        "Redact secrets and sensitive data."
+      ]
+    },
+    {
+      "enforcement": "fail_closed",
+      "id": "semantic-side-effects",
+      "rules": [
+        "Persistent writes require declared semantic effects.",
+        "Undeclared material mutation fails certification.",
+        "High-impact reversible effects require tested rollback."
+      ]
+    },
+    {
+      "enforcement": "fail_closed",
+      "id": "agent-routing-safety",
+      "rules": [
+        "Permissions and safety are hard gates.",
+        "Failure correlation is considered for teams.",
+        "High-risk work requires independent verification."
+      ]
+    },
+    {
+      "enforcement": "approval_required",
+      "id": "optimization-governance",
+      "rules": [
+        "Freeze baseline and environment.",
+        "Use bounded reversible experiments.",
+        "Preserve negative results.",
+        "No direct production self-modification.",
+        "Test rollback before promotion."
+      ]
+    },
+    {
+      "enforcement": "hard_block",
+      "id": "engineering-dna-ethics",
+      "rules": [
+        "Profile observable project practices only.",
+        "Do not infer protected or psychological traits.",
+        "Include evidence, context, confidence, and expiry."
+      ]
+    },
+    {
+      "enforcement": "fail_or_quarantine",
+      "id": "knowledge-dynamics-governance",
+      "rules": [
+        "Physics terms are operational metaphors.",
+        "Composite scores expose raw components.",
+        "Trust/decay updates are reversible and event-sourced."
+      ]
+    },
+    {
+      "enforcement": "hard_block",
+      "id": "integration-nondestructive",
+      "rules": [
+        "Dry run by default.",
+        "Similarity never authorizes deletion.",
+        "Protect stronger runtime, contracts, tests, evidence, docs, and aliases."
+      ]
+    },
+    {
+      "enforcement": "fail_release",
+      "id": "release-hygiene",
+      "rules": [
+        "Confirmed secrets fail release.",
+        "Exclude caches and compiled artifacts.",
+        "Sanitize local absolute paths.",
+        "Use deterministic ZIP metadata and hashes."
+      ]
+    }
+  ]
+}

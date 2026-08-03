@@ -1,0 +1,33 @@
+{
+  "id": "isolate-project-streams",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/isolate-project-streams/SKILL.md",
+  "body_sha256": "f9e9b72e34dccf638d7fe7022a987f23a92cea4f1e76686f1ce08bf353b998cc",
+  "references": [
+    ".agents/skills/isolate-project-streams/references/scope-contract.md"
+  ],
+  "capability_tags": [
+    "project",
+    "session",
+    "lease",
+    "transfer",
+    "isolation"
+  ],
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "provenance": {
+    "type": "clean_room_source_synthesis",
+    "basis": [
+      "registry/project_stream_capabilities.json",
+      "evidence/source-migration-receipt.json"
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_workspace_manager.py",
+  "evidence": "tests/test_workspace_manager.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

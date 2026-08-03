@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "loading_rule": "Probe only the candidates required by a selected capability; do not probe the full list at startup.",
+  "aliases": [
+    {"candidates": ["rg"], "tool_id": "repository-search", "startup_default": true},
+    {"candidates": ["git"], "tool_id": "version-control", "startup_default": true},
+    {"candidates": ["docker"], "tool_id": "container-runtime", "startup_default": true},
+    {"candidates": ["podman"], "tool_id": "container-runtime", "startup_default": false},
+    {"candidates": ["python", "python3", "node"], "tool_id": "language-runtime", "startup_default": false},
+    {"candidates": ["npm", "pnpm", "pip", "uv"], "tool_id": "package-manager", "startup_default": false},
+    {"candidates": ["pytest", "playwright"], "tool_id": "test-runner", "startup_default": false},
+    {"candidates": ["curl"], "tool_id": "network-client", "startup_default": false},
+    {"candidates": ["playwright", "chromium", "chrome"], "tool_id": "browser-automation", "startup_default": false},
+    {"candidates": ["pip-audit", "cargo-audit", "trivy", "syft", "grype", "gitleaks", "clamscan"], "tool_id": "security-scanner", "startup_default": false},
+    {"candidates": ["codex"], "tool_id": "agent-runtime", "startup_default": false},
+    {"candidates": ["mcp"], "tool_id": "tool-protocol-server", "startup_default": false}
+  ]
+}

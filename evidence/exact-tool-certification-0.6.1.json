@@ -1,0 +1,1943 @@
+{
+  "admitted_tools": 56,
+  "directly_loaded": 56,
+  "domain_wrappers": 7,
+  "errors": [],
+  "negative_cases": 11,
+  "passed_domain_wrappers": 7,
+  "passed_tools": 56,
+  "positive_cases": 56,
+  "results": [
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "fe775e9138a68256e7eaa8188cc5fac1ac53377d16712f3dc36c7f54c41c3c1c"
+      },
+      "id": "agents-md-generator",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "60093cd0abc1d806f62526bc129f97701c3fcce42d727c4fd2e3407e81885b8f"
+      },
+      "sha256": "2d0c69c73eb3fb835b2d4b6a3de4544fbf44fe8191dd69d8f4f616264f7175b3",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "5ddcce40b0f8c89951359d4cbe55e017ba370321aa92178a81c46087ff8a4ba4"
+      },
+      "id": "ai-bom",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "2b09c8c36cf5b3e5cff526f7ceab13c2a61ec5797e66e42932955bc3ca85ac61"
+      },
+      "sha256": "f68a1e39efc793de2687fe055de081d9fab7ece0010c34be3eda23abe983994b",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_ai_bom.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "f016a3282565d81a7d8ed0bb9f1b33aa97a9be070302509d10bdbadd5b9f765c"
+      },
+      "id": "approval-request",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "5122264a0f39424ef558ac1bd5cfac6bd20dac163985180e29a01d10ed7d0589"
+      },
+      "sha256": "c589451189be9615e2dcbed5d64b9e59e095d0360698883f50f766de9ee21efa",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_approval_request.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "ceb1d4edf985000f9ae7f91ddffd54de677d1e6da8d69d52925150cc21f68e4f"
+      },
+      "id": "archive-verifier",
+      "negative_behavior": {
+        "exit_code": 1,
+        "expected_exit_codes": [
+          1
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "8a5f69833db9ccbfd64ae7a413226d406d09dc2fc99361acc71bb2878c9722cd"
+      },
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "57d4fcc54d313951e91ea0cea18c43fb62741882893b3cc7415b15905d1b10c4"
+      },
+      "sha256": "86ec40330adff1bdbbdaf36abe8887beefc61efe68450aa2833ac85afc54aa22",
+      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_archive_verifier.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "5c40ba628f37ec7b20c4a307223800ee15d9fa7ffc10f69e6364d963ef9e2a86"
+      },
+      "id": "backend-probe",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "d2b82ddf74d6608dbfe5ef628fa66eac79abc53d1b4feb8e89ed382d847a280b"
+      },
+      "sha256": "e5eceaeda4a42c876561fbf5ed4a3ada61408097c55e09135a6dc2155a532ee4",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_backend_probe.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "197219567549106dbc1e6c7936646cd316a637acfa70d5072f93f18ab814ae80"
+      },
+      "id": "benchmark-contamination-scan",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "3c647c8ac4fbb59bf5f49abd166fe2f8bca137bec3ed78eddb87135f93ca141d"
+      },
+      "sha256": "802ca6fefa69d3537caefac32bbe3284da43a3c8f97e018e84fceadefc89b396",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_benchmark_contamination_scan.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "0ab47799a8e1cc95412d872a0be3c51061aa8315d7e9f042242e01d6ef5b0323"
+      },
+      "id": "canary-compare",
+      "negative_behavior": {
+        "exit_code": 4,
+        "expected_exit_codes": [
+          4
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "55ff3c265358eebe93880f186bd5777c07fe31c5b97756c82aacc44ba805bc22"
+      },
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "4a0358ff1e4f8bff7c3cb0c29889975b30268c0b11c03a5780628d30d538b4e8"
+      },
+      "sha256": "72fad372e79cee8bb426d3caf21a6d15a2c4876c9afb77f314f79e5d60b83e4d",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_canary_compare.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "aef2cecaad4577ca2dbae5f9e321aa4d9ebab99682144905832b898787714d18"
+      },
+      "id": "capability-router",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "a3bdc69e1a30d5704df6aaef0199dcfb2e81f8627021f470c6aaaea8eda4ebeb"
+      },
+      "sha256": "2e6d990be494ef10d0d97110da24dd6bea36c1e122ceda824a4b9f126e4616bd",
+      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_capability_router.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "5adfe4cbb7e852090710280945ba7972799a1944c4860befb49bf2916b840012"
+      },
+      "id": "capacity-planner",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "076902d66d705fb15032d780e29d7729f83ff545d2bffe364cb258b4793867a5"
+      },
+      "sha256": "6dbd9d3257fba880c304913ecc9739934c8c93d1a5dfe6d57e6fd349d3066435",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_capacity_planner.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "581729d5529e5a4cbb971addd7f5ec7ccd836de38e84a855e8f1700faf9d0976"
+      },
+      "id": "certification-aggregator",
+      "negative_behavior": {
+        "exit_code": 1,
+        "expected_exit_codes": [
+          1
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "fb16e148d60353c879822afde38ac2c9a60d8ede1fb27514e3d1a8788398f9b3"
+      },
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "a8b83531fd70e77956e28538a086aee1112c7d3c8ff56c0a7cdc0bfdd806a4b5"
+      },
+      "sha256": "3843cffe375074a8686c23a3f47ed15f248151ca8b5206e93687de7b3545bde0",
+      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_certification_aggregator.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "4e7e665552b70a769b136168e0369c27a8871bbe1b4934ce23cac7f270abf5fc"
+      },
+      "id": "change-impact",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "b4f3fbc248f9bac4c865b8ab00dad978ca94b842016ae16bf3100d3acf0faa36"
+      },
+      "sha256": "37a11f168f869a452e04cc56318c860eef8d2d59baae28563826546b723b0692",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7111cce2f5141421bcf732cb517aea8ff5820acc5d9e198649ac39e9ccd6be55"
+      },
+      "id": "claim-ledger",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7a36db0e0d49a535d269879bad3208e168766c56a6737dc486a1586fca9ffc51"
+      },
+      "sha256": "3fea365348823a1f589949fa38d7009935ec827188e248ac1bbb598fb1ed65ac",
+      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_claim_ledger.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "e8925f717cfe9954f19d41ed418cd409e38d639343341b1cb8781b49bcaee55b"
+      },
+      "id": "collision-merge-planner",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "66afb0a742c0d057f1ae7ed6d796865bb002f00179c8ce2808fef652628a9788"
+      },
+      "sha256": "29712ef5d76e7e5f34e0249b7e8daa3ce462eb3ea1f452c427c641bb33a2d505",
+      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_collision_merge_planner.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "cccd2246c69a399943b0da68a3eb48d61818e0edf4b1b2914e62f261648e42eb"
+      },
+      "id": "completion-cutline",
+      "negative_behavior": {
+        "exit_code": 2,
+        "expected_exit_codes": [
+          2
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "e7f7913329350aaf1a3ab35a29ae0721cd47b3c60bbb9735d6acbcee8a970303"
+      },
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "b30d730e4d78a792366818c2a500665b935277f53052ddf31a84bd169dc51507"
+      },
+      "sha256": "b6dbef7545066966b9f1e05fd0c602471c0678bdc9e59545e65b76de4243f34c",
+      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_completion_cutline.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "a61dc2584e46060c527ecc555721a6a7ba1bba3e74ca063b2c0beaf1c3ae72d8"
+      },
+      "id": "config-trace",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "5922641164279a5210a7dad5b0aa07f9985741fcbe0022f3e6e99f39ae37eb8c"
+      },
+      "sha256": "08e7faae66ab45e9baf4c995160d8a971393ba1467406575cd31da5c9369174c",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_config_trace.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "c7c15cf367aa57e11f8c366902d0dca105a3410283fa5ef7cc518518cb7b7ff9"
+      },
+      "id": "context-budget",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "be52c20ff682b1e497a9de632c36f86a83e549c692e0c8384ad0cbfe4b87eb42"
+      },
+      "sha256": "68f82ca91cc6b09804182b74dedff7519a3026a464ca66a1c88813f9e088078d",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_context_budget.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "edc890e07430e4a87f4e58afc49e6c1f2c0c890a9ac626881f4a96c43854e109"
+      },
+      "id": "deterministic-archive",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "f7fb167cf1b5bd26e58682b1a43ec2846a7eb4488d93a66108d9fa48f8926229"
+      },
+      "sha256": "4e8513ad63ab44ff8a9f8cb9a80d9815ee1c9521d3ddcf111037e906bc946d54",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_deterministic_archive.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "a0a0814a03486dc11f2ec98f7c36433cc04b36e802a24aed50809fa511a29b45"
+      },
+      "id": "differential-tester",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "fa950bc178f02f874787c4a94385efb5b5d9d274d6349ae4bae26fdb67456842"
+      },
+      "sha256": "a715e538e695a6a0d27b99a6a573ea3637d0519119719c9fde291c2cc17f5586",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_differential_tester.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "6e9535da98caec6156418c6af301ee30b6f8c19e12e4560414a4136cd17eee86"
+      },
+      "id": "drift-monitor",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "0ac6710acb1b0bbcc10a8d2b9f89d2466bb912ff8a7188cb4d858ea8187ae374"
+      },
+      "sha256": "2be1da5a490d2ac90985480a7a49dcda9a0bb8fbe8bf2611df69b7b7514180b5",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_drift_monitor.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "6e822e09696d882aa0f4c4d7c938533a32588130eb29c753f0c65393ee9ab7e3"
+      },
+      "id": "duplicate-detector",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "3f92778ba238426ce52c58a44e5a876e80aadc87f05619a181d733cdae4d87bf"
+      },
+      "sha256": "3650108d3c921b18ab5b72514a7fcdcc724e85f0fe789cee27085766805552f8",
+      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_duplicate_detector.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "a75789a185f5a6fc9dce9268a25ec8c66804db42adcdbe885b15651fb1a36948"
+      },
+      "id": "durable-state",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "85551f40354195d868a8fbedc334fdcbf544870d5548a85fac92d5fd1cee9f75"
+      },
+      "sha256": "2eaf1de1416488dca24b1765da135a862b69b7ec39f1e9eed94bab0f7816d15d",
+      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_durable_state.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "64b12363d5c389786f44635cfed7b52ac23ab41c06e433e476ae3848445b0b67"
+      },
+      "id": "evidence-bundle",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "49f7db7ca03e3fecc985ec8af3964db909337351bc058d68455e532e337b69d8"
+      },
+      "sha256": "480d11614568a3f919be0dc864c1245fad64abcef37615c1bfa99323613c9597",
+      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_evidence_bundle.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "47ddb23b276b673db984cb1dd52892825a2e7d4fe8a2d8ea451e84e8620c203b"
+      },
+      "id": "failure-normalizer",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "721da56c48ca4bd54ab3ce1aeb5fe49ef5e731a96344f554dc3a407d7d4235e8"
+      },
+      "sha256": "6c4d9c2c1ceca211906bec091f11689811eee65eebcc9bf74cd9a653346c8720",
+      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_failure_normalizer.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "dc32c2ca2c1a3019fa5e57ef24a64863f3e1eab1346a81428685f96ef437a891"
+      },
+      "id": "formula-property-tests",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "d0e4e50eb48fc5ab7c38892d8c7c292bd722b18638a5b9c3451ca9f7cd913d86"
+      },
+      "sha256": "690255274143736e28097a24a76392c38aa8dc992c68e5c194f2f8d2e2db7a6b",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_formula_property_tests.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "1696ce3a52db177ea4d951f0f2168e1cb80137f30a8f82b0a1aaa8336c7021c9"
+      },
+      "id": "fuzz-json-runner",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "539dfcd37d83b5e8b3183433f1830c196487d9c0fff323cef572a5f3c4ee0e9f"
+      },
+      "sha256": "54b27c6d461c9f8699bb0f6639011d218e8d29a6edab52f6f50ddb0bd4d8940a",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_fuzz_json_runner.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "54da2610eb9eeadf87aace064afe520a9f2a7a252164e5ebe718c960ef0f7785"
+      },
+      "id": "hardware-probe",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "54da2610eb9eeadf87aace064afe520a9f2a7a252164e5ebe718c960ef0f7785"
+      },
+      "sha256": "e9c40093033f518459ae71c2b9ebe9855898de800e02cee092a72eb1d0cd9c1e",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_hardware_probe.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "f7752b0e8290c4cfe6e8f02ce355c448bf1172923c495c6d3ef162c954491593"
+      },
+      "id": "hybrid-retrieval",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "9d832fbb02bccd7b6bab932a09b8c4d4a4cff7deea9658f509285908a1c503e0"
+      },
+      "sha256": "19bc948f91a1178604c2ccb335cd084f40ee79501a41e7901d60bbf7a65088c3",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_hybrid_retrieval.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7316fdad379c448aca009e58b2a0133b3de7f9560d847f8be8caa787335fd6aa"
+      },
+      "id": "ingestion-validator",
+      "negative_behavior": {
+        "exit_code": 2,
+        "expected_exit_codes": [
+          2
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "cd052c1e3783e426bdcb0c7ffc0d969870d30792ba2a518af703061bdf11375d"
+      },
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "8f28e00ab98d06ccb974b38507eeb6e4a6d5a3f86c6bf20cfdeea8614e2fe8ef"
+      },
+      "sha256": "4522e0a170a1b204ba67d3c441d893729fe37e20bc9b0c5ff3db6a2b06767911",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_ingestion_validator.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "df6d676f7b847730ae379157405dc2926b8d4b5cdd15036e74152401870b83a9"
+      },
+      "id": "judge-calibrator",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "def05e08d3847213ab91a8743ac4c3020111f0a618f035a57a3ec436b6330784"
+      },
+      "sha256": "a1f776f25e28078abba88bb30276bbaaf673a2952f8e30ea46fc0c657069fef4",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_judge_calibrator.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "4639eae1aa9bd03657be540e0b316b6105a842d530433661a32b30e5504a3edd"
+      },
+      "id": "manifest-reconciler",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "07efa4f7d62772c0719c9eab079721238acd48875e65b54357daca09facf2a1f"
+      },
+      "sha256": "4e7370f4892fdc226eae7c4a2a0a40903ffc7cf5a853143bfab24207ef5478ca",
+      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_manifest_reconciler.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "c621685d25d16c89b5776fb78b18102a165be0b4a4e42b69b7f7e14357221673"
+      },
+      "id": "memory-write-gate",
+      "negative_behavior": {
+        "exit_code": 3,
+        "expected_exit_codes": [
+          3
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "fab2208b0bd2bfdc38fea35dac9342b5adfbea820ad048aafc48438ad4e4eca3"
+      },
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "77f10b09eae78ee33268660530a9ac04395602a6e9276473e3366e397c382127"
+      },
+      "sha256": "6572e07f74910d741f62f4fcbf31afa6e389abf34be7d5d4aca3c1b2890a5637",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_memory_write_gate.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "e392d8dde67aec4d20d0eff9824e0644583020d8a2d61b563e9699e4347fb86b"
+      },
+      "id": "metamorphic-runner",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "3bb5db58bb036fb5959e60436ec47a2c6c81a98d568feeb47ed6e4603985d4a6"
+      },
+      "sha256": "a46b56be296c6f224c4146b3a4ba6e7c15bdb386fc6582b097a18d1f5d0374cc",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_metamorphic_runner.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "c5130ae88be92c5f4b89523c277dbef0f5fb464a30a146aedb3c990c527400c4"
+      },
+      "id": "model-router",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7eba4de9b804aa5b8c5e5f3712047b32cf6a19d2135e8ddd11ad730397c6e61f"
+      },
+      "sha256": "0b430f29f8c9b0cdc4ad3d1c1773e997e5550a964819916ff4456c541731c0ee",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_model_router.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "0b829d1e78749e5e24b2ab118c74b2209f48c524491a8782fef7d9764cd96cc4"
+      },
+      "id": "mutation-operator",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "d62d90d2d80b7d02f123766c107581dd651bb70c3c85e4189436e62960f98314"
+      },
+      "sha256": "696d65200ca5a9c9840ad9dd2d5bdd11c3c98dc1936012e72bf30c80c42e7e81",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_mutation_operator.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "e7942aa2458f88bda253563c71788e031238f133f1d6fef83a29af22711240d8"
+      },
+      "id": "openapi-tool-importer",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "f3fb72a2d9876a0eb3c11e07c4b516addb714f5c0f8ed23aa5fbe9ace37a671a"
+      },
+      "sha256": "6eb31babeeecd56967a1d964b8b015c88fc445d375a2cc10bd793108a61fe6bd",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_openapi_tool_importer.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "89834591ee32dc88a6150df63764acdfd178e3b8c01c96a43a846280dcb87233"
+      },
+      "id": "patch-scope-guard",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "8ca7d225043b9794b905fa14ca49494ff2bd43feb9fc998dae4a5be8cf9f7e69"
+      },
+      "sha256": "9b9c5967c7b00597de7cce6e31031d14d66d552f41fe53d7560f1f60720b1e8d",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_patch_scope_guard.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "8b6c0bc082f5a2d8ec2b158c6203604996e09e2f0e3622a0e67a321699b73506"
+      },
+      "id": "permission-guard",
+      "negative_behavior": {
+        "exit_code": 3,
+        "expected_exit_codes": [
+          3
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "60ac34daa524caa3da01c7e804815835d9b62ae4575ce8917f65118409eb7655"
+      },
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "96601dc25c809fbc62d969e3f931afb33f3137914c2173a39f58807685d9cca3"
+      },
+      "sha256": "3e821875f1b424f5f4e923e716c044d8fed90b388a467d3c1e8c5528da3ccb08",
+      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_permission_guard.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "295c6916e5491a6c92447da9dcf224186ec6cf98788f8354f432fe69c364ead3"
+      },
+      "id": "prompt-injection-scanner",
+      "negative_behavior": {
+        "exit_code": 2,
+        "expected_exit_codes": [
+          2
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "e35789df68286343f8ed2c50ca3ad45f169bda29c17d901b7f2350f1773b0e39"
+      },
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "2ccbeb3a88e1a4c2b7617a7eadff6328bd6db47fe1dc77fd3aaaaf1ee7b32160"
+      },
+      "sha256": "c8809af93e1b881fca164d70a1085c42fde25b2091fb4784ac608b2087066ece",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_prompt_injection_scanner.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "a3a206f454f8464156bdc7eb78862d68a928a967474cac34500cf350a7761317"
+      },
+      "id": "protocol-validator",
+      "negative_behavior": {
+        "exit_code": 2,
+        "expected_exit_codes": [
+          2
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "3b68352316081808447844f34dbfc6f35d364d1f8cb1be29fbbcb162de99dd2c"
+      },
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "4230a3117170c2b7ac2f1c57eb46088aa24d4a13f21189cf75e1f0d67fb2ff03"
+      },
+      "sha256": "2b4d4b60e61cc8a0afd6ad03a48e1b174a1d51d55700434598bf706337ae5889",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_protocol_validator.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "bf1954f512befc1765354068aa2ed8ec601c5d2c4828f06daa813e3ecd4d785d"
+      },
+      "id": "provenance-generator",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "d698327e0a18259cdf79caa3f09aab7858ba71e3bfe93fa1ff9c6dae9fe2fe15"
+      },
+      "sha256": "a28f14962222c41e887cbf2cabcaa254b34eb161a4603f7feb7cbac0d01aaae1",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_provenance_generator.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "9ea455c427ca9e7d1c4f1b87623ae3baae4ecee76ec33474cf73fe4e07f45e9f"
+      },
+      "id": "recertification-impact",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "99dde229c776f87750b346b7a31a3b5f9e9989ad8152854730fcbf32602b7690"
+      },
+      "sha256": "12a05d2f7192ed0f8c8b9ee1abbd2fbe719117a1ca0b8ce7dadba8dc937f53df",
+      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_recertification_impact.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "d4356f178c0dc23d2b3551af4cf15ae765f22b8eacfc536ae6bfded5d819e682"
+      },
+      "id": "replay-bundle",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "ab754631f79eff124f4c9501a69f93f0a2691718e7ccc41911141ee33a12c758"
+      },
+      "sha256": "cee34a30b78de1d794d22a59c778be47c372b11b666cef7fdd77ab62aae9a834",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_replay_bundle.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "d128610b5f04ef242a9758a88bb4abe9bc2cfa9c024f75ee515cb1f10d3881a6"
+      },
+      "id": "repo-mapper",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "sha256": "a5f18ea59e7545d5f21e12bd76af9981e75e51b52a5a131f2e21336427dc8fdf",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_repo_mapper.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "f559fbbf2c92c3f1268581b4b15f264709ed981d7c54f377bb53057de7d00b16"
+      },
+      "id": "reproduction-scaffold",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "0a8b23a46757b5b9c246c363e2e750a070b76b0f5f8146439f82a71d5e6bb44a"
+      },
+      "sha256": "125db72ad7bcbfe56ca9f7eb0dcf82add59be7bc24a7eab352d8b6f5a21bcfe9",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_reproduction_scaffold.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "c2226a0a03d49e05f0df1bba78fe58280b53438942c6112cd0900dcbf5a645b7"
+      },
+      "id": "retrieval-evaluator",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "ef7de8883413f620ea4c412d6664e297b6ed79414f33baba469afb73ab162c61"
+      },
+      "sha256": "99752daf496f83ac9a5f1f84d8af12dcbda4896408969a9ddd9293cb6cd7b85c",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_retrieval_evaluator.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "9e570a8e1eeb6b27213c2d77165243707a3ef12e4f546c36e3a46d4163597b4c"
+      },
+      "id": "runtime-path",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "4325899e3b0400bb1fa19918b9c9a3c17430460975fe400657a2785c2095028f"
+      },
+      "sha256": "11bfda7a014173e854c23f9968fe2034a05ce84e8056119c332514df22c64fe3",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_runtime_path.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7c9d7165a12868894d359b4a4a7ca518e2563caf1937ca0525adb5683cdbbd0c"
+      },
+      "id": "sandbox-profile",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "7e43ebfe11c619e2b31c4dd5508657e12fedfd41d0751c435c6f0c1cffbbde32"
+      },
+      "sha256": "7e24a659e013dad91d62c932280068cfc77eae99c914aa3c737280adc3830a9c",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_sandbox_profile.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "95486f7b5ae32e673501ce196683a07eb2470bcb0c290ae0add6fc718c45cef9"
+      },
+      "id": "sbom-lite",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "908cf7aee094002bda49803c30fbdf8100ee33bedd7d06533c3b8a06a346aba4"
+      },
+      "sha256": "886e041017b3608e43266846cbf641ebbdf44af3a2bb9cb6cc426e3989515f67",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_sbom_lite.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "0711973562cc4ad07aeed4b44d87e5c9120512018c3cc8373b55a9b354fc12d7"
+      },
+      "id": "scoped-memory",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "3f07729036cc3f1844c375807ccd77c2b516b3cd7b8ac8a31c21049c9757b6b7"
+      },
+      "sha256": "7363b9cffee8dda22039aad5b7ccc6c6d8fd26b8d0f3d80c18a6378a29116515",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_scoped_memory.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "fb9f60fdef65340314c809b49195ac72bb1479b7abd07d98fcbfa771eeba1120"
+      },
+      "id": "secret-scanner",
+      "negative_behavior": {
+        "exit_code": 2,
+        "expected_exit_codes": [
+          2
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "d265db14192a17ba8bfe4448fc68675597fa987acb66c505c0059a704b4588b2"
+      },
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "06917e5c09065ddaf3c8c7d94fb573311409777b5ca21c96ea1f33bbfafd40e1"
+      },
+      "sha256": "086b52b3cfecab8d79e169763530be274a5bfe82437d04ee760ca062e05a62af",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "cfe6a0a5f109eafe409f20cdf7a3943a12d1a074f595611322eda5318dcd5717"
+      },
+      "id": "skill-compiler",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "af19c2951ff4fd951ccdcbd5cc045230b59fc6138f822bfe2128d9f76953e400"
+      },
+      "sha256": "263407a24c812613c823b909c6a3d56a0962fad2f196ec4c7d3b81226cb21589",
+      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "93d276f108ae3e757c302fbecd82685b691d03f95e4784b8e2900d47e1564056"
+      },
+      "id": "symbol-index",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "c44106c7ea5935b61cb39c39bea69b851a0a6575cad5882863d69a64336746d0"
+      },
+      "sha256": "f824de19a8a5045d1b84cba5328a5475bc1705c9bcfcb4752ee30e87e1409e86",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_symbol_index.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "055e068a2544c534f4adfeae2090126fb8362bbc1b5e4dde6f26e5f4a1868441"
+      },
+      "id": "threat-model",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "fd058c19b1e1f9b6830dcb119deb2d00b4b7a4a038b970a580c2ac1a210d7610"
+      },
+      "sha256": "df397a024a570fc568ba256d3700cd34ab50af4194c0a9dbdf38e3f114d76bc0",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_threat_model.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "9604869bfb8d153dbb2a500b7f4b5c5ff9310893051b5f65a4fe90ab54d8b4a8"
+      },
+      "id": "tool-policy-enforcer",
+      "negative_behavior": {
+        "exit_code": 3,
+        "expected_exit_codes": [
+          3
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "b9527b78486dd1946229e5a9e467b6b8799e52e4cff213caa036894264b0591c"
+      },
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "87454f9484d2ee86fd27349c238bfb952b23aa095b597b835eb8c120d29aab4e"
+      },
+      "sha256": "11fb537732a0e5ca20f9ecd869479daadcd09fcc12a253e23bade36a4f5fb2b2",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_tool_policy_enforcer.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "2799aa35ede5d466699d0c465f2c30734a21f1e5ed79426d03623162a0804f00"
+      },
+      "id": "trace-recorder",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "4079b5bf29313bcb2ef915a6914903a0e9ce7c0ea84f5845e52efd4054419a65"
+      },
+      "sha256": "93098e87152340c41f1964c3d9cd430b47ddd8c45bd35eccb75e1eed0d3edcdc",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_trace_recorder.py"
+    },
+    {
+      "direct_load": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": null,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "bf1cbc69d2bc5809c4939ea075e6dc65bb341befa1941c65c1a630447b1c1373"
+      },
+      "id": "trajectory-scorer",
+      "negative_behavior": null,
+      "positive_behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "a934cdb26cdeee926b76eefc9c1b78d8008ad8583e2ec44ed7f84d8b7c3a3545"
+      },
+      "sha256": "c06bd347ee32d1a34ca1f89202fbd0bd4caa229374757dec55104b38a7c91000",
+      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_trajectory_scorer.py"
+    }
+  ],
+  "schema_version": "1.0",
+  "valid": true,
+  "wrapper_results": [
+    {
+      "behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "5f4e4737a39e0f971b987c09adce25c23f53601897976b3f258e2ba25cc3dba0"
+      },
+      "outcome": "capability-router",
+      "owner": "govern-operating-kernel",
+      "sha256": "2875a0983bc003ddc89dee0188c7e954424971f5a1d3ea9d58c566cfdc9e9967",
+      "target": ".agents/skills/govern-operating-kernel/scripts/domain_tool.py"
+    },
+    {
+      "behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "851e8f4ccab8c38efca9fe8307e4c997dd57f4603b59fc110fa7a17c52683c90"
+      },
+      "outcome": "repo-mapper",
+      "owner": "analyze-repository-intelligence",
+      "sha256": "2875a0983bc003ddc89dee0188c7e954424971f5a1d3ea9d58c566cfdc9e9967",
+      "target": ".agents/skills/analyze-repository-intelligence/scripts/domain_tool.py"
+    },
+    {
+      "behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "de439b0259b08aa0ec8e24c2d9ceb191e9d560f2a96c47f9b556d5938c19566d"
+      },
+      "outcome": "differential-tester",
+      "owner": "engineer-verification-lab",
+      "sha256": "2875a0983bc003ddc89dee0188c7e954424971f5a1d3ea9d58c566cfdc9e9967",
+      "target": ".agents/skills/engineer-verification-lab/scripts/domain_tool.py"
+    },
+    {
+      "behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "c0edfd5649ed54f8ed2c8caadac9d38eb3de9aa3f7e3c387c8a890b97e776e76"
+      },
+      "outcome": "hybrid-retrieval",
+      "owner": "operate-memory-retrieval-observability",
+      "sha256": "2875a0983bc003ddc89dee0188c7e954424971f5a1d3ea9d58c566cfdc9e9967",
+      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/domain_tool.py"
+    },
+    {
+      "behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "6b6cf891b3d5fab042b9cf1a5406ed54b8517c9317ede5f92b368dae9c0aae6b"
+      },
+      "outcome": "secret-scanner",
+      "owner": "secure-agent-supply-chain",
+      "sha256": "2875a0983bc003ddc89dee0188c7e954424971f5a1d3ea9d58c566cfdc9e9967",
+      "target": ".agents/skills/secure-agent-supply-chain/scripts/domain_tool.py"
+    },
+    {
+      "behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "2a3b02606a268ca7193d95da7b198965c8d382d69f79ee774e536e22073f8afd"
+      },
+      "outcome": "model-router",
+      "owner": "govern-runtime-protocol-deployment",
+      "sha256": "2875a0983bc003ddc89dee0188c7e954424971f5a1d3ea9d58c566cfdc9e9967",
+      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/domain_tool.py"
+    },
+    {
+      "behavior": {
+        "exit_code": 0,
+        "expected_exit_codes": [
+          0
+        ],
+        "json_object": true,
+        "missing_outputs": [],
+        "parse_error": null,
+        "passed": true,
+        "stderr": "",
+        "stdout_sha256": "22cbc43758de39dff1881d069b252059d0bd0fd597d6fcc2a76d02a952e03ff2"
+      },
+      "outcome": "manifest-reconciler",
+      "owner": "manage-revocable-certification",
+      "sha256": "2875a0983bc003ddc89dee0188c7e954424971f5a1d3ea9d58c566cfdc9e9967",
+      "target": ".agents/skills/manage-revocable-certification/scripts/domain_tool.py"
+    }
+  ]
+}

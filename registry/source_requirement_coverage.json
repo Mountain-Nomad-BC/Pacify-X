@@ -1,0 +1,259 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Executable ownership and release truth for requirements distilled from the staged source packs. This registry is loaded by validation; raw source notes are not shipped as runtime behavior.",
+  "allowed_states": [
+    "operational",
+    "operational_bounded",
+    "mapped_deferred",
+    "external_evidence_only"
+  ],
+  "controls": [
+    {
+      "id": "engineering-lifecycle-orchestration",
+      "state": "operational",
+      "release_role": "required",
+      "owners": [
+        "runtime/engineering_lifecycle.py",
+        "registry/engineering_lifecycle.json",
+        "runtime/skill_navigator.py"
+      ],
+      "skills": [
+        "orchestrate-engineering-loop",
+        "execution-contract-enforcer",
+        "outcome-verifier"
+      ],
+      "contracts": [
+        "contracts/orchestration-contract.schema.json",
+        "contracts/validation-contract.schema.json"
+      ],
+      "tests": [
+        "tests/test_engineering_lifecycle.py",
+        "tests/test_integration_acceptance.py"
+      ]
+    },
+    {
+      "id": "environment-and-existing-project-discovery",
+      "state": "operational_bounded",
+      "release_role": "required",
+      "owners": [
+        "runtime/intake.py",
+        "runtime/startup.py",
+        "runtime/commissioning.py"
+      ],
+      "skills": [
+        "discover-environment-safely",
+        "commission-evidence-first-project"
+      ],
+      "contracts": [
+        "contracts/commissioning-questionnaire.schema.json"
+      ],
+      "tests": [
+        "tests/test_project_onboarding.py",
+        "tests/test_commissioning_questionnaire.py"
+      ]
+    },
+    {
+      "id": "evidence-first-commissioning-questionnaire",
+      "state": "operational",
+      "release_role": "required",
+      "owners": [
+        "runtime/commissioning.py",
+        "runtime/project_management.py",
+        "bootstrap/commissioning/questionnaire-template.json"
+      ],
+      "skills": [
+        "commission-evidence-first-project",
+        "commission-project"
+      ],
+      "contracts": [
+        "contracts/commissioning-questionnaire.schema.json",
+        "contracts/project-management.schema.json"
+      ],
+      "tests": [
+        "tests/test_commissioning_questionnaire.py",
+        "tests/test_commissioning_apply.py"
+      ]
+    },
+    {
+      "id": "project-stream-capability-library",
+      "state": "operational_bounded",
+      "release_role": "optional_bounded",
+      "owners": [
+        "runtime/project_stream_orchestrator.py",
+        "runtime/project_control_plane.py",
+        "registry/project_stream_capabilities.json",
+        "registry/project_stream_handlers.json"
+      ],
+      "skills": [
+        "isolate-project-streams",
+        "govern-memory-fabric"
+      ],
+      "contracts": [
+        "contracts/project_stream/workflow-request.schema.json",
+        "contracts/project_stream/project-scope-envelope.schema.json"
+      ],
+      "tests": [
+        "tests/test_project_stream_orchestrator.py",
+        "tests/test_project_control_plane.py"
+      ],
+      "truth_rule": "Workflow skills contain only operational child capabilities; deferred enhancements are declared separately and never invoked by the handler."
+    },
+    {
+      "id": "raw-source-pack-lineage",
+      "state": "external_evidence_only",
+      "release_role": "not_shipped",
+      "owners": [
+        "registry/source_requirement_coverage.json"
+      ],
+      "skills": [],
+      "contracts": [],
+      "tests": [
+        "tests/test_source_requirement_coverage.py"
+      ],
+      "custody_indexes": [
+        "evidence/externalized-payload-index.json"
+      ]
+    },
+    {
+      "id": "research-to-operations-opportunities",
+      "state": "operational_bounded",
+      "release_role": "optional_bounded",
+      "owners": [
+        "runtime/research_assimilation.py",
+        "runtime/knowledge_foundry.py",
+        "registry/operational_capabilities.json"
+      ],
+      "skills": [
+        "research-to-capability"
+      ],
+      "contracts": [
+        "contracts/research_ops/operationalization-record.schema.json",
+        "contracts/research_ops/research-record.schema.json"
+      ],
+      "tests": [
+        "tests/test_research_contract_admission.py",
+        "tests/test_knowledge_foundry.py"
+      ],
+      "truth_rule": "Research records are schema-enforced candidate-only inputs. Publication never becomes production proof or automatic activation."
+    },
+    {
+      "id": "runtime-cognitive-assurance",
+      "state": "operational_bounded",
+      "release_role": "optional_opt_in",
+      "owners": [
+        "runtime/cognitive_assurance.py",
+        "runtime/engineering_intelligence.py"
+      ],
+      "skills": [
+        "audit-ai-runtime-assurance",
+        "analyze-engineering-intelligence"
+      ],
+      "contracts": [
+        "contracts/runtime-assurance.schema.json"
+      ],
+      "tests": [
+        "tests/test_cognitive_assurance.py",
+        "tests/test_engineering_intelligence.py"
+      ]
+    },
+    {
+      "id": "skeptical-engineering-core",
+      "state": "operational",
+      "release_role": "required",
+      "owners": [
+        "runtime/assurance_controls.py",
+        "policies/skeptical-certification.json",
+        "registry/engineering_lifecycle.json"
+      ],
+      "skills": [
+        "certify-skeptical-engineering"
+      ],
+      "contracts": [
+        "contracts/skeptical-certification.schema.json"
+      ],
+      "tests": [
+        "tests/test_assurance_controls.py",
+        "tests/test_engineering_lifecycle.py"
+      ]
+    },
+    {
+      "id": "source-capability-assimilation",
+      "state": "operational_bounded",
+      "release_role": "required",
+      "owners": [
+        "runtime/capability_assimilation.py",
+        "registry/capability_mining_admission.json",
+        "registry/skill_orchestrations.json"
+      ],
+      "skills": [
+        "audit-source-capabilities",
+        "orchestrate-security-validation",
+        "harden-container-boundaries",
+        "deploy-isolated-model-worker",
+        "synchronize-derived-architecture",
+        "certify-reversible-validation",
+        "govern-visual-runtime-accessibility",
+        "engineer-hybrid-retrieval",
+        "inspect-live-contracts",
+        "validate-production-containers",
+        "dynamic-service-discovery",
+        "repair-corrupted-text",
+        "run-evidence-campaigns",
+        "triage-cross-surface-failures",
+        "validate-knowledge-relationships",
+        "manage-mcp-lifecycle",
+        "enforce-source-import-boundaries",
+        "govern-deployment-safety",
+        "run-resilience-drills",
+        "audit-incomplete-implementations"
+      ],
+      "contracts": [
+        "contracts/source-capability-audit.schema.json"
+      ],
+      "tests": [
+        "tests/test_capability_assimilation.py",
+        "tests/test_capability_mining_skills.py"
+      ]
+    },
+    {
+      "id": "tool-and-package-admission",
+      "state": "operational_bounded",
+      "release_role": "required",
+      "owners": [
+        "runtime/tool_intake.py",
+        "runtime/assurance_controls.py"
+      ],
+      "skills": [
+        "quarantine-external-tools"
+      ],
+      "contracts": [
+        "contracts/external-tool-intake.schema.json"
+      ],
+      "tests": [
+        "tests/test_tool_intake.py",
+        "tests/test_assurance_controls.py"
+      ]
+    },
+    {
+      "id": "verified-process-to-skill-candidate",
+      "state": "operational",
+      "release_role": "required",
+      "owners": [
+        "runtime/process_memory.py",
+        "registry/engineering_lifecycle.json",
+        "evidence/process-audit-intake-receipt.json"
+      ],
+      "skills": [
+        "trace-to-skill-compiler"
+      ],
+      "contracts": [
+        "contracts/engineering-process-record.schema.json"
+      ],
+      "tests": [
+        "tests/test_process_memory.py",
+        "tests/test_engineering_lifecycle.py"
+      ],
+      "truth_rule": "Only verified outcomes and verified recoveries compile; similarity is checked before drafting; output remains inert until separate skill admission."
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "classification": "closed external-source intake evidence; not runtime input",
+  "source_alias": "temp_2",
+  "status": "closed_and_externalized",
+  "snapshot_sequence": 5,
+  "closure_sequence": 6,
+  "file_count": 318,
+  "byte_count": 492539,
+  "tree_sha256": "bdaefc41a0717a464e7e8fed7e1e5a8f8a814aa0ef3d420bd42469fe879d545d",
+  "changed_since_prior_snapshot": 5,
+  "final_intake_complete": true,
+  "approved_by": "user-explicit-request-2026-08-02",
+  "custody_index": "evidence/externalized-payload-index.json",
+  "implementation_owners": [
+    "registry/source_requirement_coverage.json",
+    "registry/project_stream_capabilities.json",
+    "runtime/intake_lifecycle.py",
+    "runtime/memory_vault.py",
+    "runtime/project_stream_orchestrator.py"
+  ]
+}

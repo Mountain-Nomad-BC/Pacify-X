@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:research_ops:experiment-card",
+  "title": "Research-to-Operations Experiment Card",
+  "type": "object",
+  "required": [
+    "experiment_id",
+    "opportunity_id",
+    "hypothesis",
+    "baseline",
+    "treatment",
+    "metrics",
+    "gates",
+    "result"
+  ],
+  "properties": {
+    "experiment_id": {
+      "type": "string"
+    },
+    "opportunity_id": {
+      "type": "string"
+    },
+    "hypothesis": {
+      "type": "string"
+    },
+    "baseline": {
+      "type": "object"
+    },
+    "treatment": {
+      "type": "object"
+    },
+    "datasets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "direction"
+        ]
+      }
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "pass_condition"
+        ]
+      }
+    },
+    "result": {
+      "enum": [
+        "not_run",
+        "pass",
+        "conditional",
+        "fail",
+        "invalid"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decision": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

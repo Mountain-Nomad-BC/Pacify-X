@@ -1,0 +1,94 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:metacognitive:capability-genome",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "capabilities": {
+      "items": {
+        "properties": {
+          "aliases": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "effects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lifecycle": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "domain",
+          "effects"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "relations": {
+      "items": {
+        "properties": {
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "evidence": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "source": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "depends_on",
+              "extends",
+              "composes",
+              "conflicts_with",
+              "duplicates",
+              "replaces",
+              "supersedes",
+              "aliases",
+              "coexecutes"
+            ]
+          }
+        },
+        "required": [
+          "source",
+          "type",
+          "target",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "capabilities",
+    "relations"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,64 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:metacognitive:semantic-effect-contract",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "capability_id": {
+      "type": "string"
+    },
+    "epistemic_effects": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "evidence_required": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "prohibited_effects": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "reads": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "rollback": {
+      "properties": {
+        "method": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "required",
+        "method"
+      ],
+      "type": "object"
+    },
+    "writes": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "capability_id",
+    "reads",
+    "writes",
+    "epistemic_effects",
+    "evidence_required",
+    "rollback"
+  ],
+  "type": "object"
+}

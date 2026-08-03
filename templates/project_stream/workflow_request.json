@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "workflow_id": "nightly_project_health",
+  "project_id": "prj_CHANGE_ME",
+  "session_id": "session_operator",
+  "idempotency_key": "health_change_me",
+  "approved_effects": ["read_local"],
+  "timeout_seconds": 120,
+  "payload": {
+    "metrics": {
+      "tests": 1.0,
+      "security": 1.0,
+      "evidence": 1.0,
+      "dependencies": 1.0,
+      "memory": 1.0,
+      "operations": 1.0
+    },
+    "next_safe_action": "review the persisted workflow receipt"
+  }
+}

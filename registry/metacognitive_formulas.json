@@ -1,0 +1,795 @@
+{
+  "formulas": [
+    {
+      "caveats": [
+        "Aesthetic abstraction has no automatic value."
+      ],
+      "equation": "A_v=duplication_reduced+reuse_gain-complexity_added-specialization_loss",
+      "id": "abstraction-value-score",
+      "status": "formula",
+      "title": "Abstraction value score",
+      "use_when": "Evaluate meta-capabilities."
+    },
+    {
+      "caveats": [
+        "Normalize and expose factors."
+      ],
+      "equation": "R_a=impact\u00b7uncertainty\u00b7dependency_count\u00b7age_factor",
+      "id": "assumption-risk-score",
+      "status": "formula",
+      "title": "Assumption risk score",
+      "use_when": "Prioritize assumption validation."
+    },
+    {
+      "caveats": [
+        "Popularity alone is not competence."
+      ],
+      "equation": "A_s=centrality\u00b7coexecution_affinity\u00b7dependency_growth\u00b7outcome_quality",
+      "id": "attractor-strength",
+      "status": "formula",
+      "title": "Attractor strength",
+      "use_when": "Detect hubs or gravity wells."
+    },
+    {
+      "caveats": [
+        "Identification requires causal assumptions or randomization."
+      ],
+      "equation": "ATE=E[Y(1)-Y(0)]",
+      "id": "average-treatment-effect",
+      "status": "formula",
+      "title": "Average treatment effect",
+      "use_when": "State the causal effect estimand of an intervention."
+    },
+    {
+      "caveats": [
+        "Do not mechanically adjust without a causal graph."
+      ],
+      "equation": "P(y|do(x))=\u03a3_z P(y|x,z)P(z)",
+      "id": "backdoor-adjustment-reference",
+      "status": "reference",
+      "title": "Backdoor adjustment",
+      "use_when": "Adjust for a valid backdoor set."
+    },
+    {
+      "caveats": [
+        "Do not invent priors or assume dependent evidence is independent."
+      ],
+      "equation": "P(H|E)=P(E|H)P(H)/P(E)",
+      "id": "bayes-update",
+      "status": "formula",
+      "title": "Bayesian update",
+      "use_when": "Update a hypothesis probability when prior and likelihoods are defensible."
+    },
+    {
+      "caveats": [
+        "Define opportunities, not just events."
+      ],
+      "equation": "f_b=count(behavior)/opportunities",
+      "id": "behavior-frequency",
+      "status": "formula",
+      "title": "Behavior frequency",
+      "use_when": "Measure recurring engineering behavior."
+    },
+    {
+      "caveats": [
+        "Avoid assuming independent propagation."
+      ],
+      "equation": "B=\u03a3_d criticality(d)\u00b7propagation_probability(d)",
+      "id": "blast-radius-score",
+      "status": "formula",
+      "title": "Blast radius score",
+      "use_when": "Estimate downstream impact."
+    },
+    {
+      "caveats": [
+        "Compare within comparable task classes."
+      ],
+      "equation": "BS=(1/N)\u03a3(p_i-y_i)\u00b2",
+      "id": "brier-score",
+      "status": "formula",
+      "title": "Brier score",
+      "use_when": "Evaluate binary probabilistic calibration."
+    },
+    {
+      "caveats": [
+        "Method depends on metric and sample."
+      ],
+      "equation": "Use binomial/bootstrap interval around observed calibration metrics.",
+      "id": "calibration-confidence-interval",
+      "status": "reference",
+      "title": "Calibration confidence interval",
+      "use_when": "Quantify uncertainty in profile measurements."
+    },
+    {
+      "caveats": [
+        "Not literal thermodynamic entropy."
+      ],
+      "equation": "H_c=H(identity_states)+H(lifecycle_disagreement)+duplication_pressure",
+      "id": "capability-entropy",
+      "status": "formula",
+      "title": "Capability entropy",
+      "use_when": "Map fragmentation and inconsistency."
+    },
+    {
+      "caveats": [
+        "Similarity never authorizes deletion."
+      ],
+      "equation": "S=w_nN+w_ioIO+w_eE+w_bB+w_tT",
+      "id": "capability-similarity",
+      "status": "formula",
+      "title": "Capability similarity",
+      "use_when": "Compare name, IO, effects, behavior, and tests."
+    },
+    {
+      "caveats": [
+        "Unexecuted controls are not passes."
+      ],
+      "equation": "C_cert=passed_required_controls/required_controls",
+      "id": "certification-coverage",
+      "status": "formula",
+      "title": "Certification coverage",
+      "use_when": "Measure executed certification scope."
+    },
+    {
+      "caveats": [
+        "Also report separation and support."
+      ],
+      "equation": "C=mean within-cluster similarity",
+      "id": "cluster-cohesion",
+      "status": "formula",
+      "title": "Cluster cohesion",
+      "use_when": "Evaluate concept clusters."
+    },
+    {
+      "caveats": [
+        "Rare events inflate PMI; require minimum support."
+      ],
+      "equation": "PMI(A,B)=log(P(A,B)/(P(A)P(B)))",
+      "id": "coexecution-affinity",
+      "status": "formula",
+      "title": "Co-execution affinity",
+      "use_when": "Detect capabilities co-running more than chance."
+    },
+    {
+      "caveats": [
+        "Report sample size and interval."
+      ],
+      "equation": "P(F|C)=count(F\u2229C)/count(C)",
+      "id": "conditional-failure-rate",
+      "status": "formula",
+      "title": "Conditional failure rate",
+      "use_when": "Measure failures under trigger conditions."
+    },
+    {
+      "caveats": [
+        "Method and assumptions must be documented."
+      ],
+      "equation": "Estimate \u03b8 \u00b1 uncertainty using an appropriate analytic or bootstrap method.",
+      "id": "confidence-interval-reference",
+      "status": "reference",
+      "title": "Confidence interval",
+      "use_when": "Report uncertainty around measured effects."
+    },
+    {
+      "caveats": [
+        "Dimensions and weights must be explicit."
+      ],
+      "equation": "D_c=\u03a3_i w_i\u00b7distance(source_i,target_i)",
+      "id": "context-distance",
+      "status": "formula",
+      "title": "Context distance",
+      "use_when": "Assess transfer compatibility."
+    },
+    {
+      "caveats": [
+        "Context model must be explicit."
+      ],
+      "equation": "S_cn=(observed-expected_context)/scale_context",
+      "id": "context-normalized-score",
+      "status": "formula",
+      "title": "Context-normalized score",
+      "use_when": "Compare patterns across different project constraints."
+    },
+    {
+      "caveats": [
+        "Pressure signals risk, not automatic falsity."
+      ],
+      "equation": "CP=severity\u00b7evidence_quality\u00b7blast_radius\u00b7unresolved_factor",
+      "id": "contradiction-pressure",
+      "status": "formula",
+      "title": "Contradiction pressure",
+      "use_when": "Prioritize unresolved conflict."
+    },
+    {
+      "caveats": [
+        "Prefer observed trace values."
+      ],
+      "equation": "O_c=messages\u00b7latency+handoff_failures+context_duplication",
+      "id": "coordination-overhead",
+      "status": "formula",
+      "title": "Coordination overhead",
+      "use_when": "Estimate multi-agent cost."
+    },
+    {
+      "caveats": [
+        "High cosine is not behavioral equivalence."
+      ],
+      "equation": "cos(a,b)=(a\u00b7b)/(\u2016a\u2016\u2016b\u2016)",
+      "id": "cosine-similarity",
+      "status": "formula",
+      "title": "Cosine similarity",
+      "use_when": "Compare feature-vector direction."
+    },
+    {
+      "caveats": [
+        "Define eligible cases before testing."
+      ],
+      "equation": "R_ce=counterexamples/eligible_held_out_cases",
+      "id": "counterexample-rate",
+      "status": "formula",
+      "title": "Counterexample rate",
+      "use_when": "Measure theory failures."
+    },
+    {
+      "caveats": [
+        "Validity depends on counterfactual/replay fidelity."
+      ],
+      "equation": "\u0394_cf=Y_with_factor-Y_without_factor",
+      "id": "counterfactual-delta",
+      "status": "formula",
+      "title": "Counterfactual delta",
+      "use_when": "Measure replay or intervention influence."
+    },
+    {
+      "caveats": [
+        "Include safety, tests, docs, runtime, and compatibility."
+      ],
+      "equation": "A\u227bB iff A is no worse on all required coverage dimensions and better on at least one",
+      "id": "coverage-dominance",
+      "status": "formula",
+      "title": "Coverage dominance",
+      "use_when": "Compare merge candidates."
+    },
+    {
+      "caveats": [
+        "Calibrate k and threshold."
+      ],
+      "equation": "S_t=max(0,S_{t-1}+x_t-\u03bc\u2080-k)",
+      "id": "cusum-drift",
+      "status": "formula",
+      "title": "CUSUM drift",
+      "use_when": "Detect small persistent deviation."
+    },
+    {
+      "caveats": [
+        "\u03b1 must be calibrated and capped."
+      ],
+      "equation": "T_child\u2190T_child\u00b7(1-\u03b1(1-T_parent))",
+      "id": "dependency-decay-propagation",
+      "status": "formula",
+      "title": "Dependency decay propagation",
+      "use_when": "Propagate bounded trust loss."
+    },
+    {
+      "caveats": [
+        "Expose each component and critical paths."
+      ],
+      "equation": "DHS=1-(missing+cycles+incompatible+unsupported)/N_norm",
+      "id": "dependency-health-score",
+      "status": "formula",
+      "title": "Dependency health score",
+      "use_when": "Summarize dependency defects."
+    },
+    {
+      "caveats": [
+        "Choose the estimator by outcome type."
+      ],
+      "equation": "Use standardized mean difference, relative risk, or domain-appropriate effect measure.",
+      "id": "effect-size",
+      "status": "reference",
+      "title": "Effect size",
+      "use_when": "Quantify practical change beyond p-values."
+    },
+    {
+      "caveats": [
+        "Does not itself correct correlated sources."
+      ],
+      "equation": "N_eff=(\u03a3w_i)\u00b2/\u03a3w_i\u00b2",
+      "id": "effective-independent-evidence",
+      "status": "formula",
+      "title": "Effective independent evidence",
+      "use_when": "Estimate effective count under unequal weights."
+    },
+    {
+      "caveats": [
+        "Lower entropy can still be confidently wrong."
+      ],
+      "equation": "\u0394H=H_before-H_after",
+      "id": "entropy-reduction",
+      "status": "formula",
+      "title": "Entropy reduction",
+      "use_when": "Measure reduction in distributional uncertainty."
+    },
+    {
+      "caveats": [
+        "Temporal proximity alone is not causation."
+      ],
+      "equation": "C_xy=linked_events/(candidate_related_events+\u03b5)",
+      "id": "event-correlation-score",
+      "status": "formula",
+      "title": "Event correlation score",
+      "use_when": "Estimate trace linkage coverage."
+    },
+    {
+      "caveats": [
+        "Calibrate \u03bb and control limits."
+      ],
+      "equation": "z_t=\u03bbx_t+(1-\u03bb)z_{t-1}",
+      "id": "ewma-drift",
+      "status": "formula",
+      "title": "EWMA drift",
+      "use_when": "Detect sustained shifts."
+    },
+    {
+      "caveats": [
+        "Sensitive to bins and sample size."
+      ],
+      "equation": "ECE=\u03a3_b (n_b/N)|acc(b)-conf(b)|",
+      "id": "expected-calibration-error",
+      "status": "formula",
+      "title": "Expected calibration error",
+      "use_when": "Summarize confidence-bin mismatch."
+    },
+    {
+      "caveats": [
+        "Outcome probabilities and utility are assumptions."
+      ],
+      "equation": "E[U(plan)]=\u03a3_o P(o|plan)U(o)-cost-risk",
+      "id": "expected-plan-utility",
+      "status": "formula",
+      "title": "Expected plan utility",
+      "use_when": "Compare plans under uncertainty."
+    },
+    {
+      "caveats": [
+        "Utility model must be explicit."
+      ],
+      "equation": "EVI=E[max_a U(a|I)]-max_a E[U(a)]-cost(I)",
+      "id": "expected-value-of-information",
+      "status": "formula",
+      "title": "Expected value of information",
+      "use_when": "Decide whether another test/research step is worth its cost."
+    },
+    {
+      "caveats": [
+        "Coverage does not guarantee correctness."
+      ],
+      "equation": "C_e=explained_material_decisions/total_material_decisions",
+      "id": "explanation-coverage",
+      "status": "formula",
+      "title": "Explanation coverage",
+      "use_when": "Measure operational explanation coverage."
+    },
+    {
+      "caveats": [
+        "Age is not falsity; choose h by domain."
+      ],
+      "equation": "T(t)=T\u2080\u00b72^{-t/h}",
+      "id": "exponential-trust-decay",
+      "status": "formula",
+      "title": "Trust half-life decay",
+      "use_when": "Decay time-sensitive trust."
+    },
+    {
+      "caveats": [
+        "Needs enough comparable failures."
+      ],
+      "equation": "P_fc=\u03a3_{i<j} corr(F_i,F_j)\u00b7severity_ij",
+      "id": "failure-correlation-penalty",
+      "status": "formula",
+      "title": "Failure correlation penalty",
+      "use_when": "Penalize teams with shared blind spots."
+    },
+    {
+      "caveats": [
+        "No single centrality is universally correct."
+      ],
+      "equation": "Use degree, betweenness, eigenvector, or PageRank appropriate to the question.",
+      "id": "graph-centrality",
+      "status": "reference",
+      "title": "Graph centrality",
+      "use_when": "Find hubs, bridges, and critical paths."
+    },
+    {
+      "caveats": [
+        "Requires outcome probabilities or bounded estimates."
+      ],
+      "equation": "IG=H(before)-E[H(after)]",
+      "id": "information-gain",
+      "status": "formula",
+      "title": "Information gain",
+      "use_when": "Rank tests expected to reduce uncertainty."
+    },
+    {
+      "caveats": [
+        "Requires aligned normalized supports."
+      ],
+      "equation": "JSD(P,Q)=\u00bdKL(P\u2225M)+\u00bdKL(Q\u2225M), M=(P+Q)/2",
+      "id": "jensen-shannon-divergence",
+      "status": "formula",
+      "title": "Jensen-Shannon divergence",
+      "use_when": "Compare distributions symmetrically."
+    },
+    {
+      "caveats": [
+        "History may be incomplete."
+      ],
+      "equation": "L_p=affected_descendants\u00b7recurrence\u00b7generation_factor",
+      "id": "lineage-propagation-score",
+      "status": "formula",
+      "title": "Lineage propagation score",
+      "use_when": "Locate propagation sources."
+    },
+    {
+      "caveats": [
+        "Clip probabilities numerically and report method."
+      ],
+      "equation": "LL=-(1/N)\u03a3[y_i log p_i+(1-y_i)log(1-p_i)]",
+      "id": "log-loss",
+      "status": "formula",
+      "title": "Log loss",
+      "use_when": "Penalize confident incorrect predictions."
+    },
+    {
+      "caveats": [
+        "Do not erase important variants."
+      ],
+      "equation": "M=shared_steps+shared_effects+shared_invariants+shared_tests normalized",
+      "id": "mechanism-overlap",
+      "status": "formula",
+      "title": "Mechanism overlap",
+      "use_when": "Find reusable common mechanisms."
+    },
+    {
+      "caveats": [
+        "Retrieval alone is not influence."
+      ],
+      "equation": "M_i=usage_evidence\u00b7scope_fit\u00b7counterfactual_effect",
+      "id": "memory-influence-score",
+      "status": "formula",
+      "title": "Memory influence score",
+      "use_when": "Estimate whether memory materially affected an outcome."
+    },
+    {
+      "caveats": [
+        "Hard constraints cannot be traded away."
+      ],
+      "equation": "MV=duplication_removed+coverage_gained-maintenance_saved-migration_risk",
+      "id": "merge-value-score",
+      "status": "formula",
+      "title": "Merge value score",
+      "use_when": "Prioritize reconciliations."
+    },
+    {
+      "caveats": [
+        "Also check forbidden and undeclared changes."
+      ],
+      "equation": "C_m=verified_expected_mutations/declared_expected_mutations",
+      "id": "mutation-coverage",
+      "status": "formula",
+      "title": "Mutation coverage",
+      "use_when": "Confirm expected state changes occurred."
+    },
+    {
+      "caveats": [
+        "Respect lower-is-better metrics."
+      ],
+      "equation": "I=(candidate-baseline)/max(|baseline|,\u03b5)",
+      "id": "normalized-improvement",
+      "status": "formula",
+      "title": "Normalized improvement",
+      "use_when": "Compare relative change."
+    },
+    {
+      "caveats": [
+        "Novel wording is not novelty."
+      ],
+      "equation": "N=1-max_similarity(candidate,existing)",
+      "id": "novelty-score",
+      "status": "formula",
+      "title": "Novelty score",
+      "use_when": "Detect genuinely new capability proposals."
+    },
+    {
+      "caveats": [
+        "Normalize objective direction."
+      ],
+      "equation": "A dominates B iff no worse on all objectives and better on at least one",
+      "id": "pareto-dominance",
+      "status": "formula",
+      "title": "Pareto dominance",
+      "use_when": "Select multi-objective candidates."
+    },
+    {
+      "caveats": [
+        "Each component must remain visible."
+      ],
+      "equation": "P_e=linked_decisions\u00b7evidence_coverage\u00b7policy_coverage",
+      "id": "path-explanation-score",
+      "status": "formula",
+      "title": "Path explanation score",
+      "use_when": "Rank reconstructability of a decision path."
+    },
+    {
+      "caveats": [
+        "Stable bad habits are still stable."
+      ],
+      "equation": "S_p=1-normalized_variance(context_adjusted_pattern_over_time)",
+      "id": "pattern-stability",
+      "status": "formula",
+      "title": "Pattern stability",
+      "use_when": "Measure stable project practices."
+    },
+    {
+      "caveats": [
+        "Never reduce an agent to one global intelligence score."
+      ],
+      "equation": "T=\u03a3_k benchmark_weight_k\u00b7normalized_result_k\u00b7confidence_k",
+      "id": "profile-trait-score",
+      "status": "formula",
+      "title": "Profile trait score",
+      "use_when": "Summarize a trait by task class."
+    },
+    {
+      "caveats": [
+        "Define exposure window and deduplicate incidents."
+      ],
+      "equation": "R=count(recurrences)/exposure_window",
+      "id": "recurrence-rate",
+      "status": "formula",
+      "title": "Recurrence rate",
+      "use_when": "Measure repeated failure."
+    },
+    {
+      "caveats": [
+        "Critical guardrail failures may bypass scoring."
+      ],
+      "equation": "R_g=impact\u00b7magnitude\u00b7duration\u00b7scope",
+      "id": "regression-severity",
+      "status": "formula",
+      "title": "Regression severity",
+      "use_when": "Prioritize rollback."
+    },
+    {
+      "caveats": [
+        "Do not include hindsight-only unavailable options."
+      ],
+      "equation": "R=U(best_available)-U(selected)",
+      "id": "regret",
+      "status": "formula",
+      "title": "Regret",
+      "use_when": "Measure missed utility."
+    },
+    {
+      "caveats": [
+        "Any confirmed secret is an immediate failure."
+      ],
+      "equation": "C_r=1-(forbidden_artifacts+secret_findings+local_path_findings)/N_norm",
+      "id": "release-cleanliness-score",
+      "status": "formula",
+      "title": "Release cleanliness score",
+      "use_when": "Summarize archive hygiene."
+    },
+    {
+      "caveats": [
+        "Canonical ownership must be known."
+      ],
+      "equation": "D_r=1-consensus_ratio_across_canonical_views",
+      "id": "representation-disagreement",
+      "status": "formula",
+      "title": "Representation disagreement",
+      "use_when": "Find registry disagreement."
+    },
+    {
+      "caveats": [
+        "Budget changes timing, not truth status."
+      ],
+      "equation": "P_r=criticality\u00b7(1-trust)+contradiction_pressure+dependency_change+age_factor",
+      "id": "revalidation-priority",
+      "status": "formula",
+      "title": "Revalidation priority",
+      "use_when": "Schedule validation work."
+    },
+    {
+      "caveats": [
+        "Hard prohibitions remain prohibitions."
+      ],
+      "equation": "B_r=base_authority\u00b7(1-uncertainty)\u00b7(1-blast_radius)\u00b7verification_strength",
+      "id": "risk-budget-score",
+      "status": "formula",
+      "title": "Risk budget score",
+      "use_when": "Bound agent authority."
+    },
+    {
+      "caveats": [
+        "Permissions and safety are hard gates."
+      ],
+      "equation": "U_r=fit\u00b7quality-confidence_penalty-cost-latency-risk",
+      "id": "routing-utility",
+      "status": "formula",
+      "title": "Routing utility",
+      "use_when": "Rank eligible routes."
+    },
+    {
+      "caveats": [
+        "Distance must fit the effect domain."
+      ],
+      "equation": "D_s=distance(declared_effect_vector,observed_effect_vector)",
+      "id": "semantic-drift-score",
+      "status": "formula",
+      "title": "Semantic drift score",
+      "use_when": "Detect mismatch between declared meaning and runtime behavior."
+    },
+    {
+      "caveats": [
+        "Unknown material effects should fail or remain unresolved."
+      ],
+      "equation": "C_s=declared_and_verified_effects/observed_material_effects",
+      "id": "semantic-effect-coverage",
+      "status": "formula",
+      "title": "Semantic effect coverage",
+      "use_when": "Measure semantic-contract completeness."
+    },
+    {
+      "caveats": [
+        "Use bounded perturbations and report ranges."
+      ],
+      "equation": "S_i=|\u0394output/\u0394input_i| normalized",
+      "id": "sensitivity-index",
+      "status": "formula",
+      "title": "Sensitivity index",
+      "use_when": "Show which assumptions or weights drive a result."
+    },
+    {
+      "caveats": [
+        "Not a universal measure of semantic uncertainty."
+      ],
+      "equation": "H(X)=-\u03a3 p_i log\u2082 p_i",
+      "id": "shannon-entropy",
+      "status": "formula",
+      "title": "Shannon entropy",
+      "use_when": "Measure uncertainty in a probability distribution."
+    },
+    {
+      "caveats": [
+        "Hard policy violations are gates, not tradeoffs."
+      ],
+      "equation": "R_s=scope\u00b7irreversibility\u00b7permission_sensitivity\u00b7uncertainty",
+      "id": "side-effect-risk-score",
+      "status": "formula",
+      "title": "Side-effect risk score",
+      "use_when": "Rank state changes by harm potential."
+    },
+    {
+      "caveats": [
+        "Expose components."
+      ],
+      "equation": "S=1/(1+volatility+contradiction_pressure+dependency_churn)",
+      "id": "stability-index",
+      "status": "formula",
+      "title": "Stability index",
+      "use_when": "Summarize stability."
+    },
+    {
+      "caveats": [
+        "Some redundancy is intentional for verification."
+      ],
+      "equation": "C_team=coverage_union-redundancy-coordination_cost",
+      "id": "team-complementarity",
+      "status": "formula",
+      "title": "Team complementarity",
+      "use_when": "Choose complementary teams."
+    },
+    {
+      "caveats": [
+        "Choose \u03bb by domain; stable facts should barely decay."
+      ],
+      "equation": "w(t)=w\u2080 exp(-\u03bbt)",
+      "id": "temporal-evidence-decay",
+      "status": "formula",
+      "title": "Temporal evidence decay",
+      "use_when": "Discount time-sensitive evidence."
+    },
+    {
+      "caveats": [
+        "Held-out cases must truly be held out."
+      ],
+      "equation": "G=held_out_success-counterexample_penalty",
+      "id": "theory-generalization-score",
+      "status": "formula",
+      "title": "Theory generalization score",
+      "use_when": "Validate induced theory."
+    },
+    {
+      "caveats": [
+        "Event truth still requires validation."
+      ],
+      "equation": "C_t=present_required_event_types/required_event_types",
+      "id": "trace-completeness",
+      "status": "formula",
+      "title": "Trace completeness",
+      "use_when": "Check required operational event classes were recorded."
+    },
+    {
+      "caveats": [
+        "Governance mismatch can hard-block transfer."
+      ],
+      "equation": "F_t=evidence\u00b7(1-context_distance)\u00b7adaptability",
+      "id": "transfer-fit-score",
+      "status": "formula",
+      "title": "Transfer fit score",
+      "use_when": "Rank transferable patterns."
+    },
+    {
+      "caveats": [
+        "Expose every component; this is an operational model."
+      ],
+      "equation": "T_{t+1}=clip(T_t+validation_gain+outcome_gain-contradiction_loss-decay_loss)",
+      "id": "trust-dynamics",
+      "status": "formula",
+      "title": "Trust dynamics",
+      "use_when": "Update trust from explicit events."
+    },
+    {
+      "caveats": [
+        "Use only when the entropy measure is appropriate."
+      ],
+      "equation": "URR=(H_before-H_after)/max(H_before,\u03b5)",
+      "id": "uncertainty-reduction-ratio",
+      "status": "formula",
+      "title": "Uncertainty reduction ratio",
+      "use_when": "Normalize uncertainty reduction."
+    },
+    {
+      "caveats": [
+        "High development volatility may be legitimate."
+      ],
+      "equation": "V=EWMA(|state_change|)+dependency_change_rate",
+      "id": "volatility-index",
+      "status": "formula",
+      "title": "Volatility index",
+      "use_when": "Detect rapid knowledge change."
+    },
+    {
+      "caveats": [
+        "Expose all components."
+      ],
+      "equation": "Q=\u03a3_j \u03b1_j q_j, \u03a3_j \u03b1_j=1",
+      "id": "weighted-evidence-quality",
+      "status": "formula",
+      "title": "Weighted evidence quality",
+      "use_when": "Combine directness, provenance, reproducibility, independence, recency, and scope fit."
+    },
+    {
+      "caveats": [
+        "Handle zero vectors explicitly."
+      ],
+      "equation": "J_w(A,B)=\u03a3min(a_i,b_i)/\u03a3max(a_i,b_i)",
+      "id": "weighted-jaccard",
+      "status": "formula",
+      "title": "Weighted Jaccard",
+      "use_when": "Compare sparse weighted features."
+    },
+    {
+      "caveats": [
+        "Weights are policy, not discovered truth."
+      ],
+      "equation": "U=\u03a3_i w_i\u00b7normalized_metric_i",
+      "id": "weighted-utility",
+      "status": "formula",
+      "title": "Weighted utility",
+      "use_when": "Apply declared preferences after hard constraints."
+    }
+  ],
+  "version": "1.0.0"
+}

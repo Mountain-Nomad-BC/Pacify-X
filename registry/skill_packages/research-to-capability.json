@@ -1,0 +1,30 @@
+{
+  "id": "research-to-capability",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/research-to-capability/SKILL.md",
+  "body_sha256": "ffd5fce65c1dfb58b7f7bac560c10e8cd24d2e4ad6009b72a60e8172217d234c",
+  "references": [
+    ".agents/skills/research-to-capability/references/candidate-contract.md"
+  ],
+  "capability_tags": [
+    "research",
+    "provenance",
+    "capability-building",
+    "validation"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "clean_room",
+    "basis": [
+      "local research admission requirements"
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_skill_library.py; tests/test_research_contract_admission.py",
+  "evidence": "tests/test_research_contract_admission.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

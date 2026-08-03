@@ -1,0 +1,35 @@
+{
+  "id": "skill-bundle-resolver",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/skill-bundle-resolver/SKILL.md",
+  "body_sha256": "f713ba80888d80b6db7a81468b0a0c34893f0629b7842a28cf8953691d6193aa",
+  "references": [],
+  "capability_tags": [
+    "bundle",
+    "orchestration",
+    "resolver",
+    "skill"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_dd257f1c.md",
+        "sha256": "f144df02fe7025c94ac4080c3902968549279967883ddc8fd101238c6831e385"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_342a98d5.yaml",
+        "sha256": "d63ef4023ec3593166ca919f1c6ac5d0259590b884d16511ea5e8f96c75cd8f3"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

@@ -1,0 +1,365 @@
+{
+  "pack_count": 7,
+  "packs": {
+    "01": {
+      "formulas": [
+        "confidence-combination-independent",
+        "expected-plan-utility",
+        "weighted-source-quality"
+      ],
+      "orchestrations": [
+        "compile-and-register-skill",
+        "execute-controlled-capability",
+        "independent-verify-result",
+        "promote-validated-learning",
+        "recover-failed-workflow",
+        "research-with-evidence",
+        "resolve-conflicting-evidence",
+        "route-and-budget-task"
+      ],
+      "owner": "govern-operating-kernel",
+      "scripts": [
+        "capability-router",
+        "claim-ledger",
+        "durable-state",
+        "evidence-bundle",
+        "failure-normalizer",
+        "permission-guard",
+        "run-smoke-tests",
+        "skill-compiler",
+        "validate-pack"
+      ],
+      "skills": [
+        "abstention-and-escalation",
+        "assumption-register",
+        "capability-router",
+        "claim-evidence-ledger",
+        "confidence-calibrator",
+        "durable-task-state",
+        "failure-taxonomy-normalizer",
+        "idempotency-and-compensation",
+        "independent-verification-gate",
+        "permission-scope-designer",
+        "skill-compiler",
+        "source-conflict-resolver",
+        "source-quality-assessor",
+        "typed-capability-contract",
+        "unknown-field-guardian"
+      ],
+      "status": "implemented_and_certified"
+    },
+    "02": {
+      "formulas": [
+        "impact-risk-score",
+        "jaccard-change-overlap"
+      ],
+      "orchestrations": [
+        "diagnose-root-cause",
+        "implement-verified-change",
+        "issue-to-minimal-reproduction",
+        "plan-safe-migration",
+        "prepare-agent-instructions",
+        "review-change-impact",
+        "trace-runtime-request",
+        "understand-repository"
+      ],
+      "owner": "analyze-repository-intelligence",
+      "scripts": [
+        "agents-md-generator",
+        "change-impact",
+        "config-trace",
+        "patch-scope-guard",
+        "repo-mapper",
+        "reproduction-scaffold",
+        "runtime-path",
+        "symbol-index"
+      ],
+      "skills": [
+        "agent-computer-interface-designer",
+        "call-graph-builder",
+        "change-reviewer",
+        "configuration-resolution-tracer",
+        "data-flow-tracer",
+        "dependency-impact-analyzer",
+        "issue-to-reproduction",
+        "migration-planner",
+        "ownership-history-mapper",
+        "patch-scope-guardian",
+        "patch-to-test-plan",
+        "repository-cartographer",
+        "reproduction-minimizer",
+        "root-cause-hypothesis-manager",
+        "runtime-path-tracer",
+        "security-boundary-mapper",
+        "symbol-reference-navigator",
+        "test-coverage-mapper"
+      ],
+      "status": "implemented_and_certified"
+    },
+    "03": {
+      "formulas": [
+        "mutation-score",
+        "precision-recall-f1",
+        "relative-performance-change"
+      ],
+      "orchestrations": [
+        "build-verification-plan",
+        "calibrate-llm-judge",
+        "convert-incident-to-regression",
+        "evaluate-agent-end-to-end",
+        "fuzz-and-minimize",
+        "mutation-quality-gate",
+        "performance-regression-gate",
+        "run-behavioral-certification",
+        "run-long-horizon-evaluation"
+      ],
+      "owner": "engineer-verification-lab",
+      "scripts": [
+        "benchmark-contamination-scan",
+        "differential-tester",
+        "formula-property-tests",
+        "fuzz-json-runner",
+        "judge-calibrator",
+        "metamorphic-runner",
+        "mutation-operator",
+        "scenario-runner",
+        "trajectory-scorer"
+      ],
+      "skills": [
+        "agent-trajectory-evaluator",
+        "benchmark-contamination-auditor",
+        "chaos-scenario-designer",
+        "contract-test-designer",
+        "differential-test-designer",
+        "evaluation-design",
+        "fault-injection-operator",
+        "flaky-test-diagnoser",
+        "fuzz-test-operator",
+        "golden-master-manager",
+        "hidden-test-manager",
+        "integration-test-designer",
+        "llm-judge-calibrator",
+        "metamorphic-test-designer",
+        "mutation-test-operator",
+        "performance-regression-tester",
+        "property-based-test-designer",
+        "regression-suite-curator",
+        "test-quality-auditor",
+        "unit-test-designer"
+      ],
+      "status": "implemented_and_certified"
+    },
+    "04": {
+      "formulas": [
+        "context-utility-density",
+        "population-stability-index",
+        "reciprocal-rank-fusion"
+      ],
+      "orchestrations": [
+        "curate-memory-from-runs",
+        "debug-retrieval-failure",
+        "design-memory-system",
+        "ingest-and-index-corpus",
+        "instrument-agent-workflow",
+        "monitor-quality-drift",
+        "purge-scoped-memory",
+        "reconstruct-task-context",
+        "replay-failed-run",
+        "retrieve-with-grounding"
+      ],
+      "owner": "operate-memory-retrieval-observability",
+      "scripts": [
+        "context-budget",
+        "drift-monitor",
+        "hybrid-retrieval",
+        "ingestion-validator",
+        "memory-write-gate",
+        "replay-bundle",
+        "retrieval-evaluator",
+        "scoped-memory",
+        "trace-recorder"
+      ],
+      "skills": [
+        "context-budget-manager",
+        "context-injection-defender",
+        "document-ingestion-validator",
+        "episodic-memory-manager",
+        "genai-telemetry-instrumentation",
+        "graph-retrieval",
+        "hybrid-retrieval",
+        "memory-compaction",
+        "memory-conflict-resolution",
+        "memory-isolation",
+        "memory-provenance",
+        "memory-retention-deletion",
+        "memory-retrieval-planner",
+        "memory-write-gate",
+        "procedural-memory-manager",
+        "quality-drift-monitor",
+        "replay-and-forensics",
+        "reranking",
+        "retrieval-evaluator",
+        "semantic-memory-manager",
+        "trace-correlation",
+        "working-memory-manager"
+      ],
+      "status": "implemented_and_certified"
+    },
+    "05": {
+      "formulas": [
+        "reproducibility-rate",
+        "risk-priority"
+      ],
+      "orchestrations": [
+        "audit-ai-supply-chain",
+        "build-sandbox-profile",
+        "handle-ai-security-incident",
+        "perform-security-review",
+        "red-team-agent-system",
+        "release-trusted-artifact",
+        "reproduce-and-verify-build",
+        "test-prompt-injection-resistance",
+        "validate-tool-authority"
+      ],
+      "owner": "secure-agent-supply-chain",
+      "scripts": [
+        "ai-bom",
+        "deterministic-archive",
+        "prompt-injection-scanner",
+        "provenance-generator",
+        "sandbox-profile",
+        "sbom-lite",
+        "secret-scanner",
+        "threat-model",
+        "tool-policy-enforcer"
+      ],
+      "skills": [
+        "agent-identity-authentication",
+        "agent-red-teaming",
+        "ai-bom-generator",
+        "ai-threat-modeling",
+        "artifact-signer-verifier",
+        "authorization-policy",
+        "control-mapping",
+        "data-classification",
+        "dependency-risk-scorer",
+        "egress-policy-enforcer",
+        "license-compliance",
+        "memory-poisoning-defense",
+        "output-sanitization",
+        "privacy-impact-analysis",
+        "prompt-injection-defense",
+        "provenance-generator",
+        "reproducible-build-validator",
+        "sandbox-profile-designer",
+        "sbom-generator",
+        "secret-handling",
+        "security-incident-response",
+        "tool-abuse-defense"
+      ],
+      "status": "implemented_and_certified"
+    },
+    "06": {
+      "formulas": [
+        "canary-quality-delta",
+        "kv-cache-bytes",
+        "little-law-serving"
+      ],
+      "orchestrations": [
+        "benchmark-serving-backends",
+        "degrade-safely",
+        "deploy-canary-and-compare",
+        "human-review-and-handoff",
+        "import-and-govern-tool",
+        "plan-capacity-and-cost",
+        "publish-a2a-capability",
+        "route-model-by-policy",
+        "select-serving-backend",
+        "validate-protocol-compatibility"
+      ],
+      "owner": "govern-runtime-protocol-deployment",
+      "scripts": [
+        "approval-request",
+        "backend-probe",
+        "benchmark-harness",
+        "canary-compare",
+        "capacity-planner",
+        "hardware-probe",
+        "model-router",
+        "openapi-tool-importer",
+        "protocol-validator"
+      ],
+      "skills": [
+        "a2a-agent-adapter",
+        "backend-capability-prober",
+        "batching-policy-selector",
+        "cache-policy-selector",
+        "capability-discovery-negotiation",
+        "capacity-planner",
+        "cost-resource-budget-manager",
+        "deployment-canary-manager",
+        "fallback-and-degradation",
+        "handoff-package-author",
+        "hardware-topology-inspector",
+        "human-approval-ux",
+        "json-schema-tool-validator",
+        "mcp-client-server-adapter",
+        "model-compatibility-prober",
+        "model-router",
+        "openapi-tool-importer",
+        "quantization-quality-evaluator",
+        "runtime-regression-tester",
+        "serving-backend-selector",
+        "throughput-latency-benchmarker",
+        "tool-output-sanitizer"
+      ],
+      "status": "implemented_and_certified"
+    },
+    "07": {
+      "formulas": [
+        "certification-coverage",
+        "semantic-overlap-jaccard"
+      ],
+      "orchestrations": [
+        "audit-pack-completeness",
+        "detect-and-plan-conflict-merges",
+        "field-feedback-to-regression",
+        "final-capability-certification",
+        "freeze-foundational-scope",
+        "recertify-after-change",
+        "release-completion-suite",
+        "revoke-certification"
+      ],
+      "owner": "manage-revocable-certification",
+      "scripts": [
+        "archive-hygiene",
+        "archive-verifier",
+        "certification-aggregator",
+        "collision-merge-planner",
+        "completion-cutline",
+        "duplicate-detector",
+        "manifest-reconciler",
+        "recertification-impact"
+      ],
+      "skills": [
+        "adversarial-robustness-certifier",
+        "archive-hygiene",
+        "behavioral-competence-certifier",
+        "collision-and-merge-planner",
+        "completion-cutline-enforcer",
+        "deterministic-correctness-certifier",
+        "duplicate-capability-detector",
+        "field-validation-monitor",
+        "long-horizon-reliability-certifier",
+        "manifest-reconciler",
+        "operational-resilience-certifier",
+        "package-integrity-validator",
+        "recertification-impact-analyzer",
+        "release-trust-certifier",
+        "revocable-certification-manager"
+      ],
+      "status": "implemented_and_certified"
+    }
+  },
+  "schema_version": "1.0"
+}

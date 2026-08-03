@@ -1,0 +1,4 @@
+interface:
+  display_name: "Evaluate Retrieval Readiness"
+  short_description: "Gate retrieval quality and forbidden-source exposure"
+  default_prompt: "Use -retrieval-readiness to measure the versioned retrieval suite and produce a fail-closed activation decision."

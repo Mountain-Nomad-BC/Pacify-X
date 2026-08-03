@@ -1,0 +1,47 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:metacognitive:certification",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "controls": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "pack_id": {
+      "type": "string"
+    },
+    "revocation_triggers": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "CONDITIONAL"
+      ]
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "pack_id",
+    "version",
+    "status",
+    "controls",
+    "limitations",
+    "revocation_triggers"
+  ],
+  "type": "object"
+}

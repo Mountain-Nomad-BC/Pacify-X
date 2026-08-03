@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "release": "0.5.0",
+  "created_utc": "2026-08-03T01:45:55.4904198Z",
+  "status": "revoked_pending_declared_suite_reconstruction",
+  "revoked_utc": "2026-08-03T00:00:00Z",
+  "revocation_reason": "Canonical-owner routing was incorrectly treated as proof that 260 absent-body operational outcomes were implemented, wired, and independently acceptance-tested. Routing proves ownership only.",
+  "scope": "Independent, model-agnostic engineering-loop bootstrap for new and existing projects with metadata-only skill discovery, bounded hydration, isolated multi-project management, governed memory, recoverable cleanup, and evidence-backed completion.",
+  "gates": {
+    "framework_tests": {"passed": 282, "failed": 0},
+    "official_modified_skill_validation": {"passed": 9, "failed": 0},
+    "registry": {"valid": true, "core_active_capabilities": 6},
+    "catalog": {"records": 80, "selectable": 51, "inert": 29, "maximum_selected": 3, "startup_hydrated_bodies": 0},
+    "contracts": {"owned": 44, "total": 44, "valid": true},
+    "graphs": {"artifacts": 6, "fresh": true, "deterministic": true},
+    "integrations": {"active": 1, "smoke_tested": true},
+    "release_audit": {"passed": 14, "failed": 0, "strict_external_evidence": true},
+    "golden_capability_queries": {"passed": 6, "failed": 0},
+    "declared_outcome_routes": {"passed": 260, "failed": 0},
+    "installed_wheel": {
+      "built": true,
+      "installed_cleanly": true,
+      "new_project_commissioning": true,
+      "existing_project_owner_preservation": true,
+      "multi_project_isolation_and_memory": true
+    },
+    "project_integrity": {"valid": true, "registered_selectable_skills": 51},
+    "sanitization": {"identifier_hits": 0, "legacy_placeholder_hits": 0, "active_zip_files": 0, "errors": 0}
+  },
+  "final_intake": {
+    "physical_files": 539,
+    "bytes": 4947488,
+    "tree_sha256": "3e58a1d2b7035ffbd52c4b83f80b67a269dde5b919614781268b9c8a36132b26",
+    "closed_after_matching_snapshots": true,
+    "archives_executed": false,
+    "archives_extracted": false,
+    "candidate_count": 374,
+    "dispositions": {"MERGE": 111, "WRAP": 1, "DEFER": 260, "REJECT": 2},
+    "recoverable_custody_index": "evidence/externalized-payload-index.json",
+    "quarantine_manifest_sha256": "5f310891f735a32ac88f0bd33db1d5b894143ae0b5fe3788cc092e07bf430348",
+    "hard_delete": false
+  },
+  "suite_recovery_boundary": {
+    "manifest_declared_files": 1305,
+    "present_in_suite_and_hash_matching": 72,
+    "exact_cross_tree_recoveries": 100,
+    "absent_declared_files": 1133,
+    "absent_body_operational_outcomes": 260,
+    "outcomes_bound_to_current_hash_backed_canonical_owners": 260,
+    "rejected_noncapability_markers": 1,
+    "unrouted_outcomes": 0,
+    "claim": "The 260 absent-body operational outcomes have canonical owner assignments, but those assignments remain reconstruction inputs rather than implementation evidence.",
+    "non_claim": "Byte parity and historical validation are not claimed for unavailable pack 01 through 07 bodies."
+  },
+  "evidence_hashes": {
+    "evidence/final-intake-assimilation.json": "0132d24190bf879d9ff7e0f24ae2b65e7e365ad182f592c6e9066a254eb3af7e",
+    "evidence/final-sanitization-audit.json": "063b636eb6218206203215603117dba1e499168d0dabb7337fc6338398867a13",
+    "evidence/golden-capability-query-certification.json": "4d72ff6919bae54076b612afa896b5f1053c359cb8ae17facb01fe25c95b9d17",
+    "registry/final_intake_candidate_dispositions.json": "c59588743c10d1ac7f8d3c3d835404eb7fff33b8a12bb85681a96bca53c7a815",
+    "registry/declared_capability_recovery_map.json": "f82c8939c190aee78785541a4aef1ba2488328a639fdccfde93e994e353d63cf",
+    "registry/semantic_capability_index.json": "a3e71b74c43163e73ea3607ba71ae87d2e7584b0f0919697ae13f6da79c9394d",
+    "registry/graphs/graph_manifest.json": "50c75189a6b667c1bcb81fac584957d3709e25614208b3c037ff6c7cd84a8a44",
+    "evidence/externalized-payload-index.json": "668190be1e0038679829fc09b448bbdf194b7efc8d09e1b7985b834c0b6f880d",
+    "pyproject.toml": "49fce9b5113d4235cfc0c68b924412ae8f7d5d9cd2926aebaeeb4f107872122e"
+  },
+  "recovery": "The quarantined intake can be restored to temp_audit_work/next_round only through an approved intake reopen operation followed by hash verification.",
+  "superseded_by_work_card": "REL-007"
+}

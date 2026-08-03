@@ -1,0 +1,102 @@
+{
+  "integrations": [
+    {
+      "approval": {
+        "required": false
+      },
+      "consumes": [
+        "task_contracts",
+        "resource_snapshot",
+        "policy_snapshot"
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "handler": "engineering_bootstrap.capability_scheduler:simulate_schedule",
+      "healthcheck": "engineering_bootstrap.capability_scheduler:integration_healthcheck",
+      "id": "capability-scheduling-runtime",
+      "owner": "runtime/capability_scheduler.py",
+      "provides": [
+        "deterministic_observe_only_schedule",
+        "hard_gate_reason_codes",
+        "replayable_decision_hash"
+      ],
+      "rollback": {
+        "strategy": "disable integration record; scheduler is observe-only and retains no canonical state"
+      },
+      "status": "active",
+      "uses": [
+        "orchestrate-capability-scheduling",
+        "execution-contract-enforcer",
+        "recovery-coordinator",
+        "outcome-verifier",
+        "isolate-project-streams"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "approval": {
+        "required": false
+      },
+      "consumes": [
+        "query",
+        "identity_scope",
+        "source_metadata"
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "handler": "engineering_bootstrap.retrieval:retrieve",
+      "healthcheck": "engineering_bootstrap.retrieval:integration_healthcheck",
+      "id": "governed-retrieval-adapter",
+      "owner": "runtime/retrieval.py",
+      "provides": [
+        "policy_filtered_cited_context"
+      ],
+      "rollback": {
+        "strategy": "disable registry record; no persisted adapter state"
+      },
+      "status": "active",
+      "uses": [
+        "corpus-intake-receipt",
+        "restricted-lineage"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "approval": {
+        "required": false
+      },
+      "consumes": [
+        "typed_payload",
+        "project_scope",
+        "evidence_context"
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "handler": "engineering_bootstrap.metacognitive_evolution.facade:run_operation",
+      "healthcheck": "engineering_bootstrap.metacognitive_evolution.facade:integration_healthcheck",
+      "id": "metacognitive-evolution-runtime",
+      "owner": "runtime/metacognitive_evolution/facade.py",
+      "provides": [
+        "bounded_metacognitive_analysis",
+        "semantic_effect_lint",
+        "revocable_improvement_proposals"
+      ],
+      "rollback": {
+        "strategy": "disable integration record; runtime is read-only and retains no canonical state"
+      },
+      "status": "active",
+      "uses": [
+        "govern-metacognitive-evolution",
+        "validate-knowledge-relationships",
+        "govern-memory-fabric",
+        "manage-revocable-certification"
+      ],
+      "version": "1.0.0"
+    }
+  ],
+  "loading_rule": "metadata_at_startup_handler_after_explicit_selection",
+  "schema_version": "2.0"
+}

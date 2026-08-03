@@ -1,0 +1,35 @@
+{
+  "id": "dependency-impact-tracer",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/dependency-impact-tracer/SKILL.md",
+  "body_sha256": "ed588fbe233a0d4efe300fd0403f4e706544326e55930864097aea480fa54a7a",
+  "references": [],
+  "capability_tags": [
+    "dependency",
+    "engineering",
+    "impact",
+    "tracer"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_a5d034b4.md",
+        "sha256": "a1b90a8c9b49fcd0cc5df1749e7d76f30cf9b8fceb4c3a1358ced80acf6c371e"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_59d422a7.yaml",
+        "sha256": "99bc86cd350bb0e46eb1d5482ff6e2442d1870e48dbbf83f38c0cefde2a77488"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

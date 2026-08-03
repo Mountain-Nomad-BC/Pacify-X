@@ -1,0 +1,36 @@
+{
+  "id": "research-to-operation-translator",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/research-to-operation-translator/SKILL.md",
+  "body_sha256": "eb10bf6f136275a0c9d8d55b314fce65d6d41d4a282b65a82383124a9b0e5528",
+  "references": [],
+  "capability_tags": [
+    "operation",
+    "research",
+    "research-ops",
+    "to",
+    "translator"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_dd7ced01.md",
+        "sha256": "f41b7063f125839eb954c9f467020737e7ad34244fd4ac5c2d9eae18016929b0"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_bc8e2013.yaml",
+        "sha256": "92fb7235a872227f4bcf77e34f6a7ba27e227d17df603f9bbe15b969e295292d"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

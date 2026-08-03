@@ -1,0 +1,36 @@
+{
+  "id": "behavior-to-code-mapper",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/behavior-to-code-mapper/SKILL.md",
+  "body_sha256": "5accb85afc143ea3e5f0ad732ac4c93cc39e37d49a5523669f04d9586f2554f5",
+  "references": [],
+  "capability_tags": [
+    "behavior",
+    "code",
+    "engineering",
+    "mapper",
+    "to"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "source_conversion",
+    "basis": [
+      {
+        "path": "LLM_hybrid_rag/SKILL_e16f1578.md",
+        "sha256": "e1666f2c836f6a0ca5fb1508fb8bb499723dbbaa1d0dd1b493f382e5772d4c70"
+      },
+      {
+        "path": "LLM_hybrid_rag/manifest_1901a3ea.yaml",
+        "sha256": "2a6829bf3b8838e84008c161eca6efb9869d6267fd65c7279e366e5ef2abdc4c"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_operational_controls.py",
+  "evidence": "tests/test_operational_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

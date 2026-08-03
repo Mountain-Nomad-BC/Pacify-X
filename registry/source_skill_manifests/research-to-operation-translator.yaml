@@ -1,0 +1,66 @@
+id: research-to-operation-translator
+version: 0.1.0
+status: draft
+owner: framework owner
+category: research-ops
+priority: P1
+purpose: Convert a validated research mechanism into a bounded skill, service, workflow,
+  or evaluation.
+activation:
+  when:
+  - mechanism and gap show internal value
+  not_when:
+  - value unmeasurable or controls unavailable
+inputs:
+  required:
+  - mechanism card
+  - gap analysis
+  - target workflow
+  - data
+  - risk model
+outputs:
+  produces: &id001
+  - operationalization canvas
+  - component architecture
+  - skills
+  - experiment
+  - promotion gates
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- intelligent system builders
+- skill compiler
+- evaluation
+risk:
+  tier: R1
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- measured value
+- maintenance
+- incidents
+- rollback time
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - proeval
+  - harness-handbook

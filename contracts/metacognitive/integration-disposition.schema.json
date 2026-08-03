@@ -1,0 +1,52 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:metacognitive:integration-disposition",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "disposition": {
+      "enum": [
+        "reuse",
+        "extend",
+        "compose",
+        "merge",
+        "alias",
+        "replace_with_migration",
+        "quarantine",
+        "reject",
+        "new"
+      ]
+    },
+    "pack_capability": {
+      "type": "string"
+    },
+    "protected_artifacts": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "required_validation": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "target_candidate": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "pack_capability",
+    "target_candidate",
+    "disposition",
+    "rationale",
+    "protected_artifacts"
+  ],
+  "type": "object"
+}

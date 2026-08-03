@@ -1,0 +1,60 @@
+id: permission-diff-auditor
+version: 0.1.0
+status: draft
+owner: framework owner
+category: security
+priority: P0
+purpose: Identify new permissions, scopes, side effects, and destinations between
+  versions.
+activation:
+  when:
+  - skill/dependency changes
+  not_when:
+  - no executable or permission-bearing change
+inputs:
+  required:
+  - old package
+  - new package
+  - observed effects
+outputs:
+  produces: &id001
+  - permission diff
+  - risk delta
+  - approval requirement
+  - compatibility warning
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- admission
+- impact tracer
+- framework policy
+risk:
+  tier: R2
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- unapproved expansion
+- dependency expansion found
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - malicious-skills

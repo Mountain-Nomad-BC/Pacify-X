@@ -1,0 +1,186 @@
+{
+  "count": 30,
+  "records": [
+    {
+      "description": "Learn from runtime outcomes and update routing preferences without silently changing acceptance requirements.",
+      "id": "adaptive-performance-router",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/adaptive-performance-router.json",
+      "sha256": "2cc0f4eeccbcdbc5ddf13f1145564981633ca41a4d61fb00f3871bc74b9b71c6"
+    },
+    {
+      "description": "Coordinate loosely coupled agents through task publication, claims, leases, evidence returns, and next-wave generation.",
+      "id": "blackboard-work-coordinator",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/blackboard-work-coordinator.json",
+      "sha256": "370728e9989d66a437274d227b04d70091cacb1f99928443edf63d5935439a37"
+    },
+    {
+      "description": "Support claim/bid/award execution where capabilities advertise contracts and compete for tasks.",
+      "id": "capability-marketplace-broker",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/capability-marketplace-broker.json",
+      "sha256": "ded5d350a2d62191beecff0842b0eb65a793bb881c134f07fb6a80ba2536d498"
+    },
+    {
+      "description": "Enforce global, provider, model, endpoint, tenant, and resource-specific concurrency and rate limits.",
+      "id": "concurrency-rate-limit-governor",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/concurrency-rate-limit-governor.json",
+      "sha256": "fc48269aee8f111d9042520f3db99155cdeef02cf4bcdd4899cee6118e735b6d"
+    },
+    {
+      "description": "Allocate verification and alternative paths according to confidence, uncertainty, evidence quality, and consequence.",
+      "id": "confidence-aware-scheduler",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/confidence-aware-scheduler.json",
+      "sha256": "ac20cc621510ff5ebb81ac1ae3660301f6a2c9e3e151269c19b6e4b80cad834a"
+    },
+    {
+      "description": "Enforce money, token, API-call, compute-minute, and storage budgets while preserving acceptance criteria.",
+      "id": "cost-token-budget-scheduler",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/cost-token-budget-scheduler.json",
+      "sha256": "d47ca3874ff9a0f77271c19650155ee6fd331d0f5436ea10634bf85ec361c637"
+    },
+    {
+      "description": "Identify schedule bottlenecks and reduce makespan through reordering, resource boosts, and alternate implementations.",
+      "id": "critical-path-optimizer",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/critical-path-optimizer.json",
+      "sha256": "ffd97bc7635c2bc29f3d9062ccf07ea3e08905d48bd2a45fa31c2a8808be0a5e"
+    },
+    {
+      "description": "Schedule work against deadlines, SLAs, time windows, lateness penalties, and estimated completion risk.",
+      "id": "deadline-sla-scheduler",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/deadline-sla-scheduler.json",
+      "sha256": "8f49d4726659430b62fc2f5bfdaed625152dd15caabebb592800d0dac4b10d71"
+    },
+    {
+      "description": "Build and execute dependency-safe task graphs with cycle detection, readiness gates, fan-out, fan-in, and critical-path awareness.",
+      "id": "dependency-dag-scheduler",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/dependency-dag-scheduler.json",
+      "sha256": "a430b86f64cf6133844ed6b37446dace16e825201ee65cccd31e98152a5e3da0"
+    },
+    {
+      "description": "Coordinate claims and locks with fencing tokens, heartbeats, expirations, duplicate suppression, and split-brain defenses.",
+      "id": "distributed-lease-lock-manager",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/distributed-lease-lock-manager.json",
+      "sha256": "ea233551b860a4370ffa4ff8dec20e8a6c334163b7669630f5b18384d4397ec7"
+    },
+    {
+      "description": "Treat missing evidence, tests, receipts, and certification artifacts as explicit schedulable dependencies.",
+      "id": "evidence-completion-scheduler",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/evidence-completion-scheduler.json",
+      "sha256": "4018996353dc57581518a13c31c9c97a4a9dea8ec87219f5d258180ee18a5af6"
+    },
+    {
+      "description": "Apply retry, backoff, alternate skill, alternate model, degraded mode, escalation, rollback, or safe stop policies.",
+      "id": "failure-recovery-scheduler",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/failure-recovery-scheduler.json",
+      "sha256": "caca96e6fe2dfcc8e718b2b3ad17e4352c60e5d39b473bbb14f5ff91c4e94a64"
+    },
+    {
+      "description": "Route work across CPU, GPU, accelerator, local model, cloud model, and deterministic tooling.",
+      "id": "heterogeneous-compute-router",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/heterogeneous-compute-router.json",
+      "sha256": "5f751af875811af88505b3a41d8fd255b413a2f7388d9f0023055dc574de0a8a"
+    },
+    {
+      "description": "Pause, bundle, route, expire, and resume approval-dependent work without losing state or provenance.",
+      "id": "human-approval-gate-scheduler",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/human-approval-gate-scheduler.json",
+      "sha256": "80b1be2e1cf069843e8a51fa4c8c5808f6b94ee1243c304b351c9f633a40187c"
+    },
+    {
+      "description": "Optimize interactive, batch, streaming, and background work against latency objectives.",
+      "id": "latency-aware-scheduler",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/latency-aware-scheduler.json",
+      "sha256": "bb19bde77056f9c8357ce142974986a0668ef1247eef0e5d877b2faec6a090b9"
+    },
+    {
+      "description": "Choose local, private, remote, or hybrid execution based on privacy, egress, cost, latency, quality, and availability.",
+      "id": "local-cloud-execution-router",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/local-cloud-execution-router.json",
+      "sha256": "9e44c7b4f612e8cef8629b4fdf48f76171dc1e456d3a6e11bf6d9666433c1734"
+    },
+    {
+      "description": "Use idle capacity for indexing, cleanup, benchmarks, cache warming, documentation, and low-risk maintenance.",
+      "id": "maintenance-idle-work-scheduler",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/maintenance-idle-work-scheduler.json",
+      "sha256": "acd7dd6873e9fbb239edf14bebbec996cadf878cfff908a508f9018395e378c9"
+    },
+    {
+      "description": "Fill resource fragmentation and blocked intervals with useful preemptible work.",
+      "id": "opportunistic-backfill-scheduler",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/opportunistic-backfill-scheduler.json",
+      "sha256": "307049b9978fa938cab25bada6198648a3d4a448c4736bc2ffb857b799849474"
+    },
+    {
+      "description": "Find safe parallel branches, serialization hazards, shared-state conflicts, and optimal fan-out limits.",
+      "id": "parallelism-opportunity-detector",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/parallelism-opportunity-detector.json",
+      "sha256": "437322f68383e18907570c68c0c937882a354517b6cb023226167942bd89e8fc"
+    },
+    {
+      "description": "Safely pause and resume work using checkpoints, leases, idempotency keys, and compensation semantics.",
+      "id": "preemption-checkpoint-manager",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/preemption-checkpoint-manager.json",
+      "sha256": "f9f9f7668618c68b3dc09b839dc0e1a3030df9efe7485c4a87bc7f7937338548"
+    },
+    {
+      "description": "Assign and continuously recompute task priority using urgency, impact, dependency pressure, aging, and starvation prevention.",
+      "id": "priority-queue-scheduler",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/priority-queue-scheduler.json",
+      "sha256": "ebbb5cc2fe0a75ba9b4457a594cef8c98751421c63124175d064b4b604aad025"
+    },
+    {
+      "description": "Prevent indefinite postponement through aging, weighted fairness, tenant quotas, and bounded priority inversion.",
+      "id": "queue-starvation-fairness-guard",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/queue-starvation-fairness-guard.json",
+      "sha256": "f7e8c658e12bbf54c77c37827a38abfdcb3c29eb0441f4db645b3535793e2334"
+    },
+    {
+      "description": "Place work using CPU, RAM, GPU, disk, network, model, and concurrency constraints.",
+      "id": "resource-aware-scheduler",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/resource-aware-scheduler.json",
+      "sha256": "0f1254394c3282e0dbbcfb216c4cba30c75c36bc0ce705544ab34c9e7146cfcf"
+    },
+    {
+      "description": "Prioritize and gate tasks according to safety, security, irreversibility, blast radius, and failure consequence.",
+      "id": "risk-aware-scheduler",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/risk-aware-scheduler.json",
+      "sha256": "6b5b556f5be93264916bce10e915f6908d31e37b12e2062115f94cce83fa8cc7"
+    },
+    {
+      "description": "Emit traces, queue metrics, utilization, wait time, decision reasons, overrides, and replayable scheduling evidence.",
+      "id": "schedule-observability-auditor",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/schedule-observability-auditor.json",
+      "sha256": "75924458d840578f46b014c880eec2d72cd5a5dd0f0e174d2aab496f25c92b60"
+    },
+    {
+      "description": "Simulate candidate schedules, bottlenecks, failures, and resource contention before execution.",
+      "id": "schedule-simulation-planner",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/schedule-simulation-planner.json",
+      "sha256": "4724a00c7d17a72d0c369d5af0db1f96287b3c22092b7fa0959f71e03d0c7a6a"
+    },
+    {
+      "description": "Certify scheduler configuration, implementation, tests, evidence, rollback, and integration readiness.",
+      "id": "scheduler-certification-manager",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/scheduler-certification-manager.json",
+      "sha256": "99184e42c79bcbf41acb6ae6cdee4744e1cd69882d9a5b545eef32ab8230a319"
+    },
+    {
+      "description": "Inject worker loss, model outage, lock expiry, delayed completion, resource pressure, and duplicate delivery.",
+      "id": "scheduler-chaos-resilience-tester",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/scheduler-chaos-resilience-tester.json",
+      "sha256": "cea45a88c2d1c6ad862d0c6ec0e51dc047e8d0c5a35f4d17d3a96ea35e6f8992"
+    },
+    {
+      "description": "Validate policy consistency, impossible constraints, unsafe fallbacks, hidden egress, and non-deterministic priority rules.",
+      "id": "scheduler-policy-validator",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/scheduler-policy-validator.json",
+      "sha256": "468f2d4a73618f888ee6dac4441d998e91c6425302843fbb27f0e3b77485ce35"
+    },
+    {
+      "description": "Score competing skills and implementations by fit, confidence, history, resource needs, policy, and expected utility.",
+      "id": "skill-arbitration-engine",
+      "path": ".agents/skills/orchestrate-capability-scheduling/references/capabilities/skill-arbitration-engine.json",
+      "sha256": "c129ea836859cc24403629f79cb62e7c6348053cbdd76dcee6ba5a0fe727ed93"
+    }
+  ],
+  "schema_version": "1.0"
+}

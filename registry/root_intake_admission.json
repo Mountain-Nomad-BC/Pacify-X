@@ -1,0 +1,207 @@
+{
+  "schema_version": "1.0",
+  "source_files": 22,
+  "unique_contents": 12,
+  "requirements": [
+    {
+      "id": "demand-paged-capabilities",
+      "state": "active",
+      "targets": [
+        "runtime/lazy_loader.py",
+        "runtime/orchestrator.py"
+      ]
+    },
+    {
+      "id": "typed-io-orchestration",
+      "state": "active",
+      "targets": [
+        "registry/graphs/io_graph.json",
+        "runtime/planner.py"
+      ]
+    },
+    {
+      "id": "model-routing-not-weights",
+      "state": "active",
+      "targets": [
+        "models/index.json",
+        "models/routing-policy.json",
+        "runtime/models.py"
+      ]
+    },
+    {
+      "id": "generic-ui-context",
+      "state": "contract_ready_backend_deferred",
+      "targets": [
+        "contracts/ui-context.schema.json",
+        "registry/source_specialty_admission.json"
+      ]
+    },
+    {
+      "id": "repair-patterns-not-code-paste",
+      "state": "active",
+      "targets": [
+        "builders/repair_pattern_builder.py",
+        ".agents/skills/diagnose-python-repair/SKILL.md"
+      ]
+    },
+    {
+      "id": "human-approved-security-tools",
+      "state": "active",
+      "targets": [
+        "policies/external-tool-quarantine.json",
+        ".agents/skills/quarantine-external-tools/SKILL.md"
+      ]
+    }
+  ],
+  "unique_records": [
+    {
+      "sha256": "8941e373539f684e40c88a612df3dca5cb307d33cd038bdbee57d384a59862bf",
+      "representative_path": "02_governed_retrieval_system_with_deterministic_rails_intelligent_integrations_and_engines_Operations_Upgrade_Pack_docs_intelligent_integrations_and_engines_governed_retrieval_system_with_deterministic_rails_RESPONSIBILITY_MATRIX.md",
+      "duplicate_count": 4,
+      "title": "Responsibility Matrix",
+      "disposition": "responsibility_ownership_integrated",
+      "delivery_state": "active",
+      "mapped_targets": [
+        "registry/capability_map.json",
+        "policies/canonical-owner.json"
+      ]
+    },
+    {
+      "sha256": "751d6c3cca8324c9878cb048d33f55a9d1f1afa03b8a3f78c115f5accab844ce",
+      "representative_path": "36_governed_retrieval_system_with_deterministic_rails_page_context_policy.md",
+      "duplicate_count": 1,
+      "title": "governed_retrieval_system_with_deterministic_rails Page Context Policy",
+      "disposition": "generic_ui_context_contract_extracted",
+      "delivery_state": "partial",
+      "mapped_targets": [
+        "contracts/ui-context.schema.json",
+        "registry/source_specialty_admission.json"
+      ]
+    },
+    {
+      "sha256": "597b7c5696df8a0f8e6716ae951aa6f7e3b97103bf6bccf9b01d6e5e9a50746d",
+      "representative_path": "BOOTSTRAP_GUIDE.md",
+      "duplicate_count": 1,
+      "title": "Governed engineering bootstrap",
+      "disposition": "bootstrap_flow_superseded",
+      "delivery_state": "active",
+      "mapped_targets": [
+        "README.md",
+        "runtime/commissioning.py",
+        "runtime/startup.py"
+      ]
+    },
+    {
+      "sha256": "f712b459457dd4201953ea3f8682e065ab90e9f6f93aac5142d853b62114cbeb",
+      "representative_path": "Build_info.txt",
+      "duplicate_count": 1,
+      "title": "I'd build it more like an operating system.",
+      "disposition": "architecture_and_model_routing_integrated",
+      "delivery_state": "active",
+      "mapped_targets": [
+        "models/index.json",
+        "models/routing-policy.json",
+        "runtime/models.py",
+        "registry/graphs/system_asset_graph.json"
+      ]
+    },
+    {
+      "sha256": "191b6bdfd478857bd9558858310a1ca8182cce9efe22da1d76f15c5be9202890",
+      "representative_path": "Don't build a library of Python code.txt",
+      "duplicate_count": 1,
+      "title": "Don't build a library of Python code. Build a library of Python repair patterns.",
+      "disposition": "repair_pattern_principle_integrated",
+      "delivery_state": "active",
+      "mapped_targets": [
+        "builders/repair_pattern_builder.py",
+        ".agents/skills/diagnose-python-repair/SKILL.md"
+      ]
+    },
+    {
+      "sha256": "0751812c73bbfd214667e83b2d128f23200d12caafc119fc196f9faf1846e454",
+      "representative_path": "intelligent_integrations_and_engines_BOOTSTRAP_ENGINEERING_OS_REBUILD_2026-08-01_01_CONTROL_PLANE_NON_GOALS_AND_BOUNDARIES.md",
+      "duplicate_count": 1,
+      "title": "Non-Goals and Boundaries",
+      "disposition": "governance_boundaries_integrated",
+      "delivery_state": "active",
+      "mapped_targets": [
+        "policies/permission-boundary.json",
+        "policies/contained-execution.json"
+      ]
+    },
+    {
+      "sha256": "e3a358eeca28754ca841034f2359db7badbcbe2ffdadebcbb774eb470348adb9",
+      "representative_path": "intelligent_integrations_and_engines_BOOTSTRAP_ENGINEERING_OS_REBUILD_2026-08-01_04_COMMISSIONING_AND_INTAKE_EXPERIENCE_CALIBRATION.md",
+      "duplicate_count": 1,
+      "title": "Development Experience Calibration",
+      "disposition": "commissioning_calibration_integrated",
+      "delivery_state": "active",
+      "mapped_targets": [
+        "runtime/commissioning.py",
+        "contracts/commissioning-questionnaire.schema.json"
+      ]
+    },
+    {
+      "sha256": "048d409e43c99b00a36a87b2f7527ed3645367855177dcc571ef2715a32cb4a3",
+      "representative_path": "intelligent_integrations_and_engines_BOOTSTRAP_ENGINEERING_OS_REBUILD_2026-08-01_10_CODEX_EXECUTION_PROJECT_BRIEF_TEMPLATE.md",
+      "duplicate_count": 1,
+      "title": "Project Context",
+      "disposition": "commissioning_template_integrated",
+      "delivery_state": "active",
+      "mapped_targets": [
+        "runtime/commissioning.py",
+        "contracts/commissioning-questionnaire.schema.json"
+      ]
+    },
+    {
+      "sha256": "922fe0a3c4018c282fe80d96fa21e7230301b9127f2d7f90b2b1289ef27fcf7f",
+      "representative_path": "README_intelligent_integrations_and_engines_AI_Harness_Packs (1).md",
+      "duplicate_count": 2,
+      "title": "intelligent integrations and engines / Governed Retrieval System with Deterministic Rails AI Harness Research Operations Packs",
+      "disposition": "package_description_reconciled",
+      "delivery_state": "reference",
+      "mapped_targets": [
+        "registry/reference_candidate_admission.json",
+        "evidence/source-migration-receipt.json"
+      ]
+    },
+    {
+      "sha256": "54ab72ccfc87ac074d5a2388c70c4f94c26d38fcf833532709ba769304c0d8df",
+      "representative_path": "README_intelligent_integrations_and_engines_BOOTSTRAP_ENGINEERING_OS_REBUILD (1).md",
+      "duplicate_count": 6,
+      "title": "intelligent integrations and engines Bootstrap Engineering OS Rebuild — Package Downloads",
+      "disposition": "package_description_reconciled",
+      "delivery_state": "reference",
+      "mapped_targets": [
+        "registry/reference_candidate_admission.json",
+        "evidence/source-migration-receipt.json"
+      ]
+    },
+    {
+      "sha256": "bad373a97a1e3643cb5cf141acd54b9e674e86d27ea9d450f8b12f4caf5d5619",
+      "representative_path": "start_instruct.md",
+      "duplicate_count": 1,
+      "title": "This is a lot and complex, so if you have any questions, please ask. The goal of this is to take my semi autonomous engineering framework and the prompting for it to be started, and the digital USER simulation agent tool and all the preventative safeties and securities and everything and turn it int",
+      "disposition": "governing_requirements_integrated",
+      "delivery_state": "active",
+      "mapped_targets": [
+        "bootstrap/startup.toml",
+        "runtime/lazy_loader.py",
+        "runtime/orchestrator.py",
+        "PROJECT_MANAGEMENT.md"
+      ]
+    },
+    {
+      "sha256": "6cdbdb869d00dd6672e622970be7e3686ce269ee33b33a736ba6f24386ec6744",
+      "representative_path": "VALIDATION_REPORT(8) (1).md",
+      "duplicate_count": 2,
+      "title": "Validation Report",
+      "disposition": "historical_validation_reference",
+      "delivery_state": "reference",
+      "mapped_targets": [
+        "PROJECT_MANAGEMENT.md",
+        "PROJECT_MANAGEMENT.md"
+      ]
+    }
+  ]
+}

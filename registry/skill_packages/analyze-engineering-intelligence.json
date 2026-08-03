@@ -1,0 +1,39 @@
+{
+  "id": "analyze-engineering-intelligence",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".agents/skills/analyze-engineering-intelligence/SKILL.md",
+  "body_sha256": "17746bfc6c684ee185521a91353dd8999e7d0636c86fe89dd5675050cea40981",
+  "references": [
+    ".agents/skills/analyze-engineering-intelligence/references/analysis-contract.md"
+  ],
+  "capability_tags": [
+    "architecture",
+    "dependency",
+    "semantic-drift",
+    "engineering-health",
+    "research",
+    "refactoring"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "clean_room_implementation_from_internal_design",
+    "basis": [
+      {
+        "path": "agent_memory_issues_to_explore/\ud83d\udce6 Pack 8 AI Runtime & Cognitive As.txt",
+        "sha256": "be252cfb2c073c5246c40c09ee6ec8f51c67490958058b28fd21ef33bfac9834"
+      },
+      {
+        "path": "agent_memory_issues_to_explore/The newer surveys on agent skills a.txt",
+        "sha256": "b624ab3bfa2993717fc8465f7422ef5babc702ab70a5feb5768d38cb4ac2b160"
+      }
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_engineering_intelligence.py",
+  "evidence": "tests/test_engineering_intelligence.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

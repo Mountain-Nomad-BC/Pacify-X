@@ -1,0 +1,66 @@
+id: memory-injection-firewall
+version: 0.1.0
+status: draft
+owner: framework owner
+category: security
+priority: P0
+purpose: Quarantine retrieved memory that redirects intent, expands permissions, exposes
+  secrets, or alters policy hierarchy.
+activation:
+  when:
+  - any untrusted memory/external text enters reasoning
+  not_when:
+  - never bypass for untrusted memory
+inputs:
+  required:
+  - original goal
+  - current plan
+  - retrieved item
+  - provenance
+  - requested effects
+  - classification
+outputs:
+  produces: &id001
+  - allow/quarantine/review
+  - instruction detection
+  - intent divergence
+  - sensitive-flow warnings
+effects:
+  reads:
+  - registry/state/evidence as scoped
+  writes:
+  - trace and structured result; memory is candidate-only
+  network: none by default; adapters declare destinations
+  side_effect_class: read_or_control_plane unless composed tool differs
+permissions:
+- registry:read
+- trace:write
+dependencies:
+- framework policy
+- context assembler
+- memory service
+- tool gateway
+risk:
+  tier: R2
+  approval: deployment approval; runtime approval follows composed effects
+budgets:
+  timeout_seconds: 120
+  max_retries: 1
+  max_tool_calls: 12
+idempotency:
+  required_for_side_effects: true
+postconditions: *id001
+memory_policy:
+  read: scoped
+  write: candidate_only
+tests:
+- tests/test_cases.yaml
+metrics:
+- attack success
+- false positives
+- quarantine count
+- scope attempts
+provenance:
+  generated: '2026-08-01'
+  source_ids:
+  - mind-memory-defense

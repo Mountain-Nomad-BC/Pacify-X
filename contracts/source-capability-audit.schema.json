@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:source-capability-audit",
+  "title": "Bounded source capability audit receipt",
+  "type": "object",
+  "required": ["schema_version", "complete", "files_accounted", "error_count", "inventory_sha256", "report_sha256"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "complete": {"type": "boolean"},
+    "files_accounted": {"type": "integer", "minimum": 1},
+    "text_scanned": {"type": "integer", "minimum": 0},
+    "excluded_directories": {"type": "integer", "minimum": 0},
+    "oversize_review_required": {"type": "integer", "minimum": 0},
+    "error_count": {"type": "integer", "minimum": 0},
+    "inventory_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": true
+}

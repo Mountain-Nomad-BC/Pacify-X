@@ -1,0 +1,35 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:evaluation-result",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "case_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "evidence": {
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      },
+      "type": "array"
+    },
+    "observed": {
+      "type": "object"
+    },
+    "status": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "case_id",
+    "status",
+    "observed",
+    "evidence"
+  ],
+  "title": "Evaluation Result",
+  "type": "object"
+}

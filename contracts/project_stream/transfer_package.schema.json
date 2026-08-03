@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:transfer_package",
+  "title": "Cross-Project Transfer Package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "transfer_id",
+    "source_project_id",
+    "destination_project_id",
+    "purpose",
+    "artifacts",
+    "sanitization",
+    "state"
+  ],
+  "properties": {
+    "transfer_id": {
+      "type": "string",
+      "pattern": "^xfer_"
+    },
+    "source_project_id": {
+      "type": "string",
+      "pattern": "^prj_"
+    },
+    "destination_project_id": {
+      "type": "string",
+      "pattern": "^prj_"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "sanitization": {
+      "type": "object"
+    },
+    "license_and_ownership": {
+      "type": "object"
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "state": {
+      "enum": [
+        "draft",
+        "sanitized",
+        "review",
+        "approved",
+        "imported",
+        "rejected"
+      ]
+    }
+  }
+}

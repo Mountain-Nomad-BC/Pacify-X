@@ -1,0 +1,5146 @@
+{
+  "case_count": 257,
+  "cases": [
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:audit-ai-supply-chain",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:audit-pack-completeness",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:benchmark-serving-backends",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:build-sandbox-profile",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:build-verification-plan",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:calibrate-llm-judge",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:compile-and-register-skill",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:convert-incident-to-regression",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:curate-memory-from-runs",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:debug-retrieval-failure",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:degrade-safely",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:deploy-canary-and-compare",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:design-memory-system",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:detect-and-plan-conflict-merges",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:diagnose-root-cause",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:evaluate-agent-end-to-end",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:execute-controlled-capability",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:field-feedback-to-regression",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:final-capability-certification",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:freeze-foundational-scope",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:fuzz-and-minimize",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:handle-ai-security-incident",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:human-review-and-handoff",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:implement-verified-change",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:import-and-govern-tool",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:independent-verify-result",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:ingest-and-index-corpus",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:instrument-agent-workflow",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:issue-to-minimal-reproduction",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:monitor-quality-drift",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:mutation-quality-gate",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:perform-security-review",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:performance-regression-gate",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:plan-capacity-and-cost",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:plan-safe-migration",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:prepare-agent-instructions",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:promote-validated-learning",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:publish-a2a-capability",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:purge-scoped-memory",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:recertify-after-change",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:reconstruct-task-context",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:recover-failed-workflow",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:red-team-agent-system",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:release-completion-suite",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:release-trusted-artifact",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:replay-failed-run",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:reproduce-and-verify-build",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:research-with-evidence",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:resolve-conflicting-evidence",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:retrieve-with-grounding",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:review-change-impact",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:revoke-certification",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:route-and-budget-task",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:route-model-by-policy",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:run-behavioral-certification",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:run-long-horizon-evaluation",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:select-serving-backend",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:test-prompt-injection-resistance",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:trace-runtime-request",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:understand-repository",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:validate-protocol-compatibility",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "orchestration:validate-tool-authority",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:agents-md-generator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:ai-bom",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:approval-request",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:archive-hygiene",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:archive-verifier",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:backend-probe",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:benchmark-contamination-scan",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:benchmark-harness",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:canary-compare",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:capability-router",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:capacity-planner",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:certification-aggregator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:change-impact",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:claim-ledger",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:collision-merge-planner",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:completion-cutline",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:config-trace",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:context-budget",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:deterministic-archive",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:differential-tester",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:drift-monitor",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:duplicate-detector",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:durable-state",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:evidence-bundle",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:failure-normalizer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:formula-property-tests",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:fuzz-json-runner",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:hardware-probe",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:hybrid-retrieval",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:ingestion-validator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:judge-calibrator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:manifest-reconciler",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:memory-write-gate",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:metamorphic-runner",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:model-router",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:mutation-operator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:openapi-tool-importer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:patch-scope-guard",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:permission-guard",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:prompt-injection-scanner",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:protocol-validator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:provenance-generator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:recertification-impact",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:replay-bundle",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:repo-mapper",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:reproduction-scaffold",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:retrieval-evaluator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:run-smoke-tests",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:runtime-path",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:sandbox-profile",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:sbom-lite",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:scenario-runner",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:scoped-memory",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:secret-scanner",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:skill-compiler",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:symbol-index",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:threat-model",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:tool-policy-enforcer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:trace-recorder",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:trajectory-scorer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "script:validate-pack",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:a2a-agent-adapter",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:abstention-and-escalation",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:adversarial-robustness-certifier",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:agent-computer-interface-designer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:agent-identity-authentication",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:agent-red-teaming",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:agent-trajectory-evaluator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:ai-bom-generator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:ai-threat-modeling",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:archive-hygiene",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:artifact-signer-verifier",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:assumption-register",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:authorization-policy",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:backend-capability-prober",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:batching-policy-selector",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:behavioral-competence-certifier",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:benchmark-contamination-auditor",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:cache-policy-selector",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:call-graph-builder",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:capability-discovery-negotiation",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:capability-router",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:capacity-planner",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:change-reviewer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:chaos-scenario-designer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:claim-evidence-ledger",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:collision-and-merge-planner",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:completion-cutline-enforcer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:confidence-calibrator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:configuration-resolution-tracer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:context-budget-manager",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:context-injection-defender",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:contract-test-designer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:control-mapping",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:cost-resource-budget-manager",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:data-classification",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:data-flow-tracer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:dependency-impact-analyzer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:dependency-risk-scorer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:deployment-canary-manager",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:deterministic-correctness-certifier",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:differential-test-designer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:document-ingestion-validator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:duplicate-capability-detector",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:durable-task-state",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:egress-policy-enforcer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:episodic-memory-manager",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:evaluation-design",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:failure-taxonomy-normalizer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:fallback-and-degradation",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:fault-injection-operator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:field-validation-monitor",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:flaky-test-diagnoser",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:fuzz-test-operator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:genai-telemetry-instrumentation",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:golden-master-manager",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:graph-retrieval",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:handoff-package-author",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:hardware-topology-inspector",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:hidden-test-manager",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:human-approval-ux",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:hybrid-retrieval",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:idempotency-and-compensation",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:independent-verification-gate",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:integration-test-designer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:issue-to-reproduction",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:json-schema-tool-validator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:license-compliance",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:llm-judge-calibrator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:long-horizon-reliability-certifier",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:manifest-reconciler",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:mcp-client-server-adapter",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:memory-compaction",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:memory-conflict-resolution",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:memory-isolation",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:memory-poisoning-defense",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:memory-provenance",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:memory-retention-deletion",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:memory-retrieval-planner",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:memory-write-gate",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:metamorphic-test-designer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:migration-planner",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:model-compatibility-prober",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:model-router",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:mutation-test-operator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:openapi-tool-importer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:operational-resilience-certifier",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:output-sanitization",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:ownership-history-mapper",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:package-integrity-validator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:patch-scope-guardian",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:patch-to-test-plan",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:performance-regression-tester",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:permission-scope-designer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:privacy-impact-analysis",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:procedural-memory-manager",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:prompt-injection-defense",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:property-based-test-designer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:provenance-generator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:quality-drift-monitor",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:quantization-quality-evaluator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:recertification-impact-analyzer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:regression-suite-curator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:release-trust-certifier",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:replay-and-forensics",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:repository-cartographer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:reproducible-build-validator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:reproduction-minimizer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:reranking",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:retrieval-evaluator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:revocable-certification-manager",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "manage-revocable-certification",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:root-cause-hypothesis-manager",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:runtime-path-tracer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:runtime-regression-tester",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:sandbox-profile-designer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:sbom-generator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:secret-handling",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:security-boundary-mapper",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:security-incident-response",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:semantic-memory-manager",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:serving-backend-selector",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:skill-compiler",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:source-conflict-resolver",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:source-quality-assessor",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:symbol-reference-navigator",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:test-coverage-mapper",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "analyze-repository-intelligence",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:test-quality-auditor",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:throughput-latency-benchmarker",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:tool-abuse-defense",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "secure-agent-supply-chain",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:tool-output-sanitizer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-runtime-protocol-deployment",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:trace-correlation",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:typed-capability-contract",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:unit-test-designer",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "engineer-verification-lab",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:unknown-field-guardian",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "govern-operating-kernel",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    },
+    {
+      "expected": {
+        "negative_valid": false,
+        "positive_valid": true
+      },
+      "id": "skill:working-memory-manager",
+      "negative": {
+        "target": "bounded-target"
+      },
+      "owner": "operate-memory-retrieval-observability",
+      "positive": {
+        "constraints": {
+          "effects": [
+            "read_local"
+          ]
+        },
+        "evidence_context": {},
+        "target": "bounded-target"
+      }
+    }
+  ],
+  "schema_version": "1.0"
+}
