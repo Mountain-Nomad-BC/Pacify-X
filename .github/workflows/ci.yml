@@ -55,7 +55,7 @@ jobs:
         run: python -m runtime.cli --root . gates run --gate ${{ matrix.gate }} --receipt-dir "${{ runner.temp }}/gate-receipts"
       - name: Retain gate receipt
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: assurance-gate-${{ matrix.gate }}
           path: ${{ runner.temp }}/gate-receipts/
@@ -106,7 +106,7 @@ jobs:
           python -c "from pathlib import Path; from runtime.release_distribution import bind_artifact_set,file_record; from runtime.release_identity import authoritative_version; d=Path('dist'); records=[file_record(next(d.glob('*.whl')),'wheel'),file_record(next(d.glob('*.tar.gz')),'sdist')]; r=bind_artifact_set(d,records,source_product_digest='ci-observed-source',version=authoritative_version(Path('.')),source_root=Path('.')); print(r); raise SystemExit(0 if r['valid'] else 1)"
       - name: Upload coverage and package evidence
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: governed-gate-evidence
           path: |
