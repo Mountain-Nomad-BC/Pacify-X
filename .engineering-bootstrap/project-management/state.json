@@ -112,7 +112,7 @@
     "unknowns": []
   },
   "lifecycle": {
-    "next_action": "merge REL-012 to main, run public CI, and require a future signed release for certification",
+    "next_action": "merge REL-012 to main, require public CI, and create a future signed release before certifying the new bytes",
     "phase": "post-release-hardening",
     "status": "validated-development"
   },

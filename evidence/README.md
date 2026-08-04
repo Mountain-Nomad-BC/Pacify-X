@@ -34,6 +34,9 @@ The values above come from the signed certificate and observed public downloads,
 - `release-runs/`: run-scoped historical evidence; a run has no authority unless referenced by a valid signed certificate.
 - `declared-suite/`: reconstruction and domain-pack evidence, not a product release certificate.
 - `bundles/`: retained archive-custody inventories.
+- `repairs/`: bounded reconnaissance, punch-card, compatibility, merge, and validation receipts for post-release development repairs; these do not alter an existing release certificate.
+
+The current trust-boundary hardening package begins at [`repairs/trust-boundary-hardening/PUNCH_CARD_LEDGER.md`](repairs/trust-boundary-hardening/PUNCH_CARD_LEDGER.md), with validation in [`VALIDATION_RECEIPT.md`](repairs/trust-boundary-hardening/VALIDATION_RECEIPT.md) and deferred external actions in [`DEFERRED_FINDINGS.md`](repairs/trust-boundary-hardening/DEFERRED_FINDINGS.md).
 
 ## Revoked certificates
 
