@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:authorization-request",
+  "title": "Authoritative authorization request",
+  "type": "object",
+  "required": ["capability_id", "effects", "project_id", "actor_id", "session_id", "execution_id", "evidence_store", "policy_decision_ref", "accepted_policy_producers"],
+  "properties": {
+    "capability_id": {"type": "string", "minLength": 1},
+    "effects": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "project_id": {"type": "string", "minLength": 1},
+    "actor_id": {"type": "string", "minLength": 1},
+    "session_id": {"type": "string", "minLength": 1},
+    "execution_id": {"type": "string", "minLength": 1},
+    "evidence_store": {"type": "string", "minLength": 1},
+    "policy_decision_ref": {"type": "string", "pattern": "^evidence:[A-Za-z0-9._-]+$"},
+    "policy_decision_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "accepted_policy_producers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "max_age_seconds": {"type": "integer", "minimum": 1},
+    "timeout_seconds": {"type": "integer", "minimum": 1},
+    "max_tool_calls": {"type": "integer", "minimum": 0},
+    "idempotency_key": {"type": "string"},
+    "effect_grant_path": {"type": "string"},
+    "effect_signature_path": {"type": "string"},
+    "adapter": {"type": "string"},
+    "environment": {"type": "string"},
+    "writable_targets": {"type": "array", "items": {"type": "string"}},
+    "network_hosts": {"type": "array", "items": {"type": "string"}},
+    "secret_refs": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

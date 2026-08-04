@@ -20,6 +20,7 @@ def test_packaged_imports_are_fully_classified_and_declared():
         if line and not line.startswith("#") and "==" in line
     }
     assert result["release_dependency_count"] == len(locked) == 13
+    assert result["build_requirements"] == ["setuptools==81.0.0"]
 
 
 def test_dependency_inventory_is_deterministic_and_has_no_runtime_yaml_dependency():

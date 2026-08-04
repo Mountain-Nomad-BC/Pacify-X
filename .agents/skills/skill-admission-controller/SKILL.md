@@ -31,8 +31,8 @@ Control whether a skill may enter registry, sandbox, canary, or production.
 - promotion state
 
 ## Procedure
-1. validate structure.
-2. verify source/hash.
+1. validate structure and resolve signed evidence references.
+2. verify record signatures, producers, source/hash, freshness, and candidate/project scope.
 3. diff permissions/effects.
 4. scan prompt/code/dependencies.
 5. detonate.
@@ -41,6 +41,7 @@ Control whether a skill may enter registry, sandbox, canary, or production.
 
 ## Guardrails
 - unknown/unsigned remains quarantined.
+- caller-provided provenance, licensing, test, and security Booleans cannot admit a candidate.
 - declared effects must match observed.
 - self-modifying eval prohibited.
 

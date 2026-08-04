@@ -9,12 +9,14 @@ Deliver a model-agnostic, drop-in bootstrap that lets an LLM safely commission e
 ## Current state
 
 Mode: `existing`  
-Phase: `deployment certified`
-Status: `complete`
-Active card: `none`
-Next action: monitor release 0.6.3 and open a new card before any material change.
+Phase: `post-release trust-boundary hardening`
+Status: `validated development change awaiting merge and public CI`
+Active card: `REL-012`
+Next action: merge the validated repair branch into `main`, run public CI, and require a future signed release before calling these post-0.6.3 changes release-certified.
 
 Release 0.6.3 is the current signed, self-certified release. The annotated tag, exact public distribution files, trusted publisher signature, complete evidence set, checksums, SBOM, provenance, and fresh installed-wheel verification agree. Canonical evidence is under `evidence/releases/0.6.3/`; the public release is at [GitHub v0.6.3](https://github.com/Mountain-Nomad-BC/Pacify-X/releases/tag/v0.6.3).
+
+The current development tree adds the REL-012 trust-boundary and reproducibility repairs. Those changes have passed local source, selective assurance-gate, sanitation, clean-build, and installed-wheel validation, but they do not rewrite or expand the immutable v0.6.3 certificate. A future signed release must bind these new bytes before they are described as release-certified.
 
 Release 0.6.2 is historical and revoked for deployment. Its validation proved internal consistency under the included profile, but did not authenticate one immutable chain from Git commit through the exact tested and publicly distributed package bytes. Revocation evidence is retained at `evidence/release-revocation-0.6.2.json`; the original certificate remains unchanged as historical evidence.
 
@@ -162,6 +164,20 @@ Release evidence: `evidence/release-certification-0.6.2.json`.
 - [x] Download every public release asset separately, verify all bindings and hashes, and install the public wheel in a fresh environment.
 
 Release evidence: `evidence/releases/0.6.3/certificate.json`, `evidence/releases/0.6.3/certificate.json.sig`, and `evidence/releases/0.6.3/public-release-verification.json`. The complete run bundle is retained outside the deployable repository and identified by the public verification receipt.
+
+## Trust-boundary and reproducibility hardening card - REL-012
+
+- [x] Replace caller-asserted outcome, admission, and authorization authority with one signed, scoped, freshness-bounded evidence resolver.
+- [x] Preserve claim evaluation only through explicitly non-authoritative compatibility commands.
+- [x] Centralize stable CLI exit semantics and cover negative dispositions.
+- [x] Align runtime Python support with packaging and CI for Python 3.11 through 3.14.
+- [x] Make immutable v0.6.3 installation the default onboarding path while keeping historical release evidence unchanged.
+- [x] Add durable, reconstructable release-evidence custody for future signed releases.
+- [x] Prove lazy command-family loading and locked normal/scheduled CI dependencies.
+- [x] Split assurance into independently receipted, hash-keyed gates so only failed or stale gates rerun.
+- [x] Pass focused tests, repaired-failure reruns, all current assurance gates, sanitation, clean build, and installed-wheel smoke validation.
+
+Repair evidence: `evidence/repairs/trust-boundary-hardening/`. This card is implementation-complete but remains development state until merged, exercised by public CI, and later bound into a new signed release.
 
 ## Primary user entry points
 

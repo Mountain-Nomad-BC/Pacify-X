@@ -6,11 +6,12 @@ description: Independently verify completion claims against declared postconditi
 # Verify Outcome
 
 1. Extract atomic completion claims and measurable postconditions.
-2. Collect evidence records with stable IDs, task scope, kind, source, creation time, sensitivity, and status.
+2. Resolve signed evidence records with stable IDs, producer identity, project/task/execution scope, creation time, and content hashes.
 3. Link evidence as support, contradiction, or context. Keep unresolved and contradictory evidence visible.
 4. Reject stale, invalid, future-dated, or out-of-scope records as support.
 5. Run validation independently of the implementation claim.
-6. Mark the result verified only when postconditions pass and current valid evidence exists.
-7. Return unsupported claims, failed checks, warnings, and approved evidence IDs for incomplete work.
+6. Mark the result authoritative and verified only when the signed policy decision applies and every required postcondition has fresh, correctly scoped, integrity-valid evidence.
+7. Use `evaluate-outcome-claims` only for explicitly non-authoritative compatibility analysis.
+8. Return unsupported claims, failed checks, warnings, and approved evidence IDs for incomplete work.
 
 Read [evidence-contract.md](references/evidence-contract.md) when shaping evidence or deciding freshness.

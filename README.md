@@ -18,8 +18,7 @@ PACIFY-X is the project and framework. `engineering-bootstrap` is its Python pac
 
 **Requires:** Python 3.11–3.14, Git, and an AI coding assistant
 
-> [!WARNING]
-> Version 0.6.2 was revoked and should not be deployed. Use v0.6.3 or later. PACIFY-X self-certification is evidence of its included checks, not an independent security audit or warranty. [See the release evidence and limitations](evidence/README.md).
+PACIFY-X v0.6.3 is the current supported release and the default used throughout this guide.
 
 ## What PACIFY-X does for you
 
@@ -38,13 +37,17 @@ You do not need to learn the internal orchestration system or memorize a large c
 
 ### 1. Get PACIFY-X ready
 
-Clone or copy this repository to a stable folder, open a terminal in that folder, and run:
+Clone the exact v0.6.3 release into a stable folder, open a terminal in that folder, and run:
 
 ```powershell
+git clone --branch v0.6.3 --single-branch https://github.com/Mountain-Nomad-BC/Pacify-X.git
+cd Pacify-X
 python -m pip install .
 engineering-bootstrap doctor
 engineering-bootstrap validate
 ```
+
+This installs the immutable certified source tag. To verify and install the exact published wheel instead, follow the short [verified-artifact installation](docs/release-process.md#install-the-certified-release) procedure.
 
 ### 2. Choose how you are starting
 
@@ -116,6 +119,7 @@ Read [START_HERE_FOR_AI.md](START_HERE_FOR_AI.md) before taking any project acti
 - [Architecture, governance, and risk](ARCHITECTURE_GOVERNANCE_AND_RISK.md)
 - [Release and verification process](docs/release-process.md)
 - [Security policy](SECURITY.md)
+- [Trust boundary and CLI decisions](docs/trust-boundary.md)
 - [Project management and punch-card state](PROJECT_MANAGEMENT.md)
 - [Evidence authority and limitations](evidence/README.md)
 
@@ -126,12 +130,14 @@ These exact counts are checked automatically for drift; ordinary users do not ne
 
 | Layer | Exact count |
 |---|---:|
-| Runtime modules | 112 |
-| Contracts | 82 |
+| Runtime modules | 117 |
+| Contracts | 86 |
 | Registry artifacts | 206 |
-| Tool and support scripts | 112 |
+| Tool and support scripts | 113 |
 
 </details>
+
+The default branch is the current development line. Contributors working from `main` should use the setup in [CONTRIBUTING.md](CONTRIBUTING.md); ordinary users should start from the v0.6.3 release shown above.
 
 ## License
 

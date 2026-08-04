@@ -9,6 +9,8 @@ class OutcomeVerifierTests(unittest.TestCase):
     def test_verifies_only_with_postconditions_and_current_evidence(self) -> None:
         result = verify({"tests": True, "mapping": True}, [{"id": "E-2", "status": "current", "valid": True}], policy_allowed=True, executor_claimed_complete=True)
         self.assertEqual(result.status, "verified")
+        self.assertFalse(result.authoritative)
+        self.assertEqual(result.decision_source, "caller_asserted_claims")
         self.assertEqual(result.approved_evidence_ids, ("E-2",))
 
     def test_executor_cannot_self_certify_failed_postcondition(self) -> None:

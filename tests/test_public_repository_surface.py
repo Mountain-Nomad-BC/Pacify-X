@@ -28,6 +28,14 @@ def test_status_language_does_not_claim_independent_certification() -> None:
     assert "independent certification" in (ROOT / "evidence/README.md").read_text(encoding="utf-8")
 
 
+def test_readme_defaults_to_063_without_a_revocation_warning() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "[!WARNING]" not in readme
+    assert "0.6.2" not in readme
+    assert "git clone --branch v0.6.3 --single-branch" in readme
+    assert "immutable certified source tag" in readme
+
+
 def test_public_release_receipt_matches_canonical_certificate_and_signature() -> None:
     release_root = ROOT / "evidence/releases/0.6.3"
     receipt = json.loads((release_root / "public-release-verification.json").read_text(encoding="utf-8"))
@@ -95,16 +103,19 @@ def test_release_wheelhouse_is_outside_the_classified_source_tree() -> None:
     assert "-Path wheelhouse" not in workflow
     assert "-d wheelhouse" not in workflow
     assert "New-Item -ItemType Directory -Path release-artifacts" not in workflow
+    assert "package_release_evidence.py" in workflow
+    assert "complete-evidence-custody" not in workflow or "Package durable complete evidence custody" in workflow
 
 
-def test_governed_ci_invokes_the_contract_corpus_status_command() -> None:
+def test_governed_ci_runs_independent_receipted_assurance_gates() -> None:
     workflow = (ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
-    assert "python -m runtime.cli --root . contracts status" in workflow
-    assert "python -m runtime.cli --root . contracts\n" not in workflow
+    assert "gate: [contracts, dependencies, platform, generated, registry, licensing, structural]" in workflow
+    assert "gates run --gate ${{ matrix.gate }}" in workflow
+    assert "needs: assurance-gates" in workflow
 
 
 def test_assurance_workflows_do_not_build_the_project_before_source_audits() -> None:
-    exact_tools = "python -m pip install build==1.5.0 coverage==7.14.2 pytest==9.0.2 PyYAML==6.0.3 setuptools==81.0.0 wheel==0.47.0"
+    exact_tools = "python -m pip install --require-hashes -r requirements-release.lock"
     for relative in (".github/workflows/ci.yml", ".github/workflows/scheduled-assurance.yml"):
         workflow = (ROOT / relative).read_text(encoding="utf-8")
         assert exact_tools in workflow

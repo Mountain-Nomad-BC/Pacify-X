@@ -24,14 +24,45 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install test surface
-        run: python -m pip install . pytest==9.0.2 PyYAML==6.0.3
+        run: |
+          python -m pip install --require-hashes -r requirements-release.lock
+          python -m pip install --no-build-isolation .
       - name: Platform path, lock, permission, and line-ending controls
         env:
           PYTHONDONTWRITEBYTECODE: "1"
           PYTHONNOUSERSITE: "1"
         run: python -m pytest -q -p no:cacheprovider tests/test_platform_support.py tests/test_bounded_walk.py tests/test_file_lock_contention.py tests/test_evidence_portability.py
 
+  assurance-gates:
+    name: assurance / ${{ matrix.gate }}
+    strategy:
+      fail-fast: false
+      matrix:
+        gate: [contracts, dependencies, platform, generated, registry, licensing, structural]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONNOUSERSITE: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.14"
+      - name: Install exact validation tools
+        run: python -m pip install --require-hashes -r requirements-release.lock
+      - name: Run independently receipted gate
+        run: python -m runtime.cli --root . gates run --gate ${{ matrix.gate }} --receipt-dir "${{ runner.temp }}/gate-receipts"
+      - name: Retain gate receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: assurance-gate-${{ matrix.gate }}
+          path: ${{ runner.temp }}/gate-receipts/
+          if-no-files-found: error
+
   governed-gates:
+    needs: assurance-gates
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
@@ -45,15 +76,9 @@ jobs:
         with:
           python-version: "3.14"
       - name: Install exact validation tools
-        run: python -m pip install build==1.5.0 coverage==7.14.2 pytest==9.0.2 PyYAML==6.0.3 setuptools==81.0.0 wheel==0.47.0
+        run: python -m pip install --require-hashes -r requirements-release.lock
       - name: Package metadata and version policy
         run: python -m pytest -q -p no:cacheprovider tests/test_platform_support.py tests/test_release_identity_controls.py
-      - name: Structural, contract, registry, and licensing audits
-        run: |
-          python -m runtime.cli --root . validate
-          python -m runtime.cli --root . contracts status
-          python -m runtime.cli --root . audit structure
-          python -m runtime.cli --root . audit licensing
       - name: Fast correctness profile
         run: python -m runtime.cli --root . test-profile run fast
       - name: Executed critical branch coverage with dynamic contexts

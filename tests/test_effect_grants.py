@@ -66,3 +66,10 @@ def test_expired_effect_grant_is_rejected() -> None:
         future = datetime.now(timezone.utc) + timedelta(days=1)
         result = validate_effect_grant(grant, signature_path=signature, trust_policy_path=policy, capability_id="writer", requested_effects=("write_workspace",), adapter="sandbox", environment="test", project_id="prj_one", session_id="session_one", now=future)
         assert not result["valid"] and "effect grant is expired or has invalid time bounds" in result["errors"]
+
+
+def test_effect_grant_replay_with_different_idempotency_key_is_rejected() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        root = Path(directory); grant, _, signature, policy = _fixture(root)
+        result = validate_effect_grant(grant, signature_path=signature, trust_policy_path=policy, capability_id="writer", requested_effects=("write_workspace",), adapter="sandbox", environment="test", project_id="prj_one", session_id="session_one", idempotency_key="different-operation")
+        assert not result["valid"] and "effect grant idempotency key mismatch" in result["errors"]

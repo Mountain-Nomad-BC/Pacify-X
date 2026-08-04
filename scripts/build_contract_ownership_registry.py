@@ -7,9 +7,11 @@ from pathlib import Path
 
 
 ROOT_OWNERS = {
+    "authorization-request.schema.json": ("runtime/execution_contract.py", ["runtime/cli.py"], "runtime_enforced", ["tests/test_trust_boundaries.py"]),
     "authoritative-skill-contract.schema.json": (".agents/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py", [".agents/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py"], "runtime_enforced", ["tests/test_authoritative_skill_compiler.py"]),
     "builder-contract.schema.json": ("builders/common.py", ["builders/skill_builder.py", "builders/orchestration_builder.py"], "builder_boundary", ["tests/test_wave5_builders.py"]),
     "capability-contract.schema.json": ("runtime/registry.py", ["builders/skill_builder.py"], "runtime_registry_boundary", ["tests/test_config_and_registry.py"]),
+    "candidate-admission-request.schema.json": ("runtime/admission_controller.py", ["runtime/cli.py"], "runtime_enforced", ["tests/test_trust_boundaries.py"]),
     "commissioning-questionnaire.schema.json": ("runtime/commissioning.py", ["runtime/commissioning.py"], "runtime_enforced", ["tests/test_commissioning_questionnaire.py"]),
     "containment-action.schema.json": ("runtime/assurance_controls.py", ["runtime/assurance_controls.py"], "runtime_control_equivalent", ["tests/test_assurance_controls.py"]),
     "evidence-record.schema.json": ("runtime/evidence_assembler.py", ["runtime/evidence_assembler.py"], "runtime_control_equivalent", ["tests/test_evidence_assembler.py"]),
@@ -20,6 +22,7 @@ ROOT_OWNERS = {
     "knowledge-source.schema.json": ("runtime/retrieval.py", ["runtime/retrieval.py"], "runtime_control_equivalent", ["tests/test_retrieval_and_models.py"]),
     "model-contract.schema.json": ("runtime/models.py", ["runtime/models.py"], "runtime_registry_boundary", ["tests/test_retrieval_and_models.py"]),
     "orchestration-contract.schema.json": ("runtime/graphs.py", ["builders/orchestration_builder.py"], "builder_and_registry_boundary", ["tests/test_graphs_and_orchestrations.py"]),
+    "outcome-verification-request.schema.json": ("runtime/outcome_verifier.py", ["runtime/cli.py"], "runtime_enforced", ["tests/test_trust_boundaries.py"]),
     "policy-contract.schema.json": ("runtime/execution_contract.py", ["runtime/execution_contract.py"], "runtime_control_equivalent", ["tests/test_execution_contract.py"]),
     "project-management.schema.json": ("runtime/project_management.py", ["runtime/project_management.py"], "runtime_enforced", ["tests/test_commissioning_apply.py"]),
     "runtime-assurance.schema.json": ("runtime/cognitive_assurance.py", ["runtime/cognitive_assurance.py"], "runtime_control_equivalent", ["tests/test_cognitive_assurance.py"]),
@@ -28,6 +31,7 @@ ROOT_OWNERS = {
     "source-capability-audit.schema.json": ("runtime/capability_assimilation.py", [".agents/skills/audit-source-capabilities/scripts/audit_source_capabilities.py"], "runtime_registry_boundary", ["tests/test_capability_assimilation.py", "tests/test_capability_mining_skills.py"]),
     "source-intake-event.schema.json": ("runtime/intake_lifecycle.py", ["runtime/intake_lifecycle.py"], "runtime_control_equivalent", ["tests/test_intake_lifecycle.py"]),
     "tool-contract.schema.json": ("runtime/registry.py", ["registry/tools.json"], "runtime_registry_boundary", ["tests/test_config_and_registry.py"]),
+    "trusted-evidence-record.schema.json": ("runtime/trusted_evidence.py", ["runtime/trusted_evidence.py"], "runtime_enforced", ["tests/test_trust_boundaries.py"]),
     "ui-context.schema.json": ("runtime/classifier.py", ["runtime/classifier.py"], "runtime_control_equivalent", ["tests/test_runtime_wave4.py"]),
     "validation-contract.schema.json": ("runtime/outcome_verifier.py", ["runtime/outcome_verifier.py"], "runtime_control_equivalent", ["tests/test_outcome_verifier.py"]),
 }

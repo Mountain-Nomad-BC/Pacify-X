@@ -10,7 +10,7 @@
     "changed_file_sha256": {},
     "degraded_components": [],
     "failures": [],
-    "next_safe_action": "monitor release 0.6.3 and open a new card before material changes",
+    "next_safe_action": "merge REL-012 to main, require public CI, and create a future signed release before certifying the new bytes",
     "open_circuits": [],
     "repository": {
       "branch": "main",
@@ -19,12 +19,12 @@
       "working_tree_sha256": "77098d1721daa7fac9aa2fa67c344e6b292b8c7bd32e2f78142f9f86bf20e99c"
     },
     "retries": [],
-    "revision": 29,
+    "revision": 30,
     "runtime_version": "0.6.3",
     "tool_versions": {},
     "validation": {
-      "tests": "release_0.6.3_signed_self_certification_and_public_asset_reproduction_passed",
-      "verifier": "evidence/releases/0.6.3/public-release-verification.json"
+      "tests": "rel_012_local_validation_passed_release_certification_pending",
+      "verifier": "evidence/repairs/trust-boundary-hardening/VALIDATION_RECEIPT.md"
     },
     "versions": {
       "assumptions": 12,
@@ -112,9 +112,9 @@
     "unknowns": []
   },
   "lifecycle": {
-    "next_action": "monitor release 0.6.3 and open a new card before material changes",
-    "phase": "deployment-certified",
-    "status": "complete"
+    "next_action": "merge REL-012 to main, run public CI, and require a future signed release for certification",
+    "phase": "post-release-hardening",
+    "status": "validated-development"
   },
   "project": {
     "mode": "existing",
@@ -123,7 +123,7 @@
   },
   "schema_version": "1.0",
   "work": {
-    "active_punch_card": "none",
+    "active_punch_card": "REL-012-TRUST-BOUNDARY-HARDENING",
     "backlog": [
       {
         "id": "REL-008-LAST-ROUND",
@@ -144,6 +144,11 @@
         "id": "REL-011-FULL-REPAIR",
         "outcome": "All 42 full-repair audit cards are implemented with negative regressions, exact-artifact provenance, bounded mutation, tamper-evident state, signed evidence, public CI, and independent reproduction.",
         "status": "complete"
+      },
+      {
+        "id": "REL-012-TRUST-BOUNDARY-HARDENING",
+        "outcome": "Authoritative commands resolve signed scoped evidence, normal CI is reproducible, evidence custody is durable, CLI loading is bounded, and assurance gates rerun independently by input hash.",
+        "status": "validated-development"
       }
     ],
     "milestones": [

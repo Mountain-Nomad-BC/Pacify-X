@@ -2,6 +2,7 @@
 
 This module authorizes an execution envelope. It does not execute the action.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -10,10 +11,16 @@ from pathlib import Path
 from typing import Mapping
 
 from .effect_grants import validate_effect_grant
+from .trusted_evidence import EvidenceScope, TrustedEvidenceResolver
 
 NON_READ_EFFECTS = {
-    "write_workspace", "install_tool", "network", "run_service",
-    "secret_access", "migration", "destructive",
+    "write_workspace",
+    "install_tool",
+    "network",
+    "run_service",
+    "secret_access",
+    "migration",
+    "destructive",
 }
 
 
@@ -80,19 +87,165 @@ def enforce(
             reasons.append("non-read effects require approval id")
         if not request.idempotency_key:
             reasons.append("non-read effects require idempotency key")
-        if not all((effect_grant_path, effect_signature_path, effect_trust_policy_path, project_id, session_id, adapter, environment)):
+        if not all(
+            (
+                effect_grant_path,
+                effect_signature_path,
+                effect_trust_policy_path,
+                project_id,
+                session_id,
+                adapter,
+                environment,
+            )
+        ):
             reasons.append("non-read effects require an enforced runtime effect grant")
         else:
             try:
                 grant = json.loads(effect_grant_path.read_text(encoding="utf-8"))
                 validation = validate_effect_grant(
-                    grant, signature_path=effect_signature_path, trust_policy_path=effect_trust_policy_path,
-                    capability_id=request.capability_id, requested_effects=request.effects,
-                    adapter=adapter, environment=environment, project_id=project_id, session_id=session_id,
-                    writable_targets=writable_targets, network_hosts=network_hosts, secret_refs=secret_refs,
+                    grant,
+                    signature_path=effect_signature_path,
+                    trust_policy_path=effect_trust_policy_path,
+                    capability_id=request.capability_id,
+                    requested_effects=request.effects,
+                    adapter=adapter,
+                    environment=environment,
+                    project_id=project_id,
+                    session_id=session_id,
+                    writable_targets=writable_targets,
+                    network_hosts=network_hosts,
+                    secret_refs=secret_refs,
                     destructive="destructive" in requested,
+                    idempotency_key=request.idempotency_key,
                 )
                 reasons.extend(validation["errors"])
             except (OSError, ValueError, json.JSONDecodeError) as error:
-                reasons.append(f"effect grant validation failed: {type(error).__name__}: {error}")
-    return ContractDecision(not reasons, tuple(reasons), bool(requested & NON_READ_EFFECTS))
+                reasons.append(
+                    f"effect grant validation failed: {type(error).__name__}: {error}"
+                )
+    return ContractDecision(
+        not reasons, tuple(reasons), bool(requested & NON_READ_EFFECTS)
+    )
+
+
+def simulate_authorization(
+    request: ExecutionRequest,
+    policy: PolicyDecision,
+    manifest: Mapping[str, object],
+) -> dict[str, object]:
+    """Evaluate a caller-asserted envelope without creating operational authority."""
+    decision = enforce(request, policy, manifest)
+    return {
+        "evaluated": True,
+        "approved": decision.approved,
+        "authoritative": False,
+        "decision_source": "caller_asserted",
+        "effect_grant_verified": False,
+        "reasons": list(decision.reasons),
+        "requires_verification": decision.requires_verification,
+    }
+
+
+def authorize_with_policy_evidence(
+    root: Path,
+    manifest: Mapping[str, object],
+    request_data: Mapping[str, object],
+) -> dict[str, object]:
+    """Resolve a signed policy decision before validating the execution envelope."""
+    try:
+        capability_id = str(request_data["capability_id"])
+        effects = tuple(map(str, request_data.get("effects", ("read_local",))))
+        project_id = str(request_data["project_id"])
+        actor_id = str(request_data["actor_id"])
+        session_id = str(request_data["session_id"])
+        execution_id = str(request_data["execution_id"])
+        store_relative = Path(str(request_data["evidence_store"]))
+        store = (root.resolve() / store_relative).resolve()
+        if store_relative.is_absolute() or root.resolve() not in store.parents:
+            raise ValueError("evidence_store must be product-relative")
+        resolver = TrustedEvidenceResolver(
+            store, root / "policies/effect-grant-trust.json"
+        )
+        resolved = resolver.resolve(
+            str(request_data["policy_decision_ref"]),
+            scope=EvidenceScope(
+                project_id,
+                capability_id,
+                execution_id=execution_id,
+                actor_id=actor_id,
+                session_id=session_id,
+            ),
+            accepted_producers=set(map(str, request_data["accepted_policy_producers"])),
+            max_age_seconds=int(request_data.get("max_age_seconds", 900)),
+            expected_sha256=str(request_data["policy_decision_sha256"])
+            if request_data.get("policy_decision_sha256")
+            else None,
+            required_type="policy_decision",
+        )
+    except (KeyError, OSError, TypeError, ValueError) as error:
+        return {
+            "evaluated": False,
+            "approved": False,
+            "authoritative": False,
+            "decision_source": "request_validation",
+            "effect_grant_verified": False,
+            "reasons": [f"invalid authorization request: {error}"],
+            "requires_verification": False,
+        }
+    if not resolved.verified:
+        return {
+            "evaluated": True,
+            "approved": False,
+            "authoritative": False,
+            "decision_source": "resolved_signed_policy",
+            "effect_grant_verified": False,
+            "reasons": list(resolved.reasons),
+            "requires_verification": bool(set(effects) & NON_READ_EFFECTS),
+        }
+    policy_result = resolved.record.get("result", {})
+    if not isinstance(policy_result, dict):
+        policy_result = {}
+    approval_id = str(policy_result.get("approval_id", "")) or None
+    decision = enforce(
+        ExecutionRequest(
+            capability_id,
+            effects,
+            int(request_data.get("timeout_seconds", 30)),
+            int(request_data.get("max_tool_calls", 0)),
+            str(request_data.get("idempotency_key", "")) or None,
+        ),
+        PolicyDecision(
+            policy_result.get("allowed") is True,
+            tuple(map(str, policy_result.get("approved_effects", ()))),
+            approval_id,
+        ),
+        manifest,
+        effect_grant_path=Path(str(request_data["effect_grant_path"]))
+        if request_data.get("effect_grant_path")
+        else None,
+        effect_signature_path=Path(str(request_data["effect_signature_path"]))
+        if request_data.get("effect_signature_path")
+        else None,
+        effect_trust_policy_path=root / "policies/effect-grant-trust.json",
+        project_id=project_id,
+        session_id=session_id,
+        adapter=str(request_data.get("adapter", "")),
+        environment=str(request_data.get("environment", "")),
+        writable_targets=tuple(
+            Path(str(value)) for value in request_data.get("writable_targets", ())
+        ),
+        network_hosts=tuple(map(str, request_data.get("network_hosts", ()))),
+        secret_refs=tuple(map(str, request_data.get("secret_refs", ()))),
+    )
+    return {
+        "evaluated": True,
+        "approved": decision.approved,
+        "authoritative": decision.approved,
+        "decision_source": "resolved_signed_policy",
+        "policy_evidence_id": resolved.record.get("evidence_id"),
+        "effect_grant_verified": decision.approved
+        if set(effects) & NON_READ_EFFECTS
+        else False,
+        "reasons": list(decision.reasons),
+        "requires_verification": decision.requires_verification,
+    }

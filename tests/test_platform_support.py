@@ -4,6 +4,7 @@ import stat
 import tempfile
 
 from runtime.file_lock import FileLock
+from runtime.platform_support import python_minor_supported, runtime_python_status
 from runtime.release_environment import support_matrix, validate_support_matrix
 
 
@@ -21,6 +22,16 @@ def test_platform_support_policy_matches_declared_ci_matrix() -> None:
         "ubuntu-latest",
         "macos-latest",
     }
+
+
+def test_runtime_python_support_enforces_both_bounds() -> None:
+    policy = support_matrix(ROOT)
+    assert not python_minor_supported((3, 10), policy)
+    for minor in (11, 12, 13, 14):
+        assert python_minor_supported((3, minor), policy)
+        assert runtime_python_status(ROOT, (3, minor, 0))["supported"]
+    assert not python_minor_supported((3, 15), policy)
+    assert runtime_python_status(ROOT, (3, 15, 0))["reason"] == "python_version_outside_supported_range"
 
 
 def test_path_semantics_accept_spaces_and_non_ascii_names() -> None:

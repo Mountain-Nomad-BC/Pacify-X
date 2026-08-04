@@ -8,6 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+from runtime.admission_controller import AdmissionDecision
 from runtime.cli import main
 
 
@@ -22,6 +23,29 @@ def invoke(*arguments: str) -> tuple[int, dict]:
 
 
 class CliCommandTests(unittest.TestCase):
+    def test_review_candidate_exit_codes_distinguish_disposition(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            manifest = Path(directory) / "manifest.json"; manifest.write_text("{}", encoding="utf-8")
+            evidence = Path(directory) / "evidence.json"; evidence.write_text("{}", encoding="utf-8")
+            cases = {"admit": 0, "restrict": 2, "quarantine": 3, "reject": 4}
+            for disposition, expected in cases.items():
+                decision = AdmissionDecision(True, True, disposition in {"admit", "restrict"}, True, "test", disposition, (), "test", disposition)
+                with self.subTest(disposition=disposition), patch("runtime.admission_controller.review_authoritative", return_value=decision):
+                    status, output = invoke("review-candidate", "--manifest", str(manifest), "--evidence", str(evidence))
+                    self.assertEqual(status, expected)
+                    self.assertEqual(output["disposition"], disposition)
+
+    def test_authoritative_verification_exit_codes_are_stable(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            request = Path(directory) / "request.json"; request.write_text("{}", encoding="utf-8")
+            cases = {"verified": 0, "verification_failed": 5, "insufficient_trusted_evidence": 6, "invalid_request": 7, "evidence_integrity_failure": 8}
+            for decision, expected in cases.items():
+                result = {"verified": decision == "verified", "authoritative": decision == "verified", "decision": decision, "reasons": []}
+                with self.subTest(decision=decision), patch("runtime.outcome_verifier.verify_authoritative", return_value=result):
+                    status, output = invoke("verify-outcome", "--request", str(request))
+                    self.assertEqual(status, expected)
+                    self.assertEqual(output["decision"], decision)
+
     def test_test_profile_timeout_fails_closed_without_traceback(self) -> None:
         timed_out = {
             "valid": False,
@@ -34,7 +58,7 @@ class CliCommandTests(unittest.TestCase):
             "termination": {"method": "test-fixture", "errors": []},
             "errors": ["test profile exceeded 300 seconds"],
         }
-        with patch("runtime.cli.run_test_command", return_value=timed_out):
+        with patch("runtime.test_runner.run_test_command", return_value=timed_out):
             status, output = invoke("test-profile", "run", "fast")
         self.assertEqual(status, 1)
         self.assertFalse(output["valid"])
@@ -73,13 +97,15 @@ class CliCommandTests(unittest.TestCase):
         self.assertEqual(output["activation_limit"], 1)
         self.assertIn("release", output["unload_plan"])
 
-    def test_authorize_is_fail_closed_without_policy_allowance(self) -> None:
-        denied_status, denied = invoke("authorize", "--capability", "evidence-assembler")
-        allowed_status, allowed = invoke("authorize", "--capability", "evidence-assembler", "--policy-allowed")
-        self.assertEqual(denied_status, 1)
+    def test_caller_asserted_authorization_is_explicitly_simulated(self) -> None:
+        denied_status, denied = invoke("simulate-authorization", "--capability", "evidence-assembler")
+        allowed_status, allowed = invoke("simulate-authorization", "--capability", "evidence-assembler", "--policy-allowed")
+        self.assertEqual(denied_status, 0)
         self.assertFalse(denied["approved"])
+        self.assertFalse(denied["authoritative"])
         self.assertEqual(allowed_status, 0)
         self.assertTrue(allowed["approved"])
+        self.assertFalse(allowed["authoritative"])
 
     def test_verify_and_retry_commands_consume_typed_json(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -91,9 +117,10 @@ class CliCommandTests(unittest.TestCase):
                 "policy_allowed": True,
                 "executor_claimed_complete": True,
             }), encoding="utf-8")
-            status, output = invoke("verify-outcome", "--request", str(verification))
+            status, output = invoke("evaluate-outcome-claims", "--request", str(verification))
             self.assertEqual(status, 0)
             self.assertEqual(output["status"], "verified")
+            self.assertFalse(output["authoritative"])
 
             failure = location / "failure.json"
             failure.write_text(json.dumps({

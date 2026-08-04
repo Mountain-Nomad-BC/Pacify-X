@@ -122,6 +122,25 @@ jobs:
           These are the exact artifacts built, tested, inspected, signed, and verified by this run. No release asset was rebuilt after certification.
           "@ | Set-Content release-notes.md
 
+      - name: Package durable complete evidence custody
+        shell: pwsh
+        run: |
+          $run = "evidence\releases\$env:PACIFY_X_RELEASE\$env:PACIFY_X_RUN_ID"
+          $custodyWork = Join-Path $env:RUNNER_TEMP "pacify-x-evidence-custody"
+          $commit = git rev-parse HEAD
+          python scripts/package_release_evidence.py `
+            --input $run `
+            --input "$env:RUNNER_TEMP\pacify-x-release-result.json" `
+            --input "$env:RUNNER_TEMP\pacify-x-release-verification.json" `
+            --input $env:PACIFY_X_RELEASE_ARTIFACT_DIR `
+            --release $env:PACIFY_X_RELEASE `
+            --source-commit $commit `
+            --certificate "evidence\releases\$env:PACIFY_X_RELEASE\certificate.json" `
+            --output release-assets `
+            --work-dir $custodyWork `
+            --locator-base "https://github.com/$env:GITHUB_REPOSITORY/releases/download/$env:PACIFY_X_RELEASE_TAG" `
+            --signing-key $env:PACIFY_X_RELEASE_SIGNING_KEY
+
       - name: Publish exact GitHub Release assets
         shell: pwsh
         env:

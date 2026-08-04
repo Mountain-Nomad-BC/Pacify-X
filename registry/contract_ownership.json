@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "policy": "Every shipped schema has one explicit owner and an honest enforcement classification.",
-  "contract_count": 82,
+  "contract_count": 86,
   "records": [
     {
       "path": "contracts/ai-bom.schema.json",
@@ -80,6 +80,25 @@
       ]
     },
     {
+      "path": "contracts/authorization-request.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:authorization-request",
+      "contract_version": "1.0.0",
+      "title": "Authoritative authorization request",
+      "owner": "runtime/execution_contract.py",
+      "producers": [
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_trust_boundaries.py"
+      ]
+    },
+    {
       "path": "contracts/builder-contract.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:builder-contract",
       "contract_version": "1.0.0",
@@ -97,6 +116,25 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_wave5_builders.py"
+      ]
+    },
+    {
+      "path": "contracts/candidate-admission-request.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:candidate-admission-request",
+      "contract_version": "1.0.0",
+      "title": "Authoritative candidate admission request",
+      "owner": "runtime/admission_controller.py",
+      "producers": [
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_trust_boundaries.py"
       ]
     },
     {
@@ -725,6 +763,25 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_graphs_and_orchestrations.py"
+      ]
+    },
+    {
+      "path": "contracts/outcome-verification-request.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:outcome-verification-request",
+      "contract_version": "1.0.0",
+      "title": "Authoritative outcome verification request",
+      "owner": "runtime/outcome_verifier.py",
+      "producers": [
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_trust_boundaries.py"
       ]
     },
     {
@@ -1529,6 +1586,25 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_declared_suite_support.py"
+      ]
+    },
+    {
+      "path": "contracts/trusted-evidence-record.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:trusted-evidence-record",
+      "contract_version": "1.0.0",
+      "title": "Signed trusted evidence record",
+      "owner": "runtime/trusted_evidence.py",
+      "producers": [
+        "runtime/trusted_evidence.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_trust_boundaries.py"
       ]
     },
     {

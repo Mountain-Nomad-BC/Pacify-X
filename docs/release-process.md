@@ -4,6 +4,23 @@ PACIFY-X is the project and framework. `engineering-bootstrap` is its Python pac
 
 Release authority is created only from a clean tagged commit. The authoritative version is `project.version` in `pyproject.toml`; the runtime version, README projection, annotated Git tag, package metadata, artifacts, certificate, and publication receipt must match it exactly.
 
+## Install the certified release
+
+The simplest certified path is the immutable source tag shown in the README. To install the exact wheel that passed release certification instead:
+
+```powershell
+git clone --branch v0.6.3 --single-branch https://github.com/Mountain-Nomad-BC/Pacify-X.git
+cd Pacify-X
+New-Item -ItemType Directory release-assets | Out-Null
+gh release download v0.6.3 --repo Mountain-Nomad-BC/Pacify-X --dir release-assets
+python -m runtime.cli --root . release verify --release 0.6.3 --artifact-dir release-assets
+python -m pip install .\release-assets\engineering_loop_bootstrap-0.6.3-py3-none-any.whl
+engineering-bootstrap --version
+engineering-bootstrap doctor
+```
+
+The verification command fails before installation if the certificate, signature, artifact hashes, source identity, or release authority do not agree. A checkout of `main` is a development installation and is not the immutable v0.6.3 release.
+
 ## Controlled sequence
 
 1. Close every blocking corrective and full-repair card with executed evidence.
@@ -15,7 +32,8 @@ Release authority is created only from a clean tagged commit. The authoritative 
 7. Generate the evidence manifest, SBOM, provenance, checksums, and certificate.
 8. Sign the canonical certificate with the trusted Ed25519 publisher key. The private key must remain outside the repository.
 9. Verify signature, evidence, artifacts, Git identity, version parity, and published-byte parity independently.
-10. Commit only non-product evidence, then atomically push the evidence commit and annotated tag. Publish the exact staged files as GitHub Release assets without rebuilding.
+10. Package the complete evidence set as content-addressed chunks, sign its custody receipt, and publish those chunks with the release so verification does not depend on temporary CI retention.
+11. Commit only non-product evidence, then atomically push the evidence commit and annotated tag. Publish the exact staged files as GitHub Release assets without rebuilding.
 
 ## Key rotation and revocation
 

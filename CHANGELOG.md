@@ -2,6 +2,12 @@
 
 All notable changes to PACIFY-X are recorded here. The project follows semantic versioning.
 
+## Unreleased
+
+- Replaced caller-asserted outcome, authorization, and candidate-admission authority with one signed, scoped evidence resolver and explicit non-authoritative compatibility commands.
+- Added stable governed CLI exit codes, Python 3.11â€“3.14 runtime enforcement, command-local CLI loading, durable chunked release-evidence custody, and hash-locked normal CI.
+- Made v0.6.3 the sole onboarding default, removed the README warning block, and separated certified release installation from development setup.
+
 ## 0.6.3 - 2026-08-03
 
 - Bound release certificates to the annotated Git identity, trusted Ed25519 publisher, exact wheel and sdist bytes, evidence manifest, coverage, SBOM, provenance, toolchain, and platform.

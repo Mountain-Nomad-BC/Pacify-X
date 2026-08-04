@@ -41,7 +41,9 @@ class Rel011RevocationTests(unittest.TestCase):
         self.assertNotIn("**Status:** Certified deployment-ready", readme)
         self.assertIn("**Current release:** [v0.6.3]", readme)
         self.assertIn("Signed self-certified release published", readme)
-        self.assertIn("Release 0.6.2 is revoked", start)
+        self.assertIn("Version 0.6.3 is the current signed release", start)
+        self.assertNotIn("0.6.2", readme)
+        self.assertNotIn("0.6.2", start)
 
 
 if __name__ == "__main__":

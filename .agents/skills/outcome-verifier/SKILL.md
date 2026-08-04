@@ -34,15 +34,16 @@ Independently determine whether evidence, policy, and actual postconditions supp
 - approved evidence
 
 ## Procedure
-1. derive required outcome.
-2. check policy.
-3. check evidence freshness/sufficiency.
-4. check each postcondition.
+1. derive the required outcome and resolve its repository-owned postcondition contract.
+2. resolve a signed, scoped policy decision; never accept a caller Boolean as policy authority.
+3. resolve signed evidence references and verify integrity, signer, producer, freshness, and scope.
+4. derive each postcondition result from the verified records.
 5. identify unsupported inference.
 6. return bounded status.
 
 ## Guardrails
 - executor confidence is not proof.
+- caller-provided `valid`, `current`, or `policy_allowed` fields are assertions, not authority.
 - avoid persuasive internal narrative.
 - policy violations cannot be argued away.
 
