@@ -14,6 +14,8 @@ from typing import Any, Callable, Mapping
 import venv
 import zipfile
 
+from .release_environment import scrub_release_environment
+
 
 Runner = Callable[..., subprocess.CompletedProcess[str]]
 
@@ -503,7 +505,7 @@ def install_exact_wheel(
     python = environment_root / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
     process = runner(
         [str(python), "-m", "pip", "install", "--no-deps", "--no-index", str(wheel)],
-        cwd=environment_root, env={"PATH": os.environ.get("PATH", ""), "PYTHONNOUSERSITE": "1", "PYTHONDONTWRITEBYTECODE": "1"},
+        cwd=environment_root, env=scrub_release_environment(),
         text=True, capture_output=True, timeout=300,
     )
     after = hashlib.sha256(wheel.read_bytes()).hexdigest()

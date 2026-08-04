@@ -129,16 +129,27 @@ def test_certification_installs_exact_built_wheel(monkeypatch) -> None:
     wheel.write_bytes(b"exact-wheel-bytes")
     expected = hashlib.sha256(wheel.read_bytes()).hexdigest()
     monkeypatch.setattr("runtime.release_distribution.venv.EnvBuilder.create", lambda self, target: Path(target).mkdir(parents=True))
+    monkeypatch.setenv("SYSTEMROOT", r"C:\Windows")
+    monkeypatch.setenv("WINDIR", r"C:\Windows")
+    monkeypatch.setenv("PROGRAMDATA", r"C:\ProgramData")
+    monkeypatch.setenv("GITHUB_TOKEN", "must-not-cross-boundary")
     calls = []
+    environments = []
 
     def runner(command, **kwargs):
         calls.append(command)
+        environments.append(kwargs["env"])
         return subprocess.CompletedProcess(command, 0, "", "")
 
     result = install_exact_wheel(wheel, expected, root / "venv", runner=runner)
     assert result["valid"]
     assert result["installed_wheel_sha256"] == expected
     assert str(wheel.resolve()) in calls[0]
+    assert environments[0]["SYSTEMROOT"] == r"C:\Windows"
+    assert environments[0]["WINDIR"] == r"C:\Windows"
+    assert environments[0]["PROGRAMDATA"] == r"C:\ProgramData"
+    assert "GITHUB_TOKEN" not in environments[0]
+    assert environments[0]["PIP_NO_INDEX"] == "1"
 
 
 def test_artifact_byte_change_revokes_certificate() -> None:
