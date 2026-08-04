@@ -6,6 +6,7 @@ from runtime.release_environment import (
     build_wheelhouse_manifest,
     certification_platform_binding,
     offline_install_command,
+    parse_release_lock,
     scrub_release_environment,
     support_matrix,
     toolchain_identity,
@@ -29,6 +30,25 @@ def test_current_release_environment_matches_exact_lock() -> None:
     result = validate_release_environment(ROOT)
     assert result["lock_valid"]
     assert result["required_count"] == lock["required_count"]
+
+
+def test_multiline_hash_allowlists_remain_exact_and_reject_interruption() -> None:
+    root = Path(tempfile.mkdtemp())
+    lock = root / "requirements-release.lock"
+    first = "1" * 64
+    second = "2" * 64
+    lock.write_text(
+        f"fixture==1.0 \\\n    --hash=sha256:{first} \\\n    --hash=sha256:{second}\n",
+        encoding="utf-8",
+    )
+    parsed = parse_release_lock(lock)
+    assert parsed["valid"], parsed["errors"]
+    assert parsed["records"][0]["sha256"] == [first, second]
+    lock.write_text(
+        f"fixture==1.0 \\\n# interruption\n    --hash=sha256:{first}\n",
+        encoding="utf-8",
+    )
+    assert not parse_release_lock(lock)["valid"]
 
 
 def test_release_dependencies_install_offline_with_hashes() -> None:
@@ -57,10 +77,16 @@ def test_wrong_dependency_hash_fails() -> None:
 
 
 def test_release_environment_is_scrubbed() -> None:
-    clean = scrub_release_environment({
-        "PATH": "tools", "SYSTEMROOT": "system", "AWS_SECRET_ACCESS_KEY": "secret",
-        "GITHUB_TOKEN": "secret", "PYTHONPATH": "host-imports", "PROGRAMDATA": "system-data",
-    })
+    clean = scrub_release_environment(
+        {
+            "PATH": "tools",
+            "SYSTEMROOT": "system",
+            "AWS_SECRET_ACCESS_KEY": "secret",
+            "GITHUB_TOKEN": "secret",
+            "PYTHONPATH": "host-imports",
+            "PROGRAMDATA": "system-data",
+        }
+    )
     assert clean["PATH"] == "tools"
     assert clean["PROGRAMDATA"] == "system-data"
     assert "AWS_SECRET_ACCESS_KEY" not in clean and "GITHUB_TOKEN" not in clean
@@ -71,13 +97,21 @@ def test_release_environment_is_scrubbed() -> None:
 def test_toolchain_identity_is_in_certificate_evidence() -> None:
     identity = toolchain_identity()
     assert len(identity["python_executable_sha256"]) == 64
-    assert identity["python_version"] and identity["operating_system"] and identity["architecture"]
+    assert (
+        identity["python_version"]
+        and identity["operating_system"]
+        and identity["architecture"]
+    )
 
 
 def test_network_is_not_required_during_certification() -> None:
     root = Path(tempfile.mkdtemp())
-    command = offline_install_command("python", root / "requirements-release.lock", root / "wheelhouse")
-    clean = scrub_release_environment({"PIP_INDEX_URL": "https://example.invalid/simple", "PATH": "tools"})
+    command = offline_install_command(
+        "python", root / "requirements-release.lock", root / "wheelhouse"
+    )
+    clean = scrub_release_environment(
+        {"PIP_INDEX_URL": "https://example.invalid/simple", "PATH": "tools"}
+    )
     assert "--no-index" in command
     assert "PIP_INDEX_URL" not in clean and clean["PIP_NO_INDEX"] == "1"
 
@@ -93,7 +127,11 @@ def test_platform_claims_match_ci_matrix() -> None:
     result = validate_support_matrix(ROOT)
     assert result["valid"], result["errors"]
     assert set(result["operating_systems"]) == {"Windows", "Linux", "Darwin"}
-    assert set(result["ci_runners"].values()) == {"windows-latest", "ubuntu-latest", "macos-latest"}
+    assert set(result["ci_runners"].values()) == {
+        "windows-latest",
+        "ubuntu-latest",
+        "macos-latest",
+    }
 
 
 def test_release_certificate_records_platform() -> None:
@@ -115,5 +153,8 @@ def test_platform_path_lock_permission_and_line_ending_controls() -> None:
     assert b"* text=auto eol=lf\n" in attributes
     policy = support_matrix(ROOT)
     assert set(policy["platform_checks"]) == {
-        "path-semantics", "advisory-file-locking", "permission-boundaries", "lf-line-endings",
+        "path-semantics",
+        "advisory-file-locking",
+        "permission-boundaries",
+        "lf-line-endings",
     }

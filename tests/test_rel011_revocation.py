@@ -15,7 +15,9 @@ class Rel011RevocationTests(unittest.TestCase):
     def test_release_062_is_preserved_but_not_deployment_authoritative(self) -> None:
         certificate_path = ROOT / "evidence/release-certification-0.6.2.json"
         revocation = json.loads(
-            (ROOT / "evidence/release-revocation-0.6.2.json").read_text(encoding="utf-8")
+            (ROOT / "evidence/release-revocation-0.6.2.json").read_text(
+                encoding="utf-8"
+            )
         )
         self.assertEqual(revocation["status"], "revoked")
         self.assertFalse(revocation["deployment_authoritative"])
@@ -26,9 +28,12 @@ class Rel011RevocationTests(unittest.TestCase):
         )
 
         state = json.loads(
-            (ROOT / ".engineering-bootstrap/project-management/state.json").read_text(encoding="utf-8")
+            (ROOT / ".engineering-bootstrap/project-management/state.json").read_text(
+                encoding="utf-8"
+            )
         )
-        self.assertEqual(state["lifecycle"]["phase"], "deployment-certified")
+        self.assertEqual(state["lifecycle"]["phase"], "post-release-hardening")
+        self.assertEqual(state["lifecycle"]["status"], "validated-development")
         self.assertEqual(
             state["evidence"]["validation_receipt"],
             "evidence/releases/0.6.3/public-release-verification.json",
