@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "status": "locally_self_certified",
+  "publication_status": "pending_github_release_workflow",
+  "release": "0.6.3",
+  "run_id": "rel-0.6.3-a04740b1e1ff",
+  "source_control": {
+    "commit_sha": "5683e009b94a1a2096038ffc78f9f9288ca6ab99",
+    "tree_sha": "2cc073177880ee63160ae9f44f417c8638074d4a",
+    "tag": "v0.6.3"
+  },
+  "product_digest": "ec0e296d38c0740bbfe1f77bb2791cb49033f1f3defd1efd017676df68f7c4ab",
+  "signer_fingerprint": "SHA256:aQC1XhpHq6hbFMK2vv7cKFgxLEXJVmnprjfZKTn12Ms",
+  "gate_count": 33,
+  "full_test_count": 1051,
+  "full_test_failures": 0,
+  "exact_tools_passed": 63,
+  "exact_tools_denominator": 63,
+  "coverage_sha256": "609f5b1f0abbfb5efd6e784ad7fa118954ae033ff1bc61ed7163a26a9f3fad7e",
+  "artifacts": [
+    {
+      "filename": "engineering_loop_bootstrap-0.6.3-py3-none-any.whl",
+      "sha256": "76913e6ce0556d40bb46fa005de898cfe508f1cdcf3487845ca5a186628a4cb2"
+    },
+    {
+      "filename": "engineering_loop_bootstrap-0.6.3.tar.gz",
+      "sha256": "c15960a92dcc3c1a197cff8878f2b7ce21485cd3ba026776bcbe53d5bdb31cb7"
+    }
+  ],
+  "complete_local_evidence": {
+    "custody_class": "external_operator_custody",
+    "file_count": 20,
+    "size_bytes": 251000268,
+    "certificate_file_sha256": "669645f0ecb51c8a3b0ee9e9b63fe6405762c5c9063e53ba81b810efd3af9926",
+    "signature_file_sha256": "06af59cf3e45889e1c0b5d44afe1581e1811898c5e2d59e601065c2a54e8d84f",
+    "evidence_manifest_file_sha256": "fae6b330de4d96e775deb3a49f1936a3a49c3ee1cfb4684f6e4cbe7f27fe6db6",
+    "hard_delete": false
+  },
+  "notes": "The complete local evidence set is retained outside the Git repository because its raw executed coverage file exceeds GitHub's per-file limit. The GitHub release workflow produces and publishes its own exact signed certification assets."
+}
