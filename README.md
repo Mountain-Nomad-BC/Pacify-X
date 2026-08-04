@@ -18,9 +18,6 @@ PACIFY-X is the project and framework. `engineering-bootstrap` is its Python pac
 
 **Requires:** Python 3.11–3.14, Git, and an AI coding assistant
 
-> [!WARNING]
-> Version 0.6.2 was revoked and should not be deployed. Use v0.6.3 or later. PACIFY-X self-certification is evidence of its included checks, not an independent security audit or warranty. [See the release evidence and limitations](evidence/README.md).
-
 ## What PACIFY-X does for you
 
 You describe the project and the outcome you want. PACIFY-X helps the AI:
