@@ -81,12 +81,13 @@ jobs:
       - name: Run one-build certification against exact artifacts
         shell: pwsh
         run: |
+          $resultPath = Join-Path $env:RUNNER_TEMP "pacify-x-release-result.json"
           python -m runtime.cli --root . release finalize `
             --release $env:PACIFY_X_RELEASE_TAG.Substring(1) `
             --artifact-dir $env:PACIFY_X_RELEASE_ARTIFACT_DIR `
             --wheelhouse $env:PACIFY_X_RELEASE_WHEELHOUSE `
-            --signing-key $env:PACIFY_X_RELEASE_SIGNING_KEY | Tee-Object release-result.json
-          $result = Get-Content release-result.json -Raw | ConvertFrom-Json
+            --signing-key $env:PACIFY_X_RELEASE_SIGNING_KEY | Tee-Object $resultPath
+          $result = Get-Content $resultPath -Raw | ConvertFrom-Json
           if (-not $result.valid -or -not $result.certified) { throw "release certification failed" }
           "PACIFY_X_RUN_ID=$($result.run_id)" | Out-File -FilePath $env:GITHUB_ENV -Append
           "PACIFY_X_RELEASE=$($env:PACIFY_X_RELEASE_TAG.Substring(1))" | Out-File -FilePath $env:GITHUB_ENV -Append
@@ -94,8 +95,9 @@ jobs:
       - name: Independently verify exact staged bytes
         shell: pwsh
         run: |
-          python -m runtime.cli --root . release verify --release $env:PACIFY_X_RELEASE --artifact-dir $env:PACIFY_X_RELEASE_ARTIFACT_DIR | Tee-Object release-verification.json
-          $result = Get-Content release-verification.json -Raw | ConvertFrom-Json
+          $verificationPath = Join-Path $env:RUNNER_TEMP "pacify-x-release-verification.json"
+          python -m runtime.cli --root . release verify --release $env:PACIFY_X_RELEASE --artifact-dir $env:PACIFY_X_RELEASE_ARTIFACT_DIR | Tee-Object $verificationPath
+          $result = Get-Content $verificationPath -Raw | ConvertFrom-Json
           if (-not $result.valid) { throw "independent release verification failed" }
 
       - name: Assemble immutable release assets without rebuilding
@@ -132,8 +134,8 @@ jobs:
         with:
           name: pacify-x-release-${{ env.PACIFY_X_RELEASE_TAG }}
           path: |
-            release-result.json
-            release-verification.json
+            ${{ runner.temp }}/pacify-x-release-result.json
+            ${{ runner.temp }}/pacify-x-release-verification.json
             ${{ runner.temp }}/pacify-x-release-artifacts/
             release-assets/
             evidence/releases/
