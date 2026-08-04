@@ -48,6 +48,8 @@ FINALIZER_CARDS = {"REL-010-C", "REL-010-E", "REL-011-FULL-REPAIR"}
 FINALIZER_FULL_REPAIR_PENDING = frozenset({"PC-001", "PC-002", "PC-003", "PC-004", "PC-005", "PC-006", "PC-037"})
 MACHINE_LOCAL_PATH = re.compile(r"(?i)(?:[a-z]:[\\/]|/(?:users|home|tmp|var/tmp)/)")
 PROJECT_ESCAPE_PATH = re.compile(r"(?:^|[\\/])\.\.(?:[\\/]|$)")
+WINDOWS_LOCAL_FRAGMENT = re.compile(r"(?i)[a-z]:[\\/][^\s\"'<>]*")
+POSIX_LOCAL_FRAGMENT = re.compile(r"(?i)/(?:users|home|var/tmp|tmp)/[^\s\"'<>]*")
 
 
 def _json(path: Path) -> dict[str, Any]:
@@ -182,11 +184,24 @@ def _junit_case_gate(path: Path, marker: str) -> dict[str, Any]:
 
 
 def _sanitize_junit_metadata(path: Path) -> None:
-    """Remove host identity from otherwise useful public test evidence."""
+    """Remove host identity and machine-local paths from public test evidence."""
     tree = ET.parse(path)
-    for suite in tree.getroot().iter("testsuite"):
+    root = tree.getroot()
+    for suite in root.iter("testsuite"):
         suite.attrib.pop("hostname", None)
+    for element in root.iter():
+        for key, value in tuple(element.attrib.items()):
+            element.set(key, _redact_junit_text(value))
+        if element.text:
+            element.text = _redact_junit_text(element.text)
+        if element.tail:
+            element.tail = _redact_junit_text(element.tail)
     tree.write(path, encoding="utf-8", xml_declaration=True)
+
+
+def _redact_junit_text(value: str) -> str:
+    redacted = WINDOWS_LOCAL_FRAGMENT.sub("[machine-local-path]", value)
+    return POSIX_LOCAL_FRAGMENT.sub("[machine-local-path]", redacted)
 
 
 def _junit_metadata_gate(path: Path) -> dict[str, Any]:

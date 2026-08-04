@@ -462,7 +462,7 @@ class WorkspaceManagerTests(unittest.TestCase):
             original = Path.read_bytes; calls = {"count": 0}
             def changing(path):
                 data = original(path)
-                if path == config:
+                if path.resolve() == config.resolve():
                     calls["count"] += 1
                     if calls["count"] > 1:
                         return data + b"\n# drift"

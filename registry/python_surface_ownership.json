@@ -2,7 +2,7 @@
   "direct_behavior_count": 63,
   "errors": [],
   "evidence_association_count": 52,
-  "map_current": false,
+  "map_current": true,
   "packaged_file_count": 319,
   "python_file_count": 365,
   "records": [
@@ -2531,7 +2531,7 @@
       "validation_level": "evidence-association"
     },
     {
-      "bytes": 39385,
+      "bytes": 40060,
       "evidence": [
         "tests/test_rel009_release.py",
         "tests/test_release_certification.py",
@@ -2541,7 +2541,7 @@
       "packaged": true,
       "path": "runtime/release_certification.py",
       "role": "installed-runtime",
-      "sha256": "c20aacae2c5fc45b4be7f5b2f459b344ea8822d72f339bba105db9eef7c604dc",
+      "sha256": "31b2fe98dae8b74094e3d01292156d7bfb26c34683a3114e3c663a8b4e153aa2",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -2782,7 +2782,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 13545,
+      "bytes": 13582,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -2791,7 +2791,7 @@
       "packaged": true,
       "path": "runtime/tool_intake.py",
       "role": "installed-runtime",
-      "sha256": "7b70a71792b8e1a77387dacc81b29629fe09268f5994cc70a40b22185394a3d0",
+      "sha256": "b9aa6035b726dfb8863922e0a93d843f08f5dca63f106a4cc820cc4e46440f28",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -4542,7 +4542,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 7560,
+      "bytes": 8451,
       "evidence": [
         "tests/test_release_certification.py"
       ],
@@ -4550,7 +4550,7 @@
       "packaged": true,
       "path": "tests/test_release_certification.py",
       "role": "release-test",
-      "sha256": "048223704e4d310286421a1e7fac47c0ef1e77a8db38b516b9860c812d769d03",
+      "sha256": "fcc569ad67fc4b762219fbf9ebc7ee99a7cf9dfe33ff0f513771c53784b82f10",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -4945,7 +4945,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 33689,
+      "bytes": 33709,
       "evidence": [
         "tests/test_workspace_manager.py"
       ],
@@ -4953,7 +4953,7 @@
       "packaged": true,
       "path": "tests/test_workspace_manager.py",
       "role": "release-test",
-      "sha256": "5b10bff845b6267f2fa554a2a2bcdf8fd03346b1140de4caa9d240a2cfd28dcc",
+      "sha256": "caeb38b1782a0f08ff131395ad7d808eca48390014aba9695a41a24309d19c8a",
       "syntax_valid": true,
       "validation_level": "executable-test"
     }

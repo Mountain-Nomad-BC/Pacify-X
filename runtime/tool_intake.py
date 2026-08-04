@@ -234,7 +234,8 @@ def scan_project_tooling(
 
 def record_tool_intake(project: Path, framework_root: Path, *, apply: bool = False, **scan_options: Any) -> dict[str, Any]:
     record = scan_project_tooling(project, framework_root, **scan_options)
-    target_root = project.resolve() / ".engineering-bootstrap" / "project-management"
+    project_root = project.resolve()
+    target_root = project_root / ".engineering-bootstrap" / "project-management"
     target = target_root / "tool-intake.json"
     if not apply:
         return {**record, "applied": False, "approval_required": True, "target": target.as_posix()}
@@ -252,7 +253,7 @@ def record_tool_intake(project: Path, framework_root: Path, *, apply: bool = Fal
     temporary.write_bytes(payload)
     os.replace(temporary, target)
     state = json.loads(state_path.read_text(encoding="utf-8"))
-    state.setdefault("evidence", {})["tool_intake_records"] = [target.relative_to(project).as_posix()]
+    state.setdefault("evidence", {})["tool_intake_records"] = [target.relative_to(project_root).as_posix()]
     state["checkpoint"]["revision"] = int(state["checkpoint"]["revision"]) + 1
     prior = target_root / "history" / f"state-{_sha(state_path)[:16]}.json"
     prior.parent.mkdir(parents=True, exist_ok=True)

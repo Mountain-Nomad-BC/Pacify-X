@@ -77,6 +77,25 @@ def test_junit_publication_evidence_removes_host_identity() -> None:
         assert "private-workstation" not in report.read_text(encoding="utf-8")
 
 
+def test_junit_publication_evidence_redacts_machine_local_failure_paths() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = Path(directory) / "report.xml"
+        report.write_text(
+            '<testsuites><testsuite hostname="runner"><testcase name="test_failure">'
+            '<failure>C:\\Users\\runneradmin\\work\\project\\tests\\test_example.py:10 '
+            '/home/runner/work/project/tests/test_example.py:10</failure>'
+            '</testcase></testsuite></testsuites>',
+            encoding="utf-8",
+        )
+        _sanitize_junit_metadata(report)
+        result = _junit_metadata_gate(report)
+        content = report.read_text(encoding="utf-8")
+        assert result["valid"], result["errors"]
+        assert content.count("[machine-local-path]") == 2
+        assert "runneradmin" not in content
+        assert "/home/runner" not in content
+
+
 def test_release_environment_gate_uses_isolated_interpreter() -> None:
     payload = {"schema_version": "1.0", "valid": True, "errors": []}
     completed = subprocess.CompletedProcess([], 0, stdout=json.dumps(payload), stderr="")

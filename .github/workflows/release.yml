@@ -128,5 +128,6 @@ jobs:
             ${{ runner.temp }}/pacify-x-release-artifacts/
             release-assets/
             evidence/releases/
+            ${{ runner.temp }}/pacify-x-release-quarantine/**/release-evidence/
           if-no-files-found: warn
           retention-days: 90
