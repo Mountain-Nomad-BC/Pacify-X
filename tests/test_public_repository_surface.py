@@ -52,3 +52,18 @@ def test_public_governance_files_are_present_and_project_specific() -> None:
     assert "revocation" in security
     contributing = (ROOT / "CONTRIBUTING.md").read_text(encoding="utf-8")
     assert "No hard deletion" in contributing or "do not hard-delete" in contributing
+
+
+def test_release_wheelhouse_is_outside_the_classified_source_tree() -> None:
+    workflow = (ROOT / ".github/workflows/release.yml").read_text(encoding="utf-8")
+    assert 'Join-Path $env:RUNNER_TEMP "pacify-x-release-wheelhouse"' in workflow
+    assert "PACIFY_X_RELEASE_WHEELHOUSE=$wheelhouse" in workflow
+    assert "--wheelhouse $env:PACIFY_X_RELEASE_WHEELHOUSE" in workflow
+    assert "-Path wheelhouse" not in workflow
+    assert "-d wheelhouse" not in workflow
+
+
+def test_governed_ci_invokes_the_contract_corpus_status_command() -> None:
+    workflow = (ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+    assert "python -m runtime.cli --root . contracts status" in workflow
+    assert "python -m runtime.cli --root . contracts\n" not in workflow

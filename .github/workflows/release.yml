@@ -51,8 +51,10 @@ jobs:
       - name: Prepare hash-locked wheelhouse
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Path wheelhouse | Out-Null
-          python -m pip download --require-hashes -r requirements-release.lock -d wheelhouse
+          $wheelhouse = Join-Path $env:RUNNER_TEMP "pacify-x-release-wheelhouse"
+          New-Item -ItemType Directory -Path $wheelhouse | Out-Null
+          python -m pip download --require-hashes -r requirements-release.lock -d $wheelhouse
+          "PACIFY_X_RELEASE_WHEELHOUSE=$wheelhouse" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Materialize protected publisher key
         shell: pwsh
@@ -71,7 +73,7 @@ jobs:
           python -m runtime.cli --root . release finalize `
             --release $env:PACIFY_X_RELEASE_TAG.Substring(1) `
             --artifact-dir release-artifacts `
-            --wheelhouse wheelhouse `
+            --wheelhouse $env:PACIFY_X_RELEASE_WHEELHOUSE `
             --signing-key $env:PACIFY_X_RELEASE_SIGNING_KEY | Tee-Object release-result.json
           $result = Get-Content release-result.json -Raw | ConvertFrom-Json
           if (-not $result.valid -or -not $result.certified) { throw "release certification failed" }

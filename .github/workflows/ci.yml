@@ -51,7 +51,7 @@ jobs:
       - name: Structural, contract, registry, and licensing audits
         run: |
           python -m runtime.cli --root . validate
-          python -m runtime.cli --root . contracts
+          python -m runtime.cli --root . contracts status
           python -m runtime.cli --root . audit structure
           python -m runtime.cli --root . audit licensing
       - name: Fast correctness profile
