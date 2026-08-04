@@ -1551,7 +1551,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 3628,
+      "bytes": 5104,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -1560,7 +1560,7 @@
       "packaged": true,
       "path": "runtime/dependency_audit.py",
       "role": "installed-runtime",
-      "sha256": "488bfd947f4ed3836bfe309fff34f0686a638cde7dcf44931aa1ca5b60f9faef",
+      "sha256": "7564a8f037c1f04c998e64d381bb176037c346ca34b933da042f44218a6a1985",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -3935,7 +3935,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 1239,
+      "bytes": 1406,
       "evidence": [
         "tests/test_dependency_audit.py"
       ],
@@ -3943,7 +3943,7 @@
       "packaged": true,
       "path": "tests/test_dependency_audit.py",
       "role": "release-test",
-      "sha256": "04609852473cbfd878ced9909b95edfbf1eceb76c14ffc0e34edd0e16ffad7d9",
+      "sha256": "929e3ca868dc21e9535975fa92da48ba6c08adcdf813d6431f7b72180eefbfdd",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

@@ -9,6 +9,21 @@ import tomllib
 from typing import Any
 
 
+def _lock_hash_counts(text: str) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    current: str | None = None
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if "==" in line and not line.startswith("--hash"):
+            current = line.split("==", 1)[0].casefold()
+            counts.setdefault(current, 0)
+        if current is not None:
+            counts[current] += line.count("--hash=sha256:")
+    return counts
+
+
 def validate_dependency_closure(root: Path) -> dict[str, Any]:
     root = root.resolve()
     registry_path = root / "registry/python_dependency_ownership.json"
@@ -37,16 +52,34 @@ def validate_dependency_closure(root: Path) -> dict[str, Any]:
         ):
             errors.append(f"undeclared test distribution: {record['distribution']}")
     lock_path = root / "requirements-release.lock"
+    lock_text = lock_path.read_text(encoding="utf-8")
     lock = {
         line.split("==", 1)[0].casefold(): line.split("==", 1)[1]
-        for line in lock_path.read_text(encoding="utf-8").splitlines()
+        for line in lock_text.splitlines()
         if line and not line.startswith("#") and "==" in line
     }
+    lock_hash_counts = _lock_hash_counts(lock_text)
     required_release = optional.get("release", set())
     if required_release != set(lock):
         errors.append(
             f"release lock mismatch: missing={sorted(required_release - set(lock))} extra={sorted(set(lock) - required_release)}"
         )
+    unhashed = sorted(name for name in lock if lock_hash_counts.get(name, 0) < 1)
+    if unhashed:
+        errors.append(f"release lock entries without hashes: {unhashed}")
+    platform_policy = json.loads(
+        (root / "policies/platform-support.json").read_text(encoding="utf-8")
+    )
+    matrix_size = len(platform_policy.get("python_minors", ())) * len(
+        platform_policy.get("ci_runners", {})
+    )
+    for distribution in ("coverage", "pyyaml"):
+        if lock_hash_counts.get(distribution, 0) < matrix_size:
+            errors.append(
+                f"{distribution} hash allowlist does not cover the supported Python/OS matrix"
+            )
+    if lock_hash_counts.get("ruff", 0) < len(platform_policy.get("ci_runners", {})):
+        errors.append("ruff hash allowlist does not cover the supported OS matrix")
     build_requirements = set(config.get("build-system", {}).get("requires", ()))
     if build_requirements != {"setuptools==81.0.0"}:
         errors.append("build-system backend must be exact-pinned to setuptools==81.0.0")
@@ -78,5 +111,6 @@ def validate_dependency_closure(root: Path) -> dict[str, Any]:
         "release_dependency_count": len(required_release),
         "build_requirements": sorted(build_requirements),
         "lock_sha256": hashlib.sha256(lock_path.read_bytes()).hexdigest(),
+        "lock_hash_counts": lock_hash_counts,
         "errors": errors,
     }

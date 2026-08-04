@@ -1,4 +1,3 @@
-import copy
 import json
 from pathlib import Path
 
@@ -16,11 +15,16 @@ def test_packaged_imports_are_fully_classified_and_declared():
     assert result["runtime_dependency_count"] == 0
     locked = {
         line.split("==", 1)[0].casefold()
-        for line in (ROOT / "requirements-release.lock").read_text(encoding="utf-8").splitlines()
+        for line in (ROOT / "requirements-release.lock")
+        .read_text(encoding="utf-8")
+        .splitlines()
         if line and not line.startswith("#") and "==" in line
     }
     assert result["release_dependency_count"] == len(locked) == 13
     assert result["build_requirements"] == ["setuptools==81.0.0"]
+    assert result["lock_hash_counts"]["coverage"] >= 12
+    assert result["lock_hash_counts"]["pyyaml"] >= 12
+    assert result["lock_hash_counts"]["ruff"] >= 3
 
 
 def test_dependency_inventory_is_deterministic_and_has_no_runtime_yaml_dependency():
