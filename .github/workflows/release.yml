@@ -4,6 +4,12 @@ on:
   push:
     tags:
       - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing annotated release tag to certify and publish
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -20,11 +26,13 @@ jobs:
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONNOUSERSITE: "1"
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PACIFY_X_RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
     steps:
       - name: Checkout exact annotated tag
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
+          ref: ${{ inputs.release_tag || github.ref }}
 
       - name: Set up tested release Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -34,7 +42,10 @@ jobs:
       - name: Require annotated tag and clean source
         shell: pwsh
         run: |
-          if ((git cat-file -t $env:GITHUB_REF_NAME) -ne "tag") { throw "release tag must be annotated" }
+          if ($env:PACIFY_X_RELEASE_TAG -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+$') { throw "release tag is malformed" }
+          git fetch --force origin "refs/tags/$($env:PACIFY_X_RELEASE_TAG):refs/tags/$($env:PACIFY_X_RELEASE_TAG)"
+          if ((git cat-file -t $env:PACIFY_X_RELEASE_TAG) -ne "tag") { throw "release tag must be annotated" }
+          if ((git rev-list -n 1 $env:PACIFY_X_RELEASE_TAG) -ne (git rev-parse HEAD)) { throw "release tag does not point to checked-out HEAD" }
           if (git status --porcelain=v1 --untracked-files=all) { throw "release checkout is not clean" }
 
       - name: Prepare hash-locked wheelhouse
@@ -58,14 +69,14 @@ jobs:
         run: |
           New-Item -ItemType Directory -Path release-artifacts | Out-Null
           python -m runtime.cli --root . release finalize `
-            --release $env:GITHUB_REF_NAME.Substring(1) `
+            --release $env:PACIFY_X_RELEASE_TAG.Substring(1) `
             --artifact-dir release-artifacts `
             --wheelhouse wheelhouse `
             --signing-key $env:PACIFY_X_RELEASE_SIGNING_KEY | Tee-Object release-result.json
           $result = Get-Content release-result.json -Raw | ConvertFrom-Json
           if (-not $result.valid -or -not $result.certified) { throw "release certification failed" }
           "PACIFY_X_RUN_ID=$($result.run_id)" | Out-File -FilePath $env:GITHUB_ENV -Append
-          "PACIFY_X_RELEASE=$($env:GITHUB_REF_NAME.Substring(1))" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "PACIFY_X_RELEASE=$($env:PACIFY_X_RELEASE_TAG.Substring(1))" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Independently verify exact staged bytes
         shell: pwsh
@@ -100,13 +111,13 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create $env:GITHUB_REF_NAME release-assets\* --verify-tag --title "PACIFY-X $env:PACIFY_X_RELEASE" --notes-file release-notes.md
+        run: gh release create $env:PACIFY_X_RELEASE_TAG release-assets\* --verify-tag --title "PACIFY-X $env:PACIFY_X_RELEASE" --notes-file release-notes.md
 
       - name: Retain certification evidence on failure or success
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: pacify-x-release-${{ github.ref_name }}
+          name: pacify-x-release-${{ env.PACIFY_X_RELEASE_TAG }}
           path: |
             release-result.json
             release-verification.json
