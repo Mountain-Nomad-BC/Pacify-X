@@ -90,6 +90,28 @@ class ContractRuntimeTests(unittest.TestCase):
             schema = self._write_schema(contract_root, "root.json", {"$ref": "child.json"})
             validate_instance("value", schema, contract_root=Path(str(contract_root).upper()))
 
+    @unittest.skipUnless(os.name == "nt", "Windows short-path alias regression")
+    def test_contract_ref_accepts_short_name_alias_of_same_windows_root(self) -> None:
+        import ctypes
+
+        with tempfile.TemporaryDirectory() as temporary:
+            contract_root = Path(temporary) / "contracts with a deliberately long name"
+            self._write_schema(contract_root, "child.json", {"type": "string"})
+            schema = self._write_schema(contract_root, "root.json", {"$ref": "child.json"})
+
+            get_short_path = ctypes.windll.kernel32.GetShortPathNameW
+            get_short_path.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32]
+            get_short_path.restype = ctypes.c_uint32
+            buffer = ctypes.create_unicode_buffer(32768)
+            length = get_short_path(str(contract_root), buffer, len(buffer))
+            if length == 0 or length >= len(buffer):
+                self.skipTest("Windows short-path aliases are unavailable")
+            short_root = Path(buffer.value)
+            if os.path.normcase(str(short_root)) == os.path.normcase(str(contract_root)):
+                self.skipTest("8.3 short-name generation is disabled on this volume")
+
+            validate_instance("value", schema, contract_root=short_root)
+
     def test_contract_ref_rejects_absolute_path(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             contract_root = Path(temporary) / "contracts"

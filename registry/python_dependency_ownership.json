@@ -490,6 +490,14 @@
     {
       "classification": "standard_library",
       "distribution": null,
+      "module": "ctypes",
+      "paths": [
+        "tests/test_contract_runtime.py"
+      ]
+    },
+    {
+      "classification": "standard_library",
+      "distribution": null,
       "module": "dataclasses",
       "paths": [
         "builders/adapter_builder.py",

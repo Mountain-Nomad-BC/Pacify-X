@@ -91,21 +91,30 @@ def _resolve_external_path(ref_path: str, schema_path: Path, contract_root: Path
 
     lexical_root = Path(os.path.abspath(str(contract_root)))
     lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
-    root_key = os.path.normcase(str(lexical_root))
-    target_key = os.path.normcase(str(lexical_target))
     try:
-        contained = os.path.commonpath((root_key, target_key)) == root_key
-    except ValueError:
-        contained = False
-    if not contained:
-        raise ValueError(f"schema reference escapes contract root: {ref_path!r}")
-    relative = Path(os.path.relpath(lexical_target, lexical_root))
+        lexical_root = lexical_root.resolve(strict=True)
+        lexical_target.stat()
+    except OSError as exc:
+        raise ValueError(f"unresolved external schema reference {ref_path!r} in {schema_path}") from exc
 
-    cursor = lexical_root
-    for part in relative.parts:
-        cursor = cursor / part
+    cursor = lexical_target
+    contained = False
+    while True:
         if cursor.is_symlink() or (hasattr(cursor, "is_junction") and cursor.is_junction()):
             raise ValueError(f"symlinked schema references are not allowed: {ref_path!r}")
+        try:
+            same_identity = os.path.samefile(cursor, lexical_root)
+        except OSError:
+            same_identity = False
+        if same_identity:
+            contained = True
+            break
+        parent = cursor.parent
+        if parent == cursor:
+            break
+        cursor = parent
+    if not contained:
+        raise ValueError(f"schema reference escapes contract root: {ref_path!r}")
 
     try:
         target_path = lexical_target.resolve(strict=True)
