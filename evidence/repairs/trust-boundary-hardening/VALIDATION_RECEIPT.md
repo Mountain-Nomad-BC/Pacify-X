@@ -46,9 +46,11 @@ Status: local integrated validation passed; merge and public CI pending.
 - Installed `doctor`: valid on Python 3.14.5 with the declared `>=3.11,<3.15` policy.
 - Installed `validate`: valid with all 6 active capabilities.
 - The installed CLI exposed the independent gate commands.
-- Final wheel SHA-256: `47b95a53d5ed37049836e54a6f6b9a31c7055232022bc32dbfde82e7bf4e4b01`.
-- Final source archive SHA-256: `e414ffdb5c0dfb3c2b52001a9511069678376185d9ec1ce741b7b834e11b9ffd`.
+- Final wheel SHA-256: `ea2ce5d34f936a7523dc01faed2df1435271409b3879470f219b7f2f0f398dce`.
+- Final source archive SHA-256: `b86b63f77486813040b33239dfbeecdbca92195d3e6f480e4cfe8d589999dfd3`.
 - Wheel contained all new runtime modules and all 86 contracts; it contained no embedded ZIP.
+
+After the first target-branch checkout, the generated gate detected that the semantic capability index generator had written platform-translated line endings before Git normalized the file. The generator now writes explicit LF bytes, dependent projections were regenerated, and a fresh checkout-state run finalized all seven gates. The hashes above are from the post-repair build.
 
 ## Hygiene and sanitation
 
