@@ -6,7 +6,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from runtime.exact_tool_certification import ToolCase, _run, certify_exact_tools
+from runtime.exact_tool_certification import ToolCase, _normalized, _run, certify_exact_tools
 from runtime.python_surface_certification import certify_python_surfaces
 
 
@@ -55,6 +55,14 @@ class ExactToolCertificationTests(unittest.TestCase):
     def test_tool_repeat_case_is_deterministic(self) -> None:
         for record in self.result["results"]:
             self.assertTrue(record["deterministic_repeat"], record["id"])
+
+    def test_fixture_path_normalization_handles_windows_aliases_and_case(self) -> None:
+        short = r"C:\Users\RUNNER~1\AppData\Local\Temp\fixture"
+        long = r"C:\Users\runneradmin\AppData\Local\Temp\fixture"
+        first = _normalized({"path": short + r"\clean-repo\a.py"}, (short, long))
+        second = _normalized({"path": long.upper() + "/clean-repo/a.py"}, (short, long))
+        self.assertEqual(first, second)
+        self.assertEqual(first["path"], "<fixture-root>/clean-repo/a.py")
 
     def test_tool_timeout_is_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

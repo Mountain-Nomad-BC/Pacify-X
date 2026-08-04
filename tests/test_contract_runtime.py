@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -80,6 +81,14 @@ class ContractRuntimeTests(unittest.TestCase):
             schema = self._write_schema(contract_root, "root.json", {"$ref": "../outside.json"})
             with self.assertRaisesRegex(ValueError, "escapes contract root"):
                 validate_instance("value", schema, contract_root=contract_root)
+
+    @unittest.skipUnless(os.name == "nt", "Windows path alias regression")
+    def test_contract_ref_accepts_case_variant_of_same_windows_root(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            contract_root = Path(temporary) / "contracts"
+            self._write_schema(contract_root, "child.json", {"type": "string"})
+            schema = self._write_schema(contract_root, "root.json", {"$ref": "child.json"})
+            validate_instance("value", schema, contract_root=Path(str(contract_root).upper()))
 
     def test_contract_ref_rejects_absolute_path(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

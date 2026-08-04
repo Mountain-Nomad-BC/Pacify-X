@@ -91,10 +91,15 @@ def _resolve_external_path(ref_path: str, schema_path: Path, contract_root: Path
 
     lexical_root = Path(os.path.abspath(str(contract_root)))
     lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+    root_key = os.path.normcase(str(lexical_root))
+    target_key = os.path.normcase(str(lexical_target))
     try:
-        relative = lexical_target.relative_to(lexical_root)
-    except ValueError as exc:
-        raise ValueError(f"schema reference escapes contract root: {ref_path!r}") from exc
+        contained = os.path.commonpath((root_key, target_key)) == root_key
+    except ValueError:
+        contained = False
+    if not contained:
+        raise ValueError(f"schema reference escapes contract root: {ref_path!r}")
+    relative = Path(os.path.relpath(lexical_target, lexical_root))
 
     cursor = lexical_root
     for part in relative.parts:
@@ -106,10 +111,15 @@ def _resolve_external_path(ref_path: str, schema_path: Path, contract_root: Path
         target_path = lexical_target.resolve(strict=True)
     except OSError as exc:
         raise ValueError(f"unresolved external schema reference {ref_path!r} in {schema_path}") from exc
+    resolved_root = contract_root.resolve(strict=True)
+    resolved_root_key = os.path.normcase(str(resolved_root))
+    resolved_target_key = os.path.normcase(str(target_path))
     try:
-        target_path.relative_to(contract_root)
-    except ValueError as exc:
-        raise ValueError(f"schema reference escapes contract root: {ref_path!r}") from exc
+        contained = os.path.commonpath((resolved_root_key, resolved_target_key)) == resolved_root_key
+    except ValueError:
+        contained = False
+    if not contained:
+        raise ValueError(f"schema reference escapes contract root: {ref_path!r}")
     if not target_path.is_file():
         raise ValueError(f"referenced schema is not a file: {ref_path!r}")
     return target_path

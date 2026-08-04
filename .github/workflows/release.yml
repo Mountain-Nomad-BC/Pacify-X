@@ -52,9 +52,12 @@ jobs:
         shell: pwsh
         run: |
           $wheelhouse = Join-Path $env:RUNNER_TEMP "pacify-x-release-wheelhouse"
+          $artifactDir = Join-Path $env:RUNNER_TEMP "pacify-x-release-artifacts"
           New-Item -ItemType Directory -Path $wheelhouse | Out-Null
+          New-Item -ItemType Directory -Path $artifactDir | Out-Null
           python -m pip download --require-hashes -r requirements-release.lock -d $wheelhouse
           "PACIFY_X_RELEASE_WHEELHOUSE=$wheelhouse" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "PACIFY_X_RELEASE_ARTIFACT_DIR=$artifactDir" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Materialize protected publisher key
         shell: pwsh
@@ -69,10 +72,9 @@ jobs:
       - name: Run one-build certification against exact artifacts
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Path release-artifacts | Out-Null
           python -m runtime.cli --root . release finalize `
             --release $env:PACIFY_X_RELEASE_TAG.Substring(1) `
-            --artifact-dir release-artifacts `
+            --artifact-dir $env:PACIFY_X_RELEASE_ARTIFACT_DIR `
             --wheelhouse $env:PACIFY_X_RELEASE_WHEELHOUSE `
             --signing-key $env:PACIFY_X_RELEASE_SIGNING_KEY | Tee-Object release-result.json
           $result = Get-Content release-result.json -Raw | ConvertFrom-Json
@@ -83,7 +85,7 @@ jobs:
       - name: Independently verify exact staged bytes
         shell: pwsh
         run: |
-          python -m runtime.cli --root . release verify --release $env:PACIFY_X_RELEASE --artifact-dir release-artifacts | Tee-Object release-verification.json
+          python -m runtime.cli --root . release verify --release $env:PACIFY_X_RELEASE --artifact-dir $env:PACIFY_X_RELEASE_ARTIFACT_DIR | Tee-Object release-verification.json
           $result = Get-Content release-verification.json -Raw | ConvertFrom-Json
           if (-not $result.valid) { throw "independent release verification failed" }
 
@@ -92,7 +94,7 @@ jobs:
         run: |
           $run = "evidence\releases\$env:PACIFY_X_RELEASE\$env:PACIFY_X_RUN_ID"
           New-Item -ItemType Directory -Path release-assets | Out-Null
-          Copy-Item release-artifacts\* release-assets\
+          Copy-Item "$env:PACIFY_X_RELEASE_ARTIFACT_DIR\*" release-assets\
           Copy-Item "$run\SHA256SUMS.txt" release-assets\
           Copy-Item "$run\sbom.cdx.json" release-assets\
           Copy-Item "$run\provenance.intoto.json" release-assets\
@@ -123,7 +125,7 @@ jobs:
           path: |
             release-result.json
             release-verification.json
-            release-artifacts/
+            ${{ runner.temp }}/pacify-x-release-artifacts/
             release-assets/
             evidence/releases/
           if-no-files-found: warn

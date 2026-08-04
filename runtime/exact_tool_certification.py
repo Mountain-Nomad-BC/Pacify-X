@@ -8,6 +8,7 @@ import json
 import os
 import platform
 from pathlib import Path
+import re
 import subprocess
 import sys
 import tempfile
@@ -150,10 +151,19 @@ def _prepare_fixtures(root: Path) -> dict[str, str]:
     left.mkdir(); right.mkdir()
     _dump(left / "skill.json", {"id": "left", "summary": "bounded duplicate skill"})
     _dump(right / "skill.json", {"id": "right", "summary": "bounded duplicate skill"})
-    with zipfile.ZipFile(p("good.zip"), "w") as archive:
-        archive.writestr("fixture/a.txt", "bounded")
-    with zipfile.ZipFile(p("bad.zip"), "w") as archive:
-        archive.writestr("fixture/__pycache__/a.pyc", b"compiled")
+    def stable_zip(path: Path, name: str, content: bytes) -> None:
+        info = zipfile.ZipInfo(name, date_time=(2020, 1, 1, 0, 0, 0))
+        info.compress_type = zipfile.ZIP_DEFLATED
+        info.create_system = 3
+        info.external_attr = 0o100644 << 16
+        with zipfile.ZipFile(path, "w") as archive:
+            archive.writestr(info, content)
+
+    stable_zip(p("good.zip"), "fixture/a.txt", b"bounded")
+    stable_zip(p("bad.zip"), "fixture/__pycache__/a.pyc", b"compiled")
+    stable_time = 1_600_000_000
+    for fixture_path in sorted(root.rglob("*"), key=lambda item: len(item.parts), reverse=True):
+        os.utime(fixture_path, (stable_time, stable_time))
     return {name: str(p(name)) for name in [
         "sample.txt", "clean.txt", "hostile.txt", "benchmark.txt", "corpus.txt", "events.ndjson", "diff.txt", "calibration.csv", "contract.yaml",
         *fixtures.keys(), "clean-repo", "secret-dir", "left", "right", "good.zip", "bad.zip",
@@ -258,7 +268,16 @@ def _tree_snapshot(root: Path) -> dict[str, str]:
     }
 
 
-def _normalized(value: object, root_text: str = "") -> object:
+def _redact_fixture_roots(value: str, root_aliases: tuple[str, ...]) -> str:
+    normalized = value.replace("\\", "/")
+    for alias in sorted(set(root_aliases), key=len, reverse=True):
+        candidate = alias.replace("\\", "/").rstrip("/")
+        if candidate:
+            normalized = re.sub(re.escape(candidate), "<fixture-root>", normalized, flags=re.IGNORECASE)
+    return normalized
+
+
+def _normalized(value: object, root_aliases: tuple[str, ...] = ()) -> object:
     if isinstance(value, dict):
         volatile_keys = {
             "at",
@@ -270,26 +289,28 @@ def _normalized(value: object, root_text: str = "") -> object:
             "verified_at",
         }
         return {
-            key: _normalized(item, root_text) for key, item in sorted(value.items())
+            key: _normalized(item, root_aliases) for key, item in sorted(value.items())
             if key not in volatile_keys
             and not any(token in key.casefold() for token in ("time", "created", "updated", "duration", "timestamp"))
         }
     if isinstance(value, list):
-        return [_normalized(item, root_text) for item in value]
-    if isinstance(value, str) and root_text:
-        return value.replace(root_text, "<fixture-root>").replace(root_text.replace("\\", "/"), "<fixture-root>")
+        return [_normalized(item, root_aliases) for item in value]
+    if isinstance(value, str) and root_aliases:
+        return _redact_fixture_roots(value, root_aliases)
     return value
 
 
 def _normalized_digest(content: bytes, root: Path | None = None) -> str:
+    aliases = () if root is None else tuple({str(root), str(root.resolve()), os.path.abspath(str(root)), os.path.realpath(str(root))})
     try:
         value = json.loads(content.decode("utf-8"))
     except (UnicodeError, json.JSONDecodeError):
-        normalized = content
-        if root:
-            normalized = normalized.replace(str(root.resolve()).encode(), b"<fixture-root>").replace(str(root.resolve()).replace("\\", "/").encode(), b"<fixture-root>")
+        try:
+            normalized = _redact_fixture_roots(content.decode("utf-8"), aliases).encode("utf-8")
+        except UnicodeError:
+            normalized = content
         return hashlib.sha256(normalized).hexdigest()
-    return hashlib.sha256(json.dumps(_normalized(value, str(root.resolve()) if root else ""), sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    return hashlib.sha256(json.dumps(_normalized(value, aliases), sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
 def _run(script: Path, case: ToolCase, temp: Path, timeout_seconds: float, *, python_executable: str | None = None) -> dict[str, Any]:
