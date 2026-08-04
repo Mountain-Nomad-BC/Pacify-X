@@ -250,6 +250,37 @@ def _seal(value: dict[str, Any]) -> dict[str, Any]:
     return {**unsigned, "certificate_sha256": digest}
 
 
+def _commit_release_evidence(release_root: Path, destination: Path) -> dict[str, Any]:
+    """Add signed evidence without overwriting existing pre-release records."""
+    source_files: list[tuple[Path, Path]] = []
+    errors: list[str] = []
+    for source in sorted(release_root.rglob("*"), key=lambda item: item.as_posix().casefold()):
+        relative = source.relative_to(release_root)
+        if source.is_symlink() or (hasattr(source, "is_junction") and source.is_junction()):
+            errors.append(f"release evidence contains a link: {relative.as_posix()}")
+        elif source.is_file():
+            source_files.append((source, relative))
+    collisions = [relative.as_posix() for _, relative in source_files if (destination / relative).exists()]
+    if collisions:
+        errors.extend(f"release evidence collision: {relative}" for relative in collisions)
+    if errors:
+        return {"valid": False, "copied_file_count": 0, "errors": errors}
+    try:
+        destination.mkdir(parents=True, exist_ok=True)
+        for source, relative in source_files:
+            target = destination / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with source.open("rb") as reader, target.open("xb") as writer:
+                shutil.copyfileobj(reader, writer)
+    except OSError as error:
+        return {
+            "valid": False,
+            "copied_file_count": 0,
+            "errors": [f"release evidence commit failed: {type(error).__name__}: {error}"],
+        }
+    return {"valid": True, "copied_file_count": len(source_files), "errors": []}
+
+
 def _portable_payload_gate(value: object) -> dict[str, Any]:
     """Reject absolute or parent-traversing paths from release metadata."""
     hits: list[str] = []
@@ -672,10 +703,12 @@ def finalize_release(
         }
         _dump(journal_path, journal)
         destination = root / "evidence" / "releases" / release
-        if destination.exists():
-            return {"valid": False, "certified": False, "published": False, "run_id": run_id, "errors": ["release evidence destination already exists"]}
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copytree(release_root, destination)
+        evidence_commit = _commit_release_evidence(release_root, destination)
+        if not evidence_commit["valid"]:
+            return {
+                "valid": False, "certified": False, "published": False, "run_id": run_id,
+                "errors": evidence_commit["errors"],
+            }
         journal["status"] = "evidence_committed"
         _dump(journal_path, journal)
     verification = verify_release_certificate(root, release=release, artifact_dir=selected_artifact_dir)

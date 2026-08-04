@@ -7,7 +7,7 @@ import subprocess
 import tempfile
 from unittest.mock import patch
 
-from runtime.release_certification import FINALIZER_FULL_REPAIR_PENDING, _certificate_ledger_errors, _junit_case_gate, _junit_metadata_gate, _junit_totals, _portable_payload_gate, _release_environment_gate, _sanitize_junit_metadata, finalize_release, verify_release_certificate
+from runtime.release_certification import FINALIZER_FULL_REPAIR_PENDING, _certificate_ledger_errors, _commit_release_evidence, _junit_case_gate, _junit_metadata_gate, _junit_totals, _portable_payload_gate, _release_environment_gate, _sanitize_junit_metadata, finalize_release, verify_release_certificate
 from runtime.corrective_release import validate_corrective_ledger
 from runtime.full_repair import validate_full_repair_ledger
 
@@ -128,6 +128,46 @@ def test_in_progress_release_evidence_is_not_a_child_of_staged_product() -> None
     evidence.mkdir(parents=True)
     assert staged not in evidence.parents
     assert evidence.relative_to(transaction).as_posix() == "release-evidence/1.2.3/run-123"
+
+
+def test_release_evidence_commit_preserves_nonconflicting_pre_release_records() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        root = Path(directory)
+        source = root / "external/release-evidence/0.6.3"
+        destination = root / "product/evidence/releases/0.6.3"
+        (source / "run-123").mkdir(parents=True)
+        (source / "certificate.json").write_text('{"signed":true}\n', encoding="utf-8")
+        (source / "run-123/gate-summary.json").write_text('{"valid":true}\n', encoding="utf-8")
+        destination.mkdir(parents=True)
+        summary = destination / "local-certification-summary.json"
+        summary.write_text('{"status":"pre-release"}\n', encoding="utf-8")
+
+        result = _commit_release_evidence(source, destination)
+
+        assert result["valid"], result["errors"]
+        assert result["copied_file_count"] == 2
+        assert summary.read_text(encoding="utf-8") == '{"status":"pre-release"}\n'
+        assert (destination / "certificate.json").read_text(encoding="utf-8") == '{"signed":true}\n'
+        assert (destination / "run-123/gate-summary.json").is_file()
+
+
+def test_release_evidence_commit_rejects_every_existing_file_collision() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        root = Path(directory)
+        source = root / "external/release-evidence/0.6.3"
+        destination = root / "product/evidence/releases/0.6.3"
+        source.mkdir(parents=True)
+        destination.mkdir(parents=True)
+        (source / "certificate.json").write_text("new signed bytes\n", encoding="utf-8")
+        existing = destination / "certificate.json"
+        existing.write_text("existing bytes\n", encoding="utf-8")
+
+        result = _commit_release_evidence(source, destination)
+
+        assert not result["valid"]
+        assert result["copied_file_count"] == 0
+        assert result["errors"] == ["release evidence collision: certificate.json"]
+        assert existing.read_text(encoding="utf-8") == "existing bytes\n"
 
 
 def test_authenticated_certificate_has_an_exact_pending_card_boundary() -> None:
