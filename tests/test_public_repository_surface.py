@@ -101,3 +101,11 @@ def test_governed_ci_invokes_the_contract_corpus_status_command() -> None:
     workflow = (ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
     assert "python -m runtime.cli --root . contracts status" in workflow
     assert "python -m runtime.cli --root . contracts\n" not in workflow
+
+
+def test_assurance_workflows_do_not_build_the_project_before_source_audits() -> None:
+    exact_tools = "python -m pip install build==1.5.0 coverage==7.14.2 pytest==9.0.2 PyYAML==6.0.3 setuptools==81.0.0 wheel==0.47.0"
+    for relative in (".github/workflows/ci.yml", ".github/workflows/scheduled-assurance.yml"):
+        workflow = (ROOT / relative).read_text(encoding="utf-8")
+        assert exact_tools in workflow
+        assert "python -m pip install .[release]" not in workflow
