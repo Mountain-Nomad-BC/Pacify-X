@@ -1,6 +1,6 @@
 # Validation receipt
 
-Status: local integrated validation passed; merge and public CI pending.
+Status: integrated on `main`; local validation and public CI passed; future signed release pending.
 
 ## Source tests
 
@@ -13,6 +13,7 @@ Status: local integrated validation passed; merge and public CI pending.
 - The two failures were an installed-wheel doctor source-path assumption and release-audit cache hygiene. The doctor now resolves installed declared resources; all disposable caches were recoverably quarantined outside the repository.
 - Failed-only reruns then passed: installed-wheel E2E passed and all 4 release-audit tests passed in 105.77 seconds.
 - Aggregate result after bounded failed-only reruns: all 634 tests passed and 465 subtests passed. This is deliberately reported as an aggregate, not misrepresented as one uninterrupted clean run.
+- Post-CI-repair governed fast profile: 567 passed and 465 subtests passed in 217.30 seconds.
 - An attempted `PYTHONNOUSERSITE=1` invocation found no pytest because pytest is installed in the user site; it executed no tests and is not counted.
 
 ## Independent assurance gates
@@ -46,16 +47,24 @@ Status: local integrated validation passed; merge and public CI pending.
 - Installed `doctor`: valid on Python 3.14.5 with the declared `>=3.11,<3.15` policy.
 - Installed `validate`: valid with all 6 active capabilities.
 - The installed CLI exposed the independent gate commands.
-- Final wheel SHA-256: `ea2ce5d34f936a7523dc01faed2df1435271409b3879470f219b7f2f0f398dce`.
-- Final source archive SHA-256: `b86b63f77486813040b33239dfbeecdbca92195d3e6f480e4cfe8d589999dfd3`.
+- Final wheel SHA-256: `b85ec577c0cc7097eaf299adf7b55a1f42ec4a7ed79f844a20cf423897aab2d0`.
+- Final source archive SHA-256: `f9b0b9729781d0123d03a5a58bd090e719b06d4749f74281faa8ba5cdcdacbe5`.
 - Wheel contained all new runtime modules and all 86 contracts; it contained no embedded ZIP.
 
 After the first target-branch checkout, the generated gate detected that the semantic capability index generator had written platform-translated line endings before Git normalized the file. The generator now writes explicit LF bytes, dependent projections were regenerated, and a fresh checkout-state run finalized all seven gates. The hashes above are from the post-repair build.
 
+## Public CI closure
+
+- Initial public runs exposed two independent defects: a Windows/Python-3.14-only native-wheel hash allowlist and a one-physical-line release-lock parser.
+- The lock now admits only exact hashes for every supported Python 3.11-3.14 runner across Linux, Windows, macOS ARM64, and macOS x86_64.
+- Local `pip download --require-hashes` simulation passed all 16 platform/interpreter targets.
+- All 12 GitHub platform jobs, all 7 independent assurance jobs, and the governed gate passed.
+- Authoritative public run: `https://github.com/Mountain-Nomad-BC/Pacify-X/actions/runs/30935573081`.
+
 ## Hygiene and sanitation
 
 - Cache cleanup used recoverable quarantine only; no hard delete occurred.
-- Final active-tree sanitation: valid across 1,459 files and 16,377,817 bytes, with zero prohibited-identifier hits, legacy placeholders, active ZIPs, or scan errors.
+- Final active-tree sanitation: valid across 1,459 files and 16,383,148 bytes, with zero prohibited-identifier hits, legacy placeholders, active ZIPs, or scan errors.
 - Final cache dry run: zero cache directories, bytecode files, or inventoried cache files.
 - Historical release and revocation evidence remains unchanged.
 

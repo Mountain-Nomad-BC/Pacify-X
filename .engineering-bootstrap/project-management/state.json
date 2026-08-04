@@ -10,7 +10,7 @@
     "changed_file_sha256": {},
     "degraded_components": [],
     "failures": [],
-    "next_safe_action": "merge REL-012 to main, require public CI, and create a future signed release before certifying the new bytes",
+    "next_safe_action": "open a future signed-release card when authorized and do not rewrite immutable v0.6.3",
     "open_circuits": [],
     "repository": {
       "branch": "main",
@@ -19,11 +19,11 @@
       "working_tree_sha256": "77098d1721daa7fac9aa2fa67c344e6b292b8c7bd32e2f78142f9f86bf20e99c"
     },
     "retries": [],
-    "revision": 30,
+    "revision": 31,
     "runtime_version": "0.6.3",
     "tool_versions": {},
     "validation": {
-      "tests": "rel_012_local_validation_passed_release_certification_pending",
+      "tests": "rel_012_main_ci_30935573081_passed_release_certification_pending",
       "verifier": "evidence/repairs/trust-boundary-hardening/VALIDATION_RECEIPT.md"
     },
     "versions": {
@@ -112,7 +112,7 @@
     "unknowns": []
   },
   "lifecycle": {
-    "next_action": "merge REL-012 to main, require public CI, and create a future signed release before certifying the new bytes",
+    "next_action": "open a future signed-release card when authorized and do not rewrite immutable v0.6.3",
     "phase": "post-release-hardening",
     "status": "validated-development"
   },
@@ -123,7 +123,7 @@
   },
   "schema_version": "1.0",
   "work": {
-    "active_punch_card": "REL-012-TRUST-BOUNDARY-HARDENING",
+    "active_punch_card": "none",
     "backlog": [
       {
         "id": "REL-008-LAST-ROUND",
@@ -148,7 +148,7 @@
       {
         "id": "REL-012-TRUST-BOUNDARY-HARDENING",
         "outcome": "Authoritative commands resolve signed scoped evidence, normal CI is reproducible, evidence custody is durable, CLI loading is bounded, and assurance gates rerun independently by input hash.",
-        "status": "validated-development"
+        "status": "complete"
       }
     ],
     "milestones": [
