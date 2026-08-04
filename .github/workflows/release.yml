@@ -67,6 +67,15 @@ jobs:
           if (-not $env:RELEASE_KEY_B64) { throw "PACIFY_X_RELEASE_SIGNING_KEY_B64 is required" }
           $keyPath = Join-Path $PWD ".git\pacify-x-release-key"
           [IO.File]::WriteAllBytes($keyPath, [Convert]::FromBase64String($env:RELEASE_KEY_B64))
+          & icacls $keyPath /inheritance:r /grant:r "${env:USERNAME}:(R,W)" | Out-Null
+          if ($LASTEXITCODE -ne 0) { throw "release private key permission hardening failed" }
+          $publicKey = (& ssh-keygen -y -f $keyPath)
+          if ($LASTEXITCODE -ne 0 -or -not $publicKey) { throw "release public key derivation failed" }
+          [IO.File]::WriteAllText("${keyPath}.pub", "$publicKey`n", [Text.Encoding]::ASCII)
+          $fingerprintFields = (& ssh-keygen -lf "${keyPath}.pub" -E sha256) -split '\s+'
+          if ($LASTEXITCODE -ne 0 -or $fingerprintFields.Count -lt 2) { throw "release public key validation failed" }
+          $trustedFingerprints = @((Get-Content policies/release-trust.json -Raw | ConvertFrom-Json).trusted_signers | ForEach-Object { $_.fingerprint })
+          if ($trustedFingerprints -notcontains $fingerprintFields[1]) { throw "release signing key is not trusted by repository policy" }
           "PACIFY_X_RELEASE_SIGNING_KEY=$keyPath" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Run one-build certification against exact artifacts

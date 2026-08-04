@@ -62,6 +62,10 @@ def test_release_wheelhouse_is_outside_the_classified_source_tree() -> None:
     assert 'Join-Path $env:RUNNER_TEMP "pacify-x-release-artifacts"' in workflow
     assert "PACIFY_X_RELEASE_ARTIFACT_DIR=$artifactDir" in workflow
     assert "--artifact-dir $env:PACIFY_X_RELEASE_ARTIFACT_DIR" in workflow
+    assert 'icacls $keyPath /inheritance:r /grant:r "${env:USERNAME}:(R,W)"' in workflow
+    assert "ssh-keygen -y -f $keyPath" in workflow
+    assert 'WriteAllText("${keyPath}.pub"' in workflow
+    assert "release signing key is not trusted by repository policy" in workflow
     assert "-Path wheelhouse" not in workflow
     assert "-d wheelhouse" not in workflow
     assert "New-Item -ItemType Directory -Path release-artifacts" not in workflow
