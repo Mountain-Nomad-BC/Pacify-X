@@ -20,5 +20,9 @@ if __name__ == "__main__":
     payload = build_semantic_index(args.root)
     output = args.output or args.root / "registry" / "semantic_capability_index.json"
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    output.write_text(
+        json.dumps(payload, indent=2) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
     print(json.dumps({"valid": True, "record_count": payload["record_count"], "revision": payload["revision"], "output": str(output)}))
