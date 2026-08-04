@@ -3,7 +3,7 @@
 This is the required orientation document for any AI assistant entering the Engineering Loop & Bootstrap Framework.
 
 > [!WARNING]
-> Release 0.6.2 is revoked. Version 0.6.3 is a release candidate: the full repair implementation is validated, but it is not release-authoritative until one-build certification, signed exact-asset publication, and independent download verification complete.
+> Release 0.6.2 is revoked. Version 0.6.3 is the current signed, self-certified release. Its exact public assets have been separately downloaded and verified. Treat the certificate as bounded evidence, not as an independent security certification or warranty.
 
 Your job is not to load the repository into context. Your job is to establish one bounded project scope, discover only the capabilities needed for the current task, operate through governed interfaces, and prove outcomes with current evidence.
 

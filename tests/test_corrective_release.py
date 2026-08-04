@@ -28,9 +28,9 @@ def test_blocking_card_gate_matches_the_project_lifecycle():
         assert any("blocking card" in error for error in result["errors"])
 
 
-def test_only_finalizer_may_admit_in_progress_finalizer_cards() -> None:
+def test_completed_finalizer_leaves_no_blocking_cards() -> None:
     strict = validate_corrective_ledger(ROOT, require_blocking_passed=True)
-    assert not strict["valid"]
+    assert strict["valid"], strict["errors"]
     staged = validate_corrective_ledger(
         ROOT, require_blocking_passed=True, allow_finalizer_in_progress=True,
     )

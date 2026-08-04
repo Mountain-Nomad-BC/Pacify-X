@@ -1,0 +1,90 @@
+{
+  "artifact_manifest": "evidence/releases/0.6.3/rel-0.6.3-9d8b50533edb/artifact-manifest.json",
+  "artifact_manifest_sha256": "d535f88a7dc365458d5ab880975d118de1864b88fd6fdd4501c4c3ef404afc81",
+  "artifact_policy_sha256": "c095c0c0c5e7a47e063dc59bf7caa16edc9edcf6c795e826d0493896208a76f1",
+  "artifacts": [
+    {
+      "filename": "engineering_loop_bootstrap-0.6.3-py3-none-any.whl",
+      "sha256": "f5163781a6bfe6258a361a17eb130876ea3e026ed4871260c6c2524e7d843dee",
+      "size_bytes": 2519770,
+      "type": "wheel"
+    },
+    {
+      "filename": "engineering_loop_bootstrap-0.6.3.tar.gz",
+      "sha256": "ae4f736ea7e08bc7bb4e3c68c6dc486d5675fb559e3148d890552f89683bf9af",
+      "size_bytes": 4407546,
+      "type": "sdist"
+    }
+  ],
+  "certification_platform": {
+    "architecture": "AMD64",
+    "operating_system": "Windows",
+    "platform": "Windows-2025Server-10.0.26100-SP0",
+    "python_implementation": "CPython",
+    "python_minor": "3.14",
+    "python_version": "3.14.6"
+  },
+  "content_sha256": "d1847980d259b700b86db02207be7674ec758c89bf1865b21ab0a8e69f1b6b10",
+  "coverage_evidence": "evidence/releases/0.6.3/rel-0.6.3-9d8b50533edb/coverage.json",
+  "coverage_evidence_sha256": "c09444141492bbca0521e12e5256eb824d5da5a6f12ddf6e35147b5d70393a25",
+  "created_utc": "2026-08-04T06:15:33.804139+00:00",
+  "evidence_manifest": "evidence/releases/0.6.3/rel-0.6.3-9d8b50533edb/evidence-manifest.json",
+  "evidence_manifest_sha256": "1613460cad9f16221068e1cd68276e4499ba202bd4dd45a27343b28144d8cc63",
+  "gate_summary": "evidence/releases/0.6.3/rel-0.6.3-9d8b50533edb/gate-summary.json",
+  "harness_digest": "ae245831193c4836c15b46f6671f8b4a076c18907f7dfc2811a26ccb366de259",
+  "manifest_file_count": 1351,
+  "product_digest": "77098d1721daa7fac9aa2fa67c344e6b292b8c7bd32e2f78142f9f86bf20e99c",
+  "publication_plan": "evidence/releases/0.6.3/rel-0.6.3-9d8b50533edb/publication-plan.json",
+  "release": "0.6.3",
+  "revocation_triggers": [
+    "artifact hash mismatch",
+    "evidence manifest mismatch",
+    "Git identity mismatch",
+    "product digest mismatch",
+    "publisher signature failure",
+    "signer revocation"
+  ],
+  "run_id": "rel-0.6.3-9d8b50533edb",
+  "schema_version": "3.0",
+  "signature": {
+    "algorithm": "ssh-ed25519",
+    "key_fingerprint": "SHA256:aQC1XhpHq6hbFMK2vv7cKFgxLEXJVmnprjfZKTn12Ms",
+    "namespace": "pacify-x-release",
+    "path": "certificate.json.sig",
+    "publisher": "Mountain-Nomad-BC"
+  },
+  "source_control": {
+    "commit_sha": "20dd8da01ba1307eb853ff64f2db42d94e0fad79",
+    "dirty": false,
+    "errors": [],
+    "remote_url": "https://github.com/Mountain-Nomad-BC/Pacify-X",
+    "repository": "Mountain-Nomad-BC/Pacify-X",
+    "schema_version": "1.0",
+    "tag": "v0.6.3",
+    "tag_commit_sha": "20dd8da01ba1307eb853ff64f2db42d94e0fad79",
+    "tag_object_type": "tag",
+    "tree_sha": "531e60a4dc294342245e72511b5633b73d4ef4ba",
+    "valid": true
+  },
+  "status": "self_certified",
+  "supply_chain_evidence": {
+    "checksums": "evidence/releases/0.6.3/rel-0.6.3-9d8b50533edb/SHA256SUMS.txt",
+    "provenance": "evidence/releases/0.6.3/rel-0.6.3-9d8b50533edb/provenance.intoto.json",
+    "sbom": "evidence/releases/0.6.3/rel-0.6.3-9d8b50533edb/sbom.cdx.json"
+  },
+  "toolchain": {
+    "architecture": "AMD64",
+    "filesystem_case_sensitive": false,
+    "locale": [
+      "English_United States",
+      "1252"
+    ],
+    "operating_system": "Windows",
+    "platform": "Windows-2025Server-10.0.26100-SP0",
+    "python_executable_sha256": "199ce15a9f0d4f9522edba59338e4879d28cf61f88e377b8164bcb716275ed22",
+    "python_implementation": "CPython",
+    "python_version": "3.14.6",
+    "timezone": "system-default"
+  },
+  "wheelhouse_manifest_sha256": "eeaadf6f27d40c6492e710b8375a65b58a1aa2372287f6ca7c1f6270e8109489"
+}

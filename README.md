@@ -12,14 +12,14 @@ Engineering Loop & Bootstrap turns a general-purpose AI assistant into a governe
 
 PACIFY-X is the project and framework. `engineering-bootstrap` is its Python package and command-line control plane.
 
-**Current release:** v0.6.3 — release candidate
+**Current release:** [v0.6.3](https://github.com/Mountain-Nomad-BC/Pacify-X/releases/tag/v0.6.3)
 
-**Status:** Full repair implemented and validated; exact signed publication pending
+**Status:** Signed self-certified release published; public assets reproduced and verified
 
 **Requires:** Python 3.11–3.14, Git, and an AI coding assistant
 
 > [!WARNING]
-> Version 0.6.2 was revoked and should not be deployed. Version 0.6.3 remains a release candidate until its signed public assets are published and independently downloaded for verification. [Read the revocation record](evidence/release-revocation-0.6.2.json).
+> Version 0.6.2 was revoked and should not be deployed. Use v0.6.3 or later. PACIFY-X self-certification is evidence of its included checks, not an independent security audit or warranty. [See the release evidence and limitations](evidence/README.md).
 
 ## What PACIFY-X does for you
 

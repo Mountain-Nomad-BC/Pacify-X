@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "valid": true,
+  "release": "0.6.3",
+  "verified_utc": "2026-08-04T06:23:42Z",
+  "release_url": "https://github.com/Mountain-Nomad-BC/Pacify-X/releases/tag/v0.6.3",
+  "workflow_run_url": "https://github.com/Mountain-Nomad-BC/Pacify-X/actions/runs/30882737975",
+  "workflow_job_id": "91907355657",
+  "workflow_artifact": {
+    "name": "pacify-x-release-v0.6.3",
+    "artifact_id": "8882124340",
+    "sha256": "f3fb7b5eb7c848cd51aef724d9d18ae3e6694f9e599c1f7298c198644772d343"
+  },
+  "source_control": {
+    "repository": "Mountain-Nomad-BC/Pacify-X",
+    "tag": "v0.6.3",
+    "tag_object_sha": "f76fa8612d113408816e7fe14aad2d51d4568ed2",
+    "commit_sha": "20dd8da01ba1307eb853ff64f2db42d94e0fad79",
+    "tree_sha": "531e60a4dc294342245e72511b5633b73d4ef4ba"
+  },
+  "certificate": {
+    "run_id": "rel-0.6.3-9d8b50533edb",
+    "status": "self_certified",
+    "sha256": "bdae09171803e44e59ac2d35dc57a3257b4edf31894def58293194a741da99f9",
+    "signature_sha256": "0229b5e6ae00a2febd9d5b46f5b579c4c4b1f2263496f40dda1b27a75452a21f",
+    "signing_identity": "pacify-x-release",
+    "publisher": "Mountain-Nomad-BC",
+    "trusted_key_fingerprint": "SHA256:aQC1XhpHq6hbFMK2vv7cKFgxLEXJVmnprjfZKTn12Ms",
+    "product_digest": "77098d1721daa7fac9aa2fa67c344e6b292b8c7bd32e2f78142f9f86bf20e99c",
+    "manifest_file_count": 1351
+  },
+  "public_assets": [
+    {
+      "filename": "certificate.json",
+      "size_bytes": 3772,
+      "sha256": "bdae09171803e44e59ac2d35dc57a3257b4edf31894def58293194a741da99f9"
+    },
+    {
+      "filename": "certificate.json.sig",
+      "size_bytes": 310,
+      "sha256": "0229b5e6ae00a2febd9d5b46f5b579c4c4b1f2263496f40dda1b27a75452a21f"
+    },
+    {
+      "filename": "engineering_loop_bootstrap-0.6.3-py3-none-any.whl",
+      "size_bytes": 2519770,
+      "sha256": "f5163781a6bfe6258a361a17eb130876ea3e026ed4871260c6c2524e7d843dee"
+    },
+    {
+      "filename": "engineering_loop_bootstrap-0.6.3.tar.gz",
+      "size_bytes": 4407546,
+      "sha256": "ae4f736ea7e08bc7bb4e3c68c6dc486d5675fb559e3148d890552f89683bf9af"
+    },
+    {
+      "filename": "evidence-manifest.json",
+      "size_bytes": 6545,
+      "sha256": "1613460cad9f16221068e1cd68276e4499ba202bd4dd45a27343b28144d8cc63"
+    },
+    {
+      "filename": "provenance.intoto.json",
+      "size_bytes": 1813,
+      "sha256": "e70fe02d9146b232a688d31ae1a7e90e80276916589ff8b3289e32949f84a0ff"
+    },
+    {
+      "filename": "sbom.cdx.json",
+      "size_bytes": 979,
+      "sha256": "7c5dd440749bbfa48fbbc8b4c0eff7c263efa3b860d20f04ed0305ca0b996561"
+    },
+    {
+      "filename": "SHA256SUMS.txt",
+      "size_bytes": 222,
+      "sha256": "b3e7115a9b70b4128ce96d3b647f0931fb343f37d41251dd5bdc5b869b3c033c"
+    }
+  ],
+  "checks": {
+    "public_release_assets_downloaded_without_repository_credentials": "passed",
+    "all_public_asset_hashes_match_observed_github_digests": "passed",
+    "detached_signature_matches_trusted_publisher_key": "passed",
+    "certificate_binds_exact_wheel_and_source_archive": "passed",
+    "checksums_match_downloaded_distribution_files": "passed",
+    "sbom_and_provenance_bind_downloaded_distribution_files": "passed",
+    "workflow_artifact_digest_matches_github": "passed",
+    "canonical_run_evidence_matches_public_certificate": "passed",
+    "fresh_virtual_environment_wheel_install": "passed",
+    "installed_cli_help": "passed",
+    "installed_cli_version": "engineering-bootstrap 0.6.3"
+  },
+  "verification_environment": {
+    "operating_system": "Windows",
+    "architecture": "AMD64",
+    "python_implementation": "CPython",
+    "python_version": "3.14.5"
+  },
+  "custody": {
+    "class": "external_temporary_quarantine",
+    "id": "public-release-verification-v0.6.3",
+    "hard_delete": false
+  },
+  "limitations": [
+    "This receipt records a separate reproduction from public release assets; it is not third-party certification.",
+    "Self-certification is not a security warranty, penetration test, or proof about undeclared environments."
+  ]
+}

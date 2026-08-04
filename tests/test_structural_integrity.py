@@ -23,6 +23,17 @@ def test_structural_integrity_has_closed_denominators() -> None:
     result = audit_structural_integrity(ROOT)
     non_document_errors = [item for item in result["errors"] if not item.startswith("documentation: stale deployment claim")]
     assert not non_document_errors, non_document_errors
+
+
+def test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection() -> None:
+    result = audit_structural_integrity(ROOT)
+    groups = [
+        item for item in result["duplicate_file_groups"]
+        if item["classification"] == "ledger-authority-head-anchor"
+    ]
+    assert len(groups) == 1
+    assert any(path.endswith("/head.json") for path in groups[0]["paths"])
+    assert any("/anchors/" in path for path in groups[0]["paths"])
     assert result["category_count"] == 15
     assert result["reachability_records"] > 100
     assert result["required_audit_item_count"] == 21

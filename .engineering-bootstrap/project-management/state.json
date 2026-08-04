@@ -8,28 +8,23 @@
       "maximum_selected_skills": 3
     },
     "changed_file_sha256": {},
-    "degraded_components": [
-      "release_authenticity",
-      "artifact_identity",
-      "transactional_mutation",
-      "tamper_evident_history"
-    ],
+    "degraded_components": [],
     "failures": [],
-    "next_safe_action": "close REL-011 full repair and issue a signed exact-artifact replacement release",
+    "next_safe_action": "monitor release 0.6.3 and open a new card before material changes",
     "open_circuits": [],
     "repository": {
-      "branch": null,
-      "commit": null,
+      "branch": "main",
+      "commit": "20dd8da01ba1307eb853ff64f2db42d94e0fad79",
       "root": ".",
-      "working_tree_sha256": null
+      "working_tree_sha256": "77098d1721daa7fac9aa2fa67c344e6b292b8c7bd32e2f78142f9f86bf20e99c"
     },
     "retries": [],
-    "revision": 28,
+    "revision": 29,
     "runtime_version": "0.6.3",
     "tool_versions": {},
     "validation": {
-      "tests": "historical_release_profile_passed_but_release_authority_revoked",
-      "verifier": "release_0.6.2_revoked_by_full_repair_audit"
+      "tests": "release_0.6.3_signed_self_certification_and_public_asset_reproduction_passed",
+      "verifier": "evidence/releases/0.6.3/public-release-verification.json"
     },
     "versions": {
       "assumptions": 12,
@@ -57,7 +52,7 @@
       "evidence/release-certification-0.6.1.json",
       "evidence/release-certification-0.6.2.json"
     ],
-    "validation_receipt": "evidence/release-revocation-0.6.2.json"
+    "validation_receipt": "evidence/releases/0.6.3/public-release-verification.json"
   },
   "governance": {
     "assumptions": [],
@@ -111,14 +106,15 @@
       "REL-008 closed with all 2,195 expanded-intake files dispositioned, 2,192 source files hash-reconciled in quarantine, three generated cache files separately quarantined, and 300 framework tests passing.",
       "REL-009 certified release 0.6.1 with 327 source tests, all admitted exact tools directly executed, and all Python surfaces owned.",
       "REL-010 reopened certification after reproducing 1 failed and 4 passed declared-suite support tests against pre-change digest 55af1b3388e8c439cecf9244a19378ae80f0b9f4fc78123ad068619f16bb6c70.",
-      "REL-010 now governs 320 registry, YAML, and orchestration artifacts and passes all 21 mature-framework structural audit items across 15 executable categories; final full-profile and atomic publication remain pending."
+      "REL-010 governs 320 registry, YAML, and orchestration artifacts and passed all 21 mature-framework structural audit items across 15 executable categories before final publication.",
+      "Release 0.6.3 is bound to annotated tag v0.6.3, a trusted publisher signature, exact public wheel and source bytes, complete canonical evidence, and a separate public-asset installation verification."
     ],
     "unknowns": []
   },
   "lifecycle": {
-    "next_action": "close REL-011 full repair and issue a signed exact-artifact replacement release",
-    "phase": "full-repair-implementation",
-    "status": "active"
+    "next_action": "monitor release 0.6.3 and open a new card before material changes",
+    "phase": "deployment-certified",
+    "status": "complete"
   },
   "project": {
     "mode": "existing",
@@ -127,7 +123,7 @@
   },
   "schema_version": "1.0",
   "work": {
-    "active_punch_card": "REL-011-FULL-REPAIR",
+    "active_punch_card": "none",
     "backlog": [
       {
         "id": "REL-008-LAST-ROUND",
@@ -147,7 +143,7 @@
       {
         "id": "REL-011-FULL-REPAIR",
         "outcome": "All 42 full-repair audit cards are implemented with negative regressions, exact-artifact provenance, bounded mutation, tamper-evident state, signed evidence, public CI, and independent reproduction.",
-        "status": "active"
+        "status": "complete"
       }
     ],
     "milestones": [

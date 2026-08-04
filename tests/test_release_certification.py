@@ -170,10 +170,10 @@ def test_release_evidence_commit_rejects_every_existing_file_collision() -> None
         assert existing.read_text(encoding="utf-8") == "existing bytes\n"
 
 
-def test_authenticated_certificate_has_an_exact_pending_card_boundary() -> None:
+def test_published_authenticated_certificate_closes_every_release_card() -> None:
     assert not _certificate_ledger_errors(ROOT)
-    assert not validate_corrective_ledger(ROOT, require_blocking_passed=True)["valid"]
-    assert not validate_full_repair_ledger(ROOT, require_all_passed=True)["valid"]
+    assert validate_corrective_ledger(ROOT, require_blocking_passed=True)["valid"]
+    assert validate_full_repair_ledger(ROOT, require_all_passed=True)["valid"]
     assert FINALIZER_FULL_REPAIR_PENDING == {
         "PC-001", "PC-002", "PC-003", "PC-004", "PC-005", "PC-006", "PC-037",
     }

@@ -28,10 +28,10 @@ class Rel011RevocationTests(unittest.TestCase):
         state = json.loads(
             (ROOT / ".engineering-bootstrap/project-management/state.json").read_text(encoding="utf-8")
         )
-        self.assertEqual(state["lifecycle"]["phase"], "full-repair-implementation")
+        self.assertEqual(state["lifecycle"]["phase"], "deployment-certified")
         self.assertEqual(
             state["evidence"]["validation_receipt"],
-            "evidence/release-revocation-0.6.2.json",
+            "evidence/releases/0.6.3/public-release-verification.json",
         )
         self.assertFalse(verify_release_certificate(ROOT, release="0.6.2")["valid"])
 
@@ -39,7 +39,8 @@ class Rel011RevocationTests(unittest.TestCase):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         start = (ROOT / "START_HERE_FOR_AI.md").read_text(encoding="utf-8")
         self.assertNotIn("**Status:** Certified deployment-ready", readme)
-        self.assertIn("**Current release:** v0.6.3 — release candidate", readme)
+        self.assertIn("**Current release:** [v0.6.3]", readme)
+        self.assertIn("Signed self-certified release published", readme)
         self.assertIn("Release 0.6.2 is revoked", start)
 
 

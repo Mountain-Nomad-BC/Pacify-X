@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "mode": "existing",
+  "created": [
+    ".codex/config.toml",
+    ".engineering-bootstrap/project.toml",
+    ".vscode/settings.json",
+    ".vscode/tasks.json",
+    "AGENTS.md"
+  ],
+  "unchanged": [
+    ".agents/skills/admit-capability/SKILL.md",
+    ".agents/skills/admit-capability/agents/openai.yaml",
+    ".agents/skills/admit-capability/references/admission-contract.md",
+    ".agents/skills/commission-project/SKILL.md",
+    ".agents/skills/commission-project/agents/openai.yaml",
+    ".agents/skills/commission-project/references/scaffold-contract.md",
+    ".agents/skills/orchestrate-engineering-loop/SKILL.md",
+    ".agents/skills/orchestrate-engineering-loop/agents/openai.yaml",
+    ".agents/skills/orchestrate-engineering-loop/references/runtime-contract.md",
+    ".agents/skills/verify-outcome/SKILL.md",
+    ".agents/skills/verify-outcome/agents/openai.yaml",
+    ".agents/skills/verify-outcome/references/evidence-contract.md"
+  ],
+  "conflicts": []
+}

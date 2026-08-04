@@ -12,15 +12,14 @@ def test_full_repair_ledger_maps_every_controlling_audit_card() -> None:
     result = validate_full_repair_ledger(ROOT)
     assert result["valid"], result["errors"]
     assert result["card_count"] == len(EXPECTED_IDS) == 42
-    assert result["passed"] == 35
-    assert result["in_progress"] == 6
-    assert result["open"] == 1
+    assert result["passed"] == 42
+    assert result["in_progress"] == 0
+    assert result["open"] == 0
 
 
-def test_full_repair_ledger_blocks_release_until_every_card_has_receipts() -> None:
+def test_full_repair_ledger_accepts_every_card_with_executed_receipts() -> None:
     result = validate_full_repair_ledger(ROOT, require_all_passed=True)
-    assert not result["valid"]
-    assert any("PC-001" in error for error in result["errors"])
+    assert result["valid"], result["errors"]
 
 
 def test_finalizer_pending_allowlist_does_not_pre_pass_publication() -> None:

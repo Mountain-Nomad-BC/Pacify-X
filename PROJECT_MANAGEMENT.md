@@ -9,10 +9,12 @@ Deliver a model-agnostic, drop-in bootstrap that lets an LLM safely commission e
 ## Current state
 
 Mode: `existing`  
-Phase: `full repair implementation`
-Status: `active`
-Active card: `REL-011-FULL-REPAIR`
-Next action: close the controlling 42-card full repair audit in dependency order and publish only an exact-artifact, Git-bound, signed replacement release.
+Phase: `deployment certified`
+Status: `complete`
+Active card: `none`
+Next action: monitor release 0.6.3 and open a new card before any material change.
+
+Release 0.6.3 is the current signed, self-certified release. The annotated tag, exact public distribution files, trusted publisher signature, complete evidence set, checksums, SBOM, provenance, and fresh installed-wheel verification agree. Canonical evidence is under `evidence/releases/0.6.3/`; the public release is at [GitHub v0.6.3](https://github.com/Mountain-Nomad-BC/Pacify-X/releases/tag/v0.6.3).
 
 Release 0.6.2 is historical and revoked for deployment. Its validation proved internal consistency under the included profile, but did not authenticate one immutable chain from Git commit through the exact tested and publicly distributed package bytes. Revocation evidence is retained at `evidence/release-revocation-0.6.2.json`; the original certificate remains unchanged as historical evidence.
 
@@ -148,6 +150,18 @@ This certificate is revoked for deployment by `evidence/release-revocation-0.6.1
 - [x] Publish a new deployment certificate and close this card only through the authoritative finalizer.
 
 Release evidence: `evidence/release-certification-0.6.2.json`.
+
+## Authenticated exact-artifact full-repair card - REL-011
+
+- [x] Revoke 0.6.2 without deleting or rewriting its historical evidence.
+- [x] Implement and validate all 42 full-repair cards with required receipts.
+- [x] Build the wheel and source archive once from the clean annotated `v0.6.3` tag.
+- [x] Run the full certification profile against those exact distribution bytes.
+- [x] Sign the canonical certificate with the repository-trusted publisher identity.
+- [x] Publish the exact bytes and immutable supporting evidence as a public GitHub Release.
+- [x] Download every public release asset separately, verify all bindings and hashes, and install the public wheel in a fresh environment.
+
+Release evidence: `evidence/releases/0.6.3/certificate.json`, `evidence/releases/0.6.3/certificate.json.sig`, and `evidence/releases/0.6.3/public-release-verification.json`. The complete run bundle is retained outside the deployable repository and identified by the public verification receipt.
 
 ## Primary user entry points
 

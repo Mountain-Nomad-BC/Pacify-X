@@ -754,19 +754,24 @@
       "dependencies": [
         "ARCH-028"
       ],
-      "disposition": "Release 0.6.2 is revoked. The external 42-card full repair audit is controlling; release authority remains blocked until every card has implementation, negative regression coverage, and executed evidence.",
+      "disposition": "Release 0.6.2 remains revoked. All 42 full-repair cards closed after the clean v0.6.3 tag produced one signed exact-artifact release, complete canonical evidence, and a separate verification of the public assets and installed wheel.",
       "id": "REL-011-FULL-REPAIR",
       "owning_paths": [
         "evidence/release-revocation-0.6.2.json",
+        "evidence/releases/0.6.3/certificate.json",
+        "evidence/releases/0.6.3/public-release-verification.json",
+        "registry/full_repair_ledger.json",
         "PROJECT_MANAGEMENT.md",
         ".engineering-bootstrap/project-management/state.json"
       ],
       "parent": "REL-010-E",
       "priority": "P0",
       "receipts": [
-        "evidence/release-revocation-0.6.2.json"
+        "evidence/releases/0.6.3/certificate.json",
+        "evidence/releases/0.6.3/certificate.json.sig",
+        "evidence/releases/0.6.3/public-release-verification.json"
       ],
-      "status": "in_progress",
+      "status": "passed",
       "title": "Close the authenticated exact-artifact full repair audit"
     }
   ],

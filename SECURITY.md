@@ -1,6 +1,6 @@
 # Security policy
 
-PACIFY-X 0.6.2 is revoked. Version 0.6.3 remains a release candidate until its exact signed assets are published and independently verified. Do not deploy a revoked release or treat an unpublished candidate as security-authoritative.
+PACIFY-X 0.6.2 is revoked. Version 0.6.3 is the current signed, self-certified release. Its public assets were downloaded separately and verified against the trusted signature, certificate, checksums, SBOM, provenance, and install checks. Do not deploy a revoked release.
 
 ## Reporting a vulnerability
 

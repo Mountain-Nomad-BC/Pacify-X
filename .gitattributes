@@ -9,3 +9,8 @@
 
 # Content-addressed custody inventories preserve their certified bytes.
 evidence/bundles/**/*.jsonl binary
+
+# Signed release evidence must retain its exact certified bytes on every platform.
+evidence/releases/*/certificate.json binary
+evidence/releases/*/certificate.json.sig binary
+evidence/releases/*/rel-*/* binary

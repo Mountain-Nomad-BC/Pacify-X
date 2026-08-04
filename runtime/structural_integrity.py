@@ -24,6 +24,7 @@ DUPLICATE_CLASSIFICATIONS = {
     "portable-skill-hash-helpers": {"owner": ".agents/skills", "rationale": "portable skill-local helpers", "authoritative_source": "shared behavioral contract", "regeneration_command": None, "equivalence_rule": "behavioral parity"},
     "bounded-cli-boilerplate": {"owner": "scripts", "rationale": "small explicit command entrypoints", "authoritative_source": "each script", "regeneration_command": None, "equivalence_rule": "entrypoint behavior"},
     "digest-adapters": {"owner": "runtime", "rationale": "bounded digest adapters", "authoritative_source": "hash contract", "regeneration_command": None, "equivalence_rule": "behavioral parity"},
+    "ledger-authority-head-anchor": {"owner": "runtime/event_ledger.py", "rationale": "the current authority head is an exact recoverable projection of its immutable sequence anchor", "authoritative_source": ".engineering-bootstrap/commissioning-events", "regeneration_command": "append chained event", "equivalence_rule": "byte-for-byte"},
 }
 
 
@@ -96,6 +97,13 @@ def _classify_exact_group(paths: list[str]) -> str | None:
         return "generated-declared-suite-projections"
     if len(paths) == 2 and any(path.startswith("bootstrap/profiles/") for path in paths) and any(path.startswith(".engineering-bootstrap/profiles/") for path in paths):
         return "generated-profile-projections"
+    if (
+        len(paths) == 2
+        and all(path.startswith(".engineering-bootstrap/.ledger-authority/") for path in paths)
+        and any(path.endswith("/head.json") for path in paths)
+        and any("/anchors/" in path for path in paths)
+    ):
+        return "ledger-authority-head-anchor"
     return None
 
 

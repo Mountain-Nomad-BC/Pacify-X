@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from pathlib import Path
 import tomllib
 
@@ -22,8 +24,28 @@ def test_product_naming_is_explicit_and_consistent() -> None:
 def test_status_language_does_not_claim_independent_certification() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "**Status:** Certified deployment-ready" not in readme
-    assert "**Status:** Full repair implemented and validated; exact signed publication pending" in readme
+    assert "**Status:** Signed self-certified release published; public assets reproduced and verified" in readme
     assert "independent certification" in (ROOT / "evidence/README.md").read_text(encoding="utf-8")
+
+
+def test_public_release_receipt_matches_canonical_certificate_and_signature() -> None:
+    release_root = ROOT / "evidence/releases/0.6.3"
+    receipt = json.loads((release_root / "public-release-verification.json").read_text(encoding="utf-8"))
+    certificate_path = release_root / "certificate.json"
+    signature_path = release_root / "certificate.json.sig"
+    certificate = json.loads(certificate_path.read_text(encoding="utf-8"))
+    assets = {item["filename"]: item for item in receipt["public_assets"]}
+
+    assert receipt["valid"] is True
+    assert receipt["release"] == certificate["release"] == "0.6.3"
+    assert receipt["source_control"]["commit_sha"] == certificate["source_control"]["commit_sha"]
+    assert receipt["certificate"]["product_digest"] == certificate["product_digest"]
+    assert receipt["certificate"]["trusted_key_fingerprint"] == certificate["signature"]["key_fingerprint"]
+    assert assets["certificate.json"]["sha256"] == hashlib.sha256(certificate_path.read_bytes()).hexdigest()
+    assert assets["certificate.json.sig"]["sha256"] == hashlib.sha256(signature_path.read_bytes()).hexdigest()
+    for artifact in certificate["artifacts"]:
+        assert assets[artifact["filename"]]["sha256"] == artifact["sha256"]
+        assert assets[artifact["filename"]]["size_bytes"] == artifact["size_bytes"]
 
 
 def test_evidence_authority_index_identifies_revocation_and_limitations() -> None:
