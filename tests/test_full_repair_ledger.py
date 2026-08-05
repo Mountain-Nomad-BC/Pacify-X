@@ -25,7 +25,9 @@ def test_full_repair_ledger_accepts_every_card_with_executed_receipts() -> None:
 def test_finalizer_pending_allowlist_does_not_pre_pass_publication() -> None:
     with tempfile.TemporaryDirectory() as directory:
         root = Path(directory)
-        ledger = json.loads((ROOT / "registry/full_repair_ledger.json").read_text(encoding="utf-8"))
+        ledger = json.loads(
+            (ROOT / "registry/full_repair_ledger.json").read_text(encoding="utf-8")
+        )
         for card in ledger["cards"]:
             card["status"] = "open" if card["id"] == "PC-037" else "passed"
             card["receipts"] = ["synthetic-executed-receipt"]
@@ -34,11 +36,15 @@ def test_finalizer_pending_allowlist_does_not_pre_pass_publication() -> None:
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.touch(exist_ok=True)
         (root / "registry").mkdir(exist_ok=True)
-        (root / "registry/full_repair_ledger.json").write_text(json.dumps(ledger), encoding="utf-8")
+        (root / "registry/full_repair_ledger.json").write_text(
+            json.dumps(ledger), encoding="utf-8"
+        )
         strict = validate_full_repair_ledger(root, require_all_passed=True)
         assert not strict["valid"]
         assert any("PC-037: remains open" in error for error in strict["errors"])
         staged = validate_full_repair_ledger(
-            root, require_all_passed=True, allowed_pending=frozenset({"PC-037"}),
+            root,
+            require_all_passed=True,
+            allowed_pending=frozenset({"PC-037"}),
         )
         assert staged["valid"], staged["errors"]

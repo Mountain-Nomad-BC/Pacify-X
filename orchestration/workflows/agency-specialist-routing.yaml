@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "registry": "registry/skill_orchestrations.json",
+  "workflows": [
+    {
+      "id": "agency-specialist-routing",
+      "purpose": "Route, review, hydrate, compile, authorize, verify, and release a bounded specialist panel without eager corpus loading or prompt-derived authority.",
+      "steps": [
+        {"id": "validate-provider", "skill": "route-specialist-agents", "depends_on": []},
+        {"id": "route-metadata", "skill": "route-specialist-agents", "depends_on": ["validate-provider"]},
+        {"id": "review-risk", "skill": "enforce-governance-controls", "depends_on": ["route-metadata"]},
+        {"id": "compile-selected", "skill": "route-specialist-agents", "depends_on": ["review-risk"]},
+        {"id": "authorize-effects", "skill": "execution-contract-enforcer", "depends_on": ["compile-selected"]},
+        {"id": "verify-result", "skill": "verify-outcome", "depends_on": ["authorize-effects"]},
+        {"id": "release-context", "skill": "route-specialist-agents", "depends_on": ["verify-result"]}
+      ],
+      "failure_policy": "Fail closed on invalid hashes, reference-only activation, unresolved routing, missing high-risk review, project-memory mismatch, authority ambiguity, or unverified acceptance criteria.",
+      "bounds": {"primary_agents": 1, "max_reviewers": 3, "max_hydrated_agents": 4}
+    }
+  ]
+}

@@ -1,0 +1,708 @@
+{
+  "edge_count": 117,
+  "edges": [
+    {
+      "from": "audit-agent-harness-performance",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "audit-ai-runtime-assurance"
+    },
+    {
+      "from": "audit-agent-harness-performance",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "validate-engineering-outcomes"
+    },
+    {
+      "from": "audit-agent-harness-performance",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "govern-operating-kernel"
+    },
+    {
+      "from": "manage-harness-context-budget",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "context-compactor"
+    },
+    {
+      "from": "manage-harness-context-budget",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "skill-navigator"
+    },
+    {
+      "from": "manage-harness-context-budget",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "context-compactor"
+    },
+    {
+      "from": "observe-project-scoped-instincts",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "govern-metacognitive-evolution"
+    },
+    {
+      "from": "observe-project-scoped-instincts",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "isolate-project-streams"
+    },
+    {
+      "from": "observe-project-scoped-instincts",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "candidate-memory-promoter"
+    },
+    {
+      "from": "observe-project-scoped-instincts",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "govern-metacognitive-evolution"
+    },
+    {
+      "from": "evolve-instincts-into-capabilities",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "observe-project-scoped-instincts"
+    },
+    {
+      "from": "evolve-instincts-into-capabilities",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "forge-skills-from-knowledge"
+    },
+    {
+      "from": "evolve-instincts-into-capabilities",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "skill-admission-controller"
+    },
+    {
+      "from": "evolve-instincts-into-capabilities",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "forge-skills-from-knowledge"
+    },
+    {
+      "from": "manage-session-continuity-adapters",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "human-handoff-state-transfer"
+    },
+    {
+      "from": "manage-session-continuity-adapters",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "long-horizon-progress-ledger"
+    },
+    {
+      "from": "manage-session-continuity-adapters",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "isolate-project-streams"
+    },
+    {
+      "from": "manage-session-continuity-adapters",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "human-handoff-state-transfer"
+    },
+    {
+      "from": "plan-selective-capability-installation",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "skill-bundle-resolver"
+    },
+    {
+      "from": "plan-selective-capability-installation",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "admit-capability"
+    },
+    {
+      "from": "plan-selective-capability-installation",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "commission-project"
+    },
+    {
+      "from": "plan-selective-capability-installation",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "skill-bundle-resolver"
+    },
+    {
+      "from": "orchestrate-isolated-agent-fleet",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "orchestrate-capability-scheduling"
+    },
+    {
+      "from": "orchestrate-isolated-agent-fleet",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "isolate-project-streams"
+    },
+    {
+      "from": "orchestrate-isolated-agent-fleet",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "recovery-coordinator"
+    },
+    {
+      "from": "orchestrate-isolated-agent-fleet",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "orchestrate-capability-scheduling"
+    },
+    {
+      "from": "govern-agent-hook-lifecycle",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "supervise-contained-execution"
+    },
+    {
+      "from": "govern-agent-hook-lifecycle",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "enforce-governance-controls"
+    },
+    {
+      "from": "govern-agent-hook-lifecycle",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "tool-loop-circuit-breaker"
+    },
+    {
+      "from": "govern-agent-hook-lifecycle",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "supervise-contained-execution"
+    },
+    {
+      "from": "benchmark-agent-regressions",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "engineer-verification-lab"
+    },
+    {
+      "from": "benchmark-agent-regressions",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "active-evaluation-selector"
+    },
+    {
+      "from": "benchmark-agent-regressions",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "audit-ai-runtime-assurance"
+    },
+    {
+      "from": "benchmark-agent-regressions",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "engineer-verification-lab"
+    },
+    {
+      "from": "govern-model-routing-economics",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "reasoning-utility-controller"
+    },
+    {
+      "from": "govern-model-routing-economics",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "evaluation-budget-allocator"
+    },
+    {
+      "from": "govern-model-routing-economics",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "benchmark-agent-regressions"
+    },
+    {
+      "from": "govern-model-routing-economics",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "reasoning-utility-controller"
+    },
+    {
+      "from": "maintain-skill-health",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "skill-admission-controller"
+    },
+    {
+      "from": "maintain-skill-health",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "synchronize-derived-architecture"
+    },
+    {
+      "from": "maintain-skill-health",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "provenance-signature-verifier"
+    },
+    {
+      "from": "maintain-skill-health",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "skill-admission-controller"
+    },
+    {
+      "from": "distill-operational-rules",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "forge-skills-from-knowledge"
+    },
+    {
+      "from": "distill-operational-rules",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "validate-knowledge-relationships"
+    },
+    {
+      "from": "distill-operational-rules",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "skill-admission-controller"
+    },
+    {
+      "from": "distill-operational-rules",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "forge-skills-from-knowledge"
+    },
+    {
+      "from": "govern-cross-harness-parity",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "govern-runtime-protocol-deployment"
+    },
+    {
+      "from": "govern-cross-harness-parity",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "synchronize-derived-architecture"
+    },
+    {
+      "from": "govern-cross-harness-parity",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "plan-selective-capability-installation"
+    },
+    {
+      "from": "govern-cross-harness-parity",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "govern-runtime-protocol-deployment"
+    },
+    {
+      "from": "audit-interactive-action-paths",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "triage-cross-surface-failures"
+    },
+    {
+      "from": "audit-interactive-action-paths",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "run-evidence-campaigns"
+    },
+    {
+      "from": "audit-interactive-action-paths",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "govern-visual-runtime-accessibility"
+    },
+    {
+      "from": "audit-interactive-action-paths",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "triage-cross-surface-failures"
+    },
+    {
+      "from": "capture-architecture-decisions",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "propose-change-intelligence"
+    },
+    {
+      "from": "capture-architecture-decisions",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "long-horizon-progress-ledger"
+    },
+    {
+      "from": "capture-architecture-decisions",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "evidence-assembler"
+    },
+    {
+      "from": "capture-architecture-decisions",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "propose-change-intelligence"
+    },
+    {
+      "from": "lookup-current-documentation",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "research-to-operation-translator"
+    },
+    {
+      "from": "lookup-current-documentation",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "evaluate-retrieval-readiness"
+    },
+    {
+      "from": "lookup-current-documentation",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "manage-mcp-lifecycle"
+    },
+    {
+      "from": "lookup-current-documentation",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "research-to-operation-translator"
+    },
+    {
+      "from": "design-mcp-server-capability",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "manage-mcp-lifecycle"
+    },
+    {
+      "from": "design-mcp-server-capability",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "validate-contract-boundaries"
+    },
+    {
+      "from": "design-mcp-server-capability",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "quarantine-external-tools"
+    },
+    {
+      "from": "design-mcp-server-capability",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "manage-mcp-lifecycle"
+    },
+    {
+      "from": "enforce-agent-config-supply-chain",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "secure-agent-supply-chain"
+    },
+    {
+      "from": "enforce-agent-config-supply-chain",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "provenance-signature-verifier"
+    },
+    {
+      "from": "enforce-agent-config-supply-chain",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "enforce-source-import-boundaries"
+    },
+    {
+      "from": "enforce-agent-config-supply-chain",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "secure-agent-supply-chain"
+    },
+    {
+      "from": "manage-autonomous-loop-convergence",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "orchestrate-engineering-loop"
+    },
+    {
+      "from": "manage-autonomous-loop-convergence",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "tool-loop-circuit-breaker"
+    },
+    {
+      "from": "manage-autonomous-loop-convergence",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "recovery-coordinator"
+    },
+    {
+      "from": "manage-autonomous-loop-convergence",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "orchestrate-engineering-loop"
+    },
+    {
+      "from": "detect-workspace-capability-needs",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "audit-source-capabilities"
+    },
+    {
+      "from": "detect-workspace-capability-needs",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "skill-navigator"
+    },
+    {
+      "from": "detect-workspace-capability-needs",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "plan-selective-capability-installation"
+    },
+    {
+      "from": "detect-workspace-capability-needs",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "audit-source-capabilities"
+    },
+    {
+      "from": "maintain-learner-profile-boundary",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "isolate-project-streams"
+    },
+    {
+      "from": "maintain-learner-profile-boundary",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "govern-memory-fabric"
+    },
+    {
+      "from": "maintain-learner-profile-boundary",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "permission-diff-auditor"
+    },
+    {
+      "from": "maintain-learner-profile-boundary",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "long-horizon-progress-ledger"
+    },
+    {
+      "from": "sequence-adaptive-learning-exercises",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "reasoning-utility-controller"
+    },
+    {
+      "from": "sequence-adaptive-learning-exercises",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "active-evaluation-selector"
+    },
+    {
+      "from": "sequence-adaptive-learning-exercises",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "maintain-learner-profile-boundary"
+    },
+    {
+      "from": "sequence-adaptive-learning-exercises",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "govern-metacognitive-evolution"
+    },
+    {
+      "from": "capture-human-observer-assessment",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "human-handoff-state-transfer"
+    },
+    {
+      "from": "capture-human-observer-assessment",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "evidence-assembler"
+    },
+    {
+      "from": "capture-human-observer-assessment",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "maintain-learner-profile-boundary"
+    },
+    {
+      "from": "capture-human-observer-assessment",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "human-handoff-state-transfer"
+    },
+    {
+      "from": "maintain-behavior-event-ledger",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "long-horizon-progress-ledger"
+    },
+    {
+      "from": "maintain-behavior-event-ledger",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "evidence-assembler"
+    },
+    {
+      "from": "maintain-behavior-event-ledger",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "maintain-learner-profile-boundary"
+    },
+    {
+      "from": "maintain-behavior-event-ledger",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "long-horizon-progress-ledger"
+    },
+    {
+      "from": "govern-reinforcement-token-economy",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "execution-contract-enforcer"
+    },
+    {
+      "from": "govern-reinforcement-token-economy",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "evidence-assembler"
+    },
+    {
+      "from": "govern-reinforcement-token-economy",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "capture-human-observer-assessment"
+    },
+    {
+      "from": "govern-reinforcement-token-economy",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "execution-contract-enforcer"
+    },
+    {
+      "from": "evaluate-cue-recall-and-recognition",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "active-evaluation-selector"
+    },
+    {
+      "from": "evaluate-cue-recall-and-recognition",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "maintain-behavior-event-ledger"
+    },
+    {
+      "from": "evaluate-cue-recall-and-recognition",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "active-evaluation-selector"
+    },
+    {
+      "from": "summarize-learning-progress",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "maintain-behavior-event-ledger"
+    },
+    {
+      "from": "summarize-learning-progress",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "evaluate-cue-recall-and-recognition"
+    },
+    {
+      "from": "summarize-learning-progress",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "govern-reinforcement-token-economy"
+    },
+    {
+      "from": "summarize-learning-progress",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "long-horizon-progress-ledger"
+    },
+    {
+      "from": "design-replayable-exercise-state-machine",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "bounded-workflow-topology-selector"
+    },
+    {
+      "from": "design-replayable-exercise-state-machine",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "validate-contract-boundaries"
+    },
+    {
+      "from": "design-replayable-exercise-state-machine",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "outcome-verifier"
+    },
+    {
+      "from": "design-replayable-exercise-state-machine",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "bounded-workflow-topology-selector"
+    },
+    {
+      "from": "separate-supervisor-and-learner-roles",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "permission-diff-auditor"
+    },
+    {
+      "from": "separate-supervisor-and-learner-roles",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "execution-contract-enforcer"
+    },
+    {
+      "from": "separate-supervisor-and-learner-roles",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "maintain-learner-profile-boundary"
+    },
+    {
+      "from": "separate-supervisor-and-learner-roles",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "permission-diff-auditor"
+    },
+    {
+      "from": "safeguard-human-learning-systems",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "enforce-governance-controls"
+    },
+    {
+      "from": "safeguard-human-learning-systems",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "govern-memory-fabric"
+    },
+    {
+      "from": "safeguard-human-learning-systems",
+      "relation": "depends_on",
+      "status": "candidate",
+      "to": "permission-diff-auditor"
+    },
+    {
+      "from": "safeguard-human-learning-systems",
+      "relation": "proposed_owner",
+      "status": "candidate",
+      "to": "enforce-governance-controls"
+    }
+  ],
+  "schema_version": "1.0"
+}

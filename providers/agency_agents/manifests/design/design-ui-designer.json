@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.design.ui-designer",
+  "name": "UI Designer",
+  "description": "Expert UI designer specializing in visual design systems, component libraries, and pixel-perfect interface creation. Creates beautiful, consistent, accessible user interfaces that enhance UX and reflect brand identity",
+  "division": "design",
+  "source": {
+    "path": "design/design-ui-designer.md",
+    "sha256": "3130768958d3b3d38178aaec91cf789e01ecca4984c8674d4aaea446b6cba240",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/design/design-ui-designer.md",
+    "sha256": "47cef1b262e0ed30b976b2912c3e1c4dd653b723f36ae23f75b222d11e1e10a9",
+    "audit_status": "HARDEN",
+    "audit_score": 62.6
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "low",
+    "autonomy": "advisory_and_draft",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "UI Designer",
+      "ui-designer",
+      "design-ui-designer"
+    ]
+  },
+  "capabilities": [
+    "accessibility",
+    "analytics",
+    "architecture",
+    "automation_workflow",
+    "compliance_governance",
+    "design",
+    "frontend",
+    "identity_access",
+    "marketing",
+    "performance",
+    "research",
+    "search_retrieval"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "user problem and target users",
+    "platform, device, and interaction constraints",
+    "brand system and existing components",
+    "accessibility requirements",
+    "research evidence or known assumptions"
+  ],
+  "deliverables": [
+    "design rationale tied to user needs",
+    "flows, states, and edge cases",
+    "component or artifact specification",
+    "accessibility and usability checks",
+    "engineering handoff notes"
+  ],
+  "quality_gates": [
+    "Test against real user goals rather than visual preference alone",
+    "Cover empty, loading, error, permission, and recovery states",
+    "Check keyboard, screen-reader, contrast, zoom, motion, and localization implications",
+    "Label unvalidated design assumptions"
+  ],
+  "boundaries": [
+    "Do not claim usability validation without observed research or test evidence",
+    "Do not overwrite brand or accessibility constraints without explicit approval"
+  ],
+  "handoffs": [
+    "design/design-ux-researcher.md",
+    "design/design-ui-finish-gate-reviewer.md",
+    "testing/testing-accessibility-auditor.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "Security-sensitive role lacks authorized-scope-only constraint"
+    ],
+    "improvement_issues": [
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit",
+      "No freshness/version/source-date policy for changeable knowledge"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

@@ -1,4 +1,5 @@
 """Bounded, fail-closed orchestration over admitted capability metadata."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -7,9 +8,22 @@ from pathlib import Path
 from typing import Callable, Mapping, Protocol
 
 from .config import BootstrapConfig, load_startup_config
-from .evidence_assembler import Claim, EvidenceLink, EvidencePackage, EvidenceRecord, assemble_evidence
+from .evidence_assembler import (
+    Claim,
+    EvidenceLink,
+    EvidencePackage,
+    EvidenceRecord,
+    assemble_evidence,
+)
 from .execution_contract import ExecutionRequest, PolicyDecision, enforce
-from .lifecycle import Checkpoint, CheckpointSink, FailureRecord, MemoryCheckpointSink, failure_fingerprint, make_checkpoint
+from .lifecycle import (
+    Checkpoint,
+    CheckpointSink,
+    FailureRecord,
+    MemoryCheckpointSink,
+    failure_fingerprint,
+    make_checkpoint,
+)
 from .outcome_verifier import VerificationDecision, verify
 from .registry import load_json, navigation_index, validate_registry
 from .skill_navigator import CapabilitySummary, navigate
@@ -79,7 +93,9 @@ class Orchestrator:
         self.handler_resolver = handler_resolver
         self.checkpoint_sink = checkpoint_sink or MemoryCheckpointSink()
         self.now = now or (lambda: datetime.now(timezone.utc))
-        self.config: BootstrapConfig = load_startup_config(self.root / "bootstrap" / "startup.toml")
+        self.config: BootstrapConfig = load_startup_config(
+            self.root / "bootstrap" / "startup.toml"
+        )
 
     def run(self, request: TaskRequest, policy: PolicyDecision) -> OrchestrationResult:
         stages: list[str] = []
@@ -90,19 +106,35 @@ class Orchestrator:
         failure: FailureRecord | None = None
         handler: Handler | None = None
 
-        def mark(stage: str, status: str = "passed", evidence_ids: tuple[str, ...] = ()) -> None:
+        def mark(
+            stage: str, status: str = "passed", evidence_ids: tuple[str, ...] = ()
+        ) -> None:
             stages.append(stage)
             checkpoint = make_checkpoint(
-                request.task_id, len(checkpoints) + 1, stage, status,
-                selected.capability_id if selected else None, evidence_ids,
+                request.task_id,
+                len(checkpoints) + 1,
+                stage,
+                status,
+                selected.capability_id if selected else None,
+                evidence_ids,
             )
             self.checkpoint_sink.append(checkpoint)
             checkpoints.append(checkpoint)
 
-        def finish(status: str, errors: tuple[str, ...] = (), *, unloaded: bool = True) -> OrchestrationResult:
+        def finish(
+            status: str, errors: tuple[str, ...] = (), *, unloaded: bool = True
+        ) -> OrchestrationResult:
             return OrchestrationResult(
-                request.task_id, status, selected.capability_id if selected else None,
-                tuple(stages), errors, package, verification, tuple(checkpoints), failure, unloaded,
+                request.task_id,
+                status,
+                selected.capability_id if selected else None,
+                tuple(stages),
+                errors,
+                package,
+                verification,
+                tuple(checkpoints),
+                failure,
+                unloaded,
             )
 
         if not request.task_id.strip() or not request.goal.strip():
@@ -116,34 +148,59 @@ class Orchestrator:
 
         index = navigation_index(self.root)
         if request.preferred_capability_id:
-            selected = next((item for item in index if item.capability_id == request.preferred_capability_id), None)
+            selected = next(
+                (
+                    item
+                    for item in index
+                    if item.capability_id == request.preferred_capability_id
+                ),
+                None,
+            )
             if selected is None:
                 mark("selection", "failed")
                 return finish("blocked", ("preferred capability is not active",))
         else:
             navigation = navigate(
-                request.goal, index, request.inputs,
+                request.goal,
+                index,
+                request.inputs,
                 max_candidates=self.config.budget.max_active_capabilities,
             )
-            selected = next((item for item in index if navigation.candidates and item.capability_id == navigation.candidates[0].capability_id), None)
+            selected = next(
+                (
+                    item
+                    for item in index
+                    if navigation.candidates
+                    and item.capability_id == navigation.candidates[0].capability_id
+                ),
+                None,
+            )
             if selected is None:
                 mark("selection", "failed")
                 return finish("blocked", (navigation.reason,))
-        missing_inputs = tuple(sorted(set(selected.required_inputs) - set(request.inputs)))
+        missing_inputs = tuple(
+            sorted(set(selected.required_inputs) - set(request.inputs))
+        )
         if missing_inputs:
             mark("input_validation", "failed")
             return finish("blocked", ("missing inputs: " + ", ".join(missing_inputs),))
         mark("selection")
 
         capability_item = next(
-            item for item in load_json(self.root / "registry" / "capability_map.json")["active_capabilities"]
+            item
+            for item in load_json(self.root / "registry" / "capability_map.json")[
+                "active_capabilities"
+            ]
             if item["id"] == selected.capability_id
         )
         manifest = load_json(self.root / capability_item["contract"])
         contract = enforce(
             ExecutionRequest(
-                selected.capability_id, request.requested_effects,
-                request.timeout_seconds, request.max_tool_calls, request.idempotency_key,
+                selected.capability_id,
+                request.requested_effects,
+                request.timeout_seconds,
+                request.max_tool_calls,
+                request.idempotency_key,
             ),
             policy,
             manifest,
@@ -179,22 +236,43 @@ class Orchestrator:
             mark("evidence_assembly", evidence_ids=evidence_ids)
             verification = verify(
                 outcome.postconditions,
-                [{"id": evidence_id, "status": "current", "valid": True} for evidence_id in evidence_ids],
+                [
+                    {"id": evidence_id, "status": "current", "valid": True}
+                    for evidence_id in evidence_ids
+                ],
                 policy_allowed=policy.allowed,
                 executor_claimed_complete=outcome.executor_claimed_complete,
             )
-            mark("verification", "passed" if verification.status == "verified" else "failed", evidence_ids)
-            status = "completed" if verification.status == "verified" and not package.unsupported_claims else "incomplete"
+            mark(
+                "verification",
+                "passed" if verification.status == "verified" else "failed",
+                evidence_ids,
+            )
+            status = (
+                "completed"
+                if verification.status == "verified" and not package.unsupported_claims
+                else "incomplete"
+            )
             errors = tuple(
                 list(verification.failed_checks)
-                + (["unsupported claims: " + ", ".join(package.unsupported_claims)] if package.unsupported_claims else [])
+                + (
+                    ["unsupported claims: " + ", ".join(package.unsupported_claims)]
+                    if package.unsupported_claims
+                    else []
+                )
             )
             return finish(status, errors)
         except Exception as error:  # capability boundary must fail closed
-            fingerprint = failure_fingerprint(selected.capability_id, type(error).__name__, str(error))
+            fingerprint = failure_fingerprint(
+                selected.capability_id, type(error).__name__, str(error)
+            )
             failure = FailureRecord(
-                request.task_id, selected.capability_id, fingerprint,
-                request.attempt, (), f"{type(error).__name__}: {error}",
+                request.task_id,
+                selected.capability_id,
+                fingerprint,
+                request.attempt,
+                (),
+                f"{type(error).__name__}: {error}",
             )
             mark("execution", "failed")
             return finish("failed", (failure.message,))

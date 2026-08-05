@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:external_capabilities:hook-decision",
+  "title": "Bounded non-executing hook governance decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["allowed", "reason_codes", "invocation_token", "depth", "authority_granted"],
+  "properties": {
+    "allowed": {"type": "boolean"},
+    "reason_codes": {"type": "array", "items": {"type": "string"}},
+    "invocation_token": {"type": "string", "minLength": 1},
+    "depth": {"type": "integer", "minimum": 1},
+    "authority_granted": {"const": false}
+  }
+}

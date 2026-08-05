@@ -1,4 +1,5 @@
 """Group exact duplicates without deleting source records."""
+
 from __future__ import annotations
 
 import argparse
@@ -26,11 +27,33 @@ def main() -> int:
         if len(items) < 2:
             continue
         members = sorted({item["id"] for item in items})
-        duplicates.append({"group_id": f"exact-{digest[:16]}", "sha256": digest, "bytes": size, "count": len(members), "members": members})
-    output = {"schema_version": "1.0", "inventory_records": total, "group_count": len(duplicates), "duplicate_records": sum(item["count"] for item in duplicates), "groups": duplicates}
+        duplicates.append(
+            {
+                "group_id": f"exact-{digest[:16]}",
+                "sha256": digest,
+                "bytes": size,
+                "count": len(members),
+                "members": members,
+            }
+        )
+    output = {
+        "schema_version": "1.0",
+        "inventory_records": total,
+        "group_count": len(duplicates),
+        "duplicate_records": sum(item["count"] for item in duplicates),
+        "groups": duplicates,
+    }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({key: output[key] for key in ("inventory_records", "group_count", "duplicate_records")}, indent=2))
+    print(
+        json.dumps(
+            {
+                key: output[key]
+                for key in ("inventory_records", "group_count", "duplicate_records")
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

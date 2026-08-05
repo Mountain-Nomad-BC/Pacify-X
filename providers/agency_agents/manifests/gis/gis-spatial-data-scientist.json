@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.gis.spatial-data-scientist",
+  "name": "Spatial Data Scientist",
+  "description": "Advanced spatial analytics specialist who applies statistical modeling, spatial econometrics, clustering, and predictive analytics to geospatial data — finding patterns that aren't visible on a map.",
+  "division": "gis",
+  "source": {
+    "path": "gis/gis-spatial-data-scientist.md",
+    "sha256": "03254a9fa2a9522800eddf743b8305bc2d4b2093e233e6c9b593da6f0746c657",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/gis/gis-spatial-data-scientist.md",
+    "sha256": "a67a61a6af6aa205397f06d1c005253b37f7e3daff88509f39728683c5b6f947",
+    "audit_status": "REWRITE",
+    "audit_score": 50.8
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Spatial Data Scientist",
+      "spatial-data-scientist",
+      "gis-spatial-data-scientist"
+    ]
+  },
+  "capabilities": [
+    "ai_ml",
+    "analytics",
+    "automation_workflow",
+    "gis",
+    "gis_spatial",
+    "identity_access",
+    "networking",
+    "research",
+    "search_retrieval"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "analysis question and area of interest",
+    "source datasets and provenance",
+    "coordinate reference systems and units",
+    "required accuracy, scale, and output format",
+    "privacy, licensing, and update-date constraints"
+  ],
+  "deliverables": [
+    "data inventory and CRS/units statement",
+    "reproducible spatial method",
+    "map, layer, model, or analysis result",
+    "accuracy and uncertainty notes",
+    "metadata and provenance"
+  ],
+  "quality_gates": [
+    "Verify CRS, datum, units, extent, topology, and geometry validity before analysis",
+    "Preserve source dates, lineage, transformation parameters, and licensing",
+    "Use scale-appropriate methods and report positional or model uncertainty",
+    "Validate outputs visually and numerically"
+  ],
+  "boundaries": [
+    "Do not infer precise location, identity, or causality beyond the source resolution",
+    "Do not expose sensitive locations or personal movement data without authorization and minimization"
+  ],
+  "handoffs": [
+    "gis/gis-qa-engineer.md",
+    "gis/gis-technical-consultant.md",
+    "gis/gis-cartography-designer.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Outputs are not defined as a stable deliverable contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Failure modes and risk controls are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Acceptance criteria are missing or weak",
+      "No freshness/version/source-date policy for changeable knowledge",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Action-capable role lacks rollback/dry-run safeguards"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

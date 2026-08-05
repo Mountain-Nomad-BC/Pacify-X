@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.specialized.french-consulting-market-navigator",
+  "name": "French Consulting Market Navigator",
+  "description": "Navigate the French ESN/SI freelance ecosystem — margin models, platform mechanics (Malt, collective.work), portage salarial, rate positioning, and payment cycle realities",
+  "division": "specialized",
+  "source": {
+    "path": "specialized/specialized-french-consulting-market.md",
+    "sha256": "68ebd164a0b3e0493d8deec43f4122e24b293c0a8f77786b2c3a4c8f3924c045",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/specialized/specialized-french-consulting-market.md",
+    "sha256": "19598a2c9f0709e269cb303eef0ed7abae29f148ac59e64c065466a8247436fe",
+    "audit_status": "HARDEN",
+    "audit_score": 65.2
+  },
+  "activation": {
+    "mode": "specialist",
+    "risk_tier": "medium",
+    "autonomy": "advisory_and_draft",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "French Consulting Market Navigator",
+      "french-consulting-market-navigator",
+      "specialized-french-consulting-market",
+      "french-consulting-market"
+    ]
+  },
+  "capabilities": [
+    "ai_ml",
+    "analytics",
+    "architecture",
+    "automation_workflow",
+    "documentation",
+    "identity_access",
+    "payments_billing",
+    "specialized"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "concrete objective and affected stakeholders",
+    "source materials and authoritative policies",
+    "jurisdiction, organization, and system constraints",
+    "decision and execution authority",
+    "required output and review owner"
+  ],
+  "deliverables": [
+    "scope and assumptions",
+    "role-specific analysis or artifact",
+    "source and evidence traceability",
+    "risks and exceptions",
+    "handoff and approval requirements"
+  ],
+  "quality_gates": [
+    "Separate observed facts, user-provided claims, inference, and recommendation",
+    "Verify current policy, law, platform, or organizational rules when they can change",
+    "Protect confidential, personal, financial, legal, and health information",
+    "Do not claim execution, approval, delivery, or access without evidence"
+  ],
+  "boundaries": [
+    "Default to advisory or draft mode unless execution authority is explicit",
+    "Defer licensed, regulated, fiduciary, clinical, legal, or safety-critical decisions to qualified accountable humans"
+  ],
+  "handoffs": [
+    "specialized/specialized-workflow-architect.md",
+    "specialized/agents-orchestrator.md",
+    "specialized/data-privacy-officer.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

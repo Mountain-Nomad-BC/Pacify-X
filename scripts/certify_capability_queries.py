@@ -1,4 +1,5 @@
 """Execute deterministic golden queries against the compact skill index."""
+
 from __future__ import annotations
 
 import argparse
@@ -9,8 +10,8 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from runtime.query_certification import certify_queries, load_cases
-from runtime.registry import skill_navigation_index
+from runtime.query_certification import certify_queries, load_cases  # noqa: E402 -- local source bootstrap
+from runtime.registry import skill_navigation_index  # noqa: E402 -- local source bootstrap
 
 
 if __name__ == "__main__":
@@ -23,5 +24,12 @@ if __name__ == "__main__":
     payload = certify_queries(skill_navigation_index(args.root), load_cases(cases))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({key: payload[key] for key in ("complete", "case_count", "passed", "failed")}))
+    print(
+        json.dumps(
+            {
+                key: payload[key]
+                for key in ("complete", "case_count", "passed", "failed")
+            }
+        )
+    )
     raise SystemExit(0 if payload["complete"] else 1)

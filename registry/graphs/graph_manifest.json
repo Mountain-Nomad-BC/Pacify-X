@@ -4,6 +4,14 @@
   "policy": "derived metadata projection; regenerate and byte-compare before release",
   "sources": [
     {
+      "path": "registry/agency_agent_graph.json",
+      "sha256": "ea2643fd20c95d482b5d02a69c96109310319b6c4daddca85199bc514703702a"
+    },
+    {
+      "path": "registry/agency_agent_registry.json",
+      "sha256": "258d34007098b8dc4229fe26017081118248601fec017a9b85747badca5fb9c7"
+    },
+    {
       "path": "registry/builders.json",
       "sha256": "546a4a204ee0ddc8957934f70884021cbf53f648263cb4fe98c8ae4b7220e228"
     },
@@ -29,11 +37,11 @@
     },
     {
       "path": "registry/skill_catalog.toml",
-      "sha256": "4c437344434aa39d0e9ae89dcc865a64946db09b1c3974f3c77eef94722e6e4f"
+      "sha256": "372f1184df52c489eb616808d7b26a91d68bfd482e8da1eb0929e07cba58f90c"
     },
     {
       "path": "registry/skills/evidence-assembler.json",
-      "sha256": "ca20a579c9aeb9028842f88453cc9a7f743fbe97e8089220e6d7826c0f55a8d5"
+      "sha256": "d2f19cf3a8620e1e1130481d847fbcc2ba36dac96dd455c02cadc2c2dadf6546"
     },
     {
       "path": "registry/skills/execution-contract-enforcer.json",
@@ -49,11 +57,11 @@
     },
     {
       "path": "registry/skills/skill-navigator.json",
-      "sha256": "399ac0398829bc2f287e9f9c21e66c9284fbc4caa11e4ccac2c6fba93aa69ffa"
+      "sha256": "3b055a86724842cfb67d8cc945c827de125d94f262474a7819f9af3f7ac2a165"
     },
     {
       "path": "registry/skills/workflow-orchestrator.json",
-      "sha256": "9d2e6b37757f69ecab5b718b7325806ae7cd4d9bfb84e7577ebba0acac9c07ac"
+      "sha256": "fca43988a48ddb9e435948c86dab83bf05d2352c16bdcc55c7654a12cd4e3ab9"
     },
     {
       "path": "registry/tools.json",
@@ -79,7 +87,7 @@
     },
     {
       "path": "registry/graphs/system_asset_graph.json",
-      "sha256": "5cc8dbc53c99e4051e36662be77e8cb0bfc62630d6822c06b52f04d5e0f0bf90"
+      "sha256": "8a85c5755d05c2344b91344ac34877939a5943ab80b46f552f39207dae0aa966"
     }
   ]
 }

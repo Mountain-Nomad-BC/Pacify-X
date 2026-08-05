@@ -1,4 +1,5 @@
 """Explainable task classification over compact text metadata only."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -14,13 +15,32 @@ DEFAULT_TAXONOMY: Mapping[str, tuple[str, ...]] = {
     "onboarding": ("bootstrap", "existing", "intake", "new project", "onboard"),
     "orchestration": ("agent", "dag", "orchestrate", "schedule", "workflow"),
     "research": ("compare", "paper", "research", "source", "study"),
-    "retrieval": ("citation", "graph", "knowledge", "retrieval", "retrieve", "search", "vector"),
+    "retrieval": (
+        "citation",
+        "graph",
+        "knowledge",
+        "retrieval",
+        "retrieve",
+        "search",
+        "vector",
+    ),
     "security": ("auth", "secret", "security", "threat", "vulnerability"),
     "validation": ("acceptance", "evidence", "test", "validate", "verify"),
 }
 DEFAULT_TASK_CLASSES: Mapping[str, tuple[str, ...]] = {
     "read_only": ("analyze", "inspect", "map", "read", "review"),
-    "mutation": ("build", "change", "create", "delete", "edit", "fix", "implement", "install", "move", "write"),
+    "mutation": (
+        "build",
+        "change",
+        "create",
+        "delete",
+        "edit",
+        "fix",
+        "implement",
+        "install",
+        "move",
+        "write",
+    ),
     "verification": ("acceptance", "evidence", "test", "validate", "verify"),
 }
 
@@ -57,11 +77,27 @@ def classify_task(
     domain_matches = matches(taxonomy)
     class_matches = matches(DEFAULT_TASK_CLASSES)
     best = max((len(values) for values in domain_matches.values()), default=0)
-    selected_domains = tuple(sorted(name for name, values in domain_matches.items() if len(values) >= max(1, best - 1)))
+    selected_domains = tuple(
+        sorted(
+            name
+            for name, values in domain_matches.items()
+            if len(values) >= max(1, best - 1)
+        )
+    )
     selected_classes = tuple(sorted(class_matches)) or ("read_only",)
-    terms = tuple(sorted(set().union(*domain_matches.values(), *class_matches.values()))) if (domain_matches or class_matches) else ()
-    confidence = min(0.99, 0.18 + 0.16 * len(terms) + (0.08 if selected_domains else 0.0))
-    route = "select" if selected_domains and confidence >= confidence_threshold else "broader_metadata_lookup"
+    terms = (
+        tuple(sorted(set().union(*domain_matches.values(), *class_matches.values())))
+        if (domain_matches or class_matches)
+        else ()
+    )
+    confidence = min(
+        0.99, 0.18 + 0.16 * len(terms) + (0.08 if selected_domains else 0.0)
+    )
+    route = (
+        "select"
+        if selected_domains and confidence >= confidence_threshold
+        else "broader_metadata_lookup"
+    )
     return ClassificationRecord(
         selected_classes,
         selected_domains or ("general",),

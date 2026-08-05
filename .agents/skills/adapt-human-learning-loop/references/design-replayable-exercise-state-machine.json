@@ -1,0 +1,57 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "reward only after verified completion",
+    "reset all ephemeral state on replay",
+    "do not let UI labels become canonical state"
+  ],
+  "bundle": "adapt-human-learning-loop",
+  "category": "state-machine",
+  "dependencies": [
+    "bounded-workflow-topology-selector",
+    "validate-contract-boundaries",
+    "outcome-verifier"
+  ],
+  "id": "design-replayable-exercise-state-machine",
+  "keywords": [
+    "exercise state machine",
+    "timer",
+    "replay",
+    "attempt state",
+    "reward once"
+  ],
+  "mechanisms": [
+    "idle/present/hidden/respond/complete states",
+    "timer events",
+    "attempt counter",
+    "replay reset",
+    "completion postcondition",
+    "reward-once invariant"
+  ],
+  "owner": "bounded-workflow-topology-selector",
+  "provenance": {
+    "derivation": "clean-room mechanism abstraction",
+    "source": "hyperlearning-clean-room",
+    "source_refs": [
+      "src/Ejercicio1.java",
+      "src/Ejercicio2.java",
+      "src/Ejercicio3.java",
+      "src/Ejercicio4.java"
+    ]
+  },
+  "source": "hyperlearning-clean-room",
+  "source_refs": [
+    "src/Ejercicio1.java",
+    "src/Ejercicio2.java",
+    "src/Ejercicio3.java",
+    "src/Ejercicio4.java"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Model exercises as explicit states and transitions so timers, exposure, attempts, completion, replay, reward, and exit behavior can be tested deterministically.",
+  "title": "Design Replayable Exercise State Machine",
+  "use_when": [
+    "timed activities have inconsistent UI transitions",
+    "replay duplicates rewards or stale state",
+    "exercise logic is embedded in event handlers"
+  ]
+}

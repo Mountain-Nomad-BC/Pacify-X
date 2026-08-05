@@ -1,0 +1,31 @@
+{
+  "id": "intent-preserving-merge-resolution",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/intent-preserving-merge-resolution/SKILL.md",
+  "body_sha256": "62e581370fb71200d8279fec5facd505c978507a23a94b375256c583e0555045",
+  "references": [],
+  "capability_tags": [
+    "engineering-reasoning",
+    "intent",
+    "merge",
+    "preserving",
+    "resolution"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "sanitized_mit_adaptation",
+    "basis": [
+      "evidence/integration/pxi-20260804/candidate_disposition_ledger.json",
+      "LICENSES/mattpocock-skills-MIT.txt"
+    ],
+    "canonical_owner": ".agents/skills/intent-preserving-merge-resolution/SKILL.md"
+  },
+  "clean_room": false,
+  "tests": "tests/test_project_reasoning.py",
+  "evidence": "tests/test_project_reasoning.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

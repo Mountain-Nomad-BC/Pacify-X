@@ -4,6 +4,7 @@ The walker makes resource ceilings and symlink handling explicit.  It never
 follows a link unless the caller selects ``follow_within_root``; that mode
 rejects both escapes and identity cycles before yielding a path.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -33,8 +34,13 @@ class FilesystemWalkError(ValueError):
     """A structured, fail-closed traversal failure."""
 
     def __init__(
-        self, code: str, *, root: Path, path: Path | None = None,
-        limit: int | None = None, observed: int | None = None,
+        self,
+        code: str,
+        *,
+        root: Path,
+        path: Path | None = None,
+        limit: int | None = None,
+        observed: int | None = None,
     ) -> None:
         self.code = code
         self.root = root
@@ -126,9 +132,14 @@ def bounded_walk(
     while pending:
         logical_directory, physical_directory, depth = pending.pop()
         try:
-            children = sorted(os.scandir(physical_directory), key=lambda item: (item.name.casefold(), item.name))
+            children = sorted(
+                os.scandir(physical_directory),
+                key=lambda item: (item.name.casefold(), item.name),
+            )
         except OSError as error:
-            raise FilesystemWalkError("directory_unreadable", root=canonical_root, path=logical_directory) from error
+            raise FilesystemWalkError(
+                "directory_unreadable", root=canonical_root, path=logical_directory
+            ) from error
         for child in reversed(children):
             logical_path = logical_directory / child.name
             relative_path = logical_path.relative_to(canonical_root)
@@ -138,21 +149,30 @@ def bounded_walk(
             child_depth = depth + 1
             if child_depth > limits.max_depth:
                 raise FilesystemWalkError(
-                    "max_depth_exceeded", root=canonical_root, path=relative_path,
-                    limit=limits.max_depth, observed=child_depth,
+                    "max_depth_exceeded",
+                    root=canonical_root,
+                    path=relative_path,
+                    limit=limits.max_depth,
+                    observed=child_depth,
                 )
             is_link = child.is_symlink()
             if is_link:
                 if symlink_policy == "reject":
-                    raise FilesystemWalkError("symlink_disallowed", root=canonical_root, path=relative_path)
+                    raise FilesystemWalkError(
+                        "symlink_disallowed", root=canonical_root, path=relative_path
+                    )
                 if symlink_policy == "skip":
                     continue
                 try:
                     physical_path = Path(child.path).resolve(strict=True)
                 except OSError as error:
-                    raise FilesystemWalkError("symlink_unresolvable", root=canonical_root, path=relative_path) from error
+                    raise FilesystemWalkError(
+                        "symlink_unresolvable", root=canonical_root, path=relative_path
+                    ) from error
                 if not _inside(physical_path, canonical_root):
-                    raise FilesystemWalkError("symlink_escape", root=canonical_root, path=relative_path)
+                    raise FilesystemWalkError(
+                        "symlink_escape", root=canonical_root, path=relative_path
+                    )
             else:
                 physical_path = Path(child.path)
 
@@ -160,7 +180,9 @@ def bounded_walk(
                 if physical_path.is_dir():
                     identity = _identity(physical_path)
                     if identity in visited_directories:
-                        raise FilesystemWalkError("directory_cycle", root=canonical_root, path=relative_path)
+                        raise FilesystemWalkError(
+                            "directory_cycle", root=canonical_root, path=relative_path
+                        )
                     visited_directories.add(identity)
                     entries.append(WalkEntry(logical_path, relative, "directory", None))
                     pending.append((logical_path, physical_path, child_depth))
@@ -169,14 +191,28 @@ def bounded_walk(
                     next_file_count = file_count + 1
                     next_total_bytes = total_bytes + size
                     if next_file_count > limits.max_files:
-                        raise FilesystemWalkError("max_files_exceeded", root=canonical_root, path=relative_path, limit=limits.max_files, observed=next_file_count)
+                        raise FilesystemWalkError(
+                            "max_files_exceeded",
+                            root=canonical_root,
+                            path=relative_path,
+                            limit=limits.max_files,
+                            observed=next_file_count,
+                        )
                     if next_total_bytes > limits.max_bytes:
-                        raise FilesystemWalkError("max_bytes_exceeded", root=canonical_root, path=relative_path, limit=limits.max_bytes, observed=next_total_bytes)
+                        raise FilesystemWalkError(
+                            "max_bytes_exceeded",
+                            root=canonical_root,
+                            path=relative_path,
+                            limit=limits.max_bytes,
+                            observed=next_total_bytes,
+                        )
                     file_count = next_file_count
                     total_bytes = next_total_bytes
                     entries.append(WalkEntry(logical_path, relative, "file", size))
             except OSError as error:
-                raise FilesystemWalkError("path_unreadable", root=canonical_root, path=relative_path) from error
+                raise FilesystemWalkError(
+                    "path_unreadable", root=canonical_root, path=relative_path
+                ) from error
 
     entries.sort(key=lambda entry: (entry.relative.casefold(), entry.relative))
     return WalkResult(canonical_root, tuple(entries), file_count, total_bytes)

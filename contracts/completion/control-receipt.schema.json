@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:completion:control-receipt",
+  "title": "PACIFY-X Completion Control Receipt",
+  "type": "object",
+  "required": ["control", "project_id", "decision", "evidence_sha256"],
+  "properties": {
+    "control": {
+      "enum": [
+        "candidate_pipeline",
+        "distributed_runtime",
+        "epistemic_evolution",
+        "deliverable_validation",
+        "engineering_research"
+      ]
+    },
+    "project_id": {"type": "string", "minLength": 1},
+    "decision": {
+      "enum": ["allow", "deny", "abstain", "proposal", "quarantine"]
+    },
+    "blockers": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "evidence_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "canonical_owner": {"type": "string", "minLength": 1},
+    "source_fingerprints": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": true
+}

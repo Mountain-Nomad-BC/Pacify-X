@@ -20,7 +20,9 @@ def hash_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def reconcile(report_path: Path, source_root: Path, policy_path: Path) -> dict[str, Any]:
+def reconcile(
+    report_path: Path, source_root: Path, policy_path: Path
+) -> dict[str, Any]:
     report = json.loads(report_path.read_text(encoding="utf-8-sig"))
     policy = json.loads(policy_path.read_text(encoding="utf-8-sig"))
     results: list[dict[str, Any]] = []
@@ -29,7 +31,11 @@ def reconcile(report_path: Path, source_root: Path, policy_path: Path) -> dict[s
     for finding in report.get("findings", []):
         relative = str(finding["path"]).replace("\\", "/")
         decision = next(
-            (rule for rule in policy.get("rules", []) if fnmatch.fnmatchcase(relative, str(rule["path_glob"]))),
+            (
+                rule
+                for rule in policy.get("rules", [])
+                if fnmatch.fnmatchcase(relative, str(rule["path_glob"]))
+            ),
             None,
         )
         result = {
@@ -67,7 +73,8 @@ def reconcile(report_path: Path, source_root: Path, policy_path: Path) -> dict[s
             "unique_source_files": len(hashes),
             "by_disposition": dict(sorted(counts.items())),
             "unresolved": unresolved,
-            "complete": unresolved == 0 and len(results) == int(report.get("finding_count", -1)),
+            "complete": unresolved == 0
+            and len(results) == int(report.get("finding_count", -1)),
         },
         "records": results,
     }

@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0",
+  "generator": "pacify-x.integration-disposition/1.0.0",
+  "source_alias": "audit_repair_pack_20260805",
+  "expected_tree_sha256": null,
+  "inventory_sha256": "deb732cc6a4dd0f59fadf0e86da5d8f85a39c16c72371c0dd2ae79e4561392be",
+  "file_count": 13,
+  "byte_count": 21488,
+  "unaccounted_count": 0,
+  "disposition_counts": {
+    "merge": 5,
+    "retain": 8
+  },
+  "records": [
+    {
+      "source_path": "CODEX_INTEGRATION_INSTRUCTIONS.md",
+      "bytes": 2532,
+      "sha256": "07190bd49d9f68f2a0d52628bbbde3745d267bce0872b7fac0e57bff4db0080c",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "repair instruction, installer, verifier, patch, manifest, or audit evidence retained after canonical clean-room integration"
+    },
+    {
+      "source_path": "evidence/audit-summary.json",
+      "bytes": 400,
+      "sha256": "ca87937f0acb3b7fadb624252c88b81b717181d1a71b8392fb691339385da7cd",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "repair instruction, installer, verifier, patch, manifest, or audit evidence retained after canonical clean-room integration"
+    },
+    {
+      "source_path": "MANIFEST.json",
+      "bytes": 2099,
+      "sha256": "f401e9d45d1952131abf8a102da4d551f39a9831c8a98405e04d0281eff9cda9",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "repair instruction, installer, verifier, patch, manifest, or audit evidence retained after canonical clean-room integration"
+    },
+    {
+      "source_path": "overlay/runtime/external_toolchain.py",
+      "bytes": 2007,
+      "sha256": "79f09d6760e5fa0105fd1d5f846137a1a9f8f5d6ef16f4def52bfd1233864cf7",
+      "disposition": "merge",
+      "canonical_owner": "runtime/external_toolchain.py",
+      "target_path": "runtime/external_toolchain.py",
+      "rationale": "target exists; semantic merge and target tests required"
+    },
+    {
+      "source_path": "overlay/scripts/clean_source_export.py",
+      "bytes": 1211,
+      "sha256": "1ba65f305a5641d6e8f553f0b22fc1e020c1aa64b996ac0942245b09cbe567a9",
+      "disposition": "merge",
+      "canonical_owner": "scripts/clean_source_export.py",
+      "target_path": "scripts/clean_source_export.py",
+      "rationale": "target exists; semantic merge and target tests required"
+    },
+    {
+      "source_path": "overlay/scripts/migration/sync_skill_packaging.py",
+      "bytes": 2690,
+      "sha256": "5c3692669039f7832fe0c44fe3fb1fbbb59e299d92688abe2dfb8f99d06ab0ca",
+      "disposition": "merge",
+      "canonical_owner": "scripts/migration/sync_skill_packaging.py",
+      "target_path": "scripts/migration/sync_skill_packaging.py",
+      "rationale": "target exists; semantic merge and target tests required"
+    },
+    {
+      "source_path": "overlay/tests/test_external_toolchain.py",
+      "bytes": 489,
+      "sha256": "e352b2e6d9e9668b3cf3d7aad86d03a7560e2c0d4fb9b1f7f0d0944558b64f73",
+      "disposition": "merge",
+      "canonical_owner": "tests/test_external_toolchain.py",
+      "target_path": "tests/test_external_toolchain.py",
+      "rationale": "target exists; semantic merge and target tests required"
+    },
+    {
+      "source_path": "overlay/tests/test_skill_packaging_projection.py",
+      "bytes": 1846,
+      "sha256": "66eb2c7afc55865ddf073911c65afbf8cfb494f1aef38ae9a38238a02147a7c8",
+      "disposition": "merge",
+      "canonical_owner": "tests/test_skill_packaging_projection.py",
+      "target_path": "tests/test_skill_packaging_projection.py",
+      "rationale": "target exists; semantic merge and target tests required"
+    },
+    {
+      "source_path": "patches/cli-doctor.patch",
+      "bytes": 992,
+      "sha256": "066db0957c08bb55446d7d18797826d31beaafb2cfe2a66d90910077e41cdd06",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "repair instruction, installer, verifier, patch, manifest, or audit evidence retained after canonical clean-room integration"
+    },
+    {
+      "source_path": "README.md",
+      "bytes": 2251,
+      "sha256": "c4e8613afc2daf0acf2bbe36f2ab8d2da9c210f8312327a6aa71dd201c87afc9",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "repair instruction, installer, verifier, patch, manifest, or audit evidence retained after canonical clean-room integration"
+    },
+    {
+      "source_path": "repair-punch-cards.json",
+      "bytes": 2662,
+      "sha256": "718e3715300c22bd1b215d0d9f72dd019097c187842e257060e73e838302c182",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "repair instruction, installer, verifier, patch, manifest, or audit evidence retained after canonical clean-room integration"
+    },
+    {
+      "source_path": "scripts/apply_repair.py",
+      "bytes": 1134,
+      "sha256": "9583d4e9f94cd9ecfb858edd96d6916cccede4e9050d42741e7df83e620e634c",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "repair instruction, installer, verifier, patch, manifest, or audit evidence retained after canonical clean-room integration"
+    },
+    {
+      "source_path": "scripts/verify_repair.py",
+      "bytes": 1175,
+      "sha256": "4174209fd9e0a2ed8f4a7e1fc7f3f82b9e12df0c248edb1f4adac27a297ffc6b",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "repair instruction, installer, verifier, patch, manifest, or audit evidence retained after canonical clean-room integration"
+    }
+  ],
+  "report_sha256": "4410d3c8ddd814fd070c1eb5f7fd21defb28ee799b4f45b6672e22fcb6ba4f2a"
+}

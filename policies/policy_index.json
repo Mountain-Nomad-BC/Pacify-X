@@ -19,7 +19,8 @@
     {"id": "effect-grant-trust", "summary": "Trust effect authority only when a scoped, unexpired grant has a verified publisher signature.", "body": "policies/effect-grant-trust.json"},
     {"id": "release-signing-trust", "summary": "Verify signed release certificates against explicitly trusted and non-revoked publisher keys.", "body": "policies/release-trust.json"},
     {"id": "public-data-allowlist", "summary": "Admit only reviewed public identifiers, inert test domains, technical URI tokens, and binary signatures during sanitation review.", "body": "policies/public-data-allowlist.json"},
-    {"id": "platform-support", "summary": "Bound Python and operating-system support claims to the public CI and release matrices.", "body": "policies/platform-support.json"}
+    {"id": "platform-support", "summary": "Bound Python and operating-system support claims to the public CI and release matrices.", "body": "policies/platform-support.json"},
+    {"id": "agency-agent-runtime", "summary": "Keep specialist routing bounded, lazy, project-scoped, evidence-governed, and separate from runtime authority.", "body": "policies/agency-agent-runtime.json"}
   ],
   "loading_rule": "Load a full policy body only when the request, selected capability, or declared effect references its policy ID."
 }

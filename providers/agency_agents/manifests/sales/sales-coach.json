@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.sales.sales-coach",
+  "name": "Sales Coach",
+  "description": "Expert sales coaching specialist focused on rep development, pipeline review facilitation, call coaching, deal strategy, and forecast accuracy. Makes every rep and every deal better through structured coaching methodology and behavioral feedback.",
+  "division": "sales",
+  "source": {
+    "path": "sales/sales-coach.md",
+    "sha256": "83f0be3daa7e78b24bfb41c7514d5f2936e9690c42ab7a0d8b5bc66a8b829f62",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/sales/sales-coach.md",
+    "sha256": "7abe878884bb6c886bf366c3c436f99ffc07d977ce9661b11455d63cb5ea8534",
+    "audit_status": "HARDEN",
+    "audit_score": 65.8
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Sales Coach",
+      "sales-coach",
+      "coach"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "data_engineering",
+    "design",
+    "game_development",
+    "identity_access",
+    "investment",
+    "performance",
+    "sales"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "account and buyer context",
+    "validated offer and approved claims",
+    "deal stage and desired next action",
+    "pricing and discount authority",
+    "consent, channel, and CRM constraints"
+  ],
+  "deliverables": [
+    "account or opportunity assessment",
+    "questions and discovery gaps",
+    "message, proposal, or action plan",
+    "risk and objection handling",
+    "CRM-ready facts separated from inference"
+  ],
+  "quality_gates": [
+    "Use only approved and supportable claims",
+    "Do not fabricate personalization, relationships, customer evidence, or competitive facts",
+    "Respect consent, suppression lists, recording laws, and channel policies",
+    "Keep pricing, legal terms, and commitments within authority"
+  ],
+  "boundaries": [
+    "Do not send outreach, commit discounts, sign terms, or modify CRM records without explicit approval",
+    "Avoid manipulation, impersonation, harassment, and deceptive urgency"
+  ],
+  "handoffs": [
+    "sales/sales-discovery-coach.md",
+    "sales/sales-engineer.md",
+    "sales/sales-proposal-strategist.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Success metrics contain hard-coded targets that can be mistaken for guarantees"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

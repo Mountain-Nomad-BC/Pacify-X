@@ -1,4 +1,5 @@
 """Append-only source-intake lifecycle with stable freeze verification."""
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -22,17 +23,21 @@ def snapshot_tree(root: Path, *, source_alias: str) -> dict[str, object]:
     if not resolved.is_dir():
         raise ValueError("source intake root must be a directory")
     records: list[dict[str, object]] = []
-    for path in sorted(resolved.rglob("*"), key=lambda item: item.as_posix().casefold()):
+    for path in sorted(
+        resolved.rglob("*"), key=lambda item: item.as_posix().casefold()
+    ):
         if not path.is_file():
             continue
         stat = path.stat()
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
-        records.append({
-            "path": path.relative_to(resolved).as_posix(),
-            "sha256": digest,
-            "bytes": stat.st_size,
-            "mtime_ns": stat.st_mtime_ns,
-        })
+        records.append(
+            {
+                "path": path.relative_to(resolved).as_posix(),
+                "sha256": digest,
+                "bytes": stat.st_size,
+                "mtime_ns": stat.st_mtime_ns,
+            }
+        )
     canonical = "\n".join(
         f"{item['path']}\0{item['sha256']}\0{item['bytes']}\0{item['mtime_ns']}"
         for item in records
@@ -55,7 +60,11 @@ def load_events(state_dir: Path) -> tuple[dict[str, object], ...]:
     events = []
     for path in sorted(state_dir.glob("*.json")):
         event = json.loads(path.read_text(encoding="utf-8"))
-        if not isinstance(event, dict) or "event" not in event or "sequence" not in event:
+        if (
+            not isinstance(event, dict)
+            or "event" not in event
+            or "sequence" not in event
+        ):
             raise ValueError(f"invalid intake event: {path.name}")
         events.append(event)
     expected = list(range(1, len(events) + 1))
@@ -64,7 +73,9 @@ def load_events(state_dir: Path) -> tuple[dict[str, object], ...]:
     return tuple(events)
 
 
-def _append_event(state_dir: Path, event: str, payload: Mapping[str, object]) -> dict[str, object]:
+def _append_event(
+    state_dir: Path, event: str, payload: Mapping[str, object]
+) -> dict[str, object]:
     state_dir.mkdir(parents=True, exist_ok=True)
     for _ in range(8):
         sequence = len(load_events(state_dir)) + 1
@@ -105,24 +116,32 @@ def intake_status(state_dir: Path) -> dict[str, object]:
     }
 
 
-def open_intake(state_dir: Path, *, source_alias: str, opened_by: str) -> dict[str, object]:
+def open_intake(
+    state_dir: Path, *, source_alias: str, opened_by: str
+) -> dict[str, object]:
     if not source_alias.strip() or not opened_by.strip():
         raise ValueError("source alias and opener are required")
     status = intake_status(state_dir)
     if status["status"] == "open":
         raise ValueError("source intake is already open")
     event = "open" if status["status"] == "uninitialized" else "reopen"
-    return _append_event(state_dir, event, {"source_alias": source_alias, "opened_by": opened_by})
+    return _append_event(
+        state_dir, event, {"source_alias": source_alias, "opened_by": opened_by}
+    )
 
 
-def record_snapshot(source: Path, state_dir: Path, *, source_alias: str) -> dict[str, object]:
+def record_snapshot(
+    source: Path, state_dir: Path, *, source_alias: str
+) -> dict[str, object]:
     status = intake_status(state_dir)
     if status["status"] != "open":
         raise ValueError("source intake must be open before recording a snapshot")
     if status["source_alias"] != source_alias:
         raise ValueError("source alias does not match the intake ledger")
     snapshot = snapshot_tree(source, source_alias=source_alias)
-    return _append_event(state_dir, "snapshot", {"source_alias": source_alias, "snapshot": snapshot})
+    return _append_event(
+        state_dir, "snapshot", {"source_alias": source_alias, "snapshot": snapshot}
+    )
 
 
 def close_intake(
@@ -140,7 +159,9 @@ def close_intake(
     status = intake_status(state_dir)
     if status["status"] != "open" or status["source_alias"] != source_alias:
         raise ValueError("matching source intake is not open")
-    snapshots = [event for event in load_events(state_dir) if event["event"] == "snapshot"]
+    snapshots = [
+        event for event in load_events(state_dir) if event["event"] == "snapshot"
+    ]
     if len(snapshots) < 2:
         raise ValueError("two recorded snapshots are required before closure")
     first, second = snapshots[-2:]
@@ -150,22 +171,34 @@ def close_intake(
         datetime.fromisoformat(str(second["created_utc"]))
         - datetime.fromisoformat(str(first["created_utc"]))
     ).total_seconds()
-    if left["tree_sha256"] != right["tree_sha256"] or left["records"] != right["records"]:
+    if (
+        left["tree_sha256"] != right["tree_sha256"]
+        or left["records"] != right["records"]
+    ):
         raise ValueError("the two latest source snapshots are not identical")
     if elapsed < minimum_stability_seconds:
         raise ValueError("source snapshots do not satisfy the stability window")
     current = snapshot_tree(source, source_alias=source_alias)
-    if current["tree_sha256"] != right["tree_sha256"] or current["records"] != right["records"]:
+    if (
+        current["tree_sha256"] != right["tree_sha256"]
+        or current["records"] != right["records"]
+    ):
         raise ValueError("source changed after the accepted snapshot")
-    return _append_event(state_dir, "close", {
-        "source_alias": source_alias,
-        "approved_by": approved_by,
-        "minimum_stability_seconds": minimum_stability_seconds,
-        "accepted_snapshot": current,
-    })
+    return _append_event(
+        state_dir,
+        "close",
+        {
+            "source_alias": source_alias,
+            "approved_by": approved_by,
+            "minimum_stability_seconds": minimum_stability_seconds,
+            "accepted_snapshot": current,
+        },
+    )
 
 
-def require_closed_stable(source: Path, state_dir: Path, *, source_alias: str) -> dict[str, object]:
+def require_closed_stable(
+    source: Path, state_dir: Path, *, source_alias: str
+) -> dict[str, object]:
     events = load_events(state_dir)
     status = intake_status(state_dir)
     if status["status"] != "closed" or status["source_alias"] != source_alias:
@@ -173,8 +206,13 @@ def require_closed_stable(source: Path, state_dir: Path, *, source_alias: str) -
     closure = next(event for event in reversed(events) if event["event"] == "close")
     accepted = closure["accepted_snapshot"]
     current = snapshot_tree(source, source_alias=source_alias)
-    if current["tree_sha256"] != accepted["tree_sha256"] or current["records"] != accepted["records"]:
-        raise ValueError("closed source intake has drifted; reopen it before processing")
+    if (
+        current["tree_sha256"] != accepted["tree_sha256"]
+        or current["records"] != accepted["records"]
+    ):
+        raise ValueError(
+            "closed source intake has drifted; reopen it before processing"
+        )
     return current
 
 
@@ -197,7 +235,9 @@ def quarantine_closed_intake(
         source_relative = source.relative_to(workspace)
         destination_relative = destination.relative_to(workspace)
     except ValueError as error:
-        raise ValueError("source and quarantine destination must stay inside the workspace") from error
+        raise ValueError(
+            "source and quarantine destination must stay inside the workspace"
+        ) from error
     if source == workspace or destination == workspace or source == destination:
         raise ValueError("source or quarantine destination is too broad")
     if "quarantine" not in {part.casefold() for part in destination_relative.parts}:
@@ -211,13 +251,20 @@ def quarantine_closed_intake(
     expected_records = accepted["records"]
     # Repeat immediately before the move to close the validation window.
     immediate = snapshot_tree(source, source_alias=source_alias)
-    if immediate["tree_sha256"] != accepted["tree_sha256"] or immediate["records"] != expected_records:
+    if (
+        immediate["tree_sha256"] != accepted["tree_sha256"]
+        or immediate["records"] != expected_records
+    ):
         raise ValueError("source changed during quarantine preflight")
 
     destination.parent.mkdir(parents=True, exist_ok=True)
     shutil.move(str(source), str(destination))
     moved = snapshot_tree(destination, source_alias=source_alias)
-    if source.exists() or moved["tree_sha256"] != accepted["tree_sha256"] or moved["records"] != expected_records:
+    if (
+        source.exists()
+        or moved["tree_sha256"] != accepted["tree_sha256"]
+        or moved["records"] != expected_records
+    ):
         raise RuntimeError("post-move quarantine reconciliation failed")
 
     receipt = {

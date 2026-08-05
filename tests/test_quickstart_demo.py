@@ -15,10 +15,15 @@ def test_minimal_demo_runs_end_to_end_and_retains_evidence() -> None:
         output = Path(directory) / "demo"
         process = subprocess.run(
             [sys.executable, "examples/quickstart/demo.py", "--output", str(output)],
-            cwd=ROOT, text=True, capture_output=True, timeout=90,
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            timeout=90,
         )
         assert process.returncode == 0, process.stdout + process.stderr
-        receipt = json.loads((output / "evidence/demo-receipt.json").read_text(encoding="utf-8"))
+        receipt = json.loads(
+            (output / "evidence/demo-receipt.json").read_text(encoding="utf-8")
+        )
         assert receipt["valid"]
         assert receipt["steps"]["initialization_preview"]["applied"] is False
         assert receipt["steps"]["initialization"]["applied"] is True

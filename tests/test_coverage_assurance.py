@@ -12,7 +12,9 @@ from runtime.release_certification import _verify_coverage_binding
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def _write_fixture(root: Path, *, branch_percent: float = 100.0, exemptions: object = None) -> Path:
+def _write_fixture(
+    root: Path, *, branch_percent: float = 100.0, exemptions: object = None
+) -> Path:
     (root / "policies").mkdir(parents=True, exist_ok=True)
     total = 10
     missing = round(total * (100.0 - branch_percent) / 100.0)
@@ -28,7 +30,9 @@ def _write_fixture(root: Path, *, branch_percent: float = 100.0, exemptions: obj
         },
         "exemptions": [] if exemptions is None else exemptions,
     }
-    (root / "policies/coverage-assurance.json").write_text(json.dumps(policy), encoding="utf-8")
+    (root / "policies/coverage-assurance.json").write_text(
+        json.dumps(policy), encoding="utf-8"
+    )
     evidence = {
         "meta": {"branch_coverage": True, "show_contexts": True},
         "files": {
@@ -44,7 +48,9 @@ def _write_fixture(root: Path, *, branch_percent: float = 100.0, exemptions: obj
 
 
 def test_python_validation_requires_executed_coverage_not_text_reference() -> None:
-    ownership = json.loads((ROOT / "registry/python_surface_ownership.json").read_text(encoding="utf-8"))
+    ownership = json.loads(
+        (ROOT / "registry/python_surface_ownership.json").read_text(encoding="utf-8")
+    )
     levels = {record["validation_level"] for record in ownership["records"]}
     assert "direct-test-reference" not in levels
     assert "evidence-association" in levels
@@ -71,7 +77,9 @@ def test_coverage_evidence_is_bound_to_certificate() -> None:
         release_path.write_bytes(source.read_bytes())
         certificate = {
             "coverage_evidence": "evidence/releases/1.0.0/run-1/coverage.json",
-            "coverage_evidence_sha256": hashlib.sha256(release_path.read_bytes()).hexdigest(),
+            "coverage_evidence_sha256": hashlib.sha256(
+                release_path.read_bytes()
+            ).hexdigest(),
         }
         assert _verify_coverage_binding(root, "1.0.0", certificate)["valid"]
         release_path.write_text("{}", encoding="utf-8")
@@ -87,4 +95,6 @@ def test_coverage_exemption_requires_owner_and_reason() -> None:
         )
         result = validate_coverage_evidence(root, evidence)
         assert not result["valid"]
-        assert "requires module, owner, reason, and branches" in "\n".join(result["errors"])
+        assert "requires module, owner, reason, and branches" in "\n".join(
+            result["errors"]
+        )

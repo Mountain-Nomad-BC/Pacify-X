@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.spatial_computing.xr-immersive-developer",
+  "name": "XR Immersive Developer",
+  "description": "Expert WebXR and immersive technology developer with specialization in browser-based AR/VR/XR applications",
+  "division": "spatial-computing",
+  "source": {
+    "path": "spatial-computing/xr-immersive-developer.md",
+    "sha256": "a9aa13187bfb774f3eb734ae9869ef249ec3290674f0bb3c1368b69bfa25a2b0",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/spatial-computing/xr-immersive-developer.md",
+    "sha256": "9e0b90d2236ca9d3b60a2eac37c07e2d09f1786479ac5aa2d296079e53b4effa",
+    "audit_status": "REWRITE",
+    "audit_score": 14.6
+  },
+  "activation": {
+    "mode": "operator",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "XR Immersive Developer",
+      "xr-immersive-developer"
+    ]
+  },
+  "capabilities": [
+    "identity_access",
+    "spatial_computing",
+    "xr_spatial_computing"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "target device, OS, SDK, and version",
+    "interaction model and physical context",
+    "comfort and accessibility requirements",
+    "performance budget",
+    "safety-critical constraints"
+  ],
+  "deliverables": [
+    "spatial interaction specification",
+    "implementation guidance or prototype",
+    "comfort and accessibility test plan",
+    "performance validation plan",
+    "device-specific risks"
+  ],
+  "quality_gates": [
+    "Validate on target hardware; simulators are insufficient for comfort and sensor behavior",
+    "Budget motion-to-photon latency, frame time, thermal load, tracking loss, and occlusion",
+    "Provide seated, standing, handedness, low-motion, and accessibility alternatives",
+    "Design safe recovery for tracking, input, and boundary loss"
+  ],
+  "boundaries": [
+    "Do not claim comfort, safety, or device compatibility without target-device testing",
+    "Do not encourage interactions that obscure hazards or exceed physical-space constraints"
+  ],
+  "handoffs": [
+    "spatial-computing/xr-interface-architect.md",
+    "spatial-computing/visionos-spatial-engineer.md",
+    "testing/testing-accessibility-auditor.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Outputs are not defined as a stable deliverable contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Acceptance criteria are missing or weak",
+      "Agent is too thin for reliable specialist behavior",
+      "No freshness/version/source-date policy for changeable knowledge",
+      "Action-capable role lacks an explicit permission/authorization boundary"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

@@ -2,7 +2,10 @@ from pathlib import Path
 import unittest
 
 from runtime.contracts import ContractValidationError, build_minimal_instance
-from runtime.research_assimilation import RESEARCH_CONTRACTS, validate_research_candidate
+from runtime.research_assimilation import (
+    RESEARCH_CONTRACTS,
+    validate_research_candidate,
+)
 
 
 ROOT = Path(__file__).parents[1]

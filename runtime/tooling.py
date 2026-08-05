@@ -1,4 +1,5 @@
 """Metadata-first, bounded discovery for tool families."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

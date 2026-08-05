@@ -1,0 +1,269 @@
+{
+  "schema_version": "1.0",
+  "registry": "registry/service_capability_workflows.json",
+  "workflows": [
+    {
+      "id": "ai-tool-access-review",
+      "version": "1.0.0",
+      "status": "active",
+      "router": "route-n8n-supabase-stack",
+      "stages": [
+        {
+          "order": 1,
+          "capability": "use-n8n-mcp",
+          "required": true
+        },
+        {
+          "order": 2,
+          "capability": "use-supabase-mcp-and-agent-skills",
+          "required": true
+        },
+        {
+          "order": 3,
+          "capability": "design-n8n-supabase-security-boundaries",
+          "required": true
+        },
+        {
+          "order": 4,
+          "capability": "supervise-contained-execution",
+          "required": true
+        }
+      ],
+      "admission": "preview_then_apply",
+      "rollback": "append an immutable revocation receipt, preserve prior evidence, and restore only through the governed project recovery flow",
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence."
+    },
+    {
+      "id": "n8n-install-commission",
+      "version": "1.0.0",
+      "status": "active",
+      "router": "route-n8n-capabilities",
+      "stages": [
+        {
+          "order": 1,
+          "capability": "evaluate-n8n-fit",
+          "required": true
+        },
+        {
+          "order": 2,
+          "capability": "acquire-install-n8n",
+          "required": true
+        },
+        {
+          "order": 3,
+          "capability": "configure-n8n",
+          "required": true
+        },
+        {
+          "order": 4,
+          "capability": "deploy-n8n-docker",
+          "required": true
+        },
+        {
+          "order": 5,
+          "capability": "backup-upgrade-restore-n8n",
+          "required": true
+        }
+      ],
+      "admission": "preview_then_apply",
+      "rollback": "append an immutable revocation receipt, preserve prior evidence, and restore only through the governed project recovery flow",
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence."
+    },
+    {
+      "id": "n8n-production-security-review",
+      "version": "1.0.0",
+      "status": "active",
+      "router": "route-n8n-capabilities",
+      "stages": [
+        {
+          "order": 1,
+          "capability": "secure-n8n",
+          "required": true
+        },
+        {
+          "order": 2,
+          "capability": "manage-n8n-credentials",
+          "required": true
+        },
+        {
+          "order": 3,
+          "capability": "govern-n8n-community-nodes",
+          "required": true
+        },
+        {
+          "order": 4,
+          "capability": "observe-operate-n8n",
+          "required": true
+        }
+      ],
+      "admission": "preview_then_apply",
+      "rollback": "append an immutable revocation receipt, preserve prior evidence, and restore only through the governed project recovery flow",
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence."
+    },
+    {
+      "id": "n8n-supabase-integration-release",
+      "version": "1.0.0",
+      "status": "active",
+      "router": "route-n8n-supabase-stack",
+      "stages": [
+        {
+          "order": 1,
+          "capability": "connect-n8n-to-supabase",
+          "required": true
+        },
+        {
+          "order": 2,
+          "capability": "design-n8n-supabase-security-boundaries",
+          "required": true
+        },
+        {
+          "order": 3,
+          "capability": "design-n8n-supabase-reliability",
+          "required": true
+        },
+        {
+          "order": 4,
+          "capability": "test-n8n-supabase-integrations",
+          "required": true
+        },
+        {
+          "order": 5,
+          "capability": "operate-n8n-supabase-production",
+          "required": true
+        }
+      ],
+      "admission": "preview_then_apply",
+      "rollback": "append an immutable revocation receipt, preserve prior evidence, and restore only through the governed project recovery flow",
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence."
+    },
+    {
+      "id": "n8n-supabase-rag-release",
+      "version": "1.0.0",
+      "status": "active",
+      "router": "route-n8n-supabase-stack",
+      "stages": [
+        {
+          "order": 1,
+          "capability": "operate-supabase-vector-search",
+          "required": true
+        },
+        {
+          "order": 2,
+          "capability": "build-n8n-supabase-rag",
+          "required": true
+        },
+        {
+          "order": 3,
+          "capability": "test-n8n-supabase-integrations",
+          "required": true
+        },
+        {
+          "order": 4,
+          "capability": "engineer-hybrid-retrieval",
+          "required": true
+        },
+        {
+          "order": 5,
+          "capability": "evaluate-retrieval-readiness",
+          "required": true
+        }
+      ],
+      "admission": "preview_then_apply",
+      "rollback": "append an immutable revocation receipt, preserve prior evidence, and restore only through the governed project recovery flow",
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence."
+    },
+    {
+      "id": "n8n-workflow-release",
+      "version": "1.0.0",
+      "status": "active",
+      "router": "route-n8n-capabilities",
+      "stages": [
+        {
+          "order": 1,
+          "capability": "design-build-n8n-workflows",
+          "required": true
+        },
+        {
+          "order": 2,
+          "capability": "test-validate-n8n-workflows",
+          "required": true
+        },
+        {
+          "order": 3,
+          "capability": "validate-engineering-outcomes",
+          "required": true
+        }
+      ],
+      "admission": "preview_then_apply",
+      "rollback": "append an immutable revocation receipt, preserve prior evidence, and restore only through the governed project recovery flow",
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence."
+    },
+    {
+      "id": "supabase-local-to-production",
+      "version": "1.0.0",
+      "status": "active",
+      "router": "route-supabase-capabilities",
+      "stages": [
+        {
+          "order": 1,
+          "capability": "acquire-install-supabase",
+          "required": true
+        },
+        {
+          "order": 2,
+          "capability": "develop-supabase-locally",
+          "required": true
+        },
+        {
+          "order": 3,
+          "capability": "manage-supabase-migrations",
+          "required": true
+        },
+        {
+          "order": 4,
+          "capability": "manage-supabase-environments",
+          "required": true
+        },
+        {
+          "order": 5,
+          "capability": "backup-deploy-recover-supabase",
+          "required": true
+        }
+      ],
+      "admission": "preview_then_apply",
+      "rollback": "append an immutable revocation receipt, preserve prior evidence, and restore only through the governed project recovery flow",
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence."
+    },
+    {
+      "id": "supabase-secure-application",
+      "version": "1.0.0",
+      "status": "active",
+      "router": "route-supabase-capabilities",
+      "stages": [
+        {
+          "order": 1,
+          "capability": "design-supabase-postgres",
+          "required": true
+        },
+        {
+          "order": 2,
+          "capability": "secure-supabase-rls",
+          "required": true
+        },
+        {
+          "order": 3,
+          "capability": "implement-supabase-auth",
+          "required": true
+        },
+        {
+          "order": 4,
+          "capability": "test-n8n-supabase-integrations",
+          "required": true
+        }
+      ],
+      "admission": "preview_then_apply",
+      "rollback": "append an immutable revocation receipt, preserve prior evidence, and restore only through the governed project recovery flow",
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence."
+    }
+  ]
+}

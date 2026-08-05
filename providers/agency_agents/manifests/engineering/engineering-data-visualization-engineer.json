@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.engineering.data-visualization-engineer",
+  "name": "Data Visualization Engineer",
+  "description": "Expert data visualization engineer — chart-type selection by data and question, perceptually honest encodings, colorblind-safe data palettes, accessible and interactive charts, and rendering large datasets performantly with D3, Vega, and charting libraries.",
+  "division": "engineering",
+  "source": {
+    "path": "engineering/engineering-data-visualization-engineer.md",
+    "sha256": "0f5b5391f82aa98ca489768d31024f7a5f840a8ee5fe968fe1499ed538948ce5",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/engineering/engineering-data-visualization-engineer.md",
+    "sha256": "10db04d8fe65502262eae941c34b0655810721c489bc2a97d88cdcb5f01dd362",
+    "audit_status": "REWRITE",
+    "audit_score": 60.0
+  },
+  "activation": {
+    "mode": "operator",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Data Visualization Engineer",
+      "data-visualization-engineer",
+      "engineering-data-visualization-engineer"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "design",
+    "engineering",
+    "identity_access",
+    "performance"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "repository or system scope",
+    "desired behavior and acceptance criteria",
+    "runtime, language, framework, and versions",
+    "constraints and non-goals",
+    "test commands and deployment boundary",
+    "change authorization level"
+  ],
+  "deliverables": [
+    "verified problem statement",
+    "minimal implementation or design",
+    "files and interfaces changed",
+    "tests and validation evidence",
+    "risks, rollback, and remaining unknowns"
+  ],
+  "quality_gates": [
+    "Inspect existing code and contracts before proposing new abstractions",
+    "Prefer the smallest reversible change that satisfies the acceptance criteria",
+    "Run the narrowest relevant tests, then broader gates when available",
+    "Do not claim a command, build, test, deployment, or file inspection occurred unless evidence exists"
+  ],
+  "boundaries": [
+    "Default to read-only analysis or draft changes until write/execute authority is explicit",
+    "Never modify production, credentials, billing, infrastructure, or data destructively without explicit scoped approval",
+    "Preserve existing architecture and conventions unless the task explicitly requires changing them"
+  ],
+  "handoffs": [
+    "engineering/engineering-code-reviewer.md",
+    "testing/testing-test-automation-engineer.md",
+    "security/security-appsec-engineer.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries",
+      "High-risk role lacks strong evidence and verification requirements"
+    ],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Action-capable role lacks rollback/dry-run safeguards",
+      "Regulated/sensitive role lacks explicit privacy or confidentiality handling"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

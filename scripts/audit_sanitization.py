@@ -1,4 +1,5 @@
 """Audit a tree for private identifiers and active ZIP archives without mutating it."""
+
 from __future__ import annotations
 
 import argparse
@@ -9,19 +10,30 @@ import re
 
 TERMS = ("r" + "ie", "re" + "my", "rh" + "eem")
 PATTERN = re.compile(
-    rb"(?i)(?:(?<![A-Za-z])(" + TERMS[0].encode() + rb")(?![A-Za-z])|(" + TERMS[1].encode()
-    + rb"|" + TERMS[2].encode() + rb"))"
+    rb"(?i)(?:(?<![A-Za-z])("
+    + TERMS[0].encode()
+    + rb")(?![A-Za-z])|("
+    + TERMS[1].encode()
+    + rb"|"
+    + TERMS[2].encode()
+    + rb"))"
 )
 LEGACY_TERMS = ("integration" + "_" + "engine", "governed" + "_" + "retrieval")
 LEGACY_PATTERN = re.compile(
-    rb"(?i)(" + LEGACY_TERMS[0].encode() + rb"|" + LEGACY_TERMS[1].encode()
+    rb"(?i)("
+    + LEGACY_TERMS[0].encode()
+    + rb"|"
+    + LEGACY_TERMS[1].encode()
     + rb"(?!_system_with_deterministic_rails))"
 )
 EXCLUDED_DIRECTORIES = {".git"}
 
 
 def audit(
-    root: Path, *, ignored: tuple[Path, ...] = (), excluded_names: frozenset[str] = frozenset(),
+    root: Path,
+    *,
+    ignored: tuple[Path, ...] = (),
+    excluded_names: frozenset[str] = frozenset(),
 ) -> dict[str, object]:
     resolved = root.resolve()
     ignored_paths = {path.resolve() for path in ignored}
@@ -31,8 +43,13 @@ def audit(
     files_scanned = 0
     bytes_scanned = 0
     errors: list[str] = []
-    for path in sorted(resolved.rglob("*"), key=lambda item: item.as_posix().casefold()):
-        if any(part in EXCLUDED_DIRECTORIES or part in excluded_names for part in path.relative_to(resolved).parts):
+    for path in sorted(
+        resolved.rglob("*"), key=lambda item: item.as_posix().casefold()
+    ):
+        if any(
+            part in EXCLUDED_DIRECTORIES or part in excluded_names
+            for part in path.relative_to(resolved).parts
+        ):
             continue
         if not path.is_file() or path.resolve() in ignored_paths:
             continue
@@ -42,10 +59,20 @@ def audit(
             zip_paths.append(relative)
         path_match = PATTERN.search(relative.encode("utf-8", errors="replace"))
         if path_match:
-            identifier_hits.append({"path": relative, "location": "path", "offset": path_match.start()})
-        legacy_path_match = LEGACY_PATTERN.search(relative.encode("utf-8", errors="replace"))
+            identifier_hits.append(
+                {"path": relative, "location": "path", "offset": path_match.start()}
+            )
+        legacy_path_match = LEGACY_PATTERN.search(
+            relative.encode("utf-8", errors="replace")
+        )
         if legacy_path_match:
-            legacy_placeholder_hits.append({"path": relative, "location": "path", "offset": legacy_path_match.start()})
+            legacy_placeholder_hits.append(
+                {
+                    "path": relative,
+                    "location": "path",
+                    "offset": legacy_path_match.start(),
+                }
+            )
         try:
             overlap = b""
             offset = 0
@@ -55,50 +82,128 @@ def audit(
                     following = handle.read(1024 * 1024)
                     bytes_scanned += len(chunk)
                     buffer = overlap + chunk
-                    safe_end = len(buffer) if not following else max(0, len(buffer) - 128)
+                    safe_end = (
+                        len(buffer) if not following else max(0, len(buffer) - 128)
+                    )
                     buffer_start = offset - len(overlap)
                     for match in PATTERN.finditer(buffer):
                         absolute = buffer_start + match.start()
                         if match.start() < safe_end and absolute >= 0:
-                            identifier_hits.append({"path": relative, "location": "content", "offset": absolute})
+                            identifier_hits.append(
+                                {
+                                    "path": relative,
+                                    "location": "content",
+                                    "offset": absolute,
+                                }
+                            )
                     for match in LEGACY_PATTERN.finditer(buffer):
                         absolute = buffer_start + match.start()
                         if match.start() < safe_end and absolute >= 0:
-                            legacy_placeholder_hits.append({"path": relative, "location": "content", "offset": absolute})
+                            legacy_placeholder_hits.append(
+                                {
+                                    "path": relative,
+                                    "location": "content",
+                                    "offset": absolute,
+                                }
+                            )
                     overlap = buffer[safe_end:]
                     offset += len(chunk)
                     chunk = following
         except OSError as error:
             errors.append(f"{relative}: {type(error).__name__}: {error}")
-    identifier_hits.sort(key=lambda item: (str(item["path"]), str(item["location"]), int(item["offset"])))
-    legacy_placeholder_hits.sort(key=lambda item: (str(item["path"]), str(item["location"]), int(item["offset"])))
+    identifier_hits.sort(
+        key=lambda item: (str(item["path"]), str(item["location"]), int(item["offset"]))
+    )
+    legacy_placeholder_hits.sort(
+        key=lambda item: (str(item["path"]), str(item["location"]), int(item["offset"]))
+    )
     exclusions = sorted(EXCLUDED_DIRECTORIES | set(excluded_names))
-    def gate(name: str, status: str, findings: object, limitations: str) -> dict[str, object]:
+
+    def gate(
+        name: str, status: str, findings: object, limitations: str
+    ) -> dict[str, object]:
         return {
-            "name": name, "status": status, "tool": "audit_sanitization.py",
-            "corpus": ".", "exclusions": exclusions, "limitations": limitations,
-            "findings": findings, "disposition": "pass" if status == "passed" else ("fail" if status == "failed" else "not_run"),
+            "name": name,
+            "status": status,
+            "tool": "audit_sanitization.py",
+            "corpus": ".",
+            "exclusions": exclusions,
+            "limitations": limitations,
+            "findings": findings,
+            "disposition": "pass"
+            if status == "passed"
+            else ("fail" if status == "failed" else "not_run"),
         }
+
     gates = {
-        "brand_identifier_sanitation": gate("brand_identifier_sanitation", "failed" if identifier_hits else "passed", identifier_hits, "Configured identifier patterns only; not a general secret or PII scan."),
-        "legacy_placeholder_detection": gate("legacy_placeholder_detection", "failed" if legacy_placeholder_hits else "passed", legacy_placeholder_hits, "Configured legacy placeholder patterns only."),
-        "archive_detection": gate("archive_detection", "failed" if zip_paths else "passed", sorted(zip_paths), "Detects active ZIP paths only; does not inspect archive contents."),
-        "secret_scanning": gate("secret_scanning", "not_run", [], "No credential/secret scanner was invoked by this control."),
-        "credential_scanning": gate("credential_scanning", "not_run", [], "No credential scanner was invoked by this control."),
-        "pii_review": gate("pii_review", "not_run", [], "No PII review tool or human review was invoked."),
-        "binary_review": gate("binary_review", "not_run", [], "Binary payload classification is outside this identifier scanner."),
-        "license_provenance_review": gate("license_provenance_review", "not_run", [], "License and provenance review requires a separate admitted control."),
+        "brand_identifier_sanitation": gate(
+            "brand_identifier_sanitation",
+            "failed" if identifier_hits else "passed",
+            identifier_hits,
+            "Configured identifier patterns only; not a general secret or PII scan.",
+        ),
+        "legacy_placeholder_detection": gate(
+            "legacy_placeholder_detection",
+            "failed" if legacy_placeholder_hits else "passed",
+            legacy_placeholder_hits,
+            "Configured legacy placeholder patterns only.",
+        ),
+        "archive_detection": gate(
+            "archive_detection",
+            "failed" if zip_paths else "passed",
+            sorted(zip_paths),
+            "Detects active ZIP paths only; does not inspect archive contents.",
+        ),
+        "secret_scanning": gate(
+            "secret_scanning",
+            "not_run",
+            [],
+            "No credential/secret scanner was invoked by this control.",
+        ),
+        "credential_scanning": gate(
+            "credential_scanning",
+            "not_run",
+            [],
+            "No credential scanner was invoked by this control.",
+        ),
+        "pii_review": gate(
+            "pii_review",
+            "not_run",
+            [],
+            "No PII review tool or human review was invoked.",
+        ),
+        "binary_review": gate(
+            "binary_review",
+            "not_run",
+            [],
+            "Binary payload classification is outside this identifier scanner.",
+        ),
+        "license_provenance_review": gate(
+            "license_provenance_review",
+            "not_run",
+            [],
+            "License and provenance review requires a separate admitted control.",
+        ),
     }
     return {
-        "schema_version": "1.0", "root": ".",
+        "schema_version": "1.0",
+        "root": ".",
         "excluded_directory_names": exclusions,
-        "files_scanned": files_scanned, "bytes_scanned": bytes_scanned,
-        "identifier_hit_count": len(identifier_hits), "identifier_hits": identifier_hits,
-        "legacy_placeholder_hit_count": len(legacy_placeholder_hits), "legacy_placeholder_hits": legacy_placeholder_hits,
-        "active_zip_count": len(zip_paths), "active_zip_paths": sorted(zip_paths),
-        "error_count": len(errors), "errors": errors,
+        "files_scanned": files_scanned,
+        "bytes_scanned": bytes_scanned,
+        "identifier_hit_count": len(identifier_hits),
+        "identifier_hits": identifier_hits,
+        "legacy_placeholder_hit_count": len(legacy_placeholder_hits),
+        "legacy_placeholder_hits": legacy_placeholder_hits,
+        "active_zip_count": len(zip_paths),
+        "active_zip_paths": sorted(zip_paths),
+        "error_count": len(errors),
+        "errors": errors,
         "gates": gates,
-        "valid": not identifier_hits and not legacy_placeholder_hits and not zip_paths and not errors,
+        "valid": not identifier_hits
+        and not legacy_placeholder_hits
+        and not zip_paths
+        and not errors,
     }
 
 
@@ -109,11 +214,29 @@ def main() -> int:
     parser.add_argument("--exclude-name", action="append", default=[])
     args = parser.parse_args()
     result = audit(
-        args.root, ignored=(args.output,), excluded_names=frozenset(args.exclude_name),
+        args.root,
+        ignored=(args.output,),
+        excluded_names=frozenset(args.exclude_name),
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({key: result[key] for key in ("valid", "files_scanned", "bytes_scanned", "identifier_hit_count", "legacy_placeholder_hit_count", "active_zip_count", "error_count")}, indent=2))
+    print(
+        json.dumps(
+            {
+                key: result[key]
+                for key in (
+                    "valid",
+                    "files_scanned",
+                    "bytes_scanned",
+                    "identifier_hit_count",
+                    "legacy_placeholder_hit_count",
+                    "active_zip_count",
+                    "error_count",
+                )
+            },
+            indent=2,
+        )
+    )
     return 0 if result["valid"] else 1
 
 

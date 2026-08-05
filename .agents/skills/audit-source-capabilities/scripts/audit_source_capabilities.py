@@ -1,4 +1,5 @@
 """Deterministically inventory a source tree and surface reusable mechanisms."""
+
 from __future__ import annotations
 
 import argparse
@@ -14,19 +15,67 @@ from typing import Iterable
 
 
 TEXT_EXTENSIONS = {
-    ".bat", ".cfg", ".cmd", ".conf", ".css", ".csv", ".dockerfile", ".fish",
-    ".go", ".h", ".html", ".ini", ".java", ".js", ".json", ".jsonl", ".jsx",
-    ".kt", ".md", ".mdc", ".mjs", ".mmd", ".ps1", ".py", ".rb", ".rs",
-    ".rst", ".scss", ".sh", ".sql", ".toml", ".ts", ".tsx", ".txt", ".xml",
-    ".yaml", ".yml",
+    ".bat",
+    ".cfg",
+    ".cmd",
+    ".conf",
+    ".css",
+    ".csv",
+    ".dockerfile",
+    ".fish",
+    ".go",
+    ".h",
+    ".html",
+    ".ini",
+    ".java",
+    ".js",
+    ".json",
+    ".jsonl",
+    ".jsx",
+    ".kt",
+    ".md",
+    ".mdc",
+    ".mjs",
+    ".mmd",
+    ".ps1",
+    ".py",
+    ".rb",
+    ".rs",
+    ".rst",
+    ".scss",
+    ".sh",
+    ".sql",
+    ".toml",
+    ".ts",
+    ".tsx",
+    ".txt",
+    ".xml",
+    ".yaml",
+    ".yml",
 }
 TEXT_FILENAMES = {
-    ".dockerignore", ".editorconfig", ".gitignore", ".gitattributes",
-    "dockerfile", "license", "makefile", "procfile",
+    ".dockerignore",
+    ".editorconfig",
+    ".gitignore",
+    ".gitattributes",
+    "dockerfile",
+    "license",
+    "makefile",
+    "procfile",
 }
 DEFAULT_EXCLUDES = {
-    ".git", ".hg", ".svn", "__pycache__", ".pytest_cache", "node_modules",
-    "dist", "build", "coverage", ".mypy_cache", ".ruff_cache", "venv",
+    ".git",
+    ".hg",
+    ".svn",
+    "__pycache__",
+    ".pytest_cache",
+    "node_modules",
+    "dist",
+    "build",
+    "coverage",
+    ".mypy_cache",
+    ".ruff_cache",
+    "venv",
 }
 MECHANISMS = {
     "atomic-state": r"(?i)\b(os\.replace|atomic[_ -]?(write|swap|rename)|fsync|write[_ -]?ahead|temp(?:orary)?[_ -]?file)\b",
@@ -68,38 +117,249 @@ COMBINED_MECHANISMS = re.compile(
     ),
     re.IGNORECASE,
 )
-COMPILED_MECHANISMS = {name: re.compile(pattern) for name, pattern in MECHANISMS.items()}
+COMPILED_MECHANISMS = {
+    name: re.compile(pattern) for name, pattern in MECHANISMS.items()
+}
 MECHANISM_PREFILTERS = {
-    "atomic-state": (b"os.replace", b"atomic", b"fsync", b"write-ahead", b"write_ahead", b"temporary", b"temp file"),
+    "atomic-state": (
+        b"os.replace",
+        b"atomic",
+        b"fsync",
+        b"write-ahead",
+        b"write_ahead",
+        b"temporary",
+        b"temp file",
+    ),
     "bounded-retry": (b"backoff", b"retry", b"jitter", b"circuit"),
-    "contract-introspection": (b"openapi()", b"metadata.tables", b"contract", b"consumer", b"introspect"),
-    "derived-artifact-sync": (b"source of truth", b"source_of_truth", b"generated", b"regenerate", b"do not edit", b"architecture guardrail"),
-    "dynamic-service-discovery": (b"service discovery", b"service_discovery", b"dns", b"resolver", b"re-resolv", b"stale address", b"stale endpoint", b"stale identity"),
-    "evidence-integrity": (b"sha256", b"evidence", b"proof manifest", b"source manifest", b"content hash", b"claim-to-evidence", b"claim_to_evidence"),
-    "knowledge-integrity": (b"orphan", b"provenance", b"cardinality", b"alias", b"mapping coverage", b"shacl"),
-    "live-contract-validation": (b"docker exec", b"docker compose exec", b"inject", b"marker", b"live contract", b"live_contract"),
-    "observability-correlation": (b"correlation", b"trace", b"prometheus", b"loki", b"alertmanager", b"telemetry", b"service health"),
-    "reversible-validation": (b"rollback", b"restore", b"snapshot", b"trap", b"pre-migration", b"pre_migration", b"post-migration", b"post_migration", b"round-trip", b"round_trip"),
-    "security-aggregation": (b"sbom", b"gitleaks", b"trufflehog", b"grype", b"syft", b"sast", b"dast", b"findings", b"payload strip"),
-    "state-isolation": (b"advisory lock", b"file lock", b"lease", b"project scope", b"no new privileges", b"no_new_privileges", b"cap drop", b"read-only filesystem"),
+    "contract-introspection": (
+        b"openapi()",
+        b"metadata.tables",
+        b"contract",
+        b"consumer",
+        b"introspect",
+    ),
+    "derived-artifact-sync": (
+        b"source of truth",
+        b"source_of_truth",
+        b"generated",
+        b"regenerate",
+        b"do not edit",
+        b"architecture guardrail",
+    ),
+    "dynamic-service-discovery": (
+        b"service discovery",
+        b"service_discovery",
+        b"dns",
+        b"resolver",
+        b"re-resolv",
+        b"stale address",
+        b"stale endpoint",
+        b"stale identity",
+    ),
+    "evidence-integrity": (
+        b"sha256",
+        b"evidence",
+        b"proof manifest",
+        b"source manifest",
+        b"content hash",
+        b"claim-to-evidence",
+        b"claim_to_evidence",
+    ),
+    "knowledge-integrity": (
+        b"orphan",
+        b"provenance",
+        b"cardinality",
+        b"alias",
+        b"mapping coverage",
+        b"shacl",
+    ),
+    "live-contract-validation": (
+        b"docker exec",
+        b"docker compose exec",
+        b"inject",
+        b"marker",
+        b"live contract",
+        b"live_contract",
+    ),
+    "observability-correlation": (
+        b"correlation",
+        b"trace",
+        b"prometheus",
+        b"loki",
+        b"alertmanager",
+        b"telemetry",
+        b"service health",
+    ),
+    "reversible-validation": (
+        b"rollback",
+        b"restore",
+        b"snapshot",
+        b"trap",
+        b"pre-migration",
+        b"pre_migration",
+        b"post-migration",
+        b"post_migration",
+        b"round-trip",
+        b"round_trip",
+    ),
+    "security-aggregation": (
+        b"sbom",
+        b"gitleaks",
+        b"trufflehog",
+        b"grype",
+        b"syft",
+        b"sast",
+        b"dast",
+        b"findings",
+        b"payload strip",
+    ),
+    "state-isolation": (
+        b"advisory lock",
+        b"file lock",
+        b"lease",
+        b"project scope",
+        b"no new privileges",
+        b"no_new_privileges",
+        b"cap drop",
+        b"read-only filesystem",
+    ),
     "text-repair": (b"ocr", b"garbl", b"token replacement", b"stutter", b"normaliz"),
-    "validation-completeness": (b"pass", b"blocked", b"skipped", b"uncertain", b"denominator", b"completion gate", b"unmapped", b"global certification"),
-    "visual-accessibility": (b"prefers-reduced-motion", b"requestanimationframe", b"preservedrawingbuffer", b"keyboard activation", b"visual tier"),
-    "capability-admission": (b"admission", b"promotion", b"candidate staged", b"candidate_staged", b"skill supply chain", b"skill_supply_chain", b"provenance"),
-    "dependency-impact": (b"dependency graph", b"dependency_graph", b"blast radius", b"blast_radius", b"downstream", b"transitive", b"change impact"),
-    "configuration-drift": (b"config drift", b"config_drift", b"configuration drift", b"configuration parity", b"mirrored config", b"canonical config"),
-    "resource-performance": (b"performance budget", b"memory budget", b"latency budget", b"resource pressure", b"load test", b"slow quer"),
-    "evaluation-readiness": (b"golden set", b"golden dataset", b"evaluation dataset", b"retrieval quality", b"precision", b"ndcg", b"benchmark suite"),
-    "prompt-memory-security": (b"prompt injection", b"memory poison", b"untrusted context", b"secret retrieval", b"context firewall"),
-    "migration-safety": (b"schema migration", b"expand contract", b"compatibility window", b"forward migration", b"migration plan"),
-    "failure-triage": (b"root cause", b"failure triage", b"stack trace", b"incident correlat", b"failure cluster"),
-    "browser-evidence": (b"playwright", b"browser test", b"browser audit", b"browser certif", b"route crawl", b"screenshot", b"keyboard-only"),
-    "data-readiness": (b"data readiness", b"fallback classif", b"synthetic data", b"empty state", b"data provenance"),
-    "retrieval-engineering": (b"hybrid search", b"hybrid retrieval", b"rerank", b"chunking", b"embedding model", b"embedding optim", b"knowledge graph"),
-    "service-lifecycle": (b"container lifecycle", b"graceful shutdown", b"startup probe", b"readiness probe", b"health check"),
-    "tool-lifecycle": (b"mcp server", b"json-rpc", b"tools/list", b"lazy load", b"tool catalog"),
-    "research-extraction": (b"research to operation", b"research-to-operation", b"research to capability", b"research-to-capability", b"academic paper", b"claim evidence", b"citation provenance"),
-    "orchestration-checkpoint": (b"checkpoint", b"punch card", b"workflow graph", b"depends_on", b"resume token"),
+    "validation-completeness": (
+        b"pass",
+        b"blocked",
+        b"skipped",
+        b"uncertain",
+        b"denominator",
+        b"completion gate",
+        b"unmapped",
+        b"global certification",
+    ),
+    "visual-accessibility": (
+        b"prefers-reduced-motion",
+        b"requestanimationframe",
+        b"preservedrawingbuffer",
+        b"keyboard activation",
+        b"visual tier",
+    ),
+    "capability-admission": (
+        b"admission",
+        b"promotion",
+        b"candidate staged",
+        b"candidate_staged",
+        b"skill supply chain",
+        b"skill_supply_chain",
+        b"provenance",
+    ),
+    "dependency-impact": (
+        b"dependency graph",
+        b"dependency_graph",
+        b"blast radius",
+        b"blast_radius",
+        b"downstream",
+        b"transitive",
+        b"change impact",
+    ),
+    "configuration-drift": (
+        b"config drift",
+        b"config_drift",
+        b"configuration drift",
+        b"configuration parity",
+        b"mirrored config",
+        b"canonical config",
+    ),
+    "resource-performance": (
+        b"performance budget",
+        b"memory budget",
+        b"latency budget",
+        b"resource pressure",
+        b"load test",
+        b"slow quer",
+    ),
+    "evaluation-readiness": (
+        b"golden set",
+        b"golden dataset",
+        b"evaluation dataset",
+        b"retrieval quality",
+        b"precision",
+        b"ndcg",
+        b"benchmark suite",
+    ),
+    "prompt-memory-security": (
+        b"prompt injection",
+        b"memory poison",
+        b"untrusted context",
+        b"secret retrieval",
+        b"context firewall",
+    ),
+    "migration-safety": (
+        b"schema migration",
+        b"expand contract",
+        b"compatibility window",
+        b"forward migration",
+        b"migration plan",
+    ),
+    "failure-triage": (
+        b"root cause",
+        b"failure triage",
+        b"stack trace",
+        b"incident correlat",
+        b"failure cluster",
+    ),
+    "browser-evidence": (
+        b"playwright",
+        b"browser test",
+        b"browser audit",
+        b"browser certif",
+        b"route crawl",
+        b"screenshot",
+        b"keyboard-only",
+    ),
+    "data-readiness": (
+        b"data readiness",
+        b"fallback classif",
+        b"synthetic data",
+        b"empty state",
+        b"data provenance",
+    ),
+    "retrieval-engineering": (
+        b"hybrid search",
+        b"hybrid retrieval",
+        b"rerank",
+        b"chunking",
+        b"embedding model",
+        b"embedding optim",
+        b"knowledge graph",
+    ),
+    "service-lifecycle": (
+        b"container lifecycle",
+        b"graceful shutdown",
+        b"startup probe",
+        b"readiness probe",
+        b"health check",
+    ),
+    "tool-lifecycle": (
+        b"mcp server",
+        b"json-rpc",
+        b"tools/list",
+        b"lazy load",
+        b"tool catalog",
+    ),
+    "research-extraction": (
+        b"research to operation",
+        b"research-to-operation",
+        b"research to capability",
+        b"research-to-capability",
+        b"academic paper",
+        b"claim evidence",
+        b"citation provenance",
+    ),
+    "orchestration-checkpoint": (
+        b"checkpoint",
+        b"punch card",
+        b"workflow graph",
+        b"depends_on",
+        b"resume token",
+    ),
 }
 SKILL_NAME = re.compile(r"(?m)^name:\s*[\"']?([^\n\"']+)")
 SKILL_DESCRIPTION = re.compile(r"(?m)^description:\s*[\"']?([^\n]+)")
@@ -125,7 +385,10 @@ def _excluded(relative: Path, excluded: set[str]) -> str | None:
 
 
 def _is_text(path: Path) -> bool:
-    return path.suffix.casefold() in TEXT_EXTENSIONS or path.name.casefold() in TEXT_FILENAMES
+    return (
+        path.suffix.casefold() in TEXT_EXTENSIONS
+        or path.name.casefold() in TEXT_FILENAMES
+    )
 
 
 def _hash_file(path: Path) -> str:
@@ -153,18 +416,34 @@ def _scan_text(path: Path) -> tuple[str, str, Counter[str]]:
                     continue
                 if decoded is None:
                     decoded = line.decode("utf-8", errors="replace")
-                hit_counts[name] += sum(1 for _ in COMPILED_MECHANISMS[name].finditer(decoded))
-    return digest.hexdigest(), bytes(prefix).decode("utf-8", errors="replace"), hit_counts
+                hit_counts[name] += sum(
+                    1 for _ in COMPILED_MECHANISMS[name].finditer(decoded)
+                )
+    return (
+        digest.hexdigest(),
+        bytes(prefix).decode("utf-8", errors="replace"),
+        hit_counts,
+    )
 
 
-def _inventory_excluded_boundary(boundary: Path, source: Path) -> tuple[list[tuple[str, int, str]], list[str]]:
+def _inventory_excluded_boundary(
+    boundary: Path, source: Path
+) -> tuple[list[tuple[str, int, str]], list[str]]:
     records: list[tuple[str, int, str]] = []
     errors: list[str] = []
-    for path in sorted(boundary.rglob("*"), key=lambda item: item.as_posix().casefold()):
+    for path in sorted(
+        boundary.rglob("*"), key=lambda item: item.as_posix().casefold()
+    ):
         if path.is_symlink() or not path.is_file():
             continue
         try:
-            records.append((path.relative_to(source).as_posix(), path.stat().st_size, _hash_file(path)))
+            records.append(
+                (
+                    path.relative_to(source).as_posix(),
+                    path.stat().st_size,
+                    _hash_file(path),
+                )
+            )
         except OSError as error:
             errors.append(f"{path}: {type(error).__name__}: {error}")
     return records, errors
@@ -178,13 +457,17 @@ def _catalog(path: Path | None) -> list[dict[str, object]]:
         {
             "id": str(item["id"]),
             "status": str(item.get("status", "candidate")),
-            "tokens": _tokens(" ".join((str(item["id"]), *map(str, item.get("tags", ())))))
+            "tokens": _tokens(
+                " ".join((str(item["id"]), *map(str, item.get("tags", ()))))
+            ),
         }
         for item in data.get("skills", ())
     ]
 
 
-def _matches(name: str, description: str, catalog: list[dict[str, object]]) -> list[dict[str, object]]:
+def _matches(
+    name: str, description: str, catalog: list[dict[str, object]]
+) -> list[dict[str, object]]:
     candidate = _tokens(f"{name} {description}")
     ranked: list[dict[str, object]] = []
     for item in catalog:
@@ -192,8 +475,16 @@ def _matches(name: str, description: str, catalog: list[dict[str, object]]) -> l
         union = candidate | existing
         similarity = len(candidate & existing) / len(union) if union else 0.0
         if similarity:
-            ranked.append({"id": item["id"], "status": item["status"], "similarity": round(similarity, 4)})
-    return sorted(ranked, key=lambda item: (-float(item["similarity"]), str(item["id"])))[:5]
+            ranked.append(
+                {
+                    "id": item["id"],
+                    "status": item["status"],
+                    "similarity": round(similarity, 4),
+                }
+            )
+    return sorted(
+        ranked, key=lambda item: (-float(item["similarity"]), str(item["id"]))
+    )[:5]
 
 
 def audit(
@@ -220,37 +511,56 @@ def audit(
     excluded_boundaries: list[dict[str, object]] = []
     inventory_records: list[tuple[str, int, str]] = []
     paths: list[Path] = []
-    for current, directories, filenames in os.walk(source, topdown=True, followlinks=False):
+    for current, directories, filenames in os.walk(
+        source, topdown=True, followlinks=False
+    ):
         current_path = Path(current)
         kept: list[str] = []
         for name in sorted(directories, key=str.casefold):
             candidate = current_path / name
             relative = candidate.relative_to(source)
             lowered = name.casefold()
-            if lowered in excluded or lowered.startswith(".venv") or lowered.endswith("-venv"):
+            if (
+                lowered in excluded
+                or lowered.startswith(".venv")
+                or lowered.endswith("-venv")
+            ):
                 excluded_counts[name] += 1
                 totals["excluded_directories"] += 1
-                boundary_records, boundary_errors = _inventory_excluded_boundary(candidate, source)
+                boundary_records, boundary_errors = _inventory_excluded_boundary(
+                    candidate, source
+                )
                 inventory_records.extend(boundary_records)
                 errors.extend(boundary_errors)
                 boundary_hash = hashlib.sha256()
                 for item_path, item_bytes, item_digest in boundary_records:
-                    boundary_hash.update(f"{item_path}\0{item_digest}\0{item_bytes}\n".encode("utf-8", errors="replace"))
+                    boundary_hash.update(
+                        f"{item_path}\0{item_digest}\0{item_bytes}\n".encode(
+                            "utf-8", errors="replace"
+                        )
+                    )
                 totals["excluded_files"] += len(boundary_records)
                 totals["excluded_bytes"] += sum(item[1] for item in boundary_records)
-                excluded_boundaries.append({
-                    "path": relative.as_posix(), "reason": name,
-                    "file_count": len(boundary_records),
-                    "byte_count": sum(item[1] for item in boundary_records),
-                    "tree_sha256": boundary_hash.hexdigest(),
-                })
+                excluded_boundaries.append(
+                    {
+                        "path": relative.as_posix(),
+                        "reason": name,
+                        "file_count": len(boundary_records),
+                        "byte_count": sum(item[1] for item in boundary_records),
+                        "tree_sha256": boundary_hash.hexdigest(),
+                    }
+                )
             elif candidate.is_symlink():
                 totals["symlink_skipped"] += 1
-                excluded_boundaries.append({"path": relative.as_posix(), "reason": "symlink"})
+                excluded_boundaries.append(
+                    {"path": relative.as_posix(), "reason": "symlink"}
+                )
             else:
                 kept.append(name)
         directories[:] = kept
-        paths.extend(current_path / name for name in sorted(filenames, key=str.casefold))
+        paths.extend(
+            current_path / name for name in sorted(filenames, key=str.casefold)
+        )
 
     for path in sorted(paths, key=lambda item: item.as_posix().casefold()):
         try:
@@ -276,24 +586,46 @@ def audit(
             inventory_records.append((relative.as_posix(), size, digest))
             hits = dict(sorted(hit_counts.items()))
             mechanism_counts.update(hits)
-            skill_like = path.name.casefold() == "skill.md" or "skill" in path.stem.casefold()
+            skill_like = (
+                path.name.casefold() == "skill.md" or "skill" in path.stem.casefold()
+            )
             name_match = SKILL_NAME.search(metadata_prefix) if skill_like else None
-            description_match = SKILL_DESCRIPTION.search(metadata_prefix) if skill_like else None
+            description_match = (
+                SKILL_DESCRIPTION.search(metadata_prefix) if skill_like else None
+            )
             skill = None
             if name_match:
                 name = _slug(name_match.group(1).strip())
-                description = description_match.group(1).strip().strip("\"'") if description_match else ""
-                skill = {"name": name, "description": description, "catalog_matches": _matches(name, description, catalog)}
-            filename_signal = bool(re.search(
-                r"(?i)(audit|certif|contract|discover|drift|evidence|guard|health|harden|migrat|orchestrat|provenance|recover|repair|restore|rollback|sanit|sync|validat)",
-                path.name,
-            ))
+                description = (
+                    description_match.group(1).strip().strip("\"'")
+                    if description_match
+                    else ""
+                )
+                skill = {
+                    "name": name,
+                    "description": description,
+                    "catalog_matches": _matches(name, description, catalog),
+                }
+            filename_signal = bool(
+                re.search(
+                    r"(?i)(audit|certif|contract|discover|drift|evidence|guard|health|harden|migrat|orchestrat|provenance|recover|repair|restore|rollback|sanit|sync|validat)",
+                    path.name,
+                )
+            )
             score = len(hits) * 2 + (4 if skill else 0) + (1 if filename_signal else 0)
-            disposition = "oversize_review_required" if oversized else ("review_required" if score >= 3 else "no_reusable_signal")
+            disposition = (
+                "oversize_review_required"
+                if oversized
+                else ("review_required" if score >= 3 else "no_reusable_signal")
+            )
             if score or skill or oversized:
                 record = {
-                    "path": relative.as_posix(), "bytes": size, "sha256": digest,
-                    "mechanisms": hits, "score": score, "disposition": disposition,
+                    "path": relative.as_posix(),
+                    "bytes": size,
+                    "sha256": digest,
+                    "mechanisms": hits,
+                    "score": score,
+                    "disposition": disposition,
                 }
                 if skill:
                     record["skill"] = skill
@@ -303,17 +635,25 @@ def audit(
         except (OSError, UnicodeError) as error:
             errors.append(f"{path}: {type(error).__name__}: {error}")
 
-    for relative, size, digest in sorted(inventory_records, key=lambda item: item[0].casefold()):
+    for relative, size, digest in sorted(
+        inventory_records, key=lambda item: item[0].casefold()
+    ):
         inventory_hash.update(relative.encode("utf-8", errors="replace"))
-        inventory_hash.update(b"\0" + str(size).encode() + b"\0" + digest.encode() + b"\n")
+        inventory_hash.update(
+            b"\0" + str(size).encode() + b"\0" + digest.encode() + b"\n"
+        )
     totals["total_accounted_files"] = totals["files"] + totals["excluded_files"]
     totals["total_accounted_bytes"] = totals["bytes"] + totals["excluded_bytes"]
 
     duplicate_groups = [
         {"sha256": digest, "paths": paths}
-        for digest, paths in sorted(duplicate_hashes.items()) if len(paths) > 1
+        for digest, paths in sorted(duplicate_hashes.items())
+        if len(paths) > 1
     ]
-    review = sum(item.get("disposition") in {"review_required", "oversize_review_required"} for item in records)
+    review = sum(
+        item.get("disposition") in {"review_required", "oversize_review_required"}
+        for item in records
+    )
     return {
         "schema_version": "1.0",
         "scanner": "audit-source-capabilities/1.2.0",
@@ -355,15 +695,20 @@ def main() -> int:
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({
-        "complete": result["complete"],
-        "files": result["coverage"].get("files", 0),
-        "text_scanned": result["coverage"].get("text_scanned", 0),
-        "excluded": result["coverage"].get("excluded", 0),
-        "candidate_count": result["candidate_count"],
-        "error_count": result["coverage"]["error_count"],
-        "output": str(args.output.resolve()),
-    }, indent=2))
+    print(
+        json.dumps(
+            {
+                "complete": result["complete"],
+                "files": result["coverage"].get("files", 0),
+                "text_scanned": result["coverage"].get("text_scanned", 0),
+                "excluded": result["coverage"].get("excluded", 0),
+                "candidate_count": result["candidate_count"],
+                "error_count": result["coverage"]["error_count"],
+                "output": str(args.output.resolve()),
+            },
+            indent=2,
+        )
+    )
     return 0 if result["complete"] or args.allow_errors else 1
 
 

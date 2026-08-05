@@ -8,7 +8,14 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / ".agents" / "skills" / "audit-source-capabilities" / "scripts" / "reconcile_staged_capabilities.py"
+SCRIPT = (
+    ROOT
+    / ".agents"
+    / "skills"
+    / "audit-source-capabilities"
+    / "scripts"
+    / "reconcile_staged_capabilities.py"
+)
 SPEC = importlib.util.spec_from_file_location("reconcile_staged_capabilities", SCRIPT)
 MODULE = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
@@ -20,8 +27,38 @@ class StagedReconciliationTests(unittest.TestCase):
         candidates = root / "candidates.json"
         policy = root / "policy.json"
         catalog = root / "catalog.toml"
-        candidates.write_text(json.dumps({"candidates": [{"kind": "skill", "id": "candidate", "presence": presence, "sources": []}]}), encoding="utf-8")
-        policy.write_text(json.dumps({"rules": [{"id": "rule", "priority": 1, "when": {"presence": presence}, "disposition": disposition, "targets": ["owner"], "rationale": "test"}]}), encoding="utf-8")
+        candidates.write_text(
+            json.dumps(
+                {
+                    "candidates": [
+                        {
+                            "kind": "skill",
+                            "id": "candidate",
+                            "presence": presence,
+                            "sources": [],
+                        }
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
+        policy.write_text(
+            json.dumps(
+                {
+                    "rules": [
+                        {
+                            "id": "rule",
+                            "priority": 1,
+                            "when": {"presence": presence},
+                            "disposition": disposition,
+                            "targets": ["owner"],
+                            "rationale": "test",
+                        }
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
         catalog.write_text('[[skills]]\nid = "owner"\n', encoding="utf-8")
         return MODULE.reconcile(candidates, policy, catalog)
 
@@ -35,7 +72,10 @@ class StagedReconciliationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             report = self._fixture(Path(folder), "manifest-only", "ADOPT")
             self.assertFalse(report["summary"]["complete"])
-            self.assertEqual(report["errors"][0]["error"], "absent-artifact-cannot-be-implementation-evidence")
+            self.assertEqual(
+                report["errors"][0]["error"],
+                "absent-artifact-cannot-be-implementation-evidence",
+            )
 
     def test_equal_priority_rules_fail_as_ambiguous(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -43,9 +83,32 @@ class StagedReconciliationTests(unittest.TestCase):
             candidates = root / "candidates.json"
             policy = root / "policy.json"
             catalog = root / "catalog.toml"
-            candidates.write_text(json.dumps({"candidates": [{"kind": "skill", "id": "candidate", "presence": "actual", "sources": []}]}), encoding="utf-8")
-            rule = {"priority": 1, "when": {"presence": "actual"}, "disposition": "MERGE", "targets": ["owner"], "rationale": "test"}
-            policy.write_text(json.dumps({"rules": [{"id": "one", **rule}, {"id": "two", **rule}]}), encoding="utf-8")
+            candidates.write_text(
+                json.dumps(
+                    {
+                        "candidates": [
+                            {
+                                "kind": "skill",
+                                "id": "candidate",
+                                "presence": "actual",
+                                "sources": [],
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            rule = {
+                "priority": 1,
+                "when": {"presence": "actual"},
+                "disposition": "MERGE",
+                "targets": ["owner"],
+                "rationale": "test",
+            }
+            policy.write_text(
+                json.dumps({"rules": [{"id": "one", **rule}, {"id": "two", **rule}]}),
+                encoding="utf-8",
+            )
             catalog.write_text('[[skills]]\nid = "owner"\n', encoding="utf-8")
             report = MODULE.reconcile(candidates, policy, catalog)
             self.assertFalse(report["summary"]["complete"])

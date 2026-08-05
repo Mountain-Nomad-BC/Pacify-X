@@ -1,0 +1,30 @@
+{
+  "id": "design-it-twice",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/design-it-twice/SKILL.md",
+  "body_sha256": "15fa7a60105052643706326f55f58ae325cf19850e92aff3cfaa8f5307a9f3ec",
+  "references": [],
+  "capability_tags": [
+    "design",
+    "engineering-reasoning",
+    "it",
+    "twice"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "sanitized_mit_adaptation",
+    "basis": [
+      "evidence/integration/pxi-20260804/candidate_disposition_ledger.json",
+      "LICENSES/mattpocock-skills-MIT.txt"
+    ],
+    "canonical_owner": ".agents/skills/design-it-twice/SKILL.md"
+  },
+  "clean_room": false,
+  "tests": "tests/test_project_reasoning.py",
+  "evidence": "tests/test_project_reasoning.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

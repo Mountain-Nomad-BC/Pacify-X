@@ -1,7 +1,10 @@
 from __future__ import annotations
 from typing import Any
 
-def dominates(left: dict[str, float], right: dict[str, float], directions: dict[str, str]) -> bool:
+
+def dominates(
+    left: dict[str, float], right: dict[str, float], directions: dict[str, str]
+) -> bool:
     no_worse = True
     strictly_better = False
     for metric, direction in directions.items():
@@ -14,15 +17,20 @@ def dominates(left: dict[str, float], right: dict[str, float], directions: dict[
             strictly_better |= lv < rv
     return bool(no_worse and strictly_better)
 
-def pareto_front(candidates: list[dict[str, Any]], directions: dict[str, str]) -> list[dict[str, Any]]:
+
+def pareto_front(
+    candidates: list[dict[str, Any]], directions: dict[str, str]
+) -> list[dict[str, Any]]:
     front = []
     for candidate in candidates:
         if not any(
             dominates(other["metrics"], candidate["metrics"], directions)
-            for other in candidates if other is not candidate
+            for other in candidates
+            if other is not candidate
         ):
             front.append(candidate)
     return sorted(front, key=lambda x: str(x.get("id")))
+
 
 def evaluate(experiment: dict[str, Any]) -> dict[str, Any]:
     baseline = experiment["baseline"]
@@ -43,7 +51,9 @@ def evaluate(experiment: dict[str, Any]) -> dict[str, Any]:
         for metric, direction in directions.items():
             cv = float(candidate["metrics"][metric])
             bv = float(baseline["metrics"][metric])
-            tolerance = float(experiment.get("regression_tolerance", {}).get(metric, 0.0))
+            tolerance = float(
+                experiment.get("regression_tolerance", {}).get(metric, 0.0)
+            )
             if direction == "maximize" and cv + tolerance < bv:
                 regressions.append(metric)
             elif direction == "minimize" and cv - tolerance > bv:
@@ -51,15 +61,19 @@ def evaluate(experiment: dict[str, Any]) -> dict[str, Any]:
         utility = 0.0
         for metric, weight in experiment.get("utility_weights", {}).items():
             cv = float(candidate["metrics"][metric])
-            utility += float(weight) * (cv if directions.get(metric) == "maximize" else -cv)
-        results.append({
-            "id": candidate["id"],
-            "metrics": candidate["metrics"],
-            "threshold_failures": failures,
-            "regressions": regressions,
-            "eligible": not failures and not regressions,
-            "utility": round(utility, 8),
-        })
+            utility += float(weight) * (
+                cv if directions.get(metric) == "maximize" else -cv
+            )
+        results.append(
+            {
+                "id": candidate["id"],
+                "metrics": candidate["metrics"],
+                "threshold_failures": failures,
+                "regressions": regressions,
+                "eligible": not failures and not regressions,
+                "utility": round(utility, 8),
+            }
+        )
     eligible = [r for r in results if r["eligible"]]
     pareto = pareto_front(eligible, directions) if eligible else []
     selected = max(pareto, key=lambda x: x["utility"], default=None)

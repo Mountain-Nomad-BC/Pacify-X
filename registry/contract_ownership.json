@@ -1,8 +1,170 @@
 {
   "schema_version": "2.0",
   "policy": "Every shipped schema has one explicit owner and an honest enforcement classification.",
-  "contract_count": 86,
+  "contract_count": 146,
   "records": [
+    {
+      "path": "contracts/agents/agency-agent-manifest.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:agents:agency-agent-manifest",
+      "contract_version": "1.0.0",
+      "title": "PACIFY-X Agency Agent Manifest",
+      "owner": "registry/agency_agent_registry.json",
+      "producers": [
+        "registry/agency_agent_registry.json"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "agent_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_agent_provider.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/agents/agent-evidence-receipt.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:agents:agent-evidence-receipt",
+      "contract_version": "1.0.0",
+      "title": "Agent Evidence Receipt",
+      "owner": "runtime/agent_provider.py",
+      "producers": [
+        "runtime/agent_provider.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "agent_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_agent_provider.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/agents/agent-handoff.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:agents:agent-handoff",
+      "contract_version": "1.0.0",
+      "title": "Agent Handoff",
+      "owner": "runtime/agent_provider.py",
+      "producers": [
+        "runtime/agent_provider.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "agent_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_agent_provider.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/agents/agent-result.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:agents:agent-result",
+      "contract_version": "1.0.0",
+      "title": "Agent Result",
+      "owner": "runtime/agent_provider.py",
+      "producers": [
+        "runtime/agent_provider.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "agent_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_agent_provider.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/agents/agent-route-plan.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:agents:agent-route-plan",
+      "contract_version": "1.0.0",
+      "title": "Agent Route Plan",
+      "owner": "runtime/agent_provider.py",
+      "producers": [
+        "runtime/agent_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "agent_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_agent_provider.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/agents/agent-task-envelope.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:agents:agent-task-envelope",
+      "contract_version": "1.0.0",
+      "title": "Agent Task Envelope",
+      "owner": "runtime/agent_provider.py",
+      "producers": [
+        "runtime/agent_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "agent_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_agent_provider.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/agents/fleet-readiness.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:agents:fleet-readiness",
+      "contract_version": "1.0.0",
+      "title": "Project-scoped fleet readiness",
+      "owner": "runtime/agent_fleet_controls.py",
+      "producers": [
+        "runtime/agent_fleet_controls.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "agent_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_agent_provider.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/agents/terminal-session-adapter.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:agents:terminal-session-adapter",
+      "contract_version": "1.0.0",
+      "title": "Optional terminal session adapter plan",
+      "owner": "runtime/agent_fleet_controls.py",
+      "producers": [
+        "runtime/agent_fleet_controls.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "agent_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_agent_provider.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
     {
       "path": "contracts/ai-bom.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:ai-bom",
@@ -176,6 +338,120 @@
       ]
     },
     {
+      "path": "contracts/cognitive/behavioral-delta-certificate.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:cognitive:behavioral-delta-certificate",
+      "contract_version": "1.0.0",
+      "title": "Behavioral delta certificate",
+      "owner": "runtime/behavioral_certification.py",
+      "producers": [
+        "runtime/behavioral_certification.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "observable_behavior_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/cognitive/brain-capability.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:cognitive:brain-capability",
+      "contract_version": "1.0.0",
+      "title": "brain-capability.schema.json",
+      "owner": "runtime/cognitive_core/index_builder.py",
+      "producers": [
+        "registry/brain_capabilities.json"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "cognitive_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cognitive_core.py"
+      ]
+    },
+    {
+      "path": "contracts/cognitive/cognitive-index.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:cognitive:cognitive-index",
+      "contract_version": "1.0.0",
+      "title": "cognitive-index.schema.json",
+      "owner": "runtime/cognitive_core/index_builder.py",
+      "producers": [
+        "scripts/build_cognitive_index.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "cognitive_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cognitive_core.py"
+      ]
+    },
+    {
+      "path": "contracts/cognitive/formula-definition.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:cognitive:formula-definition",
+      "contract_version": "1.0.0",
+      "title": "formula-definition.schema.json",
+      "owner": "runtime/cognitive_core/formula_engine.py",
+      "producers": [
+        "registry/brain_formulas.json"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "cognitive_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cognitive_core.py"
+      ]
+    },
+    {
+      "path": "contracts/cognitive/reasoning-request.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:cognitive:reasoning-request",
+      "contract_version": "1.0.0",
+      "title": "reasoning-request.schema.json",
+      "owner": "runtime/cognitive_core/facade.py",
+      "producers": [
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "cognitive_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cognitive_core.py"
+      ]
+    },
+    {
+      "path": "contracts/cognitive/shadow-behavior-comparison.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:cognitive:shadow-behavior-comparison",
+      "contract_version": "1.0.0",
+      "title": "Contained shadow behavior comparison",
+      "owner": "runtime/behavioral_certification.py",
+      "producers": [
+        "runtime/behavioral_certification.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "observable_behavior_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
       "path": "contracts/commissioning-questionnaire.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:commissioning-questionnaire",
       "contract_version": "1.0.0",
@@ -211,6 +487,25 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_declared_suite_support.py"
+      ]
+    },
+    {
+      "path": "contracts/completion/control-receipt.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:completion:control-receipt",
+      "contract_version": "1.0.0",
+      "title": "PACIFY-X Completion Control Receipt",
+      "owner": "runtime/completion_controls.py",
+      "producers": [
+        "runtime/completion_controls.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "completion_control_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_completion_controls.py"
       ]
     },
     {
@@ -347,6 +642,25 @@
       ]
     },
     {
+      "path": "contracts/execution-package.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:execution-package",
+      "contract_version": "1.0.0",
+      "title": "PACIFY-X Minimum Complete Execution Package",
+      "owner": "runtime/capability_routing.py",
+      "producers": [
+        "runtime/capability_routing.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_capability_routing.py"
+      ]
+    },
+    {
       "path": "contracts/external-tool-intake.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:external-tool-intake",
       "contract_version": "1.0.0",
@@ -363,6 +677,127 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_tool_intake.py"
+      ]
+    },
+    {
+      "path": "contracts/external_capabilities/backend-service-capability.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:external_capabilities:backend-service-capability",
+      "contract_version": "1.0.0",
+      "title": "Vendor-neutral backend service capability",
+      "owner": "runtime/backend_capabilities.py",
+      "producers": [
+        "runtime/backend_capabilities.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "external_candidate_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_external_capability_provider.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/external_capabilities/external-capability-candidate.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:external_capabilities:external-capability-candidate",
+      "contract_version": "1.0.0",
+      "title": "Non-canonical external capability candidate",
+      "owner": "runtime/external_capability_provider.py",
+      "producers": [
+        "runtime/external_capability_provider.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "external_candidate_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_external_capability_provider.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/external_capabilities/hook-decision.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:external_capabilities:hook-decision",
+      "contract_version": "1.0.0",
+      "title": "Bounded non-executing hook governance decision",
+      "owner": "runtime/external_capability_provider.py",
+      "producers": [
+        "runtime/external_capability_provider.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "external_candidate_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_external_capability_provider.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/external_capabilities/routing-economics.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:external_capabilities:routing-economics",
+      "contract_version": "1.0.0",
+      "title": "Safety-first execution routing economics result",
+      "owner": "runtime/external_capability_provider.py",
+      "producers": [
+        "runtime/external_capability_provider.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "external_candidate_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_external_capability_provider.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/external_capabilities/selective-stage-plan.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:external_capabilities:selective-stage-plan",
+      "contract_version": "1.0.0",
+      "title": "Review-gated project-local external capability stage plan",
+      "owner": "runtime/external_capability_provider.py",
+      "producers": [
+        "runtime/external_capability_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "external_candidate_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_external_capability_provider.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/external_capabilities/session-snapshot.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:external_capabilities:session-snapshot",
+      "contract_version": "1.0.0",
+      "title": "Cross-harness canonical session snapshot",
+      "owner": "runtime/external_capability_provider.py",
+      "producers": [
+        "runtime/external_capability_provider.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "external_candidate_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_external_capability_provider.py",
+        "tests/test_clean_room_capabilities.py"
       ]
     },
     {
@@ -440,6 +875,228 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_retrieval_and_models.py"
+      ]
+    },
+    {
+      "path": "contracts/knowledge_refinery/graph-audit.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:knowledge_refinery:graph-audit",
+      "contract_version": "1.0.0",
+      "title": "Knowledge graph coherence audit",
+      "owner": "runtime/knowledge_refinery.py",
+      "producers": [
+        "runtime/knowledge_refinery.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "knowledge_refinery_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_knowledge_refinery.py"
+      ]
+    },
+    {
+      "path": "contracts/knowledge_refinery/merge-plan.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:knowledge_refinery:merge-plan",
+      "contract_version": "1.0.0",
+      "title": "Review-only non-destructive knowledge merge plan",
+      "owner": "runtime/knowledge_refinery.py",
+      "producers": [
+        "runtime/knowledge_refinery.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "knowledge_refinery_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_knowledge_refinery.py"
+      ]
+    },
+    {
+      "path": "contracts/knowledge_refinery/novelty-report.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:knowledge_refinery:novelty-report",
+      "contract_version": "1.0.0",
+      "title": "Seven-way semantic novelty report",
+      "owner": "runtime/knowledge_refinery.py",
+      "producers": [
+        "runtime/knowledge_refinery.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "knowledge_refinery_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_knowledge_refinery.py"
+      ]
+    },
+    {
+      "path": "contracts/knowledge_refinery/portable-inventory.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:knowledge_refinery:portable-inventory",
+      "contract_version": "1.0.0",
+      "title": "Bounded portable knowledge source inventory",
+      "owner": "runtime/knowledge_refinery.py",
+      "producers": [
+        "runtime/knowledge_refinery.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "knowledge_refinery_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_knowledge_refinery.py"
+      ]
+    },
+    {
+      "path": "contracts/memory/memory-evaluation-fixture.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:memory:memory-evaluation-fixture",
+      "contract_version": "1.0.0",
+      "title": "Memory retrieval positive and forbidden fixture",
+      "owner": "runtime/memory_intelligence.py",
+      "producers": [
+        "runtime/memory_intelligence.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "memory_lifecycle_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_memory_intelligence.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/memory/memory-event.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:memory:memory-event",
+      "contract_version": "1.0.0",
+      "title": "Immutable sanitized L0 memory event",
+      "owner": "runtime/memory_intelligence.py",
+      "producers": [
+        "runtime/memory_intelligence.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "memory_lifecycle_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_memory_intelligence.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/memory/memory-loadout.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:memory:memory-loadout",
+      "contract_version": "1.0.0",
+      "title": "Bounded project-scoped agent memory loadout",
+      "owner": "runtime/memory_intelligence.py",
+      "producers": [
+        "runtime/memory_intelligence.py",
+        "runtime/agent_provider.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "memory_lifecycle_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_memory_intelligence.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/memory/memory-offload-pointer.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:memory:memory-offload-pointer",
+      "contract_version": "1.0.0",
+      "title": "Reversible project-local context offload pointer",
+      "owner": "runtime/memory_intelligence.py",
+      "producers": [
+        "runtime/memory_intelligence.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "memory_lifecycle_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_memory_intelligence.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/memory/memory-promotion-decision.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:memory:memory-promotion-decision",
+      "contract_version": "1.0.0",
+      "title": "Evidence-gated memory promotion decision",
+      "owner": "runtime/memory_intelligence.py",
+      "producers": [
+        "runtime/memory_intelligence.py",
+        "runtime/memory_vault.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "memory_lifecycle_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_memory_intelligence.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/memory/memory-recall-package.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:memory:memory-recall-package",
+      "contract_version": "1.0.0",
+      "title": "Scoped explainable memory recall package",
+      "owner": "runtime/memory_intelligence.py",
+      "producers": [
+        "runtime/memory_intelligence.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "memory_lifecycle_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_memory_intelligence.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/memory/memory-remediation-plan.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:memory:memory-remediation-plan",
+      "contract_version": "1.0.0",
+      "title": "Memory graph remediation plan",
+      "owner": "runtime/memory_remediation.py",
+      "producers": [
+        "runtime/memory_remediation.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "memory_lifecycle_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_memory_intelligence.py",
+        "tests/test_clean_room_capabilities.py"
       ]
     },
     {
@@ -823,6 +1480,25 @@
       ]
     },
     {
+      "path": "contracts/project-map.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:project-map",
+      "contract_version": "1.0.0",
+      "title": "PACIFY-X Project Map Manifest",
+      "owner": "runtime/project_intelligence.py",
+      "producers": [
+        "runtime/project_intelligence.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_project_mapping.py"
+      ]
+    },
+    {
       "path": "contracts/project_stream/active-session.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:project_stream:active-session",
       "contract_version": "1.0.0",
@@ -911,6 +1587,25 @@
         "runtime/contracts.py"
       ],
       "enforcement": "typed_runtime_equivalent",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_temp2_completeness.py"
+      ]
+    },
+    {
+      "path": "contracts/project_stream/durable-goal-state.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:project_stream:durable-goal-state",
+      "contract_version": "1.0.0",
+      "title": "Acceptance-backed durable goal state",
+      "owner": "runtime/durable_state.py",
+      "producers": [
+        "runtime/durable_state.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
       "packaged": true,
       "tests": [
         "tests/test_contract_runtime.py",
@@ -1162,6 +1857,129 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_temp2_completeness.py"
+      ]
+    },
+    {
+      "path": "contracts/reasoning/communication-budget.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:reasoning:communication-budget",
+      "contract_version": "1.0.0",
+      "title": "Communication budget result",
+      "owner": "runtime/reasoning_controls.py",
+      "producers": [
+        "runtime/reasoning_controls.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "engineering_reasoning_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_project_reasoning.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/reasoning/decision-frontier.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:reasoning:decision-frontier",
+      "contract_version": "1.0.0",
+      "title": "Validated decision-ticket frontier",
+      "owner": "runtime/project_reasoning/frontier.py",
+      "producers": [
+        "runtime/project_reasoning/frontier.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "engineering_reasoning_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_project_reasoning.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/reasoning/glossary-audit.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:reasoning:glossary-audit",
+      "contract_version": "1.0.0",
+      "title": "Canonical project-language audit result",
+      "owner": "runtime/project_reasoning/glossary_audit.py",
+      "producers": [
+        "runtime/project_reasoning/glossary_audit.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "engineering_reasoning_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_project_reasoning.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/reasoning/independent-hypothesis-panel.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:reasoning:independent-hypothesis-panel",
+      "contract_version": "1.0.0",
+      "title": "Independent hypothesis panel result",
+      "owner": "runtime/reasoning_controls.py",
+      "producers": [
+        "runtime/reasoning_controls.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "engineering_reasoning_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_project_reasoning.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/reasoning/module-depth-audit.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:reasoning:module-depth-audit",
+      "contract_version": "1.0.0",
+      "title": "Python module interface-depth evidence",
+      "owner": "runtime/project_reasoning/deep_module_audit.py",
+      "producers": [
+        "runtime/project_reasoning/deep_module_audit.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "engineering_reasoning_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_project_reasoning.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
+      "path": "contracts/reasoning/specification-lifecycle.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:reasoning:specification-lifecycle",
+      "contract_version": "1.0.0",
+      "title": "Specification lifecycle closure",
+      "owner": "runtime/durable_state.py",
+      "producers": [
+        "runtime/durable_state.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "engineering_reasoning_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_project_reasoning.py",
+        "tests/test_clean_room_capabilities.py"
       ]
     },
     {
@@ -1455,6 +2273,286 @@
       ]
     },
     {
+      "path": "contracts/security_capabilities/authorized-security-scope.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:security_capabilities:authorized-security-scope",
+      "contract_version": "1.0.0",
+      "title": "authorized-security-scope",
+      "owner": "runtime/cybersecurity_provider.py",
+      "producers": [
+        "runtime/cybersecurity_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "security_provider_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
+      "path": "contracts/security_capabilities/cybersecurity_capability.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:security_capabilities:cybersecurity_capability",
+      "contract_version": "1.0.0",
+      "title": "cybersecurity_capability.schema.json",
+      "owner": "runtime/cybersecurity_provider.py",
+      "producers": [
+        "runtime/cybersecurity_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "security_provider_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
+      "path": "contracts/security_capabilities/external-provider-integrity.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:security_capabilities:external-provider-integrity",
+      "contract_version": "1.0.0",
+      "title": "external-provider-integrity",
+      "owner": "runtime/cybersecurity_provider.py",
+      "producers": [
+        "runtime/cybersecurity_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "security_provider_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
+      "path": "contracts/security_capabilities/incident-response-emergency-authority.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:security_capabilities:incident-response-emergency-authority",
+      "contract_version": "1.0.0",
+      "title": "incident-response-emergency-authority",
+      "owner": "runtime/cybersecurity_provider.py",
+      "producers": [
+        "runtime/cybersecurity_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "security_provider_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
+      "path": "contracts/security_capabilities/safe-security-execution.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:security_capabilities:safe-security-execution",
+      "contract_version": "1.0.0",
+      "title": "safe-security-execution",
+      "owner": "runtime/cybersecurity_provider.py",
+      "producers": [
+        "runtime/cybersecurity_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "security_provider_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
+      "path": "contracts/security_capabilities/security-change-control.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security-change-control",
+      "contract_version": "1.0.0",
+      "title": "security-change-control",
+      "owner": "runtime/cybersecurity_provider.py",
+      "producers": [
+        "runtime/cybersecurity_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "security_provider_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
+      "path": "contracts/security_capabilities/security-cleanup-and-rollback.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security-cleanup-and-rollback",
+      "contract_version": "1.0.0",
+      "title": "security-cleanup-and-rollback",
+      "owner": "runtime/cybersecurity_provider.py",
+      "producers": [
+        "runtime/cybersecurity_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "security_provider_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
+      "path": "contracts/security_capabilities/security-evidence-chain.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security-evidence-chain",
+      "contract_version": "1.0.0",
+      "title": "security-evidence-chain",
+      "owner": "runtime/cybersecurity_provider.py",
+      "producers": [
+        "runtime/cybersecurity_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "security_provider_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
+      "path": "contracts/security_capabilities/security-finding-result.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security-finding-result",
+      "contract_version": "1.0.0",
+      "title": "security-finding-result",
+      "owner": "runtime/cybersecurity_provider.py",
+      "producers": [
+        "runtime/cybersecurity_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "security_provider_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
+      "path": "contracts/security_capabilities/security-tool-invocation.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security-tool-invocation",
+      "contract_version": "1.0.0",
+      "title": "security-tool-invocation",
+      "owner": "runtime/cybersecurity_provider.py",
+      "producers": [
+        "runtime/cybersecurity_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "security_provider_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
+      "path": "contracts/security_capabilities/security_engagement.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security_engagement",
+      "contract_version": "1.0.0",
+      "title": "security_engagement.schema.json",
+      "owner": "runtime/cybersecurity_provider.py",
+      "producers": [
+        "runtime/cybersecurity_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "security_provider_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
+      "path": "contracts/security_capabilities/security_evidence_receipt.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security_evidence_receipt",
+      "contract_version": "1.0.0",
+      "title": "security_evidence_receipt.schema.json",
+      "owner": "runtime/cybersecurity_provider.py",
+      "producers": [
+        "runtime/cybersecurity_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "security_provider_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
+      "path": "contracts/security_capabilities/security_execution_decision.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security_execution_decision",
+      "contract_version": "1.0.0",
+      "title": "security_execution_decision.schema.json",
+      "owner": "runtime/cybersecurity_provider.py",
+      "producers": [
+        "runtime/cybersecurity_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "security_provider_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
+      "path": "contracts/security_capabilities/security_finding.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security_finding",
+      "contract_version": "1.0.0",
+      "title": "security_finding.schema.json",
+      "owner": "runtime/cybersecurity_provider.py",
+      "producers": [
+        "runtime/cybersecurity_provider.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "security_provider_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
       "path": "contracts/skeptical-certification.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:skeptical-certification",
       "contract_version": "1.0.0",
@@ -1532,6 +2630,25 @@
       ]
     },
     {
+      "path": "contracts/task-envelope.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:task-envelope",
+      "contract_version": "1.0.0",
+      "title": "PACIFY-X Normalized Task Envelope",
+      "owner": "runtime/capability_routing.py",
+      "producers": [
+        "runtime/capability_routing.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_capability_routing.py"
+      ]
+    },
+    {
       "path": "contracts/task-state.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:task-state",
       "contract_version": "1.0.0",
@@ -1586,6 +2703,84 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_declared_suite_support.py"
+      ]
+    },
+    {
+      "path": "contracts/transcripts/transcript-ontology.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:transcripts:transcript-ontology",
+      "contract_version": "1.0.0",
+      "title": "Queue-owned transcript ontology",
+      "owner": "runtime/transcript_analysis.py",
+      "producers": [
+        "runtime/transcript_analysis.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "transcript_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_transcript_analysis.py"
+      ]
+    },
+    {
+      "path": "contracts/transcripts/transcript-profile.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:transcripts:transcript-profile",
+      "contract_version": "1.0.0",
+      "title": "Portable transcript analysis profile",
+      "owner": "runtime/transcript_analysis.py",
+      "producers": [
+        "runtime/transcript_analysis.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "transcript_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_transcript_analysis.py"
+      ]
+    },
+    {
+      "path": "contracts/transcripts/transcript-record.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:transcripts:transcript-record",
+      "contract_version": "1.0.0",
+      "title": "Source-traceable canonical transcript record",
+      "owner": "runtime/transcript_analysis.py",
+      "producers": [
+        "runtime/transcript_analysis.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "transcript_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_transcript_analysis.py"
+      ]
+    },
+    {
+      "path": "contracts/transcripts/transcript-source.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:transcripts:transcript-source",
+      "contract_version": "1.0.0",
+      "title": "Immutable transcript source receipt",
+      "owner": "runtime/transcript_analysis.py",
+      "producers": [
+        "runtime/transcript_analysis.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "transcript_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_transcript_analysis.py"
       ]
     },
     {

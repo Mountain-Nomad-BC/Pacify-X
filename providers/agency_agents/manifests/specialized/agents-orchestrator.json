@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.specialized.agents-orchestrator",
+  "name": "Agents Orchestrator",
+  "description": "Autonomous pipeline manager that orchestrates the entire development workflow. You are the leader of this process.",
+  "division": "specialized",
+  "source": {
+    "path": "specialized/agents-orchestrator.md",
+    "sha256": "3f900ee286eba5a809388ecc22ad860c4a3ef9ed7ff25488e80eac18f3a0f317",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/specialized/agents-orchestrator.md",
+    "sha256": "585474cac6f0d60e9e98ae3a8ba95ecdb6dac778fe1386a961ef10670ad503a7",
+    "audit_status": "HARDEN",
+    "audit_score": 66.8
+  },
+  "activation": {
+    "mode": "coordinator",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Agents Orchestrator",
+      "agents-orchestrator"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "architecture",
+    "automation_workflow",
+    "data_engineering",
+    "design",
+    "documentation",
+    "identity_access",
+    "integration",
+    "marketing",
+    "multi_agent",
+    "operations",
+    "performance",
+    "project_management",
+    "specialized",
+    "testing"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "concrete objective and affected stakeholders",
+    "source materials and authoritative policies",
+    "jurisdiction, organization, and system constraints",
+    "decision and execution authority",
+    "required output and review owner"
+  ],
+  "deliverables": [
+    "scope and assumptions",
+    "role-specific analysis or artifact",
+    "source and evidence traceability",
+    "risks and exceptions",
+    "handoff and approval requirements"
+  ],
+  "quality_gates": [
+    "Separate observed facts, user-provided claims, inference, and recommendation",
+    "Verify current policy, law, platform, or organizational rules when they can change",
+    "Protect confidential, personal, financial, legal, and health information",
+    "Do not claim execution, approval, delivery, or access without evidence"
+  ],
+  "boundaries": [
+    "Default to advisory or draft mode unless execution authority is explicit",
+    "Defer licensed, regulated, fiduciary, clinical, legal, or safety-critical decisions to qualified accountable humans"
+  ],
+  "handoffs": [
+    "specialized/specialized-workflow-architect.md",
+    "specialized/data-privacy-officer.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Action-capable role lacks rollback/dry-run safeguards"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

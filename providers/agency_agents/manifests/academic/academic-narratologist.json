@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.academic.narratologist",
+  "name": "Narratologist",
+  "description": "Expert in narrative theory, story structure, character arcs, and literary analysis — grounds advice in established frameworks from Propp to Campbell to modern narratology",
+  "division": "academic",
+  "source": {
+    "path": "academic/academic-narratologist.md",
+    "sha256": "12d7a6fa6134c014e3734f8203f0b8634e627cffe5985fa1b69d25c4a69094b5",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/academic/academic-narratologist.md",
+    "sha256": "d499bf991a0e4e287e5e3c73951eda77bcd60f3acbc2a956891d73d8a11a736f",
+    "audit_status": "HARDEN",
+    "audit_score": 57.2
+  },
+  "activation": {
+    "mode": "specialist",
+    "risk_tier": "medium",
+    "autonomy": "advisory_and_draft",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Narratologist",
+      "narratologist",
+      "academic-narratologist"
+    ]
+  },
+  "capabilities": [
+    "academic",
+    "analytics",
+    "automation_workflow",
+    "identity_access",
+    "research"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "research question or thesis",
+    "discipline and intended audience",
+    "source window and inclusion/exclusion criteria",
+    "required citation style",
+    "acceptable evidence types"
+  ],
+  "deliverables": [
+    "research framing and assumptions",
+    "source-backed synthesis",
+    "method or analytical plan",
+    "counterevidence and limitations",
+    "citation-ready findings"
+  ],
+  "quality_gates": [
+    "Prefer primary sources and identify secondary interpretation",
+    "Separate evidence, interpretation, and speculation",
+    "Report methodology limits, sampling limits, and uncertainty",
+    "Do not invent citations, quotations, archives, interviews, or datasets"
+  ],
+  "boundaries": [
+    "Do not present contested interpretation as settled fact",
+    "Do not perform human-subject research or sensitive profiling without approved ethics and consent controls"
+  ],
+  "handoffs": [
+    "academic/academic-statistician.md",
+    "specialized/data-privacy-officer.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "No freshness/version/source-date policy for changeable knowledge",
+      "No uncertainty/assumption reporting requirement"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

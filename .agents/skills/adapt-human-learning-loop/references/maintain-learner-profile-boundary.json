@@ -1,0 +1,55 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "no health diagnosis or protected-trait inference",
+    "collect only necessary data",
+    "do not merge profiles from similarity"
+  ],
+  "bundle": "adapt-human-learning-loop",
+  "category": "adaptive-learning",
+  "dependencies": [
+    "isolate-project-streams",
+    "govern-memory-fabric",
+    "permission-diff-auditor"
+  ],
+  "id": "maintain-learner-profile-boundary",
+  "keywords": [
+    "learner profile",
+    "trainee history",
+    "guardian role",
+    "profile isolation"
+  ],
+  "mechanisms": [
+    "profile identity",
+    "guardian or supervisor association",
+    "activity ownership",
+    "scoped history",
+    "role separation"
+  ],
+  "owner": "long-horizon-progress-ledger",
+  "provenance": {
+    "derivation": "clean-room mechanism abstraction",
+    "source": "hyperlearning-clean-room",
+    "source_refs": [
+      "README.md",
+      "Manual de usuario e instalación.pdf",
+      "src/Padre.java",
+      "src/Paciente.java"
+    ]
+  },
+  "source": "hyperlearning-clean-room",
+  "source_refs": [
+    "README.md",
+    "Manual de usuario e instalación.pdf",
+    "src/Padre.java",
+    "src/Paciente.java"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Keep each learner or trainee profile, activity history, rewards, observations, and permissions isolated so adaptation is scoped to the correct person and program.",
+  "title": "Maintain Learner Profile Boundary",
+  "use_when": [
+    "training or simulation adapts per person",
+    "multiple learners share one system",
+    "progress history must remain attributable"
+  ]
+}

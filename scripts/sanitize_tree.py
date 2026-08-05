@@ -1,4 +1,5 @@
 """Replace private identifiers in text content and path names beneath an explicit root."""
+
 from __future__ import annotations
 
 import argparse
@@ -12,7 +13,11 @@ import tempfile
 
 
 TERMS = ("r" + "ie", "re" + "my", "rh" + "eem")
-REPLACEMENTS = ("intelligent_integrations_and_engines", "governed_retrieval_system_with_deterministic_rails", "enterprise")
+REPLACEMENTS = (
+    "intelligent_integrations_and_engines",
+    "governed_retrieval_system_with_deterministic_rails",
+    "enterprise",
+)
 PATTERN = re.compile(
     rf"(?i)(?:(?<![A-Za-z])({TERMS[0]})(?![A-Za-z])|({TERMS[1]}|{TERMS[2]}))"
 )
@@ -28,13 +33,17 @@ MAX_SAFE_COMPONENT = 240
 
 class SanitizationPreflightError(RuntimeError):
     def __init__(self, errors: list[str]) -> None:
-        super().__init__("sanitization preservation preflight could not inspect every in-scope file")
+        super().__init__(
+            "sanitization preservation preflight could not inspect every in-scope file"
+        )
         self.errors = tuple(errors)
 
 
 def sanitize(value: str) -> str:
     cleaned = PATTERN.sub(lambda match: MAPPING[match.group(0).casefold()], value)
-    return LEGACY_PATTERN.sub(lambda match: LEGACY_MAPPING[match.group(1).casefold()], cleaned)
+    return LEGACY_PATTERN.sub(
+        lambda match: LEGACY_MAPPING[match.group(1).casefold()], cleaned
+    )
 
 
 def _sanitized_component(name: str) -> str:
@@ -48,7 +57,11 @@ def _sanitized_component(name: str) -> str:
 
 def _extended_windows_path(path: Path) -> str:
     value = str(path.resolve())
-    return "\\\\?\\" + value if os.name == "nt" and not value.startswith("\\\\?\\") else value
+    return (
+        "\\\\?\\" + value
+        if os.name == "nt" and not value.startswith("\\\\?\\")
+        else value
+    )
 
 
 def _target_exists(path: Path) -> bool:
@@ -59,7 +72,7 @@ def _collision_safe_target(source: Path, target: Path) -> Path:
     if not _target_exists(target):
         return target
     suffix = target.suffix
-    stem = target.name[:-len(suffix)] if suffix else target.name
+    stem = target.name[: -len(suffix)] if suffix else target.name
     digest = hashlib.sha256(source.name.encode("utf-8")).hexdigest()
     for width in (12, 16, 24, 32, 64):
         marker = f"-{digest[:width]}"
@@ -67,7 +80,9 @@ def _collision_safe_target(source: Path, target: Path) -> Path:
         candidate = target.with_name(f"{stem[:available]}{marker}{suffix}")
         if not _target_exists(candidate):
             return candidate
-    raise FileExistsError(f"could not allocate collision-safe sanitized path beneath: {target.parent}")
+    raise FileExistsError(
+        f"could not allocate collision-safe sanitized path beneath: {target.parent}"
+    )
 
 
 def _rename(source: Path, target: Path) -> None:
@@ -83,8 +98,13 @@ def _rewrite_text(path: Path, failed_temporary_quarantine: Path) -> None:
     temporary_name: str | None = None
     try:
         with tempfile.NamedTemporaryFile(
-            "w", encoding="utf-8", newline="", delete=False, dir=path.parent,
-            prefix=f".{path.name}.", suffix=".sanitize-tmp",
+            "w",
+            encoding="utf-8",
+            newline="",
+            delete=False,
+            dir=path.parent,
+            prefix=f".{path.name}.",
+            suffix=".sanitize-tmp",
         ) as destination:
             temporary_name = destination.name
             with path.open("r", encoding="utf-8", newline="") as source:
@@ -101,7 +121,10 @@ def _rewrite_text(path: Path, failed_temporary_quarantine: Path) -> None:
                 failed_temporary_quarantine.mkdir(parents=True, exist_ok=True)
                 target = failed_temporary_quarantine / temporary.name
                 if target.exists():
-                    target = failed_temporary_quarantine / f"{temporary.stem}-{hashlib.sha256(temporary.read_bytes()).hexdigest()[:12]}{temporary.suffix}"
+                    target = (
+                        failed_temporary_quarantine
+                        / f"{temporary.stem}-{hashlib.sha256(temporary.read_bytes()).hexdigest()[:12]}{temporary.suffix}"
+                    )
                 shutil.move(str(temporary), str(target))
 
 
@@ -118,7 +141,10 @@ def _binary_has_private_term(path: Path) -> bool:
 
 
 def sanitize_tree(
-    root: Path, *, apply: bool = False, excluded_names: frozenset[str] = frozenset(),
+    root: Path,
+    *,
+    apply: bool = False,
+    excluded_names: frozenset[str] = frozenset(),
     preservation_root: Path | None = None,
 ) -> dict[str, object]:
     resolved = root.resolve()
@@ -135,7 +161,9 @@ def sanitize_tree(
         except ValueError:
             preservation_is_nested = False
         if preservation_is_nested:
-            raise ValueError("preservation root must be outside the active sanitization tree")
+            raise ValueError(
+                "preservation root must be outside the active sanitization tree"
+            )
         if preservation.exists() and any(preservation.iterdir()):
             raise ValueError("preservation root must not contain an earlier run")
         preservation.mkdir(parents=True, exist_ok=True)
@@ -147,10 +175,15 @@ def sanitize_tree(
     if apply and preservation is not None:
         affected: set[Path] = set()
         preservation_errors: list[str] = []
-        changed_nodes = [path for path in paths if _sanitized_component(path.name) != path.name]
+        changed_nodes = [
+            path for path in paths if _sanitized_component(path.name) != path.name
+        ]
         for path in paths:
             relative_parts = path.relative_to(resolved).parts
-            if any(part in SKIP_DIRECTORIES or part in excluded_names for part in relative_parts):
+            if any(
+                part in SKIP_DIRECTORIES or part in excluded_names
+                for part in relative_parts
+            ):
                 continue
             if path.is_file():
                 try:
@@ -160,7 +193,9 @@ def sanitize_tree(
                         affected.add(path)
                 except (OSError, UnicodeDecodeError) as error:
                     preservation_errors.append(
-                        sanitize(f"{path.relative_to(resolved).as_posix()}: {type(error).__name__}: {error}")
+                        sanitize(
+                            f"{path.relative_to(resolved).as_posix()}: {type(error).__name__}: {error}"
+                        )
                     )
         if preservation_errors:
             raise SanitizationPreflightError(sorted(preservation_errors))
@@ -174,11 +209,13 @@ def sanitize_tree(
             target = preservation / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(path, target)
-            preserved.append({
-                "path": relative.as_posix(),
-                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
-                "bytes": path.stat().st_size,
-            })
+            preserved.append(
+                {
+                    "path": relative.as_posix(),
+                    "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                    "bytes": path.stat().st_size,
+                }
+            )
         receipt = {
             "schema_version": "1.0",
             "operation": "pre_sanitization_preservation_copy",
@@ -186,10 +223,15 @@ def sanitize_tree(
             "recovery": "Restore a recorded quarantined file to its original relative path only after approved review.",
             "records": preserved,
         }
-        (preservation / "preservation-receipt.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
+        (preservation / "preservation-receipt.json").write_text(
+            json.dumps(receipt, indent=2) + "\n", encoding="utf-8"
+        )
     for path in paths:
         relative_parts = path.relative_to(resolved).parts
-        if any(part in SKIP_DIRECTORIES or part in excluded_names for part in relative_parts):
+        if any(
+            part in SKIP_DIRECTORIES or part in excluded_names
+            for part in relative_parts
+        ):
             continue
         if path.is_file():
             try:
@@ -197,29 +239,54 @@ def sanitize_tree(
                     sample = handle.read(65536)
                 if b"\x00" in sample:
                     if _binary_has_private_term(path):
-                        binary_hits.append(sanitize(path.relative_to(resolved).as_posix()))
+                        binary_hits.append(
+                            sanitize(path.relative_to(resolved).as_posix())
+                        )
                 else:
                     changed = _text_requires_change(path)
                     if changed:
-                        content_changes.append(sanitize(path.relative_to(resolved).as_posix()))
+                        content_changes.append(
+                            sanitize(path.relative_to(resolved).as_posix())
+                        )
                         if apply:
                             assert preservation is not None
-                            _rewrite_text(path, preservation / "_failed-sanitizer-temporary")
+                            _rewrite_text(
+                                path, preservation / "_failed-sanitizer-temporary"
+                            )
             except (OSError, UnicodeDecodeError) as error:
-                errors.append(sanitize(f"{path.relative_to(resolved).as_posix()}: {type(error).__name__}: {error}"))
+                errors.append(
+                    sanitize(
+                        f"{path.relative_to(resolved).as_posix()}: {type(error).__name__}: {error}"
+                    )
+                )
         cleaned_name = _sanitized_component(path.name)
         if cleaned_name != path.name:
             target = _collision_safe_target(path, path.with_name(cleaned_name))
             source_relative = path.relative_to(resolved).as_posix()
-            path_changes.append({"source_path_sha256": hashlib.sha256(source_relative.encode()).hexdigest(), "to": sanitize(target.relative_to(resolved).as_posix())})
+            path_changes.append(
+                {
+                    "source_path_sha256": hashlib.sha256(
+                        source_relative.encode()
+                    ).hexdigest(),
+                    "to": sanitize(target.relative_to(resolved).as_posix()),
+                }
+            )
             if apply:
                 _rename(path, target)
     return {
-        "schema_version": "1.0", "root": ".", "apply": apply,
-        "content_change_count": len(content_changes), "content_changes": sorted(content_changes),
-        "path_change_count": len(path_changes), "path_changes": sorted(path_changes, key=lambda item: item["source_path_sha256"]),
-        "binary_hit_count": len(binary_hits), "binary_hits": sorted(binary_hits),
-        "error_count": len(errors), "errors": sorted(errors),
+        "schema_version": "1.0",
+        "root": ".",
+        "apply": apply,
+        "content_change_count": len(content_changes),
+        "content_changes": sorted(content_changes),
+        "path_change_count": len(path_changes),
+        "path_changes": sorted(
+            path_changes, key=lambda item: item["source_path_sha256"]
+        ),
+        "binary_hit_count": len(binary_hits),
+        "binary_hits": sorted(binary_hits),
+        "error_count": len(errors),
+        "errors": sorted(errors),
         "preservation_count": len(preserved),
         "hard_delete": False,
     }
@@ -234,13 +301,29 @@ def main() -> int:
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     result = sanitize_tree(
-        args.root, apply=args.apply, excluded_names=frozenset(args.exclude_name),
+        args.root,
+        apply=args.apply,
+        excluded_names=frozenset(args.exclude_name),
         preservation_root=args.preservation_root,
     )
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({key: result[key] for key in ("apply", "content_change_count", "path_change_count", "binary_hit_count", "error_count")}, indent=2))
+    print(
+        json.dumps(
+            {
+                key: result[key]
+                for key in (
+                    "apply",
+                    "content_change_count",
+                    "path_change_count",
+                    "binary_hit_count",
+                    "error_count",
+                )
+            },
+            indent=2,
+        )
+    )
     return 0 if not result["binary_hits"] and not result["errors"] else 1
 
 

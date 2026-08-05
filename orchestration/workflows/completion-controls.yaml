@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "workflows": [
+    {
+      "id": "candidate-pipeline",
+      "purpose": "Compile and resolve candidates through explicit membership and evidence boundaries.",
+      "steps": [
+        {"id": "inventory", "skill": "audit-source-capabilities", "depends_on": []},
+        {"id": "compile", "skill": "govern-candidate-resolution-pipeline", "depends_on": ["inventory"]},
+        {"id": "resolve", "skill": "govern-candidate-resolution-pipeline", "depends_on": ["compile"]},
+        {"id": "verify", "skill": "engineer-verification-lab", "depends_on": ["resolve"]}
+      ],
+      "failure_policy": "Block on source admission failure, stage invariant violation, batch instability, missing dependency, missing required kind, or unreasoned exclusion."
+    },
+    {
+      "id": "distributed-runtime",
+      "purpose": "Reserve, place, execute, reconcile, and hand off project-scoped distributed work.",
+      "steps": [
+        {"id": "scope", "skill": "govern-distributed-work-runtime", "depends_on": []},
+        {"id": "reserve", "skill": "orchestrate-capability-scheduling", "depends_on": ["scope"]},
+        {"id": "place", "skill": "govern-distributed-work-runtime", "depends_on": ["reserve"]},
+        {"id": "execute", "skill": "govern-runtime-protocol-deployment", "depends_on": ["place"]},
+        {"id": "verify", "skill": "verify-outcome", "depends_on": ["execute"]},
+        {"id": "reconcile", "skill": "govern-distributed-work-runtime", "depends_on": ["verify"]}
+      ],
+      "failure_policy": "Fail closed on scope bleed, lease collision, quota, trust, missing user presence, missing evidence, or unreconciled resources."
+    },
+    {
+      "id": "epistemic-evolution",
+      "purpose": "Maintain temporal claims and evaluate quarantined skill improvements without live self-editing.",
+      "steps": [
+        {"id": "capture", "skill": "govern-memory-fabric", "depends_on": []},
+        {"id": "invalidate", "skill": "govern-epistemic-skill-evolution", "depends_on": ["capture"]},
+        {"id": "experiment", "skill": "govern-epistemic-skill-evolution", "depends_on": ["invalidate"]},
+        {"id": "verify", "skill": "skill-admission-controller", "depends_on": ["experiment"]}
+      ],
+      "failure_policy": "Keep candidates quarantined on temporal ambiguity, missing lineage, correlated actor and judge, held-out regression, or absent independent promotion."
+    },
+    {
+      "id": "deliverable-validation",
+      "purpose": "Prove physical and media deliverables against explicit promises and independent checks.",
+      "steps": [
+        {"id": "declare", "skill": "validate-physical-media-deliverables", "depends_on": []},
+        {"id": "inspect", "skill": "validate-physical-media-deliverables", "depends_on": ["declare"]},
+        {"id": "verify", "skill": "verify-outcome", "depends_on": ["inspect"]}
+      ],
+      "failure_policy": "Block on mismatch, unknown required property, missing independent physical check, or provider downgrade."
+    },
+    {
+      "id": "research-engine",
+      "purpose": "Discover, fingerprint, compare, and admit engineering mechanisms without repository-level copying.",
+      "steps": [
+        {"id": "discover", "skill": "operate-engineering-research-engine", "depends_on": []},
+        {"id": "fingerprint", "skill": "operate-engineering-research-engine", "depends_on": ["discover"]},
+        {"id": "synthesize", "skill": "operate-engineering-research-engine", "depends_on": ["fingerprint"]},
+        {"id": "admit", "skill": "govern-knowledge-refinery", "depends_on": ["synthesize"]},
+        {"id": "verify", "skill": "run-evidence-campaigns", "depends_on": ["admit"]}
+      ],
+      "failure_policy": "Retain evidence and abstain on license ambiguity, missing provenance, weak mechanism evidence, semantic conflict, or attempted direct promotion."
+    }
+  ]
+}

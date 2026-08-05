@@ -1,0 +1,31 @@
+{
+  "id": "guided-procedure-wizard",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/guided-procedure-wizard/SKILL.md",
+  "body_sha256": "42fe1e69b7ce78d824d351a3220b912d0b6a802eee3ee6885bba047be831c137",
+  "references": [],
+  "capability_tags": [
+    "engineering-reasoning",
+    "guided",
+    "procedure",
+    "wizard"
+  ],
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "provenance": {
+    "type": "sanitized_mit_adaptation",
+    "basis": [
+      "evidence/integration/pxi-20260804/candidate_disposition_ledger.json",
+      "LICENSES/mattpocock-skills-MIT.txt"
+    ],
+    "canonical_owner": ".agents/skills/guided-procedure-wizard/SKILL.md"
+  },
+  "clean_room": false,
+  "tests": "tests/test_project_reasoning.py",
+  "evidence": "tests/test_project_reasoning.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

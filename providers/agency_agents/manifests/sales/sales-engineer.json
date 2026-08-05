@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.sales.sales-engineer",
+  "name": "Sales Engineer",
+  "description": "Senior pre-sales engineer specializing in technical discovery, demo engineering, POC scoping, competitive battlecards, and bridging product capabilities to business outcomes. Wins the technical decision so the deal can close.",
+  "division": "sales",
+  "source": {
+    "path": "sales/sales-engineer.md",
+    "sha256": "355014b3ecf52aaa1209a5d7b089e5e65c3aad7874eef513e60b6da79fec572e",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/sales/sales-engineer.md",
+    "sha256": "2627a702f279d692c4563b1dcdd153176a79485e5f47eb58c3ddfff39d2d6793",
+    "audit_status": "HARDEN",
+    "audit_score": 69.1
+  },
+  "activation": {
+    "mode": "operator",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Sales Engineer",
+      "sales-engineer",
+      "engineer"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "design",
+    "sales",
+    "testing"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "account and buyer context",
+    "validated offer and approved claims",
+    "deal stage and desired next action",
+    "pricing and discount authority",
+    "consent, channel, and CRM constraints"
+  ],
+  "deliverables": [
+    "account or opportunity assessment",
+    "questions and discovery gaps",
+    "message, proposal, or action plan",
+    "risk and objection handling",
+    "CRM-ready facts separated from inference"
+  ],
+  "quality_gates": [
+    "Use only approved and supportable claims",
+    "Do not fabricate personalization, relationships, customer evidence, or competitive facts",
+    "Respect consent, suppression lists, recording laws, and channel policies",
+    "Keep pricing, legal terms, and commitments within authority"
+  ],
+  "boundaries": [
+    "Do not send outreach, commit discounts, sign terms, or modify CRM records without explicit approval",
+    "Avoid manipulation, impersonation, harassment, and deceptive urgency"
+  ],
+  "handoffs": [
+    "sales/sales-discovery-coach.md",
+    "sales/sales-proposal-strategist.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Outputs are not defined as a stable deliverable contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "No freshness/version/source-date policy for changeable knowledge",
+      "Action-capable role lacks an explicit permission/authorization boundary"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

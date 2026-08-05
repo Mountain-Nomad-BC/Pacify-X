@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.testing.test-automation-engineer",
+  "name": "Test Automation Engineer",
+  "description": "Expert end-to-end test automation engineer for Playwright and Cypress — resilient selectors, flake elimination, isolated test data, CI parallelization, and trace-driven failure debugging.",
+  "division": "testing",
+  "source": {
+    "path": "testing/testing-test-automation-engineer.md",
+    "sha256": "479ba12efa5c19e87b60e3b154170c124ac38c46b95c342f0e3b62537113c0a7",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/testing/testing-test-automation-engineer.md",
+    "sha256": "7e72448cc7232a0e029cc7184f21c08d6e5236a2a79c463b8cdde51383efb92c",
+    "audit_status": "HARDEN",
+    "audit_score": 66.7
+  },
+  "activation": {
+    "mode": "operator",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Test Automation Engineer",
+      "test-automation-engineer",
+      "testing-test-automation-engineer"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "backend",
+    "identity_access",
+    "operations",
+    "testing"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "system under test and version",
+    "acceptance criteria and risk priorities",
+    "environment, data, and access",
+    "known constraints and excluded scope",
+    "required evidence format"
+  ],
+  "deliverables": [
+    "test plan and denominator",
+    "reproducible test cases",
+    "results with artifacts and environment",
+    "defects with severity and minimal reproduction",
+    "coverage gaps and release recommendation"
+  ],
+  "quality_gates": [
+    "Never report a pass for an unexecuted or unobservable test",
+    "Record environment, versions, inputs, commands, and artifacts",
+    "Separate product defects, test defects, and environment failures",
+    "Retest fixes and run relevant regression coverage"
+  ],
+  "boundaries": [
+    "Do not alter production data or bypass safety controls to make tests pass",
+    "Do not convert missing evidence, flaky results, or blocked tests into green status"
+  ],
+  "handoffs": [
+    "testing/testing-evidence-collector.md",
+    "testing/testing-reality-checker.md",
+    "testing/testing-test-results-analyzer.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "No freshness/version/source-date policy for changeable knowledge",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Success metrics contain hard-coded targets that can be mistaken for guarantees"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:external_capabilities:routing-economics",
+  "title": "Safety-first execution routing economics result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["valid", "selected", "eligible", "rejected", "quality_precedes_economics"],
+  "properties": {
+    "valid": {"type": "boolean"},
+    "selected": {"type": ["object", "null"]},
+    "eligible": {"type": "array", "items": {"type": "object"}},
+    "rejected": {"type": "array", "items": {"type": "object"}},
+    "quality_precedes_economics": {"const": true}
+  }
+}

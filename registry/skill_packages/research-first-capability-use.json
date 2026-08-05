@@ -1,0 +1,39 @@
+{
+  "id": "research-first-capability-use",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/research-first-capability-use/SKILL.md",
+  "body_sha256": "64681a0953a12c9d1b3e8219bf4adafda3289b7421733bd8d72d5ac1e95b6cd6",
+  "references": [
+    ".agents/skills/research-first-capability-use/references/lookup-current-documentation.json"
+  ],
+  "capability_tags": [
+    "capability",
+    "external-candidate",
+    "first",
+    "research",
+    "use"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "inactive_external_candidate_wrapper",
+    "basis": [
+      "registry/external_capability_candidates.json",
+      "registry/external_capability_licenses.json"
+    ],
+    "canonical_owner": "research-to-operation-translator",
+    "source_licenses": [
+      "everything-claude-code"
+    ],
+    "candidate_capabilities": [
+      "lookup-current-documentation"
+    ]
+  },
+  "clean_room": false,
+  "tests": "tests/test_external_capability_provider.py",
+  "evidence": "tests/test_external_capability_provider.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

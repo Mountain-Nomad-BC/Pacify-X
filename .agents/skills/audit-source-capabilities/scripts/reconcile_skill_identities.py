@@ -65,7 +65,9 @@ def reconcile(
         targets = item.get("active_semantic_mappings") or item.get("targets") or []
         missing = sorted(set(map(str, targets)) - known_targets)
         if missing:
-            raise ValueError(f"unknown target skill(s) for {item.get('id') or item.get('source_id')}: {missing}")
+            raise ValueError(
+                f"unknown target skill(s) for {item.get('id') or item.get('source_id')}: {missing}"
+            )
 
     results: list[dict[str, Any]] = []
     counts: Counter[str] = Counter()
@@ -73,7 +75,9 @@ def reconcile(
     for record_id, source in skill_records.items():
         path = str(source["path"]).replace("\\", "/")
         value = frontmatter.get(record_id, {}).get("name")
-        identity = canonical(value if isinstance(value, str) and value.strip() else path.split("/")[-2])
+        identity = canonical(
+            value if isinstance(value, str) and value.strip() else path.split("/")[-2]
+        )
         source_hash = str(source["sha256"])
         identities[identity].add(source_hash)
         result = {
@@ -94,7 +98,9 @@ def reconcile(
             )
         elif identity in aliases:
             item = aliases[identity]
-            result.update(disposition=f"alias_{item['disposition']}", targets=item["targets"])
+            result.update(
+                disposition=f"alias_{item['disposition']}", targets=item["targets"]
+            )
         elif vendor_prefixes and str(source["source_tree"]).startswith(vendor_prefixes):
             result.update(
                 disposition="vendor_reference_only",
@@ -119,7 +125,9 @@ def reconcile(
             "skill_files": len(results),
             "unique_identities": len(identities),
             "unique_content_hashes": len({r["source_sha256"] for r in results}),
-            "identity_variant_counts": dict(sorted((k, len(v)) for k, v in identities.items())),
+            "identity_variant_counts": dict(
+                sorted((k, len(v)) for k, v in identities.items())
+            ),
             "by_disposition": dict(sorted(counts.items())),
             "unresolved": unresolved,
             "complete": unresolved == 0 and len(frontmatter) == len(skill_records),

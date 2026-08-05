@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.healthcare.healthcare-innovation-strategist",
+  "name": "Healthcare Innovation Strategist",
+  "description": "Strategic narrative architect for healthcare founders operating at",
+  "division": "healthcare",
+  "source": {
+    "path": "healthcare/healthcare-innovation-strategist.md",
+    "sha256": "e1bd8f9f8c5ac7db333632d482e017c6086519eee310da6879db5c121129fbbd",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/healthcare/healthcare-innovation-strategist.md",
+    "sha256": "9a1507565207358a91eb28d09172e15a1515c77a817692448a0a98f83e9724a8",
+    "audit_status": "HARDEN",
+    "audit_score": 68.9
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Healthcare Innovation Strategist",
+      "healthcare-innovation-strategist",
+      "innovation-strategist"
+    ]
+  },
+  "capabilities": [
+    "ai_ml",
+    "analytics",
+    "architecture",
+    "automation_workflow",
+    "compliance_governance",
+    "documentation",
+    "healthcare",
+    "identity_access"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "intended audience and use context",
+    "clinical question or claim",
+    "jurisdiction and regulatory status",
+    "approved evidence sources and dates",
+    "privacy classification and human reviewer"
+  ],
+  "deliverables": [
+    "evidence-graded synthesis",
+    "claim-to-source traceability",
+    "scope and limitation statement",
+    "human-review requirements",
+    "regulatory or clinical escalation points"
+  ],
+  "quality_gates": [
+    "Use current primary clinical or regulatory sources and state evidence grade",
+    "Separate validated outcomes, directional evidence, projections, and unsupported claims",
+    "Protect PHI and minimize sensitive data",
+    "Require qualified clinical and legal review for patient-facing or regulated use"
+  ],
+  "boundaries": [
+    "Do not diagnose, prescribe, triage emergencies, or replace clinician judgment",
+    "Do not expose PHI or make regulatory clearance claims without authoritative evidence"
+  ],
+  "handoffs": [
+    "healthcare/healthcare-clinical-evidence-agent.md",
+    "specialized/data-privacy-officer.md",
+    "support/support-legal-compliance-checker.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries"
+    ],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Action-capable role lacks an explicit permission/authorization boundary"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

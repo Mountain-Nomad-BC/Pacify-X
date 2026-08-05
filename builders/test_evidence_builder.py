@@ -1,10 +1,18 @@
 """Focused test specifications and sanitized evidence proposals (PC-504)."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Mapping
 
-from .common import BuilderError, bounded_unique, canonical_digest, proposal_envelope, require_identifier, sanitize
+from .common import (
+    BuilderError,
+    bounded_unique,
+    canonical_digest,
+    proposal_envelope,
+    require_identifier,
+    sanitize,
+)
 
 
 TEST_KINDS = frozenset({"positive", "negative", "effect_boundary"})
@@ -63,7 +71,9 @@ def propose_test_evidence(request: TestEvidenceRequest) -> dict[str, object]:
         raise BuilderError("missing required test kinds: " + ", ".join(missing_kinds))
 
     case_payloads.sort(key=lambda item: (str(item["kind"]), str(item["id"])))
-    failing_ids = sorted(str(item["id"]) for item in case_payloads if not item["passed"])
+    failing_ids = sorted(
+        str(item["id"]) for item in case_payloads if not item["passed"]
+    )
     summary = {
         "asset_id": asset_id,
         "total": len(case_payloads),
@@ -74,7 +84,9 @@ def propose_test_evidence(request: TestEvidenceRequest) -> dict[str, object]:
         "evidence_sources": sorted(sources),
         "sanitized": True,
     }
-    summary["evidence_digest"] = canonical_digest({"cases": case_payloads, "summary": summary})
+    summary["evidence_digest"] = canonical_digest(
+        {"cases": case_payloads, "summary": summary}
+    )
     body = {
         "asset_id": asset_id,
         "tests": case_payloads,

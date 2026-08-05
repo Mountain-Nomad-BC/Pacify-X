@@ -1,4 +1,5 @@
 """Durable lifecycle state with idempotency and non-certifying interruptions."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, asdict
@@ -39,18 +40,30 @@ def persist_state(state: DurableState, path: Path) -> None:
 def load_state(path: Path) -> DurableState:
     payload = json.loads(path.read_text(encoding="utf-8"))
     return DurableState(
-        payload["package_id"], tuple(payload["completed_steps"]),
-        tuple(tuple(item) for item in payload["selected_skills"]), tuple(payload["pending_approvals"]),
-        tuple(payload["evidence_refs"]), tuple(payload["idempotency_keys"]), tuple(payload.get("interrupted_steps", ())),
+        payload["package_id"],
+        tuple(payload["completed_steps"]),
+        tuple(tuple(item) for item in payload["selected_skills"]),
+        tuple(payload["pending_approvals"]),
+        tuple(payload["evidence_refs"]),
+        tuple(payload["idempotency_keys"]),
+        tuple(payload.get("interrupted_steps", ())),
     )
 
 
-def reconcile_resume(state: DurableState, *, actual_evidence: Iterable[str], requested_idempotency_key: str | None = None) -> tuple[bool, tuple[str, ...]]:
+def reconcile_resume(
+    state: DurableState,
+    *,
+    actual_evidence: Iterable[str],
+    requested_idempotency_key: str | None = None,
+) -> tuple[bool, tuple[str, ...]]:
     reasons: list[str] = []
     if set(state.evidence_refs) - set(actual_evidence):
         reasons.append("recorded evidence is missing from runtime")
     if state.interrupted_steps:
         reasons.append("interrupted steps are non-certifying")
-    if requested_idempotency_key and requested_idempotency_key in state.idempotency_keys:
+    if (
+        requested_idempotency_key
+        and requested_idempotency_key in state.idempotency_keys
+    ):
         reasons.append("effect idempotency key has already completed")
     return not reasons, tuple(sorted(reasons))

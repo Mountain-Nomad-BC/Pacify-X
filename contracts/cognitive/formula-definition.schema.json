@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:cognitive:formula-definition",
+  "type": "object",
+  "required": ["id", "expression", "variables", "output_dimension", "assumptions", "status", "source", "authoritative_source", "expected_examples", "property_cases", "validation"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "expression": {"type": "string", "minLength": 1},
+    "variables": {"type": "object", "additionalProperties": {"$ref": "#/$defs/variable"}},
+    "output_dimension": {"anyOf": [{"type": "string"}, {"type": "object", "additionalProperties": {"type": "number"}}]},
+    "assumptions": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "status": {"enum": ["executable", "reference_only", "requires_model"]},
+    "source": {"type": "string", "minLength": 1},
+    "authoritative_source": {"type": "string", "minLength": 1},
+    "expected_examples": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["inputs", "expected", "tolerance"],
+        "properties": {
+          "inputs": {"type": "object", "additionalProperties": {"type": "number"}},
+          "expected": {"type": "number"},
+          "tolerance": {"type": "number", "minimum": 0}
+        },
+        "additionalProperties": false
+      }
+    },
+    "property_cases": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+    "validation": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "variable": {
+      "type": "object", "required": ["dimension"], "additionalProperties": false,
+      "properties": {"dimension": {"anyOf": [{"type": "string"}, {"type": "object"}]}, "minimum": {"type": "number"}, "maximum": {"type": "number"}}
+    }
+  }
+}

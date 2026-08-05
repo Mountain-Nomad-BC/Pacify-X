@@ -34,3 +34,5 @@ Run `engineering-bootstrap tools certify` when the declared-suite exact-tool reg
 
 Use `references/scripts-index.json` to locate a deterministic helper interface. The
 cross-domain orchestration registry is `orchestration/workflows/declared-suite.yaml`.
+
+For a shadow rollout, use `runtime.behavioral_certification.compare_shadow_behavior`. Always return the incumbent result before an authorized cutover, contain candidate effects to read-only or isolated computation, record mismatches, honor the kill switch, and require separate cutover authority even when results match.

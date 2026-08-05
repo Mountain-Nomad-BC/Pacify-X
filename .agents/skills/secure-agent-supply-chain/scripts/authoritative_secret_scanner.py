@@ -1,15 +1,41 @@
 #!/usr/bin/env python3
+"""Scan a bounded tree for credential-shaped literals without echoing values."""
+
 from __future__ import annotations
-import argparse,json,re
+
+import argparse
+import json
 from pathlib import Path
-PATTERNS={'private_key':r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----','aws_access_key':r'\bAKIA[0-9A-Z]{16}\b','generic_secret':r'(?i)\b(api[_-]?key|secret|password|token)\s*[:=]\s*["\']?[^\s"\']{8,}','github_token':r'\bgh[pousr]_[A-Za-z0-9_]{20,}\b'}
-def main():
- ap=argparse.ArgumentParser(); ap.add_argument('root'); a=ap.parse_args(); hits=[]
- for p in Path(a.root).rglob('*'):
-  if not p.is_file() or any(x in p.parts for x in ['.git','node_modules','.venv']): continue
-  try: s=p.read_text(errors='ignore')
-  except Exception: continue
-  for kind,pat in PATTERNS.items():
-   for m in re.finditer(pat,s): hits.append({'file':str(p),'kind':kind,'line':s.count('\n',0,m.start())+1,'value':'[REDACTED]'})
- print(json.dumps({'findings':hits,'count':len(hits)},indent=2)); raise SystemExit(2 if hits else 0)
-if __name__=='__main__': main()
+import sys
+
+
+ROOT = Path(__file__).resolve().parents[4]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+try:
+    from engineering_bootstrap.secret_scanning import scan_secret_shapes  # type: ignore[import-not-found]  # noqa: E402
+except ModuleNotFoundError:
+    from runtime.secret_scanning import scan_secret_shapes  # noqa: E402
+
+
+scan = scan_secret_shapes
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("root", type=Path)
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--review-registry", type=Path)
+    args = parser.parse_args()
+    result = scan(args.root, review_registry=args.review_registry)
+    rendered = json.dumps(result, indent=2) + "\n"
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(rendered, encoding="utf-8")
+    print(rendered, end="")
+    return 0 if result["valid"] else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

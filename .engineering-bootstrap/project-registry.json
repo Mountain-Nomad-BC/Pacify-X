@@ -7,6 +7,22 @@
   "skill_bodies_copied_to_project": false,
   "skills": [
     {
+      "body": ".agents/skills/acquire-install-n8n/SKILL.md",
+      "bytes": 2822,
+      "id": "acquire-install-n8n",
+      "sha256": "30b739e07091695f59d196f840527c2d8ddca3e80165d50e35c0294dc20db974",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/acquire-install-supabase/SKILL.md",
+      "bytes": 3091,
+      "id": "acquire-install-supabase",
+      "sha256": "536bcecab1eb8a9e3884f5ef258ca766a16205c04ec971ee9dc99faa9c51ab87",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/admit-capability/SKILL.md",
       "bytes": 1253,
       "id": "admit-capability",
@@ -31,6 +47,14 @@
       "status": "active"
     },
     {
+      "body": ".agents/skills/architecture-deepening-audit/SKILL.md",
+      "bytes": 764,
+      "id": "architecture-deepening-audit",
+      "sha256": "4b3249edacd5f8e4a4d1b56a1895f2ac36a5a71eb30e8c7e3cdb5db543c9eea7",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/audit-ai-runtime-assurance/SKILL.md",
       "bytes": 1542,
       "id": "audit-ai-runtime-assurance",
@@ -51,6 +75,62 @@
       "bytes": 5208,
       "id": "audit-source-capabilities",
       "sha256": "1c97d9ecc6b2c657609c5f1df7d8510b885332073d72ad6e21b1f82f70dba286",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/automate-supabase-with-n8n/SKILL.md",
+      "bytes": 2986,
+      "id": "automate-supabase-with-n8n",
+      "sha256": "27eb888ff5fab8bdc992ee02b47f50306117f7ea0adc5519c3588b76717931ee",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/backup-deploy-recover-supabase/SKILL.md",
+      "bytes": 2932,
+      "id": "backup-deploy-recover-supabase",
+      "sha256": "ba63e7073a36ff2924097c0bd5073250975d5ced01f0e105cdab67dd6748fd17",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/backup-upgrade-restore-n8n/SKILL.md",
+      "bytes": 2817,
+      "id": "backup-upgrade-restore-n8n",
+      "sha256": "8e3ebcf27c0aeb717b4ebf8e2791cb90a789128e63fd2484759e44a3b7c622e3",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/build-n8n-ai-workflows/SKILL.md",
+      "bytes": 2911,
+      "id": "build-n8n-ai-workflows",
+      "sha256": "da60dadc796cd2d23129a3d6d9a1bc91e2ff7b9007146025d3dfc522eb602aab",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/build-n8n-custom-nodes/SKILL.md",
+      "bytes": 2838,
+      "id": "build-n8n-custom-nodes",
+      "sha256": "f22ee7ccd43b49113ae2087b7212edebaff09e3a0d4ec01612e1a76ca05e3caa",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/build-n8n-supabase-rag/SKILL.md",
+      "bytes": 2937,
+      "id": "build-n8n-supabase-rag",
+      "sha256": "dbe7e95583579da5f3b7c7343dd2d8f82b96da75cfe6f9dddd63b96c687bd878",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/build-supabase-edge-functions/SKILL.md",
+      "bytes": 2917,
+      "id": "build-supabase-edge-functions",
+      "sha256": "25ba3abf95f631f7f495bffd18eb989d10aace92dd6607d71ca3148f1a48ab04",
       "source": "installed_framework",
       "status": "active"
     },
@@ -87,10 +167,122 @@
       "status": "active"
     },
     {
+      "body": ".agents/skills/configure-n8n/SKILL.md",
+      "bytes": 2843,
+      "id": "configure-n8n",
+      "sha256": "88358555f9da1f345d96191ab50ada90b7e84f68fb244ba9080ea6b35fbb9cbe",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/connect-n8n-to-supabase/SKILL.md",
+      "bytes": 3053,
+      "id": "connect-n8n-to-supabase",
+      "sha256": "870fdfa310dc54a8e43c7fc9322810f0c2581291df8cb06036624b0a3cce1d61",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/context-compactor/SKILL.md",
+      "bytes": 1109,
+      "id": "context-compactor",
+      "sha256": "2c5ecea8627ebfd6bf4b2024ad1c96b8a6e5a69c0b61e89a0b4fc947fbad843b",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/context-handoff-package/SKILL.md",
+      "bytes": 704,
+      "id": "context-handoff-package",
+      "sha256": "9b33e508ea92d590b854f69134596e53febe87fe086e34a1a06f5650cb9658b4",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/decision-wayfinding/SKILL.md",
+      "bytes": 1234,
+      "id": "decision-wayfinding",
+      "sha256": "fe397598cf59a97e5edffdffb72bfb87b085d819630d1f1275366a1c9b09b3ec",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/deep-module-design/SKILL.md",
+      "bytes": 1145,
+      "id": "deep-module-design",
+      "sha256": "9464e69f622c924e2d08e4813439435d4e05f99a6dc06d8c2dd6409c5a573b32",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/deploy-isolated-model-worker/SKILL.md",
       "bytes": 1398,
       "id": "deploy-isolated-model-worker",
       "sha256": "936a84618047127e17ce58c73ca1d6e00f4ea001254edd4051323401a0da8927",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/deploy-n8n-docker/SKILL.md",
+      "bytes": 2909,
+      "id": "deploy-n8n-docker",
+      "sha256": "65d98e5a78333ba2c993c9f9047c5899ee2866579827ac1252c624bf1b2fa464",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/design-build-n8n-workflows/SKILL.md",
+      "bytes": 2885,
+      "id": "design-build-n8n-workflows",
+      "sha256": "7596197bc84e03c98e5455ddacca706462db180930b56c9198126f275b7b5399",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/design-it-twice/SKILL.md",
+      "bytes": 833,
+      "id": "design-it-twice",
+      "sha256": "15fa7a60105052643706326f55f58ae325cf19850e92aff3cfaa8f5307a9f3ec",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/design-n8n-supabase-reliability/SKILL.md",
+      "bytes": 3009,
+      "id": "design-n8n-supabase-reliability",
+      "sha256": "3c91e7463bb18e4881b7ab92f95b40a9026d8248edf5194cd052e9725f8f05c4",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/design-n8n-supabase-security-boundaries/SKILL.md",
+      "bytes": 3051,
+      "id": "design-n8n-supabase-security-boundaries",
+      "sha256": "f695d58b98e63c1ee9dc713073ea95494bcc03acb1a63caff9c5258f611127cd",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/design-supabase-postgres/SKILL.md",
+      "bytes": 2878,
+      "id": "design-supabase-postgres",
+      "sha256": "0d081972a022382d9ae18d74eb87ed614574f5707528ab582af915988468d070",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/develop-n8n-monorepo/SKILL.md",
+      "bytes": 2955,
+      "id": "develop-n8n-monorepo",
+      "sha256": "5a5de52f4427c3c40fe8c5cb6459933ec2e1a61af78156d753c66dcf33d85f3b",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/develop-supabase-locally/SKILL.md",
+      "bytes": 2813,
+      "id": "develop-supabase-locally",
+      "sha256": "a39628d128198f8a104601e2df2b1be7035a400a7da13cba33debabe6e1bfdcd",
       "source": "installed_framework",
       "status": "active"
     },
@@ -111,10 +303,26 @@
       "status": "active"
     },
     {
+      "body": ".agents/skills/domain-language-maintenance/SKILL.md",
+      "bytes": 1109,
+      "id": "domain-language-maintenance",
+      "sha256": "8b727330d295fb266b8fa1d1e389a14956e1ee126bd0edcb01800aff0d8163ba",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/dual-axis-code-review/SKILL.md",
+      "bytes": 712,
+      "id": "dual-axis-code-review",
+      "sha256": "b7c507bcf4008e3d1a4d3991d952a4d79ed095fc1e4474cc66e9491d936248c8",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/dynamic-service-discovery/SKILL.md",
-      "bytes": 1563,
+      "bytes": 1981,
       "id": "dynamic-service-discovery",
-      "sha256": "42f3408df8e7f2e2b9178f1ef960fbf6c21cc61a7ae5c3e7d8a4807722aa7bfe",
+      "sha256": "d14b5999d4836c5c25d38f17e06c505539f74c230fb5ca2bf423612b77483487",
       "source": "installed_framework",
       "status": "active"
     },
@@ -144,9 +352,17 @@
     },
     {
       "body": ".agents/skills/engineer-verification-lab/SKILL.md",
-      "bytes": 2105,
+      "bytes": 2427,
       "id": "engineer-verification-lab",
-      "sha256": "268b6dabad70bf2dddac2991040b5f7caf92724395ddbd670d2d54521020f130",
+      "sha256": "dfa4d00acfe7f08912ee652eda9bc06f4befa5b43d4a5bc92cb1392d47be4b79",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/evaluate-n8n-fit/SKILL.md",
+      "bytes": 2845,
+      "id": "evaluate-n8n-fit",
+      "sha256": "681a27938f1bf8413bd8d17585aea577a206259794856ba312e90ccca69c1825",
       "source": "installed_framework",
       "status": "active"
     },
@@ -155,6 +371,14 @@
       "bytes": 2301,
       "id": "evaluate-retrieval-readiness",
       "sha256": "6a252addc62a76f46d9518eda00d1f4a60bc61cba829e3d593b245b4f06428d9",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/evaluate-supabase-fit/SKILL.md",
+      "bytes": 2863,
+      "id": "evaluate-supabase-fit",
+      "sha256": "ad4e5cbccead50dd7be7250b4f6885e287791e1de680c66c5bc57148c6e0084b",
       "source": "installed_framework",
       "status": "active"
     },
@@ -183,10 +407,34 @@
       "status": "active"
     },
     {
+      "body": ".agents/skills/frontier-questioning/SKILL.md",
+      "bytes": 1392,
+      "id": "frontier-questioning",
+      "sha256": "76b0d8dd66a6bf68a3c67e3a41bc27e2b1dbcfd5f5db695ccae5c900810e1002",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/gate-model-data-lifecycle/SKILL.md",
       "bytes": 1543,
       "id": "gate-model-data-lifecycle",
       "sha256": "c09424ce8a07145ec061fa6c2e82ad365d1ea8b6d9c02d39f7e0ae70422371f4",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/govern-candidate-resolution-pipeline/SKILL.md",
+      "bytes": 2543,
+      "id": "govern-candidate-resolution-pipeline",
+      "sha256": "90d88f7ac9eade7852881f51c57c230462e36d942e32ba141c9d450014eff37f",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/govern-cybersecurity-capabilities/SKILL.md",
+      "bytes": 3464,
+      "id": "govern-cybersecurity-capabilities",
+      "sha256": "150f0a33f1e5cf88753831e5cd38dea7c30fbcb27d4b3f1a86c068e2c01cb421",
       "source": "installed_framework",
       "status": "active"
     },
@@ -199,10 +447,42 @@
       "status": "active"
     },
     {
+      "body": ".agents/skills/govern-distributed-work-runtime/SKILL.md",
+      "bytes": 2103,
+      "id": "govern-distributed-work-runtime",
+      "sha256": "517e85cf43256df8065156efd124f6a5a0aa4bcd2a7f5768b56a259e796c2293",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/govern-epistemic-skill-evolution/SKILL.md",
+      "bytes": 2021,
+      "id": "govern-epistemic-skill-evolution",
+      "sha256": "2338c3d42f54448994985d16cd6ecfeb0921d9d5519baacf8c605938b17191c7",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/govern-external-capability-intake/SKILL.md",
+      "bytes": 2535,
+      "id": "govern-external-capability-intake",
+      "sha256": "c58e5a9c6e10485d5463caaad9446cc6665f25c28d2feda0a6cacf7fe021370e",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/govern-knowledge-refinery/SKILL.md",
+      "bytes": 2199,
+      "id": "govern-knowledge-refinery",
+      "sha256": "0ec8432bc2dc73a44254aac390f6ce24f91410dad0a457b0f2b402f00b806e3c",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/govern-memory-fabric/SKILL.md",
-      "bytes": 3387,
+      "bytes": 5435,
       "id": "govern-memory-fabric",
-      "sha256": "056f8ee0ffb4877671b2723f5cb8983433657a56c271310750884e8071d0c9e9",
+      "sha256": "5e1015a29fda6bc4ec90d5500e5346eb32900babe5f04c32bdbcbe4b2ead126b",
       "source": "installed_framework",
       "status": "active"
     },
@@ -211,6 +491,14 @@
       "bytes": 2679,
       "id": "govern-metacognitive-evolution",
       "sha256": "fbf555b37234ecf0f84bbdf60982e08a4584ef5ecbc5de949c23dccc43af845d",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/govern-n8n-community-nodes/SKILL.md",
+      "bytes": 2868,
+      "id": "govern-n8n-community-nodes",
+      "sha256": "620259d7a7ec1b16d9579778c13716a83e44413ecd1414f50ff7ba92be5d6ddb",
       "source": "installed_framework",
       "status": "active"
     },
@@ -239,10 +527,34 @@
       "status": "active"
     },
     {
+      "body": ".agents/skills/guided-procedure-wizard/SKILL.md",
+      "bytes": 674,
+      "id": "guided-procedure-wizard",
+      "sha256": "42fe1e69b7ce78d824d351a3220b912d0b6a802eee3ee6885bba047be831c137",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/handle-debug-n8n-executions/SKILL.md",
+      "bytes": 2778,
+      "id": "handle-debug-n8n-executions",
+      "sha256": "b74f7925b5ab1c9a21bb0494a07f99719deed863470c6156d88bdfdb362aca00",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/harden-container-boundaries/SKILL.md",
       "bytes": 1298,
       "id": "harden-container-boundaries",
       "sha256": "f5814185400bb02296f582e49521cf67ca14f59b3e9fac94b58cec1c3799e0ed",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/implement-supabase-auth/SKILL.md",
+      "bytes": 2957,
+      "id": "implement-supabase-auth",
+      "sha256": "56b9e42676cee3e94a423bc720ee63ea24362fcc045bee9e67e3126cd3d2c95d",
       "source": "installed_framework",
       "status": "active"
     },
@@ -263,10 +575,50 @@
       "status": "active"
     },
     {
+      "body": ".agents/skills/integrate-n8n-webhooks-and-apis/SKILL.md",
+      "bytes": 2998,
+      "id": "integrate-n8n-webhooks-and-apis",
+      "sha256": "ed7c587a6341acf4b6bf7b0f0dd914d60df5e189bfd24cbc38d10b12fce28245",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/integrate-supabase-data-api-and-clients/SKILL.md",
+      "bytes": 3023,
+      "id": "integrate-supabase-data-api-and-clients",
+      "sha256": "f70bf975c1a035974d27e65a5461e8dfa4af71913a6f1dad3d75c4c785c24020",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/intent-preserving-merge-resolution/SKILL.md",
+      "bytes": 860,
+      "id": "intent-preserving-merge-resolution",
+      "sha256": "62e581370fb71200d8279fec5facd505c978507a23a94b375256c583e0555045",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/isolate-project-streams/SKILL.md",
       "bytes": 2664,
       "id": "isolate-project-streams",
       "sha256": "f9e9b72e34dccf638d7fe7022a987f23a92cea4f1e76686f1ce08bf353b998cc",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/long-horizon-progress-ledger/SKILL.md",
+      "bytes": 1192,
+      "id": "long-horizon-progress-ledger",
+      "sha256": "7e3aa3e6cd7b2bdc6ba6881a117a3c112d680d8ecbc78e488131dd9612323877",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/manage-agent-session-fabric/SKILL.md",
+      "bytes": 1214,
+      "id": "manage-agent-session-fabric",
+      "sha256": "1ee9fb15339afb2e8353de1aa598dd8fbc9fcedcccd571510468452bfb40af7a",
       "source": "installed_framework",
       "status": "active"
     },
@@ -279,6 +631,14 @@
       "status": "active"
     },
     {
+      "body": ".agents/skills/manage-n8n-credentials/SKILL.md",
+      "bytes": 2842,
+      "id": "manage-n8n-credentials",
+      "sha256": "3e3abadf736bdbf5ba62fcf45f8a146ec9dd45c9c9ba4b666f292688b5a20687",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/manage-revocable-certification/SKILL.md",
       "bytes": 1736,
       "id": "manage-revocable-certification",
@@ -287,10 +647,82 @@
       "status": "active"
     },
     {
+      "body": ".agents/skills/manage-supabase-environments/SKILL.md",
+      "bytes": 2832,
+      "id": "manage-supabase-environments",
+      "sha256": "b399b51164a755801e010b7bcabc3831840fea52db9cd9d38b7b4f9a4364bf8f",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/manage-supabase-migrations/SKILL.md",
+      "bytes": 2896,
+      "id": "manage-supabase-migrations",
+      "sha256": "532eef79602b517be9a097573045a293d55e754082345ce018a4045fed1ea30c",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/map-project-intelligence/SKILL.md",
+      "bytes": 1564,
+      "id": "map-project-intelligence",
+      "sha256": "4f129ae395b5db769ab994147b1934dd8b76886fb11a9d4fe5492e18e3661512",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/observe-debug-supabase/SKILL.md",
+      "bytes": 2929,
+      "id": "observe-debug-supabase",
+      "sha256": "c810d89c49b7d5eedd1c0c1fe8652f9ac1083b440ca033c81e99a09bd77153ec",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/observe-operate-n8n/SKILL.md",
+      "bytes": 2754,
+      "id": "observe-operate-n8n",
+      "sha256": "798ba11bdea5e396739126f1f1ec9cc1b5f81b4343e9ad3e8c31d5bba521350d",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/operate-engineering-research-engine/SKILL.md",
+      "bytes": 1900,
+      "id": "operate-engineering-research-engine",
+      "sha256": "8118164b966b1df64e16c10181ba445dac250aa831089e8ddd8d2d3178ffe77b",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/operate-memory-retrieval-observability/SKILL.md",
       "bytes": 1696,
       "id": "operate-memory-retrieval-observability",
       "sha256": "3e41f74c9ef68980603481113754b8aa667e06ddd6fe67aafd106eb7688706b7",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/operate-n8n-supabase-production/SKILL.md",
+      "bytes": 3002,
+      "id": "operate-n8n-supabase-production",
+      "sha256": "668d58661f13269d37df5465da7ef91c5c8a55b17cf1f633bb11a1d709e7764e",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/operate-supabase-vector-search/SKILL.md",
+      "bytes": 3086,
+      "id": "operate-supabase-vector-search",
+      "sha256": "e133b865f97203834cdcb019ffe1ac5f6323b139f6ae5d6fb5b93d5968025842",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/orchestrate-agent-fleets/SKILL.md",
+      "bytes": 1317,
+      "id": "orchestrate-agent-fleets",
+      "sha256": "3be96b8ba0fb58853f564451dfad02ad302d7aff1b5dca975b70ba1421479a96",
       "source": "installed_framework",
       "status": "active"
     },
@@ -351,6 +783,22 @@
       "status": "active"
     },
     {
+      "body": ".agents/skills/query-project-map/SKILL.md",
+      "bytes": 821,
+      "id": "query-project-map",
+      "sha256": "3aed1a640e86c3df5a0404db0cc0d60465d8c62ed970571d486584820459b77f",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/questionnaire-delegation/SKILL.md",
+      "bytes": 675,
+      "id": "questionnaire-delegation",
+      "sha256": "1b7d57606b11b8cde821dfed00891623c9c0a90ddfa1c9435aba820099b8a9cd",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/repair-corrupted-text/SKILL.md",
       "bytes": 1228,
       "id": "repair-corrupted-text",
@@ -363,6 +811,38 @@
       "bytes": 1146,
       "id": "research-to-capability",
       "sha256": "ffd5fce65c1dfb58b7f7bac560c10e8cd24d2e4ad6009b72a60e8172217d234c",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/route-n8n-capabilities/SKILL.md",
+      "bytes": 2907,
+      "id": "route-n8n-capabilities",
+      "sha256": "e2809c14bb2d98c2e70a7de4b1362631f5b9dac47141ab72c146f60f1a72c706",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/route-n8n-supabase-stack/SKILL.md",
+      "bytes": 2889,
+      "id": "route-n8n-supabase-stack",
+      "sha256": "a139acaabd598b87f1a6ca8861940452ae4cc04329711d84c8918d5e12960a6c",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/route-specialist-agents/SKILL.md",
+      "bytes": 1350,
+      "id": "route-specialist-agents",
+      "sha256": "44126f3f611b82304114c8e21a0a5820471648223f4084b99de50f4c52657a20",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/route-supabase-capabilities/SKILL.md",
+      "bytes": 2865,
+      "id": "route-supabase-capabilities",
+      "sha256": "fba482aa973ade3fbde099e47780e87c947c6773e5fbfd638059b30fa4f30497",
       "source": "installed_framework",
       "status": "active"
     },
@@ -383,6 +863,14 @@
       "status": "active"
     },
     {
+      "body": ".agents/skills/scale-n8n-queue-mode/SKILL.md",
+      "bytes": 2955,
+      "id": "scale-n8n-queue-mode",
+      "sha256": "981a60b9811004875c930fd471a9edfb0ca9c3e4f24f9be7110ad3620fc8d134",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/secure-agent-supply-chain/SKILL.md",
       "bytes": 1753,
       "id": "secure-agent-supply-chain",
@@ -391,10 +879,34 @@
       "status": "active"
     },
     {
+      "body": ".agents/skills/secure-n8n/SKILL.md",
+      "bytes": 2879,
+      "id": "secure-n8n",
+      "sha256": "65e6ddb296e3ef7ef75443afcf53fa863ce734cbb0d17370b68b6f7eb24a972c",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/secure-supabase-rls/SKILL.md",
+      "bytes": 2958,
+      "id": "secure-supabase-rls",
+      "sha256": "45f0d683b083a8757ecdb42cccb241d6b6404a9c62562084eeb824c3abe006cc",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/self-host-supabase/SKILL.md",
+      "bytes": 2880,
+      "id": "self-host-supabase",
+      "sha256": "ea187f08817c7c84bda8b81ed49fb5148ad7d37fdf80e3a2e0cd71a08e594182",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/skill-admission-controller/SKILL.md",
-      "bytes": 2488,
+      "bytes": 2843,
       "id": "skill-admission-controller",
-      "sha256": "2a5465f2473419245768bbad383ad4ee78e73da126b5075663eaa23f6c630703",
+      "sha256": "b4e9f683f31f0906380b14eaad66a3ec08d6fa52f8f38f2972780a65f6228d30",
       "source": "installed_framework",
       "status": "active"
     },
@@ -431,6 +943,22 @@
       "status": "active"
     },
     {
+      "body": ".agents/skills/test-n8n-supabase-integrations/SKILL.md",
+      "bytes": 2970,
+      "id": "test-n8n-supabase-integrations",
+      "sha256": "23c0b549b22743d4347330cc62769c45263d7fd2a57ee4f5108cdd9f7c2a520b",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/test-validate-n8n-workflows/SKILL.md",
+      "bytes": 2764,
+      "id": "test-validate-n8n-workflows",
+      "sha256": "35d51b1e75c68cc675a92bec34863892f7a79c3e654fded531e67757e091813a",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/trace-to-skill-compiler/SKILL.md",
       "bytes": 2749,
       "id": "trace-to-skill-compiler",
@@ -439,10 +967,66 @@
       "status": "active"
     },
     {
+      "body": ".agents/skills/tracer-bullet-planning/SKILL.md",
+      "bytes": 1048,
+      "id": "tracer-bullet-planning",
+      "sha256": "f118fb4a174410f7233c89dbce4abdd1cdb768e57dc27854347d8d52049f705b",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/transcript-analysis/SKILL.md",
+      "bytes": 1654,
+      "id": "transcript-analysis",
+      "sha256": "173fc8743679546fef3d133d8e86fb68832f723c79a291e04713258d7e33cfb8",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
       "body": ".agents/skills/triage-cross-surface-failures/SKILL.md",
       "bytes": 1115,
       "id": "triage-cross-surface-failures",
       "sha256": "474618a8b085690466a075b3b2812b9c5c3e5d701a9477c1745ae252092264ef",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/use-n8n-expressions-and-data/SKILL.md",
+      "bytes": 2808,
+      "id": "use-n8n-expressions-and-data",
+      "sha256": "9b89a33de357e24e1cd27d06ca9f98e608ff0dc3e07636014d3e4e73459bc5bc",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/use-n8n-mcp/SKILL.md",
+      "bytes": 2967,
+      "id": "use-n8n-mcp",
+      "sha256": "4614a6b1edd76c2b4094a63dbf013e5ac8758e34a175973f282c1fe4a97d7647",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/use-supabase-mcp-and-agent-skills/SKILL.md",
+      "bytes": 3098,
+      "id": "use-supabase-mcp-and-agent-skills",
+      "sha256": "3f3f6cf2c9395d27779bbcc6bf516a9d13f65c5ce1b623f009c4a50b6685dc71",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/use-supabase-realtime/SKILL.md",
+      "bytes": 2822,
+      "id": "use-supabase-realtime",
+      "sha256": "6a98e3baa4ca3c8ac91dc51b1baaa8c0ba3046e61edc6b8f964efad8fd1a28d3",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/use-supabase-storage/SKILL.md",
+      "bytes": 2832,
+      "id": "use-supabase-storage",
+      "sha256": "f6b2b4083f9d679ecb90d657242d2b37283d7b576fffe4c48ef0083d5f7ed571",
       "source": "installed_framework",
       "status": "active"
     },
@@ -467,6 +1051,14 @@
       "bytes": 1154,
       "id": "validate-knowledge-relationships",
       "sha256": "b287f2332cc74c0a1a57c316ca3ca8eb08259543e671aeca1f7045ae8d226126",
+      "source": "installed_framework",
+      "status": "active"
+    },
+    {
+      "body": ".agents/skills/validate-physical-media-deliverables/SKILL.md",
+      "bytes": 1739,
+      "id": "validate-physical-media-deliverables",
+      "sha256": "dcf56a29f3126e888db4f9cf8ffce890ce1a7a930193e5b6a34226ce5579333a",
       "source": "installed_framework",
       "status": "active"
     },

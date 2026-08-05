@@ -1,0 +1,62 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "generated target files are not canonical",
+    "unsupported features must be declared rather than simulated",
+    "do not overwrite local user configuration silently"
+  ],
+  "bundle": "govern-cross-harness-runtime",
+  "category": "cross-harness",
+  "dependencies": [
+    "govern-runtime-protocol-deployment",
+    "synchronize-derived-architecture",
+    "plan-selective-capability-installation"
+  ],
+  "id": "govern-cross-harness-parity",
+  "keywords": [
+    "claude codex cursor gemini kiro opencode",
+    "cross harness",
+    "parity",
+    "config merge"
+  ],
+  "mechanisms": [
+    "canonical source ownership",
+    "target adapters",
+    "config merge",
+    "projection validation",
+    "parity tests",
+    "target capability flags"
+  ],
+  "owner": "govern-runtime-protocol-deployment",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      ".codex",
+      ".cursor",
+      ".gemini",
+      ".kiro",
+      ".opencode",
+      "scripts/codex/merge-codex-config.js",
+      "scripts/sync-ecc-to-codex.sh"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    ".codex",
+    ".cursor",
+    ".gemini",
+    ".kiro",
+    ".opencode",
+    "scripts/codex/merge-codex-config.js",
+    "scripts/sync-ecc-to-codex.sh"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Project one canonical capability into Claude, Codex, Cursor, Gemini, Kiro, and OpenCode surfaces while validating semantic parity, target-specific constraints, and reversible installation.",
+  "title": "Govern Cross-Harness Parity",
+  "use_when": [
+    "the same skill or agent must work across harnesses",
+    "generated projections have drifted",
+    "installers target multiple IDEs or CLIs"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "id": "govern-n8n-community-nodes",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/govern-n8n-community-nodes/SKILL.md",
+  "body_sha256": "620259d7a7ec1b16d9579778c13716a83e44413ecd1414f50ff7ba92be5d6ddb",
+  "references": [],
+  "capability_tags": [
+    "allowlist",
+    "community-nodes",
+    "n8n",
+    "npm",
+    "supply-chain"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "clean_room_product_capability_synthesis",
+    "basis": [
+      "evidence/integration/pxi-20260804/candidate_disposition_ledger.json",
+      "registry/service_capability_catalog.json"
+    ],
+    "source_archive_sha256": "e4f79ebab8addfb1db452e4acdf1c5539d8b20a7b9e364cc5183470fee3a9753",
+    "source_version": "2.34.0",
+    "canonical_owner": ".agents/skills/govern-n8n-community-nodes/SKILL.md"
+  },
+  "clean_room": true,
+  "tests": "tests/test_service_capability_provider.py",
+  "evidence": "tests/test_service_capability_provider.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 8192
+}

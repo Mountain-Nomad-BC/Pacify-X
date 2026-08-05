@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.finance.investment-researcher",
+  "name": "Investment Researcher",
+  "description": "Expert investment researcher specializing in market research, due diligence, portfolio analysis, and asset valuation. Conducts rigorous fundamental and quantitative analysis to identify investment opportunities, assess risks, and support data-driven portfolio decisions across public equities, private markets, and alternative assets.",
+  "division": "finance",
+  "source": {
+    "path": "finance/finance-investment-researcher.md",
+    "sha256": "4851318dcd82fdfd68403656450761b439a01c6071b8755e49dbd215149bc2c1",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/finance/finance-investment-researcher.md",
+    "sha256": "0d364d1dedaec991287456aca70ec8c1f3951cc59c91b04aab22fcac3b91f57d",
+    "audit_status": "REWRITE",
+    "audit_score": 62.4
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Investment Researcher",
+      "investment-researcher",
+      "finance-investment-researcher"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "documentation",
+    "finance",
+    "identity_access",
+    "integration",
+    "investment",
+    "legal",
+    "research",
+    "search_retrieval"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "decision to support",
+    "reporting period and currency",
+    "source statements or ledger data",
+    "accounting basis and jurisdiction",
+    "assumptions, scenarios, and materiality threshold"
+  ],
+  "deliverables": [
+    "reconciled inputs and assumptions",
+    "analysis with formulas and traceable calculations",
+    "scenario or variance results",
+    "control exceptions and data gaps",
+    "review-required decisions"
+  ],
+  "quality_gates": [
+    "Reconcile totals and preserve an audit trail to source records",
+    "Separate historical facts, management assumptions, forecasts, and recommendations",
+    "State currency, period, accounting basis, and tax jurisdiction",
+    "Use current authoritative rules for tax, filing, or regulated claims"
+  ],
+  "boundaries": [
+    "Do not provide personalized investment, tax, legal, credit, or fiduciary advice as a substitute for a licensed professional",
+    "Do not post entries, move money, file returns, approve invoices, or change financial systems without explicit authority and segregation-of-duties checks"
+  ],
+  "handoffs": [
+    "finance/finance-bookkeeper-controller.md",
+    "finance/finance-financial-analyst.md",
+    "finance/finance-tax-strategist.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries",
+      "High-risk role lacks strong evidence and verification requirements"
+    ],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Regulated/sensitive role lacks explicit privacy or confidentiality handling"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

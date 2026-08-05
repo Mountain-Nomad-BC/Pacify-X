@@ -1,0 +1,70 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:security_capabilities:authorized-security-scope",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Prevent active or high-impact security actions without explicit target ownership and authorization.",
+  "properties": {
+    "approved_by": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "authorization_artifact_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "authorization_status": {
+      "const": "approved"
+    },
+    "engagement_id": {
+      "minLength": 3,
+      "type": "string"
+    },
+    "rules_of_engagement": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "target_allowlist": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "targets": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "valid_from": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "valid_until": {
+      "format": "date-time",
+      "type": "string"
+    }
+  },
+  "required": [
+    "engagement_id",
+    "targets",
+    "target_allowlist",
+    "authorization_status",
+    "authorization_artifact_id",
+    "approved_by",
+    "valid_from",
+    "valid_until",
+    "rules_of_engagement"
+  ],
+  "title": "authorized-security-scope",
+  "type": "object"
+}

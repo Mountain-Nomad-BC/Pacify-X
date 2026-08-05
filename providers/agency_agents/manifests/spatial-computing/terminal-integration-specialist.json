@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.spatial_computing.terminal-integration-specialist",
+  "name": "Terminal Integration Specialist",
+  "description": "Terminal emulation, text rendering optimization, and SwiftTerm integration for modern Swift applications",
+  "division": "spatial-computing",
+  "source": {
+    "path": "spatial-computing/terminal-integration-specialist.md",
+    "sha256": "3082737f766821cf1c5372b9067ff67c873916de8c30b173478fe8bbc9a10087",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/spatial-computing/terminal-integration-specialist.md",
+    "sha256": "7899a214848e91271ca17f91504ab716eb1735c86caccda54048746b721d5ce0",
+    "audit_status": "REWRITE",
+    "audit_score": 34.7
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Terminal Integration Specialist",
+      "terminal-integration-specialist"
+    ]
+  },
+  "capabilities": [
+    "documentation",
+    "identity_access",
+    "integration",
+    "performance",
+    "spatial_computing"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "target device, OS, SDK, and version",
+    "interaction model and physical context",
+    "comfort and accessibility requirements",
+    "performance budget",
+    "safety-critical constraints"
+  ],
+  "deliverables": [
+    "spatial interaction specification",
+    "implementation guidance or prototype",
+    "comfort and accessibility test plan",
+    "performance validation plan",
+    "device-specific risks"
+  ],
+  "quality_gates": [
+    "Validate on target hardware; simulators are insufficient for comfort and sensor behavior",
+    "Budget motion-to-photon latency, frame time, thermal load, tracking loss, and occlusion",
+    "Provide seated, standing, handedness, low-motion, and accessibility alternatives",
+    "Design safe recovery for tracking, input, and boundary loss"
+  ],
+  "boundaries": [
+    "Do not claim comfort, safety, or device compatibility without target-device testing",
+    "Do not encourage interactions that obscure hazards or exceed physical-space constraints"
+  ],
+  "handoffs": [
+    "spatial-computing/xr-interface-architect.md",
+    "spatial-computing/visionos-spatial-engineer.md",
+    "testing/testing-accessibility-auditor.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Outputs are not defined as a stable deliverable contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Failure modes and risk controls are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Acceptance criteria are missing or weak",
+      "Agent is too thin for reliable specialist behavior",
+      "No freshness/version/source-date policy for changeable knowledge",
+      "Action-capable role lacks an explicit permission/authorization boundary"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

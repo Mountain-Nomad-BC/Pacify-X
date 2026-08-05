@@ -1,4 +1,5 @@
 """Build explicit dispositions for nonportable locators in historical evidence."""
+
 from __future__ import annotations
 
 import json
@@ -12,8 +13,16 @@ from runtime.evidence_portability import discover_historical_references  # noqa:
 
 def main() -> int:
     records = discover_historical_references(ROOT)
-    output = {"schema_version": "1.0", "reference_count": len(records), "records": records}
-    (ROOT / "registry/historical_external_references.json").write_text(json.dumps(output, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+    output = {
+        "schema_version": "1.0",
+        "reference_count": len(records),
+        "records": records,
+    }
+    (ROOT / "registry/historical_external_references.json").write_text(
+        json.dumps(output, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
     print(json.dumps({"valid": True, "reference_count": len(records)}))
     return 0
 

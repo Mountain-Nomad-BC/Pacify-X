@@ -12,7 +12,12 @@ from builders.adapter_builder import (
     propose_adapter,
     transform,
 )
-from builders.common import BuilderError, DuplicateAssetError, GapNotProvenError, write_proposal
+from builders.common import (
+    BuilderError,
+    DuplicateAssetError,
+    GapNotProvenError,
+    write_proposal,
+)
 from builders.orchestration_builder import (
     OrchestrationRequest,
     ResourceBudget,
@@ -25,7 +30,11 @@ from builders.repair_pattern_builder import (
     propose_repair_pattern,
 )
 from builders.skill_builder import SkillRequest, propose_skill
-from builders.test_evidence_builder import TestCase, TestEvidenceRequest, propose_test_evidence
+from builders.test_evidence_builder import (
+    TestCase,
+    TestEvidenceRequest,
+    propose_test_evidence,
+)
 
 
 def capability(
@@ -97,7 +106,9 @@ class SkillBuilderTests(unittest.TestCase):
 
 
 class OrchestrationBuilderTests(unittest.TestCase):
-    def test_resolves_io_dependencies_and_adds_approval_evidence_and_budget(self) -> None:
+    def test_resolves_io_dependencies_and_adds_approval_evidence_and_budget(
+        self,
+    ) -> None:
         contracts = [
             capability("normalize", ("request",), ("normalized",)),
             capability(
@@ -126,7 +137,9 @@ class OrchestrationBuilderTests(unittest.TestCase):
         self.assertTrue(body["budget_analysis"]["known_before_execution"])
         self.assertTrue(body["dag_validation"]["valid"])
 
-    def test_invalid_graph_unvalidated_capability_and_insufficient_budget_fail(self) -> None:
+    def test_invalid_graph_unvalidated_capability_and_insufficient_budget_fail(
+        self,
+    ) -> None:
         valid = capability("normalize", ("request",), ("normalized",))
         invalid = {**valid, "id": "draft", "status": "candidate"}
         with self.assertRaisesRegex(BuilderError, "not admitted"):
@@ -147,7 +160,10 @@ class OrchestrationBuilderTests(unittest.TestCase):
                     "cycle-flow",
                     ("request",),
                     ("normalized",),
-                    (WorkflowStep("one", "normalize", ("two",)), WorkflowStep("two", "normalize", ("one",))),
+                    (
+                        WorkflowStep("one", "normalize", ("two",)),
+                        WorkflowStep("two", "normalize", ("one",)),
+                    ),
                     ("failure",),
                     ResourceBudget(3, 6),
                 ),
@@ -193,7 +209,9 @@ class AdapterBuilderTests(unittest.TestCase):
             transform(request, {"user_name": "Ada", "age": 37}),
             {"name": "Ada", "years": 37},
         )
-        self.assertEqual(proposal["body"]["registry_candidate"]["visible_as"], "candidate")
+        self.assertEqual(
+            proposal["body"]["registry_candidate"]["visible_as"], "candidate"
+        )
 
     def test_invalid_input_and_incompatible_mapping_fail_clearly(self) -> None:
         with self.assertRaisesRegex(BuilderError, "invalid input type"):
@@ -210,7 +228,9 @@ class AdapterBuilderTests(unittest.TestCase):
 
 
 class RepairPatternBuilderTests(unittest.TestCase):
-    def test_structured_pattern_preserves_lineage_diagnosis_validation_and_rollback(self) -> None:
+    def test_structured_pattern_preserves_lineage_diagnosis_validation_and_rollback(
+        self,
+    ) -> None:
         proposal = propose_repair_pattern(
             RepairPatternRequest(
                 "cache-repair",
@@ -222,7 +242,13 @@ class RepairPatternBuilderTests(unittest.TestCase):
                 ("restore previous cache entry",),
                 ("test receipt",),
                 ("incident-42",),
-                (RepairVariant("python", ("validate key", "invalidate key"), "Python service owns the cache"),),
+                (
+                    RepairVariant(
+                        "python",
+                        ("validate key", "invalidate key"),
+                        "Python service owns the cache",
+                    ),
+                ),
             )
         )
         pattern = proposal["body"]["pattern"]
@@ -244,7 +270,14 @@ class RepairPatternBuilderTests(unittest.TestCase):
                 ("restore snapshot",),
                 ("review record",),
                 ("incident-7",),
-                (RepairVariant("python", ("review only",), "Historical comparison", "os.system('danger')"),),
+                (
+                    RepairVariant(
+                        "python",
+                        ("review only",),
+                        "Historical comparison",
+                        "os.system('danger')",
+                    ),
+                ),
             )
         )
         variant = proposal["body"]["pattern"]["variants"][0]
@@ -265,11 +298,21 @@ class TestEvidenceBuilderTests(unittest.TestCase):
                 not failing,
                 "password=also-private" if failing else "",
             ),
-            TestCase("boundary", "effect_boundary", {"effect": "network"}, {"approval": True}, True),
+            TestCase(
+                "boundary",
+                "effect_boundary",
+                {"effect": "network"},
+                {"approval": True},
+                True,
+            ),
         )
 
-    def test_evidence_is_deterministic_sanitized_and_failures_remain_visible(self) -> None:
-        request = TestEvidenceRequest("new-asset", self.cases(failing=True), ("local-test-run",))
+    def test_evidence_is_deterministic_sanitized_and_failures_remain_visible(
+        self,
+    ) -> None:
+        request = TestEvidenceRequest(
+            "new-asset", self.cases(failing=True), ("local-test-run",)
+        )
         first = propose_test_evidence(request)
         second = propose_test_evidence(request)
         self.assertEqual(first, second)
@@ -286,7 +329,9 @@ class TestEvidenceBuilderTests(unittest.TestCase):
                 TestEvidenceRequest("new-asset", self.cases()[:1], ("local-test-run",))
             )
 
-    def test_proposals_write_only_to_requested_directory_and_never_activate(self) -> None:
+    def test_proposals_write_only_to_requested_directory_and_never_activate(
+        self,
+    ) -> None:
         proposal = propose_test_evidence(
             TestEvidenceRequest("new-asset", self.cases(), ("local-test-run",))
         )

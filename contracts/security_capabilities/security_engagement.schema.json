@@ -1,0 +1,132 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security_engagement",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "authorization": {
+      "properties": {
+        "approved_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "artifact_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rules_of_engagement": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "not_required",
+            "pending",
+            "approved",
+            "denied"
+          ]
+        },
+        "valid_from": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "valid_until": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "type": "object"
+    },
+    "change_window": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "engagement_id": {
+      "minLength": 3,
+      "type": "string"
+    },
+    "environment": {
+      "enum": [
+        "documentation",
+        "offline_evidence",
+        "development",
+        "test",
+        "isolated_lab",
+        "staging",
+        "production"
+      ]
+    },
+    "evidence_root": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mode": {
+      "enum": [
+        "advisory",
+        "read_only",
+        "controlled_change",
+        "active_test",
+        "lab_simulation"
+      ]
+    },
+    "purpose": {
+      "minLength": 10,
+      "type": "string"
+    },
+    "requester": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "rollback_plan": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "target_allowlist": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "target_denylist": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "targets": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "engagement_id",
+    "requester",
+    "purpose",
+    "mode",
+    "environment",
+    "targets",
+    "authorization"
+  ],
+  "type": "object"
+}

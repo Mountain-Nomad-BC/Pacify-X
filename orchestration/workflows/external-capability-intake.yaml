@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "registry": "registry/skill_orchestrations.json",
+  "workflows": [
+    {
+      "id": "external-capability-intake",
+      "purpose": "Inventory, search, reconcile, stage, admit, and certify external capability candidates without executing imported source or mutating active registries during staging.",
+      "steps": [
+        {"id": "inventory", "skill": "audit-source-capabilities", "depends_on": []},
+        {"id": "license", "skill": "enforce-source-import-boundaries", "depends_on": ["inventory"]},
+        {"id": "search-metadata", "skill": "govern-external-capability-intake", "depends_on": ["license"]},
+        {"id": "overlap", "skill": "govern-external-capability-intake", "depends_on": ["search-metadata"]},
+        {"id": "plan-stage", "skill": "govern-external-capability-intake", "depends_on": ["overlap"]},
+        {"id": "admission", "skill": "admit-capability", "depends_on": ["plan-stage"]},
+        {"id": "certify", "skill": "run-evidence-campaigns", "depends_on": ["admission"]}
+      ],
+      "failure_policy": "Fail closed on incomplete inventory, unclear license, source execution, semantic collision, unresolved dependency, active-registry staging mutation, hook recursion, authority expansion, session scope mismatch, or quality/privacy regression.",
+      "bounds": {"metadata_records": 3, "metadata_bytes": 32768, "hook_depth": 1, "hard_delete": false, "candidate_authority": false}
+    }
+  ]
+}

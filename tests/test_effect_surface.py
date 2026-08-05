@@ -20,9 +20,14 @@ def test_every_executable_effect_surface_is_owned_and_bounded() -> None:
 
 def test_new_shell_execution_fails_closed() -> None:
     root = Path(tempfile.mkdtemp()) / "framework"
-    shutil.copytree(ROOT, root, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache"))
+    shutil.copytree(
+        ROOT, root, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache")
+    )
     target = root / "runtime/unsafe_effect.py"
-    target.write_text("import subprocess\nsubprocess.run('echo unsafe', shell=True, timeout=1)\n", encoding="utf-8")
+    target.write_text(
+        "import subprocess\nsubprocess.run('echo unsafe', shell=True, timeout=1)\n",
+        encoding="utf-8",
+    )
     result = validate_effect_surfaces(root)
     assert not result["valid"]
     assert any("unsafe shell" in item for item in result["errors"])
@@ -30,7 +35,9 @@ def test_new_shell_execution_fails_closed() -> None:
 
 def test_registry_cannot_claim_removed_effect_surface() -> None:
     root = Path(tempfile.mkdtemp()) / "framework"
-    shutil.copytree(ROOT, root, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache"))
+    shutil.copytree(
+        ROOT, root, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache")
+    )
     path = root / "registry/effect_surface_ownership.json"
     registry = json.loads(path.read_text(encoding="utf-8"))
     registry["records"] = registry["records"][1:]
@@ -40,7 +47,9 @@ def test_registry_cannot_claim_removed_effect_surface() -> None:
 
 def test_popen_without_bounded_communication_fails_closed() -> None:
     root = Path(tempfile.mkdtemp()) / "framework"
-    shutil.copytree(ROOT, root, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache"))
+    shutil.copytree(
+        ROOT, root, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache")
+    )
     target = root / "runtime/unbounded_process.py"
     target.write_text(
         "import subprocess\nprocess = subprocess.Popen(['tool'])\nprocess.communicate()\n",

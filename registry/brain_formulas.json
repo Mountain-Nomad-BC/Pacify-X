@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0",
+  "rule": "Executable formulas require a machine-safe expression, explicit variable domains, dimensional consistency, assumptions, and tests.",
+  "formulas": [
+    {
+      "id": "binary-bayes-posterior",
+      "expression": "(likelihood_true * prior) / ((likelihood_true * prior) + (likelihood_false * (1 - prior)))",
+      "variables": {
+        "prior": {"dimension": "1", "minimum": 0, "maximum": 1},
+        "likelihood_true": {"dimension": "1", "minimum": 0, "maximum": 1},
+        "likelihood_false": {"dimension": "1", "minimum": 0, "maximum": 1}
+      },
+      "output_dimension": "1",
+      "assumptions": ["The likelihoods are conditional on the same evidence.", "Dependence with prior evidence has been handled."],
+      "status": "executable",
+      "source": "PACIFY-X reviewed clean-room definition",
+      "authoritative_source": "Bayes theorem normalized two-hypothesis definition",
+      "expected_examples": [{"inputs": {"prior": 0.5, "likelihood_true": 0.8, "likelihood_false": 0.2}, "expected": 0.8, "tolerance": 1e-9}],
+      "property_cases": ["posterior remains in [0,1] for valid probability inputs", "symmetric likelihoods preserve the prior"],
+      "validation": "tests/test_cognitive_core.py"
+    },
+    {
+      "id": "relative-change",
+      "expression": "(candidate - baseline) / abs(baseline)",
+      "variables": {
+        "candidate": {"dimension": "Q"},
+        "baseline": {"dimension": "Q"}
+      },
+      "output_dimension": "1",
+      "assumptions": ["Baseline is nonzero and quantities are comparable."],
+      "status": "executable",
+      "source": "PACIFY-X reviewed clean-room definition",
+      "authoritative_source": "dimensionless relative-change definition",
+      "expected_examples": [{"inputs": {"candidate": 12, "baseline": 10}, "expected": 0.2, "tolerance": 1e-9}],
+      "property_cases": ["equal candidate and baseline produce zero", "scale-equivalent inputs preserve relative change"],
+      "validation": "tests/test_cognitive_core.py"
+    },
+    {
+      "id": "ohms-law-current",
+      "expression": "voltage / resistance",
+      "variables": {
+        "voltage": {"dimension": "M L^2 T^-3 I^-1"},
+        "resistance": {"dimension": "M L^2 T^-3 I^-2", "minimum": 0.000000001}
+      },
+      "output_dimension": "I",
+      "assumptions": ["The circuit is in a regime where resistance is adequately modeled as constant."],
+      "status": "executable",
+      "source": "PACIFY-X reviewed clean-room definition",
+      "authoritative_source": "Ohm's law current definition I=V/R",
+      "expected_examples": [{"inputs": {"voltage": 240, "resistance": 24}, "expected": 10, "tolerance": 1e-9}],
+      "property_cases": ["positive resistance is required", "current scales linearly with voltage at constant resistance"],
+      "validation": "tests/test_cognitive_core.py"
+    },
+    {
+      "id": "electrical-power-dc",
+      "expression": "voltage * current",
+      "variables": {
+        "voltage": {"dimension": "M L^2 T^-3 I^-1"},
+        "current": {"dimension": "I"}
+      },
+      "output_dimension": "M L^2 T^-3",
+      "assumptions": ["DC or RMS quantities are used consistently."],
+      "status": "executable",
+      "source": "PACIFY-X reviewed clean-room definition",
+      "authoritative_source": "electrical power definition P=VI",
+      "expected_examples": [{"inputs": {"voltage": 240, "current": 10}, "expected": 2400, "tolerance": 1e-9}],
+      "property_cases": ["zero voltage or current produces zero power", "power has energy-per-time dimensions"],
+      "validation": "tests/test_cognitive_core.py"
+    },
+    {
+      "id": "electrical-energy",
+      "expression": "power * duration",
+      "variables": {
+        "power": {"dimension": "M L^2 T^-3"},
+        "duration": {"dimension": "T", "minimum": 0}
+      },
+      "output_dimension": "M L^2 T^-2",
+      "assumptions": ["Power is constant or represents the interval average."],
+      "status": "executable",
+      "source": "PACIFY-X reviewed clean-room definition",
+      "authoritative_source": "energy from interval-average power E=Pt",
+      "expected_examples": [{"inputs": {"power": 100, "duration": 60}, "expected": 6000, "tolerance": 1e-9}],
+      "property_cases": ["zero duration produces zero energy", "duration must be nonnegative"],
+      "validation": "tests/test_cognitive_core.py"
+    },
+    {
+      "id": "sensible-heat-rate",
+      "expression": "mass_flow * specific_heat * delta_temperature",
+      "variables": {
+        "mass_flow": {"dimension": "M T^-1", "minimum": 0},
+        "specific_heat": {"dimension": "L^2 T^-2 Theta^-1", "minimum": 0},
+        "delta_temperature": {"dimension": "Theta"}
+      },
+      "output_dimension": "M L^2 T^-3",
+      "assumptions": ["Specific heat is representative over the temperature range.", "Phase change is absent."],
+      "status": "executable",
+      "source": "PACIFY-X reviewed clean-room definition",
+      "authoritative_source": "steady sensible-heat rate definition q=m_dot*c_p*delta_T",
+      "expected_examples": [{"inputs": {"mass_flow": 2, "specific_heat": 1000, "delta_temperature": 10}, "expected": 20000, "tolerance": 1e-9}],
+      "property_cases": ["zero mass flow produces zero heat rate", "phase-change cases are outside the declared domain"],
+      "validation": "tests/test_cognitive_core.py"
+    },
+    {
+      "id": "exponential-trust-decay-executable",
+      "expression": "initial * (0.5 ** (age / half_life))",
+      "variables": {
+        "initial": {"dimension": "1", "minimum": 0, "maximum": 1},
+        "age": {"dimension": "T", "minimum": 0},
+        "half_life": {"dimension": "T", "minimum": 0.000000001}
+      },
+      "output_dimension": "1",
+      "assumptions": ["A domain-calibrated exponential half-life is appropriate."],
+      "status": "executable",
+      "source": "PACIFY-X reviewed clean-room definition",
+      "authoritative_source": "PACIFY-X trust-decay policy half-life definition",
+      "expected_examples": [{"inputs": {"initial": 1, "age": 10, "half_life": 10}, "expected": 0.5, "tolerance": 1e-9}],
+      "property_cases": ["age zero preserves initial trust", "one half-life halves initial trust"],
+      "validation": "tests/test_cognitive_core.py"
+    },
+    {
+      "id": "risk-priority-number",
+      "expression": "severity * occurrence * detectability",
+      "variables": {
+        "severity": {"dimension": "1", "minimum": 0},
+        "occurrence": {"dimension": "1", "minimum": 0},
+        "detectability": {"dimension": "1", "minimum": 0}
+      },
+      "output_dimension": "1",
+      "assumptions": ["Scales and direction are defined consistently; the product is a prioritization heuristic, not probability."],
+      "status": "executable",
+      "source": "PACIFY-X reviewed clean-room definition",
+      "authoritative_source": "declared FMEA-style prioritization heuristic RPN=S*O*D",
+      "expected_examples": [{"inputs": {"severity": 3, "occurrence": 4, "detectability": 5}, "expected": 60, "tolerance": 1e-9}],
+      "property_cases": ["zero factor produces zero priority number", "result is a heuristic and never interpreted as probability"],
+      "validation": "tests/test_cognitive_core.py"
+    }
+  ]
+}

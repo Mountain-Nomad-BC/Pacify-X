@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:knowledge_refinery:portable-inventory",
+  "title": "Bounded portable knowledge source inventory",
+  "type": "object", "additionalProperties": false,
+  "required": ["valid", "source_name", "file_count", "byte_count", "content_sha256", "files", "secret_findings", "secret_values_recorded", "canonical_writes_performed"],
+  "properties": {
+    "valid": {"type": "boolean"}, "source_name": {"type": "string"},
+    "file_count": {"type": "integer", "minimum": 0}, "byte_count": {"type": "integer", "minimum": 0},
+    "content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "files": {"type": "array", "items": {"type": "object"}},
+    "secret_findings": {"type": "array", "items": {"type": "object"}},
+    "secret_values_recorded": {"const": false}, "canonical_writes_performed": {"const": false}
+  }
+}

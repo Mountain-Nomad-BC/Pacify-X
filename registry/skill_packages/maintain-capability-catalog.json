@@ -1,0 +1,48 @@
+{
+  "id": "maintain-capability-catalog",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/maintain-capability-catalog/SKILL.md",
+  "body_sha256": "61fb5dbc2972f902f7c0a4c8dba0158a3701bf0f74b35e1685ced2972eb32a72",
+  "references": [
+    ".agents/skills/maintain-capability-catalog/references/capture-architecture-decisions.json",
+    ".agents/skills/maintain-capability-catalog/references/detect-workspace-capability-needs.json",
+    ".agents/skills/maintain-capability-catalog/references/distill-operational-rules.json",
+    ".agents/skills/maintain-capability-catalog/references/maintain-skill-health.json"
+  ],
+  "capability_tags": [
+    "architecture-governance",
+    "capability",
+    "capability-discovery",
+    "catalog",
+    "external-candidate",
+    "maintain",
+    "rule-governance",
+    "skill-governance"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "inactive_external_candidate_wrapper",
+    "basis": [
+      "registry/external_capability_candidates.json",
+      "registry/external_capability_licenses.json"
+    ],
+    "canonical_owner": "skill-admission-controller",
+    "source_licenses": [
+      "everything-claude-code"
+    ],
+    "candidate_capabilities": [
+      "maintain-skill-health",
+      "distill-operational-rules",
+      "capture-architecture-decisions",
+      "detect-workspace-capability-needs"
+    ]
+  },
+  "clean_room": false,
+  "tests": "tests/test_external_capability_provider.py",
+  "evidence": "tests/test_external_capability_provider.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

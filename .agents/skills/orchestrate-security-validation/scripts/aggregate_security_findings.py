@@ -52,8 +52,12 @@ def aggregate(root: Path) -> dict:
                     }
                 )
         except (OSError, ValueError, json.JSONDecodeError) as exc:
-            errors.append({"file": path.name, "status": "blocked", "error": type(exc).__name__})
-    records.sort(key=lambda item: (item["tool"], item["location"], item["message_sha256"]))
+            errors.append(
+                {"file": path.name, "status": "blocked", "error": type(exc).__name__}
+            )
+    records.sort(
+        key=lambda item: (item["tool"], item["location"], item["message_sha256"])
+    )
     counts = Counter(item["status"] for item in records)
     return {
         "schema_version": "1.0",
@@ -74,7 +78,11 @@ def main() -> int:
     result = aggregate(args.input.resolve())
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"complete": result["complete"], "records": result["reported_records"]}))
+    print(
+        json.dumps(
+            {"complete": result["complete"], "records": result["reported_records"]}
+        )
+    )
     return 0 if result["complete"] else 2
 
 

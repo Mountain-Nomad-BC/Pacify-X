@@ -1,0 +1,74 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security-tool-invocation",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Authorize each external security tool invocation independently.",
+  "properties": {
+    "approval_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "arguments": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "capture_output": {
+      "const": true
+    },
+    "cleanup_plan": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "max_output_bytes": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "risk_class": {
+      "enum": [
+        "R0",
+        "R1",
+        "R2",
+        "R3",
+        "R4"
+      ]
+    },
+    "targets": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "timeout_seconds": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "tool_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "tool_version": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "tool_id",
+    "tool_version",
+    "arguments",
+    "targets",
+    "risk_class",
+    "timeout_seconds",
+    "max_output_bytes",
+    "capture_output",
+    "cleanup_plan",
+    "approval_id"
+  ],
+  "title": "security-tool-invocation",
+  "type": "object"
+}

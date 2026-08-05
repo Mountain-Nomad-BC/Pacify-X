@@ -1,0 +1,719 @@
+{
+  "schema_version": "1.0",
+  "generator": "pacify-x.integration-disposition/1.0.0",
+  "source_alias": "tencent-memory-upgrade-v1",
+  "expected_tree_sha256": null,
+  "inventory_sha256": "46e6d0508ffab367473e634fc3f286b561d94658bbabb7075e3d73c8cc7aca41",
+  "file_count": 78,
+  "byte_count": 698073,
+  "unaccounted_count": 0,
+  "disposition_counts": {
+    "merge": 57,
+    "retain": 21
+  },
+  "records": [
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/audit/AUDIT_REPORT.md",
+      "bytes": 6962,
+      "sha256": "3f775778709fa1eb0587290fd242ea7fe0302f6774967bf71f546da0d0453d10",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/audit/PACIFY_X_COMPARISON.md",
+      "bytes": 1894,
+      "sha256": "3d8313007f23c86049bf1021065ee4c03a8967f8d1b6fd76a41541a33a984bdc",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/audit/SOURCE_FEATURE_MAP.md",
+      "bytes": 1380,
+      "sha256": "1e2d17fdbb3238ccd3497321d72e0e02043e1de6de23423aa018455a59a63aa6",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/audit/source_inventory.json",
+      "bytes": 579664,
+      "sha256": "c0e6487acd1db59ab36b1b7bf2c400a5bac0b731491cc6c3892935f91f50b074",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/audit/UPSTREAM_GAPS.md",
+      "bytes": 1229,
+      "sha256": "c471c04740746a85e4af8d1fc24650e2ed24506d53339e5eb92f989bff08d25f",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/BUILD_INFO.json",
+      "bytes": 986,
+      "sha256": "da92551cd36fcb93c34bfe3a2ed82ba361f2570c2c52c7b5e8358b976ea33f6e",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/CHANGELOG.md",
+      "bytes": 344,
+      "sha256": "1313f7a2aa711d6f5443c7bbe9bd5ec0ff49750ebc9d55588c63c56352e49570",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/CODEX_START_HERE.md",
+      "bytes": 4478,
+      "sha256": "fa8c8ef07d300a83131e8e0cfab21df92ab3804aad7737a16bc1b70355de6102",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/contracts/memory_asset.schema.json",
+      "bytes": 3638,
+      "sha256": "afd3de0dc4504cef47463394e2cae34a2156fd0bfc30e80ef13197a380a3014a",
+      "disposition": "merge",
+      "canonical_owner": "contracts/memory",
+      "target_path": null,
+      "rationale": "adapted into canonical memory lifecycle contracts"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/contracts/memory_evaluation_fixture.schema.json",
+      "bytes": 776,
+      "sha256": "a7dd1ae09fde398cce6d8cfd2f55b2a7d842f722cf0c80581aeac1e201c29c23",
+      "disposition": "merge",
+      "canonical_owner": "contracts/memory",
+      "target_path": null,
+      "rationale": "adapted into canonical memory lifecycle contracts"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/contracts/memory_event.schema.json",
+      "bytes": 2170,
+      "sha256": "e390922fd9d47bba6ee4c9fcd84f50ac56b3b171184e18dbf796b9d34b36a757",
+      "disposition": "merge",
+      "canonical_owner": "contracts/memory",
+      "target_path": null,
+      "rationale": "adapted into canonical memory lifecycle contracts"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/contracts/memory_loadout.schema.json",
+      "bytes": 1417,
+      "sha256": "c87384609dfefd6f03807f8f79435044e8f579f4d31eedde27caf76674961bf6",
+      "disposition": "merge",
+      "canonical_owner": "contracts/memory",
+      "target_path": null,
+      "rationale": "adapted into canonical memory lifecycle contracts"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/contracts/memory_offload_pointer.schema.json",
+      "bytes": 887,
+      "sha256": "1ce08520b7cced78317e06b42a694c956a26b4d1f4386b45987cf818b217bdec",
+      "disposition": "merge",
+      "canonical_owner": "contracts/memory",
+      "target_path": null,
+      "rationale": "adapted into canonical memory lifecycle contracts"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/contracts/memory_promotion_decision.schema.json",
+      "bytes": 1195,
+      "sha256": "8ff3e3f590d54b8385aaf2cbd0429c43ce266e7920271de51a4b20365e8b9313",
+      "disposition": "merge",
+      "canonical_owner": "contracts/memory",
+      "target_path": null,
+      "rationale": "adapted into canonical memory lifecycle contracts"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/contracts/memory_recall_package.schema.json",
+      "bytes": 1620,
+      "sha256": "edc9ce238236a604709a1e82dd4335b61096cc6e6ddd2bfc12a8258236606468",
+      "disposition": "merge",
+      "canonical_owner": "contracts/memory",
+      "target_path": null,
+      "rationale": "adapted into canonical memory lifecycle contracts"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/contracts/memory_state_transition.schema.json",
+      "bytes": 1040,
+      "sha256": "0ea2f071f015fbd37793ce55ba5d4549acad6cfa034135c74525f9d772a9e004",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_vault.py",
+      "target_path": null,
+      "rationale": "state transitions remain owned by the append-only vault lifecycle"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/docs/IMPLEMENTATION_DECISIONS.md",
+      "bytes": 1073,
+      "sha256": "8a99b85345292d88bf64d7b6bbb8ce66c8468e9e28e1ec07d7884ca503c7d450",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/docs/INTEGRATION_STATUS.md",
+      "bytes": 636,
+      "sha256": "14208b46455045bd50b099b61c26f818133f44d242d34144b573b89988f416a2",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/docs/PACIFY_X_MERGE_PLAN.md",
+      "bytes": 1247,
+      "sha256": "682635b7451ec3b53fa6ea9de6cb5726e401f3d661137670311fbc2193358862",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/docs/PUNCH_CARDS.md",
+      "bytes": 6280,
+      "sha256": "5750cc766777458111c85ee9e1e0c6ad67577388bdd5927e9a60eda669de3c16",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/docs/SOURCE_ATTRIBUTION.md",
+      "bytes": 530,
+      "sha256": "1a3a44b35c61d949334132148e5c5fbc31271f2cc6d97a17366c824d7a8d4fc7",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/docs/UTILIZATION_PLAYBOOK.md",
+      "bytes": 2998,
+      "sha256": "95b3df1430e876b0c939d66b5ff3887ad274056d7e4359ac52f3fa567d7e6aff",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/evidence/demo_output.txt",
+      "bytes": 656,
+      "sha256": "9a215b359ef2b2b19484faaf9b4420ab43219f47e42706a54a2c2c401a4c8b14",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/evidence/final_pack_validation.json",
+      "bytes": 50,
+      "sha256": "577ac021db3c8518caf4bf507742c363a4364ff2343ba0e903aa4f3e972c1101",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/evidence/pack_validation.json",
+      "bytes": 50,
+      "sha256": "577ac021db3c8518caf4bf507742c363a4364ff2343ba0e903aa4f3e972c1101",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/evidence/source_zip.sha256",
+      "bytes": 110,
+      "sha256": "03d5a2da8321d783ecfeef8b1442b167570de643f6fb1a058fbbaeae2bdd1951",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/evidence/unit_tests.txt",
+      "bytes": 111,
+      "sha256": "72f09eca554e87a45b7156c6109520cf15e8b6ec157dc5c033610649b49b8698",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/knowledge/context_assembly_policy.yaml",
+      "bytes": 570,
+      "sha256": "de670b1c62a8fcc856858ef306a66a49f975ebd2e9fb5df645ac5a13053e084a",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric/references/layered-memory-lifecycle.md",
+      "target_path": null,
+      "rationale": "policy semantics merged into lazy-loaded operational guidance and runtime gates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/knowledge/example_memory_and_fixture.json",
+      "bytes": 1565,
+      "sha256": "44b0506cb0eba0cfcc305be23c516ec74f328b418c0b7737669eda45dea0c8a0",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric/references/layered-memory-lifecycle.md",
+      "target_path": null,
+      "rationale": "policy semantics merged into lazy-loaded operational guidance and runtime gates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/knowledge/memory_layer_model.yaml",
+      "bytes": 965,
+      "sha256": "eb2aba2aac0e58daa01f90d8c7a49fb024a2a1e6fe15d278cc78697bebccd6a9",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric/references/layered-memory-lifecycle.md",
+      "target_path": null,
+      "rationale": "policy semantics merged into lazy-loaded operational guidance and runtime gates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/knowledge/memory_risk_controls.yaml",
+      "bytes": 864,
+      "sha256": "6d65faa9b8868711c6995715d107b9caa0b57babd1527c2658b825a05d7c3a91",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric/references/layered-memory-lifecycle.md",
+      "target_path": null,
+      "rationale": "policy semantics merged into lazy-loaded operational guidance and runtime gates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/knowledge/memory_state_machine.yaml",
+      "bytes": 924,
+      "sha256": "3c8fe947858a309e3975909d2e227a442ff92c68cfa6d969f6d9837cbdc83f6a",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric/references/layered-memory-lifecycle.md",
+      "target_path": null,
+      "rationale": "policy semantics merged into lazy-loaded operational guidance and runtime gates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/knowledge/retrieval_scoring_policy.yaml",
+      "bytes": 548,
+      "sha256": "c6f0f49b42f0fb4ae081da5f5f2e06773a5b1670ed1c0cf8373584a4c7b3482f",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric/references/layered-memory-lifecycle.md",
+      "target_path": null,
+      "rationale": "policy semantics merged into lazy-loaded operational guidance and runtime gates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/MANIFEST.json",
+      "bytes": 12595,
+      "sha256": "f851daec197af11aefd2b14dd66f2a64c37eeae78cfaf033ebdf7647da6a383d",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/orchestrations/assign-agent-memory-loadout.yaml",
+      "bytes": 295,
+      "sha256": "1278c047bad251f4fccac5225333b78196839bb3b908c4a73cc980892b9670d6",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/layered-memory-lifecycle.yaml",
+      "target_path": null,
+      "rationale": "consolidated into one executable canonical workflow"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/orchestrations/cold-start-memory-bootstrap.yaml",
+      "bytes": 341,
+      "sha256": "e060c6e142e2eed5f92b1d24c00ceacf0e92e4c78d49c4fb461b947e485005cc",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/layered-memory-lifecycle.yaml",
+      "target_path": null,
+      "rationale": "consolidated into one executable canonical workflow"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/orchestrations/compact-and-offload-context.yaml",
+      "bytes": 348,
+      "sha256": "9d7fccc5265cae398c20fabe64e9037ac5ef56364069b37fba14054813ba5edc",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/layered-memory-lifecycle.yaml",
+      "target_path": null,
+      "rationale": "consolidated into one executable canonical workflow"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/orchestrations/evaluate-memory-runtime.yaml",
+      "bytes": 299,
+      "sha256": "c62c1aaeb2f6512483b2a8652cea3f3a193d78b86a8fc3245202f99048c3c3c2",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/layered-memory-lifecycle.yaml",
+      "target_path": null,
+      "rationale": "consolidated into one executable canonical workflow"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/orchestrations/ingest-and-distill-memory.yaml",
+      "bytes": 542,
+      "sha256": "a0243a096847deca76734986a8e1d5b75479c8569144964c55c81f2921c24de7",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/layered-memory-lifecycle.yaml",
+      "target_path": null,
+      "rationale": "consolidated into one executable canonical workflow"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/orchestrations/memory-maintenance-and-drift.yaml",
+      "bytes": 357,
+      "sha256": "e62bd8d3329edb985cc809654f6d8108e82e803049522cc3e4521261f0fc4cfe",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/layered-memory-lifecycle.yaml",
+      "target_path": null,
+      "rationale": "consolidated into one executable canonical workflow"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/orchestrations/promote-memory-asset.yaml",
+      "bytes": 351,
+      "sha256": "db23ffc8162bf06e53bae15b5023b19f4b36e797f310e911e1721578a61f166e",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/layered-memory-lifecycle.yaml",
+      "target_path": null,
+      "rationale": "consolidated into one executable canonical workflow"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/orchestrations/recall-and-assemble-context.yaml",
+      "bytes": 412,
+      "sha256": "bbfe2472b1d23003e2ad00abdb3585504c05b5945b38d353f80aa9aa90fed291",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/layered-memory-lifecycle.yaml",
+      "target_path": null,
+      "rationale": "consolidated into one executable canonical workflow"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/README.md",
+      "bytes": 2283,
+      "sha256": "3302160d1b0799c78d5933a718be1b13aceee650c011b5de6086a72d46659df8",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source audit, attribution, and validation evidence retained in the intake disposition ledger"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/registry/memory_aliases.yaml",
+      "bytes": 658,
+      "sha256": "b27e4b8d20514928435910a445f6f14c9b863c1b17c329a7df6393edb74b5a8a",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric/references/layered-memory-lifecycle.md",
+      "target_path": null,
+      "rationale": "policy semantics merged into lazy-loaded operational guidance and runtime gates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/registry/memory_capabilities.yaml",
+      "bytes": 2799,
+      "sha256": "53942e3bdc49b1557dfbfb60840fea4923dbd3a17a5eaf5403568856b3a6cbc1",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric/references/layered-memory-lifecycle.md",
+      "target_path": null,
+      "rationale": "policy semantics merged into lazy-loaded operational guidance and runtime gates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/registry/memory_graph_edges.yaml",
+      "bytes": 4787,
+      "sha256": "b4648ed90b4571e355effda1528b1a09e4ce5a40b63e0072bba03e00787b4d5a",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric/references/layered-memory-lifecycle.md",
+      "target_path": null,
+      "rationale": "policy semantics merged into lazy-loaded operational guidance and runtime gates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/registry/memory_skills.yaml",
+      "bytes": 2917,
+      "sha256": "354362f54d8b245b0b8d00abfbc506ad1c0bbe63aa49cae40bb14858affec76c",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric/references/layered-memory-lifecycle.md",
+      "target_path": null,
+      "rationale": "policy semantics merged into lazy-loaded operational guidance and runtime gates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/registry/pacify_memory_feature_delta.yaml",
+      "bytes": 1407,
+      "sha256": "3dac0c1164afe0ca5c6461b3556c54a42ee6c18ffd1544ef487f87ce99484053",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric/references/layered-memory-lifecycle.md",
+      "target_path": null,
+      "rationale": "policy semantics merged into lazy-loaded operational guidance and runtime gates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/runtime/__init__.py",
+      "bytes": 49,
+      "sha256": "cba037e7f4def75d68546d267a34c94aa3e2fbfee6e64fa33cc8e37e61afc6a7",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_intelligence.py",
+      "target_path": null,
+      "rationale": "bounded lifecycle mechanism merged around the canonical memory vault"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/runtime/context_assembler.py",
+      "bytes": 1286,
+      "sha256": "8af76874addecddc443aa11dfea55471b9115b9fe88bb122cf3f0849fa108e6d",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_intelligence.py",
+      "target_path": null,
+      "rationale": "bounded lifecycle mechanism merged around the canonical memory vault"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/runtime/demo.py",
+      "bytes": 1459,
+      "sha256": "68025eb118c6bc78369833ea616b2184eff2d68759eaefc9c01fdf1ad1fc8ec9",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_intelligence.py",
+      "target_path": null,
+      "rationale": "bounded lifecycle mechanism merged around the canonical memory vault"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/runtime/durable_write_queue.py",
+      "bytes": 1276,
+      "sha256": "b156f626d029f4e77218f7a7091510beb334d91bfd965c8d928ad9eccf88c4ea",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_intelligence.py",
+      "target_path": null,
+      "rationale": "bounded lifecycle mechanism merged around the canonical memory vault"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/runtime/loadout_resolver.py",
+      "bytes": 1515,
+      "sha256": "d51a5aabd9d62be2daa270cc1b775152dccf29bc178e825c4b3c955c46b37721",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_intelligence.py",
+      "target_path": null,
+      "rationale": "bounded lifecycle mechanism merged around the canonical memory vault"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/runtime/memory_capture.py",
+      "bytes": 2072,
+      "sha256": "e95cdf56edbe5c11ae9ae29e164ae89b5887a62975ff80322c90a310f90bcdd5",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_intelligence.py",
+      "target_path": null,
+      "rationale": "bounded lifecycle mechanism merged around the canonical memory vault"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/runtime/memory_conflict.py",
+      "bytes": 1748,
+      "sha256": "b32b9b5e0242a4e740495e2c52c689fb5124a75817961f2d270a027a3a634c82",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_intelligence.py",
+      "target_path": null,
+      "rationale": "bounded lifecycle mechanism merged around the canonical memory vault"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/runtime/memory_evaluator.py",
+      "bytes": 1050,
+      "sha256": "92695dd9d8d176bed8d972278ccf9c5547512d4c44ac6c4a9e6cf50fbcf0a413",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_intelligence.py",
+      "target_path": null,
+      "rationale": "bounded lifecycle mechanism merged around the canonical memory vault"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/runtime/memory_models.py",
+      "bytes": 2243,
+      "sha256": "16337357a2a5b686e1d7e22612127b704c3f3028a3377259723e7ac975edcbb1",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_fabric.py",
+      "target_path": null,
+      "rationale": "layer and scope metadata merged into the canonical memory record"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/runtime/memory_ranker.py",
+      "bytes": 2859,
+      "sha256": "ff7f1bebd1b66663dc9d72f771c8466ac2a42c8db1f975fb02073dff2c2c2772",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_intelligence.py",
+      "target_path": null,
+      "rationale": "bounded lifecycle mechanism merged around the canonical memory vault"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/runtime/offload_compactor.py",
+      "bytes": 1535,
+      "sha256": "c1f4e1a5183d57a979ce149492e85df7268a8495dd7a6a81d6da801530882377",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_intelligence.py",
+      "target_path": null,
+      "rationale": "bounded lifecycle mechanism merged around the canonical memory vault"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/runtime/promotion_engine.py",
+      "bytes": 1793,
+      "sha256": "da1ccaaaa96842c897085e25a4aea71a13853e84047e9efeab14acef5490f647",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_intelligence.py",
+      "target_path": null,
+      "rationale": "bounded lifecycle mechanism merged around the canonical memory vault"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/runtime/scene_index.py",
+      "bytes": 1030,
+      "sha256": "ca2964ab2f0cf3289353bc344475d2ac5d43354978a576b3c470b4386d4fdc57",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_intelligence.py",
+      "target_path": null,
+      "rationale": "bounded lifecycle mechanism merged around the canonical memory vault"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/runtime/validate_pack.py",
+      "bytes": 1970,
+      "sha256": "b3bc5a87ad9de7b673af3df180eb4558229bff5042b481464233f22b27cb7af7",
+      "disposition": "merge",
+      "canonical_owner": "runtime/memory_intelligence.py",
+      "target_path": null,
+      "rationale": "bounded lifecycle mechanism merged around the canonical memory vault"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/agent-memory-loadouts/SKILL.md",
+      "bytes": 843,
+      "sha256": "ec7817ec8040dd3df6bf78ec9a50f8faccf3ebc65b462a46dad82e11623b6406",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric",
+      "target_path": null,
+      "rationale": "merged into existing discoverable memory and retrieval skills without duplicates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/hybrid-memory-retrieval-ranking/SKILL.md",
+      "bytes": 993,
+      "sha256": "738a27d408ef927ba30c9fea9b3fce281904faab65fa5d423df3f102f8c2d685",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric",
+      "target_path": null,
+      "rationale": "merged into existing discoverable memory and retrieval skills without duplicates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/layered-context-assembly/SKILL.md",
+      "bytes": 817,
+      "sha256": "166574ef31ab03b314a5af67d06a8e2a9e398405a9fc423a36e50792fc98ab5f",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric",
+      "target_path": null,
+      "rationale": "merged into existing discoverable memory and retrieval skills without duplicates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/layered-memory-distillation/SKILL.md",
+      "bytes": 1013,
+      "sha256": "c12b2b144445c1f2b791215d0d126328d62b5ef90d16d7aed837711a920c49a6",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric",
+      "target_path": null,
+      "rationale": "merged into existing discoverable memory and retrieval skills without duplicates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/memory-access-control/SKILL.md",
+      "bytes": 829,
+      "sha256": "71ca17c0f8b5903cdb272d2ac6be89e8135159bf9ea698b381feaef1f9074632",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric",
+      "target_path": null,
+      "rationale": "merged into existing discoverable memory and retrieval skills without duplicates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/memory-cold-start-import/SKILL.md",
+      "bytes": 847,
+      "sha256": "98bfda012aefc5a89e0e4826d6d875e446a7f03ec9f7de00b70301641514390b",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric",
+      "target_path": null,
+      "rationale": "merged into existing discoverable memory and retrieval skills without duplicates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/memory-conflict-and-supersession/SKILL.md",
+      "bytes": 794,
+      "sha256": "7b90fe58514221e2ae21654fbbb58cf73e4d04e5ef7924446e22ab08cedbaa8f",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric",
+      "target_path": null,
+      "rationale": "merged into existing discoverable memory and retrieval skills without duplicates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/memory-observability-and-drift/SKILL.md",
+      "bytes": 834,
+      "sha256": "92eaa169b05d667677b290f5186b246c188e3ff369ac689781bf66913b110895",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric",
+      "target_path": null,
+      "rationale": "merged into existing discoverable memory and retrieval skills without duplicates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/memory-promotion-governance/SKILL.md",
+      "bytes": 930,
+      "sha256": "b92e6079725903905c298db0077337c9eb789f2df1f9df51998aedf3ba9f7e12",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric",
+      "target_path": null,
+      "rationale": "merged into existing discoverable memory and retrieval skills without duplicates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/memory-storage-resilience/SKILL.md",
+      "bytes": 842,
+      "sha256": "104a32a48984ddbc1beb44cb9a16b6d690e0c58eb3e4dd64b7e8b99b5ab4dcfa",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric",
+      "target_path": null,
+      "rationale": "merged into existing discoverable memory and retrieval skills without duplicates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/reversible-context-offload/SKILL.md",
+      "bytes": 856,
+      "sha256": "46eb7501cafcf85b6216e5d852d8a0fdd3ca9e303b91e2a79c6abd35b06eb008",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric",
+      "target_path": null,
+      "rationale": "merged into existing discoverable memory and retrieval skills without duplicates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/sanitized-agent-memory-capture/SKILL.md",
+      "bytes": 954,
+      "sha256": "874ecafd38d88c363050c610e4988579163600983be0701f4ce61f0b0e40a734",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric",
+      "target_path": null,
+      "rationale": "merged into existing discoverable memory and retrieval skills without duplicates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/scene-memory-navigation/SKILL.md",
+      "bytes": 783,
+      "sha256": "d8d8704134a3843dfad19b6266683de52e461827ff8a0d0b5080a1833cb30d1c",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric",
+      "target_path": null,
+      "rationale": "merged into existing discoverable memory and retrieval skills without duplicates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/scoped-core-memory-models/SKILL.md",
+      "bytes": 850,
+      "sha256": "be297f01cea63cabce1ccbbb9d438405dbdeb4b35bc0358b6f8e6330b57743a1",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-memory-fabric",
+      "target_path": null,
+      "rationale": "merged into existing discoverable memory and retrieval skills without duplicates"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/skills/skill-memory-promotion/SKILL.md",
+      "bytes": 849,
+      "sha256": "96e89ccb9ab6386ceb4e8c4b4294d91aaa71150f8f32264be10a8a382d1dbc36",
+      "disposition": "merge",
+      "canonical_owner": "runtime/process_memory.py",
+      "target_path": null,
+      "rationale": "skill promotion remains owned by the existing skill foundry"
+    },
+    {
+      "source_path": "pacify_x_tencent_memory_upgrade_v1/tests/test_runtime.py",
+      "bytes": 3906,
+      "sha256": "70b6d9254ba9a68fcde04501d587b1a7569da808cccbd9839580157621f10841",
+      "disposition": "merge",
+      "canonical_owner": "tests/test_memory_intelligence.py",
+      "target_path": null,
+      "rationale": "adapted behavioral and negative tests"
+    }
+  ],
+  "report_sha256": "d7af278d81af71ebe1ab1061d4f143515d186669ada507f0ced7635e3c9c53f3"
+}

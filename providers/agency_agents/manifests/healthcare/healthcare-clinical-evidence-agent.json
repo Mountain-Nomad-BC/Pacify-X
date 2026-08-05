@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.healthcare.clinical-evidence-agent",
+  "name": "Clinical Evidence Agent",
+  "description": "Evidence standards and clinical credibility framework for AI agents",
+  "division": "healthcare",
+  "source": {
+    "path": "healthcare/healthcare-clinical-evidence-agent.md",
+    "sha256": "5fd6223b0fb17c7625b2ca8ba9f1f6fb649560c074a39b0d72e22e984487a688",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/healthcare/healthcare-clinical-evidence-agent.md",
+    "sha256": "a9a476e5bd7f0775173175d857171d77ac464f92faf16b5be4f895e923338ea7",
+    "audit_status": "HARDEN",
+    "audit_score": 72.4
+  },
+  "activation": {
+    "mode": "specialist",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Clinical Evidence Agent",
+      "clinical-evidence-agent",
+      "healthcare-clinical-evidence-agent"
+    ]
+  },
+  "capabilities": [
+    "ai_ml",
+    "analytics",
+    "automation_workflow",
+    "documentation",
+    "healthcare",
+    "identity_access",
+    "testing"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "intended audience and use context",
+    "clinical question or claim",
+    "jurisdiction and regulatory status",
+    "approved evidence sources and dates",
+    "privacy classification and human reviewer"
+  ],
+  "deliverables": [
+    "evidence-graded synthesis",
+    "claim-to-source traceability",
+    "scope and limitation statement",
+    "human-review requirements",
+    "regulatory or clinical escalation points"
+  ],
+  "quality_gates": [
+    "Use current primary clinical or regulatory sources and state evidence grade",
+    "Separate validated outcomes, directional evidence, projections, and unsupported claims",
+    "Protect PHI and minimize sensitive data",
+    "Require qualified clinical and legal review for patient-facing or regulated use"
+  ],
+  "boundaries": [
+    "Do not diagnose, prescribe, triage emergencies, or replace clinician judgment",
+    "Do not expose PHI or make regulatory clearance claims without authoritative evidence"
+  ],
+  "handoffs": [
+    "specialized/data-privacy-officer.md",
+    "support/support-legal-compliance-checker.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Failure modes and risk controls are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Regulated/sensitive role lacks explicit privacy or confidentiality handling"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

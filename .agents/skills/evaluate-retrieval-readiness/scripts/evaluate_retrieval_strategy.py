@@ -1,4 +1,5 @@
 """Gate a retrieval candidate against exact-reference quality and resource limits."""
+
 from __future__ import annotations
 
 import argparse
@@ -12,8 +13,16 @@ def evaluate(payload: dict[str, Any]) -> dict[str, Any]:
     thresholds = payload.get("thresholds")
     metrics = payload.get("metrics")
     state = payload.get("state")
-    if not isinstance(cases, list) or not cases or not isinstance(thresholds, dict) or not isinstance(metrics, dict) or not isinstance(state, dict):
-        raise ValueError("non-empty cases plus thresholds, metrics, and state objects are required")
+    if (
+        not isinstance(cases, list)
+        or not cases
+        or not isinstance(thresholds, dict)
+        or not isinstance(metrics, dict)
+        or not isinstance(state, dict)
+    ):
+        raise ValueError(
+            "non-empty cases plus thresholds, metrics, and state objects are required"
+        )
     recalls: list[float] = []
     forbidden: set[str] = set()
     for index, case in enumerate(cases):
@@ -36,7 +45,8 @@ def evaluate(payload: dict[str, Any]) -> dict[str, Any]:
     calibration_valid = (not compressed) or (
         state.get("lifecycle") in {"calibrated", "prepared", "persisted", "loaded"}
         and bool(state.get("calibration_fingerprint"))
-        and state.get("calibration_fingerprint") == state.get("current_distribution_fingerprint")
+        and state.get("calibration_fingerprint")
+        == state.get("current_distribution_fingerprint")
     )
     checks = {
         "recall_floor": mean_recall >= min_recall,
@@ -46,9 +56,13 @@ def evaluate(payload: dict[str, Any]) -> dict[str, Any]:
         "calibration_current": calibration_valid,
     }
     return {
-        "schema_version": "1.0", "complete": all(checks.values()), "checks": checks,
-        "case_count": len(cases), "mean_recall": round(mean_recall, 6),
-        "forbidden_ids_returned": sorted(forbidden), "metrics": {"p95_ms": p95, "peak_memory_mib": memory},
+        "schema_version": "1.0",
+        "complete": all(checks.values()),
+        "checks": checks,
+        "case_count": len(cases),
+        "mean_recall": round(mean_recall, 6),
+        "forbidden_ids_returned": sorted(forbidden),
+        "metrics": {"p95_ms": p95, "peak_memory_mib": memory},
         "state": state,
     }
 

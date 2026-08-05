@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:transcripts:transcript-record",
+  "title": "Source-traceable canonical transcript record",
+  "type": "object",
+  "required": ["record_id", "record_kind", "queue_id", "conversation_id", "source_id", "source_sha256", "source_span", "lifecycle_state", "evidence_state", "label", "text", "review_required"],
+  "properties": {
+    "record_id": {"type": "string", "minLength": 1},
+    "record_kind": {"enum": ["call", "issue", "component", "action", "outcome", "serial", "measurement"]},
+    "queue_id": {"type": "string", "minLength": 1},
+    "conversation_id": {"type": "string", "minLength": 1},
+    "source_id": {"type": "string", "minLength": 1},
+    "source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "source_span": {
+      "type": "object",
+      "required": ["start_line", "end_line"],
+      "properties": {
+        "start_line": {"type": "integer", "minimum": 1},
+        "end_line": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "lifecycle_state": {"enum": ["PRE_CALL", "ACTIVE_CALL", "WRAP_UP", "POST_CALL"]},
+    "evidence_state": {"enum": ["ASSERTED", "NEGATED", "HYPOTHETICAL", "HISTORICAL", "UNCERTAIN"]},
+    "action_state": {"enum": ["NONE", "RECOMMENDED", "REQUESTED", "INSTRUCTED", "COMMITTED", "PERFORMING", "REPORTED_COMPLETED", "VERIFIED_COMPLETED"]},
+    "outcome_state": {"enum": ["NONE", "PROPOSED", "REPORTED", "VERIFIED", "FAILED", "UNKNOWN"]},
+    "label": {"type": "string", "minLength": 1},
+    "text": {"type": "string", "minLength": 1},
+    "value": {"type": ["string", "number", "null"]},
+    "unit": {"type": ["string", "null"]},
+    "validation_evidence": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "review_required": {"type": "boolean"}
+  },
+  "additionalProperties": false
+}

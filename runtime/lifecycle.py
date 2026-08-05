@@ -1,4 +1,5 @@
 """Deterministic checkpoints and evidence-gated retry decisions."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -48,8 +49,12 @@ class RetryDecision:
     reason: str
 
 
-def failure_fingerprint(capability_id: str | None, error_type: str, message: str) -> str:
-    normalized = "|".join((capability_id or "none", error_type.strip(), " ".join(message.split())))
+def failure_fingerprint(
+    capability_id: str | None, error_type: str, message: str
+) -> str:
+    normalized = "|".join(
+        (capability_id or "none", error_type.strip(), " ".join(message.split()))
+    )
     return hashlib.sha256(normalized.encode("utf-8")).hexdigest()[:16]
 
 

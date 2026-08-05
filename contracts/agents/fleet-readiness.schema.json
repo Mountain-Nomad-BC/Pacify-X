@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:agents:fleet-readiness",
+  "title": "Project-scoped fleet readiness",
+  "type": "object",
+  "required": ["valid", "project_id", "agents", "agent_count", "total_reserved_cost", "total_cost_cap", "readiness_sha256", "authority_granted"],
+  "properties": {
+    "valid": {"type": "boolean"},
+    "project_id": {"type": "string", "minLength": 1},
+    "agents": {"type": "array", "items": {"type": "object"}},
+    "agent_count": {"type": "integer", "minimum": 0},
+    "total_reserved_cost": {"type": "number", "minimum": 0},
+    "total_cost_cap": {"type": "number", "minimum": 0},
+    "readiness_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "authority_granted": {"const": false}
+  },
+  "additionalProperties": true
+}

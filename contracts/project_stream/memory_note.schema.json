@@ -29,6 +29,13 @@
     "revision",
     "certification_status",
     "retrieval_enabled",
+    "layer",
+    "visibility",
+    "negative_matches",
+    "conflicts_with",
+    "fixed_agent_ids",
+    "priority",
+    "usage_success_rate",
     "address"
   ],
   "properties": {
@@ -74,6 +81,18 @@
         "lesson",
         "relationship",
         "procedure"
+        ,"evidence"
+        ,"constraint"
+        ,"instruction"
+        ,"event"
+        ,"negative_knowledge"
+        ,"work_task"
+        ,"scenario"
+        ,"project_doctrine"
+        ,"team_model"
+        ,"user_core"
+        ,"agent_profile"
+        ,"skill_candidate"
       ]
     },
     "summary": {
@@ -157,6 +176,9 @@
         "validated",
         "certified",
         "trusted",
+        "disputed",
+        "expired",
+        "quarantined",
         "revoked",
         "superseded"
       ]
@@ -164,6 +186,21 @@
     "retrieval_enabled": {
       "type": "boolean"
     },
+    "layer": {
+      "enum": ["L0", "L1", "L2", "L3"]
+    },
+    "team_id": {"type": ["string", "null"]},
+    "user_id": {"type": ["string", "null"]},
+    "agent_id": {"type": ["string", "null"]},
+    "task_id": {"type": ["string", "null"]},
+    "visibility": {
+      "enum": ["private", "project", "team", "restricted", "agent"]
+    },
+    "negative_matches": {"type": "array", "items": {"type": "string"}},
+    "conflicts_with": {"type": "array", "items": {"type": "string"}},
+    "fixed_agent_ids": {"type": "array", "items": {"type": "string"}},
+    "priority": {"type": "integer", "minimum": 0, "maximum": 100},
+    "usage_success_rate": {"type": "number", "minimum": 0, "maximum": 1},
     "address": {
       "type": "object",
       "additionalProperties": false,

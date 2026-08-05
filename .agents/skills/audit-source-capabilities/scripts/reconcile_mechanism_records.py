@@ -28,7 +28,13 @@ def reconcile(report_path: Path, mappings_path: Path) -> dict[str, Any]:
     for source in report.get("records", []):
         mechanisms = tuple(map(str, source.get("mechanisms", [])))
         missing = sorted(set(mechanisms) - set(mappings))
-        targets = sorted({target for mechanism in mechanisms for target in mappings.get(mechanism, [])})
+        targets = sorted(
+            {
+                target
+                for mechanism in mechanisms
+                for target in mappings.get(mechanism, [])
+            }
+        )
         if missing:
             disposition = "unresolved_mechanism"
         elif source.get("disposition") == "no_reusable_signal":
@@ -50,11 +56,16 @@ def reconcile(report_path: Path, mappings_path: Path) -> dict[str, Any]:
         )
     unresolved = counts["unresolved_mechanism"]
     expected = int(report.get("candidate_count", -1)) + sum(
-        1 for item in report.get("records", []) if item.get("disposition") == "no_reusable_signal"
+        1
+        for item in report.get("records", [])
+        if item.get("disposition") == "no_reusable_signal"
     )
     return {
         "schema_version": "1.0",
-        "inputs": {"report_sha256": hash_file(report_path), "mappings_sha256": hash_file(mappings_path)},
+        "inputs": {
+            "report_sha256": hash_file(report_path),
+            "mappings_sha256": hash_file(mappings_path),
+        },
         "summary": {
             "records": len(results),
             "expected_records": expected,

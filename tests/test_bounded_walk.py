@@ -25,7 +25,10 @@ def test_walk_is_deterministic_and_matches_intake_file_inventory() -> None:
         (root / "a" / "B.txt").write_text("b\n", encoding="utf-8")
         (root / ".git").mkdir()
         (root / ".git" / "ignored.txt").write_text("ignored\n", encoding="utf-8")
-        excluded = lambda relative: any(part.casefold() == ".git" for part in Path(relative).parts)
+
+        def excluded(relative: str) -> bool:
+            return any(part.casefold() == ".git" for part in Path(relative).parts)
+
         first = bounded_walk(root, exclude=excluded)
         second = bounded_walk(root, exclude=excluded)
         assert first == second
@@ -34,7 +37,10 @@ def test_walk_is_deterministic_and_matches_intake_file_inventory() -> None:
 
 
 def test_walk_rejects_symlink_escape_and_cycle() -> None:
-    with tempfile.TemporaryDirectory() as directory, tempfile.TemporaryDirectory() as outside_directory:
+    with (
+        tempfile.TemporaryDirectory() as directory,
+        tempfile.TemporaryDirectory() as outside_directory,
+    ):
         root = Path(directory)
         outside = Path(outside_directory)
         (outside / "secret.txt").write_text("nope", encoding="utf-8")
@@ -60,7 +66,9 @@ def test_walk_rejects_symlink_escape_and_cycle() -> None:
         (WalkLimits(max_files=8, max_depth=8, max_bytes=1), "max_bytes_exceeded"),
     ],
 )
-def test_walk_reports_structured_resource_limits(limits: WalkLimits, expected: str) -> None:
+def test_walk_reports_structured_resource_limits(
+    limits: WalkLimits, expected: str
+) -> None:
     with tempfile.TemporaryDirectory() as directory:
         root = Path(directory)
         (root / "one.txt").write_text("one", encoding="utf-8")

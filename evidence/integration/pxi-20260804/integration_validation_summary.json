@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "integration_id": "REL-013/REL-014",
+  "status": "development_tree_validated_intakes_closed",
+  "release_certified": false,
+  "historical_release_unchanged": "0.6.3",
+  "source_disposition": {
+    "closed_source_files": 4030,
+    "final_disposition_files": 4031,
+    "unaccounted": 0,
+    "intake_status": "closed_and_recoverably_quarantined",
+    "source_tree_sha256": "7f353ca7ade3e9fe061c82f58831f676f7e8ccbbab178128c7861b4a34ab1908",
+    "hard_delete": false
+  },
+  "repair_pack": {
+    "files": 13,
+    "bytes": 21488,
+    "unaccounted": 0,
+    "intake_status": "closed_and_recoverably_quarantined",
+    "matching_snapshots": 2,
+    "minimum_stability_seconds": 30,
+    "tree_sha256": "e4c7e20be030148b55afd1da861632f945c7c7812b61f572c6c17e4f4ca1f369",
+    "hard_delete": false
+  },
+  "validation": {
+    "pytest_full_source": {
+      "passed": 813,
+      "subtests_passed": 585,
+      "failed": 0,
+      "skipped": 0,
+      "uninterrupted_run": true
+    },
+    "unittest_discovery": {
+      "passed": 424,
+      "failed": 0
+    },
+    "exact_tool_certification": {
+      "tools_passed": 56,
+      "domain_wrappers_passed": 7,
+      "errors": 0
+    },
+    "distribution": {
+      "build_invocations": 1,
+      "wheel_sha256": "26f74007ae96864ece12ccfe0e1f37b6ddb6af5da89dab289779b55334e76f6d",
+      "sdist_sha256": "5abdf81ecebc5e2321d6b184b3d1ec15e8a1b278c58b4b03973837a63cfafc52",
+      "source_skill_projection_valid": true,
+      "installed_from_exact_wheel": true,
+      "unrelated_working_directory_doctor_valid": true,
+      "unrelated_working_directory_validate_valid": true
+    },
+    "clean_source_export": {
+      "file_count": 2495,
+      "records_sha256": "f39b8162c629dcd3423407a539371f2a46a6c4954432e493013f8c0def2ef14c",
+      "archive_sha256": "6470122f1046638ec92742f7d87f3a831261cc9318265dc23a7bab95d071eb87",
+      "repeat_archive_sha256_equal": true,
+      "hard_delete": false
+    },
+    "independent_gates": {
+      "passed": 8,
+      "failed": 0,
+      "finalized_current": 8
+    },
+    "strict_release_audit": {
+      "passed": 24,
+      "failed": 0
+    },
+    "structural_maturity_audit": {
+      "passed": 21,
+      "failed": 0
+    },
+    "sanitation": {
+      "files_scanned": 2495,
+      "identifier_hits": 0,
+      "legacy_placeholder_hits": 0,
+      "active_zip_count": 0,
+      "errors": 0
+    },
+    "generated_artifact_hygiene": {
+      "active_generated_artifacts": 0,
+      "cache_cleanup": "recoverable_external_quarantine",
+      "hard_delete": false
+    }
+  },
+  "remaining_action": "Preserve this validated development tree. A new signed release requires explicit exact-artifact finalizer authorization and must not mutate the historical 0.6.3 certificate."
+}

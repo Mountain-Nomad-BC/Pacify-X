@@ -1,0 +1,32 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:security_capabilities:safe-security-execution",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Separate knowledge hydration from tool execution and enforce least authority.",
+  "properties": {
+    "R4_default": {
+      "const": "knowledge_or_isolated_lab"
+    },
+    "authority_source": {
+      "const": "runtime_policy"
+    },
+    "metadata_grants_authority": {
+      "const": false
+    },
+    "network_egress_default": {
+      "const": "deny"
+    },
+    "provider_scripts_executed": {
+      "const": false
+    }
+  },
+  "required": [
+    "authority_source",
+    "metadata_grants_authority",
+    "provider_scripts_executed",
+    "R4_default",
+    "network_egress_default"
+  ],
+  "title": "safe-security-execution",
+  "type": "object"
+}

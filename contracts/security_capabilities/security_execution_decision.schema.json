@@ -1,0 +1,51 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security_execution_decision",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "decision": {
+      "enum": [
+        "allow",
+        "allow_read_only",
+        "allow_lab_only",
+        "require_approval",
+        "deny",
+        "abstain"
+      ]
+    },
+    "reasons": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "required_gates": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "risk_class": {
+      "enum": [
+        "R0",
+        "R1",
+        "R2",
+        "R3",
+        "R4"
+      ]
+    },
+    "selected_capabilities": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "decision",
+    "risk_class",
+    "reasons",
+    "required_gates",
+    "selected_capabilities"
+  ],
+  "type": "object"
+}

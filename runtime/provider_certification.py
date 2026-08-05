@@ -1,4 +1,5 @@
 """Executable adversarial certification for optional project-scoped memory providers."""
+
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, replace
@@ -53,18 +54,30 @@ class ProviderCertificate:
 
 
 def _stable(value: object) -> str:
-    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()).hexdigest()
+    return hashlib.sha256(
+        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()
+    ).hexdigest()
 
 
 def _probe(name: str, function: Callable[[], bool]) -> ProbeResult:
-    execution_id = _stable({"name": name, "started": datetime.now(timezone.utc).isoformat()})[:24]
+    execution_id = _stable(
+        {"name": name, "started": datetime.now(timezone.utc).isoformat()}
+    )[:24]
     try:
         passed = function() is True
         observed = {"name": name, "passed": passed}
-        return ProbeResult(name, passed, execution_id, _stable(observed), None if passed else "AssertionFailed")
+        return ProbeResult(
+            name,
+            passed,
+            execution_id,
+            _stable(observed),
+            None if passed else "AssertionFailed",
+        )
     except Exception as error:
         observed = {"name": name, "passed": False, "error": type(error).__name__}
-        return ProbeResult(name, False, execution_id, _stable(observed), type(error).__name__)
+        return ProbeResult(
+            name, False, execution_id, _stable(observed), type(error).__name__
+        )
 
 
 def run_provider_isolation_suite(
@@ -100,23 +113,31 @@ def run_provider_isolation_suite(
     def foreign_write_isolated() -> bool:
         foreign.put(key, foreign_value, created_by="agent-foreign")
         return local.get(key) is not None and local.get(key).get("value") == local_value
+
     tests.append(_probe("foreign_write_denied", foreign_write_isolated))
-    tests.append(_probe(
-        "foreign_prompt_log_denied",
-        lambda: all(local_value not in item for item in foreign.prompt_log())
-        and all(foreign_value not in item for item in local.prompt_log()),
-    ))
-    tests.append(_probe(
-        "global_slot_isolated",
-        lambda: config.database_namespace != foreign_config.database_namespace
-        and config.index_namespace != foreign_config.index_namespace
-        and config.process_namespace != foreign_config.process_namespace
-        and local is not foreign,
-    ))
-    tests.append(_probe(
-        "attribution_preserved",
-        lambda: local.get(key) is not None and local.get(key).get("created_by") == "agent-local",
-    ))
+    tests.append(
+        _probe(
+            "foreign_prompt_log_denied",
+            lambda: all(local_value not in item for item in foreign.prompt_log())
+            and all(foreign_value not in item for item in local.prompt_log()),
+        )
+    )
+    tests.append(
+        _probe(
+            "global_slot_isolated",
+            lambda: config.database_namespace != foreign_config.database_namespace
+            and config.index_namespace != foreign_config.index_namespace
+            and config.process_namespace != foreign_config.process_namespace
+            and local is not foreign,
+        )
+    )
+    tests.append(
+        _probe(
+            "attribution_preserved",
+            lambda: local.get(key) is not None
+            and local.get(key).get("created_by") == "agent-local",
+        )
+    )
 
     def backend_errors_propagate() -> bool:
         local.inject_failure("search")
@@ -129,21 +150,39 @@ def run_provider_isolation_suite(
                 and error.__cause__ is not None
             )
         return False
+
     tests.append(_probe("backend_errors_propagated", backend_errors_propagate))
 
     def correction_not_retrieved() -> bool:
         local.correct(key, "corrected-synthetic-value", created_by="agent-local")
-        return all(item.get("value") != local_value for item in local.search(local_value))
+        return all(
+            item.get("value") != local_value for item in local.search(local_value)
+        )
+
     tests.append(_probe("correction_non_retrieval_proved", correction_not_retrieved))
 
     config_hash = _stable(asdict(config))
     passed = all(item.passed for item in tests)
     executed = datetime.now(timezone.utc).isoformat()
-    certificate_id = _stable({"provider": provider_id, "version": provider_version, "config": config_hash, "tests": [asdict(item) for item in tests]})
+    certificate_id = _stable(
+        {
+            "provider": provider_id,
+            "version": provider_version,
+            "config": config_hash,
+            "tests": [asdict(item) for item in tests],
+        }
+    )
     evidence_refs: tuple[str, ...] = ()
     certificate = ProviderCertificate(
-        certificate_id, provider_id, provider_version, config.project_id, executed,
-        "provider-isolation-harness-v1", config_hash, tuple(tests), evidence_refs,
+        certificate_id,
+        provider_id,
+        provider_version,
+        config.project_id,
+        executed,
+        "provider-isolation-harness-v1",
+        config_hash,
+        tuple(tests),
+        evidence_refs,
         "certified_accelerator" if passed else "disabled",
     )
     if evidence_root is not None:

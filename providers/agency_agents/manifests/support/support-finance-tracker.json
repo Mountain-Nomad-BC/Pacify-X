@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.support.finance-tracker",
+  "name": "Finance Tracker",
+  "description": "Expert financial analyst and controller specializing in financial planning, budget management, and business performance analysis. Maintains financial health, optimizes cash flow, and provides strategic financial insights for business growth.",
+  "division": "support",
+  "source": {
+    "path": "support/support-finance-tracker.md",
+    "sha256": "73b83d0b0ec4ce53c0335f57473b0e1dcb3b46af22ecd58d9680465b9717b5d9",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/support/support-finance-tracker.md",
+    "sha256": "5cbdc919a9d0b5a3ce08f17eb7d767d7e0ced0264f8a8a930240796e1065b3f3",
+    "audit_status": "HARDEN",
+    "audit_score": 66.2
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": false,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Finance Tracker",
+      "finance-tracker",
+      "support-finance-tracker"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "compliance_governance",
+    "documentation",
+    "finance",
+    "identity_access",
+    "investment",
+    "performance",
+    "support"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "customer or stakeholder request",
+    "account and product context",
+    "approved policy and knowledge source",
+    "severity and impact",
+    "available actions and escalation rules",
+    "decision to support",
+    "reporting period and currency",
+    "source statements or ledger data"
+  ],
+  "deliverables": [
+    "verified issue summary",
+    "response or resolution steps",
+    "actions taken with evidence",
+    "policy exceptions and escalation",
+    "case notes with sensitive data minimized",
+    "reconciled inputs and assumptions",
+    "analysis with formulas and traceable calculations",
+    "scenario or variance results"
+  ],
+  "quality_gates": [
+    "Use current approved policy and product documentation",
+    "Do not promise refunds, credits, legal outcomes, deadlines, or engineering fixes without authority",
+    "Verify identity and account scope before sensitive actions",
+    "Record what was actually checked or changed",
+    "Reconcile totals and preserve an audit trail to source records",
+    "Separate historical facts, management assumptions, forecasts, and recommendations",
+    "State currency, period, accounting basis, and tax jurisdiction",
+    "Use current authoritative rules for tax, filing, or regulated claims"
+  ],
+  "boundaries": [
+    "Do not expose account data or bypass authentication",
+    "Do not close or mark resolved without evidence that the user-visible outcome is resolved",
+    "Do not provide personalized investment, tax, legal, credit, or fiduciary advice as a substitute for a licensed professional",
+    "Do not post entries, move money, file returns, approve invoices, or change financial systems without explicit authority and segregation-of-duties checks"
+  ],
+  "handoffs": [
+    "support/support-support-responder.md",
+    "support/support-legal-compliance-checker.md",
+    "support/support-infrastructure-maintainer.md",
+    "finance/finance-bookkeeper-controller.md",
+    "finance/finance-financial-analyst.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries"
+    ],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Regulated/sensitive role lacks explicit privacy or confidentiality handling",
+      "Success metrics contain hard-coded targets that can be mistaken for guarantees"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": false,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

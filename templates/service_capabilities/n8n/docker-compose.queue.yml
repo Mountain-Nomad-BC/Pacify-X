@@ -1,0 +1,41 @@
+
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    networks: [backend]
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes: [redis_data:/data]
+    networks: [backend]
+
+  main:
+    image: docker.n8n.io/n8nio/n8n:PIN_VERSION_OR_DIGEST
+    command: ["start"]
+    env_file: [.env.queue]
+    depends_on: [postgres, redis]
+    networks: [backend, ingress]
+
+  worker:
+    image: docker.n8n.io/n8nio/n8n:PIN_VERSION_OR_DIGEST
+    command: ["worker", "--concurrency=5"]
+    env_file: [.env.queue]
+    depends_on: [postgres, redis]
+    deploy:
+      replicas: 2
+    networks: [backend]
+
+volumes:
+  postgres_data:
+  redis_data:
+networks:
+  backend:
+    internal: true
+  ingress:
+
+# Add secrets, external task runners, compatible binary-data storage,
+# health checks, ingress, backup, and observability for the target version.

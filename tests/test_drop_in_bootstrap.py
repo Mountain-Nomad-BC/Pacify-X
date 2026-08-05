@@ -27,19 +27,28 @@ class DropInBootstrapTests(unittest.TestCase):
                 self.assertTrue((project / CONTROL_DIR / name).is_file(), name)
             for name in COMPACT_OUTPUT_FILES:
                 self.assertTrue((project / name).is_file(), name)
-            state = json.loads((project / CONTROL_DIR / "state.json").read_text(encoding="utf-8"))
+            state = json.loads(
+                (project / CONTROL_DIR / "state.json").read_text(encoding="utf-8")
+            )
             self.assertEqual(state["project"]["mode"], "new")
             self.assertEqual(state["controls"]["maximum_selected_skills"], 3)
             self.assertEqual(state["checkpoint"]["runtime_version"], VERSION)
-            self.assertEqual(state["checkpoint"]["next_safe_action"], state["lifecycle"]["next_action"])
+            self.assertEqual(
+                state["checkpoint"]["next_safe_action"],
+                state["lifecycle"]["next_action"],
+            )
             for relative in (*CONTROL_FILES, *COMPACT_OUTPUT_FILES):
-                path = project / (CONTROL_DIR / relative if relative in CONTROL_FILES else relative)
+                path = project / (
+                    CONTROL_DIR / relative if relative in CONTROL_FILES else relative
+                )
                 text = path.read_text(encoding="utf-8")
                 self.assertNotIn("\ufffd", text)
                 self.assertNotIn("â€”", text)
                 self.assertNotIn("â†’", text)
             for mode in ("new", "existing"):
-                prompt = (project / f".engineering-bootstrap/prompts/{mode}-project.md").read_text(encoding="utf-8")
+                prompt = (
+                    project / f".engineering-bootstrap/prompts/{mode}-project.md"
+                ).read_text(encoding="utf-8")
                 self.assertIn("working-set", prompt)
                 self.assertIn("hydrate --skill", prompt)
                 self.assertIn("explicit approval", prompt)
@@ -57,17 +66,31 @@ class DropInBootstrapTests(unittest.TestCase):
                 target = project / relative
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_bytes(content)
-            before = {path: hashlib.sha256(content).hexdigest() for path, content in owned.items()}
+            before = {
+                path: hashlib.sha256(content).hexdigest()
+                for path, content in owned.items()
+            }
             preview = commission(project, "existing", source_root=ROOT)
             self.assertFalse(preview["applied"])
             self.assertIn("AGENTS.md", preview["preserved_existing"])
             applied = commission(project, "existing", apply=True, source_root=ROOT)
             self.assertTrue(applied["applied"])
             for relative, digest in before.items():
-                self.assertEqual(hashlib.sha256((project / relative).read_bytes()).hexdigest(), digest)
-            inventory = json.loads((project / ".engineering-bootstrap/existing-project-inventory.json").read_text(encoding="utf-8"))
+                self.assertEqual(
+                    hashlib.sha256((project / relative).read_bytes()).hexdigest(),
+                    digest,
+                )
+            inventory = json.loads(
+                (
+                    project / ".engineering-bootstrap/existing-project-inventory.json"
+                ).read_text(encoding="utf-8")
+            )
             self.assertEqual(inventory["mode"], "read_only")
-            adoption = json.loads((project / ".engineering-bootstrap/adoption-plan.json").read_text(encoding="utf-8"))
+            adoption = json.loads(
+                (project / ".engineering-bootstrap/adoption-plan.json").read_text(
+                    encoding="utf-8"
+                )
+            )
             self.assertIn("AGENTS.md", adoption["preserved_existing"])
             self.assertTrue(project_check(project, ROOT)["valid"])
 
@@ -78,7 +101,9 @@ class DropInBootstrapTests(unittest.TestCase):
             startup = bounded_startup(ROOT, project)
             self.assertEqual(startup.hydrated_skill_bodies, ())
             self.assertFalse((project / ".agents/skills").exists())
-            self.assertEqual(main(["--root", str(ROOT), "hydrate", "--skill", "verify-outcome"]), 0)
+            self.assertEqual(
+                main(["--root", str(ROOT), "hydrate", "--skill", "verify-outcome"]), 0
+            )
 
     def test_project_check_detects_managed_prompt_tampering(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -88,7 +113,10 @@ class DropInBootstrapTests(unittest.TestCase):
             prompt.write_text("tampered", encoding="utf-8")
             result = project_check(project, ROOT)
             self.assertFalse(result["valid"])
-            self.assertIn("managed commissioning file drift: .engineering-bootstrap/prompts/new-project.md", result["errors"])
+            self.assertIn(
+                "managed commissioning file drift: .engineering-bootstrap/prompts/new-project.md",
+                result["errors"],
+            )
 
 
 if __name__ == "__main__":

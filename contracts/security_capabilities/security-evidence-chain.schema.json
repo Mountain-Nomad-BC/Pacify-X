@@ -1,0 +1,47 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security-evidence-chain",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Preserve source, integrity, time, and custody of logs, images, memory, packets, findings, and reports.",
+  "properties": {
+    "acquired_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "actor": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "analysis_separate": {
+      "const": true
+    },
+    "evidence_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "original_immutable": {
+      "const": true
+    },
+    "source_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "transformations": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "source_sha256",
+    "acquired_at",
+    "actor",
+    "original_immutable",
+    "transformations",
+    "analysis_separate"
+  ],
+  "title": "security-evidence-chain",
+  "type": "object"
+}

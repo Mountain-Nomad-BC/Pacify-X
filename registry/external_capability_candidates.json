@@ -1,0 +1,1419 @@
+{
+  "capabilities": [
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "do not treat file counts as proof of behavior",
+        "do not activate external hooks or scripts during audit",
+        "preserve target harness ownership"
+      ],
+      "bundle": "optimize-agent-harness",
+      "category": "agent-harness",
+      "dependencies": [
+        "audit-ai-runtime-assurance",
+        "validate-engineering-outcomes"
+      ],
+      "id": "audit-agent-harness-performance",
+      "keywords": [
+        "harness audit",
+        "tool coverage",
+        "context efficiency",
+        "quality gates",
+        "memory persistence",
+        "cost efficiency"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "deterministic scorecard",
+        "before-after deltas",
+        "scope-specific checks",
+        "action-space audit",
+        "observation contract audit",
+        "recovery contract audit"
+      ],
+      "owner": "govern-operating-kernel",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/agent-harness-construction/SKILL.md",
+        "agents/harness-optimizer.md",
+        "scripts/harness-audit.js"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Score tool coverage, observation quality, recovery behavior, context efficiency, quality gates, memory, evaluation, security, and cost as one measurable harness surface.",
+      "title": "Audit Agent Harness Performance",
+      "use_when": [
+        "an agent repeatedly stalls or loops",
+        "tooling exists but completion quality is poor",
+        "harness changes need measurable proof"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "never compact away unresolved decisions or evidence links",
+        "never load the full catalog merely to estimate it"
+      ],
+      "bundle": "optimize-agent-harness",
+      "category": "context-management",
+      "dependencies": [
+        "context-compactor",
+        "skill-navigator"
+      ],
+      "id": "manage-harness-context-budget",
+      "keywords": [
+        "context budget",
+        "strategic compact",
+        "token budget",
+        "lazy load",
+        "minimal hydration"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "metadata-only startup",
+        "phase-boundary compaction",
+        "token cost inventory",
+        "redundancy detection",
+        "minimal hydration"
+      ],
+      "owner": "context-compactor",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/context-budget/SKILL.md",
+        "skills/strategic-compact/SKILL.md",
+        "docs/token-optimization.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Measure startup and runtime context load, identify redundant skills/rules/MCP metadata, and compact at phase boundaries without erasing evidence or task state.",
+      "title": "Manage Harness Context Budget",
+      "use_when": [
+        "context is bloated",
+        "skills compete for startup budget",
+        "long tasks lose critical state after compaction"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "no private chain-of-thought capture",
+        "no cross-project promotion from one project",
+        "observations remain candidate-only",
+        "redact secrets before persistence"
+      ],
+      "bundle": "evolve-session-learning",
+      "category": "continuous-learning",
+      "dependencies": [
+        "govern-metacognitive-evolution",
+        "isolate-project-streams",
+        "candidate-memory-promoter"
+      ],
+      "id": "observe-project-scoped-instincts",
+      "keywords": [
+        "instincts",
+        "continuous learning",
+        "project scoped memory",
+        "session observation",
+        "confidence"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "pre/post action observation",
+        "project fingerprinting",
+        "atomic trigger-action records",
+        "confidence scoring",
+        "tail sampling",
+        "observer re-entrancy guards"
+      ],
+      "owner": "govern-metacognitive-evolution",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/continuous-learning-v2/SKILL.md",
+        "skills/continuous-learning-v2/hooks/observe.sh",
+        "skills/continuous-learning-v2/agents/observer.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Capture bounded session observations and derive atomic, evidence-backed candidate behaviors isolated by project before any memory or skill promotion.",
+      "title": "Observe Project-Scoped Instincts",
+      "use_when": [
+        "repeated corrections should become reusable guidance",
+        "project conventions must not leak across repositories",
+        "tool traces contain reusable operational patterns"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "proposal only until admission",
+        "contradictory instincts must not be averaged into nonsense",
+        "retain negative evidence and scope"
+      ],
+      "bundle": "evolve-session-learning",
+      "category": "continuous-learning",
+      "dependencies": [
+        "observe-project-scoped-instincts",
+        "forge-skills-from-knowledge",
+        "skill-admission-controller"
+      ],
+      "id": "evolve-instincts-into-capabilities",
+      "keywords": [
+        "evolve instincts",
+        "cluster learned behavior",
+        "skill promotion",
+        "rule generation"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "confidence decay and reinforcement",
+        "cross-project promotion threshold",
+        "cluster coherence checks",
+        "skill/rule/agent output selection",
+        "rollback metadata"
+      ],
+      "owner": "forge-skills-from-knowledge",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/continuous-learning-v2/SKILL.md",
+        "skills/continuous-learning-v2/scripts/instinct-cli.py",
+        "commands/evolve.md",
+        "commands/promote.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Cluster compatible atomic candidate behaviors, test them against held-out evidence, and propose skills, rules, commands, or agent refinements without self-authorizing activation.",
+      "title": "Evolve Instincts Into Capabilities",
+      "use_when": [
+        "several candidate instincts describe one reusable procedure",
+        "a repeated pattern is mature enough for formalization"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "adapter layer does not own merge sequencing",
+        "actions require separate authorization",
+        "no hidden session mutation during inspection"
+      ],
+      "bundle": "manage-agent-session-fabric",
+      "category": "session-fabric",
+      "dependencies": [
+        "human-handoff-state-transfer",
+        "long-horizon-progress-ledger",
+        "isolate-project-streams"
+      ],
+      "id": "manage-session-continuity-adapters",
+      "keywords": [
+        "session adapter",
+        "canonical session snapshot",
+        "resume session",
+        "handoff",
+        "worker state"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "canonical session schema",
+        "adapter registry",
+        "read-only snapshot",
+        "worker state aggregation",
+        "branch/worktree binding",
+        "artifact pointers"
+      ],
+      "owner": "human-handoff-state-transfer",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "docs/ECC-2.0-SESSION-ADAPTER-DISCOVERY.md",
+        "docs/SESSION-ADAPTER-CONTRACT.md",
+        "scripts/lib/session-adapters/canonical-session.js",
+        "scripts/session-inspect.js"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Normalize session snapshots across harnesses and orchestration modes so work can be inspected, resumed, handed off, and compared without binding the control plane to tmux or one vendor.",
+      "title": "Manage Session Continuity Adapters",
+      "use_when": [
+        "sessions come from multiple harnesses",
+        "agent work must survive UI or process restarts",
+        "handoff requires machine-readable state"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "never overwrite unknown files silently",
+        "install state is not proof of runtime health",
+        "target-specific projections remain derived"
+      ],
+      "bundle": "install-capabilities-selectively",
+      "category": "installation",
+      "dependencies": [
+        "skill-bundle-resolver",
+        "admit-capability",
+        "commission-project"
+      ],
+      "id": "plan-selective-capability-installation",
+      "keywords": [
+        "selective install",
+        "install profile",
+        "module manifest",
+        "install state",
+        "plan apply"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "profile/module/component manifests",
+        "plan then apply",
+        "state ledger",
+        "incremental update",
+        "conflict strategy",
+        "uninstall ownership"
+      ],
+      "owner": "skill-bundle-resolver",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "docs/SELECTIVE-INSTALL-ARCHITECTURE.md",
+        "manifests/install-modules.json",
+        "manifests/install-components.json",
+        "scripts/install-plan.js",
+        "scripts/install-apply.js"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Resolve profiles, modules, components, dependencies, targets, conflicts, and ownership into a deterministic install plan before applying any filesystem changes.",
+      "title": "Plan Selective Capability Installation",
+      "use_when": [
+        "different projects need different capability subsets",
+        "cross-harness installation must remain reproducible",
+        "updates must know what the framework owns"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "no parallelization of tightly coupled edits without partition proof",
+        "merge remains separately gated",
+        "cleanup must be reversible or evidence-preserving"
+      ],
+      "bundle": "orchestrate-agent-fleets",
+      "category": "multi-agent-orchestration",
+      "dependencies": [
+        "orchestrate-capability-scheduling",
+        "isolate-project-streams",
+        "recovery-coordinator"
+      ],
+      "id": "orchestrate-isolated-agent-fleet",
+      "keywords": [
+        "worktrees",
+        "tmux",
+        "dmux",
+        "parallel agents",
+        "agent fleet",
+        "merge queue"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "worktree isolation",
+        "worker-per-pane state",
+        "coordination directory",
+        "lifecycle hooks",
+        "resource caps",
+        "merge queue",
+        "background cleanup"
+      ],
+      "owner": "orchestrate-capability-scheduling",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/dmux-workflows/SKILL.md",
+        "skills/claude-devfleet/SKILL.md",
+        "skills/ralphinho-rfc-pipeline/SKILL.md",
+        "scripts/lib/tmux-worktree-orchestrator.js",
+        "scripts/orchestrate-worktrees.js"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Dispatch bounded work units to isolated worktrees or panes, monitor status through structured coordination files, and converge through explicit handoffs and merge gates.",
+      "title": "Orchestrate Isolated Agent Fleet",
+      "use_when": [
+        "independent tasks can run in parallel",
+        "agents must not edit the same working tree",
+        "operator needs deterministic status and handoffs"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "hooks may not silently broaden permissions",
+        "failing hooks must degrade predictably",
+        "no fragile inline shell when a script boundary is safer"
+      ],
+      "bundle": "govern-hooked-execution",
+      "category": "hooks",
+      "dependencies": [
+        "supervise-contained-execution",
+        "enforce-governance-controls",
+        "tool-loop-circuit-breaker"
+      ],
+      "id": "govern-agent-hook-lifecycle",
+      "keywords": [
+        "hooks",
+        "pre tool use",
+        "post tool use",
+        "quality gate",
+        "config protection",
+        "no verify"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "hook profiles",
+        "disabled-hook allowlist",
+        "re-entrancy guard",
+        "config protection",
+        "preflight quality checks",
+        "post-action logging",
+        "health validation"
+      ],
+      "owner": "supervise-contained-execution",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "hooks/hooks.json",
+        "scripts/lib/hook-flags.js",
+        "scripts/hooks/config-protection.js",
+        "scripts/hooks/quality-gate.js",
+        "scripts/ci/validate-hooks.js"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Register, profile, disable, validate, and observe pre/post action hooks as governed runtime controls rather than loose shell snippets.",
+      "title": "Govern Agent Hook Lifecycle",
+      "use_when": [
+        "tool calls need policy enforcement",
+        "format/type/test checks should run automatically",
+        "hook failures or loops are destabilizing sessions"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "benchmark tasks must not touch production",
+        "do not optimize only for one visible fixture",
+        "retain failed traces and variance"
+      ],
+      "bundle": "benchmark-and-route-agents",
+      "category": "evaluation",
+      "dependencies": [
+        "engineer-verification-lab",
+        "active-evaluation-selector",
+        "audit-ai-runtime-assurance"
+      ],
+      "id": "benchmark-agent-regressions",
+      "keywords": [
+        "agent eval",
+        "regression testing",
+        "pass at k",
+        "cost time consistency",
+        "behavior compliance"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "sandboxed task fixtures",
+        "head-to-head runs",
+        "pass@k",
+        "cost/time accounting",
+        "consistency variance",
+        "behavioral compliance scenarios"
+      ],
+      "owner": "engineer-verification-lab",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/agent-eval/SKILL.md",
+        "skills/ai-regression-testing/SKILL.md",
+        "skills/skill-comply/SKILL.md",
+        "skills/eval-harness/SKILL.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Run repeatable task suites across agents, models, prompts, or harness versions and compare pass rate, pass@k, cost, time, consistency, and failure class.",
+      "title": "Benchmark Agent Regressions",
+      "use_when": [
+        "a model or harness upgrade may regress behavior",
+        "routing decisions need empirical evidence",
+        "skills claim compliance without behavior proof"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "cost cannot override safety or required quality",
+        "routing confidence must be observable",
+        "no vendor lock-in in the canonical policy"
+      ],
+      "bundle": "benchmark-and-route-agents",
+      "category": "model-routing",
+      "dependencies": [
+        "reasoning-utility-controller",
+        "evaluation-budget-allocator",
+        "benchmark-agent-regressions"
+      ],
+      "id": "govern-model-routing-economics",
+      "keywords": [
+        "model route",
+        "cost aware llm",
+        "budget tracking",
+        "fallback model",
+        "prompt caching"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "task complexity bands",
+        "budget envelope",
+        "fallback ladder",
+        "retry economics",
+        "prompt caching",
+        "cost per successful task"
+      ],
+      "owner": "reasoning-utility-controller",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/cost-aware-llm-pipeline/SKILL.md",
+        "commands/model-route.md",
+        "skills/agentic-engineering/SKILL.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Select models by task complexity, required reliability, privacy, latency, and budget using measured evidence, bounded retries, and prompt-cache awareness.",
+      "title": "Govern Model Routing Economics",
+      "use_when": [
+        "not every task requires the largest model",
+        "routing must balance cost and success probability",
+        "fallbacks currently retry blindly"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "similarity never authorizes deletion",
+        "health score is advisory until evidence is reviewed",
+        "preserve provenance and versions"
+      ],
+      "bundle": "maintain-capability-catalog",
+      "category": "skill-governance",
+      "dependencies": [
+        "skill-admission-controller",
+        "synchronize-derived-architecture",
+        "provenance-signature-verifier"
+      ],
+      "id": "maintain-skill-health",
+      "keywords": [
+        "skill stocktake",
+        "skill health",
+        "validate skills",
+        "placement policy",
+        "catalog audit"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "quick scan vs full stocktake",
+        "schema validation",
+        "placement policy",
+        "staleness and duplication checks",
+        "quality rubric",
+        "health report"
+      ],
+      "owner": "skill-admission-controller",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/skill-stocktake/SKILL.md",
+        "scripts/skills-health.js",
+        "scripts/ci/validate-skills.js",
+        "docs/SKILL-DEVELOPMENT-GUIDE.md",
+        "docs/SKILL-PLACEMENT-POLICY.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Inventory skills, validate structure and placement, detect duplication or staleness, measure instruction usefulness, and queue targeted repairs instead of blindly accumulating files.",
+      "title": "Maintain Skill Health",
+      "use_when": [
+        "skill count grows faster than maintainability",
+        "candidate skills need admission evidence",
+        "runtime cannot tell which guidance is stale"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "do not convert context-specific advice into global law",
+        "do not overwrite rule files without review",
+        "retain dissenting or exception evidence"
+      ],
+      "bundle": "maintain-capability-catalog",
+      "category": "rule-governance",
+      "dependencies": [
+        "forge-skills-from-knowledge",
+        "validate-knowledge-relationships",
+        "skill-admission-controller"
+      ],
+      "id": "distill-operational-rules",
+      "keywords": [
+        "rules distill",
+        "cross cutting principles",
+        "always on rules",
+        "rule consolidation"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "cross-skill principle extraction",
+        "contradiction grouping",
+        "scope assignment",
+        "append/revise/create decision",
+        "source trace"
+      ],
+      "owner": "forge-skills-from-knowledge",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/rules-distill/SKILL.md",
+        "commands/rules-distill.md",
+        "rules/common"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Extract repeated cross-cutting constraints from admitted skills and evidence, reconcile contradictions, and propose concise always-on rules with explicit scope and source links.",
+      "title": "Distill Operational Rules",
+      "use_when": [
+        "many skills repeat the same invariant",
+        "always-on rules are drifting from capabilities",
+        "rule bloat needs consolidation"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "generated target files are not canonical",
+        "unsupported features must be declared rather than simulated",
+        "do not overwrite local user configuration silently"
+      ],
+      "bundle": "govern-cross-harness-runtime",
+      "category": "cross-harness",
+      "dependencies": [
+        "govern-runtime-protocol-deployment",
+        "synchronize-derived-architecture",
+        "plan-selective-capability-installation"
+      ],
+      "id": "govern-cross-harness-parity",
+      "keywords": [
+        "claude codex cursor gemini kiro opencode",
+        "cross harness",
+        "parity",
+        "config merge"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "canonical source ownership",
+        "target adapters",
+        "config merge",
+        "projection validation",
+        "parity tests",
+        "target capability flags"
+      ],
+      "owner": "govern-runtime-protocol-deployment",
+      "source": "everything-claude-code",
+      "source_refs": [
+        ".codex",
+        ".cursor",
+        ".gemini",
+        ".kiro",
+        ".opencode",
+        "scripts/codex/merge-codex-config.js",
+        "scripts/sync-ecc-to-codex.sh"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Project one canonical capability into Claude, Codex, Cursor, Gemini, Kiro, and OpenCode surfaces while validating semantic parity, target-specific constraints, and reversible installation.",
+      "title": "Govern Cross-Harness Parity",
+      "use_when": [
+        "the same skill or agent must work across harnesses",
+        "generated projections have drifted",
+        "installers target multiple IDEs or CLIs"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "aliases": [
+        "click path audit",
+        "browser qa",
+        "full action path audit"
+      ],
+      "boundaries": [
+        "click success is not outcome success",
+        "avoid destructive production actions",
+        "capture evidence at each boundary"
+      ],
+      "bundle": "audit-interactive-systems",
+      "category": "ui-verification",
+      "dependencies": [
+        "triage-cross-surface-failures",
+        "run-evidence-campaigns",
+        "govern-visual-runtime-accessibility"
+      ],
+      "id": "audit-interactive-action-paths",
+      "keywords": [
+        "click path audit",
+        "browser qa",
+        "button routing",
+        "resolved ui state",
+        "canary watch"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "control inventory",
+        "event-to-state trace",
+        "downstream persistence proof",
+        "resolved UI assertion",
+        "visual evidence",
+        "canary replay"
+      ],
+      "owner": "triage-cross-surface-failures",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/click-path-audit/SKILL.md",
+        "skills/browser-qa/SKILL.md",
+        "skills/canary-watch/SKILL.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Trace each interactive control from visibility and event dispatch through API, persistence, and resolved UI state to catch actions that technically fire but produce the wrong final outcome.",
+      "title": "Audit Interactive Action Paths",
+      "use_when": [
+        "buttons all route to one page",
+        "individual functions pass but cancel each other out",
+        "a deployed UI needs post-release canary verification"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "do not fabricate alternatives after the fact",
+        "record uncertainty and dissent",
+        "ADRs do not override current evidence automatically"
+      ],
+      "bundle": "maintain-capability-catalog",
+      "category": "architecture-governance",
+      "dependencies": [
+        "propose-change-intelligence",
+        "long-horizon-progress-ledger",
+        "evidence-assembler"
+      ],
+      "id": "capture-architecture-decisions",
+      "keywords": [
+        "architecture decision record",
+        "adr",
+        "rationale",
+        "alternatives",
+        "decision history"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "decision-moment detection",
+        "ADR schema",
+        "alternative capture",
+        "consequence tracking",
+        "supersession links"
+      ],
+      "owner": "propose-change-intelligence",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/architecture-decision-records/SKILL.md",
+        "skills/blueprint/SKILL.md",
+        "skills/product-lens/SKILL.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Detect decision moments and record context, constraints, alternatives, rationale, consequences, evidence, and revocation triggers as structured architecture decisions.",
+      "title": "Capture Architecture Decisions",
+      "use_when": [
+        "a design choice changes system boundaries",
+        "future agents need to know why a path was chosen",
+        "repeated debates indicate missing decision memory"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "do not send secrets in research queries",
+        "do not exceed query budget without justification",
+        "state unresolved uncertainty"
+      ],
+      "bundle": "research-first-capability-use",
+      "category": "research",
+      "dependencies": [
+        "research-to-operation-translator",
+        "evaluate-retrieval-readiness",
+        "manage-mcp-lifecycle"
+      ],
+      "id": "lookup-current-documentation",
+      "keywords": [
+        "documentation lookup",
+        "search first",
+        "current docs",
+        "version aware",
+        "official sources"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "library identity resolution",
+        "version-aware source selection",
+        "official-source preference",
+        "query budget",
+        "secret redaction",
+        "citation trace"
+      ],
+      "owner": "research-to-operation-translator",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/documentation-lookup/SKILL.md",
+        "skills/search-first/SKILL.md",
+        "skills/deep-research/SKILL.md",
+        "skills/iterative-retrieval/SKILL.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Resolve the exact library or product, prefer authoritative current documentation, bound query count, and return source-grounded implementation guidance rather than relying on stale model memory.",
+      "title": "Look Up Current Documentation",
+      "use_when": [
+        "APIs or installation steps may have changed",
+        "a named framework version matters",
+        "implementation depends on current documentation"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "MCP exposure does not imply authorization",
+        "validate all external input",
+        "do not hide network side effects"
+      ],
+      "bundle": "govern-cross-harness-runtime",
+      "category": "mcp",
+      "dependencies": [
+        "manage-mcp-lifecycle",
+        "validate-contract-boundaries",
+        "quarantine-external-tools"
+      ],
+      "id": "design-mcp-server-capability",
+      "keywords": [
+        "mcp server",
+        "tools resources prompts",
+        "stdio",
+        "streamable http",
+        "schema validation"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "tool/resource/prompt separation",
+        "schema validation",
+        "stdio or HTTP transport choice",
+        "capability discovery",
+        "health check",
+        "error recovery contract"
+      ],
+      "owner": "manage-mcp-lifecycle",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/mcp-server-patterns/SKILL.md",
+        "mcp-configs",
+        ".mcp.json"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Design MCP tools, resources, and prompts with narrow schemas, explicit transport, validation, permission boundaries, deterministic outputs, and health checks.",
+      "title": "Design MCP Server Capability",
+      "use_when": [
+        "an integration should become a reusable MCP surface",
+        "tool definitions are too broad or ambiguous",
+        "MCP lifecycle exists but implementation guidance is missing"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "scanner output is evidence, not automatic guilt",
+        "never execute imported hooks during inspection",
+        "preserve source license and provenance"
+      ],
+      "bundle": "govern-hooked-execution",
+      "category": "security",
+      "dependencies": [
+        "secure-agent-supply-chain",
+        "provenance-signature-verifier",
+        "enforce-source-import-boundaries"
+      ],
+      "id": "enforce-agent-config-supply-chain",
+      "keywords": [
+        "agent config security",
+        "unicode safety",
+        "personal paths",
+        "prompt injection",
+        "hook scan"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "config security scan",
+        "Unicode safety",
+        "personal path detection",
+        "hook validation",
+        "MCP exposure review",
+        "quarantine disposition"
+      ],
+      "owner": "secure-agent-supply-chain",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/security-scan/SKILL.md",
+        "scripts/ci/check-unicode-safety.js",
+        "scripts/ci/validate-no-personal-paths.js",
+        "scripts/hooks/config-protection.js"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Scan agent instructions, hooks, MCP configuration, Unicode, paths, and generated projections for injection, secret, portability, and policy risks before installation or execution.",
+      "title": "Enforce Agent Configuration Supply Chain",
+      "use_when": [
+        "importing external agent configuration",
+        "hooks or MCP servers are being installed",
+        "cross-platform projection may carry unsafe paths"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "no unbounded self-prompting",
+        "no repeated side effects without idempotency proof",
+        "stop on evidence conflict or budget exhaustion"
+      ],
+      "bundle": "orchestrate-agent-fleets",
+      "category": "autonomous-loops",
+      "dependencies": [
+        "orchestrate-engineering-loop",
+        "tool-loop-circuit-breaker",
+        "recovery-coordinator"
+      ],
+      "id": "manage-autonomous-loop-convergence",
+      "keywords": [
+        "autonomous loop",
+        "continuous agent loop",
+        "quality gates",
+        "stop condition",
+        "stagnation"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "loop state machine",
+        "quality gate after each phase",
+        "bounded retries",
+        "stagnation detection",
+        "observer re-entrancy guard",
+        "human escalation"
+      ],
+      "owner": "orchestrate-engineering-loop",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/autonomous-loops/SKILL.md",
+        "skills/continuous-agent-loop/SKILL.md",
+        "skills/continuous-learning-v2/agents/session-guardian.sh",
+        "commands/loop-start.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Operate bounded autonomous loops with explicit objective, state, quality gates, recovery policy, observer-loop prevention, stop conditions, and human escalation.",
+      "title": "Manage Autonomous Loop Convergence",
+      "use_when": [
+        "work should continue across several independent phases",
+        "agents are looping without convergence",
+        "scheduled autonomous execution needs hard stops"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "recommendation does not authorize installation",
+        "avoid inferring tools solely from filenames",
+        "report ambiguous detection"
+      ],
+      "bundle": "maintain-capability-catalog",
+      "category": "capability-discovery",
+      "dependencies": [
+        "audit-source-capabilities",
+        "skill-navigator",
+        "plan-selective-capability-installation"
+      ],
+      "id": "detect-workspace-capability-needs",
+      "keywords": [
+        "workspace surface audit",
+        "project detect",
+        "recommend skills",
+        "selective capability"
+      ],
+      "license": "MIT adaptation",
+      "mechanisms": [
+        "project detection",
+        "workspace surface inventory",
+        "capability-to-surface mapping",
+        "minimal bundle recommendation",
+        "install readiness checks"
+      ],
+      "owner": "audit-source-capabilities",
+      "source": "everything-claude-code",
+      "source_refs": [
+        "skills/workspace-surface-audit/SKILL.md",
+        "skills/codebase-onboarding/SKILL.md",
+        "scripts/lib/project-detect.js"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Inspect repository languages, frameworks, connected surfaces, MCPs, plugins, and workflows, then recommend the smallest relevant capability bundle with reasons and missing prerequisites.",
+      "title": "Detect Workspace Capability Needs",
+      "use_when": [
+        "onboarding an unfamiliar workspace",
+        "deciding which domain packs to load",
+        "avoiding a full install by default"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "no health diagnosis or protected-trait inference",
+        "collect only necessary data",
+        "do not merge profiles from similarity"
+      ],
+      "bundle": "adapt-human-learning-loop",
+      "category": "adaptive-learning",
+      "dependencies": [
+        "isolate-project-streams",
+        "govern-memory-fabric",
+        "permission-diff-auditor"
+      ],
+      "id": "maintain-learner-profile-boundary",
+      "keywords": [
+        "learner profile",
+        "trainee history",
+        "guardian role",
+        "profile isolation"
+      ],
+      "license": "clean-room; no source redistribution",
+      "mechanisms": [
+        "profile identity",
+        "guardian or supervisor association",
+        "activity ownership",
+        "scoped history",
+        "role separation"
+      ],
+      "owner": "long-horizon-progress-ledger",
+      "source": "hyperlearning-clean-room",
+      "source_refs": [
+        "README.md",
+        "Manual de usuario e instalación.pdf",
+        "src/Padre.java",
+        "src/Paciente.java"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Keep each learner or trainee profile, activity history, rewards, observations, and permissions isolated so adaptation is scoped to the correct person and program.",
+      "title": "Maintain Learner Profile Boundary",
+      "use_when": [
+        "training or simulation adapts per person",
+        "multiple learners share one system",
+        "progress history must remain attributable"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "no clinical treatment claims",
+        "do not infer fatigue or impairment without explicit evidence",
+        "avoid manipulative engagement optimization"
+      ],
+      "bundle": "adapt-human-learning-loop",
+      "category": "adaptive-learning",
+      "dependencies": [
+        "reasoning-utility-controller",
+        "active-evaluation-selector",
+        "maintain-learner-profile-boundary"
+      ],
+      "id": "sequence-adaptive-learning-exercises",
+      "keywords": [
+        "adaptive exercise",
+        "difficulty",
+        "learning sequence",
+        "training activity"
+      ],
+      "license": "clean-room; no source redistribution",
+      "mechanisms": [
+        "exercise catalog",
+        "difficulty bands",
+        "modality rotation",
+        "bounded repetition",
+        "performance-conditioned next activity",
+        "human override"
+      ],
+      "owner": "govern-metacognitive-evolution",
+      "source": "hyperlearning-clean-room",
+      "source_refs": [
+        "Manual de usuario e instalación.pdf sections 2.8.1-2.8.4",
+        "src/Ejercicios.java"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Select and sequence bounded exercises using observed performance, modality, difficulty, fatigue signals supplied by authorized users, and explicit learning goals.",
+      "title": "Sequence Adaptive Learning Exercises",
+      "use_when": [
+        "a training system offers several exercise types",
+        "difficulty should adjust from demonstrated performance",
+        "repetition must remain purposeful"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "label observations as subjective",
+        "do not convert one observer score into a diagnosis",
+        "preserve corrections and disputed entries"
+      ],
+      "bundle": "adapt-human-learning-loop",
+      "category": "human-feedback",
+      "dependencies": [
+        "human-handoff-state-transfer",
+        "evidence-assembler",
+        "maintain-learner-profile-boundary"
+      ],
+      "id": "capture-human-observer-assessment",
+      "keywords": [
+        "human observer",
+        "caregiver feedback",
+        "rubric score",
+        "behavior note"
+      ],
+      "license": "clean-room; no source redistribution",
+      "mechanisms": [
+        "observer identity",
+        "activity binding",
+        "rubric score",
+        "free-text comment",
+        "positive/negative/neutral labels",
+        "timestamp"
+      ],
+      "owner": "human-handoff-state-transfer",
+      "source": "hyperlearning-clean-room",
+      "source_refs": [
+        "Manual de usuario e instalación.pdf sections 2.7 and 2.8.4",
+        "src/Comportamiento.java"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Capture structured human observations after an activity with timestamp, context, rubric, free-text notes, confidence, and clear separation from machine inference.",
+      "title": "Capture Human Observer Assessment",
+      "use_when": [
+        "automated signals cannot observe the full outcome",
+        "a supervisor or caregiver must score performance",
+        "qualitative reactions matter"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "do not reduce people to positive or negative labels",
+        "avoid punitive ranking",
+        "support correction and deletion where policy requires"
+      ],
+      "bundle": "adapt-human-learning-loop",
+      "category": "event-history",
+      "dependencies": [
+        "long-horizon-progress-ledger",
+        "evidence-assembler",
+        "maintain-learner-profile-boundary"
+      ],
+      "id": "maintain-behavior-event-ledger",
+      "keywords": [
+        "behavior history",
+        "event ledger",
+        "progress history",
+        "observer comments"
+      ],
+      "license": "clean-room; no source redistribution",
+      "mechanisms": [
+        "append-only event record",
+        "typed event",
+        "observer comment",
+        "activity linkage",
+        "chronological history",
+        "correction record"
+      ],
+      "owner": "long-horizon-progress-ledger",
+      "source": "hyperlearning-clean-room",
+      "source_refs": [
+        "Manual de usuario e instalación.pdf sections 2.5 and 2.7",
+        "src/Historial.java",
+        "src/Comportamientos.java"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Record append-only, contextualized behavior or performance events with date, type, description, observer comments, source activity, and correction history.",
+      "title": "Maintain Behavior Event Ledger",
+      "use_when": [
+        "progress must be reviewed over time",
+        "human observations need traceable context",
+        "reward changes require supporting events"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "never tie essential access, dignity, care, or safety to tokens",
+        "avoid coercive or addictive mechanics",
+        "no hidden variable rewards"
+      ],
+      "bundle": "adapt-human-learning-loop",
+      "category": "reinforcement",
+      "dependencies": [
+        "execution-contract-enforcer",
+        "evidence-assembler",
+        "capture-human-observer-assessment"
+      ],
+      "id": "govern-reinforcement-token-economy",
+      "keywords": [
+        "token economy",
+        "points",
+        "reward ledger",
+        "balance invariant",
+        "reinforcement"
+      ],
+      "license": "clean-room; no source redistribution",
+      "mechanisms": [
+        "transaction ledger",
+        "balance invariant",
+        "earn/spend reason",
+        "bounded awards",
+        "insufficient-balance handling",
+        "human override"
+      ],
+      "owner": "execution-contract-enforcer",
+      "source": "hyperlearning-clean-room",
+      "source_refs": [
+        "Manual de usuario e instalación.pdf sections 2.6 and 2.8",
+        "src/Paciente.java",
+        "src/Pacientes.java"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Represent optional points or tokens as a transparent, bounded reinforcement mechanism with explicit earning and spending rules, immutable transactions, balance checks, and human oversight.",
+      "title": "Govern Reinforcement Token Economy",
+      "use_when": [
+        "training uses points to acknowledge completion",
+        "rewards must be auditable",
+        "balances currently mutate without trace"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "not a medical or cognitive diagnosis",
+        "normalize for accessibility and user-selected pacing",
+        "do not punish errors"
+      ],
+      "bundle": "adapt-human-learning-loop",
+      "category": "learning-evaluation",
+      "dependencies": [
+        "active-evaluation-selector",
+        "maintain-behavior-event-ledger"
+      ],
+      "id": "evaluate-cue-recall-and-recognition",
+      "keywords": [
+        "memory recall",
+        "recognition",
+        "missing object",
+        "cue association",
+        "attempts"
+      ],
+      "license": "clean-room; no source redistribution",
+      "mechanisms": [
+        "timed cue presentation",
+        "recognition choices",
+        "recall attempts",
+        "duplicate-attempt handling",
+        "hint accounting",
+        "success criteria"
+      ],
+      "owner": "active-evaluation-selector",
+      "source": "hyperlearning-clean-room",
+      "source_refs": [
+        "Manual de usuario e instalación.pdf sections 2.8.1-2.8.3",
+        "src/Ejercicio1.java",
+        "src/Ejercicio2.java",
+        "src/Ejercicio3.java"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Evaluate short cue exposure followed by recall, recognition, association, or missing-item selection while separating accuracy, repeated attempts, timing, and hint use.",
+      "title": "Evaluate Cue Recall and Recognition",
+      "use_when": [
+        "training memory or association",
+        "exercise performance needs structured metrics",
+        "hints and repeated attempts must be distinguished"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "no diagnosis, prognosis, or protected-trait inference",
+        "show sample size and uncertainty",
+        "do not hide negative or contradictory observations"
+      ],
+      "bundle": "adapt-human-learning-loop",
+      "category": "learning-evaluation",
+      "dependencies": [
+        "maintain-behavior-event-ledger",
+        "evaluate-cue-recall-and-recognition",
+        "govern-reinforcement-token-economy"
+      ],
+      "id": "summarize-learning-progress",
+      "keywords": [
+        "learning progress",
+        "activity history",
+        "trend summary",
+        "observer notes"
+      ],
+      "license": "clean-room; no source redistribution",
+      "mechanisms": [
+        "time-window aggregation",
+        "exercise-level metrics",
+        "observer-note separation",
+        "trend uncertainty",
+        "missing-data disclosure"
+      ],
+      "owner": "long-horizon-progress-ledger",
+      "source": "hyperlearning-clean-room",
+      "source_refs": [
+        "Manual de usuario e instalación.pdf sections 2.4-2.8",
+        "src/Historial.java"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Summarize activity completion, performance trends, observer notes, reward transactions, and data gaps over a defined time range without converting correlation into diagnosis.",
+      "title": "Summarize Learning Progress",
+      "use_when": [
+        "a learner or supervisor needs a progress view",
+        "several activity types must be compared over time"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "reward only after verified completion",
+        "reset all ephemeral state on replay",
+        "do not let UI labels become canonical state"
+      ],
+      "bundle": "adapt-human-learning-loop",
+      "category": "state-machine",
+      "dependencies": [
+        "bounded-workflow-topology-selector",
+        "validate-contract-boundaries",
+        "outcome-verifier"
+      ],
+      "id": "design-replayable-exercise-state-machine",
+      "keywords": [
+        "exercise state machine",
+        "timer",
+        "replay",
+        "attempt state",
+        "reward once"
+      ],
+      "license": "clean-room; no source redistribution",
+      "mechanisms": [
+        "idle/present/hidden/respond/complete states",
+        "timer events",
+        "attempt counter",
+        "replay reset",
+        "completion postcondition",
+        "reward-once invariant"
+      ],
+      "owner": "bounded-workflow-topology-selector",
+      "source": "hyperlearning-clean-room",
+      "source_refs": [
+        "src/Ejercicio1.java",
+        "src/Ejercicio2.java",
+        "src/Ejercicio3.java",
+        "src/Ejercicio4.java"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Model exercises as explicit states and transitions so timers, exposure, attempts, completion, replay, reward, and exit behavior can be tested deterministically.",
+      "title": "Design Replayable Exercise State Machine",
+      "use_when": [
+        "timed activities have inconsistent UI transitions",
+        "replay duplicates rewards or stale state",
+        "exercise logic is embedded in event handlers"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "learner autonomy and privacy remain explicit",
+        "no shared credentials",
+        "high-impact edits require traceable authorization"
+      ],
+      "bundle": "adapt-human-learning-loop",
+      "category": "authorization",
+      "dependencies": [
+        "permission-diff-auditor",
+        "execution-contract-enforcer",
+        "maintain-learner-profile-boundary"
+      ],
+      "id": "separate-supervisor-and-learner-roles",
+      "keywords": [
+        "caregiver role",
+        "supervisor role",
+        "learner permissions",
+        "role separation"
+      ],
+      "license": "clean-room; no source redistribution",
+      "mechanisms": [
+        "role matrix",
+        "action-level permission checks",
+        "observer attribution",
+        "least privilege",
+        "audit trail"
+      ],
+      "owner": "permission-diff-auditor",
+      "source": "hyperlearning-clean-room",
+      "source_refs": [
+        "Manual de usuario e instalación.pdf sections 2.1-2.8",
+        "src/IniciarSesion.java",
+        "src/Padre.java"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Separate who performs an activity from who can register profiles, score observations, change rewards, inspect history, or export progress.",
+      "title": "Separate Supervisor and Learner Roles",
+      "use_when": [
+        "one interface currently mixes learner and supervisor actions",
+        "sensitive history or rewards need controlled access"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "boundaries": [
+        "never claim therapy or diagnosis from app activity",
+        "do not manipulate vulnerable users",
+        "do not expose sensitive history by default"
+      ],
+      "bundle": "adapt-human-learning-loop",
+      "category": "human-safety",
+      "dependencies": [
+        "enforce-governance-controls",
+        "govern-memory-fabric",
+        "permission-diff-auditor"
+      ],
+      "id": "safeguard-human-learning-systems",
+      "keywords": [
+        "human learning safety",
+        "child privacy",
+        "non diagnostic",
+        "accessibility",
+        "anti coercion"
+      ],
+      "license": "clean-room; no source redistribution",
+      "mechanisms": [
+        "data minimization",
+        "consent and role review",
+        "accessibility controls",
+        "anti-coercion review",
+        "human override",
+        "non-diagnostic labeling"
+      ],
+      "owner": "enforce-governance-controls",
+      "source": "hyperlearning-clean-room",
+      "source_refs": [
+        "README.md",
+        "Manual de usuario e instalación.pdf"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Apply privacy, consent, accessibility, anti-coercion, age-appropriate design, human oversight, and non-diagnostic boundaries to adaptive learning and behavior-tracking systems.",
+      "title": "Safeguard Human Learning Systems",
+      "use_when": [
+        "software tracks children, patients, learners, or employees",
+        "reward systems or behavior labels are used",
+        "adaptive logic may influence people"
+      ]
+    }
+  ],
+  "capability_count": 30,
+  "schema_version": "1.0"
+}

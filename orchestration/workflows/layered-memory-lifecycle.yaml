@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "registry": "registry/skill_orchestrations.json",
+  "workflows": [
+    {
+      "id": "layered-memory-lifecycle",
+      "purpose": "Capture, distill, govern, retrieve, assemble, compact, and evaluate project-scoped memory without creating a parallel store or automatic canon.",
+      "steps": [
+        {"id": "sanitize-capture", "skill": "govern-memory-fabric", "depends_on": []},
+        {"id": "persist-l0", "skill": "govern-memory-fabric", "depends_on": ["sanitize-capture"]},
+        {"id": "extract-l1", "skill": "govern-memory-fabric", "depends_on": ["persist-l0"]},
+        {"id": "resolve-conflicts", "skill": "govern-memory-fabric", "depends_on": ["extract-l1"]},
+        {"id": "promote", "skill": "govern-memory-fabric", "depends_on": ["resolve-conflicts"]},
+        {"id": "build-scenes", "skill": "govern-memory-fabric", "depends_on": ["promote"]},
+        {"id": "resolve-loadout", "skill": "govern-memory-fabric", "depends_on": ["build-scenes"]},
+        {"id": "rank", "skill": "engineer-hybrid-retrieval", "depends_on": ["resolve-loadout"]},
+        {"id": "assemble", "skill": "govern-memory-fabric", "depends_on": ["rank"]},
+        {"id": "compact", "skill": "govern-memory-fabric", "depends_on": ["assemble"]},
+        {"id": "evaluate", "skill": "evaluate-retrieval-readiness", "depends_on": ["rank", "compact"]},
+        {"id": "observe", "skill": "operate-memory-retrieval-observability", "depends_on": ["evaluate"]}
+      ],
+      "failure_policy": "Fail closed on capture poisoning, secret findings, unsupported promotion, unresolved conflict, scope or ACL mismatch, stale or forbidden retrieval, budget overflow, offload hash failure, cross-project leakage, or evaluation regression.",
+      "bounds": {"max_borrowed_agents": 2, "max_loadout_assets": 40, "whole_vault_injection": false, "hard_delete": false}
+    }
+  ]
+}

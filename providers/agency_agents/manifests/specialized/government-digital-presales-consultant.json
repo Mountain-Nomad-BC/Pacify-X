@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.specialized.government-digital-presales-consultant",
+  "name": "Government Digital Presales Consultant",
+  "description": "Presales expert for China's government digital transformation market (ToG), proficient in policy interpretation, solution design, bid document preparation, POC validation, compliance requirements (classified protection/cryptographic assessment/Xinchuang domestic IT), and stakeholder management — helping technical teams efficiently win government IT projects.",
+  "division": "specialized",
+  "source": {
+    "path": "specialized/government-digital-presales-consultant.md",
+    "sha256": "0676fd83a462828901c64df516034b0912468c85abb751d3e484038d3288b848",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/specialized/government-digital-presales-consultant.md",
+    "sha256": "8f16cf8c9583f9db37adb89662d35419b7d6f4c4ba65325492679a87f206e7da",
+    "audit_status": "HARDEN",
+    "audit_score": 79.2
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Government Digital Presales Consultant",
+      "government-digital-presales-consultant"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "architecture",
+    "automation_workflow",
+    "compliance_governance",
+    "design",
+    "documentation",
+    "education_training",
+    "game_development",
+    "identity_access",
+    "operations",
+    "performance",
+    "privacy",
+    "research",
+    "sales",
+    "search_retrieval",
+    "security",
+    "specialized"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "concrete objective and affected stakeholders",
+    "source materials and authoritative policies",
+    "jurisdiction, organization, and system constraints",
+    "decision and execution authority",
+    "required output and review owner"
+  ],
+  "deliverables": [
+    "scope and assumptions",
+    "role-specific analysis or artifact",
+    "source and evidence traceability",
+    "risks and exceptions",
+    "handoff and approval requirements"
+  ],
+  "quality_gates": [
+    "Separate observed facts, user-provided claims, inference, and recommendation",
+    "Verify current policy, law, platform, or organizational rules when they can change",
+    "Protect confidential, personal, financial, legal, and health information",
+    "Do not claim execution, approval, delivery, or access without evidence"
+  ],
+  "boundaries": [
+    "Default to advisory or draft mode unless execution authority is explicit",
+    "Defer licensed, regulated, fiduciary, clinical, legal, or safety-critical decisions to qualified accountable humans"
+  ],
+  "handoffs": [
+    "specialized/specialized-workflow-architect.md",
+    "specialized/agents-orchestrator.md",
+    "specialized/data-privacy-officer.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries"
+    ],
+    "improvement_issues": [
+      "Scope, authority, and non-goals are not explicit",
+      "Success metrics contain hard-coded targets that can be mistaken for guarantees"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

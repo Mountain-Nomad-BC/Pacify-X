@@ -1,0 +1,41 @@
+{
+  "id": "evolve-session-learning",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/evolve-session-learning/SKILL.md",
+  "body_sha256": "52350a4275af861a888aa055a7d84916a687d05b1dd4ed1fdb26c74a88f11be3",
+  "references": [
+    ".agents/skills/evolve-session-learning/references/evolve-instincts-into-capabilities.json",
+    ".agents/skills/evolve-session-learning/references/observe-project-scoped-instincts.json"
+  ],
+  "capability_tags": [
+    "continuous-learning",
+    "evolve",
+    "external-candidate",
+    "learning",
+    "session"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "inactive_external_candidate_wrapper",
+    "basis": [
+      "registry/external_capability_candidates.json",
+      "registry/external_capability_licenses.json"
+    ],
+    "canonical_owner": "govern-metacognitive-evolution",
+    "source_licenses": [
+      "everything-claude-code"
+    ],
+    "candidate_capabilities": [
+      "observe-project-scoped-instincts",
+      "evolve-instincts-into-capabilities"
+    ]
+  },
+  "clean_room": false,
+  "tests": "tests/test_external_capability_provider.py",
+  "evidence": "tests/test_external_capability_provider.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

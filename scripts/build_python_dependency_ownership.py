@@ -1,4 +1,5 @@
 """Inventory and classify imports across every packaged Python surface."""
+
 from __future__ import annotations
 
 import argparse
@@ -10,17 +11,22 @@ import sys
 
 LOCAL = {"runtime", "builders", "scripts", "engineering_bootstrap"}
 TEST_ONLY = {"pytest": "pytest", "yaml": "PyYAML"}
+OPTIONAL_GATED = {"yaml": "PyYAML"}
 
 
 def build(root: Path) -> dict[str, object]:
     root = root.resolve()
-    ownership = json.loads((root / "registry/python_surface_ownership.json").read_text(encoding="utf-8"))
+    ownership = json.loads(
+        (root / "registry/python_surface_ownership.json").read_text(encoding="utf-8")
+    )
     modules: dict[str, set[str]] = {}
     for record in ownership["records"]:
         if not record.get("packaged"):
             continue
         relative = str(record["path"])
-        tree = ast.parse((root / relative).read_text(encoding="utf-8"), filename=relative)
+        tree = ast.parse(
+            (root / relative).read_text(encoding="utf-8"), filename=relative
+        )
         for node in ast.walk(tree):
             names: list[str] = []
             if isinstance(node, ast.Import):
@@ -35,11 +41,22 @@ def build(root: Path) -> dict[str, object]:
             classification, distribution = "standard_library", None
         elif name in LOCAL:
             classification, distribution = "local_product", None
+        elif name in OPTIONAL_GATED and any(
+            path.startswith("runtime/") for path in paths
+        ):
+            classification, distribution = "optional_gated", OPTIONAL_GATED[name]
         elif name in TEST_ONLY and all(path.startswith("tests/") for path in paths):
             classification, distribution = "test_only", TEST_ONLY[name]
         else:
             classification, distribution = "unclassified", None
-        records.append({"module": name, "distribution": distribution, "classification": classification, "paths": sorted(paths)})
+        records.append(
+            {
+                "module": name,
+                "distribution": distribution,
+                "classification": classification,
+                "paths": sorted(paths),
+            }
+        )
     return {
         "schema_version": "1.0",
         "python": {"minimum": "3.11", "maximum_tested": "3.14"},
@@ -60,7 +77,15 @@ def main() -> int:
             raise SystemExit("Python dependency ownership is stale")
     else:
         path.write_text(rendered, encoding="utf-8", newline="\n")
-    print(json.dumps({"valid": True, "modules": len(build(args.root)["records"]), "check": args.check}))
+    print(
+        json.dumps(
+            {
+                "valid": True,
+                "modules": len(build(args.root)["records"]),
+                "check": args.check,
+            }
+        )
+    )
     return 0
 
 

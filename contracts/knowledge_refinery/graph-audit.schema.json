@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:knowledge_refinery:graph-audit",
+  "title": "Knowledge graph coherence audit",
+  "type": "object", "additionalProperties": false,
+  "required": ["valid", "node_count", "edge_count", "orphans", "errors"],
+  "properties": {
+    "valid": {"type": "boolean"}, "node_count": {"type": "integer", "minimum": 0},
+    "edge_count": {"type": "integer", "minimum": 0}, "orphans": {"type": "array", "items": {"type": "string"}},
+    "errors": {"type": "array", "items": {"type": "string"}}
+  }
+}

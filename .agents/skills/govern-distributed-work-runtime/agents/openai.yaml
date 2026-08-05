@@ -1,0 +1,6 @@
+interface:
+  display_name: "Govern Distributed Work Runtime"
+  short_description: "Lease work, budgets, runtimes, and capabilities"
+  default_prompt: "Use $govern-distributed-work-runtime to plan this multi-project or remote execution with bounded leases and reconciliation."
+policy:
+  allow_implicit_invocation: true

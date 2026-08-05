@@ -1,4 +1,5 @@
 """Build a deterministic specialty map from source candidates and the active registry."""
+
 from __future__ import annotations
 
 import argparse
@@ -27,9 +28,13 @@ def main() -> int:
             "priority": candidate.get("priority", "P9"),
             "purpose": candidate.get("purpose", ""),
             "state": "active" if candidate["id"] in active else "mapped_deferred",
-            "activation": "registry" if candidate["id"] in active else "admission_required",
+            "activation": "registry"
+            if candidate["id"] in active
+            else "admission_required",
         }
-        categories.setdefault(candidate.get("category", "uncategorized"), []).append(record)
+        categories.setdefault(candidate.get("category", "uncategorized"), []).append(
+            record
+        )
     represented = {item["id"] for items in categories.values() for item in items}
     framework_only = sorted(active - represented)
     output = {
@@ -42,13 +47,31 @@ def main() -> int:
         "categories": [
             {
                 "id": category,
-                "specialties": sorted(items, key=lambda item: (item["priority"], item["id"])),
+                "specialties": sorted(
+                    items, key=lambda item: (item["priority"], item["id"])
+                ),
             }
             for category, items in sorted(categories.items())
         ],
     }
-    args.out.write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({key: output[key] for key in ("candidate_count", "active_candidate_count", "deferred_candidate_count")}, indent=2))
+    args.out.write_text(
+        json.dumps(output, indent=2) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    print(
+        json.dumps(
+            {
+                key: output[key]
+                for key in (
+                    "candidate_count",
+                    "active_candidate_count",
+                    "deferred_candidate_count",
+                )
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

@@ -1,0 +1,30 @@
+{
+  "id": "decision-wayfinding",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/decision-wayfinding/SKILL.md",
+  "body_sha256": "fe397598cf59a97e5edffdffb72bfb87b085d819630d1f1275366a1c9b09b3ec",
+  "references": [],
+  "capability_tags": [
+    "decision",
+    "engineering-reasoning",
+    "wayfinding"
+  ],
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "provenance": {
+    "type": "sanitized_mit_adaptation",
+    "basis": [
+      "evidence/integration/pxi-20260804/candidate_disposition_ledger.json",
+      "LICENSES/mattpocock-skills-MIT.txt"
+    ],
+    "canonical_owner": ".agents/skills/decision-wayfinding/SKILL.md"
+  },
+  "clean_room": false,
+  "tests": "tests/test_project_reasoning.py; tests/test_clean_room_capabilities.py",
+  "evidence": "tests/test_clean_room_capabilities.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

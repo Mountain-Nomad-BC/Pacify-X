@@ -1,11 +1,18 @@
 """Structured diagnostic and repair pattern proposals (PC-503)."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
 import hashlib
 import re
 
-from .common import BuilderError, bounded_unique, proposal_envelope, require_identifier, sanitize_text
+from .common import (
+    BuilderError,
+    bounded_unique,
+    proposal_envelope,
+    require_identifier,
+    sanitize_text,
+)
 
 
 _UNSAFE_CODE = re.compile(
@@ -71,8 +78,14 @@ def propose_repair_pattern(request: RepairPatternRequest) -> dict[str, object]:
             "unsafe_snippet_detected": unsafe,
         }
         if variant.snippet:
-            payload["snippet_sha256"] = hashlib.sha256(variant.snippet.encode()).hexdigest()
-            payload["snippet"] = "[QUARANTINED UNSAFE SNIPPET]" if unsafe else sanitize_text(variant.snippet)
+            payload["snippet_sha256"] = hashlib.sha256(
+                variant.snippet.encode()
+            ).hexdigest()
+            payload["snippet"] = (
+                "[QUARANTINED UNSAFE SNIPPET]"
+                if unsafe
+                else sanitize_text(variant.snippet)
+            )
         variant_payloads.append(payload)
 
     body = {
@@ -88,7 +101,9 @@ def propose_repair_pattern(request: RepairPatternRequest) -> dict[str, object]:
             "rollback": list(rollback),
             "evidence": sorted(evidence),
             "source_lineage": sorted(lineage),
-            "variants": sorted(variant_payloads, key=lambda item: str(item["language"])),
+            "variants": sorted(
+                variant_payloads, key=lambda item: str(item["language"])
+            ),
             "blind_copying_allowed": False,
             "diagnosis_required_before_repair": True,
         }

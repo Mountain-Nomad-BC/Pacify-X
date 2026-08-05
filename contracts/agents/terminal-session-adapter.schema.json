@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:agents:terminal-session-adapter",
+  "title": "Optional terminal session adapter plan",
+  "type": "object",
+  "required": ["valid", "decision", "adapter_id", "action", "required_authority", "errors", "executed", "attached", "persisted", "authority_granted"],
+  "properties": {
+    "valid": {"type": "boolean"},
+    "decision": {"enum": ["planned", "denied"]},
+    "adapter_id": {"type": "string"},
+    "action": {"enum": ["inspect", "attach", "execute", "persist"]},
+    "required_authority": {"enum": ["read", "attach", "execute", "persist"]},
+    "errors": {"type": "array", "items": {"type": "string"}},
+    "executed": {"const": false},
+    "attached": {"const": false},
+    "persisted": {"const": false},
+    "authority_granted": {"const": false}
+  },
+  "additionalProperties": false
+}

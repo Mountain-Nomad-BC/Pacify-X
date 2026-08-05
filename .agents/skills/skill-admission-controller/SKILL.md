@@ -78,3 +78,5 @@ The skill is complete only when structured outputs are emitted, evidence referen
 ## Completion and evidence
 
 Return a structured decision, reasons, outputs, and evidence references. Treat unresolved provenance, permissions, required inputs, or postconditions as a fail-closed result. Candidate memory, research, generated skills, and speculative work never become active without separate admission and evidence.
+
+For a changed skill, certify the observable behavioral delta with `runtime.behavioral_certification.certify_behavioral_delta`. Bind baseline, candidate, and case evidence hashes; include positive decisions, negative triggers, and hard gates; reject missing current evidence or fail-open gate behavior. Do not collect or compare private reasoning traces.

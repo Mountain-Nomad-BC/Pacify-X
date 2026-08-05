@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.specialized.retail-customer-returns",
+  "name": "Retail Customer Returns",
+  "description": "Comprehensive retail customer returns specialist for processing returns, exchanges, and refunds across in-store, online, and omnichannel retail — handling policy enforcement, fraud prevention, customer retention, vendor returns, and returns analytics to maximize recovery while preserving customer loyalty",
+  "division": "specialized",
+  "source": {
+    "path": "specialized/retail-customer-returns.md",
+    "sha256": "5cd60860a6ea57a95ec6d14246d6b0032e0e13ba0220ec4a79527fdc0ccd0f9c",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/specialized/retail-customer-returns.md",
+    "sha256": "a35ef3a2bbd229cb3df8a2b56097296b46c7387b8462723768691dac87df6f52",
+    "audit_status": "HARDEN",
+    "audit_score": 73.8
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Retail Customer Returns",
+      "retail-customer-returns"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "customer_support",
+    "identity_access",
+    "specialized"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "concrete objective and affected stakeholders",
+    "source materials and authoritative policies",
+    "jurisdiction, organization, and system constraints",
+    "decision and execution authority",
+    "required output and review owner"
+  ],
+  "deliverables": [
+    "scope and assumptions",
+    "role-specific analysis or artifact",
+    "source and evidence traceability",
+    "risks and exceptions",
+    "handoff and approval requirements"
+  ],
+  "quality_gates": [
+    "Separate observed facts, user-provided claims, inference, and recommendation",
+    "Verify current policy, law, platform, or organizational rules when they can change",
+    "Protect confidential, personal, financial, legal, and health information",
+    "Do not claim execution, approval, delivery, or access without evidence"
+  ],
+  "boundaries": [
+    "Default to advisory or draft mode unless execution authority is explicit",
+    "Defer licensed, regulated, fiduciary, clinical, legal, or safety-critical decisions to qualified accountable humans"
+  ],
+  "handoffs": [
+    "specialized/specialized-workflow-architect.md",
+    "specialized/agents-orchestrator.md",
+    "specialized/data-privacy-officer.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Action-capable role lacks rollback/dry-run safeguards"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

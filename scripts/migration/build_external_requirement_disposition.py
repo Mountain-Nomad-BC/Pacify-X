@@ -3,6 +3,7 @@
 Input is the sanitized behavior index only.  Output is content-addressed and
 contains hashes and dispositions, never source bodies or absolute paths.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -13,7 +14,8 @@ import tomllib
 
 
 NEW_OWNERS = {
-    "validate-contract-boundaries", "evaluate-retrieval-readiness",
+    "validate-contract-boundaries",
+    "evaluate-retrieval-readiness",
     "gate-model-data-lifecycle",
 }
 
@@ -59,43 +61,73 @@ RULE_OWNERS = {
 
 SKILL_OWNERS = {
     "api-contract-validator": ("validate-contract-boundaries",),
-    "docker-lifecycle": ("validate-engineering-outcomes", "supervise-contained-execution"),
+    "docker-lifecycle": (
+        "validate-engineering-outcomes",
+        "supervise-contained-execution",
+    ),
     "self-healing-dev-loop": ("diagnose-python-repair", "recovery-coordinator"),
-    "system-validation": ("validate-engineering-outcomes", "orchestrate-engineering-loop"),
+    "system-validation": (
+        "validate-engineering-outcomes",
+        "orchestrate-engineering-loop",
+    ),
     "architecture-review": ("analyze-engineering-intelligence",),
     "production-readiness": ("validate-engineering-outcomes",),
     "slow-thinking": ("orchestrate-engineering-loop",),
-    "diagnostic-logic-explainer": ("analyze-engineering-intelligence", "validate-engineering-outcomes"),
+    "diagnostic-logic-explainer": (
+        "analyze-engineering-intelligence",
+        "validate-engineering-outcomes",
+    ),
     "diagnostic-system-interpreter": ("analyze-engineering-intelligence",),
     "engineering-context": ("forge-skills-from-knowledge",),
     "units-checker": ("validate-engineering-outcomes",),
     "context-assembler": ("govern-memory-fabric",),
     "domain-knowledge-loader": ("forge-skills-from-knowledge",),
-    "embedding-optimizer": ("evaluate-retrieval-readiness", "audit-ai-runtime-assurance"),
-    "knowledge-graph-builder": ("govern-memory-fabric", "analyze-engineering-intelligence"),
+    "embedding-optimizer": (
+        "evaluate-retrieval-readiness",
+        "audit-ai-runtime-assurance",
+    ),
+    "knowledge-graph-builder": (
+        "govern-memory-fabric",
+        "analyze-engineering-intelligence",
+    ),
     "rag-aware-codex": ("govern-memory-fabric", "orchestrate-engineering-loop"),
     "rag-builder": ("evaluate-retrieval-readiness", "forge-skills-from-knowledge"),
     "rag-performance-analyzer": ("evaluate-retrieval-readiness",),
     "rag-self-healing": ("evaluate-retrieval-readiness", "recovery-coordinator"),
     "governed-runtime-activation-gate": ("evaluate-retrieval-readiness",),
-    "governed-runtime-query-bridge": ("evaluate-retrieval-readiness", "enforce-governance-controls"),
+    "governed-runtime-query-bridge": (
+        "evaluate-retrieval-readiness",
+        "enforce-governance-controls",
+    ),
     "retrieval-quality-tester": ("evaluate-retrieval-readiness",),
-    "semantic-cluster-mapper": ("analyze-engineering-intelligence", "forge-skills-from-knowledge"),
+    "semantic-cluster-mapper": (
+        "analyze-engineering-intelligence",
+        "forge-skills-from-knowledge",
+    ),
     "smart-chunker": ("evaluate-retrieval-readiness",),
     "code-quality-enforcer": ("validate-engineering-outcomes",),
     "completion-enforcer": ("verify-outcome",),
     "migration-planner": ("dependency-impact-tracer", "propose-change-intelligence"),
     "repo-doctor": ("analyze-engineering-intelligence",),
     "architecture-mapper": ("analyze-engineering-intelligence",),
-    "calculation-graph": ("validate-engineering-outcomes", "forge-skills-from-knowledge"),
-    "dependency-graph-builder": ("analyze-engineering-intelligence", "dependency-impact-tracer"),
+    "calculation-graph": (
+        "validate-engineering-outcomes",
+        "forge-skills-from-knowledge",
+    ),
+    "dependency-graph-builder": (
+        "analyze-engineering-intelligence",
+        "dependency-impact-tracer",
+    ),
     "pipeline-interpreter": ("analyze-engineering-intelligence",),
     "system-overview-loader": ("discover-environment-safely",),
     "system-state-inspector": ("validate-engineering-outcomes",),
     "autonomous-ui-auditor": ("validate-engineering-outcomes",),
     "ui-behavior-tests": ("validate-engineering-outcomes",),
     "ui-explorer": ("validate-engineering-outcomes", "discover-environment-safely"),
-    "ui-failure-analyzer": ("validate-engineering-outcomes", "analyze-engineering-intelligence"),
+    "ui-failure-analyzer": (
+        "validate-engineering-outcomes",
+        "analyze-engineering-intelligence",
+    ),
 }
 
 
@@ -116,11 +148,17 @@ def _records(path: Path) -> list[dict[str, object]]:
 
 def build(index_path: Path, catalog_path: Path) -> dict[str, object]:
     catalog = _catalog_ids(catalog_path)
-    source = sorted(_records(index_path), key=lambda item: str(item["relative_path"]).casefold())
+    source = sorted(
+        _records(index_path), key=lambda item: str(item["relative_path"]).casefold()
+    )
     cards = []
     for sequence, record in enumerate(source, 1):
         relative = str(record["relative_path"])
-        stem = Path(relative).parent.name if Path(relative).name.casefold() == "skill.md" else Path(relative).stem[:2]
+        stem = (
+            Path(relative).parent.name
+            if Path(relative).name.casefold() == "skill.md"
+            else Path(relative).stem[:2]
+        )
         if relative.casefold().startswith("persistant_rules/"):
             owners = RULE_OWNERS.get(stem, ())
             kind = "persistent_rule"
@@ -138,22 +176,37 @@ def build(index_path: Path, catalog_path: Path) -> dict[str, object]:
             disposition = "integrated_clean_room_owner"
         else:
             disposition = "integrated_existing_owner"
-        cards.append({
-            "card_id": f"EXT-S12-{sequence:03d}", "source_alias": "source-12",
-            "relative_path": relative, "sha256": record["sha256"], "kind": kind,
-            "disposition": disposition, "canonical_owners": list(owners),
-            "missing_owners": missing, "source_body_copied": False,
-            "validation": "complete" if disposition.startswith(("integrated", "reference_only")) else "blocked",
-            "original_mutated": False,
-        })
+        cards.append(
+            {
+                "card_id": f"EXT-S12-{sequence:03d}",
+                "source_alias": "source-12",
+                "relative_path": relative,
+                "sha256": record["sha256"],
+                "kind": kind,
+                "disposition": disposition,
+                "canonical_owners": list(owners),
+                "missing_owners": missing,
+                "source_body_copied": False,
+                "validation": "complete"
+                if disposition.startswith(("integrated", "reference_only"))
+                else "blocked",
+                "original_mutated": False,
+            }
+        )
     payload = {
-        "schema_version": "1.0", "source_alias": "source-12",
-        "source_file_count": len(source), "card_count": len(cards),
-        "complete": bool(cards) and all(card["validation"] == "complete" for card in cards),
-        "direct_copy": False, "originals_mutated": False,
+        "schema_version": "1.0",
+        "source_alias": "source-12",
+        "source_file_count": len(source),
+        "card_count": len(cards),
+        "complete": bool(cards)
+        and all(card["validation"] == "complete" for card in cards),
+        "direct_copy": False,
+        "originals_mutated": False,
         "cards": cards,
     }
-    digest = hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    digest = hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
     return {**payload, "disposition_sha256": digest}
 
 
@@ -166,10 +219,21 @@ def main() -> int:
     payload = build(args.index.resolve(), args.catalog.resolve())
     destination = args.output_root.resolve() / str(payload["disposition_sha256"])
     destination.mkdir(parents=True, exist_ok=False)
-    with (destination / "source-12-disposition.json").open("x", encoding="utf-8", newline="\n") as stream:
+    with (destination / "source-12-disposition.json").open(
+        "x", encoding="utf-8", newline="\n"
+    ) as stream:
         json.dump(payload, stream, indent=2, sort_keys=True)
         stream.write("\n")
-    print(json.dumps({"output": destination.as_posix(), "count": payload["card_count"], "complete": payload["complete"]}, indent=2))
+    print(
+        json.dumps(
+            {
+                "output": destination.as_posix(),
+                "count": payload["card_count"],
+                "complete": payload["complete"],
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

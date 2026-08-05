@@ -90,6 +90,13 @@ def parser() -> argparse.ArgumentParser:
         "--max-risk", choices=("R0", "R1", "R2", "R3", "R4"), default="R4"
     )
     select.add_argument("--max-candidates", type=int, default=3)
+    route = commands.add_parser("route")
+    route.add_argument("--task", required=True)
+    route.add_argument("--project", type=Path)
+    route.add_argument("--constraint", action="append", default=[])
+    route.add_argument(
+        "--max-risk", choices=("R0", "R1", "R2", "R3", "R4"), default="R4"
+    )
     working_set = commands.add_parser("working-set")
     working_set.add_argument("--goal", required=True)
     hydrate = commands.add_parser("hydrate")
@@ -111,6 +118,38 @@ def parser() -> argparse.ArgumentParser:
     source_intake.add_argument("--source-alias", required=True)
     source_intake.add_argument("--actor")
     source_intake.add_argument("--minimum-stability-seconds", type=float, default=30.0)
+    project_map = commands.add_parser("project-map")
+    project_map_commands = project_map.add_subparsers(
+        dest="project_map_action", required=True
+    )
+    project_map_build = project_map_commands.add_parser("build")
+    project_map_build.add_argument("--project", type=Path, required=True)
+    project_map_build.add_argument("--max-files", type=int, default=100_000)
+    project_map_build.add_argument("--max-depth", type=int, default=96)
+    project_map_build.add_argument(
+        "--max-bytes", type=int, default=2 * 1024 * 1024 * 1024
+    )
+    project_map_build.add_argument(
+        "--max-text-bytes", type=int, default=2 * 1024 * 1024
+    )
+    project_map_build.add_argument("--no-incremental", action="store_true")
+    project_map_validate = project_map_commands.add_parser("validate")
+    project_map_validate.add_argument("--project", type=Path, required=True)
+    project_map_validate.add_argument("--fresh", action="store_true")
+    project_map_status = project_map_commands.add_parser("status")
+    project_map_status.add_argument("--project", type=Path, required=True)
+    project_map_query = project_map_commands.add_parser("query")
+    project_map_query.add_argument("--project", type=Path, required=True)
+    project_map_query.add_argument("--query", required=True)
+    project_map_query.add_argument("--top-k", type=int, default=10)
+    project_map_query.add_argument("--kind", action="append", default=[])
+    project_map_query.add_argument("--language", action="append", default=[])
+    project_map_query.add_argument("--path-prefix")
+    project_map_query.add_argument("--relation-depth", type=int, default=1)
+    project_map_query.add_argument("--max-hydration-files", type=int, default=8)
+    project_map_diff = project_map_commands.add_parser("diff")
+    project_map_diff.add_argument("--left", type=Path, required=True)
+    project_map_diff.add_argument("--right", type=Path, required=True)
     commands.add_parser("profiles")
     test_profile = commands.add_parser("test-profile")
     test_profile.add_argument("action", choices=("show", "run"))
@@ -238,13 +277,42 @@ def parser() -> argparse.ArgumentParser:
     memory_ingest.add_argument("--apply", action="store_true")
     memory_ingest.add_argument("--session-id", default="session_operator")
     memory_ingest.add_argument("--actor-id", default="agent_operator")
+    memory_capture = memory_commands.add_parser("capture")
+    memory_capture.add_argument("--workspace", type=Path, required=True)
+    memory_capture.add_argument("--project-id", required=True)
+    memory_capture.add_argument("--source", type=Path, required=True)
+    memory_capture.add_argument(
+        "--source-kind",
+        choices=(
+            "conversation",
+            "tool_result",
+            "document",
+            "code",
+            "workflow",
+            "human_review",
+            "external_import",
+        ),
+        required=True,
+    )
+    memory_capture.add_argument("--apply", action="store_true")
+    memory_capture.add_argument("--session-id", default="session_operator")
+    memory_capture.add_argument("--actor-id", default="agent_operator")
     memory_transition = memory_commands.add_parser("transition")
     memory_transition.add_argument("--workspace", type=Path, required=True)
     memory_transition.add_argument("--project-id", required=True)
     memory_transition.add_argument("--memory-id", required=True)
     memory_transition.add_argument(
         "--target",
-        choices=("validated", "certified", "trusted", "revoked", "superseded"),
+        choices=(
+            "validated",
+            "certified",
+            "trusted",
+            "disputed",
+            "expired",
+            "quarantined",
+            "revoked",
+            "superseded",
+        ),
         required=True,
     )
     memory_transition.add_argument("--evidence", action="append", default=[])
@@ -275,6 +343,12 @@ def parser() -> argparse.ArgumentParser:
             "lesson",
             "relationship",
             "procedure",
+            "constraint",
+            "instruction",
+            "event",
+            "negative_knowledge",
+            "work_task",
+            "skill_candidate",
         ),
         default="fact",
     )
@@ -355,6 +429,232 @@ def parser() -> argparse.ArgumentParser:
     scheduling_simulate = scheduling_commands.add_parser("simulate")
     scheduling_simulate.add_argument("--input", type=Path, required=True)
     scheduling_commands.add_parser("validate")
+    cognitive = commands.add_parser("cognitive")
+    cognitive_commands = cognitive.add_subparsers(
+        dest="cognitive_action", required=True
+    )
+    cognitive_commands.add_parser("status")
+    cognitive_query = cognitive_commands.add_parser("query")
+    cognitive_query.add_argument("--query", required=True)
+    cognitive_query.add_argument("--limit", type=int, default=8)
+    cognitive_query.add_argument("--selectable-only", action="store_true")
+    cognitive_plan = cognitive_commands.add_parser("hydrate-plan")
+    cognitive_plan.add_argument("--key", action="append", required=True)
+    cognitive_plan.add_argument("--dependency-depth", type=int, default=2)
+    cognitive_plan.add_argument("--max-records", type=int, default=16)
+    cognitive_run = cognitive_commands.add_parser("run")
+    cognitive_run.add_argument("--operation", required=True)
+    cognitive_run.add_argument("--input", type=Path, required=True)
+    agents = commands.add_parser("agents")
+    agent_commands = agents.add_subparsers(dest="agents_action", required=True)
+    agent_commands.add_parser("status")
+    agent_list = agent_commands.add_parser("list")
+    agent_list.add_argument("--division")
+    agent_list.add_argument(
+        "--lifecycle", choices=("active", "advisory", "reference_only")
+    )
+    agent_list.add_argument("--limit", type=int, default=25)
+    agent_route = agent_commands.add_parser("route")
+    agent_route.add_argument("--task", required=True)
+    agent_route.add_argument("--constraint", action="append", default=[])
+    agent_route.add_argument("--limit", type=int, default=8)
+    agent_route.add_argument("--max-reviewers", type=int, default=3)
+    agent_hydrate = agent_commands.add_parser("hydrate")
+    agent_hydrate.add_argument("--agent-id", action="append", required=True)
+    agent_hydrate.add_argument("--project-id", required=True)
+    agent_hydrate.add_argument("--max-total-bytes", type=int, default=512_000)
+    agent_compile = agent_commands.add_parser("compile")
+    agent_compile.add_argument("--task", type=Path, required=True)
+    agent_compile.add_argument("--route", type=Path, required=True)
+    agent_compile.add_argument("--project-id", required=True)
+    agent_compile.add_argument("--skill", action="append", default=[])
+    agent_compile.add_argument("--tool", action="append", default=[])
+    agent_compile.add_argument("--max-total-bytes", type=int, default=512_000)
+    reasoning = commands.add_parser("reasoning")
+    reasoning_commands = reasoning.add_subparsers(
+        dest="reasoning_action", required=True
+    )
+    reasoning_frontier = reasoning_commands.add_parser("frontier")
+    reasoning_frontier.add_argument("--input", type=Path, required=True)
+    reasoning_glossary = reasoning_commands.add_parser("glossary-audit")
+    reasoning_glossary.add_argument("--glossary", type=Path, required=True)
+    reasoning_glossary.add_argument("--project", type=Path, required=True)
+    reasoning_glossary.add_argument("--path", type=Path, action="append", required=True)
+    reasoning_depth = reasoning_commands.add_parser("module-depth")
+    reasoning_depth.add_argument("--project", type=Path, required=True)
+    reasoning_depth.add_argument("--path", type=Path, required=True)
+    reasoning_commands.add_parser("validate")
+    refinery = commands.add_parser("refinery")
+    refinery_commands = refinery.add_subparsers(dest="refinery_action", required=True)
+    for action in ("inventory", "admit"):
+        refinery_source = refinery_commands.add_parser(action)
+        refinery_source.add_argument("--source", type=Path, required=True)
+        refinery_source.add_argument("--max-files", type=int, default=100_000)
+        refinery_source.add_argument("--max-depth", type=int, default=40)
+        refinery_source.add_argument(
+            "--max-bytes", type=int, default=4 * 1024 * 1024 * 1024
+        )
+    refinery_classify = refinery_commands.add_parser("classify")
+    refinery_classify.add_argument("--candidates", type=Path, required=True)
+    refinery_classify.add_argument("--canonical", type=Path, required=True)
+    refinery_plan = refinery_commands.add_parser("plan")
+    refinery_plan.add_argument("--novelty", type=Path, required=True)
+    refinery_plan.add_argument("--fingerprints", type=Path, required=True)
+    refinery_graph = refinery_commands.add_parser("graph-audit")
+    refinery_graph.add_argument("--nodes", type=Path, required=True)
+    refinery_graph.add_argument("--edges", type=Path, required=True)
+    refinery_simulate = refinery_commands.add_parser("simulate")
+    refinery_simulate.add_argument("--cases", type=Path, required=True)
+    refinery_simulate.add_argument("--rankings", type=Path, required=True)
+    refinery_calibrate = refinery_commands.add_parser("calibrate")
+    for name in (
+        "baseline-train",
+        "baseline-holdout",
+        "candidate-train",
+        "candidate-holdout",
+    ):
+        refinery_calibrate.add_argument(f"--{name}", type=Path, required=True)
+    refinery_calibrate.add_argument("--train-case-id", action="append", required=True)
+    refinery_calibrate.add_argument("--holdout-case-id", action="append", required=True)
+    refinery_certify = refinery_commands.add_parser("certify")
+    refinery_certify.add_argument("--components", type=Path, required=True)
+    refinery_stage = refinery_commands.add_parser("stage-approved")
+    refinery_stage.add_argument("--project", type=Path, required=True)
+    refinery_stage.add_argument("--plan", type=Path, required=True)
+    refinery_stage.add_argument("--approval-evidence", action="append", default=[])
+    refinery_stage.add_argument("--apply", action="store_true")
+    refinery_commands.add_parser("validate")
+    services = commands.add_parser("service-capability")
+    service_commands = services.add_subparsers(
+        dest="service_capability_action", required=True
+    )
+    service_commands.add_parser("status")
+    service_route = service_commands.add_parser("route")
+    service_route.add_argument("--query", required=True)
+    service_route.add_argument("--limit", type=int, default=6)
+    service_hydrate = service_commands.add_parser("hydrate")
+    service_hydrate.add_argument("--id", action="append", required=True)
+    service_hydrate.add_argument("--max-records", type=int, default=3)
+    service_hydrate.add_argument("--max-bytes", type=int, default=65_536)
+    service_commands.add_parser("validate")
+    service_commands.add_parser("golden-queries")
+    external = commands.add_parser("external-capability")
+    external_commands = external.add_subparsers(
+        dest="external_capability_action", required=True
+    )
+    external_commands.add_parser("status")
+    external_search = external_commands.add_parser("search")
+    external_search.add_argument("--query", required=True)
+    external_search.add_argument("--kind", action="append", default=[])
+    external_search.add_argument("--limit", type=int, default=8)
+    external_hydrate = external_commands.add_parser("hydrate")
+    external_hydrate.add_argument("--id", action="append", required=True)
+    external_hydrate.add_argument("--max-records", type=int, default=3)
+    external_hydrate.add_argument("--max-bytes", type=int, default=32_768)
+    for action in ("plan-stage", "stage"):
+        external_stage = external_commands.add_parser(action)
+        external_stage.add_argument("--project", type=Path, required=True)
+        external_stage.add_argument("--project-id", required=True)
+        external_stage.add_argument("--bundle", action="append", required=True)
+        if action == "stage":
+            external_stage.add_argument(
+                "--approval-evidence", action="append", default=[]
+            )
+            external_stage.add_argument("--apply", action="store_true")
+    external_revoke = external_commands.add_parser("revoke")
+    external_revoke.add_argument("--project", type=Path, required=True)
+    external_revoke.add_argument("--plan-id", required=True)
+    external_revoke.add_argument("--evidence", action="append", default=[])
+    external_revoke.add_argument("--apply", action="store_true")
+    external_hook = external_commands.add_parser("hook-evaluate")
+    external_hook.add_argument("--profile", type=Path, required=True)
+    external_hook.add_argument("--event", required=True)
+    external_hook.add_argument("--authority", action="append", default=[])
+    external_hook.add_argument("--chain", action="append", default=[])
+    external_session = external_commands.add_parser("session-normalize")
+    external_session.add_argument("--adapter-id", required=True)
+    external_session.add_argument("--input", type=Path, required=True)
+    external_parity = external_commands.add_parser("session-compare")
+    external_parity.add_argument("--left", type=Path, required=True)
+    external_parity.add_argument("--right", type=Path, required=True)
+    external_route = external_commands.add_parser("route")
+    external_route.add_argument("--input", type=Path, required=True)
+    external_route.add_argument("--minimum-quality", type=float, required=True)
+    external_route.add_argument("--maximum-cost", type=float, required=True)
+    external_route.add_argument("--maximum-latency-ms", type=float, required=True)
+    external_route.add_argument("--privacy-class", required=True)
+    security = commands.add_parser("security-capability")
+    security_commands = security.add_subparsers(
+        dest="security_capability_action", required=True
+    )
+    security_commands.add_parser("status")
+    security_search = security_commands.add_parser("search")
+    security_search.add_argument("--query", required=True)
+    security_search.add_argument("--limit", type=int, default=10)
+    security_authority = security_commands.add_parser("authority")
+    security_authority.add_argument(
+        "--risk", choices=("R0", "R1", "R2", "R3", "R4"), required=True
+    )
+    security_authority.add_argument("--engagement", type=Path, required=True)
+    security_package = security_commands.add_parser("package")
+    security_package.add_argument("--query", required=True)
+    security_package.add_argument("--engagement", type=Path, required=True)
+    security_package.add_argument("--max-bodies", type=int, default=5)
+    security_package.add_argument(
+        "--max-risk", choices=("R0", "R1", "R2", "R3", "R4"), default="R4"
+    )
+    security_hydrate = security_commands.add_parser("hydrate")
+    security_hydrate.add_argument("--archive", type=Path, required=True)
+    security_hydrate.add_argument("--id", action="append", required=True)
+    security_hydrate.add_argument("--max-bodies", type=int, default=5)
+    security_hydrate.add_argument("--max-bytes", type=int, default=262_144)
+    security_graph = security_commands.add_parser("graph")
+    security_graph.add_argument("--skill", action="append", required=True)
+    security_graph.add_argument("--depth", type=int, default=2)
+    security_graph.add_argument("--max-nodes", type=int, default=250)
+    security_graph.add_argument("--max-edges", type=int, default=1000)
+    security_finding = security_commands.add_parser("finding-validate")
+    security_finding.add_argument("--input", type=Path, required=True)
+    security_commands.add_parser("golden-queries")
+    security_commands.add_parser("validate")
+    clean_room = commands.add_parser("capability-control")
+    clean_room_commands = clean_room.add_subparsers(
+        dest="capability_control_action", required=True
+    )
+    clean_room_commands.add_parser("status")
+    clean_room_commands.add_parser("validate")
+    clean_room_run = clean_room_commands.add_parser("run")
+    clean_room_run.add_argument("--operation", required=True)
+    clean_room_run.add_argument("--input", type=Path, required=True)
+    transcripts = commands.add_parser("transcripts")
+    transcript_commands = transcripts.add_subparsers(
+        dest="transcripts_action", required=True
+    )
+    transcript_profile = transcript_commands.add_parser("profile")
+    transcript_profile.add_argument("--profile", type=Path)
+    transcript_profile.add_argument("--project", type=Path)
+    transcript_profile.add_argument("--queue-id")
+    transcript_adapter = transcript_commands.add_parser("adapter-plan")
+    transcript_adapter.add_argument("--profile", type=Path, required=True)
+    transcript_adapter.add_argument("--input", type=Path, required=True)
+    transcript_adapter.add_argument("--output", type=Path, required=True)
+    transcript_ingest = transcript_commands.add_parser("ingest")
+    transcript_ingest.add_argument("--input", type=Path, action="append", required=True)
+    transcript_ingest.add_argument("--output-root", type=Path, required=True)
+    transcript_ingest.add_argument("--queue-id", required=True)
+    transcript_ingest.add_argument("--run-id")
+    transcript_ingest.add_argument("--apply", action="store_true")
+    transcript_records = transcript_commands.add_parser("records")
+    transcript_records.add_argument("--run", type=Path, required=True)
+    transcript_records.add_argument("--input", type=Path, required=True)
+    transcript_records.add_argument("--apply", action="store_true")
+    transcript_validate = transcript_commands.add_parser("validate")
+    transcript_validate.add_argument("--run", type=Path, required=True)
+    transcript_export = transcript_commands.add_parser("export")
+    transcript_export.add_argument("--run", type=Path, required=True)
+    transcript_export.add_argument("--conversation-id", action="append", required=True)
+    transcript_export.add_argument("--output", type=Path, required=True)
+    transcript_export.add_argument("--apply", action="store_true")
     return result
 
 
@@ -369,6 +669,7 @@ def main(argv: list[str] | None = None) -> int:
 
             output = validate_registry(root)
         elif args.command == "doctor":
+            from .external_toolchain import openssh_authority_status
             from .platform_support import runtime_python_status
 
             capability_map = json.loads(
@@ -388,12 +689,22 @@ def main(argv: list[str] | None = None) -> int:
                 "scope": "lightweight_startup_health",
             }
             python_status = runtime_python_status(root)
+            authority_status = openssh_authority_status()
             output = {
                 "valid": registry["valid"] and python_status["supported"],
                 "python": sys.version.split()[0],
                 "python_support": python_status,
                 "registry": registry,
-                "tools": {name: shutil.which(name) for name in ("git", "rg", "docker")},
+                "tools": {
+                    name: shutil.which(name)
+                    for name in ("git", "rg", "docker", "ssh-keygen")
+                },
+                "authority_features": {
+                    "signed_evidence": authority_status,
+                    "available": authority_status["authoritative_signing_available"],
+                    "required_for_basic_inspection": False,
+                    "required_for_authoritative_signing": True,
+                },
             }
         elif args.command == "lifecycle":
             from .engineering_lifecycle import lifecycle_status
@@ -532,6 +843,22 @@ def main(argv: list[str] | None = None) -> int:
 
             selected = select_working_set(args.goal, skill_navigation_index(root))
             output = {"valid": bool(selected.capability_ids), **asdict(selected)}
+        elif args.command == "route":
+            from .capability_routing import as_jsonable, route_task
+            from .registry import skill_discovery_sources, skill_navigation_index
+
+            canonical = {
+                item.capability_id: item for item in skill_navigation_index(root)
+            }
+            routed = route_task(
+                args.task,
+                skill_discovery_sources(root),
+                project=args.project,
+                constraints=args.constraint,
+                max_risk=args.max_risk,
+                canonical_records=canonical,
+            )
+            output = {"valid": routed.package.complete, **as_jsonable(routed)}
         elif args.command == "hydrate":
             from .lazy_loader import LazySkillLoader
 
@@ -634,6 +961,41 @@ def main(argv: list[str] | None = None) -> int:
                         for key in ("file_count", "byte_count", "tree_sha256")
                     },
                 }
+        elif args.command == "project-map":
+            from .project_intelligence import (
+                build_project_map,
+                diff_project_maps,
+                project_map_status,
+                validate_project_map,
+            )
+            from .project_map_retrieval import query_project_map
+
+            if args.project_map_action == "build":
+                output = build_project_map(
+                    args.project,
+                    max_files=args.max_files,
+                    max_depth=args.max_depth,
+                    max_bytes=args.max_bytes,
+                    max_text_bytes=args.max_text_bytes,
+                    incremental=not args.no_incremental,
+                )
+            elif args.project_map_action == "validate":
+                output = validate_project_map(args.project, check_freshness=args.fresh)
+            elif args.project_map_action == "status":
+                output = project_map_status(args.project)
+            elif args.project_map_action == "query":
+                output = query_project_map(
+                    args.project,
+                    args.query,
+                    top_k=args.top_k,
+                    kinds=args.kind,
+                    languages=args.language,
+                    path_prefix=args.path_prefix,
+                    relation_depth=args.relation_depth,
+                    max_hydration_files=args.max_hydration_files,
+                )
+            else:
+                output = diff_project_maps(args.left, args.right)
         elif args.command == "profiles":
             from .profiles import validate_profile_set
 
@@ -964,6 +1326,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "memory":
             from .workspace_manager import (
                 correct_memory,
+                capture_memory_source,
                 ingest_memory,
                 maintain_memory,
                 memory_status,
@@ -972,7 +1335,17 @@ def main(argv: list[str] | None = None) -> int:
                 transition_memory,
             )
 
-            if args.memory_action == "ingest":
+            if args.memory_action == "capture":
+                output = capture_memory_source(
+                    args.workspace,
+                    args.project_id,
+                    args.source,
+                    source_kind=args.source_kind,
+                    session_id=args.session_id,
+                    actor_id=args.actor_id,
+                    apply=args.apply,
+                )
+            elif args.memory_action == "ingest":
                 output = ingest_memory(
                     args.workspace,
                     args.project_id,
@@ -1112,6 +1485,447 @@ def main(argv: list[str] | None = None) -> int:
                 output = simulate_schedule(load_json(args.input))
             else:
                 output = validate_scheduling_layer(root)
+        elif args.command == "cognitive":
+            from .cognitive_core.facade import (
+                integration_healthcheck,
+                run_cognitive_operation,
+            )
+            from .cognitive_core.index_builder import validate_cognitive_index
+            from .cognitive_core.navigator import CognitiveNavigator
+
+            index_path = root / "registry" / "cognitive_map_index.json"
+            index = json.loads(index_path.read_text(encoding="utf-8"))
+            if args.cognitive_action == "status":
+                validation = validate_cognitive_index(root, index)
+                health = integration_healthcheck()
+                output = {
+                    "valid": validation["valid"] and health["valid"],
+                    "index": validation,
+                    "facade": health,
+                }
+            elif args.cognitive_action == "query":
+                result = CognitiveNavigator(index).search(
+                    args.query,
+                    limit=args.limit,
+                    selectable_only=args.selectable_only,
+                )
+                output = {"valid": bool(result.hits), **asdict(result)}
+            elif args.cognitive_action == "hydrate-plan":
+                output = CognitiveNavigator(index).hydration_plan(
+                    args.key,
+                    dependency_depth=args.dependency_depth,
+                    max_records=args.max_records,
+                )
+            else:
+                payload = json.loads(args.input.read_text(encoding="utf-8"))
+                output = run_cognitive_operation(args.operation, payload)
+        elif args.command == "agents":
+            from .agent_provider import (
+                compile_agent_prompt,
+                hydrate_agents,
+                load_registry,
+                route_agents,
+                validate_provider,
+            )
+
+            if args.agents_action == "status":
+                output = validate_provider(root)
+            elif args.agents_action == "list":
+                registry = load_registry(root)
+                records = [
+                    {
+                        key: item[key]
+                        for key in (
+                            "agent_id",
+                            "name",
+                            "division",
+                            "role_mode",
+                            "risk_tier",
+                            "lifecycle_state",
+                            "source_audit_status",
+                            "capabilities",
+                        )
+                    }
+                    for item in registry["agents"]
+                    if (not args.division or item["division"] == args.division)
+                    and (
+                        not args.lifecycle or item["lifecycle_state"] == args.lifecycle
+                    )
+                ]
+                output = {
+                    "valid": bool(records),
+                    "provider_id": registry["provider_id"],
+                    "matched_count": len(records),
+                    "returned_count": min(len(records), max(0, args.limit)),
+                    "eager_body_hydration": 0,
+                    "agents": records[: max(0, args.limit)],
+                }
+            elif args.agents_action == "route":
+                output = route_agents(
+                    root,
+                    args.task,
+                    constraints=args.constraint,
+                    limit=args.limit,
+                    max_reviewers=args.max_reviewers,
+                )
+            elif args.agents_action == "hydrate":
+                output = hydrate_agents(
+                    root,
+                    args.agent_id,
+                    project_id=args.project_id,
+                    max_total_bytes=args.max_total_bytes,
+                )
+            else:
+                task = json.loads(args.task.read_text(encoding="utf-8"))
+                route = json.loads(args.route.read_text(encoding="utf-8"))
+                output = compile_agent_prompt(
+                    root,
+                    task,
+                    route,
+                    project_id=args.project_id,
+                    selected_skills=args.skill,
+                    permitted_tools=args.tool,
+                    max_total_bytes=args.max_total_bytes,
+                )
+        elif args.command == "reasoning":
+            from .project_reasoning import (
+                audit_glossary,
+                decision_frontier,
+                inspect_python_module,
+                validate_reasoning_orchestration,
+            )
+
+            if args.reasoning_action == "frontier":
+                output = decision_frontier(
+                    json.loads(args.input.read_text(encoding="utf-8"))
+                )
+            elif args.reasoning_action == "glossary-audit":
+                output = audit_glossary(
+                    json.loads(args.glossary.read_text(encoding="utf-8")),
+                    args.path,
+                    project_root=args.project,
+                )
+            elif args.reasoning_action == "module-depth":
+                output = inspect_python_module(args.path, project_root=args.project)
+            else:
+                output = validate_reasoning_orchestration(root)
+        elif args.command == "refinery":
+            from .knowledge_refinery import (
+                assess_calibration_proposal,
+                audit_graph,
+                certify_refinery_run,
+                classify_novelty,
+                evaluate_retrieval,
+                plan_merges,
+                portable_inventory,
+                stage_merge_plan,
+                validate_refinery_orchestration,
+            )
+
+            action = args.refinery_action
+            if action in {"inventory", "admit"}:
+                output = portable_inventory(
+                    args.source,
+                    max_files=args.max_files,
+                    max_depth=args.max_depth,
+                    max_bytes=args.max_bytes,
+                )
+                if action == "admit":
+                    output = {
+                        **output,
+                        "admission": "admit" if output["valid"] else "quarantine",
+                        "license_review_required": True,
+                    }
+            elif action == "classify":
+                output = classify_novelty(
+                    json.loads(args.candidates.read_text(encoding="utf-8")),
+                    json.loads(args.canonical.read_text(encoding="utf-8")),
+                )
+            elif action == "plan":
+                output = plan_merges(
+                    json.loads(args.novelty.read_text(encoding="utf-8")),
+                    json.loads(args.fingerprints.read_text(encoding="utf-8")),
+                )
+            elif action == "graph-audit":
+                output = audit_graph(
+                    json.loads(args.nodes.read_text(encoding="utf-8")),
+                    json.loads(args.edges.read_text(encoding="utf-8")),
+                )
+            elif action == "simulate":
+                output = evaluate_retrieval(
+                    json.loads(args.cases.read_text(encoding="utf-8")),
+                    json.loads(args.rankings.read_text(encoding="utf-8")),
+                )
+            elif action == "calibrate":
+                output = assess_calibration_proposal(
+                    json.loads(args.baseline_train.read_text(encoding="utf-8")),
+                    json.loads(args.baseline_holdout.read_text(encoding="utf-8")),
+                    json.loads(args.candidate_train.read_text(encoding="utf-8")),
+                    json.loads(args.candidate_holdout.read_text(encoding="utf-8")),
+                    train_case_ids=args.train_case_id,
+                    holdout_case_ids=args.holdout_case_id,
+                )
+            elif action == "certify":
+                output = certify_refinery_run(
+                    json.loads(args.components.read_text(encoding="utf-8"))
+                )
+            elif action == "stage-approved":
+                output = stage_merge_plan(
+                    args.project,
+                    json.loads(args.plan.read_text(encoding="utf-8")),
+                    approval_evidence=args.approval_evidence,
+                    apply=args.apply,
+                )
+            else:
+                output = validate_refinery_orchestration(root)
+        elif args.command == "service-capability":
+            from .service_capability_provider import (
+                evaluate_service_golden_queries,
+                hydrate_service_skills,
+                load_service_catalog,
+                route_service_capabilities,
+                validate_service_workflows,
+            )
+
+            action = args.service_capability_action
+            if action == "status":
+                catalog = load_service_catalog(root)
+                output = {
+                    key: value for key, value in catalog.items() if key != "records"
+                }
+            elif action == "route":
+                output = route_service_capabilities(root, args.query, limit=args.limit)
+            elif action == "hydrate":
+                output = hydrate_service_skills(
+                    root,
+                    args.id,
+                    max_records=args.max_records,
+                    max_bytes=args.max_bytes,
+                )
+            elif action == "golden-queries":
+                output = evaluate_service_golden_queries(root)
+            else:
+                output = validate_service_workflows(root)
+        elif args.command == "external-capability":
+            from .external_capability_provider import (
+                apply_selective_stage,
+                compare_session_parity,
+                external_catalog_status,
+                govern_hook_invocation,
+                hydrate_external_metadata,
+                normalize_session_snapshot,
+                plan_selective_stage,
+                rank_execution_routes,
+                revoke_selective_stage,
+                search_external_candidates,
+            )
+
+            action = args.external_capability_action
+            if action == "status":
+                output = external_catalog_status(root)
+            elif action == "search":
+                output = search_external_candidates(
+                    root, args.query, limit=args.limit, kinds=args.kind
+                )
+            elif action == "hydrate":
+                output = hydrate_external_metadata(
+                    root,
+                    args.id,
+                    max_records=args.max_records,
+                    max_bytes=args.max_bytes,
+                )
+            elif action in {"plan-stage", "stage"}:
+                plan = plan_selective_stage(
+                    root,
+                    args.project,
+                    project_id=args.project_id,
+                    bundle_ids=args.bundle,
+                )
+                output = (
+                    {"valid": True, "plan": asdict(plan)}
+                    if action == "plan-stage"
+                    else apply_selective_stage(
+                        args.project,
+                        plan,
+                        approval_evidence=args.approval_evidence,
+                        apply=args.apply,
+                    )
+                )
+            elif action == "revoke":
+                output = revoke_selective_stage(
+                    args.project,
+                    args.plan_id,
+                    evidence=args.evidence,
+                    apply=args.apply,
+                )
+            elif action == "hook-evaluate":
+                profile = json.loads(args.profile.read_text(encoding="utf-8"))
+                output = {
+                    "valid": True,
+                    "decision": asdict(
+                        govern_hook_invocation(
+                            profile,
+                            event=args.event,
+                            granted_authorities=args.authority,
+                            invocation_chain=args.chain,
+                        )
+                    ),
+                }
+            elif action == "session-normalize":
+                payload = json.loads(args.input.read_text(encoding="utf-8"))
+                output = {
+                    "valid": True,
+                    "snapshot": normalize_session_snapshot(args.adapter_id, payload),
+                }
+            elif action == "session-compare":
+                left = json.loads(args.left.read_text(encoding="utf-8"))
+                right = json.loads(args.right.read_text(encoding="utf-8"))
+                output = compare_session_parity(left, right)
+            else:
+                routes = json.loads(args.input.read_text(encoding="utf-8"))
+                if not isinstance(routes, list):
+                    raise ValueError("route input must be a JSON array")
+                output = rank_execution_routes(
+                    routes,
+                    minimum_quality=args.minimum_quality,
+                    maximum_cost=args.maximum_cost,
+                    maximum_latency_ms=args.maximum_latency_ms,
+                    privacy_class=args.privacy_class,
+                )
+        elif args.command == "security-capability":
+            from .cybersecurity_provider import (
+                build_security_execution_package,
+                evaluate_security_golden_queries,
+                evaluate_security_authority,
+                expand_security_graph,
+                hydrate_security_bodies,
+                search_security_capabilities,
+                security_provider_status,
+                validate_security_finding,
+                validate_security_orchestration,
+            )
+
+            action = args.security_capability_action
+            if action == "status":
+                output = security_provider_status(root)
+            elif action == "search":
+                output = search_security_capabilities(
+                    root, args.query, limit=args.limit
+                )
+            elif action == "authority":
+                engagement = json.loads(args.engagement.read_text(encoding="utf-8"))
+                output = {
+                    "valid": True,
+                    "decision": asdict(
+                        evaluate_security_authority(args.risk, engagement)
+                    ),
+                }
+            elif action == "package":
+                engagement = json.loads(args.engagement.read_text(encoding="utf-8"))
+                output = build_security_execution_package(
+                    root,
+                    args.query,
+                    engagement,
+                    max_bodies=args.max_bodies,
+                    max_risk=args.max_risk,
+                )
+            elif action == "hydrate":
+                output = hydrate_security_bodies(
+                    root,
+                    args.archive,
+                    args.id,
+                    max_bodies=args.max_bodies,
+                    max_bytes=args.max_bytes,
+                )
+            elif action == "graph":
+                output = expand_security_graph(
+                    root,
+                    args.skill,
+                    depth=args.depth,
+                    max_nodes=args.max_nodes,
+                    max_edges=args.max_edges,
+                )
+            elif action == "finding-validate":
+                finding = json.loads(args.input.read_text(encoding="utf-8"))
+                output = validate_security_finding(finding)
+            elif action == "golden-queries":
+                output = evaluate_security_golden_queries(root)
+            else:
+                output = validate_security_orchestration(root)
+        elif args.command == "capability-control":
+            from .clean_room_capabilities import (
+                OPERATIONS,
+                run_clean_room_operation,
+                validate_clean_room_capability_workflow,
+            )
+
+            if args.capability_control_action == "status":
+                output = {
+                    "valid": True,
+                    "operation_count": len(OPERATIONS),
+                    "operations": sorted(OPERATIONS),
+                    "metadata_only": True,
+                    "hydrated_skill_bodies": 0,
+                    "authority_granted": False,
+                }
+            elif args.capability_control_action == "validate":
+                output = validate_clean_room_capability_workflow(root)
+            else:
+                payload = json.loads(args.input.read_text(encoding="utf-8"))
+                if not isinstance(payload, dict):
+                    raise ValueError("capability-control input must be a JSON object")
+                output = run_clean_room_operation(args.operation, payload)
+        elif args.command == "transcripts":
+            from .transcript_analysis import (
+                build_queue_adapter_plan,
+                export_selected_summary,
+                ingest_transcripts,
+                load_profile,
+                validate_run,
+                write_canonical_records,
+            )
+
+            if args.transcripts_action == "profile":
+                output = {
+                    "valid": True,
+                    "profile": load_profile(
+                        root,
+                        profile=args.profile,
+                        project=args.project,
+                        queue_id=args.queue_id,
+                    ),
+                }
+            elif args.transcripts_action == "adapter-plan":
+                profile = load_profile(root, profile=args.profile)
+                output = build_queue_adapter_plan(profile, args.input, args.output)
+            elif args.transcripts_action == "ingest":
+                output = ingest_transcripts(
+                    root,
+                    args.input,
+                    args.output_root,
+                    queue_id=args.queue_id,
+                    run_id=args.run_id,
+                    apply=args.apply,
+                )
+            elif args.transcripts_action == "records":
+                records = [
+                    json.loads(line)
+                    for line in args.input.read_text(encoding="utf-8").splitlines()
+                    if line.strip()
+                ]
+                output = write_canonical_records(
+                    root, args.run, records, apply=args.apply
+                )
+            elif args.transcripts_action == "validate":
+                output = validate_run(root, args.run)
+            else:
+                output = export_selected_summary(
+                    root,
+                    args.run,
+                    args.conversation_id,
+                    args.output,
+                    apply=args.apply,
+                )
         else:  # pragma: no cover
             raise AssertionError(args.command)
     except (OSError, ValueError, KeyError, RuntimeError, json.JSONDecodeError) as error:

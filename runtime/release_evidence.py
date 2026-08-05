@@ -1,4 +1,5 @@
 """Content-addressed release evidence manifests."""
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -9,7 +10,10 @@ from typing import Any, Mapping
 
 
 def canonical_bytes(value: object) -> bytes:
-    return (json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False) + "\n").encode("utf-8")
+    return (
+        json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+        + "\n"
+    ).encode("utf-8")
 
 
 def _inside(path: Path, root: Path) -> bool:
@@ -43,38 +47,65 @@ def build_evidence_manifest(
         if not path.is_file():
             if required:
                 errors.append(f"required evidence is missing: {relative}")
-            records.append({
-                "path": candidate.as_posix(), "type": str(metadata.get("type", "unknown")),
-                "required": required, "status": "missing", "size_bytes": None, "sha256": None,
-                "generation_gate": str(metadata.get("generation_gate", "unknown")),
-                "generated_utc": timestamp, "producer": str(metadata.get("producer", "unknown")),
-            })
+            records.append(
+                {
+                    "path": candidate.as_posix(),
+                    "type": str(metadata.get("type", "unknown")),
+                    "required": required,
+                    "status": "missing",
+                    "size_bytes": None,
+                    "sha256": None,
+                    "generation_gate": str(metadata.get("generation_gate", "unknown")),
+                    "generated_utc": timestamp,
+                    "producer": str(metadata.get("producer", "unknown")),
+                }
+            )
             continue
         if path.is_symlink():
             errors.append(f"evidence path is a symbolic link: {relative}")
             continue
         data = path.read_bytes()
-        records.append({
-            "path": candidate.as_posix(), "type": str(metadata.get("type", "unknown")),
-            "required": required, "status": "present", "size_bytes": len(data),
-            "sha256": hashlib.sha256(data).hexdigest(),
-            "generation_gate": str(metadata.get("generation_gate", "unknown")),
-            "generated_utc": timestamp, "producer": str(metadata.get("producer", "unknown")),
-        })
+        records.append(
+            {
+                "path": candidate.as_posix(),
+                "type": str(metadata.get("type", "unknown")),
+                "required": required,
+                "status": "present",
+                "size_bytes": len(data),
+                "sha256": hashlib.sha256(data).hexdigest(),
+                "generation_gate": str(metadata.get("generation_gate", "unknown")),
+                "generated_utc": timestamp,
+                "producer": str(metadata.get("producer", "unknown")),
+            }
+        )
     payload = {"schema_version": "1.0", "generated_utc": timestamp, "evidence": records}
-    return {**payload, "manifest_sha256": hashlib.sha256(canonical_bytes(payload)).hexdigest(), "valid": not errors, "errors": errors}
+    return {
+        **payload,
+        "manifest_sha256": hashlib.sha256(canonical_bytes(payload)).hexdigest(),
+        "valid": not errors,
+        "errors": errors,
+    }
 
 
-def verify_evidence_manifest(evidence_root: Path, manifest: Mapping[str, object]) -> dict[str, Any]:
+def verify_evidence_manifest(
+    evidence_root: Path, manifest: Mapping[str, object]
+) -> dict[str, Any]:
     root = evidence_root.resolve(strict=True)
     errors: list[str] = []
-    unsigned = {key: manifest[key] for key in ("schema_version", "generated_utc", "evidence") if key in manifest}
+    unsigned = {
+        key: manifest[key]
+        for key in ("schema_version", "generated_utc", "evidence")
+        if key in manifest
+    }
     expected = hashlib.sha256(canonical_bytes(unsigned)).hexdigest()
     if manifest.get("manifest_sha256") != expected:
         errors.append("evidence manifest digest mismatch")
     records = manifest.get("evidence")
     if not isinstance(records, list):
-        return {"valid": False, "errors": [*errors, "evidence manifest records are malformed"]}
+        return {
+            "valid": False,
+            "errors": [*errors, "evidence manifest records are malformed"],
+        }
     seen: set[str] = set()
     for record in records:
         if not isinstance(record, Mapping):
@@ -82,7 +113,12 @@ def verify_evidence_manifest(evidence_root: Path, manifest: Mapping[str, object]
             continue
         relative = str(record.get("path", ""))
         candidate = Path(relative)
-        if not relative or candidate.is_absolute() or ".." in candidate.parts or relative in seen:
+        if (
+            not relative
+            or candidate.is_absolute()
+            or ".." in candidate.parts
+            or relative in seen
+        ):
             errors.append(f"invalid or duplicate evidence path: {relative}")
             continue
         seen.add(relative)
@@ -96,6 +132,8 @@ def verify_evidence_manifest(evidence_root: Path, manifest: Mapping[str, object]
             errors.append(f"evidence file is missing or unsafe: {relative}")
             continue
         data = path.read_bytes()
-        if len(data) != record.get("size_bytes") or hashlib.sha256(data).hexdigest() != record.get("sha256"):
+        if len(data) != record.get("size_bytes") or hashlib.sha256(
+            data
+        ).hexdigest() != record.get("sha256"):
             errors.append(f"evidence file bytes changed: {relative}")
     return {"valid": not errors, "record_count": len(records), "errors": errors}

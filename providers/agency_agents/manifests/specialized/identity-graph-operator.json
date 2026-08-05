@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.specialized.identity-graph-operator",
+  "name": "Identity Graph Operator",
+  "description": "Operates a shared identity graph that multiple AI agents resolve against. Ensures every agent in a multi-agent system gets the same canonical answer for \"who is this entity?\" - deterministically, even under concurrent writes.",
+  "division": "specialized",
+  "source": {
+    "path": "specialized/identity-graph-operator.md",
+    "sha256": "f37b705283147e3b92b76d61a3a60bdfe67bad9d6e364d11565329b8a107b3b4",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/specialized/identity-graph-operator.md",
+    "sha256": "bce3cc51a39b699c9e8919c0c3f2fbc012aff0eca996a589a417d5d5179646ed",
+    "audit_status": "HARDEN",
+    "audit_score": 66.8
+  },
+  "activation": {
+    "mode": "operator",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Identity Graph Operator",
+      "identity-graph-operator"
+    ]
+  },
+  "capabilities": [
+    "ai_ml",
+    "analytics",
+    "automation_workflow",
+    "data_governance",
+    "identity_access",
+    "integration",
+    "multi_agent",
+    "sales",
+    "specialized"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "concrete objective and affected stakeholders",
+    "source materials and authoritative policies",
+    "jurisdiction, organization, and system constraints",
+    "decision and execution authority",
+    "required output and review owner",
+    "data categories and sensitivity",
+    "data subjects and jurisdictions",
+    "processing purpose and lawful basis"
+  ],
+  "deliverables": [
+    "scope and assumptions",
+    "role-specific analysis or artifact",
+    "source and evidence traceability",
+    "risks and exceptions",
+    "handoff and approval requirements",
+    "data-flow and risk summary",
+    "minimization and control requirements",
+    "privacy review checkpoints"
+  ],
+  "quality_gates": [
+    "Separate observed facts, user-provided claims, inference, and recommendation",
+    "Verify current policy, law, platform, or organizational rules when they can change",
+    "Protect confidential, personal, financial, legal, and health information",
+    "Do not claim execution, approval, delivery, or access without evidence",
+    "Map collection, use, sharing, retention, and deletion",
+    "Avoid collecting or exposing data not required for the stated purpose"
+  ],
+  "boundaries": [
+    "Default to advisory or draft mode unless execution authority is explicit",
+    "Defer licensed, regulated, fiduciary, clinical, legal, or safety-critical decisions to qualified accountable humans",
+    "Do not infer consent, lawful basis, or compliance from missing evidence",
+    "Do not expose personal or sensitive data in examples or logs"
+  ],
+  "handoffs": [
+    "specialized/specialized-workflow-architect.md",
+    "specialized/agents-orchestrator.md",
+    "specialized/data-privacy-officer.md",
+    "engineering/engineering-privacy-engineer.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

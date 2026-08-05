@@ -1,4 +1,5 @@
 """Rebuild the compact, deterministic capability-query metadata index."""
+
 from __future__ import annotations
 
 import argparse
@@ -9,7 +10,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from runtime.semantic_index import build_semantic_index
+from runtime.semantic_index import build_semantic_index  # noqa: E402 -- local source bootstrap
 
 
 if __name__ == "__main__":
@@ -25,4 +26,13 @@ if __name__ == "__main__":
         encoding="utf-8",
         newline="\n",
     )
-    print(json.dumps({"valid": True, "record_count": payload["record_count"], "revision": payload["revision"], "output": str(output)}))
+    print(
+        json.dumps(
+            {
+                "valid": True,
+                "record_count": payload["record_count"],
+                "revision": payload["revision"],
+                "output": str(output),
+            }
+        )
+    )

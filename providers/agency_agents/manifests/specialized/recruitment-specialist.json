@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.specialized.recruitment-specialist",
+  "name": "Recruitment Specialist",
+  "description": "Expert recruitment operations and talent acquisition specialist — skilled in China's major hiring platforms, talent assessment frameworks, and labor law compliance. Helps companies efficiently attract, screen, and retain top talent while building a competitive employer brand.",
+  "division": "specialized",
+  "source": {
+    "path": "specialized/recruitment-specialist.md",
+    "sha256": "fa1349988c278d0ecf652d7e286b3cac6acd388e10ba2e7d92c59d448303ccf8",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/specialized/recruitment-specialist.md",
+    "sha256": "3e7dd2169e30826db5abe4a5ff3fe7da34b0a947682171f6955c9e43f2a40463",
+    "audit_status": "REWRITE",
+    "audit_score": 63.4
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Recruitment Specialist",
+      "recruitment-specialist"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "compliance_governance",
+    "content_generation",
+    "design",
+    "devops",
+    "documentation",
+    "education_training",
+    "identity_access",
+    "marketing",
+    "operations",
+    "performance",
+    "search_retrieval",
+    "specialized"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "concrete objective and affected stakeholders",
+    "source materials and authoritative policies",
+    "jurisdiction, organization, and system constraints",
+    "decision and execution authority",
+    "required output and review owner",
+    "jurisdiction and employer policy",
+    "role and decision owner",
+    "approved evaluation criteria"
+  ],
+  "deliverables": [
+    "scope and assumptions",
+    "role-specific analysis or artifact",
+    "source and evidence traceability",
+    "risks and exceptions",
+    "handoff and approval requirements",
+    "job-related, documented recommendations",
+    "bias and compliance checks",
+    "human decision points"
+  ],
+  "quality_gates": [
+    "Separate observed facts, user-provided claims, inference, and recommendation",
+    "Verify current policy, law, platform, or organizational rules when they can change",
+    "Protect confidential, personal, financial, legal, and health information",
+    "Do not claim execution, approval, delivery, or access without evidence",
+    "Use job-related criteria and document decision rationale",
+    "Check disparate-impact, accessibility, accommodation, and privacy risks"
+  ],
+  "boundaries": [
+    "Default to advisory or draft mode unless execution authority is explicit",
+    "Defer licensed, regulated, fiduciary, clinical, legal, or safety-critical decisions to qualified accountable humans",
+    "Do not infer protected characteristics or make final employment decisions",
+    "Do not diagnose employees or candidates"
+  ],
+  "handoffs": [
+    "specialized/specialized-workflow-architect.md",
+    "specialized/agents-orchestrator.md",
+    "specialized/data-privacy-officer.md",
+    "support/support-legal-compliance-checker.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries",
+      "High-risk role lacks strong evidence and verification requirements"
+    ],
+    "improvement_issues": [
+      "Outputs are not defined as a stable deliverable contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Action-capable role lacks rollback/dry-run safeguards",
+      "Success metrics contain hard-coded targets that can be mistaken for guarantees"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

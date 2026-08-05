@@ -37,7 +37,10 @@ def classify_error(record: dict[str, Any], policy: dict[str, Any]) -> dict[str, 
         if suffixes and not path.endswith(suffixes):
             continue
         return {"rule_id": str(rule["id"]), "disposition": str(rule["disposition"])}
-    return {"rule_id": "default", "disposition": str(policy["default_inventory_error_disposition"])}
+    return {
+        "rule_id": "default",
+        "disposition": str(policy["default_inventory_error_disposition"]),
+    }
 
 
 def reconcile(
@@ -133,19 +136,26 @@ def reconcile(
             "policy_sha256": hash_file(policy_path),
             "skill_report_sha256": hash_file(skill_report_path),
             "direct_audit_reports": [hash_file(path) for path in direct_audit_paths],
-            "error_logs": [{"sha256": hash_file(path), "records": sum(1 for _ in iter_jsonl(path))} for path in error_paths],
+            "error_logs": [
+                {"sha256": hash_file(path), "records": sum(1 for _ in iter_jsonl(path))}
+                for path in error_paths
+            ],
         },
         "summary": {
             "inventory_records": len(inventory),
             "classified_records": len(results),
             "by_disposition": dict(sorted(counts.items())),
-            "direct_scan_matches": sum(1 for item in results if "direct_scan_evidence" in item),
+            "direct_scan_matches": sum(
+                1 for item in results if "direct_scan_evidence" in item
+            ),
             "missing_classifications": len(missing_classifications),
             "inventory_errors": len(error_results),
             "inventory_errors_by_disposition": dict(sorted(error_counts.items())),
             "unresolved": unresolved,
             "unresolved_inventory_errors": unresolved_errors,
-            "complete": unresolved == 0 and unresolved_errors == 0 and len(results) == len(inventory),
+            "complete": unresolved == 0
+            and unresolved_errors == 0
+            and len(results) == len(inventory),
         },
         "missing_classification_ids": missing_classifications,
         "records": results,

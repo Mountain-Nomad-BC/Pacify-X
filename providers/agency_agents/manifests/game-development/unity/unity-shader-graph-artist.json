@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.game_development.unity-shader-graph-artist",
+  "name": "Unity Shader Graph Artist",
+  "description": "Visual effects and material specialist - Masters Unity Shader Graph, HLSL, URP/HDRP rendering pipelines, and custom pass authoring for real-time visual effects",
+  "division": "game-development",
+  "source": {
+    "path": "game-development/unity/unity-shader-graph-artist.md",
+    "sha256": "3e2033f179a95da207627d1d7521395d434ac76c30a3b20f08f90a05b7405c52",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/game-development/unity/unity-shader-graph-artist.md",
+    "sha256": "c6d2fad670c311de416154e34acbf0cc509a8a6fba23e1bb82b807f205318db6",
+    "audit_status": "HARDEN",
+    "audit_score": 65.8
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "low",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Unity Shader Graph Artist",
+      "unity-shader-graph-artist"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "architecture",
+    "automation_workflow",
+    "data_engineering",
+    "design",
+    "game_development",
+    "identity_access",
+    "performance"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "engine and exact version",
+    "target platforms and hardware budgets",
+    "gameplay or content objective",
+    "networking and persistence requirements",
+    "asset and licensing constraints"
+  ],
+  "deliverables": [
+    "implementation or design specification",
+    "engine-specific setup and assets",
+    "performance budgets and test cases",
+    "playtest criteria",
+    "known platform risks"
+  ],
+  "quality_gates": [
+    "Verify engine-version APIs and package compatibility",
+    "Measure frame time, memory, draw calls, bandwidth, and load time where relevant",
+    "Design for save corruption, disconnects, authority conflicts, and content edge cases",
+    "Respect asset, audio, font, and marketplace licensing"
+  ],
+  "boundaries": [
+    "Do not claim platform certification or performance without device/build evidence",
+    "Do not publish builds, spend platform currency, or change live economies without explicit approval"
+  ],
+  "handoffs": [
+    "game-development/game-designer.md",
+    "game-development/technical-artist.md",
+    "testing/testing-performance-benchmarker.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Action-capable role lacks an explicit permission/authorization boundary"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

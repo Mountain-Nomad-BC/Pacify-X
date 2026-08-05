@@ -1,0 +1,43 @@
+{
+  "id": "govern-cross-harness-runtime",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/govern-cross-harness-runtime/SKILL.md",
+  "body_sha256": "0b775822f61cb2c04273a38b9e360705ff2be0d96e6c0905331fa7dd60cc5030",
+  "references": [
+    ".agents/skills/govern-cross-harness-runtime/references/design-mcp-server-capability.json",
+    ".agents/skills/govern-cross-harness-runtime/references/govern-cross-harness-parity.json"
+  ],
+  "capability_tags": [
+    "cross",
+    "cross-harness",
+    "external-candidate",
+    "govern",
+    "harness",
+    "mcp",
+    "runtime"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "inactive_external_candidate_wrapper",
+    "basis": [
+      "registry/external_capability_candidates.json",
+      "registry/external_capability_licenses.json"
+    ],
+    "canonical_owner": "govern-runtime-protocol-deployment",
+    "source_licenses": [
+      "everything-claude-code"
+    ],
+    "candidate_capabilities": [
+      "govern-cross-harness-parity",
+      "design-mcp-server-capability"
+    ]
+  },
+  "clean_room": false,
+  "tests": "tests/test_external_capability_provider.py",
+  "evidence": "tests/test_external_capability_provider.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

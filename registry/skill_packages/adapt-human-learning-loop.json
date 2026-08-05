@@ -1,0 +1,65 @@
+{
+  "id": "adapt-human-learning-loop",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/adapt-human-learning-loop/SKILL.md",
+  "body_sha256": "61e3cdb546982669ad0fd5aafceac1ecb36836bfed11ee5baa55a6ad18841f76",
+  "references": [
+    ".agents/skills/adapt-human-learning-loop/references/capture-human-observer-assessment.json",
+    ".agents/skills/adapt-human-learning-loop/references/design-replayable-exercise-state-machine.json",
+    ".agents/skills/adapt-human-learning-loop/references/evaluate-cue-recall-and-recognition.json",
+    ".agents/skills/adapt-human-learning-loop/references/govern-reinforcement-token-economy.json",
+    ".agents/skills/adapt-human-learning-loop/references/maintain-behavior-event-ledger.json",
+    ".agents/skills/adapt-human-learning-loop/references/maintain-learner-profile-boundary.json",
+    ".agents/skills/adapt-human-learning-loop/references/safeguard-human-learning-systems.json",
+    ".agents/skills/adapt-human-learning-loop/references/separate-supervisor-and-learner-roles.json",
+    ".agents/skills/adapt-human-learning-loop/references/sequence-adaptive-learning-exercises.json",
+    ".agents/skills/adapt-human-learning-loop/references/summarize-learning-progress.json"
+  ],
+  "capability_tags": [
+    "adapt",
+    "adaptive-learning",
+    "authorization",
+    "event-history",
+    "external-candidate",
+    "human",
+    "human-feedback",
+    "human-safety",
+    "learning",
+    "learning-evaluation",
+    "loop",
+    "reinforcement",
+    "state-machine"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "inactive_external_candidate_wrapper",
+    "basis": [
+      "registry/external_capability_candidates.json",
+      "registry/external_capability_licenses.json"
+    ],
+    "canonical_owner": "long-horizon-progress-ledger",
+    "source_licenses": [
+      "hyperlearning-clean-room"
+    ],
+    "candidate_capabilities": [
+      "maintain-learner-profile-boundary",
+      "sequence-adaptive-learning-exercises",
+      "capture-human-observer-assessment",
+      "maintain-behavior-event-ledger",
+      "govern-reinforcement-token-economy",
+      "evaluate-cue-recall-and-recognition",
+      "summarize-learning-progress",
+      "design-replayable-exercise-state-machine",
+      "separate-supervisor-and-learner-roles",
+      "safeguard-human-learning-systems"
+    ]
+  },
+  "clean_room": true,
+  "tests": "tests/test_external_capability_provider.py",
+  "evidence": "tests/test_external_capability_provider.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

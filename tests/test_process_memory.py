@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -15,13 +14,39 @@ def record(outcome_met: bool = True) -> dict:
         "schema_version": "1.0",
         "goal": "Audit a bootstrap repository",
         "outcome": "Structural and runtime evidence reconciled",
-        "decisions": [{"decision": "compose validators", "reason": "avoid shallow duplicate checks", "alternatives": ["fixed file counts"]}],
-        "tools": [{"tool": "unittest", "reason": "authoritative runtime checks", "effects": ["read_local"]}],
-        "steps": ["discover canonical owners", "run composed validation", "investigate failures", "rerun and assemble evidence"],
-        "failures": [{"failure": "stale package manifest", "recovery": "package missing audit sources", "verified": True}],
-        "verification": {"outcome_met": outcome_met, "checks": ["source suite", "installed wheel"]},
+        "decisions": [
+            {
+                "decision": "compose validators",
+                "reason": "avoid shallow duplicate checks",
+                "alternatives": ["fixed file counts"],
+            }
+        ],
+        "tools": [
+            {
+                "tool": "unittest",
+                "reason": "authoritative runtime checks",
+                "effects": ["read_local"],
+            }
+        ],
+        "steps": [
+            "discover canonical owners",
+            "run composed validation",
+            "investigate failures",
+            "rerun and assemble evidence",
+        ],
+        "failures": [
+            {
+                "failure": "stale package manifest",
+                "recovery": "package missing audit sources",
+                "verified": True,
+            }
+        ],
+        "verification": {
+            "outcome_met": outcome_met,
+            "checks": ["source suite", "installed wheel"],
+        },
         "reusable_pattern": "validate engineering outcomes with live composed checks",
-        "evidence": ["test receipt", "wheel receipt"]
+        "evidence": ["test receipt", "wheel receipt"],
     }
 
 
@@ -39,12 +64,16 @@ class ProcessMemoryTests(unittest.TestCase):
         self.assertFalse(result["valid"])
         self.assertEqual(result["activation"], "blocked")
 
-    def test_apply_records_process_in_commissioned_project_without_activation(self) -> None:
+    def test_apply_records_process_in_commissioned_project_without_activation(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as directory:
             project = Path(directory) / "project"
             commission(project, "new", apply=True, source_root=ROOT)
-            preview = record_process_candidate(ROOT, project, record(), apply=False)
-            self.assertFalse((project / ".engineering-bootstrap/project-management/process").exists())
+            record_process_candidate(ROOT, project, record(), apply=False)
+            self.assertFalse(
+                (project / ".engineering-bootstrap/project-management/process").exists()
+            )
             applied = record_process_candidate(ROOT, project, record(), apply=True)
             self.assertTrue((project / applied["receipt"]).is_file())
             self.assertFalse(applied["candidate"]["auto_activate"])

@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.marketing.weibo-strategist",
+  "name": "Weibo Strategist",
+  "description": "Full-spectrum operations expert for Sina Weibo, with deep expertise in trending topic mechanics, Super Topic community management, public sentiment monitoring, fan economy strategies, and Weibo advertising, helping brands achieve viral reach and sustained growth on China's leading public discourse platform.",
+  "division": "marketing",
+  "source": {
+    "path": "marketing/marketing-weibo-strategist.md",
+    "sha256": "7a79f1ec3894ab2e32cb0b0b729b77fda176defaffdb59f4feae29e56a767917",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/marketing/marketing-weibo-strategist.md",
+    "sha256": "31e9a904fd72a9ac72d288ec2b10f5c3c5215f1890c5d129dc9a024769024a53",
+    "audit_status": "HARDEN",
+    "audit_score": 61.9
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "medium",
+    "autonomy": "advisory_and_draft",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Weibo Strategist",
+      "weibo-strategist",
+      "marketing-weibo-strategist"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "architecture",
+    "automation_workflow",
+    "compliance_governance",
+    "content_generation",
+    "design",
+    "documentation",
+    "game_development",
+    "identity_access",
+    "marketing",
+    "operations",
+    "payments_billing",
+    "performance",
+    "social_media"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "product, audience, market, and objective",
+    "brand voice and approved claims",
+    "channels and platform versions",
+    "budget and publishing authority",
+    "available research, analytics, and baseline"
+  ],
+  "deliverables": [
+    "strategy tied to a measurable objective",
+    "channel-specific content or campaign artifacts",
+    "claim and source register",
+    "measurement plan",
+    "approval and publishing checklist"
+  ],
+  "quality_gates": [
+    "Use current platform policies, formats, and algorithm assumptions",
+    "Do not fabricate trends, analytics, testimonials, citations, or audience research",
+    "Substantiate product, performance, health, financial, and comparative claims",
+    "Treat numeric targets as user-owned goals, not guaranteed outcomes"
+  ],
+  "boundaries": [
+    "Default to drafts; do not publish, message users, buy media, or change live campaigns without explicit authority",
+    "Avoid spam, dark patterns, impersonation, deceptive scarcity, and undisclosed synthetic endorsements"
+  ],
+  "handoffs": [
+    "marketing/marketing-content-creator.md",
+    "marketing/marketing-seo-specialist.md",
+    "marketing/marketing-pr-communications-manager.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "No uncertainty/assumption reporting requirement"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

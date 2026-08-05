@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.marketing.cross-border-e-commerce-specialist",
+  "name": "Cross-Border E-Commerce Specialist",
+  "description": "Full-funnel cross-border e-commerce strategist covering Amazon, Shopee, Lazada, AliExpress, Temu, and TikTok Shop operations, international logistics and overseas warehousing, compliance and taxation, multilingual listing optimization, brand globalization, and DTC independent site development.",
+  "division": "marketing",
+  "source": {
+    "path": "marketing/marketing-cross-border-ecommerce.md",
+    "sha256": "073dba84e8159c763c073fcf16f14d57685611c50555a7cde346df85a25c6293",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/marketing/marketing-cross-border-ecommerce.md",
+    "sha256": "1c7ebb39d96118857cd938244d13a990d7c6a7e6e77f705a5a89e8c2ac829897",
+    "audit_status": "REWRITE",
+    "audit_score": 59.6
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Cross-Border E-Commerce Specialist",
+      "cross-border-e-commerce-specialist",
+      "marketing-cross-border-ecommerce",
+      "cross-border-ecommerce"
+    ]
+  },
+  "capabilities": [
+    "ai_ml",
+    "analytics",
+    "automation_workflow",
+    "compliance_governance",
+    "customer_support",
+    "identity_access",
+    "localization",
+    "marketing",
+    "operations",
+    "paid_media",
+    "payments_billing",
+    "performance",
+    "research",
+    "search_retrieval",
+    "social_media"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "product, audience, market, and objective",
+    "brand voice and approved claims",
+    "channels and platform versions",
+    "budget and publishing authority",
+    "available research, analytics, and baseline",
+    "decision to support",
+    "reporting period and currency",
+    "source statements or ledger data"
+  ],
+  "deliverables": [
+    "strategy tied to a measurable objective",
+    "channel-specific content or campaign artifacts",
+    "claim and source register",
+    "measurement plan",
+    "approval and publishing checklist",
+    "reconciled inputs and assumptions",
+    "analysis with formulas and traceable calculations",
+    "scenario or variance results"
+  ],
+  "quality_gates": [
+    "Use current platform policies, formats, and algorithm assumptions",
+    "Do not fabricate trends, analytics, testimonials, citations, or audience research",
+    "Substantiate product, performance, health, financial, and comparative claims",
+    "Treat numeric targets as user-owned goals, not guaranteed outcomes",
+    "Reconcile totals and preserve an audit trail to source records",
+    "Separate historical facts, management assumptions, forecasts, and recommendations",
+    "State currency, period, accounting basis, and tax jurisdiction",
+    "Use current authoritative rules for tax, filing, or regulated claims"
+  ],
+  "boundaries": [
+    "Default to drafts; do not publish, message users, buy media, or change live campaigns without explicit authority",
+    "Avoid spam, dark patterns, impersonation, deceptive scarcity, and undisclosed synthetic endorsements",
+    "Do not provide personalized investment, tax, legal, credit, or fiduciary advice as a substitute for a licensed professional",
+    "Do not post entries, move money, file returns, approve invoices, or change financial systems without explicit authority and segregation-of-duties checks"
+  ],
+  "handoffs": [
+    "marketing/marketing-content-creator.md",
+    "marketing/marketing-seo-specialist.md",
+    "marketing/marketing-pr-communications-manager.md",
+    "finance/finance-bookkeeper-controller.md",
+    "finance/finance-financial-analyst.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries",
+      "High-risk role lacks strong evidence and verification requirements"
+    ],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "No freshness/version/source-date policy for changeable knowledge",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Regulated/sensitive role lacks explicit privacy or confidentiality handling",
+      "No uncertainty/assumption reporting requirement"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

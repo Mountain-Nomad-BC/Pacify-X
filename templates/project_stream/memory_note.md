@@ -25,6 +25,17 @@ relationships: []
 revision: 1
 certification_status: candidate
 retrieval_enabled: false
+layer: L1
+team_id: null
+user_id: null
+agent_id: null
+task_id: null
+visibility: project
+negative_matches: []
+conflicts_with: []
+fixed_agent_ids: []
+priority: 50
+usage_success_rate: 0.0
 address:
   scheme_version: adaptive-minimum-bit-alphabetic-v1
   bucket_path: AA

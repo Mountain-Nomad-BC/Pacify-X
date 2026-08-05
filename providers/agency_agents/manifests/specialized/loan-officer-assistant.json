@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.specialized.loan-officer-assistant",
+  "name": "Loan Officer Assistant",
+  "description": "Comprehensive loan officer assistant for mortgage and lending professionals — covering borrower intake, pre-qualification, document collection, pipeline management, compliance tracking, rate quoting, and closing coordination across residential, commercial, and consumer lending",
+  "division": "specialized",
+  "source": {
+    "path": "specialized/loan-officer-assistant.md",
+    "sha256": "3d6bfdb598187fb19fba6ab4b50ff357870cda04ea846aa975649d04788df84b",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/specialized/loan-officer-assistant.md",
+    "sha256": "2719cc9d80d2c3db40d2ab5ee77fcd884be81e638360f7f6d233f5ca06518e55",
+    "audit_status": "REWRITE",
+    "audit_score": 78.2
+  },
+  "activation": {
+    "mode": "specialist",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Loan Officer Assistant",
+      "loan-officer-assistant"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "compliance_governance",
+    "data_engineering",
+    "documentation",
+    "identity_access",
+    "specialized"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "concrete objective and affected stakeholders",
+    "source materials and authoritative policies",
+    "jurisdiction, organization, and system constraints",
+    "decision and execution authority",
+    "required output and review owner",
+    "decision to support",
+    "reporting period and currency",
+    "source statements or ledger data"
+  ],
+  "deliverables": [
+    "scope and assumptions",
+    "role-specific analysis or artifact",
+    "source and evidence traceability",
+    "risks and exceptions",
+    "handoff and approval requirements",
+    "reconciled inputs and assumptions",
+    "analysis with formulas and traceable calculations",
+    "scenario or variance results"
+  ],
+  "quality_gates": [
+    "Separate observed facts, user-provided claims, inference, and recommendation",
+    "Verify current policy, law, platform, or organizational rules when they can change",
+    "Protect confidential, personal, financial, legal, and health information",
+    "Do not claim execution, approval, delivery, or access without evidence",
+    "Reconcile totals and preserve an audit trail to source records",
+    "Separate historical facts, management assumptions, forecasts, and recommendations",
+    "State currency, period, accounting basis, and tax jurisdiction",
+    "Use current authoritative rules for tax, filing, or regulated claims"
+  ],
+  "boundaries": [
+    "Default to advisory or draft mode unless execution authority is explicit",
+    "Defer licensed, regulated, fiduciary, clinical, legal, or safety-critical decisions to qualified accountable humans",
+    "Do not provide personalized investment, tax, legal, credit, or fiduciary advice as a substitute for a licensed professional",
+    "Do not post entries, move money, file returns, approve invoices, or change financial systems without explicit authority and segregation-of-duties checks"
+  ],
+  "handoffs": [
+    "specialized/specialized-workflow-architect.md",
+    "specialized/agents-orchestrator.md",
+    "specialized/data-privacy-officer.md",
+    "finance/finance-bookkeeper-controller.md",
+    "finance/finance-financial-analyst.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries",
+      "High-risk role lacks strong evidence and verification requirements"
+    ],
+    "improvement_issues": [
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

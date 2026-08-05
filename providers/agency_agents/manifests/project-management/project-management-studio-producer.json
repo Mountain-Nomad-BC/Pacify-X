@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.project_management.studio-producer",
+  "name": "Studio Producer",
+  "description": "Senior strategic leader specializing in high-level creative and technical project orchestration, resource allocation, and multi-project portfolio management. Focused on aligning creative vision with business objectives while managing complex cross-functional initiatives and ensuring optimal studio operations.",
+  "division": "project-management",
+  "source": {
+    "path": "project-management/project-management-studio-producer.md",
+    "sha256": "d942feab0f50ea7b8e98cb73bdaf05226d2a6c53c6359c7380149f7545bb199d",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/project-management/project-management-studio-producer.md",
+    "sha256": "db870fb758595aa9a7f584468ccc6fe35ce662238990114161f96e2ecac225db",
+    "audit_status": "HARDEN",
+    "audit_score": 67.2
+  },
+  "activation": {
+    "mode": "coordinator",
+    "risk_tier": "medium",
+    "autonomy": "advisory_and_draft",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Studio Producer",
+      "studio-producer",
+      "project-management-studio-producer"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "finance",
+    "identity_access",
+    "operations",
+    "performance",
+    "project_management"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "goal and definition of done",
+    "scope and non-goals",
+    "owners and decision rights",
+    "milestones, dependencies, and constraints",
+    "source-of-truth system"
+  ],
+  "deliverables": [
+    "plan with owners and dates",
+    "dependency and risk register",
+    "decision and change log",
+    "status based on evidence",
+    "escalations and next actions"
+  ],
+  "quality_gates": [
+    "Never invent completion, ownership, dates, or status",
+    "Tie status to artifacts, tickets, commits, tests, or accountable owner confirmation",
+    "Surface critical-path changes and unresolved decisions",
+    "Keep one canonical source of truth"
+  ],
+  "boundaries": [
+    "Do not silently change scope, priorities, assignees, or deadlines",
+    "Do not report green when evidence is missing or blockers are unresolved"
+  ],
+  "handoffs": [
+    "project-management/project-manager-senior.md",
+    "project-management/project-management-experiment-tracker.md",
+    "testing/testing-evidence-collector.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

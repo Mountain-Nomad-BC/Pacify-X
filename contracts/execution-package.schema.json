@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:execution-package",
+  "title": "PACIFY-X Minimum Complete Execution Package",
+  "type": "object",
+  "required": [
+    "package_id",
+    "task_envelope_sha256",
+    "selected",
+    "selected_by_kind",
+    "dependencies_added",
+    "contracts",
+    "validators",
+    "unused_candidates",
+    "complete",
+    "executable",
+    "errors",
+    "receipt_sha256"
+  ],
+  "properties": {
+    "package_id": {"type": "string", "pattern": "^pkg_[a-f0-9]{20}$"},
+    "task_envelope_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "selected": {"type": "array", "items": {"type": "string"}, "uniqueItems": true, "maxItems": 15},
+    "selected_by_kind": {"type": "object"},
+    "dependencies_added": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "contracts": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "validators": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "unused_candidates": {"type": "array", "items": {"type": "array", "items": {"type": "string"}, "minItems": 2, "maxItems": 2}},
+    "complete": {"type": "boolean"},
+    "executable": {"type": "boolean"},
+    "errors": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "receipt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": false
+}

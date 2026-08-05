@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_stream:durable-goal-state",
+  "title": "Acceptance-backed durable goal state",
+  "type": "object",
+  "required": ["schema_version", "goal_id", "project_id", "status", "continuation_budget", "history", "event_applied", "errors", "state_sha256"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "goal_id": {"type": "string"},
+    "project_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["planned", "in_progress", "paused", "blocked", "complete"]},
+    "continuation_budget": {"type": "integer"},
+    "history": {"type": "array", "items": {"type": "object"}},
+    "event_applied": {"type": "boolean"},
+    "errors": {"type": "array", "items": {"type": "string"}},
+    "state_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": true
+}

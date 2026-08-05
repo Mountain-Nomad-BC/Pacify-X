@@ -28,7 +28,9 @@ class BootstrapSurfaceTests(unittest.TestCase):
             self.assertFalse(result["applied"])
             self.assertEqual(result["effects"], ["read_local"])
             self.assertEqual(result["next"], "approval")
-            self.assertTrue(all(item["action"] == "create" for item in result["file_plan"]))
+            self.assertTrue(
+                all(item["action"] == "create" for item in result["file_plan"])
+            )
 
     def test_existing_project_requires_directory(self) -> None:
         with self.assertRaises(ValueError):

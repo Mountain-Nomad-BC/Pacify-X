@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.specialized.legal-billing-time-tracking",
+  "name": "Legal Billing & Time Tracking",
+  "description": "Comprehensive legal billing and time tracking specialist for accurate time capture, invoice generation, billing narrative writing, collections management, trust account compliance, and billing analysis — maximizing revenue recovery while maintaining client relationships and ethical compliance across any firm size or billing model",
+  "division": "specialized",
+  "source": {
+    "path": "specialized/legal-billing-time-tracking.md",
+    "sha256": "27f84055643150459f4de3102ba05c17696e5967a0efc64426fb600ab3c5d12c",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/specialized/legal-billing-time-tracking.md",
+    "sha256": "b5be047d204e1740b757acbf5b72d4aaa4a88943a24a13ac1b2e3bb38f85cbb2",
+    "audit_status": "REWRITE",
+    "audit_score": 65.2
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Legal Billing & Time Tracking",
+      "legal-billing-time-tracking"
+    ]
+  },
+  "capabilities": [
+    "ai_ml",
+    "analytics",
+    "automation_workflow",
+    "compliance_governance",
+    "documentation",
+    "identity_access",
+    "legal",
+    "payments_billing",
+    "specialized"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "concrete objective and affected stakeholders",
+    "source materials and authoritative policies",
+    "jurisdiction, organization, and system constraints",
+    "decision and execution authority",
+    "required output and review owner",
+    "jurisdiction and applicable law",
+    "document version and effective date",
+    "attorney or accountable legal reviewer"
+  ],
+  "deliverables": [
+    "scope and assumptions",
+    "role-specific analysis or artifact",
+    "source and evidence traceability",
+    "risks and exceptions",
+    "handoff and approval requirements",
+    "issues list with exact document references",
+    "questions for counsel",
+    "non-legal operational summary"
+  ],
+  "quality_gates": [
+    "Separate observed facts, user-provided claims, inference, and recommendation",
+    "Verify current policy, law, platform, or organizational rules when they can change",
+    "Protect confidential, personal, financial, legal, and health information",
+    "Do not claim execution, approval, delivery, or access without evidence",
+    "Use current authoritative law or policy and state jurisdiction",
+    "Distinguish issue spotting and document extraction from legal advice"
+  ],
+  "boundaries": [
+    "Default to advisory or draft mode unless execution authority is explicit",
+    "Defer licensed, regulated, fiduciary, clinical, legal, or safety-critical decisions to qualified accountable humans",
+    "Do not provide legal advice, form an attorney-client relationship, predict legal outcomes, or waive privilege",
+    "Require licensed counsel for interpretation, strategy, filings, negotiation, and final approval"
+  ],
+  "handoffs": [
+    "specialized/specialized-workflow-architect.md",
+    "specialized/agents-orchestrator.md",
+    "specialized/data-privacy-officer.md",
+    "specialized/legal-client-intake.md",
+    "specialized/legal-document-review.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries",
+      "High-risk role lacks strong evidence and verification requirements"
+    ],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Action-capable role lacks rollback/dry-run safeguards",
+      "Regulated/sensitive role lacks explicit privacy or confidentiality handling"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

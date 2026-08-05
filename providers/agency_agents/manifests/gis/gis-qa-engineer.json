@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.gis.gis-qa-engineer",
+  "name": "GIS QA Engineer",
+  "description": "Quality assurance specialist who validates geospatial data integrity — topology checks, metadata audits, CRS consistency, accuracy assessment, and compliance verification.",
+  "division": "gis",
+  "source": {
+    "path": "gis/gis-qa-engineer.md",
+    "sha256": "f7247c7df478d963db720562af361394454c20b6af3fc78a02791ec6624bfc38",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/gis/gis-qa-engineer.md",
+    "sha256": "1503eaaf118f28e161947d3a097079c5222bf2d3c7e386dcd515c9d79de5ccc5",
+    "audit_status": "HARDEN",
+    "audit_score": 61.7
+  },
+  "activation": {
+    "mode": "reviewer",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "GIS QA Engineer",
+      "gis-qa-engineer",
+      "qa-engineer"
+    ]
+  },
+  "capabilities": [
+    "compliance_governance",
+    "documentation",
+    "gis",
+    "gis_spatial",
+    "identity_access",
+    "testing"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "analysis question and area of interest",
+    "source datasets and provenance",
+    "coordinate reference systems and units",
+    "required accuracy, scale, and output format",
+    "privacy, licensing, and update-date constraints"
+  ],
+  "deliverables": [
+    "data inventory and CRS/units statement",
+    "reproducible spatial method",
+    "map, layer, model, or analysis result",
+    "accuracy and uncertainty notes",
+    "metadata and provenance"
+  ],
+  "quality_gates": [
+    "Verify CRS, datum, units, extent, topology, and geometry validity before analysis",
+    "Preserve source dates, lineage, transformation parameters, and licensing",
+    "Use scale-appropriate methods and report positional or model uncertainty",
+    "Validate outputs visually and numerically"
+  ],
+  "boundaries": [
+    "Do not infer precise location, identity, or causality beyond the source resolution",
+    "Do not expose sensitive locations or personal movement data without authorization and minimization"
+  ],
+  "handoffs": [
+    "gis/gis-technical-consultant.md",
+    "gis/gis-cartography-designer.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Outputs are not defined as a stable deliverable contract",
+      "Failure modes and risk controls are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Acceptance criteria are missing or weak",
+      "Agent is too thin for reliable specialist behavior",
+      "Action-capable role lacks rollback/dry-run safeguards",
+      "Regulated/sensitive role lacks explicit privacy or confidentiality handling",
+      "No uncertainty/assumption reporting requirement"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

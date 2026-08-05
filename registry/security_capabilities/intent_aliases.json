@@ -1,0 +1,69 @@
+{
+  "ai-security": [
+    "llm security",
+    "agent security",
+    "mcp security",
+    "prompt injection",
+    "tool poisoning"
+  ],
+  "cloud-security": [
+    "aws security",
+    "azure security",
+    "gcp security",
+    "cspm"
+  ],
+  "compliance-governance": [
+    "grc",
+    "nist",
+    "cmmc",
+    "soc 2",
+    "iso 27001",
+    "risk assessment"
+  ],
+  "container-security": [
+    "kubernetes security",
+    "k8s security",
+    "docker security",
+    "runtime security"
+  ],
+  "identity-access-management": [
+    "iam",
+    "entra",
+    "active directory",
+    "pam",
+    "least privilege"
+  ],
+  "incident-response": [
+    "breach response",
+    "containment",
+    "eradication",
+    "recovery",
+    "dfir"
+  ],
+  "ot-ics-security": [
+    "industrial controls",
+    "scada",
+    "plc",
+    "modbus",
+    "dnp3"
+  ],
+  "supply-chain-security": [
+    "sbom",
+    "dependency confusion",
+    "slsa",
+    "sigstore",
+    "provenance"
+  ],
+  "threat-hunting": [
+    "hunt",
+    "hypothesis hunt",
+    "proactive detection",
+    "ioc search"
+  ],
+  "vulnerability-management": [
+    "vuln scan",
+    "patch prioritization",
+    "cve triage",
+    "remediation verification"
+  ]
+}

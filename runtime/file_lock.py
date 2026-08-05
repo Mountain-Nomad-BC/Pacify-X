@@ -1,4 +1,5 @@
 """Small cross-platform advisory file lock used by persistent control projections."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -15,10 +16,18 @@ class FileLock:
     """Acquire one non-blocking exclusive byte lock; preserve the lock file."""
 
     def __init__(
-        self, path: Path, *, timeout_seconds: float = 5.0,
-        minimum_sleep_seconds: float = 0.005, maximum_sleep_seconds: float = 0.1,
+        self,
+        path: Path,
+        *,
+        timeout_seconds: float = 5.0,
+        minimum_sleep_seconds: float = 0.005,
+        maximum_sleep_seconds: float = 0.1,
     ) -> None:
-        if timeout_seconds <= 0 or minimum_sleep_seconds <= 0 or maximum_sleep_seconds < minimum_sleep_seconds:
+        if (
+            timeout_seconds <= 0
+            or minimum_sleep_seconds <= 0
+            or maximum_sleep_seconds < minimum_sleep_seconds
+        ):
             raise ValueError("file-lock timing values must be positive and ordered")
         self.path = path
         self.timeout_seconds = timeout_seconds
@@ -30,7 +39,9 @@ class FileLock:
 
     def _owner_diagnostic(self) -> str:
         try:
-            value = self.path.read_text(encoding="ascii", errors="replace").strip("\x00\r\n ")
+            value = self.path.read_text(encoding="ascii", errors="replace").strip(
+                "\x00\r\n "
+            )
             return value or "owner unavailable"
         except OSError:
             return "owner unavailable"
@@ -59,13 +70,17 @@ class FileLock:
                 self._stream.seek(0)
                 if __import__("os").name == "nt":
                     import msvcrt
+
                     msvcrt.locking(self._stream.fileno(), msvcrt.LK_NBLCK, 1)
                 else:
                     import fcntl
+
                     fcntl.flock(self._stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
                 self._stream.seek(1)
                 self._stream.truncate()
-                self._stream.write(f"pid={os.getpid()} acquired={time.time_ns()}".encode("ascii"))
+                self._stream.write(
+                    f"pid={os.getpid()} acquired={time.time_ns()}".encode("ascii")
+                )
                 self._stream.flush()
                 break
             except OSError as error:
@@ -91,9 +106,11 @@ class FileLock:
         self._stream.seek(0)
         if __import__("os").name == "nt":
             import msvcrt
+
             msvcrt.locking(self._stream.fileno(), msvcrt.LK_UNLCK, 1)
         else:
             import fcntl
+
             fcntl.flock(self._stream.fileno(), fcntl.LOCK_UN)
         self._stream.close()
         self._stream = None

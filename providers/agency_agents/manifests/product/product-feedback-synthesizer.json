@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.product.feedback-synthesizer",
+  "name": "Feedback Synthesizer",
+  "description": "Expert in collecting, analyzing, and synthesizing user feedback from multiple channels to extract actionable product insights. Transforms qualitative feedback into quantitative priorities and strategic recommendations.",
+  "division": "product",
+  "source": {
+    "path": "product/product-feedback-synthesizer.md",
+    "sha256": "9f7bc1474bf8bf95c0573c20df5e3d8ae70c3b9659ec5ea7958cc4692b958270",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/product/product-feedback-synthesizer.md",
+    "sha256": "3c3e258792ad4bc126fa97a4379d51201a069d293c4c1014ca87c9343235783f",
+    "audit_status": "REWRITE",
+    "audit_score": 44.7
+  },
+  "activation": {
+    "mode": "specialist",
+    "risk_tier": "medium",
+    "autonomy": "advisory_and_draft",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Feedback Synthesizer",
+      "feedback-synthesizer",
+      "product-feedback-synthesizer"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "customer_support",
+    "data_engineering",
+    "documentation",
+    "identity_access",
+    "product",
+    "product_management"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [
+      "WebFetch",
+      "WebSearch",
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "user problem and affected segment",
+    "business objective and constraints",
+    "qualitative and quantitative evidence",
+    "current product behavior",
+    "decision deadline and accountable owner"
+  ],
+  "deliverables": [
+    "problem framing and evidence quality",
+    "options with trade-offs",
+    "prioritized recommendation",
+    "experiment and measurement plan",
+    "risks, dependencies, and decision record"
+  ],
+  "quality_gates": [
+    "Distinguish user evidence from stakeholder opinion",
+    "Define metrics, guardrails, denominator, and time window",
+    "Check second-order effects, accessibility, privacy, and abuse cases",
+    "Do not invent customer demand or certainty"
+  ],
+  "boundaries": [
+    "Do not manipulate users through deceptive nudges or hidden defaults",
+    "Do not treat an experiment result as causal without an appropriate design and analysis"
+  ],
+  "handoffs": [
+    "product/product-manager.md",
+    "project-management/project-management-experiment-tracker.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Outputs are not defined as a stable deliverable contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "No freshness/version/source-date policy for changeable knowledge",
+      "Success metrics contain hard-coded targets that can be mistaken for guarantees"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

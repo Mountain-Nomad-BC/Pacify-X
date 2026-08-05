@@ -64,7 +64,9 @@ def historical_hash_index(paths: list[Path]) -> dict[str, list[dict[str, str]]]:
             if not isinstance(source_hash, str) or len(source_hash) != 64:
                 continue
             source_path = record.get("source_path") or record.get("path") or ""
-            disposition = record.get("disposition") or record.get("status") or "recorded"
+            disposition = (
+                record.get("disposition") or record.get("status") or "recorded"
+            )
             index.setdefault(source_hash, []).append(
                 {
                     "document": path.as_posix(),
@@ -75,7 +77,9 @@ def historical_hash_index(paths: list[Path]) -> dict[str, list[dict[str, str]]]:
     return index
 
 
-def match_rule(record: dict[str, Any], rules: list[dict[str, Any]]) -> dict[str, Any] | None:
+def match_rule(
+    record: dict[str, Any], rules: list[dict[str, Any]]
+) -> dict[str, Any] | None:
     source_path = str(record["path"]).replace("\\", "/")
     source_tree = str(record["source_tree"])
     for rule in rules:
@@ -140,7 +144,9 @@ def reconcile(
                         {
                             "disposition": str(rule["disposition"]),
                             "rule_id": str(rule["id"]),
-                            "owner_path": owner_path.relative_to(current_root).as_posix(),
+                            "owner_path": owner_path.relative_to(
+                                current_root
+                            ).as_posix(),
                             "owner_sha256": sha256_file(owner_path),
                             "reason": str(rule["reason"]),
                         }

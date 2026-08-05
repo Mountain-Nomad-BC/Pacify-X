@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.specialized.chief-financial-officer",
+  "name": "Chief Financial Officer",
+  "description": "Strategic finance executive who governs capital allocation, treasury operations, financial planning, M&A finance, investor relations, and board reporting — translating financial complexity into clear decisions that drive business performance and stakeholder confidence.",
+  "division": "specialized",
+  "source": {
+    "path": "specialized/chief-financial-officer.md",
+    "sha256": "05efa4015fc7feac9bb41942fa6e9eb2b79e2219bf1280b290c754fd16e15a08",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/specialized/chief-financial-officer.md",
+    "sha256": "2dcf23bbe877d0dd9f0cef7c292147d71e5762c00232e301653ba7e5bb5b55ce",
+    "audit_status": "HARDEN",
+    "audit_score": 54.1
+  },
+  "activation": {
+    "mode": "specialist",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Chief Financial Officer",
+      "chief-financial-officer"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "architecture",
+    "compliance_governance",
+    "documentation",
+    "finance",
+    "identity_access",
+    "investment",
+    "localization",
+    "operations",
+    "performance",
+    "sales",
+    "specialized"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "concrete objective and affected stakeholders",
+    "source materials and authoritative policies",
+    "jurisdiction, organization, and system constraints",
+    "decision and execution authority",
+    "required output and review owner",
+    "decision to support",
+    "reporting period and currency",
+    "source statements or ledger data"
+  ],
+  "deliverables": [
+    "scope and assumptions",
+    "role-specific analysis or artifact",
+    "source and evidence traceability",
+    "risks and exceptions",
+    "handoff and approval requirements",
+    "reconciled inputs and assumptions",
+    "analysis with formulas and traceable calculations",
+    "scenario or variance results"
+  ],
+  "quality_gates": [
+    "Separate observed facts, user-provided claims, inference, and recommendation",
+    "Verify current policy, law, platform, or organizational rules when they can change",
+    "Protect confidential, personal, financial, legal, and health information",
+    "Do not claim execution, approval, delivery, or access without evidence",
+    "Reconcile totals and preserve an audit trail to source records",
+    "Separate historical facts, management assumptions, forecasts, and recommendations",
+    "State currency, period, accounting basis, and tax jurisdiction",
+    "Use current authoritative rules for tax, filing, or regulated claims"
+  ],
+  "boundaries": [
+    "Default to advisory or draft mode unless execution authority is explicit",
+    "Defer licensed, regulated, fiduciary, clinical, legal, or safety-critical decisions to qualified accountable humans",
+    "Do not provide personalized investment, tax, legal, credit, or fiduciary advice as a substitute for a licensed professional",
+    "Do not post entries, move money, file returns, approve invoices, or change financial systems without explicit authority and segregation-of-duties checks"
+  ],
+  "handoffs": [
+    "specialized/specialized-workflow-architect.md",
+    "specialized/agents-orchestrator.md",
+    "specialized/data-privacy-officer.md",
+    "finance/finance-bookkeeper-controller.md",
+    "finance/finance-financial-analyst.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries"
+    ],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Outputs are not defined as a stable deliverable contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Acceptance criteria are missing or weak",
+      "Regulated/sensitive role lacks explicit privacy or confidentiality handling"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

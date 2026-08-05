@@ -5,14 +5,16 @@ include START_HERE_FOR_AI.md
 include CHANGELOG.md
 include docs/distribution-model.md
 include requirements-release.lock
+recursive-include LICENSES *
 recursive-include bootstrap *
 recursive-include contracts *.json
+recursive-include providers *.json *.md *.txt
 recursive-include docs *.png
 recursive-include examples *.md *.py
 recursive-include models *.json
 recursive-include orchestration *.yaml
 recursive-include policies *.json
-recursive-include registry *.json *.toml *.yaml
+recursive-include registry *.json *.jsonl *.toml *.yaml
 recursive-include runtime *.py
 recursive-include scripts *.py
 recursive-include templates *

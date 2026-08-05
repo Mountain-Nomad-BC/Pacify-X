@@ -1,0 +1,57 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "scanner output is evidence, not automatic guilt",
+    "never execute imported hooks during inspection",
+    "preserve source license and provenance"
+  ],
+  "bundle": "govern-hooked-execution",
+  "category": "security",
+  "dependencies": [
+    "secure-agent-supply-chain",
+    "provenance-signature-verifier",
+    "enforce-source-import-boundaries"
+  ],
+  "id": "enforce-agent-config-supply-chain",
+  "keywords": [
+    "agent config security",
+    "unicode safety",
+    "personal paths",
+    "prompt injection",
+    "hook scan"
+  ],
+  "mechanisms": [
+    "config security scan",
+    "Unicode safety",
+    "personal path detection",
+    "hook validation",
+    "MCP exposure review",
+    "quarantine disposition"
+  ],
+  "owner": "secure-agent-supply-chain",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "skills/security-scan/SKILL.md",
+      "scripts/ci/check-unicode-safety.js",
+      "scripts/ci/validate-no-personal-paths.js",
+      "scripts/hooks/config-protection.js"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "skills/security-scan/SKILL.md",
+    "scripts/ci/check-unicode-safety.js",
+    "scripts/ci/validate-no-personal-paths.js",
+    "scripts/hooks/config-protection.js"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Scan agent instructions, hooks, MCP configuration, Unicode, paths, and generated projections for injection, secret, portability, and policy risks before installation or execution.",
+  "title": "Enforce Agent Configuration Supply Chain",
+  "use_when": [
+    "importing external agent configuration",
+    "hooks or MCP servers are being installed",
+    "cross-platform projection may carry unsafe paths"
+  ]
+}

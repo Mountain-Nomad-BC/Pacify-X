@@ -3,6 +3,7 @@
 The assembler performs no discovery, file reads, network access, or tool calls.
 Callers must provide every claim, evidence record, and relationship explicitly.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -79,7 +80,9 @@ class EvidenceRecord:
         object.__setattr__(self, "kind", EvidenceKind(self.kind))
         object.__setattr__(self, "sensitivity", Sensitivity(self.sensitivity))
         object.__setattr__(self, "status", EvidenceStatus(self.status))
-        object.__setattr__(self, "created_at", _aware_utc(self.created_at, "created_at"))
+        object.__setattr__(
+            self, "created_at", _aware_utc(self.created_at, "created_at")
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -135,7 +138,9 @@ def _warning_key(warning: EvidenceWarning) -> tuple[str, str, str, str]:
     )
 
 
-def _unique_by_id(items: Iterable[object], attribute: str, label: str) -> dict[str, object]:
+def _unique_by_id(
+    items: Iterable[object], attribute: str, label: str
+) -> dict[str, object]:
     indexed: dict[str, object] = {}
     for item in items:
         item_id = getattr(item, attribute)
@@ -267,7 +272,9 @@ def assemble_evidence(
                     )
                 )
 
-        attachments.sort(key=lambda item: (item.record.evidence_id, item.relation.value))
+        attachments.sort(
+            key=lambda item: (item.record.evidence_id, item.relation.value)
+        )
         claim_warnings.sort(key=_warning_key)
         if not supported:
             unsupported.append(claim_id)
@@ -281,9 +288,13 @@ def assemble_evidence(
             claim_warnings.sort(key=_warning_key)
 
         typed_claim = claim
-        assert isinstance(typed_claim, Claim)  # narrowed after generic duplicate checking
+        assert isinstance(
+            typed_claim, Claim
+        )  # narrowed after generic duplicate checking
         assembled_claims.append(
-            ClaimEvidence(typed_claim, tuple(attachments), supported, tuple(claim_warnings))
+            ClaimEvidence(
+                typed_claim, tuple(attachments), supported, tuple(claim_warnings)
+            )
         )
         package_warnings.extend(claim_warnings)
 

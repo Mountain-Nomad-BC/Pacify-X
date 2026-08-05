@@ -1,0 +1,76 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:security_capabilities:cybersecurity_capability",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "body_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "canonical_domain": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "description": {
+      "minLength": 20,
+      "type": "string"
+    },
+    "execution_policy": {
+      "enum": [
+        "advisory_only",
+        "read_only_defensive",
+        "controlled_change",
+        "gated_active_test",
+        "lab_only_knowledge_by_default"
+      ]
+    },
+    "files": {
+      "type": "array"
+    },
+    "frameworks": {
+      "type": "object"
+    },
+    "id": {
+      "pattern": "^external\\.cybersecurity\\.[a-z0-9-]+$",
+      "type": "string"
+    },
+    "name": {
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "type": "string"
+    },
+    "requires_human_approval": {
+      "type": "boolean"
+    },
+    "requires_written_authorization": {
+      "type": "boolean"
+    },
+    "risk_class": {
+      "enum": [
+        "R0",
+        "R1",
+        "R2",
+        "R3",
+        "R4"
+      ]
+    },
+    "source_provider": {
+      "const": "anthropic-cybersecurity-skills-community"
+    },
+    "source_subdomain": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "description",
+    "source_provider",
+    "source_subdomain",
+    "canonical_domain",
+    "risk_class",
+    "execution_policy",
+    "body_sha256"
+  ],
+  "type": "object"
+}

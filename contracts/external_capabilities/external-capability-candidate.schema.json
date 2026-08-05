@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:external_capabilities:external-capability-candidate",
+  "title": "Non-canonical external capability candidate",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "title", "summary", "status", "activation", "owner", "dependencies", "boundaries"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "summary": {"type": "string", "minLength": 1},
+    "status": {"enum": ["mapped_deferred", "reference_only"]},
+    "activation": {"enum": ["candidate_only", "requires_admission"]},
+    "owner": {"type": "string", "minLength": 1},
+    "dependencies": {"type": "array", "items": {"type": "string"}},
+    "boundaries": {"type": "array", "items": {"type": "string"}}
+  }
+}

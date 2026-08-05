@@ -13,7 +13,15 @@ from pathlib import Path
 from typing import Any
 
 
-ALLOWED_DISPOSITIONS = {"ADOPT", "MERGE", "WRAP", "REFERENCE", "SUPERSEDE", "DEFER", "REJECT"}
+ALLOWED_DISPOSITIONS = {
+    "ADOPT",
+    "MERGE",
+    "WRAP",
+    "REFERENCE",
+    "SUPERSEDE",
+    "DEFER",
+    "REJECT",
+}
 
 
 def _sha256(path: Path) -> str:
@@ -32,9 +40,13 @@ def _matches(rule: dict[str, Any], candidate: dict[str, Any]) -> bool:
         return False
     if when.get("ids") and candidate.get("id") not in when["ids"]:
         return False
-    if when.get("id_regex") and not re.search(when["id_regex"], candidate.get("id", "")):
+    if when.get("id_regex") and not re.search(
+        when["id_regex"], candidate.get("id", "")
+    ):
         return False
-    source_text = "\n".join(str(item.get("path", "")) for item in candidate.get("sources", []))
+    source_text = "\n".join(
+        str(item.get("path", "")) for item in candidate.get("sources", [])
+    )
     if when.get("source_contains") and when["source_contains"] not in source_text:
         return False
     return True
@@ -46,7 +58,9 @@ def _catalog_ids(path: Path) -> set[str]:
     return {str(item["id"]) for item in data.get("skills", [])}
 
 
-def reconcile(candidate_path: Path, policy_path: Path, catalog_path: Path) -> dict[str, Any]:
+def reconcile(
+    candidate_path: Path, policy_path: Path, catalog_path: Path
+) -> dict[str, Any]:
     source = json.loads(candidate_path.read_text(encoding="utf-8"))
     policy = json.loads(policy_path.read_text(encoding="utf-8"))
     candidates = source.get("candidates", [])
@@ -56,10 +70,14 @@ def reconcile(candidate_path: Path, policy_path: Path, catalog_path: Path) -> di
     records: list[dict[str, Any]] = []
     errors: list[dict[str, Any]] = []
 
-    for candidate in sorted(candidates, key=lambda item: (str(item.get("kind")), str(item.get("id")))):
+    for candidate in sorted(
+        candidates, key=lambda item: (str(item.get("kind")), str(item.get("id")))
+    ):
         key = (str(candidate.get("kind", "")), str(candidate.get("id", "")))
         if not all(key) or key in seen:
-            errors.append({"candidate": list(key), "error": "missing-or-duplicate-identity"})
+            errors.append(
+                {"candidate": list(key), "error": "missing-or-duplicate-identity"}
+            )
             continue
         seen.add(key)
         matches = [rule for rule in rules if _matches(rule, candidate)]
@@ -67,24 +85,55 @@ def reconcile(candidate_path: Path, policy_path: Path, catalog_path: Path) -> di
             errors.append({"candidate": list(key), "error": "no-disposition-rule"})
             continue
         max_priority = max(int(rule.get("priority", 0)) for rule in matches)
-        selected = [rule for rule in matches if int(rule.get("priority", 0)) == max_priority]
+        selected = [
+            rule for rule in matches if int(rule.get("priority", 0)) == max_priority
+        ]
         if len(selected) != 1:
-            errors.append({"candidate": list(key), "error": "ambiguous-disposition", "rules": [r.get("id") for r in selected]})
+            errors.append(
+                {
+                    "candidate": list(key),
+                    "error": "ambiguous-disposition",
+                    "rules": [r.get("id") for r in selected],
+                }
+            )
             continue
         rule = selected[0]
         disposition = str(rule.get("disposition", "")).upper()
         targets = [str(value) for value in rule.get("targets", [])]
         if disposition not in ALLOWED_DISPOSITIONS:
-            errors.append({"candidate": list(key), "error": "invalid-disposition", "value": disposition})
+            errors.append(
+                {
+                    "candidate": list(key),
+                    "error": "invalid-disposition",
+                    "value": disposition,
+                }
+            )
             continue
-        if candidate.get("presence") == "manifest-only" and disposition in {"ADOPT", "SUPERSEDE"}:
-            errors.append({"candidate": list(key), "error": "absent-artifact-cannot-be-implementation-evidence"})
+        if candidate.get("presence") == "manifest-only" and disposition in {
+            "ADOPT",
+            "SUPERSEDE",
+        }:
+            errors.append(
+                {
+                    "candidate": list(key),
+                    "error": "absent-artifact-cannot-be-implementation-evidence",
+                }
+            )
             continue
         unknown = sorted(set(targets) - owners)
         if unknown:
-            errors.append({"candidate": list(key), "error": "unknown-target-owner", "targets": unknown})
+            errors.append(
+                {
+                    "candidate": list(key),
+                    "error": "unknown-target-owner",
+                    "targets": unknown,
+                }
+            )
             continue
-        if disposition in {"ADOPT", "MERGE", "WRAP", "REFERENCE", "SUPERSEDE"} and not targets:
+        if (
+            disposition in {"ADOPT", "MERGE", "WRAP", "REFERENCE", "SUPERSEDE"}
+            and not targets
+        ):
             errors.append({"candidate": list(key), "error": "owner-required"})
             continue
         records.append(
@@ -134,7 +183,9 @@ def main() -> int:
     args = parser.parse_args()
     report = reconcile(args.candidates, args.policy, args.catalog)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    args.output.write_text(
+        json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
     print(json.dumps(report["summary"], sort_keys=True))
     return 1 if args.require_complete and not report["summary"]["complete"] else 0
 

@@ -1,5 +1,3 @@
-import copy
-import hashlib
 import json
 from pathlib import Path
 
@@ -17,6 +15,7 @@ def test_strict_external_evidence_is_portable_inside_product():
 
 def test_traversal_and_wrong_bundle_hash_fail_closed(tmp_path):
     import shutil
+
     product = tmp_path / "product"
     shutil.copytree(ROOT / "evidence", product / "evidence")
     shutil.copytree(ROOT / "contracts", product / "contracts")
@@ -29,9 +28,16 @@ def test_traversal_and_wrong_bundle_hash_fail_closed(tmp_path):
 
 def test_strict_verification_does_not_need_parent_temp_directory(tmp_path):
     import shutil
+
     product = tmp_path / "portable"
     (product / "evidence/bundles").mkdir(parents=True)
-    shutil.copytree(ROOT / "evidence/bundles/archive-custody-20260803", product / "evidence/bundles/archive-custody-20260803")
-    shutil.copy2(ROOT / "evidence/externalized-payload-index.json", product / "evidence/externalized-payload-index.json")
+    shutil.copytree(
+        ROOT / "evidence/bundles/archive-custody-20260803",
+        product / "evidence/bundles/archive-custody-20260803",
+    )
+    shutil.copy2(
+        ROOT / "evidence/externalized-payload-index.json",
+        product / "evidence/externalized-payload-index.json",
+    )
     shutil.copytree(ROOT / "contracts", product / "contracts")
     assert validate_external_evidence(product, strict=True)["valid"]

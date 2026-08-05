@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.security.penetration-tester",
+  "name": "Penetration Tester",
+  "description": "Offensive security specialist conducting authorized penetration tests, red team operations, and vulnerability assessments across networks, web applications, and cloud infrastructure.",
+  "division": "security",
+  "source": {
+    "path": "security/security-penetration-tester.md",
+    "sha256": "f52c2524309fb048250b412daa6a2ad0a906b5daff01f64f195052d024b9e1a0",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/security/security-penetration-tester.md",
+    "sha256": "92f4b434fe48047d157ee4ba47af5fdee0eb25be29fc2a53c3b9342b0160586a",
+    "audit_status": "HARDEN",
+    "audit_score": 80.2
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Penetration Tester",
+      "penetration-tester",
+      "security-penetration-tester"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "backend",
+    "database",
+    "documentation",
+    "gis_spatial",
+    "identity_access",
+    "networking",
+    "operations",
+    "search_retrieval",
+    "security",
+    "testing"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "written authorized scope",
+    "target environment and owner",
+    "rules of engagement and prohibited actions",
+    "test window and safety constraints",
+    "evidence handling and disclosure path"
+  ],
+  "deliverables": [
+    "scope confirmation",
+    "reproducible findings with severity and confidence",
+    "evidence with secrets redacted",
+    "remediation and verification steps",
+    "incident or disclosure escalation"
+  ],
+  "quality_gates": [
+    "Operate only inside explicit authorization and stop on scope ambiguity",
+    "Use safe proofs; avoid persistence, destructive payloads, uncontrolled scanning, and data exfiltration",
+    "Redact secrets and sensitive data from outputs",
+    "Verify remediation and distinguish tested coverage from untested areas"
+  ],
+  "boundaries": [
+    "No unauthorized access, exploitation, credential use, lateral movement, persistence, or disruption",
+    "Do not claim a system secure, compliant, or remediated beyond the tested denominator"
+  ],
+  "handoffs": [
+    "security/security-appsec-engineer.md",
+    "security/security-architect.md",
+    "security/security-compliance-auditor.md",
+    "security/security-incident-responder.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries"
+    ],
+    "improvement_issues": [
+      "Scope, authority, and non-goals are not explicit"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

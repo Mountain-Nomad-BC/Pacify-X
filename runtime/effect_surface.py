@@ -1,4 +1,5 @@
 """Inventory and enforce process, network, archive, and mutation effect surfaces."""
+
 from __future__ import annotations
 
 import ast
@@ -8,9 +9,31 @@ from pathlib import Path
 from typing import Any
 
 
-PROCESS_CALLS = {"subprocess.run", "subprocess.Popen", "subprocess.check_output", "subprocess.check_call", "os.system"}
+PROCESS_CALLS = {
+    "subprocess.run",
+    "subprocess.Popen",
+    "subprocess.check_output",
+    "subprocess.check_call",
+    "os.system",
+}
 NETWORK_PREFIXES = ("requests.", "urllib.request.", "socket.", "http.client.")
-MUTATION_NAMES = {"write_text", "write_bytes", "mkdir", "replace", "rename", "touch", "copy", "copy2", "copytree", "move", "rmtree", "unlink", "rmdir", "extract", "extractall"}
+MUTATION_NAMES = {
+    "write_text",
+    "write_bytes",
+    "mkdir",
+    "replace",
+    "rename",
+    "touch",
+    "copy",
+    "copy2",
+    "copytree",
+    "move",
+    "rmtree",
+    "unlink",
+    "rmdir",
+    "extract",
+    "extractall",
+}
 DESTRUCTIVE_NAMES = {"rmtree", "unlink", "rmdir"}
 
 
@@ -48,9 +71,16 @@ def _popen_communication_timeout(tree: ast.AST, popen: ast.Call) -> str | None:
     for item in ast.walk(scope):
         if not isinstance(item, ast.Call) or not isinstance(item.func, ast.Attribute):
             continue
-        if item.func.attr != "communicate" or not isinstance(item.func.value, ast.Name) or item.func.value.id != handle:
+        if (
+            item.func.attr != "communicate"
+            or not isinstance(item.func.value, ast.Name)
+            or item.func.value.id != handle
+        ):
             continue
-        timeout = next((keyword.value for keyword in item.keywords if keyword.arg == "timeout"), None)
+        timeout = next(
+            (keyword.value for keyword in item.keywords if keyword.arg == "timeout"),
+            None,
+        )
         if timeout is not None:
             return f"communicate(timeout={ast.unparse(timeout)})"
     return None
@@ -77,25 +107,33 @@ def discover_effect_surfaces(root: Path) -> list[dict[str, Any]]:
                 effect = "filesystem_mutation"
             else:
                 continue
-            keywords = {str(item.arg): ast.unparse(item.value) for item in node.keywords if item.arg}
+            keywords = {
+                str(item.arg): ast.unparse(item.value)
+                for item in node.keywords
+                if item.arg
+            }
             process_timeout = keywords.get("timeout")
             if call == "subprocess.Popen":
                 process_timeout = _popen_communication_timeout(tree, node)
             semantic = f"{relative}:{node.lineno}:{call}:{ast.dump(node, include_attributes=False)}"
-            records.append({
-                "id": hashlib.sha256(semantic.encode()).hexdigest()[:20],
-                "path": relative,
-                "line": node.lineno,
-                "call": call,
-                "effect": effect,
-                "owner": relative.split("/", 1)[0],
-                "policy": "policies/contained-execution.json" if effect in {"process", "network"} else "policies/artifact-preservation.json",
-                "approval": "required_for_material_or_external_effects",
-                "containment": "validated_path_and_bounded_scope",
-                "timeout": process_timeout if effect == "process" else None,
-                "shell": keywords.get("shell"),
-                "destructive": leaf in DESTRUCTIVE_NAMES or call == "os.remove",
-            })
+            records.append(
+                {
+                    "id": hashlib.sha256(semantic.encode()).hexdigest()[:20],
+                    "path": relative,
+                    "line": node.lineno,
+                    "call": call,
+                    "effect": effect,
+                    "owner": relative.split("/", 1)[0],
+                    "policy": "policies/contained-execution.json"
+                    if effect in {"process", "network"}
+                    else "policies/artifact-preservation.json",
+                    "approval": "required_for_material_or_external_effects",
+                    "containment": "validated_path_and_bounded_scope",
+                    "timeout": process_timeout if effect == "process" else None,
+                    "shell": keywords.get("shell"),
+                    "destructive": leaf in DESTRUCTIVE_NAMES or call == "os.remove",
+                }
+            )
     return records
 
 
@@ -112,12 +150,25 @@ def validate_effect_surfaces(root: Path) -> dict[str, Any]:
             errors.append(f"{record['id']}: missing effect policy")
         if record["effect"] == "process":
             if record["call"] == "os.system" or record["shell"] == "True":
-                errors.append(f"{record['path']}:{record['line']}: unsafe shell execution")
+                errors.append(
+                    f"{record['path']}:{record['line']}: unsafe shell execution"
+                )
             if record["timeout"] is None:
-                errors.append(f"{record['path']}:{record['line']}: process call lacks timeout")
+                errors.append(
+                    f"{record['path']}:{record['line']}: process call lacks timeout"
+                )
         if record["destructive"]:
-            errors.append(f"{record['path']}:{record['line']}: hard-delete surface is prohibited")
+            errors.append(
+                f"{record['path']}:{record['line']}: hard-delete surface is prohibited"
+            )
     counts: dict[str, int] = {}
     for record in actual:
         counts[record["effect"]] = counts.get(record["effect"], 0) + 1
-    return {"schema_version": "1.0", "valid": not errors, "record_count": len(actual), "counts": dict(sorted(counts.items())), "errors": errors, "records": actual}
+    return {
+        "schema_version": "1.0",
+        "valid": not errors,
+        "record_count": len(actual),
+        "counts": dict(sorted(counts.items())),
+        "errors": errors,
+        "records": actual,
+    }

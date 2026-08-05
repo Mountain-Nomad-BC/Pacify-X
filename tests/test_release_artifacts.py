@@ -13,7 +13,10 @@ ROOT = Path(__file__).parents[1]
 def _minimal_tree() -> Path:
     root = Path(tempfile.mkdtemp()) / "framework"
     (root / "policies").mkdir(parents=True)
-    shutil.copy2(ROOT / "policies/release-artifact-policy.json", root / "policies/release-artifact-policy.json")
+    shutil.copy2(
+        ROOT / "policies/release-artifact-policy.json",
+        root / "policies/release-artifact-policy.json",
+    )
     (root / "runtime").mkdir()
     (root / "runtime/module.py").write_text("VALUE = 1\n", encoding="utf-8")
     return root
@@ -60,7 +63,10 @@ def test_junit_xml_is_an_admitted_non_executable_evidence_format() -> None:
     root = _minimal_tree()
     report = root / "evidence/release-runs/example/full-tests.junit.xml"
     report.parent.mkdir(parents=True)
-    report.write_text('<testsuites tests="1" failures="0" errors="0" skipped="0" />\n', encoding="utf-8")
+    report.write_text(
+        '<testsuites tests="1" failures="0" errors="0" skipped="0" />\n',
+        encoding="utf-8",
+    )
     result = classify_tree(root)
     assert result["valid"], result["errors"]
 
@@ -72,7 +78,9 @@ def test_setuptools_egg_info_is_generated_intermediate_not_product() -> None:
     metadata.parent.mkdir()
     metadata.write_text("Metadata-Version: 2.4\n", encoding="utf-8")
     second = classify_tree(root)
-    record = next(item for item in second["records"] if item["path"].endswith("PKG-INFO"))
+    record = next(
+        item for item in second["records"] if item["path"].endswith("PKG-INFO")
+    )
     assert second["valid"], second["errors"]
     assert record["classification"] == "generated_intermediate"
     assert first["product_digest"] == second["product_digest"]
@@ -85,7 +93,9 @@ def test_git_metadata_is_generated_intermediate_not_product() -> None:
     metadata.parent.mkdir(parents=True)
     metadata.write_text("git metadata\n", encoding="utf-8")
     second = classify_tree(root)
-    record = next(item for item in second["records"] if item["path"] == ".git/objects/example")
+    record = next(
+        item for item in second["records"] if item["path"] == ".git/objects/example"
+    )
     assert second["valid"], second["errors"]
     assert record["classification"] == "generated_intermediate"
     assert first["product_digest"] == second["product_digest"]

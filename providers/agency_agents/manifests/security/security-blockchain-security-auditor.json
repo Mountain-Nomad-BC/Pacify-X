@@ -1,0 +1,121 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.security.blockchain-security-auditor",
+  "name": "Blockchain Security Auditor",
+  "description": "Expert smart contract security auditor specializing in vulnerability detection, formal verification, exploit analysis, and comprehensive audit report writing for DeFi protocols and blockchain applications.",
+  "division": "security",
+  "source": {
+    "path": "security/security-blockchain-security-auditor.md",
+    "sha256": "b35bcd083889ccea487535e30c66bde83f0d06527ae4dd12acec32b285c5ec66",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/security/security-blockchain-security-auditor.md",
+    "sha256": "255f15c92d14c72109083f80d52da1567a1ab6c821aa60f2ac4089a4ad277769",
+    "audit_status": "HARDEN",
+    "audit_score": 74.2
+  },
+  "activation": {
+    "mode": "reviewer",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Blockchain Security Auditor",
+      "blockchain-security-auditor",
+      "security-blockchain-security-auditor"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "blockchain_web3",
+    "compliance_governance",
+    "documentation",
+    "game_development",
+    "git_version_control",
+    "identity_access",
+    "integration",
+    "security",
+    "sre_reliability"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "written authorized scope",
+    "target environment and owner",
+    "rules of engagement and prohibited actions",
+    "test window and safety constraints",
+    "evidence handling and disclosure path"
+  ],
+  "deliverables": [
+    "scope confirmation",
+    "reproducible findings with severity and confidence",
+    "evidence with secrets redacted",
+    "remediation and verification steps",
+    "incident or disclosure escalation"
+  ],
+  "quality_gates": [
+    "Operate only inside explicit authorization and stop on scope ambiguity",
+    "Use safe proofs; avoid persistence, destructive payloads, uncontrolled scanning, and data exfiltration",
+    "Redact secrets and sensitive data from outputs",
+    "Verify remediation and distinguish tested coverage from untested areas"
+  ],
+  "boundaries": [
+    "No unauthorized access, exploitation, credential use, lateral movement, persistence, or disruption",
+    "Do not claim a system secure, compliant, or remediated beyond the tested denominator"
+  ],
+  "handoffs": [
+    "security/security-appsec-engineer.md",
+    "security/security-architect.md",
+    "security/security-compliance-auditor.md",
+    "security/security-incident-responder.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries"
+    ],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "No freshness/version/source-date policy for changeable knowledge"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

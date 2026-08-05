@@ -1,0 +1,57 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security_evidence_receipt",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "action": {
+      "type": "string"
+    },
+    "actor": {
+      "type": "string"
+    },
+    "authorization_artifact_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "cleanup_verified": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "decision": {
+      "type": "string"
+    },
+    "engagement_id": {
+      "type": "string"
+    },
+    "hashes": {
+      "type": "object"
+    },
+    "inputs": {
+      "type": "array"
+    },
+    "outputs": {
+      "type": "array"
+    },
+    "receipt_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "receipt_id",
+    "engagement_id",
+    "timestamp",
+    "actor",
+    "action",
+    "inputs",
+    "outputs",
+    "hashes",
+    "decision"
+  ],
+  "type": "object"
+}

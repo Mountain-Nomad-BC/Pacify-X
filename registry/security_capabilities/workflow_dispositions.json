@@ -1,0 +1,149 @@
+{
+  "count": 12,
+  "records": [
+    {
+      "canonical_owner": "cybersecurity-capability-operations",
+      "disposition": "merge_into_existing",
+      "expected_outcomes": [
+        "agent threat model",
+        "MCP findings",
+        "control recommendations",
+        "verification plan"
+      ],
+      "source_id": "ai-agent-mcp-security-assessment",
+      "source_path": "workflows/ai-agent-mcp-security-assessment.yaml"
+    },
+    {
+      "canonical_owner": "cybersecurity-capability-operations",
+      "disposition": "merge_into_existing",
+      "expected_outcomes": [
+        "threat model",
+        "findings",
+        "code or configuration changes",
+        "security regression evidence"
+      ],
+      "source_id": "application-api-security-review",
+      "source_path": "workflows/application-api-security-review.yaml"
+    },
+    {
+      "canonical_owner": "cybersecurity-capability-operations",
+      "disposition": "merge_into_existing",
+      "expected_outcomes": [
+        "approved test plan",
+        "technique receipts",
+        "detection coverage",
+        "cleanup evidence"
+      ],
+      "source_id": "authorized-purple-team-validation",
+      "source_path": "workflows/authorized-purple-team-validation.yaml"
+    },
+    {
+      "canonical_owner": "cybersecurity-capability-operations",
+      "disposition": "merge_into_existing",
+      "expected_outcomes": [
+        "cloud workload map",
+        "findings",
+        "change plan",
+        "post-change verification"
+      ],
+      "source_id": "cloud-container-kubernetes-assessment",
+      "source_path": "workflows/cloud-container-kubernetes-assessment.yaml"
+    },
+    {
+      "canonical_owner": "cybersecurity-capability-operations",
+      "disposition": "merge_into_existing",
+      "expected_outcomes": [
+        "candidate receipt",
+        "selected body set",
+        "hydration receipt"
+      ],
+      "source_id": "external-security-provider-discovery-and-hydration",
+      "source_path": "workflows/external-security-provider-discovery-and-hydration.yaml"
+    },
+    {
+      "canonical_owner": "cybersecurity-capability-operations",
+      "disposition": "merge_into_existing",
+      "expected_outcomes": [
+        "identity graph",
+        "privilege findings",
+        "remediation plan",
+        "effective-access evidence"
+      ],
+      "source_id": "identity-and-zero-trust-assessment",
+      "source_path": "workflows/identity-and-zero-trust-assessment.yaml"
+    },
+    {
+      "canonical_owner": "cybersecurity-capability-operations",
+      "disposition": "merge_into_existing",
+      "expected_outcomes": [
+        "incident timeline",
+        "evidence inventory",
+        "containment record",
+        "root-cause analysis",
+        "recovery validation"
+      ],
+      "source_id": "incident-response-and-forensics",
+      "source_path": "workflows/incident-response-and-forensics.yaml"
+    },
+    {
+      "canonical_owner": "cybersecurity-capability-operations",
+      "disposition": "merge_into_existing",
+      "expected_outcomes": [
+        "zone and conduit model",
+        "safety constraints",
+        "security findings",
+        "maintenance-window plan"
+      ],
+      "source_id": "ot-ics-safety-aware-assessment",
+      "source_path": "workflows/ot-ics-safety-aware-assessment.yaml"
+    },
+    {
+      "canonical_owner": "cybersecurity-capability-operations",
+      "disposition": "merge_into_existing",
+      "expected_outcomes": [
+        "security engagement envelope",
+        "risk decision",
+        "selected route"
+      ],
+      "source_id": "security-request-triage",
+      "source_path": "workflows/security-request-triage.yaml"
+    },
+    {
+      "canonical_owner": "cybersecurity-capability-operations",
+      "disposition": "merge_into_existing",
+      "expected_outcomes": [
+        "supply-chain map",
+        "findings",
+        "remediation plan",
+        "release evidence"
+      ],
+      "source_id": "software-supply-chain-and-devsecops-assessment",
+      "source_path": "workflows/software-supply-chain-and-devsecops-assessment.yaml"
+    },
+    {
+      "canonical_owner": "cybersecurity-capability-operations",
+      "disposition": "merge_into_existing",
+      "expected_outcomes": [
+        "hunt plan",
+        "query set",
+        "findings",
+        "detection changes",
+        "coverage report"
+      ],
+      "source_id": "threat-hunt-and-detection-engineering",
+      "source_path": "workflows/threat-hunt-and-detection-engineering.yaml"
+    },
+    {
+      "canonical_owner": "cybersecurity-capability-operations",
+      "disposition": "merge_into_existing",
+      "expected_outcomes": [
+        "normalized vulnerabilities",
+        "prioritized backlog",
+        "verification receipts"
+      ],
+      "source_id": "vulnerability-lifecycle",
+      "source_path": "workflows/vulnerability-lifecycle.yaml"
+    }
+  ],
+  "schema_version": "1.0"
+}

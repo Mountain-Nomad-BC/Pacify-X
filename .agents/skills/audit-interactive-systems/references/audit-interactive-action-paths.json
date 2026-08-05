@@ -1,0 +1,60 @@
+{
+  "activation": "candidate_only",
+  "aliases": [
+    "click path audit",
+    "browser qa",
+    "full action path audit"
+  ],
+  "boundaries": [
+    "click success is not outcome success",
+    "avoid destructive production actions",
+    "capture evidence at each boundary"
+  ],
+  "bundle": "audit-interactive-systems",
+  "category": "ui-verification",
+  "dependencies": [
+    "triage-cross-surface-failures",
+    "run-evidence-campaigns",
+    "govern-visual-runtime-accessibility"
+  ],
+  "id": "audit-interactive-action-paths",
+  "keywords": [
+    "click path audit",
+    "browser qa",
+    "button routing",
+    "resolved ui state",
+    "canary watch"
+  ],
+  "mechanisms": [
+    "control inventory",
+    "event-to-state trace",
+    "downstream persistence proof",
+    "resolved UI assertion",
+    "visual evidence",
+    "canary replay"
+  ],
+  "owner": "triage-cross-surface-failures",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "skills/click-path-audit/SKILL.md",
+      "skills/browser-qa/SKILL.md",
+      "skills/canary-watch/SKILL.md"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "skills/click-path-audit/SKILL.md",
+    "skills/browser-qa/SKILL.md",
+    "skills/canary-watch/SKILL.md"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Trace each interactive control from visibility and event dispatch through API, persistence, and resolved UI state to catch actions that technically fire but produce the wrong final outcome.",
+  "title": "Audit Interactive Action Paths",
+  "use_when": [
+    "buttons all route to one page",
+    "individual functions pass but cancel each other out",
+    "a deployed UI needs post-release canary verification"
+  ]
+}

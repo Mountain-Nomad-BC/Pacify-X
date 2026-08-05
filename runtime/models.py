@@ -1,4 +1,5 @@
 """Capability-based, availability-aware model discovery and routing."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -61,21 +62,36 @@ def load_model_routing_policy(root: Path) -> ModelRoutingPolicy:
     eligibility = payload["eligibility"]
     policy = ModelRoutingPolicy(
         trait_weight=float(scoring["trait_weight"]),
-        privacy_weights={str(key): float(value) for key, value in scoring["privacy_weights"].items()},
-        cost_weights={str(key): float(value) for key, value in scoring["cost_weights"].items()},
-        latency_weights={str(key): float(value) for key, value in scoring["latency_weights"].items()},
+        privacy_weights={
+            str(key): float(value) for key, value in scoring["privacy_weights"].items()
+        },
+        cost_weights={
+            str(key): float(value) for key, value in scoring["cost_weights"].items()
+        },
+        latency_weights={
+            str(key): float(value) for key, value in scoring["latency_weights"].items()
+        },
         cold_cost_weight=float(scoring["cold_cost_weight"]),
         sensitive_privacy=tuple(map(str, eligibility["sensitive_privacy"])),
         unavailable_is_ineligible=bool(eligibility["unavailable_is_ineligible"]),
     )
     if policy.trait_weight <= 0 or policy.cold_cost_weight < 0:
-        raise ValueError("model routing weights must be non-negative and trait_weight must be positive")
+        raise ValueError(
+            "model routing weights must be non-negative and trait_weight must be positive"
+        )
     if not policy.sensitive_privacy:
-        raise ValueError("sensitive model routing must declare at least one privacy class")
+        raise ValueError(
+            "sensitive model routing must declare at least one privacy class"
+        )
     return policy
 
 
-def discover_local_runtimes(names: Iterable[str] = ("ollama", "llama-server", "lmstudio"), *, resolver: Callable[[str], str | None] = shutil.which, max_runtimes: int = 3) -> tuple[tuple[str, str], ...]:
+def discover_local_runtimes(
+    names: Iterable[str] = ("ollama", "llama-server", "lmstudio"),
+    *,
+    resolver: Callable[[str], str | None] = shutil.which,
+    max_runtimes: int = 3,
+) -> tuple[tuple[str, str], ...]:
     if max_runtimes < 1 or max_runtimes > 8:
         raise ValueError("max_runtimes must be between 1 and 8")
     discovered = []
@@ -87,8 +103,11 @@ def discover_local_runtimes(names: Iterable[str] = ("ollama", "llama-server", "l
 
 
 def rank_models(
-    task_traits: Iterable[str], models: Iterable[ModelCapability], *,
-    min_context_tokens: int = 1, sensitive: bool = False,
+    task_traits: Iterable[str],
+    models: Iterable[ModelCapability],
+    *,
+    min_context_tokens: int = 1,
+    sensitive: bool = False,
     policy: ModelRoutingPolicy | None = None,
 ) -> tuple[ModelRoute, ...]:
     policy = policy or DEFAULT_ROUTING_POLICY
@@ -105,13 +124,38 @@ def rank_models(
         if required - matched:
             continue
         privacy = policy.privacy_weights.get(model.privacy, 0.0)
-        cost = policy.cost_weights.get(model.cost_class, max(policy.cost_weights.values(), default=3.0))
-        latency = policy.latency_weights.get(model.latency_class, max(policy.latency_weights.values(), default=2.0))
+        cost = policy.cost_weights.get(
+            model.cost_class, max(policy.cost_weights.values(), default=3.0)
+        )
+        latency = policy.latency_weights.get(
+            model.latency_class, max(policy.latency_weights.values(), default=2.0)
+        )
         score = round(
-            policy.trait_weight * len(matched) + privacy - cost - latency
+            policy.trait_weight * len(matched)
+            + privacy
+            - cost
+            - latency
             - policy.cold_cost_weight * model.cold_cost,
             3,
         )
-        routes.append(ModelRoute(model.model_id, score, (f"traits={','.join(sorted(matched))}", f"privacy={model.privacy}", f"cost={model.cost_class}", f"latency={model.latency_class}"), False))
+        routes.append(
+            ModelRoute(
+                model.model_id,
+                score,
+                (
+                    f"traits={','.join(sorted(matched))}",
+                    f"privacy={model.privacy}",
+                    f"cost={model.cost_class}",
+                    f"latency={model.latency_class}",
+                ),
+                False,
+            )
+        )
     routes.sort(key=lambda item: (-item.score, item.model_id or ""))
-    return tuple(routes) if routes else (ModelRoute(None, 0, ("no available model satisfies the contract",), True),)
+    return (
+        tuple(routes)
+        if routes
+        else (
+            ModelRoute(None, 0, ("no available model satisfies the contract",), True),
+        )
+    )

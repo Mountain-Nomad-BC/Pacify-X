@@ -1,4 +1,5 @@
 """Compile verified engineering process records into inert skill candidates."""
+
 from __future__ import annotations
 
 import hashlib
@@ -26,25 +27,67 @@ def _slug(value: str) -> str:
 def compile_process_candidate(root: Path, record: dict[str, Any]) -> dict[str, Any]:
     validate_instance(record, root / "contracts/engineering-process-record.schema.json")
     if record["verification"]["outcome_met"] is not True:
-        return {"valid": False, "decision": "reject_unverified", "errors": ["outcome is not verified"], "activation": "blocked"}
+        return {
+            "valid": False,
+            "decision": "reject_unverified",
+            "errors": ["outcome is not verified"],
+            "activation": "blocked",
+        }
     if any(item["verified"] is not True for item in record["failures"]):
-        return {"valid": False, "decision": "reject_unverified_recovery", "errors": ["a failure recovery is unverified"], "activation": "blocked"}
-    canonical = json.dumps(record, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+        return {
+            "valid": False,
+            "decision": "reject_unverified_recovery",
+            "errors": ["a failure recovery is unverified"],
+            "activation": "blocked",
+        }
+    canonical = json.dumps(
+        record, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+    ).encode("utf-8")
     process_hash = hashlib.sha256(canonical).hexdigest()
-    catalog = tomllib.loads((root / "registry/skill_catalog.toml").read_text(encoding="utf-8"))
-    process_terms = _terms(" ".join([record["goal"], record["outcome"], record["reusable_pattern"], *record["steps"]]))
+    catalog = tomllib.loads(
+        (root / "registry/skill_catalog.toml").read_text(encoding="utf-8")
+    )
+    process_terms = _terms(
+        " ".join(
+            [
+                record["goal"],
+                record["outcome"],
+                record["reusable_pattern"],
+                *record["steps"],
+            ]
+        )
+    )
     matches: list[tuple[float, str]] = []
     for skill in catalog.get("skills", ()):
-        skill_terms = _terms(" ".join([str(skill.get("id", "")), *map(str, skill.get("tags", ())) ]))
+        skill_terms = _terms(
+            " ".join([str(skill.get("id", "")), *map(str, skill.get("tags", ()))])
+        )
         union = process_terms | skill_terms
         score = len(process_terms & skill_terms) / len(union) if union else 0.0
         matches.append((score, str(skill["id"])))
-    score, existing = max(matches, default=(0.0, ""), key=lambda item: (item[0], item[1]))
+    score, existing = max(
+        matches, default=(0.0, ""), key=lambda item: (item[0], item[1])
+    )
     decision = "improve_existing" if score >= 0.20 else "create_candidate"
-    candidate_id = existing if decision == "improve_existing" else _slug(record["reusable_pattern"])
-    decisions = [{"order": index, "decision": item["decision"], "reason": item["reason"], "alternatives": item["alternatives"]} for index, item in enumerate(record["decisions"])]
+    candidate_id = (
+        existing
+        if decision == "improve_existing"
+        else _slug(record["reusable_pattern"])
+    )
+    decisions = [
+        {
+            "order": index,
+            "decision": item["decision"],
+            "reason": item["reason"],
+            "alternatives": item["alternatives"],
+        }
+        for index, item in enumerate(record["decisions"])
+    ]
     tools = [{"order": index, **item} for index, item in enumerate(record["tools"])]
-    execution = [{"order": index, "step": step, "depends_on": [] if index == 0 else [index - 1]} for index, step in enumerate(record["steps"])]
+    execution = [
+        {"order": index, "step": step, "depends_on": [] if index == 0 else [index - 1]}
+        for index, step in enumerate(record["steps"])
+    ]
     return {
         "valid": True,
         "decision": decision,
@@ -58,7 +101,10 @@ def compile_process_candidate(root: Path, record: dict[str, Any]) -> dict[str, A
             "verification": record["verification"],
             "failure_recovery": record["failures"],
             "evidence": record["evidence"],
-            "similarity": {"existing_skill": existing or None, "score": round(score, 6)},
+            "similarity": {
+                "existing_skill": existing or None,
+                "score": round(score, 6),
+            },
         },
         "decision_graph": decisions,
         "tool_graph": tools,
@@ -68,7 +114,9 @@ def compile_process_candidate(root: Path, record: dict[str, Any]) -> dict[str, A
     }
 
 
-def record_process_candidate(root: Path, project: Path, record: dict[str, Any], *, apply: bool = False) -> dict[str, Any]:
+def record_process_candidate(
+    root: Path, project: Path, record: dict[str, Any], *, apply: bool = False
+) -> dict[str, Any]:
     project = project.resolve()
     state_path = project / ".engineering-bootstrap/project-management/state.json"
     if not state_path.is_file():
@@ -78,7 +126,9 @@ def record_process_candidate(root: Path, project: Path, record: dict[str, Any], 
     if not result["valid"] or not apply:
         return result
     digest = result["candidate"]["source_process_sha256"]
-    relative = Path(".engineering-bootstrap/project-management/process") / f"{digest}.json"
+    relative = (
+        Path(".engineering-bootstrap/project-management/process") / f"{digest}.json"
+    )
     target = project / relative
     target.parent.mkdir(parents=True, exist_ok=True)
     payload = {"schema_version": "1.0", "process": record, "compilation": result}
@@ -90,7 +140,10 @@ def record_process_candidate(root: Path, project: Path, record: dict[str, Any], 
     records = state.setdefault("evidence", {}).setdefault("process_records", [])
     path_text = relative.as_posix()
     if path_text not in records:
-        records.append(path_text); records.sort()
+        records.append(path_text)
+        records.sort()
     validate_instance(state, root / "contracts/project-management.schema.json")
-    state_path.write_text(json.dumps(state, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    state_path.write_text(
+        json.dumps(state, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     return {**result, "receipt": path_text}

@@ -11,7 +11,9 @@ class SanitizationAuditTests(unittest.TestCase):
     def test_clean_tree_passes_and_embedded_word_does_not_false_positive(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "brief.txt").write_text("governed retrieval system with deterministic rails", encoding="utf-8")
+            (root / "brief.txt").write_text(
+                "governed retrieval system with deterministic rails", encoding="utf-8"
+            )
             result = audit(root)
             self.assertTrue(result["valid"])
 
@@ -29,13 +31,17 @@ class SanitizationAuditTests(unittest.TestCase):
     def test_brand_token_inside_domain_is_detected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "domain.txt").write_text("rh" + "eemglobal.example", encoding="utf-8")
+            (root / "domain.txt").write_text(
+                "rh" + "eemglobal.example", encoding="utf-8"
+            )
             self.assertEqual(audit(root)["identifier_hit_count"], 1)
 
     def test_legacy_abbreviated_placeholder_is_non_certifying(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "legacy.txt").write_text("governed" + "_" + "retrieval", encoding="utf-8")
+            (root / "legacy.txt").write_text(
+                "governed" + "_" + "retrieval", encoding="utf-8"
+            )
             result = audit(root)
             self.assertFalse(result["valid"])
             self.assertEqual(result["legacy_placeholder_hit_count"], 1)
@@ -47,7 +53,9 @@ class SanitizationAuditTests(unittest.TestCase):
             (root / "legacy.txt").write_text(legacy + "_rebuild", encoding="utf-8")
             self.assertEqual(audit(root)["legacy_placeholder_hit_count"], 1)
 
-    def test_canonical_identifier_across_chunk_boundary_is_not_a_legacy_hit(self) -> None:
+    def test_canonical_identifier_across_chunk_boundary_is_not_a_legacy_hit(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             legacy = "governed" + "_" + "retrieval"
@@ -66,7 +74,10 @@ class SanitizationAuditTests(unittest.TestCase):
 
     def test_not_run_secret_scan_cannot_be_reported_as_passed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            self.assertEqual(audit(Path(directory))["gates"]["secret_scanning"]["disposition"], "not_run")
+            self.assertEqual(
+                audit(Path(directory))["gates"]["secret_scanning"]["disposition"],
+                "not_run",
+            )
 
     def test_scanner_exclusions_are_recorded(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

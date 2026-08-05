@@ -9,14 +9,21 @@ import pytest
 from runtime.lazy_loader import LazySkillLoader, SkillDescriptor
 
 
-def _loader(root: Path, *, max_active: int = 3, max_bytes: int = 100) -> LazySkillLoader:
+def _loader(
+    root: Path, *, max_active: int = 3, max_bytes: int = 100
+) -> LazySkillLoader:
     (root / "base.md").write_text("base", encoding="utf-8")
     (root / "large.md").write_text("x" * 200, encoding="utf-8")
-    return LazySkillLoader(root, (
-        SkillDescriptor("base", "base.md"),
-        SkillDescriptor("broken", "missing.md", dependencies=("base",)),
-        SkillDescriptor("large", "large.md", dependencies=("base",)),
-    ), max_active=max_active, max_bytes=max_bytes)
+    return LazySkillLoader(
+        root,
+        (
+            SkillDescriptor("base", "base.md"),
+            SkillDescriptor("broken", "missing.md", dependencies=("base",)),
+            SkillDescriptor("large", "large.md", dependencies=("base",)),
+        ),
+        max_active=max_active,
+        max_bytes=max_bytes,
+    )
 
 
 def test_failed_hydration_leaves_no_active_state() -> None:
@@ -38,7 +45,8 @@ def test_failed_hydration_does_not_consume_budget() -> None:
 
 def test_hydration_retry_is_idempotent() -> None:
     with tempfile.TemporaryDirectory() as directory:
-        root = Path(directory); loader = _loader(root)
+        root = Path(directory)
+        loader = _loader(root)
         with pytest.raises(FileNotFoundError):
             loader.hydrate("broken")
         (root / "missing.md").write_text("fixed", encoding="utf-8")
@@ -58,7 +66,8 @@ def test_concurrent_hydration_deduplicates_capability() -> None:
 
 def test_hydration_commit_occurs_after_all_validation() -> None:
     with tempfile.TemporaryDirectory() as directory:
-        root = Path(directory); loader = _loader(root, max_active=1)
+        root = Path(directory)
+        loader = _loader(root, max_active=1)
         (root / "missing.md").write_text("fixed", encoding="utf-8")
         with pytest.raises(ValueError, match="active skill budget"):
             loader.hydrate("broken")

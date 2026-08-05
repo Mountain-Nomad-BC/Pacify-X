@@ -19,19 +19,38 @@ class ProjectOnboardingTests(unittest.TestCase):
         result = validate_profile_set(ROOT / "bootstrap" / "profiles")
         self.assertTrue(result["valid"], result["errors"])
         self.assertEqual(result["profile_count"], 5)
-        self.assertTrue(all(item["profile"]["resources"]["max_heavy_lanes"] == 1 for item in result["profiles"]))
+        self.assertTrue(
+            all(
+                item["profile"]["resources"]["max_heavy_lanes"] == 1
+                for item in result["profiles"]
+            )
+        )
 
-    def test_existing_intake_is_reproducible_read_only_and_preserves_owner_candidates(self) -> None:
+    def test_existing_intake_is_reproducible_read_only_and_preserves_owner_candidates(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as directory:
             project = Path(directory)
-            (project / "pyproject.toml").write_text("[project]\nname='sample'\n", encoding="utf-8")
+            (project / "pyproject.toml").write_text(
+                "[project]\nname='sample'\n", encoding="utf-8"
+            )
             (project / "AGENTS.md").write_text("owner", encoding="utf-8")
             (project / "app.py").write_text("print('ok')\n", encoding="utf-8")
-            (project / "test_app.py").write_text("def test_ok(): pass\n", encoding="utf-8")
-            before = {path.relative_to(project).as_posix(): path.read_bytes() for path in project.rglob("*") if path.is_file()}
+            (project / "test_app.py").write_text(
+                "def test_ok(): pass\n", encoding="utf-8"
+            )
+            before = {
+                path.relative_to(project).as_posix(): path.read_bytes()
+                for path in project.rglob("*")
+                if path.is_file()
+            }
             first = inspect_existing_project(project)
             second = inspect_existing_project(project)
-            after = {path.relative_to(project).as_posix(): path.read_bytes() for path in project.rglob("*") if path.is_file()}
+            after = {
+                path.relative_to(project).as_posix(): path.read_bytes()
+                for path in project.rglob("*")
+                if path.is_file()
+            }
             self.assertEqual(first, second)
             self.assertEqual(before, after)
             self.assertIn("AGENTS.md", first["canonical_owner_candidates"])
@@ -39,44 +58,69 @@ class ProjectOnboardingTests(unittest.TestCase):
 
     def test_existing_project_inventory_changes_when_content_changes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            project = Path(directory); path = project / "app.py"
-            path.write_text("one\n", encoding="utf-8"); first = inspect_existing_project(project)
-            path.write_text("two\n", encoding="utf-8"); second = inspect_existing_project(project)
+            project = Path(directory)
+            path = project / "app.py"
+            path.write_text("one\n", encoding="utf-8")
+            first = inspect_existing_project(project)
+            path.write_text("two\n", encoding="utf-8")
+            second = inspect_existing_project(project)
             self.assertNotEqual(first["inventory_sha256"], second["inventory_sha256"])
 
     def test_inventory_exact_limit_is_not_truncated(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            for name in ("a.txt", "b.txt"): (root / name).write_text(name, encoding="utf-8")
+            for name in ("a.txt", "b.txt"):
+                (root / name).write_text(name, encoding="utf-8")
             self.assertFalse(inspect_existing_project(root, max_files=2)["truncated"])
 
     def test_inventory_over_limit_is_truncated(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            for name in ("a.txt", "b.txt", "c.txt"): (root / name).write_text(name, encoding="utf-8")
+            for name in ("a.txt", "b.txt", "c.txt"):
+                (root / name).write_text(name, encoding="utf-8")
             result = inspect_existing_project(root, max_files=2)
-            self.assertTrue(result["truncated"]); self.assertEqual(result["file_count"], 2)
+            self.assertTrue(result["truncated"])
+            self.assertEqual(result["file_count"], 2)
 
     def test_inventory_records_size_and_hash(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory); (root / "a.txt").write_text("abc", encoding="utf-8")
+            root = Path(directory)
+            (root / "a.txt").write_text("abc", encoding="utf-8")
             record = inspect_existing_project(root)["inventory_records"][0]
-            self.assertEqual(record["path"], "a.txt"); self.assertEqual(record["size_bytes"], 3); self.assertEqual(len(record["sha256"]), 64)
+            self.assertEqual(record["path"], "a.txt")
+            self.assertEqual(record["size_bytes"], 3)
+            self.assertEqual(len(record["sha256"]), 64)
 
-    def test_new_project_manifest_has_guardrails_and_safe_watcher_exclusions(self) -> None:
+    def test_new_project_manifest_has_guardrails_and_safe_watcher_exclusions(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as directory:
             project = Path(directory) / "project"
             result = commission(project, "new", apply=True, source_root=ROOT)
             self.assertTrue(result["applied"])
-            manifest = json.loads((project / ".engineering-bootstrap/bootstrap-manifest.json").read_text(encoding="utf-8"))
+            manifest = json.loads(
+                (project / ".engineering-bootstrap/bootstrap-manifest.json").read_text(
+                    encoding="utf-8"
+                )
+            )
             self.assertEqual(manifest["tool_installation"], "approval_required")
             self.assertTrue(manifest["baselines"]["accessibility"])
-            settings = json.loads((project / ".vscode/settings.json").read_text(encoding="utf-8"))
+            settings = json.loads(
+                (project / ".vscode/settings.json").read_text(encoding="utf-8")
+            )
             self.assertIn("**/quarantine/**", settings["files.watcherExclude"])
-            registry = json.loads((project / ".engineering-bootstrap/project-registry.json").read_text(encoding="utf-8"))
+            registry = json.loads(
+                (project / ".engineering-bootstrap/project-registry.json").read_text(
+                    encoding="utf-8"
+                )
+            )
             self.assertEqual(registry["max_selected_skills"], 3)
-            catalog = tomllib.loads((ROOT / "registry/skill_catalog.toml").read_text(encoding="utf-8"))
-            admitted = sum(item["status"] in {"active", "admitted"} for item in catalog["skills"])
+            catalog = tomllib.loads(
+                (ROOT / "registry/skill_catalog.toml").read_text(encoding="utf-8")
+            )
+            admitted = sum(
+                item["status"] in {"active", "admitted"} for item in catalog["skills"]
+            )
             self.assertEqual(len(registry["skills"]), admitted)
             self.assertTrue(project_check(project)["valid"])
             self.assertTrue((project / "AI_ASSISTANT.md").is_file())

@@ -10,9 +10,12 @@ from runtime.recovery import DurableState, load_state, persist_state, reconcile_
 
 def _state(*, interrupted: tuple[str, ...] = ()) -> DurableState:
     return DurableState(
-        package_id="pkg-1", completed_steps=("plan",),
-        selected_skills=(("skill-a", "1.0"),), pending_approvals=("approval-1",),
-        evidence_refs=("evidence-1",), idempotency_keys=("effect-1",),
+        package_id="pkg-1",
+        completed_steps=("plan",),
+        selected_skills=(("skill-a", "1.0"),),
+        pending_approvals=("approval-1",),
+        evidence_refs=("evidence-1",),
+        idempotency_keys=("effect-1",),
         interrupted_steps=interrupted,
     )
 
@@ -39,7 +42,8 @@ def test_durable_state_refuses_non_file_replacement_target() -> None:
 
 def test_resume_fails_for_missing_evidence_interruption_and_replayed_effect() -> None:
     allowed, reasons = reconcile_resume(
-        _state(interrupted=("execute",)), actual_evidence=(),
+        _state(interrupted=("execute",)),
+        actual_evidence=(),
         requested_idempotency_key="effect-1",
     )
     assert not allowed
@@ -52,6 +56,7 @@ def test_resume_fails_for_missing_evidence_interruption_and_replayed_effect() ->
 
 def test_resume_accepts_current_evidence_and_new_effect_key() -> None:
     assert reconcile_resume(
-        _state(), actual_evidence=("evidence-1",),
+        _state(),
+        actual_evidence=("evidence-1",),
         requested_idempotency_key="effect-2",
     ) == (True, ())

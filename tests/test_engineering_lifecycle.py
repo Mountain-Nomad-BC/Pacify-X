@@ -22,7 +22,9 @@ class EngineeringLifecycleTests(unittest.TestCase):
             commission(project, "new", apply=True, source_root=ROOT)
             status = lifecycle_status(ROOT, project)
         self.assertEqual(status["next_stage"], "tool-and-package-admission")
-        self.assertEqual(status["next_stage_contract"]["skills"], ["quarantine-external-tools"])
+        self.assertEqual(
+            status["next_stage_contract"]["skills"], ["quarantine-external-tools"]
+        )
 
 
 if __name__ == "__main__":

@@ -1,0 +1,42 @@
+{
+  "id": "govern-hooked-execution",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/govern-hooked-execution/SKILL.md",
+  "body_sha256": "24d1cb75bb598eb9da03a37b96ff390a738647056befb07f54a2e1754b114a66",
+  "references": [
+    ".agents/skills/govern-hooked-execution/references/enforce-agent-config-supply-chain.json",
+    ".agents/skills/govern-hooked-execution/references/govern-agent-hook-lifecycle.json"
+  ],
+  "capability_tags": [
+    "execution",
+    "external-candidate",
+    "govern",
+    "hooked",
+    "hooks",
+    "security"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "inactive_external_candidate_wrapper",
+    "basis": [
+      "registry/external_capability_candidates.json",
+      "registry/external_capability_licenses.json"
+    ],
+    "canonical_owner": "supervise-contained-execution",
+    "source_licenses": [
+      "everything-claude-code"
+    ],
+    "candidate_capabilities": [
+      "govern-agent-hook-lifecycle",
+      "enforce-agent-config-supply-chain"
+    ]
+  },
+  "clean_room": false,
+  "tests": "tests/test_external_capability_provider.py",
+  "evidence": "tests/test_external_capability_provider.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

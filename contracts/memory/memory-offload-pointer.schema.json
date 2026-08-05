@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:memory:memory-offload-pointer",
+  "title": "Reversible project-local context offload pointer",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["pointer_id", "project_id", "source_message_id", "tool_call_id", "content_hash", "summary", "storage_locator", "reversible"],
+  "properties": {
+    "pointer_id": {"type": "string", "minLength": 1},
+    "project_id": {"type": "string", "minLength": 1},
+    "source_message_id": {"type": "string", "minLength": 1},
+    "tool_call_id": {"type": "string", "minLength": 1},
+    "content_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "summary": {"type": "string"},
+    "storage_locator": {"type": "string", "minLength": 1},
+    "reversible": {"const": true}
+  }
+}

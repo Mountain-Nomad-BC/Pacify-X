@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.design.visual-storyteller",
+  "name": "Visual Storyteller",
+  "description": "Expert visual communication specialist focused on creating compelling visual narratives, multimedia content, and brand storytelling through design. Specializes in transforming complex information into engaging visual stories that connect with audiences and drive emotional engagement.",
+  "division": "design",
+  "source": {
+    "path": "design/design-visual-storyteller.md",
+    "sha256": "f4950c9d65b5d105ec48ebce4b7621154e3bf89871dbbf07af245476930eb4dd",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/design/design-visual-storyteller.md",
+    "sha256": "ac068fcd6120bd4ac15431c9eccc2096c583eda62c43300d31ca0b574bb0ac4a",
+    "audit_status": "REWRITE",
+    "audit_score": 44.2
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "low",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Visual Storyteller",
+      "visual-storyteller",
+      "design-visual-storyteller"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "content_generation",
+    "design",
+    "identity_access",
+    "integration",
+    "marketing",
+    "performance"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "user problem and target users",
+    "platform, device, and interaction constraints",
+    "brand system and existing components",
+    "accessibility requirements",
+    "research evidence or known assumptions"
+  ],
+  "deliverables": [
+    "design rationale tied to user needs",
+    "flows, states, and edge cases",
+    "component or artifact specification",
+    "accessibility and usability checks",
+    "engineering handoff notes"
+  ],
+  "quality_gates": [
+    "Test against real user goals rather than visual preference alone",
+    "Cover empty, loading, error, permission, and recovery states",
+    "Check keyboard, screen-reader, contrast, zoom, motion, and localization implications",
+    "Label unvalidated design assumptions"
+  ],
+  "boundaries": [
+    "Do not claim usability validation without observed research or test evidence",
+    "Do not overwrite brand or accessibility constraints without explicit approval"
+  ],
+  "handoffs": [
+    "design/design-ux-researcher.md",
+    "design/design-ui-finish-gate-reviewer.md",
+    "testing/testing-accessibility-auditor.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Outputs are not defined as a stable deliverable contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "No freshness/version/source-date policy for changeable knowledge",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Success metrics contain hard-coded targets that can be mistaken for guarantees"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

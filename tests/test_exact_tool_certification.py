@@ -6,7 +6,12 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from runtime.exact_tool_certification import ToolCase, _normalized, _run, certify_exact_tools
+from runtime.exact_tool_certification import (
+    ToolCase,
+    _normalized,
+    _run,
+    certify_exact_tools,
+)
 from runtime.python_surface_certification import certify_python_surfaces
 
 
@@ -32,16 +37,24 @@ class ExactToolCertificationTests(unittest.TestCase):
         self.assertEqual(result["passed_domain_wrappers"], 7)
         for record in result["results"]:
             target = ROOT / record["target"]
-            self.assertEqual(record["sha256"], hashlib.sha256(target.read_bytes()).hexdigest())
+            self.assertEqual(
+                record["sha256"], hashlib.sha256(target.read_bytes()).hexdigest()
+            )
 
     def test_every_admitted_tool_has_negative_certification_case(self) -> None:
         result = self.result
-        denied = {record["id"] for record in result["results"] if record["negative_behavior"] is not None}
+        denied = {
+            record["id"]
+            for record in result["results"]
+            if record["negative_behavior"] is not None
+        }
         self.assertEqual(denied, {record["id"] for record in result["results"]})
 
     def test_tool_without_boundary_case_cannot_be_fully_certified(self) -> None:
         for record in self.result["results"]:
-            self.assertEqual(record["certification_strength"], "negative-path-certified")
+            self.assertEqual(
+                record["certification_strength"], "negative-path-certified"
+            )
             self.assertTrue(record["fixture_classes"]["malformed_input"])
             self.assertTrue(record["fixture_classes"]["wrong_type"])
 
@@ -78,7 +91,9 @@ class ExactToolCertificationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             receipt = Path(directory) / "progress.json"
             cache = Path(directory) / "cache"
-            first = certify_exact_tools(ROOT, receipt_path=receipt, cache_dir=cache, allow_cache=True)
+            first = certify_exact_tools(
+                ROOT, receipt_path=receipt, cache_dir=cache, allow_cache=True
+            )
             self.assertTrue(first["valid"], first["errors"])
             self.assertTrue(receipt.is_file())
             cache_file = next(cache.glob("*.json"))
@@ -87,14 +102,26 @@ class ExactToolCertificationTests(unittest.TestCase):
             cache_file.write_text(json.dumps(forged), encoding="utf-8")
             second = certify_exact_tools(ROOT, cache_dir=cache, allow_cache=True)
             self.assertTrue(second["valid"], second["errors"])
-            self.assertFalse(next(item for item in second["results"] if item["cache_key"] == cache_file.stem)["cache_hit"])
+            self.assertFalse(
+                next(
+                    item
+                    for item in second["results"]
+                    if item["cache_key"] == cache_file.stem
+                )["cache_hit"]
+            )
 
     def test_every_python_file_is_owned_classified_and_validation_bound(self) -> None:
         result = self.python_surfaces
         self.assertTrue(result["valid"], result["errors"])
         self.assertEqual(result["python_file_count"], result["syntax_valid_count"])
         self.assertEqual(result["role_counts"].get("unknown", 0), 0)
-        self.assertEqual(result["role_counts"]["installed-skill-tool"], 83)
+        installed_skill_tools = len(
+            tuple((ROOT / ".agents/skills").glob("*/scripts/*.py"))
+        )
+        self.assertEqual(
+            result["role_counts"]["installed-skill-tool"],
+            installed_skill_tools,
+        )
         self.assertEqual(result["direct_behavior_count"], 63)
 
 

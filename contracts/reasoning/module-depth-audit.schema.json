@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:reasoning:module-depth-audit",
+  "title": "Python module interface-depth evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["valid", "path", "symbol_count", "symbols", "metric_boundary"],
+  "properties": {
+    "valid": {"const": true},
+    "path": {"type": "string", "minLength": 1},
+    "symbol_count": {"type": "integer", "minimum": 0},
+    "symbols": {"type": "array", "items": {"type": "object"}},
+    "metric_boundary": {"type": "string", "minLength": 1}
+  }
+}

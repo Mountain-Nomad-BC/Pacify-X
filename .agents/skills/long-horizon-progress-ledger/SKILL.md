@@ -1,77 +1,16 @@
 ---
 name: long-horizon-progress-ledger
-description: "Represent long work as evidence-backed milestones with partial completion, blockers, regression, and recoverability. Use when the task requires this bounded operational control; keep it inactive otherwise."
+description: Manage long-running goals as project-scoped state machines with continuation budgets, isolated pause and resume, acceptance-backed completion, repeated-evidence blocked semantics, and durable evidence history. Use when work spans sessions, agents, or bounded continuation turns.
 ---
 
-# long-horizon-progress-ledger
+# Long-Horizon Progress Ledger
 
-## Purpose
+1. Bind the goal to one project and stable goal identity.
+2. Start, continue, pause, resume, block, or complete only through an explicit transition.
+3. Charge every continuation against the declared budget and stop before it becomes negative.
+4. Keep paused state bound to its owning session unless a governed handoff transfers it.
+5. Mark blocked only after the same blocker is observed three consecutive times.
+6. Mark complete only when every acceptance criterion passes and current evidence identities are present.
+7. Retain transition history and a deterministic state hash; do not infer progress from activity or file existence.
 
-Represent long work as evidence-backed milestones with partial completion, blockers, regression, and recoverability.
-
-## Use when
-- work spans many steps/sessions/agents/hours
-
-## Do not use when
-- atomic task
-
-## Required inputs
-- goal
-- milestones
-- events
-- evidence
-- budgets
-- owners
-
-## Outputs
-- milestone status
-- partial score
-- blockers
-- resume point
-- remaining risk
-
-## Procedure
-1. decompose into verifiable milestones.
-2. attach evidence.
-3. update from events.
-4. record regression/blockers.
-5. compute recoverability.
-6. checkpoint.
-
-## Guardrails
-- completion requires evidence.
-- file creation is not correctness.
-- preserve ownership/dependencies.
-
-## Integration points
-- intelligent system task store
-- handoff
-- trajectory sentinel
-- UI
-
-## Failure modes to test
-- activity milestones
-- manual burden
-
-## Operational metrics
-- resume success
-- late recovery
-- false completion
-
-## Completion requirements
-
-The skill is complete only when structured outputs are emitted, evidence references resolve, declared postconditions are checked, and the execution wrapper records the result. Any memory remains a candidate until framework promotion controls accept it.
-
-## Research basis
-- [Long-Horizon-Terminal-Bench](https://arxiv.org/abs/2607.08964)
-
-## Runtime binding
-
-- Family: `progress`
-- Binding: `runtime.operational_controls.run_control`
-- Activation: metadata is discoverable at startup; load this body only after selection.
-- Effects: read-only control-plane analysis unless a separately admitted composed capability declares more.
-
-## Completion and evidence
-
-Return a structured decision, reasons, outputs, and evidence references. Treat unresolved provenance, permissions, required inputs, or postconditions as a fail-closed result. Candidate memory, research, generated skills, and speculative work never become active without separate admission and evidence.
+Use `runtime.durable_state.transition_durable_goal`. The runtime is side-effect-free and grants no authority; persistence requires the project control plane and a separate approved write.

@@ -11,6 +11,7 @@ import tempfile
 from typing import Any, Iterable
 
 from .release_signing import canonical_bytes, public_key_fingerprint
+from .external_toolchain import require_openssh_authority
 
 
 NAMESPACE = "pacify-x-effect-grant"
@@ -52,6 +53,7 @@ def sign_effect_grant(
     identity: str,
     publisher: str,
 ) -> dict[str, Any]:
+    require_openssh_authority()
     private_key = private_key.resolve(strict=True)
     public_key = Path(str(private_key) + ".pub")
     signed = {

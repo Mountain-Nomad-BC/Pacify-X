@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "registry": "registry/skill_orchestrations.json",
+  "workflows": [
+    {
+      "id": "engineering-reasoning-loop",
+      "purpose": "Resolve consequential uncertainty, stabilize project language and interfaces, plan vertical slices, independently review results, and preserve continuation state.",
+      "steps": [
+        {"id": "question-frontier", "skill": "frontier-questioning", "depends_on": []},
+        {"id": "canonical-language", "skill": "domain-language-maintenance", "depends_on": ["question-frontier"]},
+        {"id": "decision-map", "skill": "decision-wayfinding", "depends_on": ["question-frontier"]},
+        {"id": "delegate-authority", "skill": "questionnaire-delegation", "depends_on": ["decision-map"]},
+        {"id": "compare-designs", "skill": "design-it-twice", "depends_on": ["canonical-language", "decision-map"]},
+        {"id": "design-module", "skill": "deep-module-design", "depends_on": ["compare-designs"]},
+        {"id": "audit-depth", "skill": "architecture-deepening-audit", "depends_on": ["design-module"]},
+        {"id": "plan-slices", "skill": "tracer-bullet-planning", "depends_on": ["audit-depth", "delegate-authority"]},
+        {"id": "manual-transition", "skill": "guided-procedure-wizard", "depends_on": ["plan-slices"]},
+        {"id": "review-two-axes", "skill": "dual-axis-code-review", "depends_on": ["plan-slices"]},
+        {"id": "reconcile-intent", "skill": "intent-preserving-merge-resolution", "depends_on": ["review-two-axes"]},
+        {"id": "handoff", "skill": "context-handoff-package", "depends_on": ["manual-transition", "reconcile-intent"]}
+      ],
+      "failure_policy": "Fail closed on invented authority, duplicate questions, vocabulary collision without an owner, cyclic decision or ticket graphs, cosmetic design alternatives, unverified manual transitions, unresolved review findings, or evidence-free handoff.",
+      "outputs": ["decision frontier", "canonical glossary updates", "design comparison", "tracer-bullet DAG", "dual-axis review", "handoff receipt"]
+    }
+  ]
+}

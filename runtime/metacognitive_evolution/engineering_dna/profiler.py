@@ -3,15 +3,34 @@ from collections import Counter, defaultdict
 from typing import Any
 
 PROHIBITED_FIELDS = {
-    "personality", "intelligence", "iq", "race", "ethnicity", "religion", "sex",
-    "gender", "sexual_orientation", "health", "disability", "age", "politics"
+    "personality",
+    "intelligence",
+    "iq",
+    "race",
+    "ethnicity",
+    "religion",
+    "sex",
+    "gender",
+    "sexual_orientation",
+    "health",
+    "disability",
+    "age",
+    "politics",
 }
 
 ALLOWED_PATTERN_TYPES = {
-    "architecture_choice", "testing_practice", "release_practice", "documentation_practice",
-    "failure_pattern", "repair_pattern", "dependency_pattern", "security_practice",
-    "performance_practice", "review_practice"
+    "architecture_choice",
+    "testing_practice",
+    "release_practice",
+    "documentation_practice",
+    "failure_pattern",
+    "repair_pattern",
+    "dependency_pattern",
+    "security_practice",
+    "performance_practice",
+    "review_practice",
 }
+
 
 def profile(events: list[dict[str, Any]], min_observations: int = 3) -> dict[str, Any]:
     violations = []
@@ -21,7 +40,9 @@ def profile(events: list[dict[str, Any]], min_observations: int = 3) -> dict[str
     for event in events:
         forbidden = sorted(PROHIBITED_FIELDS & set(event))
         if forbidden:
-            violations.append({"event_id": event.get("id"), "prohibited_fields": forbidden})
+            violations.append(
+                {"event_id": event.get("id"), "prohibited_fields": forbidden}
+            )
         pattern_type = str(event.get("pattern_type", ""))
         if pattern_type not in ALLOWED_PATTERN_TYPES:
             continue
@@ -41,16 +62,20 @@ def profile(events: list[dict[str, Any]], min_observations: int = 3) -> dict[str
         success = outcomes[key]["success"]
         failure = outcomes[key]["failure"]
         pattern_type, pattern = key.split(":", 1)
-        patterns.append({
-            "pattern_type": pattern_type,
-            "pattern": pattern,
-            "observation_count": count,
-            "success_rate": success / max(1, success + failure),
-            "evidence_refs": [x for x in examples[key] if x],
-            "confidence": min(1.0, count / (min_observations * 3)),
-            "transfer_status": "candidate_only",
-        })
-    patterns.sort(key=lambda x: (-x["observation_count"], x["pattern_type"], x["pattern"]))
+        patterns.append(
+            {
+                "pattern_type": pattern_type,
+                "pattern": pattern,
+                "observation_count": count,
+                "success_rate": success / max(1, success + failure),
+                "evidence_refs": [x for x in examples[key] if x],
+                "confidence": min(1.0, count / (min_observations * 3)),
+                "transfer_status": "candidate_only",
+            }
+        )
+    patterns.sort(
+        key=lambda x: (-x["observation_count"], x["pattern_type"], x["pattern"])
+    )
     return {
         "valid": not violations,
         "policy_violations": violations,
@@ -61,6 +86,7 @@ def profile(events: list[dict[str, Any]], min_observations: int = 3) -> dict[str
             "Transfer requires target-context validation and human approval.",
         ],
     }
+
 
 def compare_profiles(source: dict[str, Any], target: dict[str, Any]) -> dict[str, Any]:
     s = {(p["pattern_type"], p["pattern"]): p for p in source.get("patterns", [])}

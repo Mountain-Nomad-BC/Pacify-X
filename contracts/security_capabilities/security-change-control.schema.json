@@ -1,0 +1,50 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security-change-control",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Govern hardening and remediation changes.",
+  "properties": {
+    "change_window": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "owner": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "post_change_validation": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "pre_change_evidence": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "rollback_plan": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "service_impact_assessment": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "owner",
+    "change_window",
+    "rollback_plan",
+    "pre_change_evidence",
+    "post_change_validation",
+    "service_impact_assessment"
+  ],
+  "title": "security-change-control",
+  "type": "object"
+}

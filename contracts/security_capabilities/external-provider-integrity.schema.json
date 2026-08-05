@@ -1,0 +1,48 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:security_capabilities:external-provider-integrity",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Verify the source archive and candidate registry before use.",
+  "properties": {
+    "archive_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "catalog_count": {
+      "const": 817
+    },
+    "catalog_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "frontmatter_valid": {
+      "const": true
+    },
+    "graph_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "license": {
+      "const": "Apache-2.0"
+    },
+    "selected_body_hashes_valid": {
+      "const": true
+    },
+    "source_inventory_count": {
+      "minimum": 1,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "archive_sha256",
+    "catalog_sha256",
+    "graph_sha256",
+    "source_inventory_count",
+    "catalog_count",
+    "license",
+    "frontmatter_valid",
+    "selected_body_hashes_valid"
+  ],
+  "title": "external-provider-integrity",
+  "type": "object"
+}

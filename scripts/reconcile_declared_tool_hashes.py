@@ -1,4 +1,5 @@
 """Reconcile exact-tool target hashes and their lazy reference indexes."""
+
 from __future__ import annotations
 
 import argparse
@@ -27,7 +28,13 @@ def expected(root: Path) -> dict[str, bytes]:
         record["source_sha256"] = _sha(target)
         parts = Path(record["target"]).parts
         owner = parts[2]
-        reference = root / ".agents/skills" / owner / "references/scripts" / f"{record['id']}.json"
+        reference = (
+            root
+            / ".agents/skills"
+            / owner
+            / "references/scripts"
+            / f"{record['id']}.json"
+        )
         contract = json.loads(reference.read_text(encoding="utf-8"))
         contract["authoritative_source_sha256"] = record["source_sha256"]
         relative = reference.relative_to(root).as_posix()
@@ -50,7 +57,11 @@ def main() -> int:
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     outputs = expected(ROOT)
-    stale = [relative for relative, payload in outputs.items() if not (ROOT / relative).is_file() or (ROOT / relative).read_bytes() != payload]
+    stale = [
+        relative
+        for relative, payload in outputs.items()
+        if not (ROOT / relative).is_file() or (ROOT / relative).read_bytes() != payload
+    ]
     if args.check:
         print(json.dumps({"valid": not stale, "files": len(outputs), "stale": stale}))
         return 0 if not stale else 1

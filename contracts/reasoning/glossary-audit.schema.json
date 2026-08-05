@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:reasoning:glossary-audit",
+  "title": "Canonical project-language audit result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["valid", "issue_count", "issues", "skipped", "files_checked"],
+  "properties": {
+    "valid": {"type": "boolean"},
+    "issue_count": {"type": "integer", "minimum": 0},
+    "issues": {"type": "array", "items": {"type": "object"}},
+    "skipped": {"type": "array", "items": {"type": "string"}},
+    "files_checked": {"type": "integer", "minimum": 0}
+  }
+}

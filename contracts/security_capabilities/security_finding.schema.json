@@ -1,0 +1,66 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security_finding",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "affected_assets": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "evidence": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "finding_id": {
+      "type": "string"
+    },
+    "framework_mappings": {
+      "type": "object"
+    },
+    "recommended_actions": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "severity": {
+      "enum": [
+        "informational",
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "validation_status": {
+      "enum": [
+        "unverified",
+        "partially_verified",
+        "verified",
+        "false_positive",
+        "accepted_risk"
+      ]
+    }
+  },
+  "required": [
+    "finding_id",
+    "title",
+    "severity",
+    "confidence",
+    "evidence",
+    "affected_assets",
+    "recommended_actions"
+  ],
+  "type": "object"
+}

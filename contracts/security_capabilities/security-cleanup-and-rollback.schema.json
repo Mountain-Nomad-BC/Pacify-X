@@ -1,0 +1,46 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security-cleanup-and-rollback",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Remove test artifacts, sessions, temporary accounts, firewall changes, payloads, and credentials after approved testing or changes.",
+  "properties": {
+    "artifact_inventory": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "cleanup_checklist": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "cleanup_verified": {
+      "const": true
+    },
+    "residual_risk": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "rollback_evidence": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "cleanup_checklist",
+    "artifact_inventory",
+    "rollback_evidence",
+    "residual_risk",
+    "cleanup_verified"
+  ],
+  "title": "security-cleanup-and-rollback",
+  "type": "object"
+}

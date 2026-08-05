@@ -1,15 +1,15 @@
 """Evidence-backed Knowledge Compiler and candidate Skill Foundry."""
+
 from __future__ import annotations
 
 import ast
 from dataclasses import asdict, dataclass
-from datetime import datetime, timezone
 import hashlib
 import json
 import math
 from pathlib import Path
 import re
-from typing import Iterable, Mapping, Sequence
+from typing import Iterable, Mapping
 
 
 WORD = re.compile(r"[a-z0-9]+")
@@ -28,8 +28,20 @@ CAPABILITY_TERMS = {
     "generator": ("generate", "produce", "emit", "build"),
 }
 ALLOWED_AST = {
-    ast.Expression, ast.BinOp, ast.UnaryOp, ast.Name, ast.Load, ast.Constant,
-    ast.Add, ast.Sub, ast.Mult, ast.Div, ast.Pow, ast.Mod, ast.USub, ast.UAdd,
+    ast.Expression,
+    ast.BinOp,
+    ast.UnaryOp,
+    ast.Name,
+    ast.Load,
+    ast.Constant,
+    ast.Add,
+    ast.Sub,
+    ast.Mult,
+    ast.Div,
+    ast.Pow,
+    ast.Mod,
+    ast.USub,
+    ast.UAdd,
 }
 MAX_CALCULATION_AST_NODES = 64
 MAX_CALCULATION_DEPTH = 16
@@ -39,7 +51,9 @@ MAX_CALCULATION_EXPONENT = 16
 
 def _expression_depth(node: ast.AST) -> int:
     children = list(ast.iter_child_nodes(node))
-    return 1 if not children else 1 + max(_expression_depth(child) for child in children)
+    return (
+        1 if not children else 1 + max(_expression_depth(child) for child in children)
+    )
 
 
 def _validate_calculation_tree(tree: ast.Expression, variables: Iterable[str]) -> None:
@@ -56,9 +70,16 @@ def _validate_calculation_tree(tree: ast.Expression, variables: Iterable[str]) -
             raise ValueError(f"undeclared calculation variable: {node.id}")
         if isinstance(node, ast.Constant):
             if isinstance(node.value, bool) or not isinstance(node.value, (int, float)):
-                raise ValueError("calculation constants must be numeric and cannot be booleans")
-            if not math.isfinite(float(node.value)) or abs(float(node.value)) > MAX_CALCULATION_MAGNITUDE:
-                raise ValueError("calculation constant is non-finite or exceeds the magnitude limit")
+                raise ValueError(
+                    "calculation constants must be numeric and cannot be booleans"
+                )
+            if (
+                not math.isfinite(float(node.value))
+                or abs(float(node.value)) > MAX_CALCULATION_MAGNITUDE
+            ):
+                raise ValueError(
+                    "calculation constant is non-finite or exceeds the magnitude limit"
+                )
 
 
 def _render_javascript(node: ast.AST) -> str:
@@ -75,7 +96,13 @@ def _render_javascript(node: ast.AST) -> str:
         left, right = _render_javascript(node.left), _render_javascript(node.right)
         if isinstance(node.op, ast.Mod):
             return f"pyMod({left}, {right})"
-        symbols = {ast.Add: "+", ast.Sub: "-", ast.Mult: "*", ast.Div: "/", ast.Pow: "**"}
+        symbols = {
+            ast.Add: "+",
+            ast.Sub: "-",
+            ast.Mult: "*",
+            ast.Div: "/",
+            ast.Pow: "**",
+        }
         return f"({left} {symbols[type(node.op)]} {right})"
     raise ValueError(f"unsupported calculation syntax: {type(node).__name__}")
 
@@ -95,34 +122,48 @@ def _interpret_calculation(node: ast.AST, values: Mapping[str, float]) -> float:
     left = _interpret_calculation(node.left, values)
     right = _interpret_calculation(node.right, values)
     try:
-        if isinstance(node.op, ast.Add): result = left + right
-        elif isinstance(node.op, ast.Sub): result = left - right
-        elif isinstance(node.op, ast.Mult): result = left * right
+        if isinstance(node.op, ast.Add):
+            result = left + right
+        elif isinstance(node.op, ast.Sub):
+            result = left - right
+        elif isinstance(node.op, ast.Mult):
+            result = left * right
         elif isinstance(node.op, ast.Div):
-            if right == 0: raise ValueError("division by zero")
+            if right == 0:
+                raise ValueError("division by zero")
             result = left / right
         elif isinstance(node.op, ast.Mod):
-            if right == 0: raise ValueError("modulo by zero")
+            if right == 0:
+                raise ValueError("modulo by zero")
             result = left % right
         elif isinstance(node.op, ast.Pow):
             if abs(right) > MAX_CALCULATION_EXPONENT:
                 raise ValueError("calculation exponent exceeds the bound")
             if left == 0 and right < 0:
                 raise ValueError("zero cannot be raised to a negative exponent")
-            result = left ** right
+            result = left**right
             if isinstance(result, complex):
                 raise ValueError("complex calculation results are forbidden")
         else:
-            raise ValueError(f"unsupported calculation operator: {type(node.op).__name__}")
+            raise ValueError(
+                f"unsupported calculation operator: {type(node.op).__name__}"
+            )
     except OverflowError as error:
         raise ValueError("calculation overflow") from error
-    if not math.isfinite(float(result)) or abs(float(result)) > MAX_CALCULATION_MAGNITUDE:
-        raise ValueError("calculation result is non-finite or exceeds the magnitude limit")
+    if (
+        not math.isfinite(float(result))
+        or abs(float(result)) > MAX_CALCULATION_MAGNITUDE
+    ):
+        raise ValueError(
+            "calculation result is non-finite or exceeds the magnitude limit"
+        )
     return float(result)
 
 
 def _stable(value: object) -> str:
-    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()).hexdigest()
+    return hashlib.sha256(
+        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()
+    ).hexdigest()
 
 
 def _slug(value: str) -> str:
@@ -155,7 +196,16 @@ class SourceArtifact:
         if len(data) > max_bytes:
             raise ValueError("source exceeds the bounded foundry input size")
         text = data.decode("utf-8")
-        return cls(_slug(path.stem), source_kind, path.as_posix(), hashlib.sha256(data).hexdigest(), text, license, citation, version)
+        return cls(
+            _slug(path.stem),
+            source_kind,
+            path.as_posix(),
+            hashlib.sha256(data).hexdigest(),
+            text,
+            license,
+            citation,
+            version,
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -188,17 +238,25 @@ class CandidateSkill:
             f"{self.purpose} Use when a task requires {', '.join(self.triggers)}; "
             "keep outputs candidate-only until tests and admission evidence pass."
         )
-        procedure = "\n".join(f"{index}. {step}" for index, step in enumerate((
-            "Resolve and hash every source reference.",
-            "Load only the source fragments required for this task.",
-            "Produce the declared outputs with evidence links.",
-            "Run positive, negative, and failure-boundary tests.",
-            "Return a candidate artifact; request separate admission before activation.",
-        ), 1))
+        procedure = "\n".join(
+            f"{index}. {step}"
+            for index, step in enumerate(
+                (
+                    "Resolve and hash every source reference.",
+                    "Load only the source fragments required for this task.",
+                    "Produce the declared outputs with evidence links.",
+                    "Run positive, negative, and failure-boundary tests.",
+                    "Return a candidate artifact; request separate admission before activation.",
+                ),
+                1,
+            )
+        )
         return (
             f"---\nname: {self.skill_id}\ndescription: {json.dumps(description)}\n---\n\n"
             f"# {self.skill_id}\n\n{self.purpose}\n\n## Procedure\n\n{procedure}\n\n"
-            f"## Failure boundaries\n\n" + "\n".join(f"- {item}" for item in self.failure_cases) + "\n"
+            f"## Failure boundaries\n\n"
+            + "\n".join(f"- {item}" for item in self.failure_cases)
+            + "\n"
         )
 
 
@@ -227,36 +285,71 @@ class CalculationPackage:
 
 def compile_calculation(spec: CalculationSpec) -> CalculationPackage:
     name = _slug(spec.name).replace("-", "_")
-    if not name.isidentifier() or not spec.variables or set(spec.units) != set(spec.variables) | {"result"}:
-        raise ValueError("calculation requires a valid name and units for every variable plus result")
+    if (
+        not name.isidentifier()
+        or not spec.variables
+        or set(spec.units) != set(spec.variables) | {"result"}
+    ):
+        raise ValueError(
+            "calculation requires a valid name and units for every variable plus result"
+        )
     tree = ast.parse(spec.equation, mode="eval")
     _validate_calculation_tree(tree, spec.variables)
     arguments = ", ".join(spec.variables)
     python_source = f"def {name}({arguments}):\n    return {spec.equation}\n"
     javascript_expression = _render_javascript(tree)
-    javascript_helper = "const pyMod = (a, b) => ((a % b) + b) % b;\n" if any(isinstance(node, ast.Mod) for node in ast.walk(tree)) else ""
+    javascript_helper = (
+        "const pyMod = (a, b) => ((a % b) + b) % b;\n"
+        if any(isinstance(node, ast.Mod) for node in ast.walk(tree))
+        else ""
+    )
     javascript_source = f"{javascript_helper}export function {name}({arguments}) {{\n  return {javascript_expression};\n}}\n"
     schema = {
-        "$schema": "https://json-schema.org/draft/2020-12/schema", "type": "object",
-        "required": list(spec.variables), "additionalProperties": False,
-        "properties": {variable: {"type": "number", "x-unit": spec.units[variable]} for variable in spec.variables},
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "required": list(spec.variables),
+        "additionalProperties": False,
+        "properties": {
+            variable: {"type": "number", "x-unit": spec.units[variable]}
+            for variable in spec.variables
+        },
     }
     return CalculationPackage(
-        name, spec.equation, spec.variables, dict(spec.units), spec.dependencies,
-        python_source, javascript_source, schema,
-        ("zero", "negative input where domain permits", "large finite values", "boundary units"),
+        name,
+        spec.equation,
+        spec.variables,
+        dict(spec.units),
+        spec.dependencies,
+        python_source,
+        javascript_source,
+        schema,
+        (
+            "zero",
+            "negative input where domain permits",
+            "large finite values",
+            "boundary units",
+        ),
         ("division by zero", "non-numeric input", "unit mismatch", "non-finite result"),
     )
 
 
-def evaluate_calculation(package: CalculationPackage, values: Mapping[str, float]) -> float:
+def evaluate_calculation(
+    package: CalculationPackage, values: Mapping[str, float]
+) -> float:
     if set(values) != set(package.variables):
         raise ValueError("calculation inputs do not match the variable contract")
     for name, value in values.items():
         if isinstance(value, bool) or not isinstance(value, (int, float)):
-            raise ValueError(f"calculation input {name} must be numeric and cannot be boolean")
-        if not math.isfinite(float(value)) or abs(float(value)) > MAX_CALCULATION_MAGNITUDE:
-            raise ValueError(f"calculation input {name} is non-finite or exceeds the magnitude limit")
+            raise ValueError(
+                f"calculation input {name} must be numeric and cannot be boolean"
+            )
+        if (
+            not math.isfinite(float(value))
+            or abs(float(value)) > MAX_CALCULATION_MAGNITUDE
+        ):
+            raise ValueError(
+                f"calculation input {name} is non-finite or exceeds the magnitude limit"
+            )
     tree = ast.parse(package.equation, mode="eval")
     _validate_calculation_tree(tree, package.variables)
     return _interpret_calculation(tree, values)
@@ -299,7 +392,10 @@ def compile_foundry_bundle(
             errors.append(f"source_hash_mismatch:{source.source_id}")
         if not source.license:
             errors.append(f"source_license_missing:{source.source_id}")
-        if source.source_kind in {"paper", "standard", "white_paper"} and not source.citation:
+        if (
+            source.source_kind in {"paper", "standard", "white_paper"}
+            and not source.citation
+        ):
             errors.append(f"research_citation_missing:{source.source_id}")
         relationships = tuple(sorted(set(WIKI_LINK.findall(source.text))))
         for relation in relationships:
@@ -310,7 +406,9 @@ def compile_foundry_bundle(
                 continue
             heading = HEADING.match(cleaned)
             listed = LIST_ITEM.match(cleaned)
-            statement = heading.group(1) if heading else listed.group(1) if listed else cleaned
+            statement = (
+                heading.group(1) if heading else listed.group(1) if listed else cleaned
+            )
             if len(statement) < 8:
                 continue
             kind = "procedure" if listed else "concept" if heading else "claim"
@@ -319,13 +417,17 @@ def compile_foundry_bundle(
             if object_id in objects:
                 prior = objects[object_id]
                 objects[object_id] = KnowledgeObject(
-                    object_id, prior.kind, prior.statement,
+                    object_id,
+                    prior.kind,
+                    prior.statement,
                     tuple(sorted(set((*prior.evidence_refs, source.source_id)))),
                     tuple(sorted(set((*prior.relationships, *relationships)))),
                     min(1.0, prior.confidence + 0.1),
                 )
             else:
-                objects[object_id] = KnowledgeObject(object_id, kind, statement, (source.source_id,), relationships, 0.6)
+                objects[object_id] = KnowledgeObject(
+                    object_id, kind, statement, (source.source_id,), relationships, 0.6
+                )
             aggregate.append(statement)
     text = " ".join(aggregate).casefold()
     existing = set(map(str, registry_capability_ids))
@@ -339,26 +441,50 @@ def compile_foundry_bundle(
             errors.append(f"duplicate_capability:{skill_id}")
             continue
         references = tuple(source.source_id for source in values)
-        skills.append(CandidateSkill(
-            skill_id, f"Apply evidence-backed {capability} extracted from the supplied canonical knowledge.",
-            ("task", "evidence_refs"), (f"{capability}_result", "evidence_receipt"), hits,
-            (), (f"Use the compiled {capability} procedure on a bounded example.",),
-            ("positive_case", "negative_case", "missing_evidence", "effect_boundary"),
-            ("source evidence is missing", "input falls outside source assumptions", "tests do not reproduce"),
-            min(0.95, 0.55 + 0.05 * len(hits)), references,
-        ))
+        skills.append(
+            CandidateSkill(
+                skill_id,
+                f"Apply evidence-backed {capability} extracted from the supplied canonical knowledge.",
+                ("task", "evidence_refs"),
+                (f"{capability}_result", "evidence_receipt"),
+                hits,
+                (),
+                (f"Use the compiled {capability} procedure on a bounded example.",),
+                (
+                    "positive_case",
+                    "negative_case",
+                    "missing_evidence",
+                    "effect_boundary",
+                ),
+                (
+                    "source evidence is missing",
+                    "input falls outside source assumptions",
+                    "tests do not reproduce",
+                ),
+                min(0.95, 0.55 + 0.05 * len(hits)),
+                references,
+            )
+        )
     compiled_calculations = tuple(compile_calculation(spec) for spec in calculations)
-    schemas = tuple({
-        "$schema": "https://json-schema.org/draft/2020-12/schema", "title": skill.skill_id,
-        "type": "object", "required": list(skill.inputs),
-        "properties": {name: {} for name in skill.inputs}, "additionalProperties": False,
-    } for skill in skills) + tuple(package.input_schema for package in compiled_calculations)
+    schemas = tuple(
+        {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "title": skill.skill_id,
+            "type": "object",
+            "required": list(skill.inputs),
+            "properties": {name: {} for name in skill.inputs},
+            "additionalProperties": False,
+        }
+        for skill in skills
+    ) + tuple(package.input_schema for package in compiled_calculations)
     benchmarks = tuple(
         f"Given only evidence {', '.join(skill.references)}, exercise {skill.skill_id} and cite every supported output."
         for skill in skills
     )
     knowledge = tuple(objects[key] for key in sorted(objects))
-    evidence_coverage = sum(bool(item.evidence_refs) for item in knowledge) / max(1, len(knowledge))
+    evidence_coverage = sum(bool(item.evidence_refs) for item in knowledge) / max(
+        1, len(knowledge)
+    )
     fitness = {
         "evidence_coverage": round(evidence_coverage, 6),
         "source_count": float(len(values)),
@@ -367,15 +493,33 @@ def compile_foundry_bundle(
         "calculation_count": float(len(compiled_calculations)),
         "duplicate_ratio": round(1 - len(knowledge) / max(1, len(aggregate)), 6),
     }
-    source_records = tuple({
-        "source_id": source.source_id, "source_kind": source.source_kind, "locator": source.locator,
-        "sha256": source.sha256, "license": source.license, "citation": source.citation,
-        "version": source.version,
-    } for source in values)
-    bundle_id = _stable({"sources": source_records, "knowledge": [asdict(item) for item in knowledge]})
+    source_records = tuple(
+        {
+            "source_id": source.source_id,
+            "source_kind": source.source_kind,
+            "locator": source.locator,
+            "sha256": source.sha256,
+            "license": source.license,
+            "citation": source.citation,
+            "version": source.version,
+        }
+        for source in values
+    )
+    bundle_id = _stable(
+        {"sources": source_records, "knowledge": [asdict(item) for item in knowledge]}
+    )
     return FoundryBundle(
-        bundle_id, "candidate", source_records, knowledge, tuple(sorted(graph_edges)), tuple(skills),
-        compiled_calculations, schemas, benchmarks, fitness, tuple(sorted(set(errors))),
+        bundle_id,
+        "candidate",
+        source_records,
+        knowledge,
+        tuple(sorted(graph_edges)),
+        tuple(skills),
+        compiled_calculations,
+        schemas,
+        benchmarks,
+        fitness,
+        tuple(sorted(set(errors))),
     )
 
 
@@ -384,7 +528,16 @@ def certify_foundry_bundle(bundle: FoundryBundle) -> dict[str, object]:
     if not bundle.knowledge:
         errors.append("canonical_knowledge_empty")
     for skill in bundle.skills:
-        if skill.status != "candidate" or not all((skill.inputs, skill.outputs, skill.triggers, skill.tests, skill.failure_cases, skill.references)):
+        if skill.status != "candidate" or not all(
+            (
+                skill.inputs,
+                skill.outputs,
+                skill.triggers,
+                skill.tests,
+                skill.failure_cases,
+                skill.references,
+            )
+        ):
             errors.append(f"skill_contract_incomplete:{skill.skill_id}")
         if not skill.skill_markdown().startswith("---\n"):
             errors.append(f"skill_render_invalid:{skill.skill_id}")
@@ -400,61 +553,104 @@ def certify_foundry_bundle(bundle: FoundryBundle) -> dict[str, object]:
         "activation": "candidate_only",
         "auto_activate": False,
         "checked": {
-            "sources": len(bundle.sources), "knowledge": len(bundle.knowledge),
-            "skills": len(bundle.skills), "calculations": len(bundle.calculations),
-            "schemas": len(bundle.schemas), "benchmarks": len(bundle.benchmark_prompts),
+            "sources": len(bundle.sources),
+            "knowledge": len(bundle.knowledge),
+            "skills": len(bundle.skills),
+            "calculations": len(bundle.calculations),
+            "schemas": len(bundle.schemas),
+            "benchmarks": len(bundle.benchmark_prompts),
         },
     }
 
 
-def materialize_candidate_bundle(bundle: FoundryBundle, destination: Path) -> dict[str, object]:
+def materialize_candidate_bundle(
+    bundle: FoundryBundle, destination: Path
+) -> dict[str, object]:
     certification = certify_foundry_bundle(bundle)
     if certification["decision"] != "certified_candidate":
-        raise ValueError("foundry bundle cannot be materialized before candidate certification")
+        raise ValueError(
+            "foundry bundle cannot be materialized before candidate certification"
+        )
     root = destination.resolve() / bundle.bundle_id
     root.mkdir(parents=True, exist_ok=False)
     files = {}
-    files[Path("bundle.json")] = json.dumps(asdict(bundle), indent=2, default=str) + "\n"
+    files[Path("bundle.json")] = (
+        json.dumps(asdict(bundle), indent=2, default=str) + "\n"
+    )
     files[Path("certification.json")] = json.dumps(certification, indent=2) + "\n"
-    files[Path("knowledge.json")] = json.dumps([asdict(item) for item in bundle.knowledge], indent=2) + "\n"
-    files[Path("graph.json")] = json.dumps({"edges": bundle.graph_edges}, indent=2) + "\n"
-    files[Path("benchmarks.json")] = json.dumps({"prompts": bundle.benchmark_prompts}, indent=2) + "\n"
+    files[Path("knowledge.json")] = (
+        json.dumps([asdict(item) for item in bundle.knowledge], indent=2) + "\n"
+    )
+    files[Path("graph.json")] = (
+        json.dumps({"edges": bundle.graph_edges}, indent=2) + "\n"
+    )
+    files[Path("benchmarks.json")] = (
+        json.dumps({"prompts": bundle.benchmark_prompts}, indent=2) + "\n"
+    )
     for index, skill in enumerate(bundle.skills):
         files[Path("skills") / skill.skill_id / "SKILL.md"] = skill.skill_markdown()
-        files[Path("skills") / skill.skill_id / "manifest.json"] = json.dumps(asdict(skill), indent=2) + "\n"
-        files[Path("schemas") / f"{skill.skill_id}.schema.json"] = json.dumps(bundle.schemas[index], indent=2) + "\n"
+        files[Path("skills") / skill.skill_id / "manifest.json"] = (
+            json.dumps(asdict(skill), indent=2) + "\n"
+        )
+        files[Path("schemas") / f"{skill.skill_id}.schema.json"] = (
+            json.dumps(bundle.schemas[index], indent=2) + "\n"
+        )
     for package in bundle.calculations:
         base = Path("calculations") / package.calculation_id
         files[base / "calculation.py"] = package.python_source
         files[base / "calculation.js"] = package.javascript_source
-        files[base / "input.schema.json"] = json.dumps(package.input_schema, indent=2) + "\n"
+        files[base / "input.schema.json"] = (
+            json.dumps(package.input_schema, indent=2) + "\n"
+        )
     records = []
     for relative, content in sorted(files.items(), key=lambda item: item[0].as_posix()):
         path = root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("x", encoding="utf-8", newline="\n") as stream:
             stream.write(content)
-        records.append({"path": relative.as_posix(), "sha256": hashlib.sha256(content.encode()).hexdigest()})
-    receipt = {"bundle_id": bundle.bundle_id, "state": "candidate", "files": records, "hard_delete": False}
+        records.append(
+            {
+                "path": relative.as_posix(),
+                "sha256": hashlib.sha256(content.encode()).hexdigest(),
+            }
+        )
+    receipt = {
+        "bundle_id": bundle.bundle_id,
+        "state": "candidate",
+        "files": records,
+        "hard_delete": False,
+    }
     with (root / "receipt.json").open("x", encoding="utf-8", newline="\n") as stream:
         json.dump(receipt, stream, indent=2)
         stream.write("\n")
     return receipt
 
 
-def compose_candidate_skills(skills: Iterable[CandidateSkill], *, name: str) -> CandidateSkill:
+def compose_candidate_skills(
+    skills: Iterable[CandidateSkill], *, name: str
+) -> CandidateSkill:
     values = tuple(skills)
     if len(values) < 2 or any(skill.status != "candidate" for skill in values):
         raise ValueError("composition requires at least two candidate skills")
     return CandidateSkill(
-        _slug(name), f"Compose {', '.join(skill.skill_id for skill in values)} without duplicating their source knowledge.",
+        _slug(name),
+        f"Compose {', '.join(skill.skill_id for skill in values)} without duplicating their source knowledge.",
         tuple(sorted({item for skill in values for item in skill.inputs})),
         tuple(sorted({item for skill in values for item in skill.outputs})),
         tuple(sorted({item for skill in values for item in skill.triggers})),
         tuple(sorted(skill.skill_id for skill in values)),
         tuple(item for skill in values for item in skill.examples),
-        ("composition_happy_path", "dependency_failure", "conflicting_output", "evidence_lineage"),
-        ("dependency is not admitted", "outputs conflict", "combined effects exceed policy"),
+        (
+            "composition_happy_path",
+            "dependency_failure",
+            "conflicting_output",
+            "evidence_lineage",
+        ),
+        (
+            "dependency is not admitted",
+            "outputs conflict",
+            "combined effects exceed policy",
+        ),
         min(skill.confidence for skill in values),
         tuple(sorted({item for skill in values for item in skill.references})),
     )
@@ -470,12 +666,31 @@ def evolution_recommendations(
     recommendations = []
     for skill in values:
         if usage.get(skill.skill_id, 0) == 0:
-            recommendations.append({"skill_id": skill.skill_id, "action": "review_for_deprecation", "automatic": False})
+            recommendations.append(
+                {
+                    "skill_id": skill.skill_id,
+                    "action": "review_for_deprecation",
+                    "automatic": False,
+                }
+            )
         if failure_rates.get(skill.skill_id, 0.0) > 0.2:
-            recommendations.append({"skill_id": skill.skill_id, "action": "repair_and_recertify", "automatic": False})
+            recommendations.append(
+                {
+                    "skill_id": skill.skill_id,
+                    "action": "repair_and_recertify",
+                    "automatic": False,
+                }
+            )
     for index, left in enumerate(values):
-        for right in values[index + 1:]:
+        for right in values[index + 1 :]:
             overlap = set(left.outputs) & set(right.outputs)
             if overlap:
-                recommendations.append({"skills": (left.skill_id, right.skill_id), "action": "review_merge_or_boundary", "overlap": tuple(sorted(overlap)), "automatic": False})
+                recommendations.append(
+                    {
+                        "skills": (left.skill_id, right.skill_id),
+                        "action": "review_merge_or_boundary",
+                        "overlap": tuple(sorted(overlap)),
+                        "automatic": False,
+                    }
+                )
     return tuple(recommendations)

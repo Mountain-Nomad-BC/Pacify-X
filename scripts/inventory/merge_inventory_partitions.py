@@ -1,4 +1,5 @@
 """Merge deterministic inventory partitions without loading the corpus into memory."""
+
 from __future__ import annotations
 
 import argparse
@@ -21,7 +22,9 @@ def _records(path: Path):
             try:
                 record = json.loads(line)
             except json.JSONDecodeError as error:
-                raise ValueError(f"{path}:{line_number}: invalid JSONL: {error}") from error
+                raise ValueError(
+                    f"{path}:{line_number}: invalid JSONL: {error}"
+                ) from error
             yield ((record["source_tree"], record["path"], record["id"]), record)
 
 
@@ -40,7 +43,9 @@ def merge(inputs: list[Path], output: Path, summary_path: Path) -> dict:
     kinds: Counter[str] = Counter()
     domains: Counter[str] = Counter()
     extensions: Counter[str] = Counter()
-    iterators = [_records(path) for path in sorted(inputs, key=lambda item: item.as_posix())]
+    iterators = [
+        _records(path) for path in sorted(inputs, key=lambda item: item.as_posix())
+    ]
     with output.open("w", encoding="utf-8", newline="\n") as handle:
         for _, record in heapq.merge(*iterators, key=lambda item: item[0]):
             record_id = record["id"]
@@ -66,7 +71,9 @@ def merge(inputs: list[Path], output: Path, summary_path: Path) -> dict:
         "content_kinds": dict(sorted(kinds.items())),
         "domains": dict(sorted(domains.items())),
         "extensions": dict(extensions.most_common()),
-        "inputs": [path.as_posix() for path in sorted(inputs, key=lambda item: item.as_posix())],
+        "inputs": [
+            path.as_posix() for path in sorted(inputs, key=lambda item: item.as_posix())
+        ],
     }
     summary_path.parent.mkdir(parents=True, exist_ok=True)
     summary_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")

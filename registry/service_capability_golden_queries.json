@@ -1,0 +1,251 @@
+{
+  "schema_version": "1.0",
+  "cases": [
+    {
+      "id": "n8n-install-docker",
+      "goal": "Install n8n self-hosted with Docker and persistent storage",
+      "must_include": [
+        "acquire-install-n8n",
+        "deploy-n8n-docker"
+      ],
+      "must_exclude": [
+        "scale-n8n-queue-mode"
+      ],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "n8n-fit",
+      "goal": "Should this synchronization use n8n or direct code?",
+      "must_include": [
+        "evaluate-n8n-fit"
+      ],
+      "must_exclude": [
+        "acquire-install-n8n"
+      ],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "n8n-secure",
+      "goal": "Harden production n8n handling customer data",
+      "must_include": [
+        "secure-n8n"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "n8n-queue",
+      "goal": "Scale n8n with Redis workers and task runners",
+      "must_include": [
+        "scale-n8n-queue-mode"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "n8n-debug",
+      "goal": "A retried n8n execution sent duplicate invoices",
+      "must_include": [
+        "handle-debug-n8n-executions"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "n8n-node",
+      "goal": "Build a typed custom n8n node for an internal API",
+      "must_include": [
+        "build-n8n-custom-nodes"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "n8n-source",
+      "goal": "Modify the n8n monorepo with the right pnpm checks",
+      "must_include": [
+        "develop-n8n-monorepo"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "n8n-mcp",
+      "goal": "Expose selected n8n workflows as MCP tools",
+      "must_include": [
+        "use-n8n-mcp"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "supabase-cli",
+      "goal": "Install Supabase CLI locally in a pnpm project",
+      "must_include": [
+        "acquire-install-supabase"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "supabase-local",
+      "goal": "Run Supabase locally and reset seeded data",
+      "must_include": [
+        "develop-supabase-locally"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "supabase-rls",
+      "goal": "Write and test tenant-isolated RLS policies",
+      "must_include": [
+        "secure-supabase-rls"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "supabase-auth",
+      "goal": "Implement Supabase OAuth and SSR sessions",
+      "must_include": [
+        "implement-supabase-auth"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "supabase-vector",
+      "goal": "Tune filtered pgvector HNSW retrieval",
+      "must_include": [
+        "operate-supabase-vector-search"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "supabase-mcp",
+      "goal": "Connect an AI assistant to read-only project-scoped Supabase MCP",
+      "must_include": [
+        "use-supabase-mcp-and-agent-skills"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "cross-connect",
+      "goal": "Connect n8n to a custom schema in Supabase",
+      "must_include": [
+        "connect-n8n-to-supabase"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "cross-event",
+      "goal": "Trigger n8n from Supabase without duplicate side effects",
+      "must_include": [
+        "automate-supabase-with-n8n",
+        "design-n8n-supabase-reliability"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "cross-rag",
+      "goal": "Ingest documents in n8n and retrieve with Supabase pgvector",
+      "must_include": [
+        "build-n8n-supabase-rag"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "cross-security",
+      "goal": "Review service-role use between n8n and Supabase",
+      "must_include": [
+        "design-n8n-supabase-security-boundaries"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "cross-test",
+      "goal": "End-to-end test n8n with local Supabase and RLS roles",
+      "must_include": [
+        "test-n8n-supabase-integrations"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    },
+    {
+      "id": "cross-ops",
+      "goal": "Monitor and recover production n8n plus Supabase",
+      "must_include": [
+        "operate-n8n-supabase-production"
+      ],
+      "must_exclude": [],
+      "max_candidates": 4,
+      "constraints": {
+        "max_risk": "high"
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "id": "govern-external-capability-intake",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/govern-external-capability-intake/SKILL.md",
+  "body_sha256": "c58e5a9c6e10485d5463caaad9446cc6665f25c28d2feda0a6cacf7fe021370e",
+  "references": [
+    ".agents/skills/govern-external-capability-intake/references/runtime-contract.md"
+  ],
+  "capability_tags": [
+    "admission",
+    "external-candidates",
+    "hooks",
+    "routing",
+    "session-fabric",
+    "staging"
+  ],
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "provenance": {
+    "type": "sanitized_clean_room_integration",
+    "basis": [
+      "registry/external_capability_catalog.json",
+      "contracts/external_capabilities/selective-stage-plan.schema.json",
+      "tests/test_external_capability_provider.py"
+    ],
+    "canonical_owner": "runtime/external_capability_provider.py"
+  },
+  "clean_room": true,
+  "tests": "tests/test_external_capability_provider.py",
+  "evidence": "tests/test_external_capability_provider.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

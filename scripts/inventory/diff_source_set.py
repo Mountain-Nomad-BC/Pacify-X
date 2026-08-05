@@ -1,4 +1,5 @@
 """Build a deterministic content diff for a source set against the rest of a workspace."""
+
 from __future__ import annotations
 
 import argparse
@@ -10,8 +11,23 @@ import re
 
 
 TEXT_SUFFIXES = {
-    ".md", ".txt", ".json", ".jsonl", ".yaml", ".yml", ".csv", ".mmd",
-    ".toml", ".py", ".ps1", ".sh", ".js", ".ts", ".tsx", ".html", ".css",
+    ".md",
+    ".txt",
+    ".json",
+    ".jsonl",
+    ".yaml",
+    ".yml",
+    ".csv",
+    ".mmd",
+    ".toml",
+    ".py",
+    ".ps1",
+    ".sh",
+    ".js",
+    ".ts",
+    ".tsx",
+    ".html",
+    ".css",
 }
 SKIP_NAMES = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
 
@@ -38,7 +54,9 @@ def normalized_hash(path: Path) -> str | None:
 def files_under(root: Path, *, excluded_roots: tuple[Path, ...] = ()):
     excluded = tuple(path.resolve() for path in excluded_roots)
     for path in sorted(root.rglob("*"), key=lambda item: item.as_posix().casefold()):
-        if not path.is_file() or any(part in SKIP_NAMES for part in path.relative_to(root).parts):
+        if not path.is_file() or any(
+            part in SKIP_NAMES for part in path.relative_to(root).parts
+        ):
             continue
         resolved = path.resolve()
         if any(resolved == item or item in resolved.parents for item in excluded):
@@ -52,8 +70,18 @@ def scope(relative: str, target_name: str) -> str:
         return "unknown"
     if parts[0] == target_name:
         if len(parts) > 1 and parts[1] in {
-            "runtime", "builders", "contracts", "registry", "orchestration", "bootstrap",
-            "tests", ".agents", "policies", "integrations", "models", "knowledge",
+            "runtime",
+            "builders",
+            "contracts",
+            "registry",
+            "orchestration",
+            "bootstrap",
+            "tests",
+            ".agents",
+            "policies",
+            "integrations",
+            "models",
+            "knowledge",
         }:
             return "active_implementation"
         if len(parts) > 2 and parts[1:3] == ("planning", "inventory"):
@@ -105,24 +133,30 @@ def main() -> int:
                 normalized_matches.append(match)
         exact_matches.sort(key=lambda item: (item["scope"], item["path"]))
         normalized_matches.sort(key=lambda item: (item["scope"], item["path"]))
-        records.append({
-            "source_path": path.relative_to(source).as_posix(),
-            "extension": path.suffix.casefold(),
-            "bytes": size,
-            "sha256": digest,
-            "normalized_sha256": normalized,
-            "exact_matches": exact_matches,
-            "normalized_matches": normalized_matches,
-            "exact_active_implementation": any(item["scope"] == "active_implementation" for item in exact_matches),
-            "exact_anywhere": bool(exact_matches),
-        })
+        records.append(
+            {
+                "source_path": path.relative_to(source).as_posix(),
+                "extension": path.suffix.casefold(),
+                "bytes": size,
+                "sha256": digest,
+                "normalized_sha256": normalized,
+                "exact_matches": exact_matches,
+                "normalized_matches": normalized_matches,
+                "exact_active_implementation": any(
+                    item["scope"] == "active_implementation" for item in exact_matches
+                ),
+                "exact_anywhere": bool(exact_matches),
+            }
+        )
 
     records.sort(key=lambda item: str(item["source_path"]).casefold())
     counts = Counter()
     for record in records:
         counts["source_files"] += 1
         counts["exact_anywhere"] += int(bool(record["exact_anywhere"]))
-        counts["exact_active_implementation"] += int(bool(record["exact_active_implementation"]))
+        counts["exact_active_implementation"] += int(
+            bool(record["exact_active_implementation"])
+        )
         counts["no_exact_match"] += int(not bool(record["exact_anywhere"]))
         counts["markdown"] += int(record["extension"] == ".md")
     output = {

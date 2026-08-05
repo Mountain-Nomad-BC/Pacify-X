@@ -1,4 +1,5 @@
 """Build the closed-world registry/workflow ownership and reachability inventory."""
+
 from __future__ import annotations
 
 import json
@@ -13,7 +14,11 @@ from runtime.artifact_reachability import build_artifact_reachability  # noqa: E
 def main() -> int:
     output = ROOT / "registry/artifact_reachability.json"
     value = build_artifact_reachability(ROOT)
-    output.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+    output.write_text(
+        json.dumps(value, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
     print(json.dumps({"valid": True, "record_count": value["record_count"]}))
     return 0
 

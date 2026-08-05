@@ -1,0 +1,1278 @@
+{
+  "schema_version": "1.0",
+  "generator": "pacify-x.integration-disposition/1.0.0",
+  "source_alias": "n8n_supabase_capability_pack",
+  "expected_tree_sha256": null,
+  "inventory_sha256": "550b2be10e883183c18f4f3be4191511c59863ad745d93149d7c6e8d65412f4c",
+  "file_count": 140,
+  "byte_count": 392823,
+  "unaccounted_count": 0,
+  "disposition_counts": {
+    "fragment": 2,
+    "merge": 123,
+    "retain": 15
+  },
+  "records": [
+    {
+      "source_path": "INTEGRATION_INSTRUCTIONS_FOR_CODEX.md",
+      "bytes": 2110,
+      "sha256": "1409d294910c982efa74ff9e8efaafb0c56f06f996daf289665e870b6c227c5a",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    },
+    {
+      "source_path": "MANIFEST.json",
+      "bytes": 27624,
+      "sha256": "079eaad364ad10349d17d11cdb714e876c798f8ef5311ff4083f4b1cdf9f3e8a",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/acquire-install-n8n/SKILL.md",
+      "bytes": 2822,
+      "sha256": "30b739e07091695f59d196f840527c2d8ddca3e80165d50e35c0294dc20db974",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/acquire-install-n8n",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/acquire-install-supabase/SKILL.md",
+      "bytes": 3091,
+      "sha256": "536bcecab1eb8a9e3884f5ef258ca766a16205c04ec971ee9dc99faa9c51ab87",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/acquire-install-supabase",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/automate-supabase-with-n8n/SKILL.md",
+      "bytes": 2986,
+      "sha256": "27eb888ff5fab8bdc992ee02b47f50306117f7ea0adc5519c3588b76717931ee",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/automate-supabase-with-n8n",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/backup-deploy-recover-supabase/SKILL.md",
+      "bytes": 2932,
+      "sha256": "ba63e7073a36ff2924097c0bd5073250975d5ced01f0e105cdab67dd6748fd17",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/backup-deploy-recover-supabase",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/backup-upgrade-restore-n8n/SKILL.md",
+      "bytes": 2817,
+      "sha256": "8e3ebcf27c0aeb717b4ebf8e2791cb90a789128e63fd2484759e44a3b7c622e3",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/backup-upgrade-restore-n8n",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/build-n8n-ai-workflows/SKILL.md",
+      "bytes": 2911,
+      "sha256": "da60dadc796cd2d23129a3d6d9a1bc91e2ff7b9007146025d3dfc522eb602aab",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/build-n8n-ai-workflows",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/build-n8n-custom-nodes/SKILL.md",
+      "bytes": 2838,
+      "sha256": "f22ee7ccd43b49113ae2087b7212edebaff09e3a0d4ec01612e1a76ca05e3caa",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/build-n8n-custom-nodes",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/build-n8n-supabase-rag/SKILL.md",
+      "bytes": 2937,
+      "sha256": "dbe7e95583579da5f3b7c7343dd2d8f82b96da75cfe6f9dddd63b96c687bd878",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/build-n8n-supabase-rag",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/build-supabase-edge-functions/SKILL.md",
+      "bytes": 2917,
+      "sha256": "25ba3abf95f631f7f495bffd18eb989d10aace92dd6607d71ca3148f1a48ab04",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/build-supabase-edge-functions",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/configure-n8n/SKILL.md",
+      "bytes": 2843,
+      "sha256": "88358555f9da1f345d96191ab50ada90b7e84f68fb244ba9080ea6b35fbb9cbe",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/configure-n8n",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/connect-n8n-to-supabase/SKILL.md",
+      "bytes": 3053,
+      "sha256": "870fdfa310dc54a8e43c7fc9322810f0c2581291df8cb06036624b0a3cce1d61",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/connect-n8n-to-supabase",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/deploy-n8n-docker/SKILL.md",
+      "bytes": 2909,
+      "sha256": "65d98e5a78333ba2c993c9f9047c5899ee2866579827ac1252c624bf1b2fa464",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/deploy-n8n-docker",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/design-build-n8n-workflows/SKILL.md",
+      "bytes": 2885,
+      "sha256": "7596197bc84e03c98e5455ddacca706462db180930b56c9198126f275b7b5399",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/design-build-n8n-workflows",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/design-n8n-supabase-reliability/SKILL.md",
+      "bytes": 3009,
+      "sha256": "3c91e7463bb18e4881b7ab92f95b40a9026d8248edf5194cd052e9725f8f05c4",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/design-n8n-supabase-reliability",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/design-n8n-supabase-security-boundaries/SKILL.md",
+      "bytes": 3051,
+      "sha256": "f695d58b98e63c1ee9dc713073ea95494bcc03acb1a63caff9c5258f611127cd",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/design-n8n-supabase-security-boundaries",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/design-supabase-postgres/SKILL.md",
+      "bytes": 2878,
+      "sha256": "0d081972a022382d9ae18d74eb87ed614574f5707528ab582af915988468d070",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/design-supabase-postgres",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/develop-n8n-monorepo/SKILL.md",
+      "bytes": 2955,
+      "sha256": "5a5de52f4427c3c40fe8c5cb6459933ec2e1a61af78156d753c66dcf33d85f3b",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/develop-n8n-monorepo",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/develop-supabase-locally/SKILL.md",
+      "bytes": 2813,
+      "sha256": "a39628d128198f8a104601e2df2b1be7035a400a7da13cba33debabe6e1bfdcd",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/develop-supabase-locally",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/evaluate-n8n-fit/SKILL.md",
+      "bytes": 2845,
+      "sha256": "681a27938f1bf8413bd8d17585aea577a206259794856ba312e90ccca69c1825",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/evaluate-n8n-fit",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/evaluate-supabase-fit/SKILL.md",
+      "bytes": 2863,
+      "sha256": "ad4e5cbccead50dd7be7250b4f6885e287791e1de680c66c5bc57148c6e0084b",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/evaluate-supabase-fit",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/govern-n8n-community-nodes/SKILL.md",
+      "bytes": 2868,
+      "sha256": "620259d7a7ec1b16d9579778c13716a83e44413ecd1414f50ff7ba92be5d6ddb",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/govern-n8n-community-nodes",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/handle-debug-n8n-executions/SKILL.md",
+      "bytes": 2778,
+      "sha256": "b74f7925b5ab1c9a21bb0494a07f99719deed863470c6156d88bdfdb362aca00",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/handle-debug-n8n-executions",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/implement-supabase-auth/SKILL.md",
+      "bytes": 2957,
+      "sha256": "56b9e42676cee3e94a423bc720ee63ea24362fcc045bee9e67e3126cd3d2c95d",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/implement-supabase-auth",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/integrate-n8n-webhooks-and-apis/SKILL.md",
+      "bytes": 2998,
+      "sha256": "ed7c587a6341acf4b6bf7b0f0dd914d60df5e189bfd24cbc38d10b12fce28245",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/integrate-n8n-webhooks-and-apis",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/integrate-supabase-data-api-and-clients/SKILL.md",
+      "bytes": 3023,
+      "sha256": "f70bf975c1a035974d27e65a5461e8dfa4af71913a6f1dad3d75c4c785c24020",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/integrate-supabase-data-api-and-clients",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/manage-n8n-credentials/SKILL.md",
+      "bytes": 2842,
+      "sha256": "3e3abadf736bdbf5ba62fcf45f8a146ec9dd45c9c9ba4b666f292688b5a20687",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/manage-n8n-credentials",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/manage-supabase-environments/SKILL.md",
+      "bytes": 2832,
+      "sha256": "b399b51164a755801e010b7bcabc3831840fea52db9cd9d38b7b4f9a4364bf8f",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/manage-supabase-environments",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/manage-supabase-migrations/SKILL.md",
+      "bytes": 2896,
+      "sha256": "532eef79602b517be9a097573045a293d55e754082345ce018a4045fed1ea30c",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/manage-supabase-migrations",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/observe-debug-supabase/SKILL.md",
+      "bytes": 2929,
+      "sha256": "c810d89c49b7d5eedd1c0c1fe8652f9ac1083b440ca033c81e99a09bd77153ec",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/observe-debug-supabase",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/observe-operate-n8n/SKILL.md",
+      "bytes": 2754,
+      "sha256": "798ba11bdea5e396739126f1f1ec9cc1b5f81b4343e9ad3e8c31d5bba521350d",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/observe-operate-n8n",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/operate-n8n-supabase-production/SKILL.md",
+      "bytes": 3002,
+      "sha256": "668d58661f13269d37df5465da7ef91c5c8a55b17cf1f633bb11a1d709e7764e",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/operate-n8n-supabase-production",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/operate-supabase-vector-search/SKILL.md",
+      "bytes": 3086,
+      "sha256": "e133b865f97203834cdcb019ffe1ac5f6323b139f6ae5d6fb5b93d5968025842",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/operate-supabase-vector-search",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/route-n8n-capabilities/SKILL.md",
+      "bytes": 2907,
+      "sha256": "e2809c14bb2d98c2e70a7de4b1362631f5b9dac47141ab72c146f60f1a72c706",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-n8n-capabilities",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/route-n8n-supabase-stack/SKILL.md",
+      "bytes": 2889,
+      "sha256": "a139acaabd598b87f1a6ca8861940452ae4cc04329711d84c8918d5e12960a6c",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-n8n-supabase-stack",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/route-supabase-capabilities/SKILL.md",
+      "bytes": 2865,
+      "sha256": "fba482aa973ade3fbde099e47780e87c947c6773e5fbfd638059b30fa4f30497",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-supabase-capabilities",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/scale-n8n-queue-mode/SKILL.md",
+      "bytes": 2955,
+      "sha256": "981a60b9811004875c930fd471a9edfb0ca9c3e4f24f9be7110ad3620fc8d134",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/scale-n8n-queue-mode",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/secure-n8n/SKILL.md",
+      "bytes": 2879,
+      "sha256": "65e6ddb296e3ef7ef75443afcf53fa863ce734cbb0d17370b68b6f7eb24a972c",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/secure-n8n",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/secure-supabase-rls/SKILL.md",
+      "bytes": 2958,
+      "sha256": "45f0d683b083a8757ecdb42cccb241d6b6404a9c62562084eeb824c3abe006cc",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/secure-supabase-rls",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/self-host-supabase/SKILL.md",
+      "bytes": 2880,
+      "sha256": "ea187f08817c7c84bda8b81ed49fb5148ad7d37fdf80e3a2e0cd71a08e594182",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/self-host-supabase",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/test-n8n-supabase-integrations/SKILL.md",
+      "bytes": 2970,
+      "sha256": "23c0b549b22743d4347330cc62769c45263d7fd2a57ee4f5108cdd9f7c2a520b",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/test-n8n-supabase-integrations",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/test-validate-n8n-workflows/SKILL.md",
+      "bytes": 2764,
+      "sha256": "35d51b1e75c68cc675a92bec34863892f7a79c3e654fded531e67757e091813a",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/test-validate-n8n-workflows",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/use-n8n-expressions-and-data/SKILL.md",
+      "bytes": 2808,
+      "sha256": "9b89a33de357e24e1cd27d06ca9f98e608ff0dc3e07636014d3e4e73459bc5bc",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/use-n8n-expressions-and-data",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/use-n8n-mcp/SKILL.md",
+      "bytes": 2967,
+      "sha256": "4614a6b1edd76c2b4094a63dbf013e5ac8758e34a175973f282c1fe4a97d7647",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/use-n8n-mcp",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/use-supabase-mcp-and-agent-skills/SKILL.md",
+      "bytes": 3098,
+      "sha256": "3f3f6cf2c9395d27779bbcc6bf516a9d13f65c5ce1b623f009c4a50b6685dc71",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/use-supabase-mcp-and-agent-skills",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/use-supabase-realtime/SKILL.md",
+      "bytes": 2822,
+      "sha256": "6a98e3baa4ca3c8ac91dc51b1baaa8c0ba3046e61edc6b8f964efad8fd1a28d3",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/use-supabase-realtime",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/.agents/skills/use-supabase-storage/SKILL.md",
+      "bytes": 2832,
+      "sha256": "f6b2b4083f9d679ecb90d657242d2b37283d7b576fffe4c48ef0083d5f7ed571",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/use-supabase-storage",
+      "target_path": null,
+      "rationale": "clean-room product skill admitted lazily with explicit effects and policy boundaries"
+    },
+    {
+      "source_path": "pacify-x-overlay/knowledge/cross-stack/00-architecture.md",
+      "bytes": 832,
+      "sha256": "0e7436bfa43c1d2de3a10461be63f797ff192de056945c532467f9dd937d87fe",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-n8n-supabase-stack/references/knowledge",
+      "target_path": null,
+      "rationale": "product knowledge moved behind lazy router references"
+    },
+    {
+      "source_path": "pacify-x-overlay/knowledge/cross-stack/01-suggestion-decision-matrix.md",
+      "bytes": 1380,
+      "sha256": "92743b094d9e9dbd1fe8ef284dbc362027716cc26e23313a12ac2a19269886c5",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-n8n-supabase-stack/references/knowledge",
+      "target_path": null,
+      "rationale": "product knowledge moved behind lazy router references"
+    },
+    {
+      "source_path": "pacify-x-overlay/knowledge/n8n/00-capability-map.md",
+      "bytes": 1410,
+      "sha256": "28f0885077d7b8444b8a86ffad7864c1ca15f570ed13709ceeed4a427bfc0a71",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-n8n-supabase-stack/references/knowledge",
+      "target_path": null,
+      "rationale": "product knowledge moved behind lazy router references"
+    },
+    {
+      "source_path": "pacify-x-overlay/knowledge/n8n/01-install-deploy-operate.md",
+      "bytes": 1246,
+      "sha256": "ef5644b4a1b08f7ec5068a5c71c443a6de47fad8b30c811d9bdc7907174082c1",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-n8n-supabase-stack/references/knowledge",
+      "target_path": null,
+      "rationale": "product knowledge moved behind lazy router references"
+    },
+    {
+      "source_path": "pacify-x-overlay/knowledge/n8n/02-workflow-engineering.md",
+      "bytes": 739,
+      "sha256": "f806fb644557d21add1fe1baf3010d74182968683c45d12f8ccca7f550d6311d",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-n8n-supabase-stack/references/knowledge",
+      "target_path": null,
+      "rationale": "product knowledge moved behind lazy router references"
+    },
+    {
+      "source_path": "pacify-x-overlay/knowledge/n8n/03-security-extensions-ai-mcp.md",
+      "bytes": 950,
+      "sha256": "9d7a96e1365419ac8a32a4758d265111f69441df606f2bf87458d90b717b4eef",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-n8n-supabase-stack/references/knowledge",
+      "target_path": null,
+      "rationale": "product knowledge moved behind lazy router references"
+    },
+    {
+      "source_path": "pacify-x-overlay/knowledge/n8n/04-native-source-findings.md",
+      "bytes": 1436,
+      "sha256": "53416cd7b36e41e3bbe182497e32a05cdcdff9e29f2baab662c4fd8fbc78c66c",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-n8n-supabase-stack/references/knowledge",
+      "target_path": null,
+      "rationale": "product knowledge moved behind lazy router references"
+    },
+    {
+      "source_path": "pacify-x-overlay/knowledge/supabase/00-capability-map.md",
+      "bytes": 724,
+      "sha256": "248c377931d94e65264a4ad118b542b4100fc064bffe1796c43ca52c201d3d7a",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-n8n-supabase-stack/references/knowledge",
+      "target_path": null,
+      "rationale": "product knowledge moved behind lazy router references"
+    },
+    {
+      "source_path": "pacify-x-overlay/knowledge/supabase/01-cli-local-environments.md",
+      "bytes": 880,
+      "sha256": "511d71e35b72e6252adea7637191c1967559d4b0dfa949790f30ba40d8f1ad40",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-n8n-supabase-stack/references/knowledge",
+      "target_path": null,
+      "rationale": "product knowledge moved behind lazy router references"
+    },
+    {
+      "source_path": "pacify-x-overlay/knowledge/supabase/02-postgres-rls-auth.md",
+      "bytes": 900,
+      "sha256": "139d8c9a2ede14276a592d2d47e40bfc90a9e77621851d105999a29ef0aceab5",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-n8n-supabase-stack/references/knowledge",
+      "target_path": null,
+      "rationale": "product knowledge moved behind lazy router references"
+    },
+    {
+      "source_path": "pacify-x-overlay/knowledge/supabase/03-storage-realtime-functions.md",
+      "bytes": 829,
+      "sha256": "cbb3e08919dd80acb47fad205706f50ce84e61a8adb07aaca3ae47b6dcdefbf1",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-n8n-supabase-stack/references/knowledge",
+      "target_path": null,
+      "rationale": "product knowledge moved behind lazy router references"
+    },
+    {
+      "source_path": "pacify-x-overlay/knowledge/supabase/04-vectors-ai-tools.md",
+      "bytes": 840,
+      "sha256": "4d491c2719474b4d4977657404a80d7b093b13f5cd53c4b782759a0a60334579",
+      "disposition": "merge",
+      "canonical_owner": ".agents/skills/route-n8n-supabase-stack/references/knowledge",
+      "target_path": null,
+      "rationale": "product knowledge moved behind lazy router references"
+    },
+    {
+      "source_path": "pacify-x-overlay/orchestration/workflows/candidates/ai-tool-access-review.json",
+      "bytes": 692,
+      "sha256": "75b2cb173e2c2af75c2a7ec3735d82da24b0b24d01c3d4b366b1fb1ec5f07ac1",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/service-capability-operations.yaml",
+      "target_path": null,
+      "rationale": "candidate workflows reconciled into one validated canonical workflow document"
+    },
+    {
+      "source_path": "pacify-x-overlay/orchestration/workflows/candidates/n8n-install-commission.json",
+      "bytes": 748,
+      "sha256": "26fa9aea0e7f1cc6e3d809210966628fda27c506dbab9fe5a1bd933fdab2fb40",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/service-capability-operations.yaml",
+      "target_path": null,
+      "rationale": "candidate workflows reconciled into one validated canonical workflow document"
+    },
+    {
+      "source_path": "pacify-x-overlay/orchestration/workflows/candidates/n8n-production-security-review.json",
+      "bytes": 664,
+      "sha256": "74e3fe5f0f6e4a3ae972e2033d8fce87fd279462cf1f74d48ac3ff3ed6099b89",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/service-capability-operations.yaml",
+      "target_path": null,
+      "rationale": "candidate workflows reconciled into one validated canonical workflow document"
+    },
+    {
+      "source_path": "pacify-x-overlay/orchestration/workflows/candidates/n8n-supabase-integration-release.json",
+      "bytes": 823,
+      "sha256": "01ae732c7fee67815a215df2a51e0550b3e7ae96458816671ff14f44b22ca395",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/service-capability-operations.yaml",
+      "target_path": null,
+      "rationale": "candidate workflows reconciled into one validated canonical workflow document"
+    },
+    {
+      "source_path": "pacify-x-overlay/orchestration/workflows/candidates/n8n-supabase-rag-release.json",
+      "bytes": 796,
+      "sha256": "089e2e4caf7017e6909cf8f6a76a43db6d298e80da15b520610c63a57d811001",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/service-capability-operations.yaml",
+      "target_path": null,
+      "rationale": "candidate workflows reconciled into one validated canonical workflow document"
+    },
+    {
+      "source_path": "pacify-x-overlay/orchestration/workflows/candidates/n8n-workflow-release.json",
+      "bytes": 566,
+      "sha256": "9c62d4602799e8ef51f11724202eeb30179a8e02528211cd40445e7d64faf1dd",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/service-capability-operations.yaml",
+      "target_path": null,
+      "rationale": "candidate workflows reconciled into one validated canonical workflow document"
+    },
+    {
+      "source_path": "pacify-x-overlay/orchestration/workflows/candidates/README.md",
+      "bytes": 311,
+      "sha256": "2e6b62ce2b33da9f6769a1f888276d1d080d19fef3035f84434ae21929b09cba",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/service-capability-operations.yaml",
+      "target_path": null,
+      "rationale": "candidate workflows reconciled into one validated canonical workflow document"
+    },
+    {
+      "source_path": "pacify-x-overlay/orchestration/workflows/candidates/supabase-local-to-production.json",
+      "bytes": 800,
+      "sha256": "d1d95c72cd02ac6e008e0d3ab59b206a524b51d1a74379359f4d510379bc033b",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/service-capability-operations.yaml",
+      "target_path": null,
+      "rationale": "candidate workflows reconciled into one validated canonical workflow document"
+    },
+    {
+      "source_path": "pacify-x-overlay/orchestration/workflows/candidates/supabase-secure-application.json",
+      "bytes": 685,
+      "sha256": "1273d58ba7625bb5c6f9b5a747239dffdc93971f0803ccba67a2ee1cb766b80d",
+      "disposition": "merge",
+      "canonical_owner": "orchestration/workflows/service-capability-operations.yaml",
+      "target_path": null,
+      "rationale": "candidate workflows reconciled into one validated canonical workflow document"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/external_capabilities.candidate.json",
+      "bytes": 1694,
+      "sha256": "8728f7b043eafd6bfebf9088d00f03bda21ae116b93f2976fa78a2917f5239c3",
+      "disposition": "merge",
+      "canonical_owner": "registry/service_capability_catalog.json",
+      "target_path": null,
+      "rationale": "candidate metadata reconciled into canonical service capability registries"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/golden_capability_queries.append.json",
+      "bytes": 5890,
+      "sha256": "3ebe759661105e508195841c5b4ad3c94e9580eb62b4f09557e93a47ae4a8ca9",
+      "disposition": "merge",
+      "canonical_owner": "registry/service_capability_golden_queries.json",
+      "target_path": null,
+      "rationale": "golden routing cases admitted as executable regression evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/semantic_capability_index.append.json",
+      "bytes": 59942,
+      "sha256": "a11323b7583615d0b4310033a98ddb4c177cbb3eee42962465cfa0797fa7040f",
+      "disposition": "merge",
+      "canonical_owner": "registry/service_capability_catalog.json",
+      "target_path": null,
+      "rationale": "candidate metadata reconciled into canonical service capability registries"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_catalog.append.toml",
+      "bytes": 15604,
+      "sha256": "96056ab41796d44763e853fb85368f95647840232239f14e2fc46a9883683e89",
+      "disposition": "merge",
+      "canonical_owner": "registry/service_capability_catalog.json",
+      "target_path": null,
+      "rationale": "candidate metadata reconciled into canonical service capability registries"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/acquire-install-n8n.json",
+      "bytes": 1194,
+      "sha256": "1d960e36a4976620155c16ab8dfa4fb276016f5bf59fca8b780f2115ffe17c56",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/acquire-install-supabase.json",
+      "bytes": 1216,
+      "sha256": "242ae429589aaaf5e96fa11c59bead71e049a0c322a09e76d7cbdc56b1a13cb0",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/automate-supabase-with-n8n.json",
+      "bytes": 1127,
+      "sha256": "2c7733c0845630634c9409789a79337f68f20c9ee76bf56f525ff0cec4548ac2",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/backup-deploy-recover-supabase.json",
+      "bytes": 1115,
+      "sha256": "d6407d3eeed1f30692d10609eeeaea11a43cb7bc67584bb74b38aae73d6e77dc",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/backup-upgrade-restore-n8n.json",
+      "bytes": 1109,
+      "sha256": "4abb8f77bb512ac1c25299acd268e613e019bde41ffd00f863b945f7e48e6fff",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/build-n8n-ai-workflows.json",
+      "bytes": 1062,
+      "sha256": "73f50f6a1c0c343c39968426e84f62b5a25756a032a280834153652a300c37e0",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/build-n8n-custom-nodes.json",
+      "bytes": 1071,
+      "sha256": "2c9c6733a8aa480891077774af66db03c228554f0ed71ba1f0bbe39de1ab18d2",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/build-n8n-supabase-rag.json",
+      "bytes": 1136,
+      "sha256": "87540243b90653d4fefef2936fe9e799dd6c714e3f19ea556b950d71e1d8a9bc",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/build-supabase-edge-functions.json",
+      "bytes": 1075,
+      "sha256": "9a65ed35d6ed8274bd19f8f9181249af5ba984a4535ffa37a86ecc266e48e33f",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/configure-n8n.json",
+      "bytes": 1069,
+      "sha256": "8901a41b5545fd1fe5e2b6b195cc7210f32d918b0ab373a6b901a636546efb74",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/connect-n8n-to-supabase.json",
+      "bytes": 1140,
+      "sha256": "bdfb592996a53245887a9040f563a438c42e0f1bce2994e43978c0dc4b1c3dff",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/deploy-n8n-docker.json",
+      "bytes": 1213,
+      "sha256": "df389dda8972bf0e72abe2c776832c04cb1443218537b86adbc6320bdf3422e0",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/design-build-n8n-workflows.json",
+      "bytes": 1069,
+      "sha256": "eda5b01896628f230f822b17b16822bb64742ea2d87d29b6d595227b2a636aff",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/design-n8n-supabase-reliability.json",
+      "bytes": 1151,
+      "sha256": "cc16a81a231115863b36a5389389199977eab9ec9622dbe70144b1e97611d3bf",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/design-n8n-supabase-security-boundaries.json",
+      "bytes": 1196,
+      "sha256": "4e7823cfab0349bca57ad310c83a5960fba93b9e63f81c613c900ef7be979c03",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/design-supabase-postgres.json",
+      "bytes": 1086,
+      "sha256": "96b5f1d1990c00372ae9005ef6be011609a968ace56f9da1bf01b265dc744570",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/develop-n8n-monorepo.json",
+      "bytes": 1038,
+      "sha256": "bb5c7924ed1067bf81aaa92fe5d798c3eafd9067d38634f511f517884906a764",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/develop-supabase-locally.json",
+      "bytes": 1077,
+      "sha256": "09ec31da6424c2dab32da92af5845ee3f987cb675af69d05acefef6973b42b05",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/evaluate-n8n-fit.json",
+      "bytes": 1043,
+      "sha256": "c226a794dae3445859326c8b5e8555441d691032a3701c76e47263bbd910a332",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/evaluate-supabase-fit.json",
+      "bytes": 1101,
+      "sha256": "f87c53119d38279cbe264757e4523da30e99e7d076cff000605acef8ecceb6b5",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/govern-n8n-community-nodes.json",
+      "bytes": 1090,
+      "sha256": "7bbe6aaa145b893aafb7ff519d26a09ce62f94a45c967ffde63be4fb601fe11f",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/handle-debug-n8n-executions.json",
+      "bytes": 1086,
+      "sha256": "5a9672bce941186fd7cb0c368ef7f2f12a4bf26ac1c8cbd901e49ed32c4fd3d1",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/implement-supabase-auth.json",
+      "bytes": 1067,
+      "sha256": "ae59eb83d0b93f3c008120cd63949715f546edcacf6db5176b123242db5480d4",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/integrate-n8n-webhooks-and-apis.json",
+      "bytes": 1212,
+      "sha256": "26089fa2dafc3ce77e1d83d9e2b94c13d13a9c5b541963083c03303801ef015c",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/integrate-supabase-data-api-and-clients.json",
+      "bytes": 1184,
+      "sha256": "dc1c60ddc569f5036646db1890e55ab52eaf3a8c3208e3a390361c9a9f9ba39d",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/manage-n8n-credentials.json",
+      "bytes": 1045,
+      "sha256": "0978c42761545795cbe75d2762350b83533b09a25ee6c1bbdff21aaa3561a369",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/manage-supabase-environments.json",
+      "bytes": 1094,
+      "sha256": "ee4927329e06328cdfa4fecb9c78b0aaceb9443a4468d7e782a569d7b47aba11",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/manage-supabase-migrations.json",
+      "bytes": 1147,
+      "sha256": "6b25f3385032f808d105f181061a387d2f136b46cfc53768458db050feaaead5",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/observe-debug-supabase.json",
+      "bytes": 1074,
+      "sha256": "daa0c59e4d6a3c696127a761962a07eb8ad52d6cf521e6e25a44e8fa9bb90872",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/observe-operate-n8n.json",
+      "bytes": 1065,
+      "sha256": "3452468ca7d0b539ba27db9f3baa18a5a03a06f6770c40044bfe1e0dd80cce32",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/operate-n8n-supabase-production.json",
+      "bytes": 1165,
+      "sha256": "5774179f68fc269324243cd05370aa175694194f9bff0deb91871586e8d4e766",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/operate-supabase-vector-search.json",
+      "bytes": 1157,
+      "sha256": "f4b57b1d32f9e5c8c14ea52367631ca7e0253f94de9e4d3a1c699d6979ddddfa",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/route-n8n-capabilities.json",
+      "bytes": 1061,
+      "sha256": "99b00f58ac044d58e92ef521e001cb7a14e347e90de0b0ec1e8e90261531048f",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/route-n8n-supabase-stack.json",
+      "bytes": 1124,
+      "sha256": "d72c67cf167916327b6fbd1ad47b051e62a7fd584a806d4326a56c8a9289f42a",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/route-supabase-capabilities.json",
+      "bytes": 1057,
+      "sha256": "26e5bdfedab1e10eeeed9258402bf1a94547a9474f5ff8418b9ea0ece072ad46",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/scale-n8n-queue-mode.json",
+      "bytes": 1163,
+      "sha256": "0a958795738ad2a69661ced7d0b12850ce98a08838075140140390fdc1e02118",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/secure-n8n.json",
+      "bytes": 1062,
+      "sha256": "a3267584d3f06c586eaee49c8881b08ca48b664508b5ff826c6e9666c0c5d8d1",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/secure-supabase-rls.json",
+      "bytes": 1084,
+      "sha256": "8b1868e9af29d80c0d22a3a8b91be906440dc7d60fd88b3599cab11e8de2f3a9",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/self-host-supabase.json",
+      "bytes": 1094,
+      "sha256": "c079f29039130d1b7773ca06040e340a02f8a3561f5e792c8381fec4893f5997",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/test-n8n-supabase-integrations.json",
+      "bytes": 1124,
+      "sha256": "d734b5a738d8305824334634d1aa039cdd5ec30b7234e94bb2457f1a9fc1474f",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/test-validate-n8n-workflows.json",
+      "bytes": 1075,
+      "sha256": "e7ea5f20352665a1ca44f0768e738570e84e4dbf373765fffb238ae9d0a1c039",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/use-n8n-expressions-and-data.json",
+      "bytes": 1097,
+      "sha256": "80ac460bf7ee258299be238d706cd0b1d6938637d054e49a8562dd3dea116f56",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/use-n8n-mcp.json",
+      "bytes": 1145,
+      "sha256": "ed1bd27b785b2a906a6eb6327a0a0c5a1923f14a9a177ecfb8ea36ea7a8b89eb",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/use-supabase-mcp-and-agent-skills.json",
+      "bytes": 1181,
+      "sha256": "8311405edc1279a7a31ec4625ece2bb2d449bab326edabea75f5f46f45b9518f",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/use-supabase-realtime.json",
+      "bytes": 1060,
+      "sha256": "80aaf0748144d874e6aa04ec356331ac9900e9be373bc4c7c45c8d7833be4578",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/registry/skill_packages/use-supabase-storage.json",
+      "bytes": 1065,
+      "sha256": "ae3afc7cd7f26388422085395e48caa4f89f120c6e926db5b3ed8b76551f9876",
+      "disposition": "merge",
+      "canonical_owner": "registry/skill_packages",
+      "target_path": null,
+      "rationale": "candidate manifests rebuilt with canonical lifecycle, effects, hashes, tests, and evidence"
+    },
+    {
+      "source_path": "pacify-x-overlay/scripts/merge_capability_pack.py",
+      "bytes": 5447,
+      "sha256": "d1e3032fae52a0fdfaaadb5294e43192f036006da32009ca494fe0968f16c298",
+      "disposition": "fragment",
+      "canonical_owner": "runtime/service_capability_provider.py",
+      "target_path": null,
+      "rationale": "validation, collision, and lazy-routing behavior retained without overlay mutation"
+    },
+    {
+      "source_path": "pacify-x-overlay/scripts/validate_capability_pack.py",
+      "bytes": 3777,
+      "sha256": "868e092ae04d750aa33fa2c0ab18f6a0796c4eb3edf0be900b235cf0c92f1c54",
+      "disposition": "fragment",
+      "canonical_owner": "runtime/service_capability_provider.py",
+      "target_path": null,
+      "rationale": "validation, collision, and lazy-routing behavior retained without overlay mutation"
+    },
+    {
+      "source_path": "pacify-x-overlay/templates/cross-stack/n8n_supabase_vector_schema.sql",
+      "bytes": 1304,
+      "sha256": "36fbe35f51c93024ab28b03491cc24945acc51d3609c043ab45eaca7806a47ed",
+      "disposition": "merge",
+      "canonical_owner": "templates/service_capabilities",
+      "target_path": null,
+      "rationale": "safe examples retained under an explicitly non-turnkey template namespace"
+    },
+    {
+      "source_path": "pacify-x-overlay/templates/n8n/.env.example",
+      "bytes": 520,
+      "sha256": "a662b8e9ca201481759982696dedd7dfe18cad30cfdf5406d51a29677900d312",
+      "disposition": "merge",
+      "canonical_owner": "templates/service_capabilities",
+      "target_path": null,
+      "rationale": "safe examples retained under an explicitly non-turnkey template namespace"
+    },
+    {
+      "source_path": "pacify-x-overlay/templates/n8n/docker-compose.queue.yml",
+      "bytes": 973,
+      "sha256": "a76fade5fd6e5eb9dc46205bcbb2c1b34cd807a117e08aae0653f7142752e642",
+      "disposition": "merge",
+      "canonical_owner": "templates/service_capabilities",
+      "target_path": null,
+      "rationale": "safe examples retained under an explicitly non-turnkey template namespace"
+    },
+    {
+      "source_path": "pacify-x-overlay/templates/n8n/docker-compose.single.yml",
+      "bytes": 761,
+      "sha256": "d3532ab9dfb2f3693b0f0d6811baca875b3f8af9fdb77b371a2a1919372004ff",
+      "disposition": "merge",
+      "canonical_owner": "templates/service_capabilities",
+      "target_path": null,
+      "rationale": "safe examples retained under an explicitly non-turnkey template namespace"
+    },
+    {
+      "source_path": "pacify-x-overlay/templates/supabase/functions/example/index.ts",
+      "bytes": 1190,
+      "sha256": "80113dfa4feef846bdb2ab2a057e66bb66d3b38c412338dc05a0e444fe90668b",
+      "disposition": "merge",
+      "canonical_owner": "templates/service_capabilities",
+      "target_path": null,
+      "rationale": "safe examples retained under an explicitly non-turnkey template namespace"
+    },
+    {
+      "source_path": "pacify-x-overlay/templates/supabase/migrations/0001_secure_example.sql",
+      "bytes": 1180,
+      "sha256": "a6b710e39f15bb773738d1ad83248047eaf8f84408ff271788fe0a9ce7e3fac9",
+      "disposition": "merge",
+      "canonical_owner": "templates/service_capabilities",
+      "target_path": null,
+      "rationale": "safe examples retained under an explicitly non-turnkey template namespace"
+    },
+    {
+      "source_path": "PUNCH_CARDS.md",
+      "bytes": 2491,
+      "sha256": "b8134be45593ed11e56c6ec4d741d1feeba4719c71dede8333f6b41b0365ab73",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    },
+    {
+      "source_path": "README.md",
+      "bytes": 1393,
+      "sha256": "312e561c09fbf7f22d303c371e9b3381423773da98472b24f6c9a66892bc807c",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    },
+    {
+      "source_path": "reports/build_summary.json",
+      "bytes": 768,
+      "sha256": "6aed445148aee1e515f34dbc0e438687f87b6f25be832f8c0e5e779bfe766a07",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    },
+    {
+      "source_path": "reports/capability_coverage_matrix.md",
+      "bytes": 7107,
+      "sha256": "dc5795ef7c2f7e3a9de3f198fe36aa3b33328c7aebb1095d76ed0a8d0d1286fc",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    },
+    {
+      "source_path": "reports/mock_merge_apply.json",
+      "bytes": 11515,
+      "sha256": "2ce974b940dac967997eee6aa6c8f41d7afbf08688d86598bb373fc2a3f47d85",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    },
+    {
+      "source_path": "reports/mock_merge_collision_recheck.json",
+      "bytes": 15564,
+      "sha256": "28f819045870c2317c3e2b09c3e6480de6559bea555a732f8951428c1254c2c9",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    },
+    {
+      "source_path": "reports/mock_merge_preview.json",
+      "bytes": 11311,
+      "sha256": "f71934d47f9202a53a7f64b95fb54649bec79fa488bc0bbf87309b4d85c1f330",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    },
+    {
+      "source_path": "reports/n8n_native_skills_inventory.json",
+      "bytes": 6892,
+      "sha256": "90490ce21fe878d09a930194918f0629341f5853d34b1dbc0e8fe12acb5e6118",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    },
+    {
+      "source_path": "reports/n8n_supabase_source_surface.json",
+      "bytes": 1853,
+      "sha256": "13ac0c93ddc5bb4b400892dcec639364a2ecd13df765b96d174ed2197296a9fb",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    },
+    {
+      "source_path": "reports/overlap_and_disposition.json",
+      "bytes": 1179,
+      "sha256": "877501695488aa3499c6a34bf3a0f8ea824b2ca538294a1a665ee949962d8edd",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    },
+    {
+      "source_path": "reports/source_inventory.json",
+      "bytes": 370,
+      "sha256": "e800c9ba57acd70d7831c394324626fb2383a1f98ca9d59ab66506c623173595",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    },
+    {
+      "source_path": "reports/validation_report.json",
+      "bytes": 124,
+      "sha256": "1fcb418452223b60340871d113bb54e3986908ceb9881d6ceab4b06c3e9ece80",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    },
+    {
+      "source_path": "SOURCE_PROVENANCE.md",
+      "bytes": 1009,
+      "sha256": "ba996467251174384abbb34499769cc8ac06f6b72574ca7365dc43279f5eb27b",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "source provenance, audit, coverage, or validation evidence retained"
+    }
+  ],
+  "report_sha256": "a9dea28897f77e0df09642004e01baae5c681f434ba7a35cae743106e8882556"
+}

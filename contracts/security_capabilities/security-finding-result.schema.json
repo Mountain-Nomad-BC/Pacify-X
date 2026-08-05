@@ -1,0 +1,73 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:security_capabilities:security-finding-result",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Prevent unverified observations from becoming confirmed findings.",
+  "properties": {
+    "affected_assets": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "evidence": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "finding_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "recommended_actions": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "severity_rationale": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "observation",
+        "candidate_finding",
+        "verified_finding",
+        "false_positive",
+        "accepted_risk",
+        "remediated",
+        "verification_failed"
+      ]
+    },
+    "validation_status": {
+      "enum": [
+        "unverified",
+        "partially_verified",
+        "verified",
+        "false_positive",
+        "accepted_risk"
+      ]
+    }
+  },
+  "required": [
+    "finding_id",
+    "state",
+    "evidence",
+    "confidence",
+    "affected_assets",
+    "severity_rationale",
+    "recommended_actions",
+    "validation_status"
+  ],
+  "title": "security-finding-result",
+  "type": "object"
+}

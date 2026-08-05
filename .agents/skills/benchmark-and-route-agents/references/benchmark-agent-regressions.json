@@ -1,0 +1,57 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "benchmark tasks must not touch production",
+    "do not optimize only for one visible fixture",
+    "retain failed traces and variance"
+  ],
+  "bundle": "benchmark-and-route-agents",
+  "category": "evaluation",
+  "dependencies": [
+    "engineer-verification-lab",
+    "active-evaluation-selector",
+    "audit-ai-runtime-assurance"
+  ],
+  "id": "benchmark-agent-regressions",
+  "keywords": [
+    "agent eval",
+    "regression testing",
+    "pass at k",
+    "cost time consistency",
+    "behavior compliance"
+  ],
+  "mechanisms": [
+    "sandboxed task fixtures",
+    "head-to-head runs",
+    "pass@k",
+    "cost/time accounting",
+    "consistency variance",
+    "behavioral compliance scenarios"
+  ],
+  "owner": "engineer-verification-lab",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "skills/agent-eval/SKILL.md",
+      "skills/ai-regression-testing/SKILL.md",
+      "skills/skill-comply/SKILL.md",
+      "skills/eval-harness/SKILL.md"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "skills/agent-eval/SKILL.md",
+    "skills/ai-regression-testing/SKILL.md",
+    "skills/skill-comply/SKILL.md",
+    "skills/eval-harness/SKILL.md"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Run repeatable task suites across agents, models, prompts, or harness versions and compare pass rate, pass@k, cost, time, consistency, and failure class.",
+  "title": "Benchmark Agent Regressions",
+  "use_when": [
+    "a model or harness upgrade may regress behavior",
+    "routing decisions need empirical evidence",
+    "skills claim compliance without behavior proof"
+  ]
+}

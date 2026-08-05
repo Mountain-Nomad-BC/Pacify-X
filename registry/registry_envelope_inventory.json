@@ -11,6 +11,15 @@
       "schema": "root schema_version plus shared registry-envelope invariant"
     },
     {
+      "builder": "runtime/agent_provider.py",
+      "collection_key": "agents",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "agent_count",
+      "path": "registry/agency_agent_registry.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
       "builder": "scripts/build_artifact_reachability.py",
       "collection_key": "records",
       "consumer": "runtime/registry_envelope.py",
@@ -34,6 +43,33 @@
       "consumer": "runtime/registry_envelope.py",
       "count_key": "contract_count",
       "path": "registry/contract_ownership.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "records",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "count",
+      "path": "registry/cognitive_dependency_resolutions.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "scripts/build_cognitive_index.py",
+      "collection_key": "edges",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "edge_count",
+      "path": "registry/cognitive_map_index.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "scripts/build_cognitive_index.py",
+      "collection_key": "records",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "record_count",
+      "path": "registry/cognitive_map_index.json",
       "rule": "length",
       "schema": "root schema_version plus shared registry-envelope invariant"
     },
@@ -70,6 +106,60 @@
       "consumer": "runtime/registry_envelope.py",
       "count_key": "record_count",
       "path": "registry/effect_surface_ownership.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "records",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "record_count",
+      "path": "registry/engineering_reasoning_expansion.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "scripts/build_external_candidate_registry.py",
+      "collection_key": "edges",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "edge_count",
+      "path": "registry/external_candidate_graph.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "cases",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "case_count",
+      "path": "registry/external_capability_benchmarks.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "capabilities",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "capability_count",
+      "path": "registry/external_capability_candidates.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "scripts/build_external_candidate_registry.py",
+      "collection_key": "records",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "record_count",
+      "path": "registry/external_capability_catalog.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "packages",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "package_count",
+      "path": "registry/external_skill_bundles.json",
       "rule": "length",
       "schema": "root schema_version plus shared registry-envelope invariant"
     },
@@ -379,11 +469,65 @@
       "schema": "root schema_version plus shared registry-envelope invariant"
     },
     {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "canonical_counts",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "canonical_domain_count",
+      "path": "registry/security_capabilities/domains.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "raw_counts",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "source_raw_domain_count",
+      "path": "registry/security_capabilities/domains.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "scripts/build_cybersecurity_provider_registry.py",
+      "collection_key": "records",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "count",
+      "path": "registry/security_capabilities/native_skill_dispositions.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "scripts/build_cybersecurity_provider_registry.py",
+      "collection_key": "records",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "count",
+      "path": "registry/security_capabilities/workflow_dispositions.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
       "builder": "scripts/build_semantic_capability_index.py",
       "collection_key": "records",
       "consumer": "runtime/registry_envelope.py",
       "count_key": "record_count",
       "path": "registry/semantic_capability_index.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "records",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "record_count",
+      "path": "registry/service_capability_catalog.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "workflows",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "workflow_count",
+      "path": "registry/service_capability_workflows.json",
       "rule": "length",
       "schema": "root schema_version plus shared registry-envelope invariant"
     },

@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "run_id": "pxi-20260804",
+  "status": "integration_open",
+  "starting_branch": "main",
+  "integration_branch": "integration/codex-full-intake-20260804",
+  "starting_commit": "172f66c29076ac7cfde97dc89ce6b8f670d2c19d",
+  "working_tree_clean": true,
+  "target_release_state": "post-0.6.3 development; immutable v0.6.3 is not rewritten",
+  "environment": {
+    "operating_system": "Windows 10.0.26200",
+    "architecture": "x64",
+    "python": "3.14.5",
+    "git": "2.54.0.windows.1",
+    "node": "24.16.0",
+    "npm": "11.15.0",
+    "pnpm": "unavailable"
+  },
+  "baseline_counts": {
+    "skills": 89,
+    "contracts": 41,
+    "runtime_python_modules": 93,
+    "test_modules": 117,
+    "workflow_files": 7,
+    "top_level_registry_files": 68
+  },
+  "baseline": {
+    "control_plane_valid": true,
+    "project_check_valid": true,
+    "startup_metadata_only": true,
+    "assurance_gates_passed": 7,
+    "assurance_gates_failed": 0,
+    "source_tests_run": 408,
+    "source_tests_failed": 2,
+    "pre_existing_failures": [
+      "release-state assertion expects deployment-certified while the development tree declares post-release-hardening",
+      "the test run generated Python cache artifacts that made the composed audit fail until recoverably quarantined"
+    ],
+    "raw_test_log_sha256": "872e11a3651e4ffe931ee61c9ef9e8a5c98d51684a3bf95ec5e2a1ba906c83c7",
+    "raw_evidence_location": "external; hash-bound and intentionally not packaged"
+  }
+}

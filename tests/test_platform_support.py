@@ -31,7 +31,10 @@ def test_runtime_python_support_enforces_both_bounds() -> None:
         assert python_minor_supported((3, minor), policy)
         assert runtime_python_status(ROOT, (3, minor, 0))["supported"]
     assert not python_minor_supported((3, 15), policy)
-    assert runtime_python_status(ROOT, (3, 15, 0))["reason"] == "python_version_outside_supported_range"
+    assert (
+        runtime_python_status(ROOT, (3, 15, 0))["reason"]
+        == "python_version_outside_supported_range"
+    )
 
 
 def test_path_semantics_accept_spaces_and_non_ascii_names() -> None:

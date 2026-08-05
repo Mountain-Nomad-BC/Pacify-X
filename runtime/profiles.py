@@ -1,11 +1,14 @@
 """Validation for portable bootstrap resource and model-routing profiles."""
+
 from __future__ import annotations
 
 from pathlib import Path
 import tomllib
 
 
-PROFILE_IDS = frozenset({"default", "constrained", "large-workstation", "local-model", "cloud-restricted"})
+PROFILE_IDS = frozenset(
+    {"default", "constrained", "large-workstation", "local-model", "cloud-restricted"}
+)
 
 
 def validate_profile(path: Path) -> dict[str, object]:
@@ -28,7 +31,12 @@ def validate_profile(path: Path) -> dict[str, object]:
     serialized = path.read_text(encoding="utf-8")
     if ":\\" in serialized or "/Users/" in serialized or "\\Users\\" in serialized:
         errors.append("profile contains a machine-specific path")
-    return {"valid": not errors, "id": payload.get("id"), "errors": errors, "profile": payload}
+    return {
+        "valid": not errors,
+        "id": payload.get("id"),
+        "errors": errors,
+        "profile": payload,
+    }
 
 
 def validate_profile_set(root: Path) -> dict[str, object]:
@@ -36,4 +44,9 @@ def validate_profile_set(root: Path) -> dict[str, object]:
     ids = {item["id"] for item in results}
     errors = [error for item in results for error in item["errors"]]
     errors.extend(f"missing profile: {name}" for name in sorted(PROFILE_IDS - ids))
-    return {"valid": not errors, "profile_count": len(results), "errors": errors, "profiles": results}
+    return {
+        "valid": not errors,
+        "profile_count": len(results),
+        "errors": errors,
+        "profiles": results,
+    }

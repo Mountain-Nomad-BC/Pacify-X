@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "source_alias": "tencent-memory-upgrade-v1",
+  "source_file_count": 78,
+  "source_inventory_sha256": "46e6d0508ffab367473e634fc3f286b561d94658bbabb7075e3d73c8cc7aca41",
+  "canonical_rule": "MemoryRecord and MemoryVault remain the only canonical memory data and lifecycle owners; memory_intelligence provides bounded operations around them.",
+  "capability_count": 20,
+  "unresolved_count": 0,
+  "capabilities": [
+    {"id": "project-scope", "owner": "runtime/memory_fabric.py", "state": "existing-strengthened", "verification": "tests/test_memory_fabric.py"},
+    {"id": "sanitized-l0-capture", "owner": "runtime/memory_intelligence.py", "state": "implemented", "verification": "tests/test_memory_intelligence.py"},
+    {"id": "layered-l0-l3-model", "owner": "runtime/memory_fabric.py", "state": "implemented", "verification": "tests/test_memory_intelligence.py"},
+    {"id": "append-only-truth-lifecycle", "owner": "runtime/memory_vault.py", "state": "existing-strengthened", "verification": "tests/test_memory_vault.py"},
+    {"id": "conflict-and-supersession", "owner": "runtime/memory_intelligence.py", "state": "implemented", "verification": "tests/test_memory_intelligence.py"},
+    {"id": "evidence-gated-promotion", "owner": "runtime/memory_intelligence.py", "state": "implemented", "verification": "tests/test_memory_intelligence.py"},
+    {"id": "hybrid-rank-fusion", "owner": "runtime/memory_intelligence.py", "state": "implemented", "verification": "tests/test_memory_intelligence.py"},
+    {"id": "negative-retrieval-controls", "owner": "runtime/memory_fabric.py", "state": "implemented", "verification": "tests/test_memory_intelligence.py"},
+    {"id": "agent-memory-loadouts", "owner": "runtime/memory_intelligence.py", "state": "implemented", "verification": "tests/test_memory_intelligence.py"},
+    {"id": "layered-context-assembly", "owner": "runtime/memory_intelligence.py", "state": "implemented", "verification": "tests/test_memory_intelligence.py"},
+    {"id": "scene-index-navigation", "owner": "runtime/memory_intelligence.py", "state": "implemented", "verification": "tests/test_memory_intelligence.py"},
+    {"id": "reversible-context-offload", "owner": "runtime/memory_intelligence.py", "state": "implemented", "verification": "tests/test_memory_intelligence.py"},
+    {"id": "persistent-write-retry", "owner": "runtime/memory_intelligence.py", "state": "implemented", "verification": "tests/test_memory_intelligence.py"},
+    {"id": "memory-retrieval-evaluation", "owner": "runtime/memory_intelligence.py", "state": "implemented", "verification": "tests/test_memory_intelligence.py"},
+    {"id": "memory-observability", "owner": ".agents/skills/operate-memory-retrieval-observability", "state": "existing-composed", "verification": "tests/test_memory_integrity_controls.py"},
+    {"id": "skill-memory-promotion", "owner": "runtime/process_memory.py", "state": "existing-composed", "verification": "tests/test_process_memory.py"},
+    {"id": "cold-start-intake", "owner": "runtime/intake_lifecycle.py", "state": "existing-composed", "verification": "tests/test_intake_lifecycle.py"},
+    {"id": "provider-isolation", "owner": "runtime/memory_fabric.py", "state": "existing", "verification": "tests/test_memory_fabric.py"},
+    {"id": "backend-degradation", "owner": "runtime/memory_operations.py", "state": "existing-strengthened", "verification": "tests/test_memory_operations.py"},
+    {"id": "maintenance-and-drift", "owner": "runtime/memory_vault.py", "state": "existing-composed", "verification": "tests/test_memory_vault.py"}
+  ],
+  "rejected_architecture": [
+    "vendor-specific four-service default topology",
+    "global persona memory",
+    "automatic LLM truth promotion",
+    "fail-open deduplication",
+    "hard-delete lifecycle",
+    "whole-vault context injection",
+    "self-attested provider certification"
+  ]
+}

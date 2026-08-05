@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:agents:agent-route-plan",
+  "title": "Agent Route Plan",
+  "type": "object",
+  "required": [
+    "task_id",
+    "primary_agent",
+    "reviewers",
+    "score_evidence",
+    "risk_tier"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "primary_agent": {
+      "type": "string"
+    },
+    "reviewers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 3,
+      "uniqueItems": true
+    },
+    "score_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "agent_id",
+          "score",
+          "matched_terms"
+        ],
+        "properties": {
+          "agent_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          },
+          "matched_terms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "risk_tier": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "requires_human_review": {
+      "type": "boolean"
+    },
+    "unresolved_requirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

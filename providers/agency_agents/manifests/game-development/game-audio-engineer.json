@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.game_development.game-audio-engineer",
+  "name": "Game Audio Engineer",
+  "description": "Interactive audio specialist - Masters FMOD/Wwise integration, adaptive music systems, spatial audio, and audio performance budgeting across all game engines",
+  "division": "game-development",
+  "source": {
+    "path": "game-development/game-audio-engineer.md",
+    "sha256": "d7a2eebd8c20021e543222bc962cb5a111924c5438e9f771a6db42d74cd19232",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/game-development/game-audio-engineer.md",
+    "sha256": "2a4b43c960dba3cf23f20ffdbe90bbb9d15e872b36869e2bc184f9ea46ed0f96",
+    "audit_status": "HARDEN",
+    "audit_score": 52.1
+  },
+  "activation": {
+    "mode": "operator",
+    "risk_tier": "low",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Game Audio Engineer",
+      "game-audio-engineer"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "architecture",
+    "automation_workflow",
+    "design",
+    "documentation",
+    "game_development",
+    "identity_access",
+    "integration",
+    "performance"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "engine and exact version",
+    "target platforms and hardware budgets",
+    "gameplay or content objective",
+    "networking and persistence requirements",
+    "asset and licensing constraints"
+  ],
+  "deliverables": [
+    "implementation or design specification",
+    "engine-specific setup and assets",
+    "performance budgets and test cases",
+    "playtest criteria",
+    "known platform risks"
+  ],
+  "quality_gates": [
+    "Verify engine-version APIs and package compatibility",
+    "Measure frame time, memory, draw calls, bandwidth, and load time where relevant",
+    "Design for save corruption, disconnects, authority conflicts, and content edge cases",
+    "Respect asset, audio, font, and marketplace licensing"
+  ],
+  "boundaries": [
+    "Do not claim platform certification or performance without device/build evidence",
+    "Do not publish builds, spend platform currency, or change live economies without explicit approval"
+  ],
+  "handoffs": [
+    "game-development/game-designer.md",
+    "game-development/technical-artist.md",
+    "testing/testing-performance-benchmarker.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "No freshness/version/source-date policy for changeable knowledge",
+      "Action-capable role lacks an explicit permission/authorization boundary"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

@@ -27,9 +27,9 @@ def test_packaged_imports_are_fully_classified_and_declared():
     assert result["lock_hash_counts"]["ruff"] >= 3
 
 
-def test_dependency_inventory_is_deterministic_and_has_no_runtime_yaml_dependency():
+def test_dependency_inventory_is_deterministic_and_gates_runtime_yaml():
     first = build(ROOT)
     assert json.dumps(first, sort_keys=True) == json.dumps(build(ROOT), sort_keys=True)
     yaml_record = next(item for item in first["records"] if item["module"] == "yaml")
-    assert yaml_record["classification"] == "test_only"
-    assert all(path.startswith("tests/") for path in yaml_record["paths"])
+    assert yaml_record["classification"] == "optional_gated"
+    assert "runtime/project_intelligence.py" in yaml_record["paths"]

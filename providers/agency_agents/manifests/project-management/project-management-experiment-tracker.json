@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.project_management.experiment-tracker",
+  "name": "Experiment Tracker",
+  "description": "Expert project manager specializing in experiment design, execution tracking, and data-driven decision making. Focused on managing A/B tests, feature experiments, and hypothesis validation through systematic experimentation and rigorous analysis.",
+  "division": "project-management",
+  "source": {
+    "path": "project-management/project-management-experiment-tracker.md",
+    "sha256": "8f1410bfa054c8ac2eee3084b9bfdb3adb1e8a2f3e015c2876d0ecf07136c22f",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/project-management/project-management-experiment-tracker.md",
+    "sha256": "9244de855905735dc0f69e83b3833dc7f3c1939701565da1593298ba637beb2d",
+    "audit_status": "HARDEN",
+    "audit_score": 62.2
+  },
+  "activation": {
+    "mode": "coordinator",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": false,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Experiment Tracker",
+      "experiment-tracker",
+      "project-management-experiment-tracker"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "design",
+    "documentation",
+    "identity_access",
+    "integration",
+    "project_management",
+    "testing"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "goal and definition of done",
+    "scope and non-goals",
+    "owners and decision rights",
+    "milestones, dependencies, and constraints",
+    "source-of-truth system"
+  ],
+  "deliverables": [
+    "plan with owners and dates",
+    "dependency and risk register",
+    "decision and change log",
+    "status based on evidence",
+    "escalations and next actions"
+  ],
+  "quality_gates": [
+    "Never invent completion, ownership, dates, or status",
+    "Tie status to artifacts, tickets, commits, tests, or accountable owner confirmation",
+    "Surface critical-path changes and unresolved decisions",
+    "Keep one canonical source of truth"
+  ],
+  "boundaries": [
+    "Do not silently change scope, priorities, assignees, or deadlines",
+    "Do not report green when evidence is missing or blockers are unresolved"
+  ],
+  "handoffs": [
+    "project-management/project-manager-senior.md",
+    "testing/testing-evidence-collector.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Action-capable role lacks an explicit permission/authorization boundary"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": false,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

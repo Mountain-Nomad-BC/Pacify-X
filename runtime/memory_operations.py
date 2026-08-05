@@ -1,4 +1,5 @@
 """Bounded session, graph, attribution, and backend operations for the memory vault."""
+
 from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeout
@@ -57,16 +58,29 @@ class SessionSummaryLedger:
 
     def last_event_id(self, session_id: str) -> int:
         paths = self._paths(session_id)
-        return int(json.loads(paths[-1].read_text(encoding="utf-8"))["end_event_id"]) if paths else 0
+        return (
+            int(json.loads(paths[-1].read_text(encoding="utf-8"))["end_event_id"])
+            if paths
+            else 0
+        )
 
-    def summarize(self, session_id: str, events: Sequence[SessionEvent], *, max_facts: int = 12) -> SummaryCheckpoint | None:
+    def summarize(
+        self, session_id: str, events: Sequence[SessionEvent], *, max_facts: int = 12
+    ) -> SummaryCheckpoint | None:
         if max_facts < 1:
             raise ValueError("max facts must be positive")
         cursor = self.last_event_id(session_id)
-        pending = tuple(sorted((event for event in events if event.event_id > cursor), key=lambda item: item.event_id))
+        pending = tuple(
+            sorted(
+                (event for event in events if event.event_id > cursor),
+                key=lambda item: item.event_id,
+            )
+        )
         if not pending:
             return None
-        if any(left.event_id >= right.event_id for left, right in zip(pending, pending[1:])):
+        if any(
+            left.event_id >= right.event_id for left, right in zip(pending, pending[1:])
+        ):
             raise ValueError("session event IDs must be strictly increasing")
         lifecycle = "final" if pending[-1].kind == "SessionEnd" else "checkpoint"
         statements = []
@@ -84,21 +98,37 @@ class SessionSummaryLedger:
                     break
             if len(statements) >= max_facts:
                 break
-        canonical = "\n".join(f"{event.event_id}\0{event.kind}\0{event.content}" for event in pending)
+        canonical = "\n".join(
+            f"{event.event_id}\0{event.kind}\0{event.content}" for event in pending
+        )
         paths = self._paths(session_id)
         sequence = len(paths) + 1
-        path = self.root / re.sub(r"[^a-zA-Z0-9._-]", "-", session_id) / f"{sequence:06d}-{lifecycle}.json"
+        path = (
+            self.root
+            / re.sub(r"[^a-zA-Z0-9._-]", "-", session_id)
+            / f"{sequence:06d}-{lifecycle}.json"
+        )
         payload = {
-            "schema_version": "1.0", "session_id": session_id,
-            "start_event_id": pending[0].event_id, "end_event_id": pending[-1].event_id,
-            "processed_event_count": len(pending), "lifecycle": lifecycle,
-            "summary": statements, "source_sha256": hashlib.sha256(canonical.encode()).hexdigest(),
+            "schema_version": "1.0",
+            "session_id": session_id,
+            "start_event_id": pending[0].event_id,
+            "end_event_id": pending[-1].event_id,
+            "processed_event_count": len(pending),
+            "lifecycle": lifecycle,
+            "summary": statements,
+            "source_sha256": hashlib.sha256(canonical.encode()).hexdigest(),
             "created_utc": datetime.now(timezone.utc).isoformat(),
         }
         _write_new(path, payload)
         return SummaryCheckpoint(
-            session_id, pending[0].event_id, pending[-1].event_id, len(pending), lifecycle,
-            tuple(statements), str(payload["source_sha256"]), path.relative_to(self.root).as_posix(),
+            session_id,
+            pending[0].event_id,
+            pending[-1].event_id,
+            len(pending),
+            lifecycle,
+            tuple(statements),
+            str(payload["source_sha256"]),
+            path.relative_to(self.root).as_posix(),
         )
 
 
@@ -173,11 +203,21 @@ def build_graph_clusters(
                 if term not in seen_terms:
                     terms.append(term)
                     seen_terms.add(term)
-        clusters.append(GraphCluster(
-            f"cluster-{len(clusters) + 1:04d}", tuple(members), tuple(terms[:32]),
-            tuple(sorted(provenance)), not any(adjacency[node_id] for node_id in members),
-        ))
-    return ClusterResult(tuple(clusters), len(selected), len(supplied) > len(selected), tuple(sorted(missing)))
+        clusters.append(
+            GraphCluster(
+                f"cluster-{len(clusters) + 1:04d}",
+                tuple(members),
+                tuple(terms[:32]),
+                tuple(sorted(provenance)),
+                not any(adjacency[node_id] for node_id in members),
+            )
+        )
+    return ClusterResult(
+        tuple(clusters),
+        len(selected),
+        len(supplied) > len(selected),
+        tuple(sorted(missing)),
+    )
 
 
 @dataclass(slots=True)
@@ -217,57 +257,99 @@ class OperationOutcome:
 
 
 class StateKVGuard:
-    def __init__(self, *, failure_threshold: int = 3, cooldown_seconds: float = 30.0) -> None:
+    def __init__(
+        self, *, failure_threshold: int = 3, cooldown_seconds: float = 30.0
+    ) -> None:
         self.breakers: dict[str, CircuitBreaker] = {}
         self.failure_threshold = failure_threshold
         self.cooldown_seconds = cooldown_seconds
 
-    def execute(self, operation: str, function: Callable[[], T], *, timeout_seconds: float) -> OperationOutcome:
+    def execute(
+        self, operation: str, function: Callable[[], T], *, timeout_seconds: float
+    ) -> OperationOutcome:
         if timeout_seconds <= 0:
             raise ValueError("operation timeout must be positive")
         now = datetime.now(timezone.utc)
-        breaker = self.breakers.setdefault(operation, CircuitBreaker(self.failure_threshold, self.cooldown_seconds))
+        breaker = self.breakers.setdefault(
+            operation, CircuitBreaker(self.failure_threshold, self.cooldown_seconds)
+        )
         if not breaker.allow(now):
-            return OperationOutcome(operation, "circuit_open", None, "CircuitOpen", True, self.cooldown_seconds)
-        executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix=f"memory-{operation}")
+            return OperationOutcome(
+                operation,
+                "circuit_open",
+                None,
+                "CircuitOpen",
+                True,
+                self.cooldown_seconds,
+            )
+        executor = ThreadPoolExecutor(
+            max_workers=1, thread_name_prefix=f"memory-{operation}"
+        )
         future = executor.submit(function)
         try:
             value = future.result(timeout=timeout_seconds)
         except FutureTimeout:
             future.cancel()
             breaker.failure(now)
-            return OperationOutcome(operation, "error", None, "TimeoutError", True, min(self.cooldown_seconds, 2 ** breaker.failures))
+            return OperationOutcome(
+                operation,
+                "error",
+                None,
+                "TimeoutError",
+                True,
+                min(self.cooldown_seconds, 2**breaker.failures),
+            )
         except Exception as error:  # boundary intentionally converts backend failures
             breaker.failure(now)
-            return OperationOutcome(operation, "error", None, type(error).__name__, True, min(self.cooldown_seconds, 2 ** breaker.failures))
+            return OperationOutcome(
+                operation,
+                "error",
+                None,
+                type(error).__name__,
+                True,
+                min(self.cooldown_seconds, 2**breaker.failures),
+            )
         finally:
             executor.shutdown(wait=False, cancel_futures=True)
         breaker.success()
         return OperationOutcome(operation, "ok", value, None, False, 0.0)
 
 
-def normalize_action_attribution(payload: Mapping[str, object], *, authenticated_agent_id: str) -> dict[str, object]:
+def normalize_action_attribution(
+    payload: Mapping[str, object], *, authenticated_agent_id: str
+) -> dict[str, object]:
     if not authenticated_agent_id:
         raise ValueError("authenticated agent identity is required")
     result = dict(payload)
     supplied = str(result.get("agentId", authenticated_agent_id))
     created_by = str(result.get("createdBy", authenticated_agent_id))
     if supplied != authenticated_agent_id or created_by != authenticated_agent_id:
-        raise ValueError("memory action attribution does not match authenticated identity")
+        raise ValueError(
+            "memory action attribution does not match authenticated identity"
+        )
     result["agentId"] = authenticated_agent_id
     result["createdBy"] = authenticated_agent_id
     if "records" in result:
         result["records"] = [
-            normalize_action_attribution(dict(record), authenticated_agent_id=authenticated_agent_id)
+            normalize_action_attribution(
+                dict(record), authenticated_agent_id=authenticated_agent_id
+            )
             for record in result.get("records", ())
         ]
     return result
 
 
-def guarded_search(function: Callable[[], Sequence[object]], guard: StateKVGuard, *, timeout_seconds: float) -> BackendResult:
+def guarded_search(
+    function: Callable[[], Sequence[object]],
+    guard: StateKVGuard,
+    *,
+    timeout_seconds: float,
+) -> BackendResult:
     outcome = guard.execute("smart-search", function, timeout_seconds=timeout_seconds)
     if outcome.status != "ok":
-        return normalize_backend_result(error=RuntimeError(outcome.error_code or outcome.status))
+        return normalize_backend_result(
+            error=RuntimeError(outcome.error_code or outcome.status)
+        )
     return normalize_backend_result(items=tuple(outcome.value or ()))
 
 
@@ -280,7 +362,9 @@ def persist_with_graph_isolation(
     timeout_seconds: float,
 ) -> dict[str, object]:
     canonical = vault.append(record)
-    graph = guard.execute("graph-write", lambda: graph_write(canonical), timeout_seconds=timeout_seconds)
+    graph = guard.execute(
+        "graph-write", lambda: graph_write(canonical), timeout_seconds=timeout_seconds
+    )
     return {
         "canonical_persisted": True,
         "memory_id": canonical.memory_id,

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:memory:memory-event",
+  "title": "Immutable sanitized L0 memory event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "project_id", "scope", "source", "content_hash", "original_content_hash", "captured_at", "content", "sanitization", "admission_status"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "event_id": {"type": "string", "minLength": 1},
+    "project_id": {"type": "string", "minLength": 1},
+    "scope": {
+      "type": "object",
+      "required": ["project_id"],
+      "additionalProperties": {"type": "string"},
+      "properties": {"project_id": {"type": "string", "minLength": 1}}
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "locator"],
+      "properties": {
+        "kind": {"enum": ["conversation", "tool_result", "document", "code", "workflow", "human_review", "external_import"]},
+        "locator": {"type": "string", "minLength": 1}
+      }
+    },
+    "content_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "original_content_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "captured_at": {"type": "string", "format": "date-time"},
+    "content": {"type": "string"},
+    "sanitization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["removed_fragments", "secret_finding_codes", "injection_finding_codes"],
+      "properties": {
+        "removed_fragments": {"type": "integer", "minimum": 0},
+        "secret_finding_codes": {"type": "array", "items": {"type": "string"}},
+        "injection_finding_codes": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "admission_status": {"enum": ["accepted", "quarantined", "rejected"]}
+  }
+}

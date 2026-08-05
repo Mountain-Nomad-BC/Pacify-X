@@ -1,4 +1,5 @@
 """Apply stable local identifiers to the shipped contract corpus."""
+
 from __future__ import annotations
 
 import argparse
@@ -17,7 +18,10 @@ def normalize(root: Path) -> int:
         schema_declaration = schema.pop("$schema")
         schema.pop("$id", None)
         normalized = {"$schema": schema_declaration, "$id": expected, **schema}
-        path.write_text(json.dumps(normalized, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        path.write_text(
+            json.dumps(normalized, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
         changed += 1
     return changed
 

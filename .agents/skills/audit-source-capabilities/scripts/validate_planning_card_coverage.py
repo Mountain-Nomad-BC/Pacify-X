@@ -19,7 +19,9 @@ def hash_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def validate(coverage_path: Path, product_root: Path, source_path: Path | None = None) -> dict[str, Any]:
+def validate(
+    coverage_path: Path, product_root: Path, source_path: Path | None = None
+) -> dict[str, Any]:
     document = json.loads(coverage_path.read_text(encoding="utf-8-sig"))
     records = document.get("records", [])
     ids: list[str] = []
@@ -44,7 +46,9 @@ def validate(coverage_path: Path, product_root: Path, source_path: Path | None =
     source_ids: list[str] | None = None
     source_hash: str | None = None
     if source_path:
-        source_ids = CARD.findall(source_path.read_text(encoding="utf-8-sig", errors="replace"))
+        source_ids = CARD.findall(
+            source_path.read_text(encoding="utf-8-sig", errors="replace")
+        )
         source_hash = hash_file(source_path)
         missing = sorted(set(source_ids) - set(ids))
         extra = sorted(set(ids) - set(source_ids))

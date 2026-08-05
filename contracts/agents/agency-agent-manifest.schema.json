@@ -1,0 +1,303 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:agents:agency-agent-manifest",
+  "title": "PACIFY-X Agency Agent Manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "agent_id",
+    "name",
+    "description",
+    "division",
+    "source",
+    "canonical",
+    "activation",
+    "capabilities",
+    "runtime_policy",
+    "required_inputs",
+    "deliverables",
+    "quality_gates",
+    "boundaries",
+    "handoffs",
+    "audit",
+    "source_audit_status",
+    "lifecycle_state",
+    "negative_matches",
+    "avoid_when",
+    "failure_modes",
+    "rollback_and_dry_run",
+    "freshness_policy",
+    "tool_requests_are_grants",
+    "memory_namespace",
+    "output_contract"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "agent_id": {
+      "type": "string",
+      "pattern": "^agency\\.[a-z0-9_-]+\\.[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10
+    },
+    "division": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256",
+        "license"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "license": {
+          "type": "string"
+        },
+        "upstream_project": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "canonical": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256",
+        "audit_status",
+        "audit_score"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "audit_status": {
+          "enum": [
+            "READY",
+            "HARDEN",
+            "REWRITE"
+          ]
+        },
+        "audit_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "activation": {
+      "type": "object",
+      "required": [
+        "mode",
+        "risk_tier",
+        "autonomy",
+        "freshness_sensitive",
+        "requires_human_review",
+        "max_parallel_specialists",
+        "aliases"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "coordinator",
+            "reviewer",
+            "operator",
+            "advisor",
+            "specialist"
+          ]
+        },
+        "risk_tier": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "autonomy": {
+          "type": "string"
+        },
+        "freshness_sensitive": {
+          "type": "boolean"
+        },
+        "requires_human_review": {
+          "type": "boolean"
+        },
+        "max_parallel_specialists": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "runtime_policy": {
+      "type": "object"
+    },
+    "required_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "deliverables": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "quality_gates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "boundaries": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "handoffs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "audit": {
+      "type": "object",
+      "required": [
+        "critical_issues",
+        "improvement_issues",
+        "recommendation"
+      ]
+    },
+    "source_audit_status": {
+      "enum": [
+        "READY",
+        "HARDEN",
+        "REWRITE"
+      ]
+    },
+    "lifecycle_state": {
+      "enum": [
+        "active",
+        "advisory",
+        "reference_only"
+      ]
+    },
+    "negative_matches": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "avoid_when": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "failure_modes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "rollback_and_dry_run": {
+      "type": "object",
+      "required": [
+        "dry_run_first_for_changes",
+        "reversible_first",
+        "rollback_required_for_production"
+      ],
+      "properties": {
+        "dry_run_first_for_changes": {
+          "type": "boolean"
+        },
+        "reversible_first": {
+          "type": "boolean"
+        },
+        "rollback_required_for_production": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "freshness_policy": {
+      "type": "object",
+      "required": [
+        "verify_changeable_facts",
+        "record_source_date_and_version",
+        "stale_behavior"
+      ],
+      "properties": {
+        "verify_changeable_facts": {
+          "type": "boolean"
+        },
+        "record_source_date_and_version": {
+          "type": "boolean"
+        },
+        "stale_behavior": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "tool_requests_are_grants": {
+      "const": false
+    },
+    "memory_namespace": {
+      "type": "string",
+      "pattern": "^project:\\{project_id\\}:agent:\\{agent_id\\}$"
+    },
+    "output_contract": {
+      "const": "contracts/agents/agent-result.schema.json"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,4 +1,5 @@
 """Project-scoped, provenance-backed memory primitives and provider assurance."""
+
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
@@ -12,11 +13,47 @@ from typing import Iterable, Mapping, Sequence
 
 TOKEN = re.compile(r"[a-z0-9]+")
 NIBBLE_ALPHABET = "ABCDEFGHIJKLMNOP"
-MEMORY_TYPES = frozenset({
-    "fact", "decision", "failure", "pattern", "preference", "skill", "architecture",
-    "risk", "assumption", "lesson", "relationship", "procedure",
-})
-CERTIFICATION_STATES = ("candidate", "validated", "certified", "trusted", "revoked", "superseded")
+MEMORY_TYPES = frozenset(
+    {
+        "fact",
+        "decision",
+        "failure",
+        "pattern",
+        "preference",
+        "skill",
+        "architecture",
+        "risk",
+        "assumption",
+        "lesson",
+        "relationship",
+        "procedure",
+        "evidence",
+        "constraint",
+        "instruction",
+        "event",
+        "negative_knowledge",
+        "work_task",
+        "scenario",
+        "project_doctrine",
+        "team_model",
+        "user_core",
+        "agent_profile",
+        "skill_candidate",
+    }
+)
+MEMORY_LAYERS = ("L0", "L1", "L2", "L3")
+CERTIFICATION_STATES = (
+    "candidate",
+    "validated",
+    "certified",
+    "trusted",
+    "disputed",
+    "expired",
+    "quarantined",
+    "revoked",
+    "superseded",
+)
+VISIBILITY_STATES = ("private", "project", "team", "restricted", "agent")
 
 
 def normalize_key(value: str) -> str:
@@ -27,7 +64,9 @@ def normalize_key(value: str) -> str:
 
 
 def _address_digest(key: str) -> str:
-    return hashlib.sha256(b"memory-address-v1\0" + normalize_key(key).encode("utf-8")).hexdigest()
+    return hashlib.sha256(
+        b"memory-address-v1\0" + normalize_key(key).encode("utf-8")
+    ).hexdigest()
 
 
 def encode_hex_alpha(hex_value: str) -> str:
@@ -67,11 +106,15 @@ def assign_shard_address(
     if minimum_bits < 4 or minimum_bits > 256 or minimum_bits % 4:
         raise ValueError("minimum_bits must be a multiple of four between 4 and 256")
     if step_bits < 4 or step_bits % 4 or bucket_letters < 1:
-        raise ValueError("step_bits and bucket_letters must be positive nibble-aligned values")
+        raise ValueError(
+            "step_bits and bucket_letters must be positive nibble-aligned values"
+        )
     normalized = normalize_key(key)
     digest = _address_digest(normalized)
     other_digests = {
-        _address_digest(other) for other in occupied_keys if normalize_key(other) != normalized
+        _address_digest(other)
+        for other in occupied_keys
+        if normalize_key(other) != normalized
     }
     bits = minimum_bits
     while bits <= 256:
@@ -83,9 +126,17 @@ def assign_shard_address(
     if bits > 256:
         raise ValueError("address namespace cannot resolve a full-digest collision")
     alpha = encode_hex_alpha(digest[: bits // 4])
-    buckets = tuple(alpha[index:index + bucket_letters] for index in range(0, len(alpha), bucket_letters))
+    buckets = tuple(
+        alpha[index : index + bucket_letters]
+        for index in range(0, len(alpha), bucket_letters)
+    )
     return ShardAddress(
-        normalized, bits, alpha, buckets, hashlib.sha256(content).hexdigest(), bits > minimum_bits,
+        normalized,
+        bits,
+        alpha,
+        buckets,
+        hashlib.sha256(content).hexdigest(),
+        bits > minimum_bits,
     )
 
 
@@ -116,19 +167,40 @@ class MemoryRecord:
     revision: int = 1
     certification_status: str = "candidate"
     retrieval_enabled: bool = False
+    layer: str = "L1"
+    team_id: str | None = None
+    user_id: str | None = None
+    agent_id: str | None = None
+    task_id: str | None = None
+    visibility: str = "project"
+    negative_matches: tuple[str, ...] = ()
+    conflicts_with: tuple[str, ...] = ()
+    fixed_agent_ids: tuple[str, ...] = ()
+    priority: int = 50
+    usage_success_rate: float = 0.0
 
     def validation_errors(self) -> tuple[str, ...]:
         errors = []
         mandatory = {
-            "memory_id": self.memory_id, "workspace_id": self.workspace_id,
-            "project_id": self.project_id, "owner_id": self.owner_id,
-            "session_id": self.session_id, "lease_id": self.lease_id,
-            "title": self.title, "summary": self.summary,
-            "source_artifact": self.source_artifact, "source_sha256": self.source_sha256,
-            "evidence_locator": self.evidence_locator, "confidence_method": self.confidence_method,
+            "memory_id": self.memory_id,
+            "workspace_id": self.workspace_id,
+            "project_id": self.project_id,
+            "owner_id": self.owner_id,
+            "session_id": self.session_id,
+            "lease_id": self.lease_id,
+            "title": self.title,
+            "summary": self.summary,
+            "source_artifact": self.source_artifact,
+            "source_sha256": self.source_sha256,
+            "evidence_locator": self.evidence_locator,
+            "confidence_method": self.confidence_method,
             "classification": self.classification,
         }
-        errors.extend(f"missing_{name}" for name, value in mandatory.items() if not str(value).strip())
+        errors.extend(
+            f"missing_{name}"
+            for name, value in mandatory.items()
+            if not str(value).strip()
+        )
         if self.memory_type not in MEMORY_TYPES:
             errors.append("invalid_memory_type")
         if self.epistemic_status not in {"observation", "inference", "proposal"}:
@@ -143,7 +215,29 @@ class MemoryRecord:
             errors.append("invalid_revision")
         if self.certification_status not in CERTIFICATION_STATES:
             errors.append("invalid_certification_status")
-        if self.retrieval_enabled and self.certification_status not in {"certified", "trusted"}:
+        if self.layer not in MEMORY_LAYERS:
+            errors.append("invalid_memory_layer")
+        if self.visibility not in VISIBILITY_STATES:
+            errors.append("invalid_visibility")
+        if not 0 <= self.priority <= 100:
+            errors.append("priority_out_of_range")
+        if not 0.0 <= self.usage_success_rate <= 1.0:
+            errors.append("usage_success_rate_out_of_range")
+        if self.layer == "L0" and self.memory_type != "evidence":
+            errors.append("l0_must_be_evidence")
+        if self.layer == "L2" and self.memory_type != "scenario":
+            errors.append("l2_must_be_scenario")
+        if self.layer == "L3" and self.memory_type not in {
+            "project_doctrine",
+            "team_model",
+            "user_core",
+            "agent_profile",
+        }:
+            errors.append("l3_scope_model_required")
+        if self.retrieval_enabled and self.certification_status not in {
+            "certified",
+            "trusted",
+        }:
             errors.append("uncertified_retrieval_enabled")
         if self.expires_at and self.expires_at <= self.effective_at:
             errors.append("expiry_not_after_effective")
@@ -158,7 +252,9 @@ class MemoryDecision:
     derived_invalidation: tuple[str, ...] = ()
 
 
-def admit_memory(record: MemoryRecord, *, active_project_id: str, actor_id: str) -> MemoryDecision:
+def admit_memory(
+    record: MemoryRecord, *, active_project_id: str, actor_id: str
+) -> MemoryDecision:
     reasons = list(record.validation_errors())
     if record.project_id != active_project_id:
         reasons.append("foreign_project_memory")
@@ -166,7 +262,11 @@ def admit_memory(record: MemoryRecord, *, active_project_id: str, actor_id: str)
         reasons.append("actor_attribution_mismatch")
     if record.epistemic_status == "proposal" and record.confidence >= 1.0:
         reasons.append("proposal_cannot_be_certain")
-    return MemoryDecision("candidate" if not reasons else "quarantine", tuple(sorted(set(reasons))), record.memory_id)
+    return MemoryDecision(
+        "candidate" if not reasons else "quarantine",
+        tuple(sorted(set(reasons))),
+        record.memory_id,
+    )
 
 
 def correction_plan(previous: MemoryRecord, correction: MemoryRecord) -> MemoryDecision:
@@ -180,7 +280,12 @@ def correction_plan(previous: MemoryRecord, correction: MemoryRecord) -> MemoryD
     if correction.revision <= previous.revision:
         reasons.append("revision_not_monotonic")
     derived = ("embedding", "graph", "retrieval_cache", "summary", "transfer_exports")
-    return MemoryDecision("rebuild_required" if not reasons else "deny", tuple(sorted(set(reasons))), correction.memory_id, derived)
+    return MemoryDecision(
+        "rebuild_required" if not reasons else "deny",
+        tuple(sorted(set(reasons))),
+        correction.memory_id,
+        derived,
+    )
 
 
 def simhash64(text: str) -> int:
@@ -189,7 +294,9 @@ def simhash64(text: str) -> int:
         return 0
     vector = [0] * 64
     for term in terms:
-        value = int.from_bytes(hashlib.blake2b(term.encode("utf-8"), digest_size=8).digest(), "big")
+        value = int.from_bytes(
+            hashlib.blake2b(term.encode("utf-8"), digest_size=8).digest(), "big"
+        )
         for bit in range(64):
             vector[bit] += 1 if value & (1 << bit) else -1
     result = 0
@@ -213,6 +320,7 @@ def candidate_memories(
     current = now or datetime.now(timezone.utc)
     values = tuple(records)
     superseded = {memory_id for record in values for memory_id in record.supersedes}
+    query_terms = set(TOKEN.findall(query.casefold()))
     candidates = []
     for record in values:
         allowed = actor_id in record.acl or project_id in record.acl
@@ -227,7 +335,14 @@ def candidate_memories(
             or not record.retrieval_enabled
         ):
             continue
-        distance = (query_hash ^ simhash64(record.title + " " + record.summary)).bit_count()
+        if any(
+            set(TOKEN.findall(pattern.casefold())) <= query_terms
+            for pattern in record.negative_matches
+        ):
+            continue
+        distance = (
+            query_hash ^ simhash64(record.title + " " + record.summary)
+        ).bit_count()
         if distance <= max_hamming:
             candidates.append((distance, record.memory_id))
     return tuple(memory_id for _, memory_id in sorted(candidates))
@@ -235,23 +350,48 @@ def candidate_memories(
 
 def memory_record_from_mapping(value: Mapping[str, object]) -> MemoryRecord:
     """Create the runtime record from canonical schema/template metadata."""
-    required_times = {name: datetime.fromisoformat(str(value[name])) for name in ("observed_at", "effective_at")}
+    required_times = {
+        name: datetime.fromisoformat(str(value[name]))
+        for name in ("observed_at", "effective_at")
+    }
     expires = value.get("expires_at")
     return MemoryRecord(
-        memory_id=str(value["memory_id"]), workspace_id=str(value["workspace_id"]),
-        project_id=str(value["project_id"]), owner_id=str(value["owner_id"]),
-        session_id=str(value["session_id"]), lease_id=str(value["lease_id"]),
-        title=str(value["title"]), memory_type=str(value["memory_type"]), summary=str(value["summary"]),
-        source_artifact=str(value["source_artifact"]), source_sha256=str(value["source_sha256"]),
-        evidence_locator=str(value["evidence_locator"]), epistemic_status=str(value["epistemic_status"]),
-        confidence=float(value["confidence"]), confidence_method=str(value["confidence_method"]),
-        classification=str(value["classification"]), acl=tuple(map(str, value.get("acl", ()))),
-        observed_at=required_times["observed_at"], effective_at=required_times["effective_at"],
+        memory_id=str(value["memory_id"]),
+        workspace_id=str(value["workspace_id"]),
+        project_id=str(value["project_id"]),
+        owner_id=str(value["owner_id"]),
+        session_id=str(value["session_id"]),
+        lease_id=str(value["lease_id"]),
+        title=str(value["title"]),
+        memory_type=str(value["memory_type"]),
+        summary=str(value["summary"]),
+        source_artifact=str(value["source_artifact"]),
+        source_sha256=str(value["source_sha256"]),
+        evidence_locator=str(value["evidence_locator"]),
+        epistemic_status=str(value["epistemic_status"]),
+        confidence=float(value["confidence"]),
+        confidence_method=str(value["confidence_method"]),
+        classification=str(value["classification"]),
+        acl=tuple(map(str, value.get("acl", ()))),
+        observed_at=required_times["observed_at"],
+        effective_at=required_times["effective_at"],
         expires_at=datetime.fromisoformat(str(expires)) if expires else None,
         supersedes=tuple(map(str, value.get("supersedes", ()))),
-        relationships=tuple(map(str, value.get("relationships", ()))), revision=int(value.get("revision", 1)),
+        relationships=tuple(map(str, value.get("relationships", ()))),
+        revision=int(value.get("revision", 1)),
         certification_status=str(value.get("certification_status", "candidate")),
         retrieval_enabled=value.get("retrieval_enabled") is True,
+        layer=str(value.get("layer", "L1")),
+        team_id=str(value["team_id"]) if value.get("team_id") else None,
+        user_id=str(value["user_id"]) if value.get("user_id") else None,
+        agent_id=str(value["agent_id"]) if value.get("agent_id") else None,
+        task_id=str(value["task_id"]) if value.get("task_id") else None,
+        visibility=str(value.get("visibility", "project")),
+        negative_matches=tuple(map(str, value.get("negative_matches", ()))),
+        conflicts_with=tuple(map(str, value.get("conflicts_with", ()))),
+        fixed_agent_ids=tuple(map(str, value.get("fixed_agent_ids", ()))),
+        priority=int(value.get("priority", 50)),
+        usage_success_rate=float(value.get("usage_success_rate", 0.0)),
     )
 
 
@@ -294,7 +434,12 @@ def certify_provider_isolation(
         reasons.append("shared_provider_process_forbidden")
     if config.source_of_truth:
         reasons.append("external_provider_cannot_be_source_of_truth")
-    if not config.project_id or not config.database_namespace or not config.index_namespace or not config.process_namespace:
+    if (
+        not config.project_id
+        or not config.database_namespace
+        or not config.index_namespace
+        or not config.process_namespace
+    ):
         reasons.append("provider_namespace_incomplete")
     for name, passed in asdict(evidence).items():
         if not passed:
@@ -309,7 +454,9 @@ class BackendResult:
     error_code: str | None = None
 
 
-def normalize_backend_result(*, items: Sequence[object] | None = None, error: Exception | None = None) -> BackendResult:
+def normalize_backend_result(
+    *, items: Sequence[object] | None = None, error: Exception | None = None
+) -> BackendResult:
     """Never collapse a backend failure into a truthful-looking empty result."""
     if error is not None:
         return BackendResult("error", (), type(error).__name__)
@@ -329,10 +476,21 @@ def plan_self_healing(findings: Iterable[Mapping[str, object]]) -> MaintenancePl
     actions = []
     for finding in findings:
         kind = str(finding.get("kind", "unknown"))
-        if kind in {"duplicate", "stale", "broken_link", "orphan_index", "invalid_hash"}:
-            actions.append({
-                "kind": kind, "target": str(finding.get("target", "")),
-                "action": "quarantine_and_rebuild" if kind in {"orphan_index", "invalid_hash"} else "propose_repair",
-                "source_remains_canonical": True,
-            })
+        if kind in {
+            "duplicate",
+            "stale",
+            "broken_link",
+            "orphan_index",
+            "invalid_hash",
+        }:
+            actions.append(
+                {
+                    "kind": kind,
+                    "target": str(finding.get("target", "")),
+                    "action": "quarantine_and_rebuild"
+                    if kind in {"orphan_index", "invalid_hash"}
+                    else "propose_repair",
+                    "source_remains_canonical": True,
+                }
+            )
     return MaintenancePlan(tuple(actions), dry_run=True, human_approval_required=True)

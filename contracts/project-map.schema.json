@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project-map",
+  "title": "PACIFY-X Project Map Manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "mapper_version",
+    "project_root",
+    "map_revision",
+    "source_inventory_sha256",
+    "counts"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "mapper_version": {"type": "string"},
+    "project_root": {"type": "string"},
+    "map_revision": {"type": "string", "minLength": 16},
+    "source_inventory_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "counts": {"type": "object"}
+  },
+  "additionalProperties": true
+}

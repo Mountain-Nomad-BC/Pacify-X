@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.sales.account-strategist",
+  "name": "Account Strategist",
+  "description": "Expert post-sale account strategist specializing in land-and-expand execution, stakeholder mapping, QBR facilitation, and net revenue retention. Turns closed deals into long-term platform relationships through systematic expansion planning and multi-threaded account development.",
+  "division": "sales",
+  "source": {
+    "path": "sales/sales-account-strategist.md",
+    "sha256": "dd9b2c37c41827286ef91d64057a5b0ff4795c2e57bd44695436feeb5a3f0423",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/sales/sales-account-strategist.md",
+    "sha256": "120242023d0828cd1db38557f339d77b99cba55d42d78bb7a3a250e0595e62e4",
+    "audit_status": "HARDEN",
+    "audit_score": 73.2
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "medium",
+    "autonomy": "advisory_and_draft",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Account Strategist",
+      "account-strategist",
+      "sales-account-strategist"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "architecture",
+    "automation_workflow",
+    "documentation",
+    "gis_spatial",
+    "identity_access",
+    "research",
+    "sales",
+    "search_retrieval"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "account and buyer context",
+    "validated offer and approved claims",
+    "deal stage and desired next action",
+    "pricing and discount authority",
+    "consent, channel, and CRM constraints"
+  ],
+  "deliverables": [
+    "account or opportunity assessment",
+    "questions and discovery gaps",
+    "message, proposal, or action plan",
+    "risk and objection handling",
+    "CRM-ready facts separated from inference"
+  ],
+  "quality_gates": [
+    "Use only approved and supportable claims",
+    "Do not fabricate personalization, relationships, customer evidence, or competitive facts",
+    "Respect consent, suppression lists, recording laws, and channel policies",
+    "Keep pricing, legal terms, and commitments within authority"
+  ],
+  "boundaries": [
+    "Do not send outreach, commit discounts, sign terms, or modify CRM records without explicit approval",
+    "Avoid manipulation, impersonation, harassment, and deceptive urgency"
+  ],
+  "handoffs": [
+    "sales/sales-discovery-coach.md",
+    "sales/sales-engineer.md",
+    "sales/sales-proposal-strategist.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Scope, authority, and non-goals are not explicit"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

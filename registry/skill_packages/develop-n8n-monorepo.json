@@ -1,0 +1,33 @@
+{
+  "id": "develop-n8n-monorepo",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/develop-n8n-monorepo/SKILL.md",
+  "body_sha256": "5a5de52f4427c3c40fe8c5cb6459933ec2e1a61af78156d753c66dcf33d85f3b",
+  "references": [],
+  "capability_tags": [
+    "agents.md",
+    "monorepo",
+    "n8n",
+    "package-gates",
+    "pnpm"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "clean_room_product_capability_synthesis",
+    "basis": [
+      "evidence/integration/pxi-20260804/candidate_disposition_ledger.json",
+      "registry/service_capability_catalog.json"
+    ],
+    "source_archive_sha256": "e4f79ebab8addfb1db452e4acdf1c5539d8b20a7b9e364cc5183470fee3a9753",
+    "source_version": "2.34.0",
+    "canonical_owner": ".agents/skills/develop-n8n-monorepo/SKILL.md"
+  },
+  "clean_room": true,
+  "tests": "tests/test_service_capability_provider.py",
+  "evidence": "tests/test_service_capability_provider.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 8192
+}

@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0.0",
+  "policy_id": "pacify-x.agency-agents.runtime",
+  "precedence": [
+    "platform_and_safety_policy",
+    "task_authority_envelope",
+    "project_policy_and_contracts",
+    "pacify_x_agent_runtime_policy",
+    "agent_manifest",
+    "agent_persona_content",
+    "style_preferences"
+  ],
+  "routing": {
+    "one_primary_agent": true,
+    "max_reviewers": 3,
+    "max_parallel_specialists_default": 3,
+    "require_distinct_review_function": true,
+    "keyword_only_activation_forbidden": true,
+    "minimum_route_score": 0.18,
+    "tie_policy": "prefer narrower capability match, lower risk, then reviewer availability"
+  },
+  "tool_authority": {
+    "prompt_or_frontmatter_may_grant_tools": false,
+    "default_access": "read_only",
+    "write_requires_explicit_task_authority": true,
+    "execute_requires_explicit_task_authority": true,
+    "external_action_requires_confirmation": true,
+    "destructive_action": "deny_by_default",
+    "production_change_requires": [
+      "explicit_target",
+      "rollback",
+      "validation_plan",
+      "human_approval"
+    ],
+    "credential_handling": [
+      "never_echo_secret",
+      "redact_evidence",
+      "use_scoped_secret_provider"
+    ]
+  },
+  "execution": {
+    "required_phases": [
+      "frame",
+      "inspect",
+      "plan",
+      "execute",
+      "verify",
+      "report",
+      "handoff"
+    ],
+    "smallest_sufficient_change": true,
+    "reversible_first": true,
+    "no_claim_without_observation": true,
+    "blocked_is_not_passed": true,
+    "partial_completion_allowed_with_visible_gaps": true
+  },
+  "evidence": {
+    "required_for_completion": true,
+    "separate_fact_inference_assumption_recommendation": true,
+    "record_versions_and_dates": true,
+    "freshness_check_for_changeable_domains": true,
+    "test_denominator_required": true,
+    "redact_sensitive_values": true
+  },
+  "memory": {
+    "implicit_persistent_memory": false,
+    "namespace_required": true,
+    "project_scoped": true,
+    "sensitive_memory_default": "do_not_store",
+    "source_reference_required": true,
+    "conflict_resolution": "new evidence does not silently overwrite prior evidence; retain provenance"
+  },
+  "composition": {
+    "reviewers_by_risk": {
+      "low": [
+        "quality reviewer when acceptance criteria are nontrivial"
+      ],
+      "medium": [
+        "domain or test reviewer for consequential outputs"
+      ],
+      "high": [
+        "qualified accountable human and at least one independent specialist reviewer"
+      ]
+    },
+    "prevent_agent_soup": true,
+    "personality_does_not_override_contracts": true,
+    "generated_integrations_are_not_canonical": true
+  },
+  "freshness": {
+    "domains": [
+      "law",
+      "tax",
+      "finance",
+      "healthcare",
+      "security",
+      "platform APIs",
+      "marketing platforms",
+      "standards",
+      "pricing",
+      "policies"
+    ],
+    "require_authoritative_source": true,
+    "record_as_of_date": true,
+    "stale_data_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "stop_conditions": [
+    "missing or ambiguous authority",
+    "scope conflict",
+    "irreversible action without rollback",
+    "contradictory required evidence",
+    "high-risk professional judgment without accountable review",
+    "validation cannot observe the requested outcome"
+  ]
+}

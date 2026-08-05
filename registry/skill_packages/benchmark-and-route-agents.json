@@ -1,0 +1,43 @@
+{
+  "id": "benchmark-and-route-agents",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/benchmark-and-route-agents/SKILL.md",
+  "body_sha256": "2b92b657c421e1cd56ddde71013151c7751d7f9ec662c98ee325837d913ef79e",
+  "references": [
+    ".agents/skills/benchmark-and-route-agents/references/benchmark-agent-regressions.json",
+    ".agents/skills/benchmark-and-route-agents/references/govern-model-routing-economics.json"
+  ],
+  "capability_tags": [
+    "agents",
+    "and",
+    "benchmark",
+    "evaluation",
+    "external-candidate",
+    "model-routing",
+    "route"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "inactive_external_candidate_wrapper",
+    "basis": [
+      "registry/external_capability_candidates.json",
+      "registry/external_capability_licenses.json"
+    ],
+    "canonical_owner": "engineer-verification-lab",
+    "source_licenses": [
+      "everything-claude-code"
+    ],
+    "candidate_capabilities": [
+      "benchmark-agent-regressions",
+      "govern-model-routing-economics"
+    ]
+  },
+  "clean_room": false,
+  "tests": "tests/test_external_capability_provider.py",
+  "evidence": "tests/test_external_capability_provider.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

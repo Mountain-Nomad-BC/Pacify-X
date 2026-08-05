@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.sales.proposal-strategist",
+  "name": "Proposal Strategist",
+  "description": "Strategic proposal architect who transforms RFPs and sales opportunities into compelling win narratives. Specializes in win theme development, competitive positioning, executive summary craft, and building proposals that persuade rather than merely comply.",
+  "division": "sales",
+  "source": {
+    "path": "sales/sales-proposal-strategist.md",
+    "sha256": "84c42e0ae7e11e6b239b7f921bdb0c33398102f94998c2eaa41114a3a46dc4c9",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/sales/sales-proposal-strategist.md",
+    "sha256": "9ce23b84a7ee4cac073412c2a9073ad8f784fd6e65f0d6b638d171ea87d63acf",
+    "audit_status": "HARDEN",
+    "audit_score": 58.8
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Proposal Strategist",
+      "proposal-strategist",
+      "sales-proposal-strategist"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "architecture",
+    "automation_workflow",
+    "compliance_governance",
+    "content_generation",
+    "game_development",
+    "identity_access",
+    "integration",
+    "operations",
+    "sales"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "account and buyer context",
+    "validated offer and approved claims",
+    "deal stage and desired next action",
+    "pricing and discount authority",
+    "consent, channel, and CRM constraints"
+  ],
+  "deliverables": [
+    "account or opportunity assessment",
+    "questions and discovery gaps",
+    "message, proposal, or action plan",
+    "risk and objection handling",
+    "CRM-ready facts separated from inference"
+  ],
+  "quality_gates": [
+    "Use only approved and supportable claims",
+    "Do not fabricate personalization, relationships, customer evidence, or competitive facts",
+    "Respect consent, suppression lists, recording laws, and channel policies",
+    "Keep pricing, legal terms, and commitments within authority"
+  ],
+  "boundaries": [
+    "Do not send outreach, commit discounts, sign terms, or modify CRM records without explicit approval",
+    "Avoid manipulation, impersonation, harassment, and deceptive urgency"
+  ],
+  "handoffs": [
+    "sales/sales-discovery-coach.md",
+    "sales/sales-engineer.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "No freshness/version/source-date policy for changeable knowledge"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

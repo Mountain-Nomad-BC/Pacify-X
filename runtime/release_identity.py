@@ -1,4 +1,5 @@
 """Authoritative package version and immutable Git release identity."""
+
 from __future__ import annotations
 
 import importlib.metadata
@@ -16,7 +17,9 @@ VERSION_PATTERN = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
 def authoritative_version(root: Path) -> str:
     pyproject = root.resolve() / "pyproject.toml"
     if pyproject.is_file():
-        value = str(tomllib.loads(pyproject.read_text(encoding="utf-8"))["project"]["version"])
+        value = str(
+            tomllib.loads(pyproject.read_text(encoding="utf-8"))["project"]["version"]
+        )
     else:
         value = importlib.metadata.version("engineering-loop-bootstrap")
     if not VERSION_PATTERN.fullmatch(value):
@@ -24,7 +27,9 @@ def authoritative_version(root: Path) -> str:
     return value
 
 
-def validate_version_surfaces(root: Path, *, asserted: str | None = None) -> dict[str, Any]:
+def validate_version_surfaces(
+    root: Path, *, asserted: str | None = None
+) -> dict[str, Any]:
     root = root.resolve()
     version = authoritative_version(root)
     errors: list[str] = []
@@ -32,12 +37,18 @@ def validate_version_surfaces(root: Path, *, asserted: str | None = None) -> dic
     match = re.search(r'(?m)^VERSION\s*=\s*"([^"]+)"\s*$', runtime_text)
     runtime_version = match.group(1) if match else None
     if runtime_version != version:
-        errors.append(f"runtime/version.py={runtime_version!r}, pyproject.toml={version!r}")
+        errors.append(
+            f"runtime/version.py={runtime_version!r}, pyproject.toml={version!r}"
+        )
     readme = (root / "README.md").read_text(encoding="utf-8")
-    readme_match = re.search(r"(?m)^\*\*Current release:\*\* v([0-9]+\.[0-9]+\.[0-9]+)(?:\s|$)", readme)
+    readme_match = re.search(
+        r"(?m)^\*\*Current release:\*\* v([0-9]+\.[0-9]+\.[0-9]+)(?:\s|$)", readme
+    )
     readme_version = readme_match.group(1) if readme_match else None
     if readme_version != version:
-        errors.append(f"README current release={readme_version!r}, pyproject.toml={version!r}")
+        errors.append(
+            f"README current release={readme_version!r}, pyproject.toml={version!r}"
+        )
     if asserted is not None and asserted != version:
         errors.append(f"asserted release={asserted!r}, pyproject.toml={version!r}")
     return {
@@ -53,8 +64,12 @@ def validate_version_surfaces(root: Path, *, asserted: str | None = None) -> dic
 
 def _git(root: Path, *arguments: str) -> str:
     process = subprocess.run(
-        ["git", *arguments], cwd=root, text=True, capture_output=True,
-        timeout=30, check=False,
+        ["git", *arguments],
+        cwd=root,
+        text=True,
+        capture_output=True,
+        timeout=30,
+        check=False,
     )
     if process.returncode:
         detail = (process.stderr or process.stdout).strip()
@@ -92,14 +107,21 @@ def capture_git_identity(
         tag_commit = _git(root, "rev-list", "-n", "1", expected_tag)
     except ValueError as error:
         return {
-            "schema_version": "1.0", "valid": False, "repository": None,
-            "commit_sha": None, "tree_sha": None, "tag": expected_tag,
-            "dirty": True, "errors": [str(error)],
+            "schema_version": "1.0",
+            "valid": False,
+            "repository": None,
+            "commit_sha": None,
+            "tree_sha": None,
+            "tag": expected_tag,
+            "dirty": True,
+            "errors": [str(error)],
         }
     if status:
         errors.append("Git worktree contains tracked or untracked changes")
     if repository.casefold() != expected_repository.casefold():
-        errors.append(f"repository identity {repository!r} does not match {expected_repository!r}")
+        errors.append(
+            f"repository identity {repository!r} does not match {expected_repository!r}"
+        )
     if object_type != "tag":
         errors.append(f"{expected_tag} is not an annotated tag")
     if tag_commit != commit:
@@ -119,7 +141,12 @@ def capture_git_identity(
     }
 
 
-def verify_recorded_git_identity(root: Path, recorded: dict[str, Any], *, expected_repository: str = EXPECTED_REPOSITORY) -> dict[str, Any]:
+def verify_recorded_git_identity(
+    root: Path,
+    recorded: dict[str, Any],
+    *,
+    expected_repository: str = EXPECTED_REPOSITORY,
+) -> dict[str, Any]:
     root = root.resolve()
     errors: list[str] = []
     try:
@@ -131,7 +158,10 @@ def verify_recorded_git_identity(root: Path, recorded: dict[str, Any], *, expect
         tree = _git(root, "rev-parse", f"{recorded.get('commit_sha')}^{{tree}}")
     except ValueError as error:
         return {"valid": False, "errors": [str(error)]}
-    if repository.casefold() != expected_repository.casefold() or repository.casefold() != str(recorded.get("repository", "")).casefold():
+    if (
+        repository.casefold() != expected_repository.casefold()
+        or repository.casefold() != str(recorded.get("repository", "")).casefold()
+    ):
         errors.append("recorded repository identity does not match Git origin")
     if tag_type != "tag":
         errors.append("recorded release tag is not annotated")
@@ -139,4 +169,10 @@ def verify_recorded_git_identity(root: Path, recorded: dict[str, Any], *, expect
         errors.append("recorded release tag does not resolve to the certified commit")
     if tree != recorded.get("tree_sha"):
         errors.append("recorded Git tree does not match the certified commit")
-    return {"valid": not errors, "repository": repository, "tag_commit_sha": tag_commit, "tree_sha": tree, "errors": errors}
+    return {
+        "valid": not errors,
+        "repository": repository,
+        "tag_commit_sha": tag_commit,
+        "tree_sha": tree,
+        "errors": errors,
+    }

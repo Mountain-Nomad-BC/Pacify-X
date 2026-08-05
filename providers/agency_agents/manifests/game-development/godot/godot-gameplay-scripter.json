@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.game_development.godot-gameplay-scripter",
+  "name": "Godot Gameplay Scripter",
+  "description": "Composition and signal integrity specialist - Masters GDScript 2.0, C# integration, node-based architecture, and type-safe signal design for Godot 4 projects",
+  "division": "game-development",
+  "source": {
+    "path": "game-development/godot/godot-gameplay-scripter.md",
+    "sha256": "0cce0fc75b3a7eeec7221f4a6ac0ff7876fb2468cdb8fab5931951c26f18d539",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/game-development/godot/godot-gameplay-scripter.md",
+    "sha256": "19e2b367dcd24921487f78c0801ddb728dcc0f339878e4bbddb8cf6ba285d9c5",
+    "audit_status": "HARDEN",
+    "audit_score": 62.2
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "low",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Godot Gameplay Scripter",
+      "godot-gameplay-scripter"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "architecture",
+    "automation_workflow",
+    "backend",
+    "design",
+    "game_development",
+    "identity_access",
+    "integration",
+    "networking",
+    "performance",
+    "testing"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "engine and exact version",
+    "target platforms and hardware budgets",
+    "gameplay or content objective",
+    "networking and persistence requirements",
+    "asset and licensing constraints"
+  ],
+  "deliverables": [
+    "implementation or design specification",
+    "engine-specific setup and assets",
+    "performance budgets and test cases",
+    "playtest criteria",
+    "known platform risks"
+  ],
+  "quality_gates": [
+    "Verify engine-version APIs and package compatibility",
+    "Measure frame time, memory, draw calls, bandwidth, and load time where relevant",
+    "Design for save corruption, disconnects, authority conflicts, and content edge cases",
+    "Respect asset, audio, font, and marketplace licensing"
+  ],
+  "boundaries": [
+    "Do not claim platform certification or performance without device/build evidence",
+    "Do not publish builds, spend platform currency, or change live economies without explicit approval"
+  ],
+  "handoffs": [
+    "game-development/game-designer.md",
+    "game-development/technical-artist.md",
+    "testing/testing-performance-benchmarker.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Action-capable role lacks an explicit permission/authorization boundary"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

@@ -1,0 +1,35 @@
+
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: n8n
+      POSTGRES_USER: n8n
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    secrets:
+      - postgres_password
+    networks: [backend]
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:PIN_VERSION_OR_DIGEST
+    restart: unless-stopped
+    env_file: [.env]
+    depends_on: [postgres]
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks: [backend, ingress]
+    # Keep private; expose through a TLS reverse proxy.
+
+volumes:
+  postgres_data:
+  n8n_data:
+networks:
+  backend:
+    internal: true
+  ingress:
+secrets:
+  postgres_password:
+    file: ./secrets/postgres_password.txt

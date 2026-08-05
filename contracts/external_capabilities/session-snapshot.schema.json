@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:external_capabilities:session-snapshot",
+  "title": "Cross-harness canonical session snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "adapter_id", "project_id", "session_id", "agent_id", "state", "branch", "worktree", "checkpoint", "artifact_refs", "evidence_refs", "pending_actions", "authority_granted", "snapshot_sha256"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "adapter_id": {"type": "string", "minLength": 1},
+    "project_id": {"type": "string", "minLength": 1},
+    "session_id": {"type": "string", "minLength": 1},
+    "agent_id": {"type": "string", "minLength": 1},
+    "state": {"enum": ["active", "paused", "completed", "failed", "blocked"]},
+    "branch": {"type": ["string", "null"]},
+    "worktree": {"type": ["string", "null"]},
+    "checkpoint": {"type": ["string", "null"]},
+    "artifact_refs": {"type": "array", "items": {"type": "string"}},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "pending_actions": {"type": "array", "items": {"type": "string"}},
+    "authority_granted": {"const": false},
+    "snapshot_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "govern-distributed-work-runtime",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/govern-distributed-work-runtime/SKILL.md",
+  "body_sha256": "517e85cf43256df8065156efd124f6a5a0aa4bcd2a7f5768b56a259e796c2293",
+  "references": [],
+  "capability_tags": ["budget", "lease", "runtime-placement", "multi-project", "a2a", "mcp"],
+  "effects": ["read_local", "write_workspace", "network"],
+  "provenance": {"type": "sanitized_clean_room_integration", "basis": ["evidence/integration/pxi-20260804/final_intake_disposition.json"], "canonical_owner": "runtime/completion_controls.py"},
+  "clean_room": true,
+  "tests": "tests/test_completion_controls.py",
+  "evidence": "tests/test_completion_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

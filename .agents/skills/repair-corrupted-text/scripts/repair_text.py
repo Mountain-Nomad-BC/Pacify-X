@@ -13,7 +13,9 @@ def _hash(raw: bytes) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
-def _repair(value: object, mappings: list[tuple[str, str]], counts: dict[str, int]) -> object:
+def _repair(
+    value: object, mappings: list[tuple[str, str]], counts: dict[str, int]
+) -> object:
     if isinstance(value, str):
         for source, replacement in mappings:
             count = value.count(source)
@@ -32,13 +34,19 @@ def repair(input_path: Path, mapping_path: Path) -> tuple[bytes, dict]:
     raw = input_path.read_bytes()
     config = json.loads(mapping_path.read_text(encoding="utf-8"))
     replacements = config.get("replacements", {})
-    if not isinstance(replacements, dict) or any(not isinstance(k, str) or not isinstance(v, str) for k, v in replacements.items()):
+    if not isinstance(replacements, dict) or any(
+        not isinstance(k, str) or not isinstance(v, str)
+        for k, v in replacements.items()
+    ):
         raise ValueError("mapping replacements must be a string-to-string object")
     mappings = sorted(replacements.items(), key=lambda pair: (-len(pair[0]), pair[0]))
     counts: dict[str, int] = {}
     if input_path.suffix.lower() == ".json":
         value = json.loads(raw.decode("utf-8"))
-        output = (json.dumps(_repair(value, mappings, counts), indent=2, ensure_ascii=False) + "\n").encode("utf-8")
+        output = (
+            json.dumps(_repair(value, mappings, counts), indent=2, ensure_ascii=False)
+            + "\n"
+        ).encode("utf-8")
     else:
         output = str(_repair(raw.decode("utf-8"), mappings, counts)).encode("utf-8")
     receipt = {

@@ -1,0 +1,612 @@
+{
+  "schema_version": "1.0",
+  "generator": "pacify-x.integration-disposition/1.0.0",
+  "source_alias": "knowledge-refinery-upgrade",
+  "expected_tree_sha256": null,
+  "inventory_sha256": "f1269528f49d4e7273d99b367686c422d0e52b51594e0adfcc1dbb7377c71246",
+  "file_count": 66,
+  "byte_count": 232417,
+  "unaccounted_count": 0,
+  "disposition_counts": {
+    "merge": 23,
+    "reject": 2,
+    "retain": 41
+  },
+  "records": [
+    {
+      "source_path": "BUILD_INFO.json",
+      "bytes": 1237,
+      "sha256": "5f3c1de346b46050fd30bcfc29165d2fc080473ad417387abaa67e74e740e985",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "CHANGELOG.md",
+      "bytes": 641,
+      "sha256": "5374cd081ccb924fab26f4891832676dc9748328714c6914f914af9d4794f9b7",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "CODEX_START_HERE.md",
+      "bytes": 667,
+      "sha256": "e0367cafca31468796bceff4bca08ffecac8146640c8e04291ecc4ea74438e81",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "INTEGRATION_STATUS.md",
+      "bytes": 1480,
+      "sha256": "5b828b2bc9a149817bc425b78e9713de4ee21e8a3de4c1d8ef0bd5325dc60017",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/config/artifact-schema-map.yaml",
+      "bytes": 1283,
+      "sha256": "e8018c40a13c2751d54798c11ed5532cbf095e6bf4111c8d9e62903b4eb55f41",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/config/example-alias-map.yaml",
+      "bytes": 315,
+      "sha256": "371af80814d0f7580ba526f0e16c47f49934bd10bfcf45e4fdeb0e12f78b8f3e",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/config/ranking-weights.yaml",
+      "bytes": 727,
+      "sha256": "059f6401706d05c17cd6e6e8abb751b567ee471adcc0d0c3eab9a43f46fbc1d6",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/config/refinery-config.yaml",
+      "bytes": 1026,
+      "sha256": "0ae0aaec7b00865783acdffc9d134e954b8516ad1e7f02a4921d5f73021984d8",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/config/relation-types.yaml",
+      "bytes": 990,
+      "sha256": "5ab90adc66cd9784f46bd071defaab2b95573344c4720de17b7c8105ec25ffcf",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/contracts/calibration-report.schema.json",
+      "bytes": 1254,
+      "sha256": "f4605e418ec989f181c7b1cec267047dd2c6fb0a1880ba07c0e51787b7d6176a",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/contracts/candidate-artifact.schema.json",
+      "bytes": 3257,
+      "sha256": "75b3ca1e2675b35749eae9426b0c076320d6281a1f04166f61c650477da75103",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/contracts/certification-receipt.schema.json",
+      "bytes": 887,
+      "sha256": "5cc30b69bdc6b83cdf5403ce254e8f7737833d618a941ef969df2060dddaf743",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/contracts/execution-package.schema.json",
+      "bytes": 1129,
+      "sha256": "bb7262c6412ed4c4e3f84c919e2706287542f5bcecf2adb3c68d0f033288fb1a",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/contracts/merge-plan.schema.json",
+      "bytes": 2059,
+      "sha256": "119005de25e695af2b75b1534ca5770939c5f1074847933dab95dc47f39d5c2a",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/contracts/novelty-decision.schema.json",
+      "bytes": 1225,
+      "sha256": "9a055e9e5168c32385e6a1216c26396bff02b52396648bbc1a836cfe7cf61cbe",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/contracts/ranked-candidate.schema.json",
+      "bytes": 1043,
+      "sha256": "dbc90cd8d330c9231c76f00d57d10a2d4f0a307c1d03b1e641b1bec6d43ae76b",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/contracts/retrieval-query-case.schema.json",
+      "bytes": 1484,
+      "sha256": "aebb5fd667d9010b6200ac58c37435d9d344c07d138ae668def4ed8a3b8b3236",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/contracts/source-inventory.schema.json",
+      "bytes": 1314,
+      "sha256": "f62e0e881f2e6f4f8ecae1e49aa4df0187588e1ddde84e53e2f63d509f3c14f7",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/docs/ARCHITECTURE.md",
+      "bytes": 1964,
+      "sha256": "c0091309703b67172d75d2cf124fd02a40975f1ad71a99a1335b10d5562b4b23",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/docs/CODEX_INTEGRATION_AND_REPAIR_INSTRUCTIONS.md",
+      "bytes": 10871,
+      "sha256": "4ef749a3700f3a485abbbc389b12dc6d118581ac81fd261c53012c94238f37d5",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/docs/RANKING_DESIGN.md",
+      "bytes": 1331,
+      "sha256": "349c5a1d8ea570b337b4d4dffbd61e91db08597ac4e9439a2262beeab683fdcb",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/docs/RUNBOOK.md",
+      "bytes": 1776,
+      "sha256": "4154a01713c4d5e9b02aa8e33a72340bb519ea41f2652b25962f825f2bfd9c45",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/evidence/SMOKE_TEST_SUMMARY.json",
+      "bytes": 773,
+      "sha256": "864ab1294cac626ae6fcd16153e67dcc5e44b93d7d7d42511ddba6501fda8f92",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/evidence/validation.log",
+      "bytes": 723,
+      "sha256": "e970af289a0b546f0f082b0f07eeeea3cd00491ad5ecfc7ff103b4eb367adb89",
+      "disposition": "reject",
+      "canonical_owner": "none",
+      "target_path": null,
+      "rationale": "non-capability packaging or binary asset"
+    },
+    {
+      "source_path": "pacify_x_integration/examples/approval.json",
+      "bytes": 219,
+      "sha256": "92066486a5df73a5190bdd38da622413c2a2b21a52a6f6a72bc1f8738b2361c5",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/examples/canonical/artifacts.json",
+      "bytes": 647,
+      "sha256": "ac5b82cbdddfd474215fe7cf5ff712b9ba5ce41fec47fda6c152b4f923dba95c",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/examples/canonical/knowledge_graph.json",
+      "bytes": 18,
+      "sha256": "432a840a570e233d4c528accce60f5c609cd1c2fb99744037c002ef251b7bf7f",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/examples/incoming/LICENSE",
+      "bytes": 125,
+      "sha256": "d2c5dc3b9357906663da559f46d3f3d950f8f4954b7d209b3b663170a1fc27fe",
+      "disposition": "reject",
+      "canonical_owner": "none",
+      "target_path": null,
+      "rationale": "non-capability packaging or binary asset"
+    },
+    {
+      "source_path": "pacify_x_integration/examples/incoming/new_artifacts.yaml",
+      "bytes": 717,
+      "sha256": "26eca33bfe47c8e4b29a68522ed3ed6f417c80cebf3a37496a658c24c4575942",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/examples/query-corpus.json",
+      "bytes": 2057,
+      "sha256": "45d2027fb314d562f7be90dbd70480bff037c4285498501bfb585071bb0c8965",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/orchestrations/graph-coherence-maintenance.yaml",
+      "bytes": 877,
+      "sha256": "03762a9bbb816b577801fed865f5d33417a11aa128552851ad0629d5210545ad",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/orchestrations/knowledge-refinery-pipeline.yaml",
+      "bytes": 3571,
+      "sha256": "7a465d9fc813999ab064a87a54622960a39bda2512e27f8c3ea81047e7d01160",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/orchestrations/novelty-and-merge-review.yaml",
+      "bytes": 1454,
+      "sha256": "b5894f90decb32840185c950018fb1909a30c83cdd20c105bb13f398084f308a",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/orchestrations/ranking-calibration.yaml",
+      "bytes": 1293,
+      "sha256": "036caf795f6fefbf6ce574cc5e1759271d4163d3d415fbba355fae27c2303e8e",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/orchestrations/retrieval-ranking-runtime.yaml",
+      "bytes": 2239,
+      "sha256": "1f255ab1a68769f55348f9e5e87d04fb7ae3e4127760978f1b227bca4a0510a5",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/policies/knowledge-refinery-policy.yaml",
+      "bytes": 2475,
+      "sha256": "7b1734a0bc86ff6154a1a2bb4400655ef5f3d8b4a9d996bec9f667a75e49a401",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/requirements.txt",
+      "bytes": 15,
+      "sha256": "b4603b9468ade4d639d2c6f73b89d50e1fa5d227c73ab15be0382cca478513e6",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/scripts/build_query_corpus.py",
+      "bytes": 1900,
+      "sha256": "3a1f9c0a765bb76b3bef89993b80964f5bc316a14d18a598131b4d70c45e44b2",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/scripts/knowledge_refinery.py",
+      "bytes": 488,
+      "sha256": "9f03438718152cc30232a049b4cfbed4c28288f640885084374c3b2e7955d2cb",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/scripts/merge_into_pacify_x.py",
+      "bytes": 4025,
+      "sha256": "e4cbef12149345d53a59233b251790eb84c1c7247822136b982908dbaefbcec2",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/skills/graph-coherence-maintenance.md",
+      "bytes": 451,
+      "sha256": "de03a55d82a8ce0108ee81658437f1f1bf3c012e4f119b128e7fc1b844b5954e",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/skills/knowledge-refinery.md",
+      "bytes": 506,
+      "sha256": "1147f380dc78f286082b714be3fb06057b75ce251593e9a83c74f77ed41c8d42",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/skills/retrieval-ranking-calibration.md",
+      "bytes": 514,
+      "sha256": "77a69485ded6d3e10daefaca54046373e69ea38c7818359d3204ba480cb5d6e1",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/skills/semantic-novelty-classification.md",
+      "bytes": 496,
+      "sha256": "216fd0dea5585ce9ca1582af1b58bdd1820340075d2f12f2d92d08198d8fcbd5",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "pacify_x_integration/tests/test_refinery.py",
+      "bytes": 4606,
+      "sha256": "387c82628260c43fa29080f6438779206ceb0aee1f771e8b3b56a5b085d101ea",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/__init__.py",
+      "bytes": 166,
+      "sha256": "4d77e82e6daf51faae3790a808e023d07b1ff902f081f0b91b23039e6691bbdf",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/admission.py",
+      "bytes": 7432,
+      "sha256": "27ee308fbe05ac083020757b1ffb2038a8344d95f785c7cbac3de24249d8acc5",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/calibration.py",
+      "bytes": 5468,
+      "sha256": "874869eea9cbeefee5e2b5e3e9f46310e5b95cfa16832764b301b61e04658ce7",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/certification.py",
+      "bytes": 6710,
+      "sha256": "9f9f6c1e17dd66c19ae4d78250fc89007964f75d37136fc52ee928adfb8419da",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/cli.py",
+      "bytes": 6137,
+      "sha256": "aba2e3fc732b5fb47eeae6a94b9487fc96bf1fd7d1319b12cd70b3fa678f72e9",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/core.py",
+      "bytes": 11961,
+      "sha256": "436555b5902f19eff57f897cc9bc82b2ad22364da4f598d03e20f0d99a7eb8f9",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/extract.py",
+      "bytes": 12812,
+      "sha256": "b7b6ecb9b7362e843fb55d0815f60cc26e8f0d375fbbd2b99f2e30dffa5f22ab",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/graph.py",
+      "bytes": 11378,
+      "sha256": "7459e0c1ac006f16176f6bcbab5bb4c764042d2239a4e2550b04dd75e8684af4",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/index.py",
+      "bytes": 6770,
+      "sha256": "184eb727835b44f1cf940747027806968289a8e1bb86ac003d7b1e612cb20873",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/inventory.py",
+      "bytes": 4881,
+      "sha256": "13b261fa66899d179cc94d5ac6fb9d22e51220e2964b62e3ccf3c616030776a8",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/loaders.py",
+      "bytes": 6785,
+      "sha256": "df9f48e99ca31ebf48bee58678559704771bf1ec896fdd50707e361f7dfe511d",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/merge_plan.py",
+      "bytes": 8856,
+      "sha256": "94f258ace4be08e5af2becea9bed8aa948a6d505c9e7c64b871f790377aba121",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/novelty.py",
+      "bytes": 12726,
+      "sha256": "71e223af4777208d3590f812fbd4470255364556a1ec82ead3764cfcd73a2461",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/package_builder.py",
+      "bytes": 6649,
+      "sha256": "cde577c60df6c8a0d748e18ed08d96c8cc1371f3d294b2a1f55392cc9e1d8b04",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/pipeline.py",
+      "bytes": 10890,
+      "sha256": "0f111af6ba975cddc65c92d59030758c2856298198209f01e3173daf441c550a",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/ranker.py",
+      "bytes": 15874,
+      "sha256": "6b3f31ef6bb191f55ade0c6bcf57558cf3855efc0ce11f0c0ecc8ef9504b313a",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/safe_archive.py",
+      "bytes": 4764,
+      "sha256": "8b8bbbdf7a05108fe03dc838d4604c50a78896f1c73a98259e1fc32794d35572",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/tools/knowledge_refinery/simulation.py",
+      "bytes": 6051,
+      "sha256": "eba2161daf2a6456b85f18bd7c2ff9ee34a6805c0e5c1a255f7b1a83ba234329",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "pacify_x_integration/validators/validate_pack.py",
+      "bytes": 1820,
+      "sha256": "d403b112e2709d320247e055ddddae1786d7b8ee4373746621ee7b6342c3e9ee",
+      "disposition": "merge",
+      "canonical_owner": "runtime/capability_routing.py",
+      "target_path": null,
+      "rationale": "reviewed executable mechanism"
+    },
+    {
+      "source_path": "PACKAGE_MANIFEST.json",
+      "bytes": 12736,
+      "sha256": "9337591c0a831b5bcf9afb5e888cfccafd542d0313b7c3ca1230058e5e8619c7",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    },
+    {
+      "source_path": "README.md",
+      "bytes": 3402,
+      "sha256": "8b6ead4455b434d308b5262b0cad884e213f87b49e846151f9a62b5c488fa7bd",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reference, registry, manifest, or validation evidence"
+    }
+  ],
+  "report_sha256": "d453c64723294c690baa8b24f030647c3154aef69712f22421e1019776e64f8c"
+}

@@ -31,8 +31,13 @@ class CacheQuarantineTests(unittest.TestCase):
             destination = root / str(result["quarantine_destination"])
             moved = destination / "pkg" / "__pycache__" / "module.pyc"
             self.assertEqual(moved.read_bytes(), b"compiled")
-            self.assertEqual((destination / ".ruff_cache/state.json").read_text(encoding="utf-8"), "{}\n")
-            receipt = json.loads((destination / "receipt.json").read_text(encoding="utf-8"))
+            self.assertEqual(
+                (destination / ".ruff_cache/state.json").read_text(encoding="utf-8"),
+                "{}\n",
+            )
+            receipt = json.loads(
+                (destination / "receipt.json").read_text(encoding="utf-8")
+            )
             self.assertEqual(receipt["operation"], "recoverable_cache_quarantine")
             self.assertEqual(
                 {record["path"] for record in receipt["records"]},

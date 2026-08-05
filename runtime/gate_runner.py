@@ -6,6 +6,8 @@ from dataclasses import dataclass
 import hashlib
 import json
 from pathlib import Path
+import subprocess
+import sys
 from typing import Any, Callable, Iterable
 
 
@@ -59,6 +61,30 @@ def _platform(root: Path) -> dict[str, Any]:
     return validate_support_matrix(root)
 
 
+def _lint(root: Path) -> dict[str, Any]:
+    command = [sys.executable, "-m", "ruff", "check", "--no-cache", "."]
+    completed = subprocess.run(
+        command,
+        cwd=root,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        timeout=120,
+        check=False,
+    )
+    output = "\n".join(
+        part.strip() for part in (completed.stdout, completed.stderr) if part.strip()
+    )
+    return {
+        "valid": completed.returncode == 0,
+        "command": "python -m ruff check --no-cache .",
+        "exit_code": completed.returncode,
+        "output": output,
+        "cache_disabled": True,
+        "errors": [] if completed.returncode == 0 else [output or "Ruff failed"],
+    }
+
+
 GATES = {
     spec.gate_id: spec
     for spec in (
@@ -95,6 +121,20 @@ GATES = {
             ),
             (),
             _platform,
+        ),
+        GateSpec(
+            "lint",
+            (
+                "pyproject.toml",
+                "runtime/**/*.py",
+                "builders/**/*.py",
+                "scripts/**/*.py",
+                "tests/**/*.py",
+                ".agents/skills/**/scripts/*.py",
+                "templates/**/*.py",
+            ),
+            (),
+            _lint,
         ),
         GateSpec(
             "generated",

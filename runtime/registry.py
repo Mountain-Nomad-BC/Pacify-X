@@ -1,4 +1,5 @@
 """Canonical active-capability registry loading and validation."""
+
 from __future__ import annotations
 
 import json
@@ -22,14 +23,41 @@ from .paths import declared_file_available, resolve_declared_path
 
 CAPABILITY_ID = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 REQUIRED_CONTRACT_FIELDS = {
-    "id", "version", "owner", "status", "provenance", "hash", "license",
-    "provides", "consumes", "effects", "permissions", "dependencies", "conflicts",
-    "cost", "latency", "risk", "validation", "evidence", "approval", "rollback",
+    "id",
+    "version",
+    "owner",
+    "status",
+    "provenance",
+    "hash",
+    "license",
+    "provides",
+    "consumes",
+    "effects",
+    "permissions",
+    "dependencies",
+    "conflicts",
+    "cost",
+    "latency",
+    "risk",
+    "validation",
+    "evidence",
+    "approval",
+    "rollback",
 }
 ALLOWED_CONTRACT_FIELDS = REQUIRED_CONTRACT_FIELDS
 REQUIRED_MODEL_FIELDS = {
-    "model_id", "runtime", "available", "context_tokens", "traits", "supports_tools",
-    "privacy", "cost_class", "latency_class", "warm_cost", "cold_cost", "failure_modes",
+    "model_id",
+    "runtime",
+    "available",
+    "context_tokens",
+    "traits",
+    "supports_tools",
+    "privacy",
+    "cost_class",
+    "latency_class",
+    "warm_cost",
+    "cold_cost",
+    "failure_modes",
 }
 
 
@@ -38,7 +66,9 @@ def load_json(path: Path) -> dict:
 
 
 def load_skill_catalog(root: Path) -> dict:
-    return tomllib.loads((root / "registry" / "skill_catalog.toml").read_text(encoding="utf-8"))
+    return tomllib.loads(
+        (root / "registry" / "skill_catalog.toml").read_text(encoding="utf-8")
+    )
 
 
 def validate_registry(root: Path) -> dict:
@@ -47,13 +77,21 @@ def validate_registry(root: Path) -> dict:
         capability_map = load_json(root / "registry" / "capability_map.json")
         ledger = load_json(root / "registry" / "admission_ledger.json")
     except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
-        return {"valid": False, "active_count": 0, "errors": [f"configuration load failed: {error}"]}
+        return {
+            "valid": False,
+            "active_count": 0,
+            "errors": [f"configuration load failed: {error}"],
+        }
     errors: list[str] = []
     seen: set[str] = set()
     contracts: dict[str, dict] = {}
     active = capability_map.get("active_capabilities", [])
     if not isinstance(active, list):
-        return {"valid": False, "active_count": 0, "errors": ["active_capabilities must be a list"]}
+        return {
+            "valid": False,
+            "active_count": 0,
+            "errors": ["active_capabilities must be a list"],
+        }
     if len(active) > config.budget.max_initial_registry_records:
         errors.append("active registry exceeds initial record budget")
     ledger_status = {
@@ -66,7 +104,9 @@ def validate_registry(root: Path) -> dict:
             errors.append("active capability entry must be an object")
             continue
         capability_id = item.get("id")
-        if not isinstance(capability_id, str) or not CAPABILITY_ID.fullmatch(capability_id):
+        if not isinstance(capability_id, str) or not CAPABILITY_ID.fullmatch(
+            capability_id
+        ):
             errors.append(f"invalid capability id: {capability_id}")
             continue
         if capability_id in seen:
@@ -88,42 +128,79 @@ def validate_registry(root: Path) -> dict:
             missing = REQUIRED_CONTRACT_FIELDS - set(contract)
             extra = set(contract) - ALLOWED_CONTRACT_FIELDS
             if missing:
-                errors.append(f"{capability_id}: missing contract fields: {', '.join(sorted(missing))}")
+                errors.append(
+                    f"{capability_id}: missing contract fields: {', '.join(sorted(missing))}"
+                )
             if extra:
-                errors.append(f"{capability_id}: unexpected contract fields: {', '.join(sorted(extra))}")
-            if contract.get("id") != capability_id or contract.get("status") != "active":
+                errors.append(
+                    f"{capability_id}: unexpected contract fields: {', '.join(sorted(extra))}"
+                )
+            if (
+                contract.get("id") != capability_id
+                or contract.get("status") != "active"
+            ):
                 errors.append(f"{capability_id}: contract identity/status mismatch")
             if contract.get("version") != item.get("version"):
                 errors.append(f"{capability_id}: version mismatch")
             if contract.get("effects") != item.get("effects"):
                 errors.append(f"{capability_id}: effect declaration mismatch")
-            for field in ("provides", "consumes", "effects", "permissions", "dependencies", "conflicts"):
-                if not isinstance(contract.get(field), list) or not all(isinstance(value, str) for value in contract.get(field, [])):
-                    errors.append(f"{capability_id}: contract {field} must be a string list")
+            for field in (
+                "provides",
+                "consumes",
+                "effects",
+                "permissions",
+                "dependencies",
+                "conflicts",
+            ):
+                if not isinstance(contract.get(field), list) or not all(
+                    isinstance(value, str) for value in contract.get(field, [])
+                ):
+                    errors.append(
+                        f"{capability_id}: contract {field} must be a string list"
+                    )
             unknown_effects = set(contract.get("effects", ())) - KNOWN_EFFECTS
             if unknown_effects:
-                errors.append(f"{capability_id}: unknown effects: {', '.join(sorted(unknown_effects))}")
-            implementation_path = resolve_declared_path(root, str(item.get("implementation", "")))
+                errors.append(
+                    f"{capability_id}: unknown effects: {', '.join(sorted(unknown_effects))}"
+                )
+            implementation_path = resolve_declared_path(
+                root, str(item.get("implementation", ""))
+            )
             if implementation_path is not None and implementation_path.is_file():
                 digest = hashlib.sha256(implementation_path.read_bytes()).hexdigest()
                 if contract.get("hash") != digest:
                     errors.append(f"{capability_id}: implementation hash mismatch")
-            if not isinstance(contract.get("provenance"), dict) or not contract.get("provenance"):
+            if not isinstance(contract.get("provenance"), dict) or not contract.get(
+                "provenance"
+            ):
                 errors.append(f"{capability_id}: provenance must be recorded")
-            if not isinstance(contract.get("license"), str) or not contract.get("license", "").strip():
+            if (
+                not isinstance(contract.get("license"), str)
+                or not contract.get("license", "").strip()
+            ):
                 errors.append(f"{capability_id}: license must be recorded")
             if contract.get("risk") not in {"R0", "R1", "R2", "R3", "R4"}:
                 errors.append(f"{capability_id}: invalid risk class")
-            for field in ("cost", "latency", "validation", "evidence", "approval", "rollback"):
+            for field in (
+                "cost",
+                "latency",
+                "validation",
+                "evidence",
+                "approval",
+                "rollback",
+            ):
                 if not isinstance(contract.get(field), dict) or not contract.get(field):
                     errors.append(f"{capability_id}: {field} must be recorded")
             contracts[capability_id] = contract
     for capability_id, contract in contracts.items():
         unresolved = sorted(set(contract.get("dependencies", [])) - seen)
         if unresolved:
-            errors.append(f"{capability_id}: unresolved dependencies: {', '.join(unresolved)}")
+            errors.append(
+                f"{capability_id}: unresolved dependencies: {', '.join(unresolved)}"
+            )
     visiting: set[str] = set()
     visited: set[str] = set()
+
     def visit(capability_id: str) -> None:
         if capability_id in visiting:
             errors.append(f"capability dependency cycle includes {capability_id}")
@@ -131,18 +208,23 @@ def validate_registry(root: Path) -> dict:
         if capability_id in visited:
             return
         visiting.add(capability_id)
-        for dependency in sorted(contracts.get(capability_id, {}).get("dependencies", ())):
+        for dependency in sorted(
+            contracts.get(capability_id, {}).get("dependencies", ())
+        ):
             if dependency in contracts:
                 visit(dependency)
         visiting.remove(capability_id)
         visited.add(capability_id)
+
     for capability_id in sorted(contracts):
         visit(capability_id)
     workflow_root = root / "registry" / "orchestrations"
     if workflow_root.is_dir():
         for workflow_path in sorted(workflow_root.glob("*.json")):
             try:
-                workflow_errors = validate_orchestration(load_json(workflow_path), contracts.values())
+                workflow_errors = validate_orchestration(
+                    load_json(workflow_path), contracts.values()
+                )
             except (OSError, json.JSONDecodeError, ValueError) as error:
                 errors.append(f"invalid orchestration {workflow_path.name}: {error}")
                 continue
@@ -160,12 +242,22 @@ def validate_registry(root: Path) -> dict:
                 errors.append("model registry record does not match model contract")
                 continue
             model_id = model.get("model_id")
-            if not isinstance(model_id, str) or not CAPABILITY_ID.fullmatch(model_id) or model_id in model_ids:
+            if (
+                not isinstance(model_id, str)
+                or not CAPABILITY_ID.fullmatch(model_id)
+                or model_id in model_ids
+            ):
                 errors.append(f"invalid or duplicate model id: {model_id}")
             model_ids.add(str(model_id))
-            if not isinstance(model.get("available"), bool) or not isinstance(model.get("context_tokens"), int) or model.get("context_tokens", 0) < 1:
+            if (
+                not isinstance(model.get("available"), bool)
+                or not isinstance(model.get("context_tokens"), int)
+                or model.get("context_tokens", 0) < 1
+            ):
                 errors.append(f"{model_id}: invalid availability/context metadata")
-            if not isinstance(model.get("traits"), list) or not all(isinstance(value, str) for value in model.get("traits", ())):
+            if not isinstance(model.get("traits"), list) or not all(
+                isinstance(value, str) for value in model.get("traits", ())
+            ):
                 errors.append(f"{model_id}: invalid trait metadata")
     skill_catalog_path = root / "registry" / "skill_catalog.toml"
     if skill_catalog_path.is_file():
@@ -175,21 +267,40 @@ def validate_registry(root: Path) -> dict:
             errors.append(f"invalid skill catalog: {error}")
             skill_catalog = {"skills": []}
         skills = skill_catalog.get("skills", ())
-        if skill_catalog.get("loading_rule") != "metadata_only_at_startup_body_after_selection":
+        if (
+            skill_catalog.get("loading_rule")
+            != "metadata_only_at_startup_body_after_selection"
+        ):
             errors.append("skill catalog must require metadata-only startup")
-        if skill_catalog.get("default_active_limit") != config.budget.max_active_capabilities:
+        if (
+            skill_catalog.get("default_active_limit")
+            != config.budget.max_active_capabilities
+        ):
             errors.append("skill catalog default limit differs from startup budget")
         skill_ids: set[str] = set()
         for skill in skills:
             if not isinstance(skill, dict):
-                errors.append("skill catalog entry must be an object"); continue
+                errors.append("skill catalog entry must be an object")
+                continue
             skill_id = skill.get("id")
-            if not isinstance(skill_id, str) or not CAPABILITY_ID.fullmatch(skill_id) or skill_id in skill_ids:
+            if (
+                not isinstance(skill_id, str)
+                or not CAPABILITY_ID.fullmatch(skill_id)
+                or skill_id in skill_ids
+            ):
                 errors.append(f"invalid or duplicate skill id: {skill_id}")
             skill_ids.add(str(skill_id))
             skill_status = str(skill.get("status", "candidate"))
-            if skill_status not in {"active", "admitted", "mapped_deferred", "candidate", "quarantined"}:
-                errors.append(f"{skill_id}: invalid skill lifecycle state {skill_status}")
+            if skill_status not in {
+                "active",
+                "admitted",
+                "mapped_deferred",
+                "candidate",
+                "quarantined",
+            }:
+                errors.append(
+                    f"{skill_id}: invalid skill lifecycle state {skill_status}"
+                )
             for field in ("body", "contract"):
                 relative = str(skill.get(field, ""))
                 if not declared_file_available(root, relative):
@@ -197,15 +308,30 @@ def validate_registry(root: Path) -> dict:
             admission_status = ledger_status.get(skill.get("admission_record"))
             if skill_status in {"active", "admitted"} and admission_status != "active":
                 errors.append(f"{skill_id}: missing active skill admission record")
-            if skill_status in {"mapped_deferred", "candidate", "quarantined"} and admission_status == "active":
+            if (
+                skill_status in {"mapped_deferred", "candidate", "quarantined"}
+                and admission_status == "active"
+            ):
                 errors.append(f"{skill_id}: deferred skill has active admission record")
             contract_path = resolve_declared_path(root, str(skill.get("contract", "")))
-            if contract_path is not None and "skill_packages" in contract_path.parts and contract_path.is_file():
+            if (
+                contract_path is not None
+                and "skill_packages" in contract_path.parts
+                and contract_path.is_file()
+            ):
                 package = load_json(contract_path)
                 body_path = resolve_declared_path(root, str(skill.get("body", "")))
-                if package.get("id") != skill_id or package.get("status") != skill_status:
+                if (
+                    package.get("id") != skill_id
+                    or package.get("status") != skill_status
+                ):
                     errors.append(f"{skill_id}: skill package identity/status mismatch")
-                if body_path is not None and body_path.is_file() and package.get("body_sha256") != hashlib.sha256(body_path.read_bytes()).hexdigest():
+                if (
+                    body_path is not None
+                    and body_path.is_file()
+                    and package.get("body_sha256")
+                    != hashlib.sha256(body_path.read_bytes()).hexdigest()
+                ):
                     errors.append(f"{skill_id}: skill body hash mismatch")
                 for reference in package.get("references", ()):
                     if not declared_file_available(root, reference):
@@ -215,21 +341,39 @@ def validate_registry(root: Path) -> dict:
                         errors.append(f"{skill_id}: missing skill resource {resource}")
     try:
         build_system_graph(root)
-    except (OSError, ValueError, KeyError, json.JSONDecodeError, tomllib.TOMLDecodeError) as error:
+    except (
+        OSError,
+        ValueError,
+        KeyError,
+        json.JSONDecodeError,
+        tomllib.TOMLDecodeError,
+    ) as error:
         errors.append(f"invalid system asset graph: {error}")
     try:
         contract_result = validate_contract_corpus(root)
-        errors.extend(f"contract corpus: {error}" for error in contract_result["errors"])
+        errors.extend(
+            f"contract corpus: {error}" for error in contract_result["errors"]
+        )
     except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
         errors.append(f"contract corpus unavailable: {error}")
     try:
         coverage_result = validate_source_coverage(root)
-        errors.extend(f"source coverage: {error}" for error in coverage_result["errors"])
-    except (OSError, ValueError, KeyError, json.JSONDecodeError, tomllib.TOMLDecodeError) as error:
+        errors.extend(
+            f"source coverage: {error}" for error in coverage_result["errors"]
+        )
+    except (
+        OSError,
+        ValueError,
+        KeyError,
+        json.JSONDecodeError,
+        tomllib.TOMLDecodeError,
+    ) as error:
         errors.append(f"source coverage unavailable: {error}")
     try:
         integration_result = validate_integrations(root)
-        errors.extend(f"integration registry: {error}" for error in integration_result["errors"])
+        errors.extend(
+            f"integration registry: {error}" for error in integration_result["errors"]
+        )
     except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
         errors.append(f"integration registry unavailable: {error}")
     try:
@@ -239,13 +383,29 @@ def validate_registry(root: Path) -> dict:
         errors.append(f"graph registry unavailable: {error}")
     try:
         assimilation = validate_capability_assimilation(root)
-        errors.extend(f"capability assimilation: {error}" for error in assimilation["errors"])
-    except (OSError, ValueError, KeyError, json.JSONDecodeError, tomllib.TOMLDecodeError) as error:
+        errors.extend(
+            f"capability assimilation: {error}" for error in assimilation["errors"]
+        )
+    except (
+        OSError,
+        ValueError,
+        KeyError,
+        json.JSONDecodeError,
+        tomllib.TOMLDecodeError,
+    ) as error:
         errors.append(f"capability assimilation unavailable: {error}")
     try:
         semantic = validate_semantic_index(root)
-        errors.extend(f"semantic capability index: {error}" for error in semantic["errors"])
-    except (OSError, ValueError, KeyError, json.JSONDecodeError, tomllib.TOMLDecodeError) as error:
+        errors.extend(
+            f"semantic capability index: {error}" for error in semantic["errors"]
+        )
+    except (
+        OSError,
+        ValueError,
+        KeyError,
+        json.JSONDecodeError,
+        tomllib.TOMLDecodeError,
+    ) as error:
         errors.append(f"semantic capability index unavailable: {error}")
     return {"valid": not errors, "active_count": len(seen), "errors": errors}
 
@@ -255,20 +415,30 @@ def navigation_index(root: Path) -> list[CapabilitySummary]:
     summaries: list[CapabilitySummary] = []
     for item in capability_map.get("active_capabilities", []):
         contract = load_json(root / item["contract"])
-        summaries.append(CapabilitySummary(
-            capability_id=contract["id"],
-            purpose=" ".join(contract.get("provides", [])),
-            triggers=tuple(contract.get("provides", [])),
-            aliases=tuple(contract.get("provides", [])),
-            required_inputs=tuple(contract.get("consumes", [])),
-            risk="R1" if set(contract.get("effects", [])) <= {"read_local"} else "R2",
-            status=contract["status"],
-            dependencies=tuple(contract.get("dependencies", [])),
-            capability_tags=tuple(contract.get("provides", [])),
-            freshness=1.0 if contract.get("evidence", {}).get("status") == "current" else 0.25,
-            cost={"bounded": 0.0, "low": 1.0, "medium": 2.0, "high": 4.0}.get(contract.get("cost", {}).get("class"), 2.0),
-            latency={"local": 0.0, "low": 1.0, "medium": 2.0, "high": 4.0}.get(contract.get("latency", {}).get("class"), 2.0),
-        ))
+        summaries.append(
+            CapabilitySummary(
+                capability_id=contract["id"],
+                purpose=" ".join(contract.get("provides", [])),
+                triggers=tuple(contract.get("provides", [])),
+                aliases=tuple(contract.get("provides", [])),
+                required_inputs=tuple(contract.get("consumes", [])),
+                risk="R1"
+                if set(contract.get("effects", [])) <= {"read_local"}
+                else "R2",
+                status=contract["status"],
+                dependencies=tuple(contract.get("dependencies", [])),
+                capability_tags=tuple(contract.get("provides", [])),
+                freshness=1.0
+                if contract.get("evidence", {}).get("status") == "current"
+                else 0.25,
+                cost={"bounded": 0.0, "low": 1.0, "medium": 2.0, "high": 4.0}.get(
+                    contract.get("cost", {}).get("class"), 2.0
+                ),
+                latency={"local": 0.0, "low": 1.0, "medium": 2.0, "high": 4.0}.get(
+                    contract.get("latency", {}).get("class"), 2.0
+                ),
+            )
+        )
     return summaries
 
 
@@ -290,6 +460,8 @@ def skill_navigation_index(root: Path) -> list[CapabilitySummary]:
     for item in catalog.get("skills", ()):
         contract_path = root / str(item.get("contract", ""))
         contract = load_json(contract_path) if contract_path.is_file() else {}
+        package_path = root / "registry" / "skill_packages" / f"{item['id']}.json"
+        package = load_json(package_path) if package_path.is_file() else {}
         tags = tuple(str(value) for value in item.get("tags", ()))
         effects = set(contract.get("effects", ()))
         risk = str(contract.get("risk", "R1"))
@@ -306,30 +478,279 @@ def skill_navigation_index(root: Path) -> list[CapabilitySummary]:
         package_identity_matches = contract.get("id") == item.get("id")
         semantic = semantic_records.get(str(item["id"]), {})
         description = str(semantic.get("description", ""))
-        summaries.append(CapabilitySummary(
-            capability_id=str(item["id"]),
-            purpose=" ".join((*purpose_parts, description)),
-            triggers=tags,
-            aliases=tuple(dict.fromkeys((*tags, *semantic.get("synonyms", ()), str(item["id"]).replace("-", " ")))),
-            required_inputs=tuple(str(value) for value in contract.get("consumes", ())),
-            risk=risk,
-            status=str(item.get("status", "candidate")),
-            # A core runtime contract may back several user-facing skills. Its
-            # component dependencies are runtime wiring, not additional skill
-            # bodies that must consume the hydration budget.
-            dependencies=tuple(str(value) for value in contract.get("dependencies", ())) if package_identity_matches else (),
-            capability_tags=tags,
-            freshness=freshness,
-            cost={"bounded": 0.0, "low": 1.0, "medium": 2.0, "high": 4.0}.get(
-                contract.get("cost", {}).get("class") if isinstance(contract.get("cost"), dict) else "low", 1.0
-            ),
-            latency={"local": 0.0, "low": 1.0, "medium": 2.0, "high": 4.0}.get(
-                contract.get("latency", {}).get("class") if isinstance(contract.get("latency"), dict) else "local", 0.0
-            ),
-            kind=str(semantic.get("kind", "skill")),
-            concepts=tuple(str(value) for value in semantic.get("concepts", ())),
-            synonyms=tuple(str(value) for value in semantic.get("synonyms", ())),
-            tools=tuple(str(value) for value in semantic.get("tools", ())),
-            relations=tuple(str(value) for value in semantic.get("relations", ())),
-        ))
+        summaries.append(
+            CapabilitySummary(
+                capability_id=str(item["id"]),
+                purpose=" ".join((*purpose_parts, description)),
+                triggers=tags,
+                aliases=tuple(
+                    dict.fromkeys(
+                        (
+                            *tags,
+                            *semantic.get("synonyms", ()),
+                            str(item["id"]).replace("-", " "),
+                        )
+                    )
+                ),
+                required_inputs=tuple(
+                    str(value) for value in contract.get("consumes", ())
+                ),
+                risk=risk,
+                status=str(item.get("status", "candidate")),
+                # A core runtime contract may back several user-facing skills. Its
+                # component dependencies are runtime wiring, not additional skill
+                # bodies that must consume the hydration budget.
+                dependencies=tuple(
+                    str(value) for value in contract.get("dependencies", ())
+                )
+                if package_identity_matches
+                else (),
+                capability_tags=tags,
+                freshness=freshness,
+                cost={"bounded": 0.0, "low": 1.0, "medium": 2.0, "high": 4.0}.get(
+                    contract.get("cost", {}).get("class")
+                    if isinstance(contract.get("cost"), dict)
+                    else "low",
+                    1.0,
+                ),
+                latency={"local": 0.0, "low": 1.0, "medium": 2.0, "high": 4.0}.get(
+                    contract.get("latency", {}).get("class")
+                    if isinstance(contract.get("latency"), dict)
+                    else "local",
+                    0.0,
+                ),
+                kind=str(semantic.get("kind", "skill")),
+                concepts=tuple(str(value) for value in semantic.get("concepts", ())),
+                synonyms=tuple(str(value) for value in semantic.get("synonyms", ())),
+                tools=tuple(str(value) for value in semantic.get("tools", ())),
+                relations=tuple(str(value) for value in semantic.get("relations", ())),
+                outcomes=tuple(
+                    str(value)
+                    for value in semantic.get("outcomes", contract.get("provides", ()))
+                ),
+                inputs=tuple(
+                    str(value)
+                    for value in semantic.get("inputs", contract.get("consumes", ()))
+                ),
+                outputs=tuple(
+                    str(value)
+                    for value in semantic.get("outputs", contract.get("provides", ()))
+                ),
+                negative_matches=tuple(
+                    str(value) for value in semantic.get("negative_matches", ())
+                ),
+                avoid_when=tuple(
+                    str(value) for value in semantic.get("avoid_when", ())
+                ),
+                conflicts_with=tuple(
+                    str(value)
+                    for value in semantic.get(
+                        "conflicts_with", contract.get("conflicts", ())
+                    )
+                ),
+                supersedes=tuple(
+                    str(value) for value in semantic.get("supersedes", ())
+                ),
+                handoff_to=tuple(
+                    str(value) for value in semantic.get("handoff_to", ())
+                ),
+                reviewed_by=tuple(
+                    str(value) for value in semantic.get("reviewed_by", ())
+                ),
+                authority_class=str(
+                    semantic.get(
+                        "authority_class",
+                        "read_only"
+                        if effects <= {"read_local"}
+                        else "workspace_mutation",
+                    )
+                ),
+                evidence_quality=1.0
+                if package.get("evidence")
+                and package.get("validation_freshness") == "current"
+                else 0.0,
+                validation_coverage=1.0
+                if package.get("tests") and (root / str(package["tests"])).is_file()
+                else 0.0,
+                contract_coverage=1.0 if contract_path.is_file() else 0.0,
+                contracts=(str(item.get("contract")),)
+                if contract_path.is_file()
+                else (),
+                validators=(str(package["tests"]),)
+                if package.get("tests") and (root / str(package["tests"])).is_file()
+                else (),
+            )
+        )
+    return summaries
+
+
+def semantic_navigation_index(root: Path) -> list[CapabilitySummary]:
+    """Adapt the semantic index independently, without catalog/package fusion."""
+    summaries: list[CapabilitySummary] = []
+    for record in load_semantic_index(root).get("records", ()):
+        if not isinstance(record, dict) or not record.get("id"):
+            continue
+        raw_status = str(record.get("status", "candidate"))
+        status = (
+            "candidate" if raw_status in {"mapped_deferred", "deferred"} else raw_status
+        )
+        summaries.append(
+            CapabilitySummary(
+                capability_id=str(record["id"]),
+                purpose=str(record.get("description", "")),
+                triggers=tuple(str(value) for value in record.get("intents", ())),
+                aliases=tuple(str(value) for value in record.get("synonyms", ())),
+                capability_tags=tuple(
+                    str(value) for value in record.get("domains", ())
+                ),
+                status=status,
+                kind=str(record.get("kind", "skill")),
+                concepts=tuple(str(value) for value in record.get("concepts", ())),
+                synonyms=tuple(str(value) for value in record.get("synonyms", ())),
+                tools=tuple(str(value) for value in record.get("tools", ())),
+                relations=tuple(str(value) for value in record.get("relations", ())),
+                outcomes=tuple(str(value) for value in record.get("outcomes", ())),
+                inputs=tuple(str(value) for value in record.get("inputs", ())),
+                outputs=tuple(str(value) for value in record.get("outputs", ())),
+                negative_matches=tuple(
+                    str(value) for value in record.get("negative_matches", ())
+                ),
+                avoid_when=tuple(str(value) for value in record.get("avoid_when", ())),
+                conflicts_with=tuple(
+                    str(value) for value in record.get("conflicts_with", ())
+                ),
+                supersedes=tuple(str(value) for value in record.get("supersedes", ())),
+                handoff_to=tuple(str(value) for value in record.get("handoff_to", ())),
+                reviewed_by=tuple(
+                    str(value) for value in record.get("reviewed_by", ())
+                ),
+                authority_class=str(record.get("authority_class", "read_only")),
+            )
+        )
+    return summaries
+
+
+def skill_discovery_sources(root: Path) -> dict[str, tuple[CapabilitySummary, ...]]:
+    """Expose independently searchable metadata paths; never hydrate bodies."""
+    return {
+        "skill_catalog": tuple(skill_navigation_index(root)),
+        "semantic_capability_index": tuple(semantic_navigation_index(root)),
+        "cognitive_map_index": tuple(cognitive_navigation_index(root)),
+        "agency_agent_registry": tuple(agent_navigation_index(root)),
+    }
+
+
+def agent_navigation_index(root: Path) -> list[CapabilitySummary]:
+    """Adapt Agency metadata without opening any manifest or agent body."""
+    path = root / "registry" / "agency_agent_registry.json"
+    if not path.is_file():
+        return []
+    payload = load_json(path)
+    summaries: list[CapabilitySummary] = []
+    for record in payload.get("agents", ()):
+        if not isinstance(record, dict) or not record.get("agent_id"):
+            continue
+        lifecycle = str(record.get("lifecycle_state", "reference_only"))
+        summaries.append(
+            CapabilitySummary(
+                capability_id=str(record["agent_id"]),
+                purpose=" ".join(
+                    (str(record.get("name", "")), str(record.get("description", "")))
+                ).strip(),
+                triggers=tuple(str(value) for value in record.get("capabilities", ())),
+                aliases=tuple(str(value) for value in record.get("aliases", ())),
+                required_inputs=(),
+                risk={"low": "R1", "medium": "R2", "high": "R3"}.get(
+                    str(record.get("risk_tier")), "R2"
+                ),
+                status="admitted"
+                if lifecycle in {"active", "advisory"}
+                else "candidate",
+                dependencies=(),
+                capability_tags=tuple(
+                    str(value) for value in record.get("capabilities", ())
+                ),
+                freshness=1.0,
+                kind="agent",
+                concepts=tuple(str(value) for value in record.get("capabilities", ())),
+                negative_matches=tuple(
+                    str(value) for value in record.get("negative_matches", ())
+                ),
+                avoid_when=tuple(str(value) for value in record.get("avoid_when", ())),
+                handoff_to=tuple(str(value) for value in record.get("handoffs", ())),
+                reviewed_by=tuple(str(value) for value in record.get("handoffs", ())),
+                authority_class="advisory_only",
+                evidence_quality=1.0
+                if record.get("body_sha256") and record.get("manifest_sha256")
+                else 0.0,
+                validation_coverage=1.0,
+                contract_coverage=1.0,
+                contracts=(
+                    "contracts/agents/agency-agent-manifest.schema.json",
+                    "contracts/agents/agent-result.schema.json",
+                ),
+                validators=(
+                    "runtime/agent_provider.py",
+                    "tests/test_agent_provider.py",
+                ),
+            )
+        )
+    return summaries
+
+
+def cognitive_navigation_index(root: Path) -> list[CapabilitySummary]:
+    """Adapt the checked-in cognitive map as an independent metadata path."""
+    path = root / "registry" / "cognitive_map_index.json"
+    if not path.is_file():
+        return []
+    payload = load_json(path)
+    edges: dict[str, list[str]] = {}
+    for edge in payload.get("edges", ()):
+        if isinstance(edge, dict) and edge.get("source") and edge.get("target"):
+            edges.setdefault(str(edge["source"]), []).append(str(edge["target"]))
+    summaries: list[CapabilitySummary] = []
+    for record in payload.get("records", ()):
+        if not isinstance(record, dict) or not record.get("id"):
+            continue
+        kind = str(record.get("kind", "capability"))
+        capability_id = (
+            str(record["id"])
+            if kind == "skill"
+            else str(record.get("key", f"{kind}:{record['id']}"))
+        )
+        raw_status = str(record.get("status", "candidate"))
+        status = (
+            "admitted"
+            if raw_status in {"active", "admitted", "executable"}
+            else "candidate"
+        )
+        source_key = str(record.get("key", capability_id))
+        summaries.append(
+            CapabilitySummary(
+                capability_id=capability_id,
+                purpose=" ".join(
+                    (str(record.get("title", "")), str(record.get("summary", "")))
+                ).strip(),
+                triggers=tuple(str(value) for value in record.get("triggers", ())),
+                aliases=tuple(str(value) for value in record.get("aliases", ())),
+                required_inputs=tuple(str(value) for value in record.get("inputs", ())),
+                risk=str(record.get("risk", "R1")),
+                status=status,
+                dependencies=(),
+                capability_tags=tuple(
+                    str(value) for value in record.get("concepts", ())
+                ),
+                freshness=1.0,
+                kind=kind,
+                concepts=tuple(str(value) for value in record.get("concepts", ())),
+                relations=tuple(sorted(set(edges.get(source_key, ())))),
+                outcomes=tuple(str(value) for value in record.get("outputs", ())),
+                inputs=tuple(str(value) for value in record.get("inputs", ())),
+                outputs=tuple(str(value) for value in record.get("outputs", ())),
+                authority_class="read_only_metadata"
+                if kind != "skill"
+                else "skill_contract_required",
+                evidence_quality=1.0 if record.get("source_sha256") else 0.0,
+            )
+        )
     return summaries

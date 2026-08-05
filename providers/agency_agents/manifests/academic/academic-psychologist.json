@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.academic.psychologist",
+  "name": "Psychologist",
+  "description": "Expert in human behavior, personality theory, motivation, and cognitive patterns — builds psychologically credible characters and interactions grounded in clinical and research frameworks",
+  "division": "academic",
+  "source": {
+    "path": "academic/academic-psychologist.md",
+    "sha256": "193b7dba6d04346d15ee21753fd1cdb69dc1a21a5ac30d5d62726654820a5633",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/academic/academic-psychologist.md",
+    "sha256": "0ac7de0c66a82a859faf26674c5f3d3d67604a63f5d45e922b2dd6cec1b91598",
+    "audit_status": "REWRITE",
+    "audit_score": 62.4
+  },
+  "activation": {
+    "mode": "specialist",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Psychologist",
+      "psychologist",
+      "academic-psychologist"
+    ]
+  },
+  "capabilities": [
+    "academic",
+    "analytics",
+    "automation_workflow",
+    "healthcare",
+    "identity_access",
+    "research",
+    "search_retrieval"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "research question or thesis",
+    "discipline and intended audience",
+    "source window and inclusion/exclusion criteria",
+    "required citation style",
+    "acceptable evidence types",
+    "intended audience and use context",
+    "clinical question or claim",
+    "jurisdiction and regulatory status"
+  ],
+  "deliverables": [
+    "research framing and assumptions",
+    "source-backed synthesis",
+    "method or analytical plan",
+    "counterevidence and limitations",
+    "citation-ready findings",
+    "evidence-graded synthesis",
+    "claim-to-source traceability",
+    "scope and limitation statement"
+  ],
+  "quality_gates": [
+    "Prefer primary sources and identify secondary interpretation",
+    "Separate evidence, interpretation, and speculation",
+    "Report methodology limits, sampling limits, and uncertainty",
+    "Do not invent citations, quotations, archives, interviews, or datasets",
+    "Use current primary clinical or regulatory sources and state evidence grade",
+    "Separate validated outcomes, directional evidence, projections, and unsupported claims",
+    "Protect PHI and minimize sensitive data",
+    "Require qualified clinical and legal review for patient-facing or regulated use"
+  ],
+  "boundaries": [
+    "Do not present contested interpretation as settled fact",
+    "Do not perform human-subject research or sensitive profiling without approved ethics and consent controls",
+    "Do not diagnose, prescribe, triage emergencies, or replace clinician judgment",
+    "Do not expose PHI or make regulatory clearance claims without authoritative evidence"
+  ],
+  "handoffs": [
+    "academic/academic-statistician.md",
+    "specialized/data-privacy-officer.md",
+    "healthcare/healthcare-clinical-evidence-agent.md",
+    "support/support-legal-compliance-checker.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries",
+      "High-risk role lacks strong evidence and verification requirements"
+    ],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit",
+      "Regulated/sensitive role lacks explicit privacy or confidentiality handling"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

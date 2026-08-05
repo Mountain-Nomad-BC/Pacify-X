@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:transcripts:transcript-profile",
+  "title": "Portable transcript analysis profile",
+  "type": "object",
+  "required": ["schema_version", "profile_id", "queue_id", "adapter", "input_formats", "canonical_formats", "publish_latest"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "profile_id": {"type": "string", "minLength": 1},
+    "queue_id": {"type": "string", "minLength": 1},
+    "adapter": {"enum": ["canonical-import", "external-command"]},
+    "tool_root": {"type": ["string", "null"]},
+    "runner": {"type": ["string", "null"]},
+    "input_formats": {"type": "array", "items": {"enum": ["txt", "json", "csv"]}, "minItems": 1, "uniqueItems": true},
+    "canonical_formats": {"type": "array", "items": {"enum": ["jsonl", "csv"]}, "minItems": 1, "uniqueItems": true},
+    "publish_latest": {"const": false}
+  },
+  "additionalProperties": false
+}

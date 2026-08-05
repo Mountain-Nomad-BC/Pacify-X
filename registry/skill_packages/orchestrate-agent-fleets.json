@@ -1,0 +1,20 @@
+{
+  "id": "orchestrate-agent-fleets",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/orchestrate-agent-fleets/SKILL.md",
+  "body_sha256": "3be96b8ba0fb58853f564451dfad02ad302d7aff1b5dca975b70ba1421479a96",
+  "references": [],
+  "capability_tags": ["agent", "bounded-inbox", "fleet-readiness", "isolation", "orchestration"],
+  "effects": ["read_local"],
+  "provenance": {
+    "type": "clean_room_reference_requirement_implementation",
+    "basis": ["runtime/agent_fleet_controls.py", "contracts/agents/fleet-readiness.schema.json", "tests/test_clean_room_capabilities.py"],
+    "canonical_owner": "runtime/agent_fleet_controls.py"
+  },
+  "clean_room": true,
+  "tests": "tests/test_clean_room_capabilities.py",
+  "evidence": "tests/test_clean_room_capabilities.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

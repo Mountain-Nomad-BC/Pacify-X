@@ -1,4 +1,3 @@
-import json
 from collections import Counter
 from pathlib import Path
 
@@ -18,7 +17,11 @@ def test_all_reconstructed_operational_outcomes_have_domain_contracts():
     result = validate_declared_suite(ROOT)
     assert result == {"valid": True, "outcomes": 257, "workflows": 62, "errors": []}
     records = list_outcomes(ROOT)["records"]
-    assert Counter(record["kind"] for record in records) == {"skill": 134, "script": 61, "orchestration": 62}
+    assert Counter(record["kind"] for record in records) == {
+        "skill": 134,
+        "script": 61,
+        "orchestration": 62,
+    }
     assert len({record["owner"] for record in records}) == 7
     for record in records:
         described = describe_outcome(ROOT, record["kind"], record["source_id"])
@@ -29,13 +32,19 @@ def test_all_reconstructed_operational_outcomes_have_domain_contracts():
 
 def test_every_outcome_has_fail_closed_planning_contract():
     records = list_outcomes(ROOT)["records"]
-    valid_input = {"target": "bounded-target", "constraints": {"effects": ["read_local"]}, "evidence_context": {}}
+    valid_input = {
+        "target": "bounded-target",
+        "constraints": {"effects": ["read_local"]},
+        "evidence_context": {},
+    }
     for record in records:
         plan = plan_outcome(ROOT, record["kind"], record["source_id"], valid_input)
         assert plan["valid"] and plan["dry_run"]
         assert len(plan["ordered_steps"]) == 5
         assert plan["failure_policy"] and plan["recovery"] and plan["evidence_required"]
-        denied = plan_outcome(ROOT, record["kind"], record["source_id"], {"target": "bounded-target"})
+        denied = plan_outcome(
+            ROOT, record["kind"], record["source_id"], {"target": "bounded-target"}
+        )
         assert not denied["valid"]
 
 

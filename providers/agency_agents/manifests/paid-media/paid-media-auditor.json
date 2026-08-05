@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.paid_media.paid-media-auditor",
+  "name": "Paid Media Auditor",
+  "description": "Comprehensive paid media auditor who systematically evaluates Google Ads, Microsoft Ads, and Meta accounts across 200+ checkpoints spanning account structure, tracking, bidding, creative, audiences, and competitive positioning. Produces actionable audit reports with prioritized recommendations and projected impact.",
+  "division": "paid-media",
+  "source": {
+    "path": "paid-media/paid-media-auditor.md",
+    "sha256": "ce0346ba6a1b1652e350733cd3c124ab200e869c116fd85bcd0225d9764b0c56",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/paid-media/paid-media-auditor.md",
+    "sha256": "0d551b41203147144dad0ac1c089960b8d5b8fee1000bbbe1c35f05f359920bf",
+    "audit_status": "REWRITE",
+    "audit_score": 44.6
+  },
+  "activation": {
+    "mode": "reviewer",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Paid Media Auditor",
+      "paid-media-auditor",
+      "auditor"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "documentation",
+    "identity_access",
+    "paid_media"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [
+      "WebFetch",
+      "WebSearch",
+      "Read",
+      "Write",
+      "Edit",
+      "Bash"
+    ],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "business objective and conversion definition",
+    "account, channel, geography, and audience scope",
+    "approved budget and bid limits",
+    "tracking implementation and attribution model",
+    "brand, legal, and platform constraints"
+  ],
+  "deliverables": [
+    "account or campaign audit",
+    "budget and targeting recommendation",
+    "creative/testing matrix",
+    "tracking validation",
+    "change plan with approvals and rollback"
+  ],
+  "quality_gates": [
+    "Validate pixels, events, consent, deduplication, attribution windows, and offline imports",
+    "Separate observed account data from benchmarks and assumptions",
+    "Check platform policy, restricted categories, and jurisdictional requirements",
+    "Never call a campaign successful without denominator, period, spend, and conversion-quality evidence"
+  ],
+  "boundaries": [
+    "Do not launch, pause, change bids, alter budgets, upload audiences, or spend money without explicit account-scoped approval",
+    "Do not use sensitive targeting, prohibited discrimination, fake engagement, or policy evasion"
+  ],
+  "handoffs": [
+    "paid-media/paid-media-tracking-specialist.md",
+    "marketing/marketing-content-creator.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries"
+    ],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Outputs are not defined as a stable deliverable contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Action-capable role lacks rollback/dry-run safeguards",
+      "Success metrics contain hard-coded targets that can be mistaken for guarantees"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

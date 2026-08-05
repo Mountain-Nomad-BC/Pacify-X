@@ -1,0 +1,287 @@
+{
+  "count": 20,
+  "duplicate_active_skills_created": 0,
+  "records": [
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Assess prompt injection, tool poisoning, tool shadowing, toxic flows, excessive authority, memory poisoning, and MCP exposure.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R1",
+      "source_id": "ai-agent-and-mcp-security-audit"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Assess application design, authentication, authorization, input handling, sessions, APIs, dependencies, and abuse cases.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R1",
+      "source_id": "application-api-and-web-security-review"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Plan and coordinate bounded adversary emulation to validate detections and controls under explicit authorization.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R3",
+      "source_id": "authorized-purple-team-validation"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Assess cloud identity, network, data, logging, workload, image, cluster, runtime, and control-plane security.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R1",
+      "source_id": "cloud-container-kubernetes-security"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Assess algorithm choice, key lifecycle, TLS, secrets, signing, hardware roots, crypto agility, and post-quantum migration readiness.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R1",
+      "source_id": "cryptography-key-management-and-pqc-readiness"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Route security requests through the external catalog using domain, intent, framework, graph, risk, authority, and outcome evidence.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R0",
+      "source_id": "cybersecurity-capability-routing"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Hash, preserve, transform, and report security evidence without contaminating originals.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R1",
+      "source_id": "cybersecurity-evidence-and-chain-of-custody"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Integrate SAST, secrets, dependency, IaC, container, signing, and policy checks into delivery without certification theater.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R1",
+      "source_id": "devsecops-secure-delivery-review"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Verify, inventory, normalize, reconcile, and selectively admit external cybersecurity capabilities without bulk activation.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R0",
+      "source_id": "external-cybersecurity-provider-intake"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Assess identity lifecycle, authentication, authorization, privileged access, device trust, segmentation, and continuous verification.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R1",
+      "source_id": "identity-zero-trust-and-privileged-access"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Coordinate preparation, triage, containment, evidence acquisition, analysis, eradication, recovery, and lessons learned.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R1",
+      "source_id": "incident-response-and-digital-forensics"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Assess architecture, segmentation, firewall policy, exposure, telemetry, encrypted traffic, and anomalous communications.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R1",
+      "source_id": "network-segmentation-and-traffic-security"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Assess industrial control security with process safety, availability, vendor, maintenance-window, and fail-safe constraints.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R1",
+      "source_id": "ot-ics-safety-aware-security"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Map data handling, risk, controls, evidence, gaps, ownership, and remediation across governance frameworks.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R0",
+      "source_id": "privacy-compliance-and-control-mapping"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Assess dependencies, SBOMs, provenance, signing, build isolation, CI identities, package risk, and release integrity.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R1",
+      "source_id": "secure-software-supply-chain-assessment"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Validate ownership, authorization, targets, time windows, rules of engagement, and environment before controlled or active work.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R0",
+      "source_id": "security-authorization-and-scope-gate"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Produce evidence-backed findings, ownership, milestones, verification status, residual risk, and executive/technical views.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R0",
+      "source_id": "security-reporting-and-remediation-tracking"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Classify security work into R0-R4 and select advisory, read-only, controlled-change, gated-test, or lab-only execution.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R0",
+      "source_id": "security-risk-and-execution-classification"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Build hypotheses, collect telemetry, test detections, map adversary behavior, tune false positives, and retain hunt evidence.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R1",
+      "source_id": "threat-hunting-and-detection-engineering"
+    },
+    {
+      "canonical_owner": "govern-cybersecurity-capabilities",
+      "complementary_owners": [
+        "govern-external-capability-intake",
+        "orchestrate-security-validation",
+        "secure-agent-supply-chain",
+        "supervise-contained-execution",
+        "validate-engineering-outcomes"
+      ],
+      "description": "Triage vulnerabilities by exploitability, exposure, asset criticality, compensating controls, remediation, and verification.",
+      "disposition": "merge_into_existing",
+      "risk_class": "R1",
+      "source_id": "vulnerability-management-and-remediation"
+    }
+  ],
+  "schema_version": "1.0"
+}

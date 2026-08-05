@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:knowledge_refinery:merge-plan",
+  "title": "Review-only non-destructive knowledge merge plan",
+  "type": "object", "additionalProperties": false,
+  "required": ["candidate_count", "decision_count", "action_count", "actions", "canonical_writes_performed", "plan_sha256", "valid"],
+  "properties": {
+    "candidate_count": {"type": "integer", "minimum": 0}, "decision_count": {"type": "integer", "minimum": 0},
+    "action_count": {"type": "integer", "minimum": 0}, "actions": {"type": "array", "items": {"type": "object"}},
+    "canonical_writes_performed": {"const": false}, "plan_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "valid": {"const": true}
+  }
+}

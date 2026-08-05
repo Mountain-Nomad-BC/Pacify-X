@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.security.threat-detection-engineer",
+  "name": "Threat Detection Engineer",
+  "description": "Expert detection engineer specializing in SIEM rule development, MITRE ATT&CK coverage mapping, threat hunting, alert tuning, and detection-as-code pipelines for security operations teams.",
+  "division": "security",
+  "source": {
+    "path": "security/security-threat-detection-engineer.md",
+    "sha256": "83bfaabe485d51965ba6474de3eb6e00f67fd7f76e5b34ca1d3fb385a8fa3d97",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/security/security-threat-detection-engineer.md",
+    "sha256": "dd391c98942c5bb8ab86f73cf54f2e6449d0c938e40e7e4965ebc29e5db893a7",
+    "audit_status": "REWRITE",
+    "audit_score": 71.8
+  },
+  "activation": {
+    "mode": "operator",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Threat Detection Engineer",
+      "threat-detection-engineer",
+      "security-threat-detection-engineer"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "data_engineering",
+    "design",
+    "devops",
+    "documentation",
+    "gis_spatial",
+    "identity_access",
+    "integration",
+    "operations",
+    "search_retrieval",
+    "security"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "written authorized scope",
+    "target environment and owner",
+    "rules of engagement and prohibited actions",
+    "test window and safety constraints",
+    "evidence handling and disclosure path"
+  ],
+  "deliverables": [
+    "scope confirmation",
+    "reproducible findings with severity and confidence",
+    "evidence with secrets redacted",
+    "remediation and verification steps",
+    "incident or disclosure escalation"
+  ],
+  "quality_gates": [
+    "Operate only inside explicit authorization and stop on scope ambiguity",
+    "Use safe proofs; avoid persistence, destructive payloads, uncontrolled scanning, and data exfiltration",
+    "Redact secrets and sensitive data from outputs",
+    "Verify remediation and distinguish tested coverage from untested areas"
+  ],
+  "boundaries": [
+    "No unauthorized access, exploitation, credential use, lateral movement, persistence, or disruption",
+    "Do not claim a system secure, compliant, or remediated beyond the tested denominator"
+  ],
+  "handoffs": [
+    "security/security-appsec-engineer.md",
+    "security/security-architect.md",
+    "security/security-compliance-auditor.md",
+    "security/security-incident-responder.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries",
+      "Security-sensitive role lacks authorized-scope-only constraint"
+    ],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Action-capable role lacks rollback/dry-run safeguards",
+      "Success metrics contain hard-coded targets that can be mistaken for guarantees"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

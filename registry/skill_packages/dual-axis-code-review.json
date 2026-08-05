@@ -1,0 +1,31 @@
+{
+  "id": "dual-axis-code-review",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/dual-axis-code-review/SKILL.md",
+  "body_sha256": "b7c507bcf4008e3d1a4d3991d952a4d79ed095fc1e4474cc66e9491d936248c8",
+  "references": [],
+  "capability_tags": [
+    "axis",
+    "code",
+    "dual",
+    "engineering-reasoning",
+    "review"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "sanitized_mit_adaptation",
+    "basis": [
+      "evidence/integration/pxi-20260804/candidate_disposition_ledger.json",
+      "LICENSES/mattpocock-skills-MIT.txt"
+    ],
+    "canonical_owner": ".agents/skills/dual-axis-code-review/SKILL.md"
+  },
+  "clean_room": false,
+  "tests": "tests/test_project_reasoning.py",
+  "evidence": "tests/test_project_reasoning.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

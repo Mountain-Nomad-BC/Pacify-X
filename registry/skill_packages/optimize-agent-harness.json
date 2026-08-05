@@ -1,0 +1,42 @@
+{
+  "id": "optimize-agent-harness",
+  "version": "0.1.0",
+  "status": "mapped_deferred",
+  "body": ".agents/skills/optimize-agent-harness/SKILL.md",
+  "body_sha256": "b1f3e0c26401ee7be543cd7a554de2cea1876fe37198d7c66c642705eac1f8b2",
+  "references": [
+    ".agents/skills/optimize-agent-harness/references/audit-agent-harness-performance.json",
+    ".agents/skills/optimize-agent-harness/references/manage-harness-context-budget.json"
+  ],
+  "capability_tags": [
+    "agent",
+    "agent-harness",
+    "context-management",
+    "external-candidate",
+    "harness",
+    "optimize"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "inactive_external_candidate_wrapper",
+    "basis": [
+      "registry/external_capability_candidates.json",
+      "registry/external_capability_licenses.json"
+    ],
+    "canonical_owner": "govern-operating-kernel",
+    "source_licenses": [
+      "everything-claude-code"
+    ],
+    "candidate_capabilities": [
+      "audit-agent-harness-performance",
+      "manage-harness-context-budget"
+    ]
+  },
+  "clean_room": false,
+  "tests": "tests/test_external_capability_provider.py",
+  "evidence": "tests/test_external_capability_provider.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

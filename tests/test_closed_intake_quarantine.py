@@ -13,7 +13,9 @@ from runtime.intake_lifecycle import (
 
 
 class ClosedIntakeQuarantineTests(unittest.TestCase):
-    def test_closed_intake_moves_only_after_equality_and_preserves_every_hash(self) -> None:
+    def test_closed_intake_moves_only_after_equality_and_preserves_every_hash(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as directory:
             workspace = Path(directory)
             source = workspace / "intake"
@@ -24,15 +26,24 @@ class ClosedIntakeQuarantineTests(unittest.TestCase):
             record_snapshot(source, state, source_alias="intake")
             record_snapshot(source, state, source_alias="intake")
             close_intake(
-                source, state, source_alias="intake", approved_by="test",
+                source,
+                state,
+                source_alias="intake",
+                approved_by="test",
                 minimum_stability_seconds=0,
             )
             destination = workspace / "quarantine" / "closed-intake"
             receipt = quarantine_closed_intake(
-                source, destination, state, workspace=workspace, source_alias="intake",
+                source,
+                destination,
+                state,
+                workspace=workspace,
+                source_alias="intake",
             )
             self.assertFalse(source.exists())
-            self.assertEqual((destination / "one.txt").read_text(encoding="utf-8"), "preserve me")
+            self.assertEqual(
+                (destination / "one.txt").read_text(encoding="utf-8"), "preserve me"
+            )
             self.assertTrue((destination / "QUARANTINE_MANIFEST.json").is_file())
             self.assertEqual(receipt["source_file_count"], 1)
             self.assertTrue(receipt["pre_move_equality_verified"])
@@ -49,20 +60,29 @@ class ClosedIntakeQuarantineTests(unittest.TestCase):
             open_intake(state, source_alias="intake", opened_by="test")
             with self.assertRaisesRegex(ValueError, "not explicitly closed"):
                 quarantine_closed_intake(
-                    source, workspace / "quarantine" / "open", state,
-                    workspace=workspace, source_alias="intake",
+                    source,
+                    workspace / "quarantine" / "open",
+                    state,
+                    workspace=workspace,
+                    source_alias="intake",
                 )
             record_snapshot(source, state, source_alias="intake")
             record_snapshot(source, state, source_alias="intake")
             close_intake(
-                source, state, source_alias="intake", approved_by="test",
+                source,
+                state,
+                source_alias="intake",
+                approved_by="test",
                 minimum_stability_seconds=0,
             )
             (source / "one.txt").write_text("changed", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "drifted"):
                 quarantine_closed_intake(
-                    source, workspace / "quarantine" / "drifted", state,
-                    workspace=workspace, source_alias="intake",
+                    source,
+                    workspace / "quarantine" / "drifted",
+                    state,
+                    workspace=workspace,
+                    source_alias="intake",
                 )
 
 

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:reasoning:independent-hypothesis-panel",
+  "title": "Independent hypothesis panel result",
+  "type": "object",
+  "required": ["valid", "converged", "selected_conclusion", "branches", "dissent", "critic", "panel_sha256", "authority_granted"],
+  "properties": {
+    "valid": {"type": "boolean"},
+    "converged": {"type": "boolean"},
+    "selected_conclusion": {"type": ["string", "null"]},
+    "branches": {"type": "array", "minItems": 2, "maxItems": 12, "items": {"type": "object"}},
+    "dissent": {"type": "array", "items": {"type": "object"}},
+    "critic": {"type": "object"},
+    "panel_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "authority_granted": {"const": false}
+  },
+  "additionalProperties": true
+}

@@ -1,4 +1,5 @@
 """Proposal-only builder for bounded skill packages (PC-500)."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -44,7 +45,9 @@ def propose_skill(
     effects = bounded_unique(request.effects, "effects", maximum=8)
     sources = bounded_unique(request.source_references, "source_references", maximum=16)
     tests = bounded_unique(request.test_requirements, "test_requirements", maximum=16)
-    evidence = bounded_unique(request.validation_evidence, "validation_evidence", maximum=16)
+    evidence = bounded_unique(
+        request.validation_evidence, "validation_evidence", maximum=16
+    )
     unknown_effects = sorted(set(effects) - KNOWN_EFFECTS)
     if unknown_effects:
         raise BuilderError("unknown effects: " + ", ".join(unknown_effects))
@@ -97,7 +100,12 @@ def propose_skill(
         "registry_candidate": {
             "id": capability_id,
             "visible_as": "candidate",
-            "admit_after": ["contract_validation", "tests_pass", "evidence_current", "approval"],
+            "admit_after": [
+                "contract_validation",
+                "tests_pass",
+                "evidence_current",
+                "approval",
+            ],
         },
     }
     return proposal_envelope("skill", capability_id, body)

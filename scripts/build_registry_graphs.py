@@ -1,4 +1,5 @@
 """Build every canonical graph and its deterministic provenance manifest."""
+
 from __future__ import annotations
 
 import argparse

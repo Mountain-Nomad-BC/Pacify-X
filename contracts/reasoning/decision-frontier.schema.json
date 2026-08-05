@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:reasoning:decision-frontier",
+  "title": "Validated decision-ticket frontier",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["valid", "frontier", "cycles", "errors"],
+  "properties": {
+    "valid": {"type": "boolean"},
+    "frontier": {"type": "array", "items": {"type": "object"}},
+    "cycles": {"type": "array", "items": {"type": "array", "items": {"type": "string"}}},
+    "closed_count": {"type": "integer", "minimum": 0},
+    "ticket_count": {"type": "integer", "minimum": 0},
+    "frontier_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "errors": {"type": "array", "items": {"type": "string"}}
+  }
+}

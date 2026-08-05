@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:agents:agent-evidence-receipt",
+  "title": "Agent Evidence Receipt",
+  "type": "object",
+  "required": [
+    "receipt_id",
+    "task_id",
+    "agent_id",
+    "kind",
+    "reference",
+    "sha256",
+    "observed_at"
+  ],
+  "properties": {
+    "receipt_id": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "agent_id": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "file",
+        "command",
+        "test",
+        "web_source",
+        "database_query",
+        "api_response",
+        "screenshot",
+        "calculation",
+        "human_confirmation"
+      ]
+    },
+    "reference": {
+      "type": "string"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "redacted": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

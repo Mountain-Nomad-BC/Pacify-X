@@ -1,4 +1,5 @@
 """Validated loading of bounded bootstrap configuration."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -70,9 +71,15 @@ def load_startup_config(path: Path) -> BootstrapConfig:
     if lifecycle.get("unload_after_step") is not True:
         raise ValueError("lifecycle.unload_after_step must be true")
     max_retries = lifecycle.get("max_retries")
-    if not isinstance(max_retries, int) or isinstance(max_retries, bool) or max_retries < 0:
+    if (
+        not isinstance(max_retries, int)
+        or isinstance(max_retries, bool)
+        or max_retries < 0
+    ):
         raise ValueError("lifecycle.max_retries must be a non-negative integer")
-    enabled_deferred = frozenset(name for name, value in deferred.items() if value is True)
+    enabled_deferred = frozenset(
+        name for name, value in deferred.items() if value is True
+    )
     if set(deferred) != enabled_deferred:
         raise ValueError("all deferred_by_default entries must be true")
     return BootstrapConfig(
@@ -84,8 +91,12 @@ def load_startup_config(path: Path) -> BootstrapConfig:
         require_explicit_project_root=True,
         allow_external_paths=False,
         budget=StartupBudget(
-            max_initial_registry_records=_positive(budget, "max_initial_registry_records"),
-            max_initial_policy_summaries=_positive(budget, "max_initial_policy_summaries"),
+            max_initial_registry_records=_positive(
+                budget, "max_initial_registry_records"
+            ),
+            max_initial_policy_summaries=_positive(
+                budget, "max_initial_policy_summaries"
+            ),
             max_active_capabilities=_positive(budget, "max_active_capabilities"),
             max_context_items=_positive(budget, "max_context_items"),
             max_context_bytes=_positive(budget, "max_context_bytes"),
@@ -99,6 +110,7 @@ def load_startup_config(path: Path) -> BootstrapConfig:
             checkpoint_after_each_step=True,
             unload_after_step=True,
             max_retries=max_retries,
-            retry_requires_new_evidence=lifecycle.get("retry_requires_new_evidence") is True,
+            retry_requires_new_evidence=lifecycle.get("retry_requires_new_evidence")
+            is True,
         ),
     )

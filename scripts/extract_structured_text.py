@@ -4,6 +4,7 @@ The upstream inventory owns format detection and structure extraction for code,
 Markdown, JSON, YAML, TOML, CSV, and plain text. This stage filters all records
 classified as text; it does not restrict extraction to Markdown.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -19,10 +20,23 @@ def extract(inventory: Path, output: Path) -> tuple[int, str]:
     for item in read_jsonl(inventory):
         if item.get("content_kind") != "text":
             continue
-        records.append({
-            key: item[key]
-            for key in ("id", "source_tree", "path", "sha256", "probable_domain", "domain_confidence")
-        } | {"format": Path(str(item["path"])).suffix.casefold() or "plain-text", "structure": item.get("structure", {})})
+        records.append(
+            {
+                key: item[key]
+                for key in (
+                    "id",
+                    "source_tree",
+                    "path",
+                    "sha256",
+                    "probable_domain",
+                    "domain_confidence",
+                )
+            }
+            | {
+                "format": Path(str(item["path"])).suffix.casefold() or "plain-text",
+                "structure": item.get("structure", {}),
+            }
+        )
     records.sort(key=lambda item: (item["source_tree"], item["path"], item["id"]))
     return write_jsonl(output, records)
 

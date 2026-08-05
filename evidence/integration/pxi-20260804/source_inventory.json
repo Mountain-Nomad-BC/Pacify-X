@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "run_id": "pxi-20260804",
+  "source_alias": "new_adds_20260804",
+  "intake_status": "open",
+  "snapshot_sequence": 6,
+  "file_count": 3399,
+  "byte_count": 59063451,
+  "tree_sha256": "f514e95804b909e1651c8a2f5af53564bd2ac6502274d20fcb25c9e88876de3a",
+  "capability_scan": {
+    "complete": true,
+    "accounted_files": 3399,
+    "regular_files_scanned": 3378,
+    "text_files_scanned": 3209,
+    "excluded_generated_or_cache_files": 21,
+    "candidate_count": 2359,
+    "error_count": 0,
+    "raw_report_sha256": "9c874f68075d3681c8b201fa9517c5fb98dde497ee9453044e7fbfca6d40596f"
+  },
+  "source_boundaries": [
+    "agency-agents-app-main",
+    "agency-agents-main",
+    "pacify_x_agency_agents_upgrade",
+    "pacify_x_knowledge_refinery_upgrade",
+    "pacifyx_brain_expansion_pack",
+    "PACIFY-X_n8n_supabase_capability_pack",
+    "PACIFY-X-Cybersecurity-Capability-Expansion",
+    "Pacify-X-Engineering-Reasoning-Skills-Expansion",
+    "Pacify-X-External-Capability-Intake-Pack",
+    "Pacify-X-Full-Project-Mapping-Pack",
+    "skills-main",
+    "transcript-analysis-skills"
+  ],
+  "closure_rule": "Take two matching full-tree snapshots plus an immediate equality check only after the user explicitly closes intake."
+}

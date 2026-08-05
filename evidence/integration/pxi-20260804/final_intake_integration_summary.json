@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "intake_id": "REL-013",
+  "closure": {
+    "source_file_count": 4030,
+    "source_byte_count": 60996936,
+    "source_tree_sha256": "7f353ca7ade3e9fe061c82f58831f676f7e8ccbbab178128c7861b4a34ab1908",
+    "matching_snapshots": 2,
+    "minimum_stability_seconds": 30,
+    "custody": "external_recoverable_quarantine",
+    "hard_delete": false,
+    "quarantine_manifest_added_after_closure": true,
+    "final_disposition_file_count": 4031,
+    "unaccounted_count": 0
+  },
+  "late_addition": {
+    "file_count": 553,
+    "byte_count": 1235412,
+    "disposition_counts": {"merge": 386, "retain": 167},
+    "packages": [
+      {"id": "engineering-research-expansion", "files": 1, "merge": 1, "retain": 0, "owner": ".agents/skills/operate-engineering-research-engine"},
+      {"id": "thirteen-source-integration", "files": 57, "merge": 27, "retain": 30, "owner": "runtime/clean_room_capabilities.py"},
+      {"id": "change-conformance", "files": 97, "merge": 63, "retain": 34, "owner": "runtime/clean_room_capabilities.py"},
+      {"id": "candidate-compiler-resolver", "files": 122, "merge": 83, "retain": 39, "punch_cards": 24, "owner": "runtime/capability_routing.py"},
+      {"id": "multi-repository-completion", "files": 179, "merge": 149, "retain": 30, "punch_cards": 40, "owner": "runtime/completion_controls.py"},
+      {"id": "external-agent-runtime", "files": 97, "merge": 63, "retain": 34, "punch_cards": 20, "owner": "runtime/completion_controls.py"}
+    ]
+  },
+  "canonical_integrations": [
+    {"id": "candidate-pipeline", "skill": "govern-candidate-resolution-pipeline", "runtime": "runtime/completion_controls.py", "workflow": "candidate-pipeline", "status": "implemented"},
+    {"id": "distributed-runtime", "skill": "govern-distributed-work-runtime", "runtime": "runtime/completion_controls.py", "workflow": "distributed-runtime", "status": "implemented"},
+    {"id": "epistemic-evolution", "skill": "govern-epistemic-skill-evolution", "runtime": "runtime/completion_controls.py", "workflow": "epistemic-evolution", "status": "implemented"},
+    {"id": "physical-media-validation", "skill": "validate-physical-media-deliverables", "runtime": "runtime/completion_controls.py", "workflow": "deliverable-validation", "status": "implemented"},
+    {"id": "engineering-research", "skill": "operate-engineering-research-engine", "runtime": "runtime/completion_controls.py", "workflow": "research-engine", "status": "implemented"}
+  ],
+  "duplicate_policy": "Micro-skills and reference runtimes were semantically folded into existing canonical owners; no parallel resolver, agent loop, scheduler, memory authority, or research promotion path was admitted.",
+  "source_code_copied": false,
+  "release_status": "development_tree_validated_not_newly_signed"
+}

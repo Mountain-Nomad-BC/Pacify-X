@@ -1,0 +1,16 @@
+{
+  "id": "govern-candidate-resolution-pipeline",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/govern-candidate-resolution-pipeline/SKILL.md",
+  "body_sha256": "90d88f7ac9eade7852881f51c57c230462e36d942e32ba141c9d450014eff37f",
+  "references": [],
+  "capability_tags": ["candidate-compiler", "resolver", "ranking", "package-optimization", "fold-in"],
+  "effects": ["read_local", "write_workspace"],
+  "provenance": {"type": "sanitized_clean_room_integration", "basis": ["evidence/integration/pxi-20260804/final_intake_disposition.json"], "canonical_owner": "runtime/capability_routing.py"},
+  "clean_room": true,
+  "tests": "tests/test_completion_controls.py",
+  "evidence": "tests/test_completion_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

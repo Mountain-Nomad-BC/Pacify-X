@@ -1,4 +1,5 @@
 """Mechanically reconcile composite claims with tested child-capability status."""
+
 from __future__ import annotations
 
 import argparse
@@ -34,32 +35,58 @@ def reconcile(root: Path) -> dict[str, int]:
     capabilities = json.loads(capability_path.read_text(encoding="utf-8"))
     orchestrations = json.loads(orchestration_path.read_text(encoding="utf-8"))
     handlers = json.loads(handler_path.read_text(encoding="utf-8"))
-    levels = {item["id"]: item["implementation_level"] for item in capabilities["capabilities"]}
+    levels = {
+        item["id"]: item["implementation_level"]
+        for item in capabilities["capabilities"]
+    }
     readiness: dict[str, list[str]] = {}
     for item in orchestrations["orchestrations"]:
-        declared = list(dict.fromkeys([*item.get("skills", ()), *item.get("deferred_capabilities", ())]))
-        missing = sorted(skill for skill in declared if levels.get(skill) != "operational_control_or_validator")
-        operational = sorted(skill for skill in declared if levels.get(skill) == "operational_control_or_validator")
+        declared = list(
+            dict.fromkeys(
+                [*item.get("skills", ()), *item.get("deferred_capabilities", ())]
+            )
+        )
+        missing = sorted(
+            skill
+            for skill in declared
+            if levels.get(skill) != "operational_control_or_validator"
+        )
+        operational = sorted(
+            skill
+            for skill in declared
+            if levels.get(skill) == "operational_control_or_validator"
+        )
         item["skills"] = operational
         item["deferred_capabilities"] = missing
         item["missing_capabilities"] = []
         item["source_status"] = "adapted-bounded-runtime"
         item["source_title"] = item.get("source_title", item["title"])
         item["title"] = IMPLEMENTED_TITLES[item["orchestration_id"]]
-        item["integration_status"] = "executable_bounded_scope_with_deferred_enhancements" if missing else "executable_composite"
+        item["integration_status"] = (
+            "executable_bounded_scope_with_deferred_enhancements"
+            if missing
+            else "executable_composite"
+        )
         readiness[item["orchestration_id"]] = missing
     executable = 0
     for item in handlers["workflows"]:
         missing = readiness[item["orchestration_id"]]
         item["status"] = "executable"
         item["deferred_capabilities"] = missing
-        item["scope"] = "bounded_runtime_handler_only; deferred capabilities are excluded"
+        item["scope"] = (
+            "bounded_runtime_handler_only; deferred capabilities are excluded"
+        )
         executable += item["status"] == "executable"
     handlers["executable_count"] = executable
     handlers["plan_only_count"] = len(handlers["workflows"]) - executable
-    orchestration_path.write_text(json.dumps(orchestrations, indent=2) + "\n", encoding="utf-8")
+    orchestration_path.write_text(
+        json.dumps(orchestrations, indent=2) + "\n", encoding="utf-8"
+    )
     handler_path.write_text(json.dumps(handlers, indent=2) + "\n", encoding="utf-8")
-    return {"executable": executable, "plan_only": len(handlers["workflows"]) - executable}
+    return {
+        "executable": executable,
+        "plan_only": len(handlers["workflows"]) - executable,
+    }
 
 
 if __name__ == "__main__":

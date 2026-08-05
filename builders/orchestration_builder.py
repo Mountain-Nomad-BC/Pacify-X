@@ -1,4 +1,5 @@
 """Validated declarative workflow proposals (PC-501)."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -9,7 +10,13 @@ try:  # installed package
 except ImportError:  # source checkout
     from runtime.graphs import validate_orchestration
 
-from .common import BuilderError, MUTATING_EFFECTS, bounded_unique, proposal_envelope, require_identifier
+from .common import (
+    BuilderError,
+    MUTATING_EFFECTS,
+    bounded_unique,
+    proposal_envelope,
+    require_identifier,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -89,10 +96,14 @@ def propose_orchestration(
     workflow_inputs = set(bounded_unique(request.inputs, "inputs", maximum=24))
     outputs = bounded_unique(request.outputs, "outputs", maximum=24)
     steps = bounded_unique(request.steps, "steps", maximum=24)
-    stop_conditions = bounded_unique(request.stop_conditions, "stop_conditions", maximum=16)
+    stop_conditions = bounded_unique(
+        request.stop_conditions, "stop_conditions", maximum=16
+    )
     budget = request.resource_budget
     if budget.max_tool_calls < 0 or budget.max_seconds < 1:
-        raise BuilderError("resource budget requires non-negative tool calls and positive seconds")
+        raise BuilderError(
+            "resource budget requires non-negative tool calls and positive seconds"
+        )
     if budget.max_agents < 1 or budget.max_test_runners < 1:
         raise BuilderError("parallelism budgets must be positive")
 
@@ -108,7 +119,9 @@ def propose_orchestration(
         if contract is None:
             raise BuilderError(f"unknown workflow capability: {step.capability_id}")
         if not _is_validated(contract):
-            raise BuilderError(f"capability is not admitted with current evidence: {step.capability_id}")
+            raise BuilderError(
+                f"capability is not admitted with current evidence: {step.capability_id}"
+            )
         by_step[step.step_id] = step
         capability_steps.setdefault(step.capability_id, []).append(step.step_id)
 
@@ -118,7 +131,9 @@ def propose_orchestration(
     for step_id, step in by_step.items():
         unknown = dependencies[step_id] - set(by_step)
         if unknown:
-            raise BuilderError(f"{step_id} has unknown dependencies: {', '.join(sorted(unknown))}")
+            raise BuilderError(
+                f"{step_id} has unknown dependencies: {', '.join(sorted(unknown))}"
+            )
         contract = contracts[step.capability_id]
         for capability_dependency in contract.get("dependencies", ()):
             candidates = capability_steps.get(str(capability_dependency), [])
@@ -153,11 +168,15 @@ def propose_orchestration(
         contract = contracts[step.capability_id]
         missing = sorted(set(contract.get("consumes", ())) - available)
         if missing:
-            raise BuilderError(f"{step_id} inputs are unavailable: {', '.join(missing)}")
+            raise BuilderError(
+                f"{step_id} inputs are unavailable: {', '.join(missing)}"
+            )
         available.update(str(value) for value in contract.get("provides", ()))
     missing_outputs = sorted(set(outputs) - available)
     if missing_outputs:
-        raise BuilderError("workflow outputs are unavailable: " + ", ".join(missing_outputs))
+        raise BuilderError(
+            "workflow outputs are unavailable: " + ", ".join(missing_outputs)
+        )
 
     estimated_calls = sum(
         int(contracts[step.capability_id].get("cost", {}).get("max_tool_calls", 0))

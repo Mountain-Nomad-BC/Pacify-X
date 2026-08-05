@@ -23,7 +23,9 @@ DEFAULT_WEIGHTS = {
 
 
 def _hash(value: object) -> str:
-    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    return hashlib.sha256(
+        json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
 
 
 def _clamp(value: float) -> float:
@@ -43,7 +45,9 @@ class Resources:
     def from_mapping(cls, value: Mapping[str, Any] | None) -> "Resources":
         value = value or {}
         fields = cls.__dataclass_fields__
-        return cls(**{name: value.get(name, field.default) for name, field in fields.items()})
+        return cls(
+            **{name: value.get(name, field.default) for name, field in fields.items()}
+        )
 
     def fits(self, requested: "Resources") -> bool:
         return (
@@ -52,7 +56,8 @@ class Resources:
             and self.gpu_count >= requested.gpu_count
             and self.vram_gb >= requested.vram_gb
             and self.disk_gb >= requested.disk_gb
-            and NETWORK_RANK.get(self.network, -1) >= NETWORK_RANK.get(requested.network, 99)
+            and NETWORK_RANK.get(self.network, -1)
+            >= NETWORK_RANK.get(requested.network, 99)
         )
 
     def consume(self, requested: "Resources") -> None:
@@ -92,7 +97,11 @@ class Task:
     @classmethod
     def from_mapping(cls, value: Mapping[str, Any]) -> "Task":
         fields = cls.__dataclass_fields__
-        values = {name: value[name] for name in fields if name in value and name not in {"resources", "created_index"}}
+        values = {
+            name: value[name]
+            for name in fields
+            if name in value and name not in {"resources", "created_index"}
+        }
         values["resources"] = Resources.from_mapping(value.get("resources"))
         return cls(**values)
 
@@ -100,7 +109,13 @@ class Task:
 class Scheduler:
     """Plans and simulates; it never invokes an executor or mutates canonical state."""
 
-    def __init__(self, resources: Resources, policy: Mapping[str, Any] | None = None, *, now: datetime | None = None):
+    def __init__(
+        self,
+        resources: Resources,
+        policy: Mapping[str, Any] | None = None,
+        *,
+        now: datetime | None = None,
+    ):
         self.total = resources
         self.available = Resources.from_mapping(resources.record())
         self.policy = dict(policy or {})
@@ -155,34 +170,53 @@ class Scheduler:
             reasons.append("resource_unavailable")
         if task.risk in {"high", "critical"} and not task.acceptance:
             reasons.append("acceptance_missing")
-        if task.privacy in {"restricted", "secret"} and task.resources.network == "external":
+        if (
+            task.privacy in {"restricted", "secret"}
+            and task.resources.network == "external"
+        ):
             reasons.append("privacy_policy_denied")
-        if self.policy.get("external_network") == "deny" and task.resources.network == "external":
+        if (
+            self.policy.get("external_network") == "deny"
+            and task.resources.network == "external"
+        ):
             reasons.append("egress_policy_denied")
         maximum_cost = task.budget.get("maximum_cost")
         estimated_cost = task.budget.get("estimated_cost")
-        if maximum_cost is not None and estimated_cost is not None and float(estimated_cost) > float(maximum_cost):
+        if (
+            maximum_cost is not None
+            and estimated_cost is not None
+            and float(estimated_cost) > float(maximum_cost)
+        ):
             reasons.append("budget_exhausted")
         if task.attempt > 1 and not task.idempotency_key and not task.compensation:
             reasons.append("retry_requires_idempotency_or_compensation")
         return not reasons, sorted(reasons)
 
     def score(self, task: Task) -> tuple[float, dict[str, float]]:
-        downstream = sum(1 for candidate in self.tasks.values() if task.id in candidate.dependencies and candidate.state in {"pending", "ready"})
+        downstream = sum(
+            1
+            for candidate in self.tasks.values()
+            if task.id in candidate.dependencies
+            and candidate.state in {"pending", "ready"}
+        )
         maximum_downstream = max(1, len(self.tasks) - 1)
         deadline_pressure = 0.0
         if task.deadline:
             try:
                 deadline = datetime.fromisoformat(task.deadline.replace("Z", "+00:00"))
                 remaining = (deadline - self.now).total_seconds()
-                deadline_pressure = _clamp(1.0 - remaining / max(task.estimated_seconds * 10.0, 1.0))
+                deadline_pressure = _clamp(
+                    1.0 - remaining / max(task.estimated_seconds * 10.0, 1.0)
+                )
             except ValueError:
                 deadline_pressure = 0.0
         factors = {
             "priority": _clamp(task.priority / 1000.0),
             "deadline_pressure": deadline_pressure,
             "dependency_unblock": _clamp(downstream / maximum_downstream),
-            "aging": _clamp((self._counter - task.created_index) / max(1, self._counter)),
+            "aging": _clamp(
+                (self._counter - task.created_index) / max(1, self._counter)
+            ),
             "success_rate": _clamp(float(task.acceptance.get("expected_success", 0.5))),
             "quality": _clamp(float(task.acceptance.get("required_quality", 0.5))),
             "cost_efficiency": _clamp(float(task.budget.get("cost_efficiency", 0.5))),
@@ -190,10 +224,20 @@ class Scheduler:
         weights = dict(DEFAULT_WEIGHTS)
         weights.update(self.policy.get("weights", {}))
         total_weight = sum(max(0.0, float(value)) for value in weights.values()) or 1.0
-        score = sum(factors[name] * max(0.0, float(weights.get(name, 0.0))) for name in factors) / total_weight
-        return round(score, 8), {name: round(value, 8) for name, value in factors.items()}
+        score = (
+            sum(
+                factors[name] * max(0.0, float(weights.get(name, 0.0)))
+                for name in factors
+            )
+            / total_weight
+        )
+        return round(score, 8), {
+            name: round(value, 8) for name, value in factors.items()
+        }
 
-    def next_task(self) -> tuple[Task | None, dict[str, list[str]], dict[str, Any] | None]:
+    def next_task(
+        self,
+    ) -> tuple[Task | None, dict[str, list[str]], dict[str, Any] | None]:
         eligible: list[tuple[float, int, str, dict[str, float]]] = []
         blocked: dict[str, list[str]] = {}
         for task in self.tasks.values():
@@ -219,14 +263,28 @@ class Scheduler:
                 break
             self.available.consume(task.resources)
             task.state = "running"
-            dispatch = {"event": "would_dispatch", "task_id": task.id, **(score or {}), "resources": task.resources.record(), "idempotency_key": task.idempotency_key}
+            dispatch = {
+                "event": "would_dispatch",
+                "task_id": task.id,
+                **(score or {}),
+                "resources": task.resources.record(),
+                "idempotency_key": task.idempotency_key,
+            }
             decisions.append(dispatch)
             self.events.append(dispatch)
             self.available.release(task.resources)
-            evidence = {"simulation": True, "acceptance_preserved": True, "executor_not_invoked": True}
+            evidence = {
+                "simulation": True,
+                "acceptance_preserved": True,
+                "executor_not_invoked": True,
+            }
             task.state = "succeeded"
             self.completed.add(task.id)
-            finish = {"event": "simulated_completion", "task_id": task.id, "evidence": evidence}
+            finish = {
+                "event": "simulated_completion",
+                "task_id": task.id,
+                "evidence": evidence,
+            }
             decisions.append(finish)
             self.events.append(finish)
         stalled = len(self.completed | self.failed) < len(self.tasks)
@@ -250,7 +308,11 @@ def simulate_schedule(payload: Mapping[str, Any]) -> dict[str, Any]:
     now_value = payload.get("now", "2000-01-01T00:00:00Z")
     try:
         now = datetime.fromisoformat(str(now_value).replace("Z", "+00:00"))
-        scheduler = Scheduler(Resources.from_mapping(payload.get("resources", {})), payload.get("policy", {}), now=now)
+        scheduler = Scheduler(
+            Resources.from_mapping(payload.get("resources", {})),
+            payload.get("policy", {}),
+            now=now,
+        )
         for value in tasks:
             if not isinstance(value, Mapping):
                 raise ValueError("every task must be an object")
@@ -261,7 +323,22 @@ def simulate_schedule(payload: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def integration_healthcheck() -> dict[str, Any]:
-    result = simulate_schedule({"resources": {"cpu_cores": 1}, "workload": {"tasks": [{"id": "a", "capability": "noop", "priority": 1, "resources": {"cpu_cores": 1}, "acceptance": {}}]}})
+    result = simulate_schedule(
+        {
+            "resources": {"cpu_cores": 1},
+            "workload": {
+                "tasks": [
+                    {
+                        "id": "a",
+                        "capability": "noop",
+                        "priority": 1,
+                        "resources": {"cpu_cores": 1},
+                        "acceptance": {},
+                    }
+                ]
+            },
+        }
+    )
     return {"valid": result.get("valid") is True and result.get("observe_only") is True}
 
 
@@ -271,26 +348,65 @@ def _load(root: Path, relative: str) -> dict[str, Any]:
 
 def list_scheduling_capabilities(root: Path) -> dict[str, Any]:
     records = _load(root, "registry/scheduling_capability_owners.json")["records"]
-    return {"valid": True, "metadata_only": True, "count": len(records), "records": records}
+    return {
+        "valid": True,
+        "metadata_only": True,
+        "count": len(records),
+        "records": records,
+    }
 
 
 def describe_scheduling_capability(root: Path, capability_id: str) -> dict[str, Any]:
     index = _load(root, "registry/scheduling_capabilities.json")["capabilities"]
     contract = next((item for item in index if item["id"] == capability_id), None)
     if contract is None:
-        return {"valid": False, "errors": [f"unknown scheduling capability: {capability_id}"]}
-    return {"valid": True, "owner": "orchestrate-capability-scheduling", "contract": contract}
+        return {
+            "valid": False,
+            "errors": [f"unknown scheduling capability: {capability_id}"],
+        }
+    return {
+        "valid": True,
+        "owner": "orchestrate-capability-scheduling",
+        "contract": contract,
+    }
 
 
 def validate_scheduling_layer(root: Path) -> dict[str, Any]:
-    capabilities = _load(root, "registry/scheduling_capabilities.json").get("capabilities", [])
-    owners = _load(root, "registry/scheduling_capability_owners.json").get("records", [])
-    workflows = _load(root, "orchestration/workflows/capability-scheduling.yaml").get("workflows", [])
+    capabilities = _load(root, "registry/scheduling_capabilities.json").get(
+        "capabilities", []
+    )
+    owners = _load(root, "registry/scheduling_capability_owners.json").get(
+        "records", []
+    )
+    workflows = _load(root, "orchestration/workflows/capability-scheduling.yaml").get(
+        "workflows", []
+    )
     policies = _load(root, "registry/scheduling_policies.json").get("policies", [])
     schemas = list((root / "contracts" / "scheduling").glob("*.json"))
-    actual = {"capabilities": len(capabilities), "owners": len(owners), "workflows": len(workflows), "policies": len(policies), "schemas": len(schemas)}
-    expected = {"capabilities": 30, "owners": 30, "workflows": 5, "policies": 3, "schemas": 8}
-    errors = [f"{name} denominator mismatch: {actual[name]} != {count}" for name, count in expected.items() if actual[name] != count]
+    actual = {
+        "capabilities": len(capabilities),
+        "owners": len(owners),
+        "workflows": len(workflows),
+        "policies": len(policies),
+        "schemas": len(schemas),
+    }
+    expected = {
+        "capabilities": 30,
+        "owners": 30,
+        "workflows": 5,
+        "policies": 3,
+        "schemas": 8,
+    }
+    errors = [
+        f"{name} denominator mismatch: {actual[name]} != {count}"
+        for name, count in expected.items()
+        if actual[name] != count
+    ]
     if {item["id"] for item in capabilities} != {item["id"] for item in owners}:
         errors.append("scheduling capability owner projection is not bijective")
-    return {"valid": not errors, "counts": actual, "observe_only": True, "errors": errors}
+    return {
+        "valid": not errors,
+        "counts": actual,
+        "observe_only": True,
+        "errors": errors,
+    }

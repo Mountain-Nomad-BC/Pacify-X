@@ -1,10 +1,11 @@
 """Deterministic, side-effect-free controls admitted from the build-source capability pack."""
+
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 import hashlib
 import json
-from typing import Iterable, Mapping, Sequence
+from typing import Iterable, Mapping
 
 
 @dataclass(frozen=True, slots=True)
@@ -72,7 +73,9 @@ ALL_OPERATIONAL_SKILLS = tuple(sorted((*DELEGATED_HANDLERS, *SKILL_FAMILIES)))
 
 
 def _stable(value: object) -> str:
-    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()).hexdigest()
+    return hashlib.sha256(
+        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()
+    ).hexdigest()
 
 
 def _tuple(values: Iterable[object]) -> tuple[str, ...]:
@@ -85,7 +88,13 @@ def evaluate_memory(skill_id: str, payload: Mapping[str, object]) -> ControlResu
     requested = set(map(str, payload.get("requested_effects", ())))
     allowed = set(map(str, payload.get("allowed_effects", ())))
     provenance = str(payload.get("provenance", "unknown"))
-    instruction_markers = ("ignore previous", "override policy", "reveal secret", "expand permission", "system message")
+    instruction_markers = (
+        "ignore previous",
+        "override policy",
+        "reveal secret",
+        "expand permission",
+        "system message",
+    )
     findings: list[str] = []
     if any(marker in item.casefold() for marker in instruction_markers):
         findings.append("embedded_instruction")
@@ -93,12 +102,22 @@ def evaluate_memory(skill_id: str, payload: Mapping[str, object]) -> ControlResu
         findings.append("permission_expansion")
     if not provenance or provenance == "unknown":
         findings.append("unresolved_provenance")
-    if original_goal and item and not set(original_goal.casefold().split()) & set(item.casefold().split()):
+    if (
+        original_goal
+        and item
+        and not set(original_goal.casefold().split()) & set(item.casefold().split())
+    ):
         findings.append("intent_divergence")
 
     current = dict(payload.get("current_variables", {}))
     prior = dict(payload.get("memory_variables", {}))
-    mismatches = tuple(sorted(key for key in set(current) | set(prior) if current.get(key) != prior.get(key)))
+    mismatches = tuple(
+        sorted(
+            key
+            for key in set(current) | set(prior)
+            if current.get(key) != prior.get(key)
+        )
+    )
     if mismatches:
         findings.append("material_context_mismatch")
 
@@ -109,16 +128,26 @@ def evaluate_memory(skill_id: str, payload: Mapping[str, object]) -> ControlResu
         "no_contradiction": not payload.get("contradictions"),
     }
     if skill_id in {"candidate-memory-promoter", "procedural-memory-compiler"}:
-        decision = "promote" if all(promotion_checks.values()) and not findings else "candidate_only"
+        decision = (
+            "promote"
+            if all(promotion_checks.values()) and not findings
+            else "candidate_only"
+        )
     elif findings:
         decision = "quarantine"
     else:
         decision = "allow_principles_only"
-    return ControlResult(skill_id, decision, tuple(sorted(findings)), {
-        "mismatches": mismatches,
-        "promotion_checks": promotion_checks,
-        "prohibited_replay": bool(mismatches or findings),
-    }, _tuple(payload.get("evidence", ())))
+    return ControlResult(
+        skill_id,
+        decision,
+        tuple(sorted(findings)),
+        {
+            "mismatches": mismatches,
+            "promotion_checks": promotion_checks,
+            "prohibited_replay": bool(mismatches or findings),
+        },
+        _tuple(payload.get("evidence", ())),
+    )
 
 
 def resolve_bundle(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
@@ -141,7 +170,11 @@ def resolve_bundle(skill_id: str, payload: Mapping[str, object]) -> ControlResul
                 continue
             coverage = unresolved & set(map(str, item.get("provides", ())))
             if coverage:
-                score = len(coverage) * 100 - float(item.get("cost", 1)) * 5 - float(item.get("risk", 1))
+                score = (
+                    len(coverage) * 100
+                    - float(item.get("cost", 1)) * 5
+                    - float(item.get("risk", 1))
+                )
                 eligible.append((score, item_id, item, coverage))
         if not eligible:
             break
@@ -149,12 +182,17 @@ def resolve_bundle(skill_id: str, payload: Mapping[str, object]) -> ControlResul
         selected.append(winner)
         unresolved -= coverage
     decision = "resolved" if not unresolved else "incomplete"
-    return ControlResult(skill_id, decision, (() if decision == "resolved" else ("requirements_unresolved",)), {
-        "selected": tuple(str(item["id"]) for item in selected),
-        "unresolved": tuple(sorted(unresolved)),
-        "excluded_conflicts": tuple(sorted(conflicts)),
-        "selection_hash": _stable([item.get("id") for item in selected]),
-    })
+    return ControlResult(
+        skill_id,
+        decision,
+        (() if decision == "resolved" else ("requirements_unresolved",)),
+        {
+            "selected": tuple(str(item["id"]) for item in selected),
+            "unresolved": tuple(sorted(unresolved)),
+            "excluded_conflicts": tuple(sorted(conflicts)),
+            "selection_hash": _stable([item.get("id") for item in selected]),
+        },
+    )
 
 
 def assess_supply_chain(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
@@ -179,13 +217,26 @@ def assess_supply_chain(skill_id: str, payload: Mapping[str, object]) -> Control
         reasons.append("provenance_or_signature_failure")
     if skill_id == "dynamic-skill-detonator" and not payload.get("sandbox_adapter"):
         reasons.append("sandbox_adapter_missing")
-    decision = "admit" if not reasons else ("sandbox_required" if reasons == ["sandbox_adapter_missing"] else "quarantine")
-    return ControlResult(skill_id, decision, tuple(reasons), {
-        "permission_additions": tuple(sorted(additions)),
-        "undeclared_effects": tuple(sorted(undeclared)),
-        "verification_checks": checks,
-        "synthetic_secrets_only": skill_id == "dynamic-skill-detonator",
-    })
+    decision = (
+        "admit"
+        if not reasons
+        else (
+            "sandbox_required"
+            if reasons == ["sandbox_adapter_missing"]
+            else "quarantine"
+        )
+    )
+    return ControlResult(
+        skill_id,
+        decision,
+        tuple(reasons),
+        {
+            "permission_additions": tuple(sorted(additions)),
+            "undeclared_effects": tuple(sorted(undeclared)),
+            "verification_checks": checks,
+            "synthetic_secrets_only": skill_id == "dynamic-skill-detonator",
+        },
+    )
 
 
 def assess_loop(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
@@ -208,11 +259,24 @@ def assess_loop(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
         reasons.append("trajectory_risk_high")
     if gain <= cost:
         reasons.append("marginal_utility_nonpositive")
-    decision = "continue" if not reasons else ("escalate" if "trajectory_risk_high" in reasons else "stop")
-    return ControlResult(skill_id, decision, tuple(reasons), {
-        "expected_gain": gain, "next_step_cost": cost, "trajectory_risk": risk,
-        "remaining_failure_budget": max(0, int(payload.get("failure_limit", 2)) - failures),
-    })
+    decision = (
+        "continue"
+        if not reasons
+        else ("escalate" if "trajectory_risk_high" in reasons else "stop")
+    )
+    return ControlResult(
+        skill_id,
+        decision,
+        tuple(reasons),
+        {
+            "expected_gain": gain,
+            "next_step_cost": cost,
+            "trajectory_risk": risk,
+            "remaining_failure_budget": max(
+                0, int(payload.get("failure_limit", 2)) - failures
+            ),
+        },
+    )
 
 
 def trace_impact(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
@@ -227,11 +291,23 @@ def trace_impact(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
                 impacted.add(right)
                 frontier.append(right)
     observations = [dict(item) for item in payload.get("observations", ())]
-    mapped = tuple(sorted((str(item.get("behavior", "")), str(item.get("owner", "unresolved"))) for item in observations))
+    mapped = tuple(
+        sorted(
+            (str(item.get("behavior", "")), str(item.get("owner", "unresolved")))
+            for item in observations
+        )
+    )
     unresolved = tuple(behavior for behavior, owner in mapped if owner == "unresolved")
-    return ControlResult(skill_id, "mapped" if not unresolved else "review_required", (() if not unresolved else ("unresolved_behavior_owner",)), {
-        "impacted": tuple(sorted(impacted - changed)), "behavior_owners": mapped, "unresolved": unresolved,
-    })
+    return ControlResult(
+        skill_id,
+        "mapped" if not unresolved else "review_required",
+        (() if not unresolved else ("unresolved_behavior_owner",)),
+        {
+            "impacted": tuple(sorted(impacted - changed)),
+            "behavior_owners": mapped,
+            "unresolved": unresolved,
+        },
+    )
 
 
 def select_evaluation(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
@@ -240,34 +316,75 @@ def select_evaluation(skill_id: str, payload: Mapping[str, object]) -> ControlRe
     ranked = []
     for item in cases:
         score = (
-            float(item.get("risk", 0)) * 4 + float(item.get("novelty", 0)) * 3
-            + float(item.get("disagreement", 0)) * 3 + float(item.get("impact", 0)) * 2
+            float(item.get("risk", 0)) * 4
+            + float(item.get("novelty", 0)) * 3
+            + float(item.get("disagreement", 0)) * 3
+            + float(item.get("impact", 0)) * 2
             - float(item.get("evidence_quality", 0))
         )
         ranked.append((score, str(item.get("id", "")), item))
-    selected = tuple(item_id for _, item_id, _ in sorted(ranked, key=lambda entry: (-entry[0], entry[1]))[:budget])
-    scenarios = tuple(sorted({str(item.get("risk_class", "general")) for _, _, item in ranked}))
-    return ControlResult(skill_id, "allocated", (), {
-        "selected_cases": selected,
-        "scenario_classes": scenarios,
-        "human_review_required": tuple(item_id for score, item_id, _ in ranked if score >= 6),
-    })
+    selected = tuple(
+        item_id
+        for _, item_id, _ in sorted(ranked, key=lambda entry: (-entry[0], entry[1]))[
+            :budget
+        ]
+    )
+    scenarios = tuple(
+        sorted({str(item.get("risk_class", "general")) for _, _, item in ranked})
+    )
+    return ControlResult(
+        skill_id,
+        "allocated",
+        (),
+        {
+            "selected_cases": selected,
+            "scenario_classes": scenarios,
+            "human_review_required": tuple(
+                item_id for score, item_id, _ in ranked if score >= 6
+            ),
+        },
+    )
 
 
 def process_research(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
-    required = set(map(str, payload.get("required_fields", ("mechanism", "assumptions", "evidence", "limitations"))))
+    required = set(
+        map(
+            str,
+            payload.get(
+                "required_fields",
+                ("mechanism", "assumptions", "evidence", "limitations"),
+            ),
+        )
+    )
     record = dict(payload.get("record", {}))
     missing = tuple(sorted(field for field in required if not record.get(field)))
     available = set(map(str, payload.get("available_controls", ())))
     required_controls = set(map(str, payload.get("required_controls", ())))
     gaps = tuple(sorted(required_controls - available))
     conflicts = tuple(sorted(map(str, payload.get("conflicts", ()))))
-    reasons = tuple(name for name, active in (("missing_research_fields", bool(missing)), ("productization_gaps", bool(gaps)), ("mechanism_conflicts", bool(conflicts))) if active)
+    reasons = tuple(
+        name
+        for name, active in (
+            ("missing_research_fields", bool(missing)),
+            ("productization_gaps", bool(gaps)),
+            ("mechanism_conflicts", bool(conflicts)),
+        )
+        if active
+    )
     decision = "candidate" if not reasons else "research_incomplete"
-    return ControlResult(skill_id, decision, reasons, {
-        "missing_fields": missing, "control_gaps": gaps, "conflicts": conflicts,
-        "promotion_state": "candidate_only", "record_hash": _stable(record),
-    }, _tuple(payload.get("evidence", ())))
+    return ControlResult(
+        skill_id,
+        decision,
+        reasons,
+        {
+            "missing_fields": missing,
+            "control_gaps": gaps,
+            "conflicts": conflicts,
+            "promotion_state": "candidate_only",
+            "record_hash": _stable(record),
+        },
+        _tuple(payload.get("evidence", ())),
+    )
 
 
 def track_progress(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
@@ -283,41 +400,93 @@ def track_progress(skill_id: str, payload: Mapping[str, object]) -> ControlResul
         states.append((str(item.get("id", "")), state))
     unresolved = tuple(item_id for item_id, state in states if state != "complete")
     handoff_required = ("goal", "constraints", "decisions", "evidence", "next_actions")
-    missing_handoff = tuple(field for field in handoff_required if not payload.get(field))
+    missing_handoff = tuple(
+        field for field in handoff_required if not payload.get(field)
+    )
     decision = "complete" if states and not unresolved else "resumable"
-    return ControlResult(skill_id, decision, (() if not missing_handoff else ("handoff_fields_missing",)), {
-        "milestones": tuple(states), "unresolved": unresolved, "missing_handoff_fields": missing_handoff,
-    })
+    return ControlResult(
+        skill_id,
+        decision,
+        (() if not missing_handoff else ("handoff_fields_missing",)),
+        {
+            "milestones": tuple(states),
+            "unresolved": unresolved,
+            "missing_handoff_fields": missing_handoff,
+        },
+    )
 
 
 def compile_candidate(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
     records = [dict(item) for item in payload.get("records", ())]
-    accepted = tuple(sorted(str(item.get("id")) for item in records if item.get("verified") is True and item.get("evidence")))
-    rejected = tuple(sorted(str(item.get("id")) for item in records if str(item.get("id")) not in accepted))
-    return ControlResult(skill_id, "candidate_compiled" if accepted else "insufficient_evidence", (() if accepted else ("no_verified_records",)), {
-        "accepted_records": accepted, "rejected_records": rejected,
-        "activation": "candidate", "compilation_hash": _stable(accepted),
-    })
+    accepted = tuple(
+        sorted(
+            str(item.get("id"))
+            for item in records
+            if item.get("verified") is True and item.get("evidence")
+        )
+    )
+    rejected = tuple(
+        sorted(
+            str(item.get("id"))
+            for item in records
+            if str(item.get("id")) not in accepted
+        )
+    )
+    return ControlResult(
+        skill_id,
+        "candidate_compiled" if accepted else "insufficient_evidence",
+        (() if accepted else ("no_verified_records",)),
+        {
+            "accepted_records": accepted,
+            "rejected_records": rejected,
+            "activation": "candidate",
+            "compilation_hash": _stable(accepted),
+        },
+    )
 
 
 def select_topology(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
     approved = [dict(item) for item in payload.get("approved_templates", ())]
     risk = float(payload.get("risk", 0))
     complexity = float(payload.get("complexity", 0))
-    eligible = [item for item in approved if float(item.get("max_risk", 1)) >= risk and float(item.get("max_complexity", 1)) >= complexity]
-    eligible.sort(key=lambda item: (float(item.get("cost", 0)), str(item.get("id", ""))))
+    eligible = [
+        item
+        for item in approved
+        if float(item.get("max_risk", 1)) >= risk
+        and float(item.get("max_complexity", 1)) >= complexity
+    ]
+    eligible.sort(
+        key=lambda item: (float(item.get("cost", 0)), str(item.get("id", "")))
+    )
     selected = str(eligible[0].get("id")) if eligible else None
     if skill_id == "read-only-speculation-controller":
         read_only = bool(payload.get("read_only"))
-        return ControlResult(skill_id, "proposal_only" if read_only else "denied", (() if read_only else ("non_read_speculation_forbidden",)), {
-            "selected_template": selected, "cache_state": "quarantined", "executed": False,
-        })
-    return ControlResult(skill_id, "selected" if selected else "no_approved_topology", (() if selected else ("approved_template_missing",)), {"selected_template": selected})
+        return ControlResult(
+            skill_id,
+            "proposal_only" if read_only else "denied",
+            (() if read_only else ("non_read_speculation_forbidden",)),
+            {
+                "selected_template": selected,
+                "cache_state": "quarantined",
+                "executed": False,
+            },
+        )
+    return ControlResult(
+        skill_id,
+        "selected" if selected else "no_approved_topology",
+        (() if selected else ("approved_template_missing",)),
+        {"selected_template": selected},
+    )
 
 
 def run_control(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
     if skill_id in DELEGATED_HANDLERS:
-        return ControlResult(skill_id, "delegate", (), {"handler": DELEGATED_HANDLERS[skill_id], "payload_hash": _stable(payload)})
+        return ControlResult(
+            skill_id,
+            "delegate",
+            (),
+            {"handler": DELEGATED_HANDLERS[skill_id], "payload_hash": _stable(payload)},
+        )
     family = SKILL_FAMILIES.get(skill_id)
     if family == "memory":
         return evaluate_memory(skill_id, payload)

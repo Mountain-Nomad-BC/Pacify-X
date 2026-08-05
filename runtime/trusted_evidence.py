@@ -13,6 +13,7 @@ import tempfile
 from typing import Any, Mapping
 
 from .release_signing import canonical_bytes, public_key_fingerprint
+from .external_toolchain import require_openssh_authority
 
 NAMESPACE = "pacify-x-trusted-evidence"
 REFERENCE = re.compile(r"^evidence:([A-Za-z0-9._-]+)$")
@@ -68,6 +69,7 @@ def sign_evidence_record(
     identity: str,
     publisher: str,
 ) -> dict[str, Any]:
+    require_openssh_authority()
     public_key = Path(str(private_key.resolve(strict=True)) + ".pub")
     signed = {
         **record,

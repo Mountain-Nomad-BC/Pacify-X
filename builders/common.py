@@ -1,4 +1,5 @@
 """Shared fail-closed controls for declarative asset proposals."""
+
 from __future__ import annotations
 
 import hashlib
@@ -29,9 +30,18 @@ _SOURCE_PATTERN = re.compile(
     rf"(?i)(?<![A-Za-z])({'|'.join(_SOURCE_TERMS)})(?![A-Za-z])"
 )
 _SOURCE_REPLACEMENTS = dict(
-    zip(_SOURCE_TERMS, ("intelligent_integrations_and_engines", "governed_retrieval_system_with_deterministic_rails", "enterprise"))
+    zip(
+        _SOURCE_TERMS,
+        (
+            "intelligent_integrations_and_engines",
+            "governed_retrieval_system_with_deterministic_rails",
+            "enterprise",
+        ),
+    )
 )
-_SECRET_KEY = re.compile(r"(?i)(?:api[_-]?key|access[_-]?token|password|secret|credential)")
+_SECRET_KEY = re.compile(
+    r"(?i)(?:api[_-]?key|access[_-]?token|password|secret|credential)"
+)
 _ASSIGNED_SECRET = re.compile(
     r"(?i)\b(api[_-]?key|access[_-]?token|password|secret|credential)\s*[:=]\s*[^\s,;]+"
 )
@@ -100,7 +110,9 @@ def sanitize(value: object, *, key: str | None = None) -> object:
     if isinstance(value, Mapping):
         return {
             sanitize_text(str(item_key)): sanitize(item_value, key=str(item_key))
-            for item_key, item_value in sorted(value.items(), key=lambda item: str(item[0]))
+            for item_key, item_value in sorted(
+                value.items(), key=lambda item: str(item[0])
+            )
         }
     if isinstance(value, (list, tuple, set, frozenset)):
         items = [sanitize(item) for item in value]
@@ -113,11 +125,15 @@ def sanitize(value: object, *, key: str | None = None) -> object:
 
 
 def canonical_digest(value: object) -> str:
-    encoded = json.dumps(sanitize(value), sort_keys=True, separators=(",", ":")).encode()
+    encoded = json.dumps(
+        sanitize(value), sort_keys=True, separators=(",", ":")
+    ).encode()
     return hashlib.sha256(encoded).hexdigest()
 
 
-def proposal_envelope(kind: str, asset_id: str, body: Mapping[str, object]) -> dict[str, object]:
+def proposal_envelope(
+    kind: str, asset_id: str, body: Mapping[str, object]
+) -> dict[str, object]:
     require_identifier(asset_id, "asset_id")
     sanitized_body = sanitize(body)
     assert isinstance(sanitized_body, dict)
@@ -148,13 +164,17 @@ def write_proposal(output_directory: Path, proposal: Mapping[str, object]) -> Pa
         raise BuilderError("proposal_id and proposal_kind are required")
     require_identifier(proposal_id, "proposal_id")
     require_identifier(kind, "proposal_kind")
-    if proposal.get("status") != "candidate" or proposal.get("auto_activate") is not False:
+    if (
+        proposal.get("status") != "candidate"
+        or proposal.get("auto_activate") is not False
+    ):
         raise BuilderError("only candidate, non-activating proposals may be written")
     output_directory.mkdir(parents=True, exist_ok=True)
     destination = output_directory / f"{kind}--{proposal_id}.proposal.json"
     if destination.exists():
         raise DuplicateAssetError(f"proposal already exists: {destination.name}")
     destination.write_text(
-        json.dumps(sanitize(proposal), indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        json.dumps(sanitize(proposal), indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
     )
     return destination

@@ -1,0 +1,52 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "no clinical treatment claims",
+    "do not infer fatigue or impairment without explicit evidence",
+    "avoid manipulative engagement optimization"
+  ],
+  "bundle": "adapt-human-learning-loop",
+  "category": "adaptive-learning",
+  "dependencies": [
+    "reasoning-utility-controller",
+    "active-evaluation-selector",
+    "maintain-learner-profile-boundary"
+  ],
+  "id": "sequence-adaptive-learning-exercises",
+  "keywords": [
+    "adaptive exercise",
+    "difficulty",
+    "learning sequence",
+    "training activity"
+  ],
+  "mechanisms": [
+    "exercise catalog",
+    "difficulty bands",
+    "modality rotation",
+    "bounded repetition",
+    "performance-conditioned next activity",
+    "human override"
+  ],
+  "owner": "govern-metacognitive-evolution",
+  "provenance": {
+    "derivation": "clean-room mechanism abstraction",
+    "source": "hyperlearning-clean-room",
+    "source_refs": [
+      "Manual de usuario e instalación.pdf sections 2.8.1-2.8.4",
+      "src/Ejercicios.java"
+    ]
+  },
+  "source": "hyperlearning-clean-room",
+  "source_refs": [
+    "Manual de usuario e instalación.pdf sections 2.8.1-2.8.4",
+    "src/Ejercicios.java"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Select and sequence bounded exercises using observed performance, modality, difficulty, fatigue signals supplied by authorized users, and explicit learning goals.",
+  "title": "Sequence Adaptive Learning Exercises",
+  "use_when": [
+    "a training system offers several exercise types",
+    "difficulty should adjust from demonstrated performance",
+    "repetition must remain purposeful"
+  ]
+}

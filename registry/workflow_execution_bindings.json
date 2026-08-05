@@ -1,13 +1,91 @@
 {
-  "schema_version": "1.0",
-  "count": 7,
   "bindings": [
-    {"path": "orchestration/workflows/capability-assimilation.yaml", "mode": "executable_validator", "entrypoint": "runtime.capability_assimilation:validate_capability_assimilation"},
-    {"path": "orchestration/workflows/capability-scheduling.yaml", "mode": "executable_validator", "entrypoint": "runtime.capability_scheduler:validate_scheduling_layer"},
-    {"path": "orchestration/workflows/control-plane.yaml", "mode": "executable_runtime", "entrypoint": "runtime.orchestrator:Orchestrator.run"},
-    {"path": "orchestration/workflows/declared-suite.yaml", "mode": "executable_validator", "entrypoint": "runtime.declared_suite:validate_declared_suite"},
-    {"path": "orchestration/workflows/local-model-planning.yaml", "mode": "executable_runtime", "entrypoint": "runtime.models:rank_models"},
-    {"path": "orchestration/workflows/metacognitive-evolution.yaml", "mode": "executable_validator", "entrypoint": "runtime.metacognitive_evolution.facade:validate_layer"},
-    {"path": "orchestration/workflows/semantic-capability-query.yaml", "mode": "executable_runtime", "entrypoint": "runtime.query_certification:certify_queries"}
-  ]
+    {
+      "entrypoint": "runtime.agent_provider:validate_agent_orchestration",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/agency-specialist-routing.yaml"
+    },
+    {
+      "entrypoint": "runtime.capability_assimilation:validate_capability_assimilation",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/capability-assimilation.yaml"
+    },
+    {
+      "entrypoint": "runtime.capability_scheduler:validate_scheduling_layer",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/capability-scheduling.yaml"
+    },
+    {
+      "entrypoint": "runtime.orchestrator:Orchestrator.run",
+      "mode": "executable_runtime",
+      "path": "orchestration/workflows/control-plane.yaml"
+    },
+    {
+      "entrypoint": "runtime.cybersecurity_provider:validate_security_orchestration",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/cybersecurity-capability-operations.yaml"
+    },
+    {
+      "entrypoint": "runtime.clean_room_capabilities:validate_clean_room_capability_workflow",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/clean-room-capability-controls.yaml"
+    },
+    {
+      "entrypoint": "runtime.declared_suite:validate_declared_suite",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/declared-suite.yaml"
+    },
+    {
+      "entrypoint": "runtime.project_reasoning.frontier:validate_reasoning_orchestration",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/engineering-reasoning-loop.yaml"
+    },
+    {
+      "entrypoint": "runtime.external_capability_provider:validate_external_capability_orchestration",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/external-capability-intake.yaml"
+    },
+    {
+      "entrypoint": "runtime.knowledge_refinery:validate_refinery_orchestration",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/knowledge-refinery.yaml"
+    },
+    {
+      "entrypoint": "runtime.memory_intelligence:validate_memory_orchestration",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/layered-memory-lifecycle.yaml"
+    },
+    {
+      "entrypoint": "runtime.models:rank_models",
+      "mode": "executable_runtime",
+      "path": "orchestration/workflows/local-model-planning.yaml"
+    },
+    {
+      "entrypoint": "runtime.metacognitive_evolution.facade:validate_layer",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/metacognitive-evolution.yaml"
+    },
+    {
+      "entrypoint": "runtime.query_certification:certify_queries",
+      "mode": "executable_runtime",
+      "path": "orchestration/workflows/semantic-capability-query.yaml"
+    },
+    {
+      "entrypoint": "runtime.service_capability_provider:validate_service_workflows",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/service-capability-operations.yaml"
+    },
+    {
+      "entrypoint": "runtime.transcript_analysis:validate_transcript_orchestration",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/transcript-evidence-extraction.yaml"
+    },
+    {
+      "entrypoint": "runtime.completion_controls:validate_completion_control_workflow",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/completion-controls.yaml"
+    }
+  ],
+  "count": 17,
+  "schema_version": "1.0"
 }

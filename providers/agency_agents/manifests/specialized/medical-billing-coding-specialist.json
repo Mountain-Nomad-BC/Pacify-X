@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.specialized.medical-billing-coding-specialist",
+  "name": "Medical Billing & Coding Specialist",
+  "description": "Expert medical billing and coding specialist for ICD-10-CM/PCS, CPT, and HCPCS coding, claim submission, denial management, revenue cycle optimization, compliance auditing, and payer contract analysis — maximizing clean claim rates and revenue recovery for healthcare providers of all sizes",
+  "division": "specialized",
+  "source": {
+    "path": "specialized/medical-billing-coding-specialist.md",
+    "sha256": "e9f597ef3a214d886a2b861347183c3674b6e24278c9308ed998a02972e7007c",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/specialized/medical-billing-coding-specialist.md",
+    "sha256": "70ea14b779a8e1f5651d793da8c0ebee58aa409cd1dd0c369a3e793c8375d542",
+    "audit_status": "HARDEN",
+    "audit_score": 73.2
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Medical Billing & Coding Specialist",
+      "medical-billing-coding-specialist"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "compliance_governance",
+    "documentation",
+    "healthcare",
+    "identity_access",
+    "payments_billing",
+    "performance",
+    "specialized"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "concrete objective and affected stakeholders",
+    "source materials and authoritative policies",
+    "jurisdiction, organization, and system constraints",
+    "decision and execution authority",
+    "required output and review owner",
+    "intended audience and use context",
+    "clinical question or claim",
+    "jurisdiction and regulatory status"
+  ],
+  "deliverables": [
+    "scope and assumptions",
+    "role-specific analysis or artifact",
+    "source and evidence traceability",
+    "risks and exceptions",
+    "handoff and approval requirements",
+    "evidence-graded synthesis",
+    "claim-to-source traceability",
+    "scope and limitation statement"
+  ],
+  "quality_gates": [
+    "Separate observed facts, user-provided claims, inference, and recommendation",
+    "Verify current policy, law, platform, or organizational rules when they can change",
+    "Protect confidential, personal, financial, legal, and health information",
+    "Do not claim execution, approval, delivery, or access without evidence",
+    "Use current primary clinical or regulatory sources and state evidence grade",
+    "Separate validated outcomes, directional evidence, projections, and unsupported claims",
+    "Protect PHI and minimize sensitive data",
+    "Require qualified clinical and legal review for patient-facing or regulated use"
+  ],
+  "boundaries": [
+    "Default to advisory or draft mode unless execution authority is explicit",
+    "Defer licensed, regulated, fiduciary, clinical, legal, or safety-critical decisions to qualified accountable humans",
+    "Do not diagnose, prescribe, triage emergencies, or replace clinician judgment",
+    "Do not expose PHI or make regulatory clearance claims without authoritative evidence"
+  ],
+  "handoffs": [
+    "specialized/specialized-workflow-architect.md",
+    "specialized/agents-orchestrator.md",
+    "specialized/data-privacy-officer.md",
+    "healthcare/healthcare-clinical-evidence-agent.md",
+    "support/support-legal-compliance-checker.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries"
+    ],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Action-capable role lacks rollback/dry-run safeguards"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

@@ -1,0 +1,37 @@
+{
+  "id": "route-specialist-agents",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/route-specialist-agents/SKILL.md",
+  "body_sha256": "44126f3f611b82304114c8e21a0a5820471648223f4084b99de50f4c52657a20",
+  "references": [
+    ".agents/skills/route-specialist-agents/references/runtime-contract.md"
+  ],
+  "resources": [
+    ".agents/skills/route-specialist-agents/scripts/route_specialist_agents.py"
+  ],
+  "capability_tags": [
+    "agents",
+    "governance",
+    "lazy-loading",
+    "routing",
+    "specialists"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "admitted_user_supplied_clean_room_pack",
+    "basis": [
+      "registry/agency_agent_registry.json",
+      "contracts/agents/agency-agent-manifest.schema.json",
+      "policies/agency-agent-runtime.json"
+    ],
+    "canonical_owner": "runtime/agent_provider.py"
+  },
+  "clean_room": true,
+  "tests": "tests/test_agent_provider.py",
+  "evidence": "registry/agency_agent_registry.json",
+  "validation_freshness": "current",
+  "context_budget_bytes": 32768
+}

@@ -1,12 +1,13 @@
 {
   "id": "govern-memory-fabric",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "status": "active",
   "body": ".agents/skills/govern-memory-fabric/SKILL.md",
-  "body_sha256": "056f8ee0ffb4877671b2723f5cb8983433657a56c271310750884e8071d0c9e9",
+  "body_sha256": "5e1015a29fda6bc4ec90d5500e5346eb32900babe5f04c32bdbcbe4b2ead126b",
   "references": [
     ".agents/skills/govern-memory-fabric/references/memory-contract.md",
-    ".agents/skills/govern-memory-fabric/references/provider-certification.md"
+    ".agents/skills/govern-memory-fabric/references/provider-certification.md",
+    ".agents/skills/govern-memory-fabric/references/layered-memory-lifecycle.md"
   ],
   "capability_tags": [
     "memory",
@@ -14,6 +15,12 @@
     "isolation",
     "sharding",
     "repair"
+    ,"capture"
+    ,"layered-memory"
+    ,"loadout"
+    ,"context-assembly"
+    ,"offload"
+    ,"evaluation"
   ],
   "effects": [
     "read_local",
@@ -24,12 +31,14 @@
     "basis": [
       "registry/project_stream_capabilities.json",
       "runtime/memory_vault.py",
-      "tests/test_memory_vault.py"
+      "runtime/memory_intelligence.py",
+      "tests/test_memory_vault.py",
+      "tests/test_memory_intelligence.py"
     ]
   },
   "clean_room": true,
-  "tests": "tests/test_workspace_manager.py",
-  "evidence": "tests/test_workspace_manager.py",
+  "tests": "tests/test_memory_intelligence.py; tests/test_clean_room_capabilities.py",
+  "evidence": "tests/test_clean_room_capabilities.py",
   "validation_freshness": "current",
   "context_budget_bytes": 24576
 }

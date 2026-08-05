@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:cognitive:reasoning-request",
+  "type": "object",
+  "required": ["request_id", "goal", "scope", "evidence_policy", "budget"],
+  "additionalProperties": false,
+  "properties": {
+    "request_id": {"type": "string", "minLength": 1},
+    "goal": {"type": "string", "minLength": 1},
+    "scope": {"type": "string", "minLength": 1},
+    "evidence_policy": {"type": "object", "required": ["provenance_required", "dependent_evidence_policy"], "properties": {"provenance_required": {"type": "boolean"}, "dependent_evidence_policy": {"enum": ["reject", "group_and_dampen", "explicit_model"]}}},
+    "budget": {"type": "object", "required": ["max_modes", "max_steps"], "properties": {"max_modes": {"type": "integer", "minimum": 1, "maximum": 8}, "max_steps": {"type": "integer", "minimum": 1, "maximum": 128}}}
+  }
+}

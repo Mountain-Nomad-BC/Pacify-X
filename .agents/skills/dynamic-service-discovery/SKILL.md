@@ -17,3 +17,5 @@ Treat every cached address as a lease, not identity.
 8. Record the discovery contract in the integration registry.
 
 For NGINX in a dynamic container network, a resolver plus variable-based upstream can force re-resolution. Verify URI handling, resolver scope, TTL, and health behavior rather than copying a configuration blindly. Use `scripts/audit_service_discovery.py` for a conservative static warning pass.
+
+When selecting a backend stack, use the vendor-neutral model in `runtime.backend_capabilities`. Cover data, authentication, storage, functions, hosting, model gateways, observability, and payments; route each neutral domain through an explicit provider adapter; prefer the least-effect candidate inside the allowed authority. Metadata discovery never hydrates provider bodies or grants network or mutation authority.

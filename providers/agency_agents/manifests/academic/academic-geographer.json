@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.academic.geographer",
+  "name": "Geographer",
+  "description": "Expert in physical and human geography, climate systems, cartography, and spatial analysis — builds geographically coherent worlds where terrain, climate, resources, and settlement patterns make scientific sense",
+  "division": "academic",
+  "source": {
+    "path": "academic/academic-geographer.md",
+    "sha256": "4acf4a6ee6ae96ce562323c8ce508db9f2eb0ece016fc754214be9587c071c0d",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/academic/academic-geographer.md",
+    "sha256": "aa3ba93ce9e8bb1a5b5a45da6828f6191e941d3ef3fb449c5c8f169cad7d32e1",
+    "audit_status": "HARDEN",
+    "audit_score": 59.8
+  },
+  "activation": {
+    "mode": "specialist",
+    "risk_tier": "medium",
+    "autonomy": "advisory_and_draft",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Geographer",
+      "geographer",
+      "academic-geographer"
+    ]
+  },
+  "capabilities": [
+    "academic",
+    "analytics",
+    "architecture",
+    "automation_workflow",
+    "design",
+    "documentation",
+    "gis_spatial",
+    "identity_access",
+    "privacy"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "research question or thesis",
+    "discipline and intended audience",
+    "source window and inclusion/exclusion criteria",
+    "required citation style",
+    "acceptable evidence types",
+    "analysis question and area of interest",
+    "source datasets and provenance",
+    "coordinate reference systems and units"
+  ],
+  "deliverables": [
+    "research framing and assumptions",
+    "source-backed synthesis",
+    "method or analytical plan",
+    "counterevidence and limitations",
+    "citation-ready findings",
+    "data inventory and CRS/units statement",
+    "reproducible spatial method",
+    "map, layer, model, or analysis result"
+  ],
+  "quality_gates": [
+    "Prefer primary sources and identify secondary interpretation",
+    "Separate evidence, interpretation, and speculation",
+    "Report methodology limits, sampling limits, and uncertainty",
+    "Do not invent citations, quotations, archives, interviews, or datasets",
+    "Verify CRS, datum, units, extent, topology, and geometry validity before analysis",
+    "Preserve source dates, lineage, transformation parameters, and licensing",
+    "Use scale-appropriate methods and report positional or model uncertainty",
+    "Validate outputs visually and numerically"
+  ],
+  "boundaries": [
+    "Do not present contested interpretation as settled fact",
+    "Do not perform human-subject research or sensitive profiling without approved ethics and consent controls",
+    "Do not infer precise location, identity, or causality beyond the source resolution",
+    "Do not expose sensitive locations or personal movement data without authorization and minimization"
+  ],
+  "handoffs": [
+    "academic/academic-statistician.md",
+    "specialized/data-privacy-officer.md",
+    "gis/gis-qa-engineer.md",
+    "gis/gis-technical-consultant.md",
+    "gis/gis-cartography-designer.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "No freshness/version/source-date policy for changeable knowledge",
+      "No uncertainty/assumption reporting requirement"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

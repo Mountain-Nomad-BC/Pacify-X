@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "run_id": "pxi-20260804",
+  "baseline_commit": "172f66c29076ac7cfde97dc89ce6b8f670d2c19d",
+  "results": [
+    {"gate": "runtime-validate", "passed": true},
+    {"gate": "project-check", "passed": true},
+    {"gate": "startup", "passed": true},
+    {"gate": "contracts", "passed": true},
+    {"gate": "dependencies", "passed": true},
+    {"gate": "platform", "passed": true},
+    {"gate": "generated", "passed": true},
+    {"gate": "registry", "passed": true},
+    {"gate": "licensing", "passed": true},
+    {"gate": "structural", "passed": true},
+    {"gate": "unittest-discover", "passed": false, "tests": 408, "failures": 2}
+  ],
+  "release_0_6_3_verification": "not applicable to mutable main: exact immutable artifact directory and certificate-bound tag bytes are required",
+  "policy": "Pre-existing failures are tracked independently and may not be hidden by integration results."
+}

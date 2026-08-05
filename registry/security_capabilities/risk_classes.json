@@ -1,0 +1,53 @@
+{
+  "R0": {
+    "authority": "none",
+    "default_execution": "advisory_only",
+    "examples": [
+      "control mapping",
+      "policy review",
+      "compliance planning"
+    ],
+    "name": "advisory-governance"
+  },
+  "R1": {
+    "authority": "read-only scoped evidence access",
+    "default_execution": "read_only_defensive",
+    "examples": [
+      "log analysis",
+      "threat hunting",
+      "offline forensics"
+    ],
+    "name": "read-only-defensive"
+  },
+  "R2": {
+    "authority": "approved change window and rollback required",
+    "default_execution": "controlled_change",
+    "examples": [
+      "hardening",
+      "control deployment",
+      "key rotation"
+    ],
+    "name": "controlled-security-change"
+  },
+  "R3": {
+    "authority": "written authorization, scope, target allowlist, human approval",
+    "default_execution": "gated_active_test",
+    "examples": [
+      "active scanning",
+      "penetration testing",
+      "adversary emulation"
+    ],
+    "name": "intrusive-authorized-testing"
+  },
+  "R4": {
+    "authority": "isolated lab by default; explicit exceptional approval for any other environment",
+    "default_execution": "lab_only_knowledge_by_default",
+    "examples": [
+      "credential access",
+      "persistence",
+      "C2",
+      "post-compromise actions"
+    ],
+    "name": "high-impact-dual-use"
+  }
+}

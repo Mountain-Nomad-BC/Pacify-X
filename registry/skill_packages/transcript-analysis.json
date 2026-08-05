@@ -1,0 +1,38 @@
+{
+  "id": "transcript-analysis",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/transcript-analysis/SKILL.md",
+  "body_sha256": "173fc8743679546fef3d133d8e86fb68832f723c79a291e04713258d7e33cfb8",
+  "references": [
+    ".agents/skills/transcript-analysis/references/architecture.md",
+    ".agents/skills/transcript-analysis/references/runtime.md"
+  ],
+  "resources": [
+    ".agents/skills/transcript-analysis/scripts/export_transcript_summary.py"
+  ],
+  "capability_tags": [
+    "evidence",
+    "nlp",
+    "provenance",
+    "transcripts",
+    "validation"
+  ],
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "provenance": {
+    "type": "admitted_user_supplied_clean_room_pack",
+    "basis": [
+      "contracts/transcripts/transcript-record.schema.json",
+      "evidence/integration/pxi-20260804/source_inventory.json"
+    ],
+    "canonical_owner": "runtime/transcript_analysis.py"
+  },
+  "clean_room": true,
+  "tests": "tests/test_transcript_analysis.py",
+  "evidence": "evidence/integration/pxi-20260804/source_inventory.json",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

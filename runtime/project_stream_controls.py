@@ -3,6 +3,7 @@
 These controls are deliberately side-effect free. They validate or produce plans;
 callers must use separately authorized adapters to mutate repositories or state.
 """
+
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
@@ -14,13 +15,17 @@ from typing import Iterable, Mapping
 
 
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_-]{2,127}$")
-PRIVATE_KINDS = frozenset({"memory", "embedding", "prompt", "log", "source", "agent_state"})
+PRIVATE_KINDS = frozenset(
+    {"memory", "embedding", "prompt", "log", "source", "agent_state"}
+)
 GLOBAL_ALLOWED_KINDS = frozenset({"constitution", "policy", "sanitized_capability"})
 
 
 def _stable(value: object) -> str:
     return hashlib.sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
+        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode(
+            "utf-8"
+        )
     ).hexdigest()
 
 
@@ -103,10 +108,18 @@ def authorize_context(
             reasons.add("private_payload_in_global_namespace")
     decision = "allow" if not denied else "deny"
     payload = {
-        "scope": asdict(scope), "allowed": sorted(allowed), "denied": sorted(denied),
+        "scope": asdict(scope),
+        "allowed": sorted(allowed),
+        "denied": sorted(denied),
         "reasons": sorted(reasons),
     }
-    return BoundaryDecision(decision, tuple(sorted(reasons)), tuple(sorted(allowed)), tuple(sorted(denied)), _stable(payload))
+    return BoundaryDecision(
+        decision,
+        tuple(sorted(reasons)),
+        tuple(sorted(allowed)),
+        tuple(sorted(denied)),
+        _stable(payload),
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -126,7 +139,9 @@ class LeaseDecision:
     lease_fingerprint: str
 
 
-def authorize_lease(request: LeaseRequest, existing: Iterable[LeaseRequest] = ()) -> LeaseDecision:
+def authorize_lease(
+    request: LeaseRequest, existing: Iterable[LeaseRequest] = ()
+) -> LeaseDecision:
     reasons = list(request.scope.errors())
     now = datetime.now(timezone.utc)
     expiry = request.expires_at
@@ -134,22 +149,33 @@ def authorize_lease(request: LeaseRequest, existing: Iterable[LeaseRequest] = ()
         reasons.append("lease_not_future_expiring")
     if not request.tools or not request.roots:
         reasons.append("lease_scope_incomplete")
-    if any(not isinstance(value, int) or isinstance(value, bool) or value < 0 for value in request.side_effect_budget.values()):
+    if any(
+        not isinstance(value, int) or isinstance(value, bool) or value < 0
+        for value in request.side_effect_budget.values()
+    ):
         reasons.append("invalid_side_effect_budget")
     for lease in existing:
         if (
-            request.writable and lease.writable
+            request.writable
+            and lease.writable
             and lease.scope.session_id == request.scope.session_id
             and lease.scope.project_id != request.scope.project_id
             and lease.expires_at > now
         ):
             reasons.append("session_has_foreign_writable_lease")
-    fingerprint = _stable({
-        "scope": asdict(request.scope), "writable": request.writable,
-        "expires_at": request.expires_at.isoformat(), "tools": sorted(request.tools),
-        "roots": sorted(request.roots), "budget": dict(request.side_effect_budget),
-    })
-    return LeaseDecision("allow" if not reasons else "deny", tuple(sorted(set(reasons))), fingerprint)
+    fingerprint = _stable(
+        {
+            "scope": asdict(request.scope),
+            "writable": request.writable,
+            "expires_at": request.expires_at.isoformat(),
+            "tools": sorted(request.tools),
+            "roots": sorted(request.roots),
+            "budget": dict(request.side_effect_budget),
+        }
+    )
+    return LeaseDecision(
+        "allow" if not reasons else "deny", tuple(sorted(set(reasons))), fingerprint
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -164,7 +190,9 @@ class SwitchEvidence:
     old_project_access_denied: bool
 
 
-def validate_project_switch(old: ScopeEnvelope, new: ScopeEnvelope, evidence: SwitchEvidence) -> BoundaryDecision:
+def validate_project_switch(
+    old: ScopeEnvelope, new: ScopeEnvelope, evidence: SwitchEvidence
+) -> BoundaryDecision:
     reasons = list(old.errors()) + list(new.errors())
     if old.workspace_id != new.workspace_id:
         reasons.append("workspace_change_not_project_switch")
@@ -174,8 +202,15 @@ def validate_project_switch(old: ScopeEnvelope, new: ScopeEnvelope, evidence: Sw
         if not passed:
             reasons.append(f"switch_check_failed:{name}")
     decision = "allow" if not reasons else "deny"
-    payload = {"old": asdict(old), "new": asdict(new), "evidence": asdict(evidence), "reasons": sorted(reasons)}
-    return BoundaryDecision(decision, tuple(sorted(set(reasons))), (), (), _stable(payload))
+    payload = {
+        "old": asdict(old),
+        "new": asdict(new),
+        "evidence": asdict(evidence),
+        "reasons": sorted(reasons),
+    }
+    return BoundaryDecision(
+        decision, tuple(sorted(set(reasons))), (), (), _stable(payload)
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -212,7 +247,9 @@ def authorize_transfer(package: TransferPackage) -> BoundaryDecision:
         reasons.append("private_memory_transfer_forbidden")
     payload = asdict(package)
     return BoundaryDecision(
-        "allow" if not reasons else "deny", tuple(reasons),
-        (package.transfer_id,) if not reasons else (), () if not reasons else (package.transfer_id,), _stable(payload),
+        "allow" if not reasons else "deny",
+        tuple(reasons),
+        (package.transfer_id,) if not reasons else (),
+        () if not reasons else (package.transfer_id,),
+        _stable(payload),
     )
-

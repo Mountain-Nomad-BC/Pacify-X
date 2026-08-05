@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:cognitive:brain-capability",
+  "type": "object",
+  "required": ["id", "title", "summary", "owner", "status", "domain", "triggers", "inputs", "outputs", "dependencies", "formula_refs", "extends", "path", "operation", "risk"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "title": {"type": "string", "minLength": 1},
+    "summary": {"type": "string", "minLength": 1},
+    "owner": {"type": "string", "minLength": 1},
+    "status": {"enum": ["active", "admitted", "mapped_deferred", "candidate"]},
+    "domain": {"type": "string", "minLength": 1},
+    "triggers": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+    "inputs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "outputs": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+    "dependencies": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "formula_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "extends": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "path": {"type": "string", "minLength": 1},
+    "operation": {"type": "string", "minLength": 1},
+    "risk": {"pattern": "^R[0-4]$"}
+  }
+}

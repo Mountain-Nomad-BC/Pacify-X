@@ -1,4 +1,5 @@
 """Classify release artifacts and compute deterministic product/harness digests."""
+
 from __future__ import annotations
 
 import hashlib
@@ -10,11 +11,16 @@ from .bounded_walk import FilesystemWalkError, WalkLimits, bounded_walk
 
 
 def _load_policy(root: Path) -> dict[str, Any]:
-    return json.loads((root / "policies/release-artifact-policy.json").read_text(encoding="utf-8"))
+    return json.loads(
+        (root / "policies/release-artifact-policy.json").read_text(encoding="utf-8")
+    )
 
 
 def _canonical_digest(records: list[dict[str, Any]]) -> str:
-    payload = b"".join((json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n").encode() for record in records)
+    payload = b"".join(
+        (json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n").encode()
+        for record in records
+    )
     return hashlib.sha256(payload).hexdigest()
 
 
@@ -25,25 +31,41 @@ def classify_tree(root: Path) -> dict[str, Any]:
     product_files = {item.casefold() for item in policy["product_root_files"]}
     evidence_roots = {item.casefold() for item in policy["evidence_roots"]}
     intermediate_names = {item.casefold() for item in policy["intermediate_names"]}
-    intermediate_name_suffixes = {item.casefold() for item in policy.get("intermediate_name_suffixes", [])}
-    intermediate_suffixes = {item.casefold() for item in policy["intermediate_suffixes"]}
+    intermediate_name_suffixes = {
+        item.casefold() for item in policy.get("intermediate_name_suffixes", [])
+    }
+    intermediate_suffixes = {
+        item.casefold() for item in policy["intermediate_suffixes"]
+    }
     control_outputs = {item.casefold() for item in policy["control_output_paths"]}
-    evidence_suffixes = {item.casefold() for item in policy["evidence_allowed_suffixes"]}
+    evidence_suffixes = {
+        item.casefold() for item in policy["evidence_allowed_suffixes"]
+    }
     records: list[dict[str, Any]] = []
     errors: list[str] = []
     normalized_seen: dict[str, str] = {}
     try:
         walk = bounded_walk(
             root,
-            limits=WalkLimits(max_files=100_000, max_depth=128, max_bytes=2 * 1024 * 1024 * 1024),
+            limits=WalkLimits(
+                max_files=100_000, max_depth=128, max_bytes=2 * 1024 * 1024 * 1024
+            ),
             symlink_policy="reject",
         )
     except FilesystemWalkError as error:
         return {
-            "schema_version": "1.0", "valid": False, "policy_version": policy["policy_version"],
-            "policy_sha256": hashlib.sha256((root / "policies/release-artifact-policy.json").read_bytes()).hexdigest(),
-            "file_count": 0, "counts": {}, "product_digest": _canonical_digest([]),
-            "harness_digest": _canonical_digest([]), "product_records": [], "records": [],
+            "schema_version": "1.0",
+            "valid": False,
+            "policy_version": policy["policy_version"],
+            "policy_sha256": hashlib.sha256(
+                (root / "policies/release-artifact-policy.json").read_bytes()
+            ).hexdigest(),
+            "file_count": 0,
+            "counts": {},
+            "product_digest": _canonical_digest([]),
+            "harness_digest": _canonical_digest([]),
+            "product_records": [],
+            "records": [],
             "errors": [f"bounded filesystem walk failed: {error.code}"],
         }
     for entry in walk.entries:
@@ -61,7 +83,11 @@ def classify_tree(root: Path) -> dict[str, Any]:
             suffix = path.suffix.casefold()
             if (
                 any(item in intermediate_names for item in folded_parts)
-                or any(item.endswith(ending) for item in folded_parts for ending in intermediate_name_suffixes)
+                or any(
+                    item.endswith(ending)
+                    for item in folded_parts
+                    for ending in intermediate_name_suffixes
+                )
                 or suffix in intermediate_suffixes
             ):
                 classification = "generated_intermediate"
@@ -73,8 +99,12 @@ def classify_tree(root: Path) -> dict[str, Any]:
                 classification = "evidence_output"
                 reason = "non-executable evidence namespace"
                 if suffix not in evidence_suffixes:
-                    errors.append(f"executable or unapproved evidence payload: {relative}")
-            elif folded_parts[0] in product_roots or (len(parts) == 1 and folded in product_files):
+                    errors.append(
+                        f"executable or unapproved evidence payload: {relative}"
+                    )
+            elif folded_parts[0] in product_roots or (
+                len(parts) == 1 and folded in product_files
+            ):
                 classification = "product_input"
                 reason = "declared product surface"
             else:
@@ -89,22 +119,40 @@ def classify_tree(root: Path) -> dict[str, Any]:
                         content_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
                     except OSError as error:
                         content_sha256 = None
-                        errors.append(f"unreadable release artifact: {relative}: {type(error).__name__}")
-                records.append({
-                    "path": relative,
-                    "classification": classification,
-                    "reason": reason,
-                    "size": entry.size,
-                    "sha256": content_sha256,
-                })
+                        errors.append(
+                            f"unreadable release artifact: {relative}: {type(error).__name__}"
+                        )
+                records.append(
+                    {
+                        "path": relative,
+                        "classification": classification,
+                        "reason": reason,
+                        "size": entry.size,
+                        "sha256": content_sha256,
+                    }
+                )
     records.sort(key=lambda item: item["path"].casefold())
-    product_records = [{key: item[key] for key in ("path", "size", "sha256")} for item in records if item["classification"] == "product_input"]
+    product_records = [
+        {key: item[key] for key in ("path", "size", "sha256")}
+        for item in records
+        if item["classification"] == "product_input"
+    ]
     harness_paths = {
-        "runtime/release_artifacts.py", "runtime/release_certification.py", "runtime/release_audit.py",
-        "runtime/structural_integrity.py", "runtime/exact_tool_certification.py",
-        "policies/release-artifact-policy.json", "registry/test_profiles.json",
+        "runtime/release_artifacts.py",
+        "runtime/release_certification.py",
+        "runtime/release_audit.py",
+        "runtime/structural_integrity.py",
+        "runtime/exact_tool_certification.py",
+        "policies/release-artifact-policy.json",
+        "registry/test_profiles.json",
     }
-    harness_records = [item for item in product_records if item["path"] in harness_paths or item["path"].startswith("tests/test_release") or item["path"].startswith("tests/test_structural")]
+    harness_records = [
+        item
+        for item in product_records
+        if item["path"] in harness_paths
+        or item["path"].startswith("tests/test_release")
+        or item["path"].startswith("tests/test_structural")
+    ]
     counts: dict[str, int] = {}
     for item in records:
         counts[item["classification"]] = counts.get(item["classification"], 0) + 1
@@ -112,7 +160,9 @@ def classify_tree(root: Path) -> dict[str, Any]:
         "schema_version": "1.0",
         "valid": not errors,
         "policy_version": policy["policy_version"],
-        "policy_sha256": hashlib.sha256((root / "policies/release-artifact-policy.json").read_bytes()).hexdigest(),
+        "policy_sha256": hashlib.sha256(
+            (root / "policies/release-artifact-policy.json").read_bytes()
+        ).hexdigest(),
         "file_count": len(records),
         "counts": dict(sorted(counts.items())),
         "product_digest": _canonical_digest(product_records),
@@ -130,4 +180,9 @@ def verify_frozen_product(root: Path, frozen: dict[str, Any]) -> dict[str, Any]:
         errors.append("product input digest changed after freeze")
     if current["harness_digest"] != frozen.get("harness_digest"):
         errors.append("certification harness digest changed after freeze")
-    return {"valid": not errors, "product_digest": current["product_digest"], "harness_digest": current["harness_digest"], "errors": errors}
+    return {
+        "valid": not errors,
+        "product_digest": current["product_digest"],
+        "harness_digest": current["harness_digest"],
+        "errors": errors,
+    }

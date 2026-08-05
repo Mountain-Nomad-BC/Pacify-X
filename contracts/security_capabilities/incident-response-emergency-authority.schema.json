@@ -1,0 +1,49 @@
+{
+  "$id": "urn:engineering-loop-bootstrap:contract:security_capabilities:incident-response-emergency-authority",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Permit bounded emergency containment without silently converting emergency access into standing authority.",
+  "properties": {
+    "after_action_review_required": {
+      "const": true
+    },
+    "commander": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "containment_actions": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "expires_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "incident_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "severity": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    }
+  },
+  "required": [
+    "incident_id",
+    "severity",
+    "commander",
+    "containment_actions",
+    "expires_at",
+    "after_action_review_required"
+  ],
+  "title": "incident-response-emergency-authority",
+  "type": "object"
+}

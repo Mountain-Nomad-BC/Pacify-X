@@ -1,0 +1,28 @@
+{
+  "activation": "candidate_only",
+  "authority": {
+    "R3_R4_require_human_approval": true,
+    "R4_default_environment": "isolated_lab",
+    "provider_metadata_grants_tool_authority": false,
+    "runtime_policy_is_authoritative": true
+  },
+  "catalog": "registry/security_capabilities/capabilities.jsonl",
+  "disableable": true,
+  "discovery_enabled": true,
+  "display_name": "Anthropic Cybersecurity Skills (community project)",
+  "execution_enabled": false,
+  "framework_coverage": "registry/security_capabilities/framework_coverage.json",
+  "graph": "registry/security_capabilities/graph.jsonl",
+  "hydration": {
+    "max_dependency_depth_default": 2,
+    "max_skill_bodies_default": 5,
+    "metadata_first": true,
+    "mode": "selective",
+    "never_execute_provider_scripts_during_hydration": true
+  },
+  "provider_id": "anthropic-cybersecurity-skills-community",
+  "provider_scripts_admitted": 0,
+  "source_archive": null,
+  "source_archive_distribution": "not_bundled; supply separately to the explicit hydration command",
+  "source_archive_sha256": "460f2ed54dac3bc96a453d2fd30c098234df80d3840fda475ba95b1e3983a08f"
+}

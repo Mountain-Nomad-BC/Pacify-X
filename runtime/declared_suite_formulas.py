@@ -31,7 +31,9 @@ def context_utility_density(utilities: Iterable[float], token_count: int) -> flo
     return _ratio(sum(utilities), token_count)
 
 
-def expected_plan_utility(outcomes: Iterable[Mapping[str, float]], cost: float = 0.0) -> float:
+def expected_plan_utility(
+    outcomes: Iterable[Mapping[str, float]], cost: float = 0.0
+) -> float:
     rows = list(outcomes)
     probability = sum(float(row["probability"]) for row in rows)
     if not rows or abs(probability - 1.0) > 1e-9:
@@ -39,7 +41,9 @@ def expected_plan_utility(outcomes: Iterable[Mapping[str, float]], cost: float =
     return sum(float(row["probability"]) * float(row["utility"]) for row in rows) - cost
 
 
-def impact_risk_score(likelihood: float, severity: float, exposure: float = 1.0, confidence: float = 1.0) -> float:
+def impact_risk_score(
+    likelihood: float, severity: float, exposure: float = 1.0, confidence: float = 1.0
+) -> float:
     if any(value < 0 for value in (likelihood, severity, exposure, confidence)):
         raise ValueError("risk factors cannot be negative")
     return likelihood * severity * exposure * confidence
@@ -50,7 +54,14 @@ def jaccard_change_overlap(left: Iterable[str], right: Iterable[str]) -> float:
     return 1.0 if not a and not b else len(a & b) / len(a | b)
 
 
-def kv_cache_bytes(layers: int, tokens: int, kv_heads: int, head_dim: int, bytes_per_element: float, batch: int = 1) -> float:
+def kv_cache_bytes(
+    layers: int,
+    tokens: int,
+    kv_heads: int,
+    head_dim: int,
+    bytes_per_element: float,
+    batch: int = 1,
+) -> float:
     values = (layers, tokens, kv_heads, head_dim, bytes_per_element, batch)
     if any(value <= 0 for value in values):
         raise ValueError("cache dimensions must be positive")
@@ -69,31 +80,55 @@ def mutation_score(killed: int, total_non_equivalent: int) -> float:
     return _ratio(killed, total_non_equivalent)
 
 
-def population_stability_index(expected: Sequence[float], actual: Sequence[float], epsilon: float = 1e-9) -> float:
+def population_stability_index(
+    expected: Sequence[float], actual: Sequence[float], epsilon: float = 1e-9
+) -> float:
     if len(expected) != len(actual) or not expected:
-        raise ValueError("expected and actual distributions must have equal nonzero length")
+        raise ValueError(
+            "expected and actual distributions must have equal nonzero length"
+        )
     if abs(sum(expected) - 1.0) > 1e-6 or abs(sum(actual) - 1.0) > 1e-6:
         raise ValueError("distributions must sum to one")
-    return sum((a - e) * math.log(max(a, epsilon) / max(e, epsilon)) for e, a in zip(expected, actual))
+    return sum(
+        (a - e) * math.log(max(a, epsilon) / max(e, epsilon))
+        for e, a in zip(expected, actual)
+    )
 
 
-def precision_recall_f1(true_positive: int, false_positive: int, false_negative: int) -> dict[str, float]:
+def precision_recall_f1(
+    true_positive: int, false_positive: int, false_negative: int
+) -> dict[str, float]:
     if min(true_positive, false_positive, false_negative) < 0:
         raise ValueError("confusion counts cannot be negative")
-    precision = true_positive / (true_positive + false_positive) if true_positive + false_positive else 0.0
-    recall = true_positive / (true_positive + false_negative) if true_positive + false_negative else 0.0
+    precision = (
+        true_positive / (true_positive + false_positive)
+        if true_positive + false_positive
+        else 0.0
+    )
+    recall = (
+        true_positive / (true_positive + false_negative)
+        if true_positive + false_negative
+        else 0.0
+    )
     f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
     return {"precision": precision, "recall": recall, "f1": f1}
 
 
-def reciprocal_rank_fusion(rankings: Sequence[Sequence[str]], k: int = 60) -> list[dict[str, float]]:
+def reciprocal_rank_fusion(
+    rankings: Sequence[Sequence[str]], k: int = 60
+) -> list[dict[str, float]]:
     if k <= 0:
         raise ValueError("k must be positive")
     scores: dict[str, float] = {}
     for ranking in rankings:
         for rank, identifier in enumerate(ranking, 1):
             scores[identifier] = scores.get(identifier, 0.0) + 1.0 / (k + rank)
-    return [{"id": identifier, "score": score} for identifier, score in sorted(scores.items(), key=lambda item: (-item[1], item[0]))]
+    return [
+        {"id": identifier, "score": score}
+        for identifier, score in sorted(
+            scores.items(), key=lambda item: (-item[1], item[0])
+        )
+    ]
 
 
 def relative_performance_change(candidate: float, baseline: float) -> float:
@@ -123,9 +158,13 @@ def weighted_source_quality(signals: Iterable[Mapping[str, float]]) -> float:
     total_weight = sum(float(row["weight"]) for row in rows)
     if total_weight <= 0:
         raise ValueError("total source weight must be positive")
-    if any(not 0 <= float(row["quality"]) <= 1 or float(row["weight"]) < 0 for row in rows):
+    if any(
+        not 0 <= float(row["quality"]) <= 1 or float(row["weight"]) < 0 for row in rows
+    ):
         raise ValueError("quality must be in [0, 1] and weights cannot be negative")
-    return sum(float(row["quality"]) * float(row["weight"]) for row in rows) / total_weight
+    return (
+        sum(float(row["quality"]) * float(row["weight"]) for row in rows) / total_weight
+    )
 
 
 FORMULAS = {
@@ -169,8 +208,12 @@ def validate_formula_registry(payload: Mapping[str, object]) -> dict[str, object
         errors.append("formula_count must be an integer")
     elif count != len(formulas):
         errors.append(f"formula_count={count} does not match formulas={len(formulas)}")
-    identifiers = [str(item.get("id", "")) for item in formulas if isinstance(item, Mapping)]
-    if len(identifiers) != len(formulas) or any(not identifier for identifier in identifiers):
+    identifiers = [
+        str(item.get("id", "")) for item in formulas if isinstance(item, Mapping)
+    ]
+    if len(identifiers) != len(formulas) or any(
+        not identifier for identifier in identifiers
+    ):
         errors.append("every formula must have a nonempty ID")
     if len(identifiers) != len(set(identifiers)):
         errors.append("duplicate formula IDs")
@@ -179,7 +222,9 @@ def validate_formula_registry(payload: Mapping[str, object]) -> dict[str, object
     if missing_implementations:
         errors.append(f"missing formula implementations: {missing_implementations}")
     if unregistered_implementations:
-        errors.append(f"unregistered formula implementations: {unregistered_implementations}")
+        errors.append(
+            f"unregistered formula implementations: {unregistered_implementations}"
+        )
     return {
         "schema_version": "1.0",
         "valid": not errors,

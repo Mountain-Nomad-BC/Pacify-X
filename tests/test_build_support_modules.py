@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -19,7 +18,9 @@ class BuildSupportModuleTests(unittest.TestCase):
             self.assertEqual(text, '{\n  "a": 1,\n  "b": 2\n}\n')
             self.assertEqual(load_json(path), {"a": 1, "b": 2})
 
-    def test_declared_suite_contract_builder_preserves_behavior_boundaries(self) -> None:
+    def test_declared_suite_contract_builder_preserves_behavior_boundaries(
+        self,
+    ) -> None:
         card = {
             "source_id": "bounded-outcome",
             "kind": "skill",
@@ -38,8 +39,12 @@ class BuildSupportModuleTests(unittest.TestCase):
         self.assertEqual(result["properties"]["recoverable"]["type"], "boolean")
 
     def test_last_round_cache_classification_precedes_test_classification(self) -> None:
-        disposition, owner = disposition_for(Path("tests/__pycache__/test_scheduler.pyc"), "scheduler")
-        self.assertEqual(disposition, "quarantine_generated_transient_after_intake_close")
+        disposition, owner = disposition_for(
+            Path("tests/__pycache__/test_scheduler.pyc"), "scheduler"
+        )
+        self.assertEqual(
+            disposition, "quarantine_generated_transient_after_intake_close"
+        )
         self.assertEqual(owner, "parent temp quarantine")
 
 

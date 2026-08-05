@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "registry": "registry/workflow_execution_bindings.json",
+  "workflows": [
+    {
+      "id": "clean-room-capability-controls",
+      "purpose": "Execute independently authored, authority-neutral controls discovered from reference requirements without importing reference implementation content.",
+      "steps": [
+        {"id": "panel", "skill": "decision-wayfinding", "operation": "independent-hypothesis-panel", "runtime_binding": "runtime.clean_room_capabilities:independent-hypothesis-panel", "contract": "contracts/reasoning/independent-hypothesis-panel.schema.json", "depends_on": []},
+        {"id": "delta", "skill": "skill-admission-controller", "operation": "behavioral-delta-certification", "runtime_binding": "runtime.clean_room_capabilities:behavioral-delta-certification", "contract": "contracts/cognitive/behavioral-delta-certificate.schema.json", "depends_on": []},
+        {"id": "communication", "skill": "context-compactor", "operation": "communication-budget", "runtime_binding": "runtime.clean_room_capabilities:communication-budget", "contract": "contracts/reasoning/communication-budget.schema.json", "depends_on": []},
+        {"id": "fleet", "skill": "orchestrate-agent-fleets", "operation": "fleet-readiness", "runtime_binding": "runtime.clean_room_capabilities:fleet-readiness", "contract": "contracts/agents/fleet-readiness.schema.json", "depends_on": []},
+        {"id": "inbox", "skill": "orchestrate-agent-fleets", "operation": "bounded-inbox", "runtime_binding": "runtime.clean_room_capabilities:bounded-inbox", "contract": "contracts/agents/fleet-readiness.schema.json", "depends_on": ["fleet"]},
+        {"id": "memory", "skill": "govern-memory-fabric", "operation": "memory-graph-remediation", "runtime_binding": "runtime.clean_room_capabilities:memory-graph-remediation", "contract": "contracts/memory/memory-remediation-plan.schema.json", "depends_on": []},
+        {"id": "goal", "skill": "long-horizon-progress-ledger", "operation": "durable-goal-transition", "runtime_binding": "runtime.clean_room_capabilities:durable-goal-transition", "contract": "contracts/project_stream/durable-goal-state.schema.json", "depends_on": []},
+        {"id": "terminal", "skill": "manage-agent-session-fabric", "operation": "terminal-session-plan", "runtime_binding": "runtime.clean_room_capabilities:terminal-session-plan", "contract": "contracts/agents/terminal-session-adapter.schema.json", "depends_on": ["goal"]},
+        {"id": "backend-validate", "skill": "dynamic-service-discovery", "operation": "backend-capability-validation", "runtime_binding": "runtime.clean_room_capabilities:backend-capability-validation", "contract": "contracts/external_capabilities/backend-service-capability.schema.json", "depends_on": []},
+        {"id": "backend-select", "skill": "dynamic-service-discovery", "operation": "backend-capability-selection", "runtime_binding": "runtime.clean_room_capabilities:backend-capability-selection", "contract": "contracts/external_capabilities/backend-service-capability.schema.json", "depends_on": ["backend-validate"]},
+        {"id": "shadow", "skill": "engineer-verification-lab", "operation": "shadow-behavior-comparison", "runtime_binding": "runtime.clean_room_capabilities:shadow-behavior-comparison", "contract": "contracts/cognitive/shadow-behavior-comparison.schema.json", "depends_on": ["delta"]},
+        {"id": "specification", "skill": "tracer-bullet-planning", "operation": "specification-lifecycle-closure", "runtime_binding": "runtime.clean_room_capabilities:specification-lifecycle-closure", "contract": "contracts/reasoning/specification-lifecycle.schema.json", "depends_on": ["panel", "shadow"]}
+      ],
+      "failure_policy": "Fail closed on missing evidence, authority expansion, cross-project scope, budget exhaustion, uncontained effects, orphan work, or incomplete acceptance.",
+      "effects": ["read_local"]
+    }
+  ]
+}

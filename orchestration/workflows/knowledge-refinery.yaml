@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "registry": "registry/skill_orchestrations.json",
+  "workflows": [{
+    "id": "knowledge-refinery",
+    "purpose": "Convert untrusted source material into reviewed, graph-coherent, retrieval-tested, non-destructive canonical change proposals.",
+    "steps": [
+      {"id": "inventory", "skill": "audit-source-capabilities", "depends_on": []},
+      {"id": "admission", "skill": "enforce-source-import-boundaries", "depends_on": ["inventory"]},
+      {"id": "extract", "skill": "govern-knowledge-refinery", "depends_on": ["admission"]},
+      {"id": "classify", "skill": "govern-knowledge-refinery", "depends_on": ["extract"]},
+      {"id": "merge-plan", "skill": "govern-knowledge-refinery", "depends_on": ["classify"]},
+      {"id": "graph-audit", "skill": "validate-knowledge-relationships", "depends_on": ["merge-plan"]},
+      {"id": "simulate", "skill": "govern-knowledge-refinery", "depends_on": ["graph-audit"]},
+      {"id": "calibrate", "skill": "govern-knowledge-refinery", "depends_on": ["simulate"]},
+      {"id": "certify", "skill": "run-evidence-campaigns", "depends_on": ["calibrate"]},
+      {"id": "stage-approved", "skill": "govern-knowledge-refinery", "depends_on": ["certify"]}
+    ],
+    "failure_policy": "Fail closed on admission blockers, decision/action count mismatch, ambiguous novelty without review, graph errors, forbidden retrieval hits, holdout degradation, stale fingerprints, unapproved weights, or attempted canonical writes.",
+    "outputs": ["portable inventory", "novelty decisions", "merge plan", "graph audit", "retrieval evidence", "calibration proposal", "staged proposal receipt"]
+  }]
+}

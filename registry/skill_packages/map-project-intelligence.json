@@ -1,0 +1,29 @@
+{
+  "id": "map-project-intelligence",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/map-project-intelligence/SKILL.md",
+  "body_sha256": "4f129ae395b5db769ab994147b1934dd8b76886fb11a9d4fe5492e18e3661512",
+  "references": [
+    ".agents/skills/map-project-intelligence/references/project-map-contract.md"
+  ],
+  "resources": [
+    ".agents/skills/map-project-intelligence/scripts/build_project_map.py",
+    ".agents/skills/map-project-intelligence/scripts/validate_project_map.py"
+  ],
+  "capability_tags": ["architecture", "inventory", "project-map", "repository", "retrieval"],
+  "effects": ["read_local", "write_workspace"],
+  "provenance": {
+    "type": "admitted_user_supplied_clean_room_pack",
+    "basis": [
+      "evidence/integration/pxi-20260804/source_inventory.json",
+      "contracts/project-map.schema.json"
+    ],
+    "canonical_owner": "runtime/project_intelligence.py"
+  },
+  "clean_room": true,
+  "tests": "tests/test_project_mapping.py",
+  "evidence": "evidence/integration/pxi-20260804/source_inventory.json",
+  "validation_freshness": "current",
+  "context_budget_bytes": 32768
+}

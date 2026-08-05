@@ -48,7 +48,9 @@ class EvidenceAssemblerTests(unittest.TestCase):
         )
 
         self.assertTrue(package.claims[0].supported)
-        self.assertEqual(package.claims[0].attachments[0].record.kind, EvidenceKind.TEST)
+        self.assertEqual(
+            package.claims[0].attachments[0].record.kind, EvidenceKind.TEST
+        )
         self.assertEqual(package.unsupported_claims, ())
         self.assertEqual(package.warnings, ())
 
@@ -88,9 +90,16 @@ class EvidenceAssemblerTests(unittest.TestCase):
         codes = {warning.code for warning in package.warnings}
         self.assertEqual(
             codes,
-            {"freshness_expired", "status_invalid", "status_stale", "unsupported_claim"},
+            {
+                "freshness_expired",
+                "status_invalid",
+                "status_stale",
+                "unsupported_claim",
+            },
         )
-        self.assertFalse(any(item.usable_for_support for item in package.claims[0].attachments))
+        self.assertFalse(
+            any(item.usable_for_support for item in package.claims[0].attachments)
+        )
 
     def test_wrong_task_and_future_evidence_are_visible_but_ineligible(self) -> None:
         package = assemble_evidence(
@@ -108,11 +117,15 @@ class EvidenceAssemblerTests(unittest.TestCase):
         )
 
         codes = {warning.code for warning in package.warnings}
-        self.assertTrue({"future_dated", "task_scope_mismatch", "unsupported_claim"} <= codes)
+        self.assertTrue(
+            {"future_dated", "task_scope_mismatch", "unsupported_claim"} <= codes
+        )
         self.assertEqual(len(package.claims[0].attachments), 1)
         self.assertEqual(package.claims[0].attachments[0].record.evidence_id, "future")
 
-    def test_foreign_task_metadata_is_retained_only_when_explicitly_requested(self) -> None:
+    def test_foreign_task_metadata_is_retained_only_when_explicitly_requested(
+        self,
+    ) -> None:
         package = assemble_evidence(
             "task-1",
             [Claim("claim-1", "A claim")],
@@ -131,15 +144,21 @@ class EvidenceAssemblerTests(unittest.TestCase):
             [record("a-support"), record("z-contradiction")],
             [
                 EvidenceLink("claim-1", "a-support"),
-                EvidenceLink("claim-1", "z-contradiction", EvidenceRelation.CONTRADICTS),
+                EvidenceLink(
+                    "claim-1", "z-contradiction", EvidenceRelation.CONTRADICTS
+                ),
             ],
             as_of=NOW,
         )
 
         self.assertTrue(package.claims[0].supported)
-        self.assertIn("contradictory_evidence", [warning.code for warning in package.warnings])
+        self.assertIn(
+            "contradictory_evidence", [warning.code for warning in package.warnings]
+        )
 
-    def test_result_is_deterministic_across_input_order_and_duplicate_links(self) -> None:
+    def test_result_is_deterministic_across_input_order_and_duplicate_links(
+        self,
+    ) -> None:
         claims = [Claim("z", "Last"), Claim("a", "First")]
         records = [record("z-record"), record("a-record")]
         links = [
@@ -168,7 +187,9 @@ class EvidenceAssemblerTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "timezone-aware"):
             assemble_evidence("task-1", [], [], [], as_of=datetime(2026, 8, 1))
         with self.assertRaisesRegex(ValueError, "max_age"):
-            assemble_evidence("task-1", [], [], [], as_of=NOW, max_age=timedelta(seconds=-1))
+            assemble_evidence(
+                "task-1", [], [], [], as_of=NOW, max_age=timedelta(seconds=-1)
+            )
 
 
 if __name__ == "__main__":

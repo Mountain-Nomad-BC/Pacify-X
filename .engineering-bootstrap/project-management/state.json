@@ -10,21 +10,21 @@
     "changed_file_sha256": {},
     "degraded_components": [],
     "failures": [],
-    "next_safe_action": "open a future signed-release card when authorized and do not rewrite immutable v0.6.3",
+    "next_safe_action": "preserve the validated development tree; issue a new signed release only through the exact-artifact finalizer when explicitly authorized",
     "open_circuits": [],
     "repository": {
-      "branch": "main",
-      "commit": "20dd8da01ba1307eb853ff64f2db42d94e0fad79",
+      "branch": "integration/codex-full-intake-20260804",
+      "commit": "172f66c29076ac7cfde97dc89ce6b8f670d2c19d",
       "root": ".",
       "working_tree_sha256": "77098d1721daa7fac9aa2fa67c344e6b292b8c7bd32e2f78142f9f86bf20e99c"
     },
     "retries": [],
-    "revision": 31,
+    "revision": 34,
     "runtime_version": "0.6.3",
     "tool_versions": {},
     "validation": {
-      "tests": "rel_012_main_ci_30935573081_passed_release_certification_pending",
-      "verifier": "evidence/repairs/trust-boundary-hardening/VALIDATION_RECEIPT.md"
+      "tests": "rel_014_validated_813_tests_585_subtests_424_unittest_63_tools_8_assurance_gates_24_release_checks_21_structural_checks_2495_file_sanitation_passed",
+      "verifier": "evidence/integration/pxi-20260804/integration_validation_summary.json"
     },
     "versions": {
       "assumptions": 12,
@@ -88,7 +88,7 @@
       "Release 0.6.1 claimed deployment readiness, but the live test_declared_suite_support.py suite fails because the formula registry envelope emits count instead of formula_count."
     ],
     "facts": [
-      "The repository exposes 80 catalog metadata records and keeps startup metadata-only with a maximum selected set of three.",
+      "The repository exposes 166 catalog metadata records, 129 selectable skills, zero startup hydration, and a maximum selected set of three.",
       "Startup reports zero hydrated skill bodies.",
       "A clean installed wheel completed both commissioning modes.",
       "The completed source intake is preserved in the parent temporary quarantine.",
@@ -107,14 +107,21 @@
       "REL-009 certified release 0.6.1 with 327 source tests, all admitted exact tools directly executed, and all Python surfaces owned.",
       "REL-010 reopened certification after reproducing 1 failed and 4 passed declared-suite support tests against pre-change digest 55af1b3388e8c439cecf9244a19378ae80f0b9f4fc78123ad068619f16bb6c70.",
       "REL-010 governs 320 registry, YAML, and orchestration artifacts and passed all 21 mature-framework structural audit items across 15 executable categories before final publication.",
-      "Release 0.6.3 is bound to annotated tag v0.6.3, a trusted publisher signature, exact public wheel and source bytes, complete canonical evidence, and a separate public-asset installation verification."
+      "Release 0.6.3 is bound to annotated tag v0.6.3, a trusted publisher signature, exact public wheel and source bytes, complete canonical evidence, and a separate public-asset installation verification.",
+      "REL-013 accounts for 3,477 initially inventoried candidate files with zero unaccounted dispositions and integrates every admitted capability through canonical lazy owners without importing reference-only implementation text.",
+      "REL-013 validation passed 794 tests plus 583 subtests, 424 unittest-discovery tests, 56 exact tools, seven domain wrappers, eight independent gates, 24 strict release-audit checks, 21 structural maturity checks, and eight sanitation controls before final intake closure.",
+      "REL-013 closed after two matching 4,030-file, 60,996,936-byte snapshots at tree SHA-256 7f353ca7ade3e9fe061c82f58831f676f7e8ccbbab178128c7861b4a34ab1908 and a 30-second stability interval; the source moved recoverably to external quarantine without hard deletion.",
+      "The final 553 late-added files are fully dispositioned and consolidated into five clean-room lazy capabilities and executable workflows rather than duplicate micro-skills or parallel runtimes.",
+      "REL-014 accounts for all 13 audit-repair-pack files, implements recursive skill packaging, exact distribution projection, OpenSSH feature health, deterministic clean export, and uninterrupted-run evidence semantics through canonical owners.",
+      "REL-014 passed 813 tests plus 585 subtests in one uninterrupted run, 424 unittest-discovery tests, an exact wheel and source build, installed-wheel execution from an unrelated working directory, byte-identical clean exports, eight current assurance gates, 24 strict release-audit checks, 21 structural maturity checks, and zero-hit sanitation across 2,495 files.",
+      "The 13-file audit repair pack closed on two matching snapshots after a 30-second stability interval at tree SHA-256 e4c7e20be030148b55afd1da861632f945c7c7812b61f572c6c17e4f4ca1f369 and moved to recoverable external quarantine without hard deletion."
     ],
     "unknowns": []
   },
   "lifecycle": {
-    "next_action": "open a future signed-release card when authorized and do not rewrite immutable v0.6.3",
-    "phase": "post-release-hardening",
-    "status": "validated-development"
+    "next_action": "preserve the validated development tree; issue a new signed release only through the exact-artifact finalizer when explicitly authorized",
+    "phase": "post-closure-validation-complete",
+    "status": "integration-complete"
   },
   "project": {
     "mode": "existing",
@@ -148,6 +155,16 @@
       {
         "id": "REL-012-TRUST-BOUNDARY-HARDENING",
         "outcome": "Authoritative commands resolve signed scoped evidence, normal CI is reproducible, evidence custody is durable, CLI loading is bounded, and assurance gates rerun independently by input hash.",
+        "status": "complete"
+      },
+      {
+        "id": "REL-013-FULL-CAPABILITY-INTEGRATION",
+        "outcome": "Every supplied capability pack is semantically reconciled into one lazy, governed architecture with complete disposition, behavioral, installed-package, and rollback evidence.",
+        "status": "complete"
+      },
+      {
+        "id": "REL-014-AUDIT-REPAIR-DISTRIBUTION-INTEGRITY",
+        "outcome": "Every commissioned skill-owned file has a deterministic exact distribution projection, authority toolchain health is explicit, clean exports are reproducible, and evidence distinguishes uninterrupted runs from supplemental reruns.",
         "status": "complete"
       }
     ],

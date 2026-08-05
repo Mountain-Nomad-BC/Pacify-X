@@ -1,0 +1,2562 @@
+{
+  "schema_version": "1.0",
+  "loading_rule": "metadata_only_at_startup_body_after_selection",
+  "record_count": 46,
+  "records": [
+    {
+      "id": "acquire-install-n8n",
+      "kind": "skill",
+      "status": "active",
+      "description": "Acquire and install n8n through a supported, pinned, reversible channel.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "install",
+        "acquire",
+        "upgrade"
+      ],
+      "concepts": [
+        "installation",
+        "Docker",
+        "npm",
+        "version pinning"
+      ],
+      "synonyms": [],
+      "tools": [
+        "docker",
+        "node",
+        "npm",
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "30b739e07091695f59d196f840527c2d8ddca3e80165d50e35c0294dc20db974",
+      "effects": [
+        "install_tool",
+        "network",
+        "read_local",
+        "write_workspace"
+      ]
+    },
+    {
+      "id": "acquire-install-supabase",
+      "kind": "skill",
+      "status": "active",
+      "description": "Acquire and install the Supabase CLI and official agent resources using supported, pinned channels.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "install",
+        "acquire",
+        "CLI"
+      ],
+      "concepts": [
+        "Supabase CLI",
+        "project dependency",
+        "local stack",
+        "agent skills"
+      ],
+      "synonyms": [],
+      "tools": [
+        "supabase",
+        "pnpm",
+        "npm",
+        "docker"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "536bcecab1eb8a9e3884f5ef258ca766a16205c04ec971ee9dc99faa9c51ab87",
+      "effects": [
+        "install_tool",
+        "network",
+        "read_local",
+        "write_workspace"
+      ]
+    },
+    {
+      "id": "automate-supabase-with-n8n",
+      "kind": "skill",
+      "status": "active",
+      "description": "Automate Supabase events and operations through n8n with authenticated triggers, idempotency, durable state, and reconciliation.",
+      "domains": [
+        "cross"
+      ],
+      "intents": [
+        "automate",
+        "trigger",
+        "sync"
+      ],
+      "concepts": [
+        "database webhooks",
+        "outbox",
+        "idempotency",
+        "reconciliation"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n",
+        "supabase"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "27eb888ff5fab8bdc992ee02b47f50306117f7ea0adc5519c3588b76717931ee",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "backup-deploy-recover-supabase",
+      "kind": "skill",
+      "status": "active",
+      "description": "Deploy and recover Supabase schema, data, functions, config, storage, and secrets with tested backups and rollback evidence.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "backup",
+        "deploy",
+        "restore"
+      ],
+      "concepts": [
+        "backup",
+        "PITR",
+        "deployment",
+        "recovery"
+      ],
+      "synonyms": [],
+      "tools": [
+        "supabase",
+        "postgres"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "ba63e7073a36ff2924097c0bd5073250975d5ced01f0e105cdab67dd6748fd17",
+      "effects": [
+        "migration",
+        "network",
+        "read_local",
+        "write_workspace"
+      ]
+    },
+    {
+      "id": "backup-upgrade-restore-n8n",
+      "kind": "skill",
+      "status": "active",
+      "description": "Back up, upgrade, roll back, and restore n8n with version-aware compatibility and recovery evidence.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "backup",
+        "upgrade",
+        "restore"
+      ],
+      "concepts": [
+        "backup",
+        "upgrade",
+        "restore",
+        "RPO",
+        "RTO"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "8e3ebcf27c0aeb717b4ebf8e2791cb90a789128e63fd2484759e44a3b7c622e3",
+      "effects": [
+        "migration",
+        "network",
+        "read_local",
+        "write_workspace"
+      ]
+    },
+    {
+      "id": "build-n8n-ai-workflows",
+      "kind": "skill",
+      "status": "active",
+      "description": "Build n8n AI workflows with bounded model/tool authority, structured outputs, retrieval evidence, evaluation, and escalation.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "AI",
+        "agent",
+        "RAG"
+      ],
+      "concepts": [
+        "LLM",
+        "agents",
+        "tools",
+        "structured output",
+        "evaluation"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "da60dadc796cd2d23129a3d6d9a1bc91e2ff7b9007146025d3dfc522eb602aab",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "build-n8n-custom-nodes",
+      "kind": "skill",
+      "status": "active",
+      "description": "Develop custom n8n nodes with typed operations, separate credentials, pagination, errors, tests, and release governance.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "custom node",
+        "develop integration"
+      ],
+      "concepts": [
+        "custom node",
+        "TypeScript",
+        "credentials",
+        "pagination"
+      ],
+      "synonyms": [],
+      "tools": [
+        "typescript",
+        "node",
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "f22ee7ccd43b49113ae2087b7212edebaff09e3a0d4ec01612e1a76ca05e3caa",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "build-n8n-supabase-rag",
+      "kind": "skill",
+      "status": "active",
+      "description": "Build governed RAG ingestion and retrieval with n8n and Supabase pgvector.",
+      "domains": [
+        "cross"
+      ],
+      "intents": [
+        "RAG",
+        "vector store",
+        "embeddings"
+      ],
+      "concepts": [
+        "RAG",
+        "pgvector",
+        "match_documents",
+        "ingestion",
+        "retrieval evaluation"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n",
+        "supabase",
+        "pgvector"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "dbe7e95583579da5f3b7c7343dd2d8f82b96da75cfe6f9dddd63b96c687bd878",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "build-supabase-edge-functions",
+      "kind": "skill",
+      "status": "active",
+      "description": "Build Supabase Edge Functions with explicit auth, secrets, CORS, bounds, idempotency, tests, and deployment evidence.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "function",
+        "webhook",
+        "serverless"
+      ],
+      "concepts": [
+        "Edge Functions",
+        "Deno",
+        "CORS",
+        "idempotency"
+      ],
+      "synonyms": [],
+      "tools": [
+        "supabase",
+        "deno"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "25ba3abf95f631f7f495bffd18eb989d10aace92dd6607d71ca3148f1a48ab04",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "configure-n8n",
+      "kind": "skill",
+      "status": "active",
+      "description": "Configure n8n URLs, database, encryption, execution, logging, retention, and runtime settings from an explicit contract.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "configure",
+        "environment"
+      ],
+      "concepts": [
+        "environment variables",
+        "runtime contract",
+        "reverse proxy"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "88358555f9da1f345d96191ab50ada90b7e84f68fb244ba9080ea6b35fbb9cbe",
+      "effects": [
+        "migration",
+        "read_local"
+      ]
+    },
+    {
+      "id": "connect-n8n-to-supabase",
+      "kind": "skill",
+      "status": "active",
+      "description": "Connect n8n to Supabase through the built-in node, Data API, RPC, or Postgres with correct URLs, schemas, credentials, and RLS semantics.",
+      "domains": [
+        "cross"
+      ],
+      "intents": [
+        "connect",
+        "CRUD",
+        "query"
+      ],
+      "concepts": [
+        "Supabase node",
+        "Data API",
+        "custom schema",
+        "RPC",
+        "service role"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n",
+        "supabase",
+        "postgres"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "870fdfa310dc54a8e43c7fc9322810f0c2581291df8cb06036624b0a3cce1d61",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "deploy-n8n-docker",
+      "kind": "skill",
+      "status": "active",
+      "description": "Deploy a durable single-main n8n instance with Docker or Compose, TLS boundaries, health checks, and backup hooks.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "deploy",
+        "self-host"
+      ],
+      "concepts": [
+        "Docker Compose",
+        "Postgres",
+        "TLS",
+        "persistence"
+      ],
+      "synonyms": [],
+      "tools": [
+        "docker",
+        "compose",
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "65d98e5a78333ba2c993c9f9047c5899ee2866579827ac1252c624bf1b2fa464",
+      "effects": [
+        "install_tool",
+        "network",
+        "read_local",
+        "write_workspace"
+      ]
+    },
+    {
+      "id": "design-build-n8n-workflows",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design maintainable n8n workflows with explicit contracts, modularity, idempotency, errors, and operator evidence.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "build",
+        "design",
+        "workflow"
+      ],
+      "concepts": [
+        "workflow design",
+        "idempotency",
+        "sub-workflows",
+        "error paths"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "7596197bc84e03c98e5455ddacca706462db180930b56c9198126f275b7b5399",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "design-n8n-supabase-reliability",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design reliable n8n-Supabase behavior for retries, duplicates, partial failure, transactions, concurrency, and backpressure.",
+      "domains": [
+        "cross"
+      ],
+      "intents": [
+        "retry",
+        "idempotency",
+        "recovery"
+      ],
+      "concepts": [
+        "reliability",
+        "transactions",
+        "outbox",
+        "dedupe",
+        "backpressure"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n",
+        "supabase",
+        "postgres"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "3c91e7463bb18e4881b7ab92f95b40a9026d8248edf5194cd052e9725f8f05c4",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "design-n8n-supabase-security-boundaries",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design trust boundaries between n8n users/workflows, Supabase RLS, service credentials, webhooks, logs, and AI tools.",
+      "domains": [
+        "cross"
+      ],
+      "intents": [
+        "secure",
+        "trust boundary",
+        "audit"
+      ],
+      "concepts": [
+        "RLS",
+        "service role",
+        "RBAC",
+        "webhook security",
+        "AI boundaries"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n",
+        "supabase"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "f695d58b98e63c1ee9dc713073ea95494bcc03acb1a63caff9c5258f611127cd",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "design-supabase-postgres",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design Supabase Postgres schemas, constraints, indexes, functions, extensions, and connection patterns.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "schema",
+        "database",
+        "index"
+      ],
+      "concepts": [
+        "Postgres",
+        "schema",
+        "constraints",
+        "indexes",
+        "pooler"
+      ],
+      "synonyms": [],
+      "tools": [
+        "postgres",
+        "supabase"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "0d081972a022382d9ae18d74eb87ed614574f5707528ab582af915988468d070",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "develop-n8n-monorepo",
+      "kind": "skill",
+      "status": "active",
+      "description": "Work safely in the supplied n8n monorepo using repository-local agent rules, pnpm, package boundaries, and evidence gates.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "source",
+        "contribute",
+        "modify"
+      ],
+      "concepts": [
+        "pnpm",
+        "monorepo",
+        "AGENTS.md",
+        "package gates"
+      ],
+      "synonyms": [],
+      "tools": [
+        "pnpm",
+        "git"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "5a5de52f4427c3c40fe8c5cb6459933ec2e1a61af78156d753c66dcf33d85f3b",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "develop-supabase-locally",
+      "kind": "skill",
+      "status": "active",
+      "description": "Run Supabase locally with reproducible config, migrations, seeds, tests, and clean reset behavior.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "local",
+        "start",
+        "reset"
+      ],
+      "concepts": [
+        "local development",
+        "Docker",
+        "migrations",
+        "seed"
+      ],
+      "synonyms": [],
+      "tools": [
+        "supabase",
+        "docker"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "a39628d128198f8a104601e2df2b1be7035a400a7da13cba33debabe6e1bfdcd",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "evaluate-n8n-fit",
+      "kind": "skill",
+      "status": "active",
+      "description": "Evaluate whether n8n fits the workload compared with code, native integrations, or another orchestrator.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "evaluate",
+        "compare",
+        "select"
+      ],
+      "concepts": [
+        "architecture fit",
+        "tradeoffs",
+        "decision record"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "681a27938f1bf8413bd8d17585aea577a206259794856ba312e90ccca69c1825",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "evaluate-supabase-fit",
+      "kind": "skill",
+      "status": "active",
+      "description": "Evaluate Supabase against direct Postgres, another backend platform, or custom services.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "evaluate",
+        "compare",
+        "select"
+      ],
+      "concepts": [
+        "architecture fit",
+        "Postgres platform",
+        "tradeoffs"
+      ],
+      "synonyms": [],
+      "tools": [
+        "supabase"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "ad4e5cbccead50dd7be7250b4f6885e287791e1de680c66c5bc57148c6e0084b",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "govern-n8n-community-nodes",
+      "kind": "skill",
+      "status": "active",
+      "description": "Assess, admit, isolate, pin, update, and retire n8n community nodes as executable supply-chain components.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "community node",
+        "install node",
+        "plugin"
+      ],
+      "concepts": [
+        "community nodes",
+        "supply chain",
+        "allowlist",
+        "npm"
+      ],
+      "synonyms": [],
+      "tools": [
+        "npm",
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "620259d7a7ec1b16d9579778c13716a83e44413ecd1414f50ff7ba92be5d6ddb",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "handle-debug-n8n-executions",
+      "kind": "skill",
+      "status": "active",
+      "description": "Diagnose failed, stuck, slow, or incorrect executions from evidence without unsafe reruns.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "debug",
+        "failure",
+        "retry"
+      ],
+      "concepts": [
+        "execution debugging",
+        "replay",
+        "root cause",
+        "error workflow"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "b74f7925b5ab1c9a21bb0494a07f99719deed863470c6156d88bdfdb362aca00",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "implement-supabase-auth",
+      "kind": "skill",
+      "status": "active",
+      "description": "Implement Supabase Auth with correct client/server sessions, redirects, JWT/RLS integration, lifecycle, and abuse controls.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "auth",
+        "login",
+        "session"
+      ],
+      "concepts": [
+        "authentication",
+        "JWT",
+        "SSR",
+        "OAuth",
+        "redirects"
+      ],
+      "synonyms": [],
+      "tools": [
+        "supabase"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "56b9e42676cee3e94a423bc720ee63ea24362fcc045bee9e67e3126cd3d2c95d",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "integrate-n8n-webhooks-and-apis",
+      "kind": "skill",
+      "status": "active",
+      "description": "Build secure webhook and API integrations with authentication, validation, pagination, rate limits, timeouts, and idempotency.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "webhook",
+        "API",
+        "HTTP"
+      ],
+      "concepts": [
+        "webhooks",
+        "HTTP",
+        "signatures",
+        "pagination",
+        "rate limits"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n",
+        "http"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "ed7c587a6341acf4b6bf7b0f0dd914d60df5e189bfd24cbc38d10b12fce28245",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "integrate-supabase-data-api-and-clients",
+      "kind": "skill",
+      "status": "active",
+      "description": "Use Supabase clients and Data APIs with correct keys, RLS, projection, pagination, errors, typing, and connection boundaries.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "API",
+        "client",
+        "query"
+      ],
+      "concepts": [
+        "Data API",
+        "supabase-js",
+        "pagination",
+        "RPC",
+        "connection modes"
+      ],
+      "synonyms": [],
+      "tools": [
+        "supabase",
+        "postgres"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "f70bf975c1a035974d27e65a5461e8dfa4af71913a6f1dad3d75c4c785c24020",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "manage-n8n-credentials",
+      "kind": "skill",
+      "status": "active",
+      "description": "Create, scope, rotate, test, and retire n8n credentials without exposing values or breaking hidden consumers.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "credential",
+        "rotate",
+        "secret"
+      ],
+      "concepts": [
+        "credential lifecycle",
+        "OAuth",
+        "secret rotation"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "3e3abadf736bdbf5ba62fcf45f8a146ec9dd45c9c9ba4b666f292688b5a20687",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "manage-supabase-environments",
+      "kind": "skill",
+      "status": "active",
+      "description": "Isolate local, preview, staging, and production Supabase projects, credentials, links, secrets, and promotion paths.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "environment",
+        "branch",
+        "promote"
+      ],
+      "concepts": [
+        "environment isolation",
+        "project ref",
+        "preview",
+        "staging"
+      ],
+      "synonyms": [],
+      "tools": [
+        "supabase"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "b399b51164a755801e010b7bcabc3831840fea52db9cd9d38b7b4f9a4364bf8f",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "manage-supabase-migrations",
+      "kind": "skill",
+      "status": "active",
+      "description": "Create, review, test, deploy, reconcile, and roll back Supabase migrations without dashboard drift.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "migration",
+        "db diff",
+        "deploy schema"
+      ],
+      "concepts": [
+        "migrations",
+        "schema drift",
+        "backfill",
+        "expand-contract"
+      ],
+      "synonyms": [],
+      "tools": [
+        "supabase",
+        "postgres"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "532eef79602b517be9a097573045a293d55e754082345ce018a4045fed1ea30c",
+      "effects": [
+        "migration",
+        "network",
+        "read_local",
+        "write_workspace"
+      ]
+    },
+    {
+      "id": "observe-debug-supabase",
+      "kind": "skill",
+      "status": "active",
+      "description": "Diagnose Supabase database, API, RLS, Auth, Storage, Realtime, Function, and client failures from correlated evidence.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "debug",
+        "error",
+        "performance"
+      ],
+      "concepts": [
+        "logging",
+        "RLS debugging",
+        "query plans",
+        "connections"
+      ],
+      "synonyms": [],
+      "tools": [
+        "supabase",
+        "postgres"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "c810d89c49b7d5eedd1c0c1fe8652f9ac1083b440ca033c81e99a09bd77153ec",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "observe-operate-n8n",
+      "kind": "skill",
+      "status": "active",
+      "description": "Operate n8n using platform, queue, database, workflow, credential, capacity, and business-outcome observability.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "monitor",
+        "operate",
+        "alert"
+      ],
+      "concepts": [
+        "observability",
+        "SLO",
+        "metrics",
+        "logs",
+        "capacity"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "798ba11bdea5e396739126f1f1ec9cc1b5f81b4343e9ad3e8c31d5bba521350d",
+      "effects": [
+        "migration",
+        "read_local"
+      ]
+    },
+    {
+      "id": "operate-n8n-supabase-production",
+      "kind": "skill",
+      "status": "active",
+      "description": "Operate a production n8n-Supabase stack with combined SLOs, capacity, cost, backup, security, incident, and change controls.",
+      "domains": [
+        "cross"
+      ],
+      "intents": [
+        "operate",
+        "monitor",
+        "production"
+      ],
+      "concepts": [
+        "production operations",
+        "SLO",
+        "incident",
+        "capacity",
+        "cost",
+        "recovery"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n",
+        "supabase",
+        "postgres"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "668d58661f13269d37df5465da7ef91c5c8a55b17cf1f633bb11a1d709e7764e",
+      "effects": [
+        "migration",
+        "read_local"
+      ]
+    },
+    {
+      "id": "operate-supabase-vector-search",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design and operate pgvector schemas, embedding lifecycle, indexes, filtered matching RPCs, and retrieval evaluation.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "vector",
+        "RAG",
+        "semantic search"
+      ],
+      "concepts": [
+        "pgvector",
+        "embeddings",
+        "HNSW",
+        "match_documents",
+        "retrieval evaluation"
+      ],
+      "synonyms": [],
+      "tools": [
+        "postgres",
+        "pgvector",
+        "supabase"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "e133b865f97203834cdcb019ffe1ac5f6323b139f6ae5d6fb5b93d5968025842",
+      "effects": [
+        "migration",
+        "read_local"
+      ]
+    },
+    {
+      "id": "route-n8n-capabilities",
+      "kind": "skill",
+      "status": "active",
+      "description": "Route n8n requests to the smallest relevant PACIFY-X capability set.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "route",
+        "suggest",
+        "choose"
+      ],
+      "concepts": [
+        "routing",
+        "workflow automation",
+        "capability selection"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "e2809c14bb2d98c2e70a7de4b1362631f5b9dac47141ab72c146f60f1a72c706",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "route-n8n-supabase-stack",
+      "kind": "skill",
+      "status": "active",
+      "description": "Route combined n8n and Supabase work across integration, automation, RAG, security, reliability, testing, and operations.",
+      "domains": [
+        "cross"
+      ],
+      "intents": [
+        "route",
+        "integrate",
+        "suggest"
+      ],
+      "concepts": [
+        "combined stack",
+        "routing",
+        "trust boundaries"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n",
+        "supabase"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "a139acaabd598b87f1a6ca8861940452ae4cc04329711d84c8918d5e12960a6c",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "route-supabase-capabilities",
+      "kind": "skill",
+      "status": "active",
+      "description": "Route Supabase requests across Postgres, RLS, Auth, Storage, Realtime, Edge Functions, vectors, CLI, self-hosting, and MCP.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "route",
+        "suggest",
+        "choose"
+      ],
+      "concepts": [
+        "routing",
+        "Postgres platform",
+        "capability selection"
+      ],
+      "synonyms": [],
+      "tools": [
+        "supabase"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "fba482aa973ade3fbde099e47780e87c947c6773e5fbfd638059b30fa4f30497",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "scale-n8n-queue-mode",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design and operate n8n queue mode with Postgres, Redis, workers, webhook processors, and task runners.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "scale",
+        "queue mode"
+      ],
+      "concepts": [
+        "queue mode",
+        "Redis",
+        "workers",
+        "task runners"
+      ],
+      "synonyms": [],
+      "tools": [
+        "redis",
+        "postgres",
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "981a60b9811004875c930fd471a9edfb0ca9c3e4f24f9be7110ad3620fc8d134",
+      "effects": [
+        "migration",
+        "read_local"
+      ]
+    },
+    {
+      "id": "secure-n8n",
+      "kind": "skill",
+      "status": "active",
+      "description": "Harden n8n identity, network, credentials, execution, nodes, updates, and retained data.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "secure",
+        "harden",
+        "audit"
+      ],
+      "concepts": [
+        "least privilege",
+        "webhook security",
+        "execution isolation",
+        "retention"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "65e6ddb296e3ef7ef75443afcf53fa863ce734cbb0d17370b68b6f7eb24a972c",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "secure-supabase-rls",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design and test Supabase Row Level Security for anonymous, authenticated, service, tenant, and administrative access.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "RLS",
+        "authorize",
+        "policy"
+      ],
+      "concepts": [
+        "RLS",
+        "tenant isolation",
+        "auth.uid",
+        "policies"
+      ],
+      "synonyms": [],
+      "tools": [
+        "postgres",
+        "supabase"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "45f0d683b083a8757ecdb42cccb241d6b6404a9c62562084eeb824c3abe006cc",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "self-host-supabase",
+      "kind": "skill",
+      "status": "active",
+      "description": "Evaluate, deploy, secure, update, and operate self-hosted Supabase with ownership of every service.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "self-host",
+        "deploy"
+      ],
+      "concepts": [
+        "self-hosting",
+        "Docker",
+        "secrets",
+        "operations"
+      ],
+      "synonyms": [],
+      "tools": [
+        "docker",
+        "postgres",
+        "supabase"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "ea187f08817c7c84bda8b81ed49fb5148ad7d37fdf80e3a2e0cd71a08e594182",
+      "effects": [
+        "install_tool",
+        "network",
+        "read_local",
+        "write_workspace"
+      ]
+    },
+    {
+      "id": "test-n8n-supabase-integrations",
+      "kind": "skill",
+      "status": "active",
+      "description": "Test n8n-Supabase integrations end to end with local services, seeded role matrices, failures, and external outcome assertions.",
+      "domains": [
+        "cross"
+      ],
+      "intents": [
+        "test",
+        "validate",
+        "integration"
+      ],
+      "concepts": [
+        "E2E",
+        "RLS tests",
+        "fixtures",
+        "failure injection"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n",
+        "supabase"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "23c0b549b22743d4347330cc62769c45263d7fd2a57ee4f5108cdd9f7c2a520b",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "test-validate-n8n-workflows",
+      "kind": "skill",
+      "status": "active",
+      "description": "Test n8n workflows using fixtures, contracts, failure injection, replay checks, and external outcome assertions.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "test",
+        "validate",
+        "certify"
+      ],
+      "concepts": [
+        "fixtures",
+        "contracts",
+        "failure injection",
+        "outcome verification"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "35d51b1e75c68cc675a92bec34863892f7a79c3e654fded531e67757e091813a",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "use-n8n-expressions-and-data",
+      "kind": "skill",
+      "status": "active",
+      "description": "Use n8n items, expressions, mappings, and transformations without cardinality, type, or item-linking mistakes.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "expression",
+        "transform",
+        "map"
+      ],
+      "concepts": [
+        "items",
+        "expressions",
+        "mapping",
+        "binary data"
+      ],
+      "synonyms": [],
+      "tools": [
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "9b89a33de357e24e1cd27d06ca9f98e608ff0dc3e07636014d3e4e73459bc5bc",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "use-n8n-mcp",
+      "kind": "skill",
+      "status": "active",
+      "description": "Expose or consume n8n capabilities through MCP with narrow tools, authentication, schemas, approvals, and injection defenses.",
+      "domains": [
+        "n8n"
+      ],
+      "intents": [
+        "MCP",
+        "tool server",
+        "expose workflow"
+      ],
+      "concepts": [
+        "MCP",
+        "tool schemas",
+        "approval",
+        "prompt injection"
+      ],
+      "synonyms": [],
+      "tools": [
+        "mcp",
+        "n8n"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "4614a6b1edd76c2b4094a63dbf013e5ac8758e34a175973f282c1fe4a97d7647",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "use-supabase-mcp-and-agent-skills",
+      "kind": "skill",
+      "status": "active",
+      "description": "Install and use official Supabase MCP, agent skills, or plugin with project scope, read-only defaults, and injection defenses.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "MCP",
+        "agent skills",
+        "plugin"
+      ],
+      "concepts": [
+        "MCP",
+        "agent skills",
+        "plugin",
+        "read-only",
+        "prompt injection"
+      ],
+      "synonyms": [],
+      "tools": [
+        "mcp",
+        "supabase"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "3f3f6cf2c9395d27779bbcc6bf516a9d13f65c5ce1b623f009c4a50b6685dc71",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "use-supabase-realtime",
+      "kind": "skill",
+      "status": "active",
+      "description": "Use Supabase Realtime for database changes, broadcast, and presence with authorization and convergence.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "realtime",
+        "subscribe",
+        "presence"
+      ],
+      "concepts": [
+        "Realtime",
+        "websockets",
+        "broadcast",
+        "presence"
+      ],
+      "synonyms": [],
+      "tools": [
+        "supabase",
+        "websocket"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "6a98e3baa4ca3c8ac91dc51b1baaa8c0ba3046e61edc6b8f964efad8fd1a28d3",
+      "effects": [
+        "read_local"
+      ]
+    },
+    {
+      "id": "use-supabase-storage",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design Supabase Storage buckets, paths, uploads, signed access, transformations, and RLS policies.",
+      "domains": [
+        "supabase"
+      ],
+      "intents": [
+        "storage",
+        "upload",
+        "bucket"
+      ],
+      "concepts": [
+        "object storage",
+        "buckets",
+        "signed URLs",
+        "storage RLS"
+      ],
+      "synonyms": [],
+      "tools": [
+        "supabase"
+      ],
+      "relations": [
+        {
+          "type": "governed_by",
+          "target": "discover-environment-safely"
+        },
+        {
+          "type": "governed_by",
+          "target": "quarantine-external-tools"
+        },
+        {
+          "type": "governed_by",
+          "target": "supervise-contained-execution"
+        },
+        {
+          "type": "governed_by",
+          "target": "validate-contract-boundaries"
+        },
+        {
+          "type": "governed_by",
+          "target": "certify-reversible-validation"
+        },
+        {
+          "type": "governed_by",
+          "target": "verify-outcome"
+        }
+      ],
+      "body_sha256": "f6b2b4083f9d679ecb90d657242d2b37283d7b576fffe4c48ef0083d5f7ed571",
+      "effects": [
+        "read_local"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:memory:memory-loadout",
+  "title": "Bounded project-scoped agent memory loadout",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["loadout_id", "project_id", "agent_id", "bindings", "max_borrowed_agents", "policy_version"],
+  "properties": {
+    "loadout_id": {"type": "string", "minLength": 1},
+    "project_id": {"type": "string", "minLength": 1},
+    "team_id": {"type": ["string", "null"]},
+    "agent_id": {"type": "string", "minLength": 1},
+    "task_id": {"type": ["string", "null"]},
+    "bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["memory_id", "mode", "priority"],
+        "properties": {
+          "memory_id": {"type": "string"},
+          "mode": {"enum": ["fixed", "query", "tool_only", "index_only", "evidence_only"]},
+          "priority": {"type": "integer", "minimum": 0, "maximum": 100},
+          "borrowed_from_agent_id": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "max_borrowed_agents": {"type": "integer", "minimum": 0, "maximum": 8},
+    "policy_version": {"type": "string", "minLength": 1}
+  }
+}

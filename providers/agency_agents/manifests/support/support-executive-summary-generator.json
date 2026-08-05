@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.support.executive-summary-generator",
+  "name": "Executive Summary Generator",
+  "description": "Consultant-grade AI specialist trained to think and communicate like a senior strategy consultant. Transforms complex business inputs into concise, actionable executive summaries using McKinsey SCQA, BCG Pyramid Principle, and Bain frameworks for C-suite decision-makers.",
+  "division": "support",
+  "source": {
+    "path": "support/support-executive-summary-generator.md",
+    "sha256": "298891fcf297de5d9b343e9ab9b63864317de63256b15c0c72e6cec172f8f0ff",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/support/support-executive-summary-generator.md",
+    "sha256": "98e61226c6c3ff6a28dc4f24577eb03825d371f2c0a5f31692ce791baf750b6a",
+    "audit_status": "HARDEN",
+    "audit_score": 62.2
+  },
+  "activation": {
+    "mode": "reviewer",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Executive Summary Generator",
+      "executive-summary-generator",
+      "support-executive-summary-generator"
+    ]
+  },
+  "capabilities": [
+    "ai_ml",
+    "analytics",
+    "automation_workflow",
+    "content_generation",
+    "identity_access",
+    "support",
+    "testing"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "customer or stakeholder request",
+    "account and product context",
+    "approved policy and knowledge source",
+    "severity and impact",
+    "available actions and escalation rules"
+  ],
+  "deliverables": [
+    "verified issue summary",
+    "response or resolution steps",
+    "actions taken with evidence",
+    "policy exceptions and escalation",
+    "case notes with sensitive data minimized"
+  ],
+  "quality_gates": [
+    "Use current approved policy and product documentation",
+    "Do not promise refunds, credits, legal outcomes, deadlines, or engineering fixes without authority",
+    "Verify identity and account scope before sensitive actions",
+    "Record what was actually checked or changed"
+  ],
+  "boundaries": [
+    "Do not expose account data or bypass authentication",
+    "Do not close or mark resolved without evidence that the user-visible outcome is resolved"
+  ],
+  "handoffs": [
+    "support/support-support-responder.md",
+    "support/support-legal-compliance-checker.md",
+    "support/support-infrastructure-maintainer.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Action-capable role lacks rollback/dry-run safeguards"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

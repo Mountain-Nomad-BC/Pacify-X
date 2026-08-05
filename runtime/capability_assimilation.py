@@ -8,7 +8,14 @@ from pathlib import Path
 import tomllib
 
 
-ALLOWED_DISPOSITIONS = {"adopt", "merge", "defer", "reject", "duplicate", "reference_only"}
+ALLOWED_DISPOSITIONS = {
+    "adopt",
+    "merge",
+    "defer",
+    "reject",
+    "duplicate",
+    "reference_only",
+}
 
 
 def _json(path: Path) -> dict:
@@ -18,7 +25,9 @@ def _json(path: Path) -> dict:
 def validate_capability_assimilation(root: Path) -> dict[str, object]:
     admission = _json(root / "registry" / "capability_mining_admission.json")
     workflows = _json(root / "registry" / "skill_orchestrations.json")
-    catalog = tomllib.loads((root / "registry" / "skill_catalog.toml").read_text(encoding="utf-8"))
+    catalog = tomllib.loads(
+        (root / "registry" / "skill_catalog.toml").read_text(encoding="utf-8")
+    )
     catalog_skills = {item["id"]: item for item in catalog.get("skills", ())}
     errors: list[str] = []
 
@@ -31,7 +40,10 @@ def validate_capability_assimilation(root: Path) -> dict[str, object]:
         scan_ids.add(scan_id)
         if scan.get("complete") is not True or scan.get("error_count") != 0:
             errors.append(f"{scan_id}: incomplete source scan")
-        if not isinstance(scan.get("files_accounted"), int) or scan.get("files_accounted", 0) < 1:
+        if (
+            not isinstance(scan.get("files_accounted"), int)
+            or scan.get("files_accounted", 0) < 1
+        ):
             errors.append(f"{scan_id}: invalid coverage denominator")
         else:
             # Nested passes intentionally overlap the broad snapshot.  Use the
@@ -68,11 +80,16 @@ def validate_capability_assimilation(root: Path) -> dict[str, object]:
             errors.append(f"{workflow_id}: invalid step identities")
         for step in steps:
             skill_id = str(step.get("skill", ""))
-            if catalog_skills.get(skill_id, {}).get("status") not in {"active", "admitted"}:
+            if catalog_skills.get(skill_id, {}).get("status") not in {
+                "active",
+                "admitted",
+            }:
                 errors.append(f"{workflow_id}: non-selectable skill {skill_id}")
             unknown_dependencies = set(step.get("depends_on", ())) - step_ids
             if unknown_dependencies:
-                errors.append(f"{workflow_id}: unknown dependencies {sorted(unknown_dependencies)}")
+                errors.append(
+                    f"{workflow_id}: unknown dependencies {sorted(unknown_dependencies)}"
+                )
         visiting: set[str] = set()
         visited: set[str] = set()
         by_id = {str(step["id"]): step for step in steps if step.get("id")}
@@ -98,9 +115,13 @@ def validate_capability_assimilation(root: Path) -> dict[str, object]:
         errors.append("capability mining receipt is missing")
     else:
         value = _json(receipt)
-        expected = hashlib.sha256((root / "registry" / "capability_mining_admission.json").read_bytes()).hexdigest()
+        expected = hashlib.sha256(
+            (root / "registry" / "capability_mining_admission.json").read_bytes()
+        ).hexdigest()
         if value.get("admission_registry_sha256") != expected:
-            errors.append("capability mining receipt does not bind the admission registry")
+            errors.append(
+                "capability mining receipt does not bind the admission registry"
+            )
         if value.get("files_accounted") != accounted_files:
             errors.append("capability mining receipt coverage denominator drift")
     return {

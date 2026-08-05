@@ -17,6 +17,17 @@ class LicensingTests(unittest.TestCase):
         self.assertEqual(result["author"], AUTHOR)
         self.assertEqual(result["publisher"], PUBLISHER)
 
+    def test_redistributed_third_party_payloads_are_attributed(self) -> None:
+        notice = (ROOT / "NOTICE").read_text(encoding="utf-8")
+        required = {
+            "LICENSES/everything-claude-code-MIT.txt": "Everything Claude Code",
+            "LICENSES/mattpocock-skills-MIT.txt": "mattpocock/skills",
+            "providers/agency_agents/LICENSE.txt": "AgentLand contributors",
+        }
+        for relative, attribution in required.items():
+            self.assertTrue((ROOT / relative).is_file(), relative)
+            self.assertIn(attribution, notice)
+
 
 if __name__ == "__main__":
     unittest.main()

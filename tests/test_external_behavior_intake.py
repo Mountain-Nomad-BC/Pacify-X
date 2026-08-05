@@ -20,7 +20,9 @@ def load_script(name: str):
 
 
 class ExternalBehaviorIntakeTests(unittest.TestCase):
-    def test_extractor_emits_sanitized_metadata_without_body_or_absolute_path(self) -> None:
+    def test_extractor_emits_sanitized_metadata_without_body_or_absolute_path(
+        self,
+    ) -> None:
         extractor = load_script("extract_behavior_contracts")
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -45,19 +47,32 @@ class ExternalBehaviorIntakeTests(unittest.TestCase):
             root = Path(directory)
             index = root / "index"
             index.mkdir()
-            (index / "summary.json").write_text(json.dumps({"tree_sha256": "a" * 64, "file_count": 1}), encoding="utf-8")
+            (index / "summary.json").write_text(
+                json.dumps({"tree_sha256": "a" * 64, "file_count": 1}), encoding="utf-8"
+            )
             candidate = {
-                "source_alias": "source-12", "relative_path": "retrieval/check/SKILL.md",
-                "sha256": "b" * 64, "name": "retrieval-check",
+                "source_alias": "source-12",
+                "relative_path": "retrieval/check/SKILL.md",
+                "sha256": "b" * 64,
+                "name": "retrieval-check",
                 "description": "Evaluate retrieval quality and search coverage",
             }
-            (index / "skill-candidates.json").write_text(json.dumps({"skills": [candidate]}), encoding="utf-8")
+            (index / "skill-candidates.json").write_text(
+                json.dumps({"skills": [candidate]}), encoding="utf-8"
+            )
             record = {
-                "source_alias": "source-12", "bytes": 5, "text_read": True,
-                "tests": [], "symbols": [], "behavior_tags": ["evaluation"],
-                "effects": [], "secret_indicator_count": 0,
+                "source_alias": "source-12",
+                "bytes": 5,
+                "text_read": True,
+                "tests": [],
+                "symbols": [],
+                "behavior_tags": ["evaluation"],
+                "effects": [],
+                "secret_indicator_count": 0,
             }
-            (index / "behavior-index.jsonl").write_text(json.dumps(record) + "\n", encoding="utf-8")
+            (index / "behavior-index.jsonl").write_text(
+                json.dumps(record) + "\n", encoding="utf-8"
+            )
             catalog = root / "catalog.toml"
             catalog.write_text(
                 '[[skills]]\nid = "verify-outcome"\ntags = ["validation", "evidence"]\n',
@@ -69,8 +84,14 @@ class ExternalBehaviorIntakeTests(unittest.TestCase):
             self.assertFalse(plan["method"]["source_bodies_read"])
             self.assertFalse(plan["method"]["source_code_executed"])
 
-    def test_every_staged_requirement_has_a_validated_canonical_disposition(self) -> None:
-        report = json.loads((ROOT / "evidence/external-source-admission-receipt.json").read_text(encoding="utf-8"))
+    def test_every_staged_requirement_has_a_validated_canonical_disposition(
+        self,
+    ) -> None:
+        report = json.loads(
+            (ROOT / "evidence/external-source-admission-receipt.json").read_text(
+                encoding="utf-8"
+            )
+        )
         self.assertEqual(report["requirement_cards"], 75)
         self.assertEqual(report["indexed_files"], 6353)
         self.assertEqual(report["parse_failure_count"], 0)

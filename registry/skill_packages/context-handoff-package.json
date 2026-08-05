@@ -1,0 +1,31 @@
+{
+  "id": "context-handoff-package",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/context-handoff-package/SKILL.md",
+  "body_sha256": "9b33e508ea92d590b854f69134596e53febe87fe086e34a1a06f5650cb9658b4",
+  "references": [],
+  "capability_tags": [
+    "context",
+    "engineering-reasoning",
+    "handoff",
+    "package"
+  ],
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "provenance": {
+    "type": "sanitized_mit_adaptation",
+    "basis": [
+      "evidence/integration/pxi-20260804/candidate_disposition_ledger.json",
+      "LICENSES/mattpocock-skills-MIT.txt"
+    ],
+    "canonical_owner": ".agents/skills/context-handoff-package/SKILL.md"
+  },
+  "clean_room": false,
+  "tests": "tests/test_project_reasoning.py",
+  "evidence": "tests/test_project_reasoning.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

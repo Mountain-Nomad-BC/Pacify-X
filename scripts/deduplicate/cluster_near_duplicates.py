@@ -1,4 +1,5 @@
 """Cluster normalized or high-confidence near-duplicate text records."""
+
 from __future__ import annotations
 
 import argparse
@@ -34,7 +35,14 @@ def main() -> int:
     for digest, items in sorted(normalized.items()):
         members = sorted({item["id"] for item in items})
         if len(members) > 1:
-            clusters.append({"cluster_id": f"normalized-{digest[:16]}", "method": "normalized_sha256", "confidence": 1.0, "members": members})
+            clusters.append(
+                {
+                    "cluster_id": f"normalized-{digest[:16]}",
+                    "method": "normalized_sha256",
+                    "confidence": 1.0,
+                    "members": members,
+                }
+            )
             assigned.update(members)
     for _, items in sorted(buckets.items()):
         ordered = sorted(items, key=lambda item: item["id"])
@@ -42,20 +50,48 @@ def main() -> int:
             if anchor["id"] in assigned:
                 continue
             members = [anchor["id"]]
-            for candidate in ordered[index + 1:]:
+            for candidate in ordered[index + 1 :]:
                 if candidate["id"] in assigned:
                     continue
-                if hamming_hex(anchor["structure"]["simhash64"], candidate["structure"]["simhash64"]) <= args.max_hamming:
+                if (
+                    hamming_hex(
+                        anchor["structure"]["simhash64"],
+                        candidate["structure"]["simhash64"],
+                    )
+                    <= args.max_hamming
+                ):
                     members.append(candidate["id"])
             if len(members) > 1:
                 members.sort()
-                clusters.append({"cluster_id": f"simhash-{anchor['id']}", "method": "simhash64", "confidence": round(1 - args.max_hamming / 64, 4), "members": members})
+                clusters.append(
+                    {
+                        "cluster_id": f"simhash-{anchor['id']}",
+                        "method": "simhash64",
+                        "confidence": round(1 - args.max_hamming / 64, 4),
+                        "members": members,
+                    }
+                )
                 assigned.update(members)
     clusters.sort(key=lambda item: item["cluster_id"])
-    output = {"schema_version": "1.0", "cluster_count": len(clusters), "clustered_records": len({member for item in clusters for member in item["members"]}), "clusters": clusters}
+    output = {
+        "schema_version": "1.0",
+        "cluster_count": len(clusters),
+        "clustered_records": len(
+            {member for item in clusters for member in item["members"]}
+        ),
+        "clusters": clusters,
+    }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"cluster_count": output["cluster_count"], "clustered_records": output["clustered_records"]}, indent=2))
+    print(
+        json.dumps(
+            {
+                "cluster_count": output["cluster_count"],
+                "clustered_records": output["clustered_records"],
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

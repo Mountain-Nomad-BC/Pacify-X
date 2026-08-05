@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.design.brand-guardian",
+  "name": "Brand Guardian",
+  "description": "Expert brand strategist and guardian specializing in brand identity development, consistency maintenance, and strategic brand positioning",
+  "division": "design",
+  "source": {
+    "path": "design/design-brand-guardian.md",
+    "sha256": "d1d5c78af85d4d35be94b93d5c011d17e3cf5dcb69b2037a3ebf3059803b893e",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/design/design-brand-guardian.md",
+    "sha256": "da8c5b48fa9e476dddcc0596a1fa050e1863e1297c74c26803a51cecbbb7eb15",
+    "audit_status": "HARDEN",
+    "audit_score": 61.8
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "low",
+    "autonomy": "advisory_and_draft",
+    "freshness_sensitive": false,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Brand Guardian",
+      "brand-guardian",
+      "design-brand-guardian"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "architecture",
+    "automation_workflow",
+    "design",
+    "documentation",
+    "identity_access",
+    "marketing",
+    "research",
+    "search_retrieval"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "user problem and target users",
+    "platform, device, and interaction constraints",
+    "brand system and existing components",
+    "accessibility requirements",
+    "research evidence or known assumptions"
+  ],
+  "deliverables": [
+    "design rationale tied to user needs",
+    "flows, states, and edge cases",
+    "component or artifact specification",
+    "accessibility and usability checks",
+    "engineering handoff notes"
+  ],
+  "quality_gates": [
+    "Test against real user goals rather than visual preference alone",
+    "Cover empty, loading, error, permission, and recovery states",
+    "Check keyboard, screen-reader, contrast, zoom, motion, and localization implications",
+    "Label unvalidated design assumptions"
+  ],
+  "boundaries": [
+    "Do not claim usability validation without observed research or test evidence",
+    "Do not overwrite brand or accessibility constraints without explicit approval"
+  ],
+  "handoffs": [
+    "design/design-ux-researcher.md",
+    "design/design-ui-finish-gate-reviewer.md",
+    "testing/testing-accessibility-auditor.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "Security-sensitive role lacks authorized-scope-only constraint"
+    ],
+    "improvement_issues": [
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit",
+      "Handoff/escalation routes are not explicit"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": false,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

@@ -473,15 +473,19 @@ def _pattern_example(pattern: str) -> str:
         return "1.0.0"
     if pattern == "^[A-P]+$":
         return "A"
+    if pattern.startswith("^external\\.cybersecurity\\."):
+        return "external.cybersecurity.example"
     if ":" in pattern and "a-zA-Z_" in pattern:
         return "runtime.module:handler"
     prefixes = {
         "^agt_": "agt_example",
+        "^agency\\.": "agency.engineering.example",
         "^cap_": "cap_example",
         "^dec_": "dec_example",
         "^evd_": "evd_example",
         "^int_": "int_example",
         "^prj_": "prj_example",
+        "^pkg_": "pkg_" + "a" * 20,
         "^qtn_": "qtn_example",
         "^repo_": "repo_example",
         "^ses_": "ses_example",
@@ -490,6 +494,7 @@ def _pattern_example(pattern: str) -> str:
         "^wsp_": "wsp_example",
         "^xfer_": "xfer_example",
         "^project/prj_": "project/prj_example",
+        "^project:\\{project_id\\}:agent:\\{agent_id\\}$": "project:{project_id}:agent:{agent_id}",
         "^projects/[^/]+/PROJECT_MANAGEMENT.md$": "projects/example/PROJECT_MANAGEMENT.md",
         "^projects/[^/]+$": "projects/example",
         "^projects/": "projects/example",
@@ -623,9 +628,17 @@ def _minimal(
         return value
     if selected == "array":
         count = int(rule.get("minItems", 0))
+        item_rule = rule.get("items", {})
+        enum_values = item_rule.get("enum", ()) if isinstance(item_rule, dict) else ()
+        if (
+            rule.get("uniqueItems") is True
+            and isinstance(enum_values, list)
+            and count <= len(enum_values)
+        ):
+            return enum_values[:count]
         return [
             _minimal(
-                rule.get("items", {}),
+                item_rule,
                 root_schema,
                 schema_path,
                 contract_root,

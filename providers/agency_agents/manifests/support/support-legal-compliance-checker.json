@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.support.legal-compliance-checker",
+  "name": "Legal Compliance Checker",
+  "description": "Expert legal and compliance specialist ensuring business operations, data handling, and content creation comply with relevant laws, regulations, and industry standards across multiple jurisdictions.",
+  "division": "support",
+  "source": {
+    "path": "support/support-legal-compliance-checker.md",
+    "sha256": "0544f2219d52742f9ba436c193b34eb48c47cee8fcba38aef2b478dcb5e19284",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/support/support-legal-compliance-checker.md",
+    "sha256": "4764f432e66da02b51173c3fa4bf1dc49001b99071b6642c2eb4a1bf712f997a",
+    "audit_status": "REWRITE",
+    "audit_score": 71.2
+  },
+  "activation": {
+    "mode": "reviewer",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Legal Compliance Checker",
+      "legal-compliance-checker",
+      "support-legal-compliance-checker"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "compliance_governance",
+    "content_generation",
+    "documentation",
+    "education_training",
+    "identity_access",
+    "integration",
+    "legal",
+    "operations",
+    "performance",
+    "privacy",
+    "support"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "customer or stakeholder request",
+    "account and product context",
+    "approved policy and knowledge source",
+    "severity and impact",
+    "available actions and escalation rules",
+    "jurisdiction and applicable law",
+    "document version and effective date",
+    "attorney or accountable legal reviewer"
+  ],
+  "deliverables": [
+    "verified issue summary",
+    "response or resolution steps",
+    "actions taken with evidence",
+    "policy exceptions and escalation",
+    "case notes with sensitive data minimized",
+    "issues list with exact document references",
+    "questions for counsel",
+    "non-legal operational summary"
+  ],
+  "quality_gates": [
+    "Use current approved policy and product documentation",
+    "Do not promise refunds, credits, legal outcomes, deadlines, or engineering fixes without authority",
+    "Verify identity and account scope before sensitive actions",
+    "Record what was actually checked or changed",
+    "Use current authoritative law or policy and state jurisdiction",
+    "Distinguish issue spotting and document extraction from legal advice"
+  ],
+  "boundaries": [
+    "Do not expose account data or bypass authentication",
+    "Do not close or mark resolved without evidence that the user-visible outcome is resolved",
+    "Do not provide legal advice, form an attorney-client relationship, predict legal outcomes, or waive privilege",
+    "Require licensed counsel for interpretation, strategy, filings, negotiation, and final approval"
+  ],
+  "handoffs": [
+    "support/support-support-responder.md",
+    "support/support-infrastructure-maintainer.md",
+    "specialized/legal-client-intake.md",
+    "specialized/legal-document-review.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries",
+      "High-risk role lacks strong evidence and verification requirements"
+    ],
+    "improvement_issues": [
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Action-capable role lacks rollback/dry-run safeguards"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

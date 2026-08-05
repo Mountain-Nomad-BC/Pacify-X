@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "registry": "registry/skill_orchestrations.json",
+  "workflows": [
+    {
+      "id": "transcript-evidence-extraction",
+      "purpose": "Ingest transcripts immutably, apply one queue-owned semantic boundary, validate evidence and outcome states, and export canonical source-traceable records.",
+      "steps": [
+        {"id": "profile", "skill": "transcript-analysis", "depends_on": []},
+        {"id": "ingest", "skill": "transcript-analysis", "depends_on": ["profile"]},
+        {"id": "separate-lifecycle", "skill": "transcript-analysis", "depends_on": ["ingest"]},
+        {"id": "normalize-queue-terms", "skill": "transcript-analysis", "depends_on": ["separate-lifecycle"]},
+        {"id": "extract", "skill": "transcript-analysis", "depends_on": ["normalize-queue-terms"]},
+        {"id": "validate", "skill": "validate-engineering-outcomes", "depends_on": ["extract"]},
+        {"id": "export", "skill": "transcript-analysis", "depends_on": ["validate"]}
+      ],
+      "failure_policy": "Fail closed on source-hash drift, source-span mismatch, queue ontology leakage, semantic overstatement, unreviewed uncertain facts, schema failure, or attempted latest publication.",
+      "outputs": ["run.json", "data/records.jsonl", "selected-summary.csv"]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:memory:memory-remediation-plan",
+  "title": "Memory graph remediation plan",
+  "type": "object",
+  "required": ["valid", "project_id", "findings", "dependency_order", "steps", "spend_cap", "planned_spend", "mutation_approved", "mutated", "plan_sha256"],
+  "properties": {
+    "valid": {"type": "boolean"},
+    "project_id": {"type": "string", "minLength": 1},
+    "findings": {"type": "array", "items": {"type": "object"}},
+    "dependency_order": {"type": "array", "items": {"type": "string"}},
+    "steps": {"type": "array", "items": {"type": "object"}},
+    "spend_cap": {"type": "number", "minimum": 0},
+    "planned_spend": {"type": "number", "minimum": 0},
+    "mutation_approved": {"type": "boolean"},
+    "mutated": {"const": false},
+    "plan_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": true
+}

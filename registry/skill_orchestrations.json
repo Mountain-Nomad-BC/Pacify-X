@@ -1,199 +1,350 @@
 {
-  "schema_version": "1.0",
+  "count": 28,
   "loading_rule": "Load workflow and skill metadata first; hydrate one selected skill body at a time.",
-  "count": 7,
+  "schema_version": "1.0",
   "workflows": [
     {
-      "id": "source-capability-assimilation",
-      "purpose": "Account, classify, admit, map, validate, and evidence reusable source mechanisms without copying private product identity.",
+      "failure_policy": "Fail closed on missing evidence, authority expansion, cross-project scope, budget exhaustion, uncontained effects, orphan work, or incomplete acceptance.",
+      "id": "clean-room-capability-controls",
+      "purpose": "Run independently authored reference-requirement controls through canonical lazy skills and deterministic runtime bindings.",
+      "steps": [
+        {"depends_on": [], "id": "panel", "skill": "decision-wayfinding"},
+        {"depends_on": [], "id": "delta", "skill": "skill-admission-controller"},
+        {"depends_on": [], "id": "communication", "skill": "context-compactor"},
+        {"depends_on": [], "id": "fleet", "skill": "orchestrate-agent-fleets"},
+        {"depends_on": ["fleet"], "id": "inbox", "skill": "orchestrate-agent-fleets"},
+        {"depends_on": [], "id": "memory", "skill": "govern-memory-fabric"},
+        {"depends_on": [], "id": "goal", "skill": "long-horizon-progress-ledger"},
+        {"depends_on": ["goal"], "id": "terminal", "skill": "manage-agent-session-fabric"},
+        {"depends_on": [], "id": "backend-validate", "skill": "dynamic-service-discovery"},
+        {"depends_on": ["backend-validate"], "id": "backend-select", "skill": "dynamic-service-discovery"},
+        {"depends_on": ["delta"], "id": "shadow", "skill": "engineer-verification-lab"},
+        {"depends_on": ["panel", "shadow"], "id": "specification", "skill": "tracer-bullet-planning"}
+      ]
+    },
+    {
+      "bounds": {
+        "max_hydrated_agents": 4,
+        "max_reviewers": 3,
+        "primary_agents": 1
+      },
+      "failure_policy": "Fail closed on invalid hashes, reference-only activation, unresolved routing, missing high-risk review, project-memory mismatch, authority ambiguity, or unverified acceptance criteria.",
+      "id": "agency-specialist-routing",
+      "purpose": "Route, review, hydrate, compile, authorize, verify, and release a bounded specialist panel without eager corpus loading or prompt-derived authority.",
       "steps": [
         {
-          "id": "inventory",
-          "skill": "audit-source-capabilities",
-          "depends_on": []
+          "depends_on": [],
+          "id": "validate-provider",
+          "skill": "route-specialist-agents"
         },
         {
-          "id": "reconcile-inventory",
-          "skill": "audit-source-capabilities",
           "depends_on": [
-            "inventory"
-          ]
+            "validate-provider"
+          ],
+          "id": "route-metadata",
+          "skill": "route-specialist-agents"
         },
         {
-          "id": "reconcile-skill-identities",
-          "skill": "audit-source-capabilities",
           "depends_on": [
-            "inventory"
-          ]
+            "route-metadata"
+          ],
+          "id": "review-risk",
+          "skill": "enforce-governance-controls"
         },
         {
-          "id": "reconcile-classified-assets",
-          "skill": "audit-source-capabilities",
           "depends_on": [
-            "reconcile-inventory",
-            "reconcile-skill-identities"
-          ]
+            "review-risk"
+          ],
+          "id": "compile-selected",
+          "skill": "route-specialist-agents"
         },
         {
-          "id": "incompleteness",
-          "skill": "audit-incomplete-implementations",
           "depends_on": [
-            "reconcile-classified-assets"
-          ]
+            "compile-selected"
+          ],
+          "id": "authorize-effects",
+          "skill": "execution-contract-enforcer"
         },
         {
-          "id": "relationships",
-          "skill": "validate-knowledge-relationships",
           "depends_on": [
-            "reconcile-classified-assets"
-          ]
+            "authorize-effects"
+          ],
+          "id": "verify-result",
+          "skill": "validate-engineering-outcomes"
         },
         {
-          "id": "boundaries",
-          "skill": "enforce-source-import-boundaries",
           "depends_on": [
-            "reconcile-classified-assets"
-          ]
-        },
-        {
-          "id": "derive",
-          "skill": "synchronize-derived-architecture",
-          "depends_on": [
-            "relationships",
-            "boundaries"
-          ]
-        },
-        {
-          "id": "certify",
-          "skill": "run-evidence-campaigns",
-          "depends_on": [
-            "incompleteness",
-            "derive"
-          ]
+            "verify-result"
+          ],
+          "id": "release-context",
+          "skill": "route-specialist-agents"
         }
       ]
     },
     {
-      "id": "secure-service-release",
-      "purpose": "Validate isolated services from contract and discovery design through security aggregation and deployment evidence.",
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence.",
+      "id": "ai-tool-access-review",
+      "outputs": [
+        "authorization-bound execution plan",
+        "external outcome evidence",
+        "revocation-capable receipt"
+      ],
+      "purpose": "Governed service capability workflow routed by route-n8n-supabase-stack.",
       "steps": [
         {
-          "id": "isolate",
-          "skill": "harden-container-boundaries",
-          "depends_on": []
+          "depends_on": [],
+          "id": "stage-1",
+          "skill": "use-n8n-mcp"
         },
         {
-          "id": "discover",
-          "skill": "dynamic-service-discovery",
           "depends_on": [
-            "isolate"
-          ]
+            "stage-1"
+          ],
+          "id": "stage-2",
+          "skill": "use-supabase-mcp-and-agent-skills"
         },
         {
-          "id": "contracts",
-          "skill": "inspect-live-contracts",
+          "depends_on": [
+            "stage-2"
+          ],
+          "id": "stage-3",
+          "skill": "design-n8n-supabase-security-boundaries"
+        },
+        {
+          "depends_on": [
+            "stage-3"
+          ],
+          "id": "stage-4",
+          "skill": "supervise-contained-execution"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on unknown ownership, missing authorization, target scope drift, production-active testing, unadmitted tools, source/body hash drift, evidence gaps, cleanup failure, or external outcome failure.",
+      "id": "cybersecurity-capability-operations",
+      "outputs": [
+        "explainable candidate package",
+        "authority decision",
+        "body-hash hydration receipt",
+        "evidence-backed finding state",
+        "cleanup and rollback evidence",
+        "non-authorizing learning proposal"
+      ],
+      "purpose": "Route security work through one metadata-first provider and canonical fail-closed authority, tool, evidence, finding, cleanup, and outcome controls.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "normalize",
+          "skill": "govern-cybersecurity-capabilities"
+        },
+        {
+          "depends_on": [
+            "normalize"
+          ],
+          "id": "authority-filter",
+          "skill": "supervise-contained-execution"
+        },
+        {
+          "depends_on": [
+            "authority-filter"
+          ],
+          "id": "discover",
+          "skill": "govern-cybersecurity-capabilities"
+        },
+        {
           "depends_on": [
             "discover"
-          ]
+          ],
+          "id": "rank",
+          "skill": "skill-bundle-resolver"
         },
         {
-          "id": "security",
-          "skill": "orchestrate-security-validation",
           "depends_on": [
-            "contracts"
-          ]
+            "rank"
+          ],
+          "id": "hydrate",
+          "skill": "govern-cybersecurity-capabilities"
         },
         {
-          "id": "containers",
-          "skill": "validate-production-containers",
           "depends_on": [
-            "security"
-          ]
+            "hydrate",
+            "authority-filter"
+          ],
+          "id": "tool-admission",
+          "skill": "quarantine-external-tools"
         },
         {
-          "id": "release",
-          "skill": "govern-deployment-safety",
           "depends_on": [
-            "containers"
-          ]
+            "tool-admission"
+          ],
+          "id": "validate-outcome",
+          "skill": "validate-engineering-outcomes"
         },
         {
-          "id": "evidence",
-          "skill": "run-evidence-campaigns",
           "depends_on": [
-            "release"
-          ]
+            "validate-outcome"
+          ],
+          "id": "record-learning",
+          "skill": "govern-metacognitive-evolution"
         }
       ]
     },
     {
-      "id": "retrieval-readiness",
-      "purpose": "Repair and validate source knowledge before constructing and evaluating governed retrieval.",
+      "failure_policy": "Fail closed on invented authority, unresolved vocabulary collisions, cyclic graphs, cosmetic alternatives, unverified transitions, unresolved review findings, or evidence-free handoff.",
+      "id": "engineering-reasoning-loop",
+      "outputs": [
+        "decision frontier",
+        "canonical glossary updates",
+        "design comparison",
+        "tracer-bullet DAG",
+        "review findings",
+        "handoff receipt"
+      ],
+      "purpose": "Resolve uncertainty, stabilize language and interfaces, plan vertical slices, review independently, and preserve continuation state.",
       "steps": [
         {
-          "id": "repair",
-          "skill": "repair-corrupted-text",
-          "depends_on": []
+          "depends_on": [],
+          "id": "question-frontier",
+          "skill": "frontier-questioning"
         },
         {
-          "id": "relationships",
-          "skill": "validate-knowledge-relationships",
           "depends_on": [
-            "repair"
-          ]
+            "question-frontier"
+          ],
+          "id": "canonical-language",
+          "skill": "domain-language-maintenance"
         },
         {
-          "id": "retrieval",
-          "skill": "engineer-hybrid-retrieval",
           "depends_on": [
-            "relationships"
-          ]
+            "question-frontier"
+          ],
+          "id": "decision-map",
+          "skill": "decision-wayfinding"
         },
         {
-          "id": "evaluate",
-          "skill": "evaluate-retrieval-readiness",
           "depends_on": [
-            "retrieval"
-          ]
+            "decision-map"
+          ],
+          "id": "delegate-authority",
+          "skill": "questionnaire-delegation"
         },
         {
-          "id": "evidence",
-          "skill": "run-evidence-campaigns",
           "depends_on": [
-            "evaluate"
-          ]
+            "canonical-language",
+            "decision-map"
+          ],
+          "id": "compare-designs",
+          "skill": "design-it-twice"
+        },
+        {
+          "depends_on": [
+            "compare-designs"
+          ],
+          "id": "design-module",
+          "skill": "deep-module-design"
+        },
+        {
+          "depends_on": [
+            "design-module"
+          ],
+          "id": "audit-depth",
+          "skill": "architecture-deepening-audit"
+        },
+        {
+          "depends_on": [
+            "audit-depth",
+            "delegate-authority"
+          ],
+          "id": "plan-slices",
+          "skill": "tracer-bullet-planning"
+        },
+        {
+          "depends_on": [
+            "plan-slices"
+          ],
+          "id": "manual-transition",
+          "skill": "guided-procedure-wizard"
+        },
+        {
+          "depends_on": [
+            "plan-slices"
+          ],
+          "id": "review-two-axes",
+          "skill": "dual-axis-code-review"
+        },
+        {
+          "depends_on": [
+            "review-two-axes"
+          ],
+          "id": "reconcile-intent",
+          "skill": "intent-preserving-merge-resolution"
+        },
+        {
+          "depends_on": [
+            "manual-transition",
+            "reconcile-intent"
+          ],
+          "id": "handoff",
+          "skill": "context-handoff-package"
         }
       ]
     },
     {
-      "id": "failure-and-recovery",
-      "purpose": "Triage cross-surface failure, prove reversible restoration, exercise bounded resilience, and retain release blockers.",
+      "failure_policy": "Fail closed on incomplete inventory, unclear license, imported-source execution, collisions, unresolved dependencies, authority expansion, scope mismatch, or acceptance regression.",
+      "id": "external-capability-intake",
+      "outputs": [
+        "external capability status",
+        "selective stage plan",
+        "project-local stage or revocation receipt"
+      ],
+      "purpose": "Inventory, search, reconcile, stage, admit, and certify external candidates without source execution or staging-time authority.",
       "steps": [
         {
-          "id": "triage",
-          "skill": "triage-cross-surface-failures",
-          "depends_on": []
+          "depends_on": [],
+          "id": "inventory",
+          "skill": "audit-source-capabilities"
         },
         {
-          "id": "restore",
-          "skill": "certify-reversible-validation",
           "depends_on": [
-            "triage"
-          ]
+            "inventory"
+          ],
+          "id": "license",
+          "skill": "enforce-source-import-boundaries"
         },
         {
-          "id": "drill",
-          "skill": "run-resilience-drills",
           "depends_on": [
-            "restore"
-          ]
+            "license"
+          ],
+          "id": "search-metadata",
+          "skill": "govern-external-capability-intake"
         },
         {
-          "id": "release",
-          "skill": "govern-deployment-safety",
           "depends_on": [
-            "drill"
-          ]
+            "search-metadata"
+          ],
+          "id": "overlap",
+          "skill": "govern-external-capability-intake"
+        },
+        {
+          "depends_on": [
+            "overlap"
+          ],
+          "id": "plan-stage",
+          "skill": "govern-external-capability-intake"
+        },
+        {
+          "depends_on": [
+            "plan-stage"
+          ],
+          "id": "admission",
+          "skill": "admit-capability"
+        },
+        {
+          "depends_on": [
+            "admission"
+          ],
+          "id": "certify",
+          "skill": "run-evidence-campaigns"
         }
       ]
     },
@@ -202,44 +353,233 @@
       "purpose": "Audit, quarantine, admit, lazily register, and protocol-certify external tool servers.",
       "steps": [
         {
+          "depends_on": [],
           "id": "inventory",
-          "skill": "audit-source-capabilities",
-          "depends_on": []
+          "skill": "audit-source-capabilities"
         },
         {
-          "id": "quarantine",
-          "skill": "quarantine-external-tools",
           "depends_on": [
             "inventory"
-          ]
+          ],
+          "id": "quarantine",
+          "skill": "quarantine-external-tools"
         },
         {
-          "id": "lifecycle",
-          "skill": "manage-mcp-lifecycle",
           "depends_on": [
             "quarantine"
-          ]
+          ],
+          "id": "lifecycle",
+          "skill": "manage-mcp-lifecycle"
         }
       ]
     },
     {
-      "id": "semantic-capability-query-certification",
-      "purpose": "Select capabilities from metadata, resolve a bounded dependency bundle, and certify deterministic golden-query behavior without eager skill-body loading.",
+      "id": "failure-and-recovery",
+      "purpose": "Triage cross-surface failure, prove reversible restoration, exercise bounded resilience, and retain release blockers.",
       "steps": [
         {
-          "id": "select",
-          "skill": "skill-navigator",
-          "depends_on": []
+          "depends_on": [],
+          "id": "triage",
+          "skill": "triage-cross-surface-failures"
         },
         {
-          "id": "resolve",
-          "skill": "skill-bundle-resolver",
-          "depends_on": ["select"]
+          "depends_on": [
+            "triage"
+          ],
+          "id": "restore",
+          "skill": "certify-reversible-validation"
         },
         {
+          "depends_on": [
+            "restore"
+          ],
+          "id": "drill",
+          "skill": "run-resilience-drills"
+        },
+        {
+          "depends_on": [
+            "drill"
+          ],
+          "id": "release",
+          "skill": "govern-deployment-safety"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on admission blockers, count mismatch, ambiguous novelty, graph errors, forbidden retrieval hits, holdout degradation, stale fingerprints, unapproved weights, or canonical writes.",
+      "id": "knowledge-refinery",
+      "outputs": [
+        "portable inventory",
+        "novelty report",
+        "merge plan",
+        "graph audit",
+        "staged proposal receipt"
+      ],
+      "purpose": "Convert untrusted sources into reviewed, graph-coherent, retrieval-tested, non-destructive knowledge change proposals.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "inventory",
+          "skill": "audit-source-capabilities"
+        },
+        {
+          "depends_on": [
+            "inventory"
+          ],
+          "id": "admission",
+          "skill": "enforce-source-import-boundaries"
+        },
+        {
+          "depends_on": [
+            "admission"
+          ],
+          "id": "extract",
+          "skill": "govern-knowledge-refinery"
+        },
+        {
+          "depends_on": [
+            "extract"
+          ],
+          "id": "classify",
+          "skill": "govern-knowledge-refinery"
+        },
+        {
+          "depends_on": [
+            "classify"
+          ],
+          "id": "merge-plan",
+          "skill": "govern-knowledge-refinery"
+        },
+        {
+          "depends_on": [
+            "merge-plan"
+          ],
+          "id": "graph-audit",
+          "skill": "validate-knowledge-relationships"
+        },
+        {
+          "depends_on": [
+            "graph-audit"
+          ],
+          "id": "simulate",
+          "skill": "govern-knowledge-refinery"
+        },
+        {
+          "depends_on": [
+            "simulate"
+          ],
+          "id": "calibrate",
+          "skill": "govern-knowledge-refinery"
+        },
+        {
+          "depends_on": [
+            "calibrate"
+          ],
           "id": "certify",
-          "skill": "run-evidence-campaigns",
-          "depends_on": ["resolve"]
+          "skill": "run-evidence-campaigns"
+        },
+        {
+          "depends_on": [
+            "certify"
+          ],
+          "id": "stage-approved",
+          "skill": "govern-knowledge-refinery"
+        }
+      ]
+    },
+    {
+      "bounds": {
+        "hard_delete": false,
+        "max_borrowed_agents": 2,
+        "max_loadout_assets": 40,
+        "whole_vault_injection": false
+      },
+      "failure_policy": "Fail closed on capture poisoning, secret findings, unsupported promotion, unresolved conflict, scope or ACL mismatch, stale or forbidden retrieval, budget overflow, offload hash failure, cross-project leakage, or evaluation regression.",
+      "id": "layered-memory-lifecycle",
+      "purpose": "Capture, distill, govern, retrieve, assemble, compact, and evaluate project-scoped memory without creating a parallel store or automatic canon.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "sanitize-capture",
+          "skill": "govern-memory-fabric"
+        },
+        {
+          "depends_on": [
+            "sanitize-capture"
+          ],
+          "id": "persist-l0",
+          "skill": "govern-memory-fabric"
+        },
+        {
+          "depends_on": [
+            "persist-l0"
+          ],
+          "id": "extract-l1",
+          "skill": "govern-memory-fabric"
+        },
+        {
+          "depends_on": [
+            "extract-l1"
+          ],
+          "id": "resolve-conflicts",
+          "skill": "govern-memory-fabric"
+        },
+        {
+          "depends_on": [
+            "resolve-conflicts"
+          ],
+          "id": "promote",
+          "skill": "govern-memory-fabric"
+        },
+        {
+          "depends_on": [
+            "promote"
+          ],
+          "id": "build-scenes",
+          "skill": "govern-memory-fabric"
+        },
+        {
+          "depends_on": [
+            "build-scenes"
+          ],
+          "id": "resolve-loadout",
+          "skill": "govern-memory-fabric"
+        },
+        {
+          "depends_on": [
+            "resolve-loadout"
+          ],
+          "id": "rank",
+          "skill": "engineer-hybrid-retrieval"
+        },
+        {
+          "depends_on": [
+            "rank"
+          ],
+          "id": "assemble",
+          "skill": "govern-memory-fabric"
+        },
+        {
+          "depends_on": [
+            "assemble"
+          ],
+          "id": "compact",
+          "skill": "govern-memory-fabric"
+        },
+        {
+          "depends_on": [
+            "rank",
+            "compact"
+          ],
+          "id": "evaluate",
+          "skill": "evaluate-retrieval-readiness"
+        },
+        {
+          "depends_on": [
+            "evaluate"
+          ],
+          "id": "observe",
+          "skill": "operate-memory-retrieval-observability"
         }
       ]
     },
@@ -248,30 +588,629 @@
       "purpose": "Inspect a model without importing it, rank feasible execution strategies, enforce data and retrieval gates, and validate the chosen plan.",
       "steps": [
         {
+          "depends_on": [],
           "id": "inspect",
-          "skill": "inspect-llm-architecture",
-          "depends_on": []
+          "skill": "inspect-llm-architecture"
         },
         {
+          "depends_on": [
+            "inspect"
+          ],
           "id": "plan",
-          "skill": "plan-local-model-deployment",
-          "depends_on": ["inspect"]
+          "skill": "plan-local-model-deployment"
         },
         {
+          "depends_on": [
+            "plan"
+          ],
           "id": "data-gate",
-          "skill": "gate-model-data-lifecycle",
-          "depends_on": ["plan"]
+          "skill": "gate-model-data-lifecycle"
         },
         {
+          "depends_on": [
+            "plan"
+          ],
           "id": "retrieval-gate",
-          "skill": "evaluate-retrieval-readiness",
-          "depends_on": ["plan"]
+          "skill": "evaluate-retrieval-readiness"
         },
         {
+          "depends_on": [
+            "data-gate",
+            "retrieval-gate"
+          ],
           "id": "validate",
-          "skill": "validate-engineering-outcomes",
-          "depends_on": ["data-gate", "retrieval-gate"]
+          "skill": "validate-engineering-outcomes"
         }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence.",
+      "id": "n8n-install-commission",
+      "outputs": [
+        "authorization-bound execution plan",
+        "external outcome evidence",
+        "revocation-capable receipt"
+      ],
+      "purpose": "Governed service capability workflow routed by route-n8n-capabilities.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "stage-1",
+          "skill": "evaluate-n8n-fit"
+        },
+        {
+          "depends_on": [
+            "stage-1"
+          ],
+          "id": "stage-2",
+          "skill": "acquire-install-n8n"
+        },
+        {
+          "depends_on": [
+            "stage-2"
+          ],
+          "id": "stage-3",
+          "skill": "configure-n8n"
+        },
+        {
+          "depends_on": [
+            "stage-3"
+          ],
+          "id": "stage-4",
+          "skill": "deploy-n8n-docker"
+        },
+        {
+          "depends_on": [
+            "stage-4"
+          ],
+          "id": "stage-5",
+          "skill": "backup-upgrade-restore-n8n"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence.",
+      "id": "n8n-production-security-review",
+      "outputs": [
+        "authorization-bound execution plan",
+        "external outcome evidence",
+        "revocation-capable receipt"
+      ],
+      "purpose": "Governed service capability workflow routed by route-n8n-capabilities.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "stage-1",
+          "skill": "secure-n8n"
+        },
+        {
+          "depends_on": [
+            "stage-1"
+          ],
+          "id": "stage-2",
+          "skill": "manage-n8n-credentials"
+        },
+        {
+          "depends_on": [
+            "stage-2"
+          ],
+          "id": "stage-3",
+          "skill": "govern-n8n-community-nodes"
+        },
+        {
+          "depends_on": [
+            "stage-3"
+          ],
+          "id": "stage-4",
+          "skill": "observe-operate-n8n"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence.",
+      "id": "n8n-supabase-integration-release",
+      "outputs": [
+        "authorization-bound execution plan",
+        "external outcome evidence",
+        "revocation-capable receipt"
+      ],
+      "purpose": "Governed service capability workflow routed by route-n8n-supabase-stack.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "stage-1",
+          "skill": "connect-n8n-to-supabase"
+        },
+        {
+          "depends_on": [
+            "stage-1"
+          ],
+          "id": "stage-2",
+          "skill": "design-n8n-supabase-security-boundaries"
+        },
+        {
+          "depends_on": [
+            "stage-2"
+          ],
+          "id": "stage-3",
+          "skill": "design-n8n-supabase-reliability"
+        },
+        {
+          "depends_on": [
+            "stage-3"
+          ],
+          "id": "stage-4",
+          "skill": "test-n8n-supabase-integrations"
+        },
+        {
+          "depends_on": [
+            "stage-4"
+          ],
+          "id": "stage-5",
+          "skill": "operate-n8n-supabase-production"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence.",
+      "id": "n8n-supabase-rag-release",
+      "outputs": [
+        "authorization-bound execution plan",
+        "external outcome evidence",
+        "revocation-capable receipt"
+      ],
+      "purpose": "Governed service capability workflow routed by route-n8n-supabase-stack.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "stage-1",
+          "skill": "operate-supabase-vector-search"
+        },
+        {
+          "depends_on": [
+            "stage-1"
+          ],
+          "id": "stage-2",
+          "skill": "build-n8n-supabase-rag"
+        },
+        {
+          "depends_on": [
+            "stage-2"
+          ],
+          "id": "stage-3",
+          "skill": "test-n8n-supabase-integrations"
+        },
+        {
+          "depends_on": [
+            "stage-3"
+          ],
+          "id": "stage-4",
+          "skill": "engineer-hybrid-retrieval"
+        },
+        {
+          "depends_on": [
+            "stage-4"
+          ],
+          "id": "stage-5",
+          "skill": "evaluate-retrieval-readiness"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence.",
+      "id": "n8n-workflow-release",
+      "outputs": [
+        "authorization-bound execution plan",
+        "external outcome evidence",
+        "revocation-capable receipt"
+      ],
+      "purpose": "Governed service capability workflow routed by route-n8n-capabilities.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "stage-1",
+          "skill": "design-build-n8n-workflows"
+        },
+        {
+          "depends_on": [
+            "stage-1"
+          ],
+          "id": "stage-2",
+          "skill": "test-validate-n8n-workflows"
+        },
+        {
+          "depends_on": [
+            "stage-2"
+          ],
+          "id": "stage-3",
+          "skill": "verify-outcome"
+        }
+      ]
+    },
+    {
+      "id": "retrieval-readiness",
+      "purpose": "Repair and validate source knowledge before constructing and evaluating governed retrieval.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "repair",
+          "skill": "repair-corrupted-text"
+        },
+        {
+          "depends_on": [
+            "repair"
+          ],
+          "id": "relationships",
+          "skill": "validate-knowledge-relationships"
+        },
+        {
+          "depends_on": [
+            "relationships"
+          ],
+          "id": "retrieval",
+          "skill": "engineer-hybrid-retrieval"
+        },
+        {
+          "depends_on": [
+            "retrieval"
+          ],
+          "id": "evaluate",
+          "skill": "evaluate-retrieval-readiness"
+        },
+        {
+          "depends_on": [
+            "evaluate"
+          ],
+          "id": "evidence",
+          "skill": "run-evidence-campaigns"
+        }
+      ]
+    },
+    {
+      "id": "secure-service-release",
+      "purpose": "Validate isolated services from contract and discovery design through security aggregation and deployment evidence.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "isolate",
+          "skill": "harden-container-boundaries"
+        },
+        {
+          "depends_on": [
+            "isolate"
+          ],
+          "id": "discover",
+          "skill": "dynamic-service-discovery"
+        },
+        {
+          "depends_on": [
+            "discover"
+          ],
+          "id": "contracts",
+          "skill": "inspect-live-contracts"
+        },
+        {
+          "depends_on": [
+            "contracts"
+          ],
+          "id": "security",
+          "skill": "orchestrate-security-validation"
+        },
+        {
+          "depends_on": [
+            "security"
+          ],
+          "id": "containers",
+          "skill": "validate-production-containers"
+        },
+        {
+          "depends_on": [
+            "containers"
+          ],
+          "id": "release",
+          "skill": "govern-deployment-safety"
+        },
+        {
+          "depends_on": [
+            "release"
+          ],
+          "id": "evidence",
+          "skill": "run-evidence-campaigns"
+        }
+      ]
+    },
+    {
+      "id": "semantic-capability-query-certification",
+      "purpose": "Select capabilities from metadata, resolve a bounded dependency bundle, and certify deterministic golden-query behavior without eager skill-body loading.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "select",
+          "skill": "skill-navigator"
+        },
+        {
+          "depends_on": [
+            "select"
+          ],
+          "id": "resolve",
+          "skill": "skill-bundle-resolver"
+        },
+        {
+          "depends_on": [
+            "resolve"
+          ],
+          "id": "certify",
+          "skill": "run-evidence-campaigns"
+        }
+      ]
+    },
+    {
+      "id": "source-capability-assimilation",
+      "purpose": "Account, classify, admit, map, validate, and evidence reusable source mechanisms without copying private product identity.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "inventory",
+          "skill": "audit-source-capabilities"
+        },
+        {
+          "depends_on": [
+            "inventory"
+          ],
+          "id": "reconcile-inventory",
+          "skill": "audit-source-capabilities"
+        },
+        {
+          "depends_on": [
+            "inventory"
+          ],
+          "id": "reconcile-skill-identities",
+          "skill": "audit-source-capabilities"
+        },
+        {
+          "depends_on": [
+            "reconcile-inventory",
+            "reconcile-skill-identities"
+          ],
+          "id": "reconcile-classified-assets",
+          "skill": "audit-source-capabilities"
+        },
+        {
+          "depends_on": [
+            "reconcile-classified-assets"
+          ],
+          "id": "incompleteness",
+          "skill": "audit-incomplete-implementations"
+        },
+        {
+          "depends_on": [
+            "reconcile-classified-assets"
+          ],
+          "id": "relationships",
+          "skill": "validate-knowledge-relationships"
+        },
+        {
+          "depends_on": [
+            "reconcile-classified-assets"
+          ],
+          "id": "boundaries",
+          "skill": "enforce-source-import-boundaries"
+        },
+        {
+          "depends_on": [
+            "relationships",
+            "boundaries"
+          ],
+          "id": "derive",
+          "skill": "synchronize-derived-architecture"
+        },
+        {
+          "depends_on": [
+            "incompleteness",
+            "derive"
+          ],
+          "id": "certify",
+          "skill": "run-evidence-campaigns"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence.",
+      "id": "supabase-local-to-production",
+      "outputs": [
+        "authorization-bound execution plan",
+        "external outcome evidence",
+        "revocation-capable receipt"
+      ],
+      "purpose": "Governed service capability workflow routed by route-supabase-capabilities.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "stage-1",
+          "skill": "acquire-install-supabase"
+        },
+        {
+          "depends_on": [
+            "stage-1"
+          ],
+          "id": "stage-2",
+          "skill": "develop-supabase-locally"
+        },
+        {
+          "depends_on": [
+            "stage-2"
+          ],
+          "id": "stage-3",
+          "skill": "manage-supabase-migrations"
+        },
+        {
+          "depends_on": [
+            "stage-3"
+          ],
+          "id": "stage-4",
+          "skill": "manage-supabase-environments"
+        },
+        {
+          "depends_on": [
+            "stage-4"
+          ],
+          "id": "stage-5",
+          "skill": "backup-deploy-recover-supabase"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on missing approval, unresolved dependency, secret exposure, authority expansion, unsafe client credentials, absent RLS, or missing external outcome evidence.",
+      "id": "supabase-secure-application",
+      "outputs": [
+        "authorization-bound execution plan",
+        "external outcome evidence",
+        "revocation-capable receipt"
+      ],
+      "purpose": "Governed service capability workflow routed by route-supabase-capabilities.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "stage-1",
+          "skill": "design-supabase-postgres"
+        },
+        {
+          "depends_on": [
+            "stage-1"
+          ],
+          "id": "stage-2",
+          "skill": "secure-supabase-rls"
+        },
+        {
+          "depends_on": [
+            "stage-2"
+          ],
+          "id": "stage-3",
+          "skill": "implement-supabase-auth"
+        },
+        {
+          "depends_on": [
+            "stage-3"
+          ],
+          "id": "stage-4",
+          "skill": "test-n8n-supabase-integrations"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on source-hash drift, source-span mismatch, queue ontology leakage, semantic overstatement, unreviewed uncertain facts, schema failure, or attempted latest publication.",
+      "id": "transcript-evidence-extraction",
+      "outputs": [
+        "run.json",
+        "data/records.jsonl",
+        "selected-summary.csv"
+      ],
+      "purpose": "Ingest transcripts immutably, apply one queue-owned semantic boundary, validate evidence and outcome states, and export canonical source-traceable records.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "profile",
+          "skill": "transcript-analysis"
+        },
+        {
+          "depends_on": [
+            "profile"
+          ],
+          "id": "ingest",
+          "skill": "transcript-analysis"
+        },
+        {
+          "depends_on": [
+            "ingest"
+          ],
+          "id": "separate-lifecycle",
+          "skill": "transcript-analysis"
+        },
+        {
+          "depends_on": [
+            "separate-lifecycle"
+          ],
+          "id": "normalize-queue-terms",
+          "skill": "transcript-analysis"
+        },
+        {
+          "depends_on": [
+            "normalize-queue-terms"
+          ],
+          "id": "extract",
+          "skill": "transcript-analysis"
+        },
+        {
+          "depends_on": [
+            "extract"
+          ],
+          "id": "validate",
+          "skill": "validate-engineering-outcomes"
+        },
+        {
+          "depends_on": [
+            "validate"
+          ],
+          "id": "export",
+          "skill": "transcript-analysis"
+        }
+      ]
+    },
+    {
+      "id": "candidate-pipeline",
+      "purpose": "Compile and resolve candidates through explicit membership and evidence boundaries.",
+      "failure_policy": "Block on source admission failure, stage invariant violation, batch instability, missing dependency, missing required kind, or unreasoned exclusion.",
+      "steps": [
+        {"id": "inventory", "skill": "audit-source-capabilities", "depends_on": []},
+        {"id": "compile", "skill": "govern-candidate-resolution-pipeline", "depends_on": ["inventory"]},
+        {"id": "resolve", "skill": "govern-candidate-resolution-pipeline", "depends_on": ["compile"]},
+        {"id": "verify", "skill": "engineer-verification-lab", "depends_on": ["resolve"]}
+      ]
+    },
+    {
+      "id": "distributed-runtime",
+      "purpose": "Reserve, place, execute, reconcile, and hand off project-scoped distributed work.",
+      "failure_policy": "Fail closed on scope bleed, lease collision, quota, trust, missing user presence, missing evidence, or unreconciled resources.",
+      "steps": [
+        {"id": "scope", "skill": "govern-distributed-work-runtime", "depends_on": []},
+        {"id": "reserve", "skill": "orchestrate-capability-scheduling", "depends_on": ["scope"]},
+        {"id": "place", "skill": "govern-distributed-work-runtime", "depends_on": ["reserve"]},
+        {"id": "execute", "skill": "govern-runtime-protocol-deployment", "depends_on": ["place"]},
+        {"id": "verify", "skill": "verify-outcome", "depends_on": ["execute"]},
+        {"id": "reconcile", "skill": "govern-distributed-work-runtime", "depends_on": ["verify"]}
+      ]
+    },
+    {
+      "id": "epistemic-evolution",
+      "purpose": "Maintain temporal claims and evaluate quarantined skill improvements without live self-editing.",
+      "failure_policy": "Keep candidates quarantined on temporal ambiguity, missing lineage, correlated actor and judge, held-out regression, or absent independent promotion.",
+      "steps": [
+        {"id": "capture", "skill": "govern-memory-fabric", "depends_on": []},
+        {"id": "invalidate", "skill": "govern-epistemic-skill-evolution", "depends_on": ["capture"]},
+        {"id": "experiment", "skill": "govern-epistemic-skill-evolution", "depends_on": ["invalidate"]},
+        {"id": "verify", "skill": "skill-admission-controller", "depends_on": ["experiment"]}
+      ]
+    },
+    {
+      "id": "deliverable-validation",
+      "purpose": "Prove physical and media deliverables against explicit promises and independent checks.",
+      "failure_policy": "Block on mismatch, unknown required property, missing independent physical check, or provider downgrade.",
+      "steps": [
+        {"id": "declare", "skill": "validate-physical-media-deliverables", "depends_on": []},
+        {"id": "inspect", "skill": "validate-physical-media-deliverables", "depends_on": ["declare"]},
+        {"id": "verify", "skill": "verify-outcome", "depends_on": ["inspect"]}
+      ]
+    },
+    {
+      "id": "research-engine",
+      "purpose": "Discover, fingerprint, compare, and admit engineering mechanisms without repository-level copying.",
+      "failure_policy": "Retain evidence and abstain on license ambiguity, missing provenance, weak mechanism evidence, semantic conflict, or attempted direct promotion.",
+      "steps": [
+        {"id": "discover", "skill": "operate-engineering-research-engine", "depends_on": []},
+        {"id": "fingerprint", "skill": "operate-engineering-research-engine", "depends_on": ["discover"]},
+        {"id": "synthesize", "skill": "operate-engineering-research-engine", "depends_on": ["fingerprint"]},
+        {"id": "admit", "skill": "govern-knowledge-refinery", "depends_on": ["synthesize"]},
+        {"id": "verify", "skill": "run-evidence-campaigns", "depends_on": ["admit"]}
       ]
     }
   ]

@@ -1,0 +1,16 @@
+{
+  "id": "operate-engineering-research-engine",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".agents/skills/operate-engineering-research-engine/SKILL.md",
+  "body_sha256": "8118164b966b1df64e16c10181ba445dac250aa831089e8ddd8d2d3178ffe77b",
+  "references": [],
+  "capability_tags": ["research", "repository-fingerprint", "mechanism-graph", "version-drift", "capability-delta"],
+  "effects": ["read_local", "network", "write_workspace"],
+  "provenance": {"type": "sanitized_clean_room_integration", "basis": ["evidence/integration/pxi-20260804/final_intake_disposition.json"], "canonical_owner": "runtime/completion_controls.py"},
+  "clean_room": true,
+  "tests": "tests/test_completion_controls.py",
+  "evidence": "tests/test_completion_controls.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

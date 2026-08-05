@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:transcripts:transcript-ontology",
+  "title": "Queue-owned transcript ontology",
+  "type": "object",
+  "required": ["schema_version", "queue_id", "version", "aliases", "components", "alerts", "thresholds", "flow_policies", "reviewed_transfers"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "queue_id": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
+    "aliases": {"type": "object", "additionalProperties": {"type": "string"}},
+    "components": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "alerts": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "thresholds": {"type": "object", "additionalProperties": {"type": "number"}},
+    "flow_policies": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "reviewed_transfers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from_queue", "term", "reviewer", "evidence"],
+        "properties": {
+          "from_queue": {"type": "string", "minLength": 1},
+          "term": {"type": "string", "minLength": 1},
+          "reviewer": {"type": "string", "minLength": 1},
+          "evidence": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

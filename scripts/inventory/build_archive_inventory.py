@@ -3,6 +3,7 @@
 Only ZIP central-directory metadata and archive bytes (for SHA-256) are read.
 Members are never extracted, opened, imported, or executed.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -21,7 +22,14 @@ _SOURCE_PATTERN = re.compile(
     rf"(?i)(?:(?<![A-Za-z])({'|'.join(_SOURCE_TERMS[:2])})(?![A-Za-z])|({_SOURCE_TERMS[2]}))"
 )
 _SOURCE_REPLACEMENTS = dict(
-    zip(_SOURCE_TERMS, ("intelligent_integrations_and_engines", "governed_retrieval_system_with_deterministic_rails", "enterprise"))
+    zip(
+        _SOURCE_TERMS,
+        (
+            "intelligent_integrations_and_engines",
+            "governed_retrieval_system_with_deterministic_rails",
+            "enterprise",
+        ),
+    )
 )
 _DRIVE_PATH = re.compile(r"^[A-Za-z]:[\\/]")
 _CONTROL_CHARACTERS = re.compile(r"[\x00-\x1f\x7f]")
@@ -50,7 +58,11 @@ class BombThresholds:
     max_entry_compression_ratio: float = 1_000.0
 
     def __post_init__(self) -> None:
-        for name in ("max_entries", "max_uncompressed_bytes", "max_entry_uncompressed_bytes"):
+        for name in (
+            "max_entries",
+            "max_uncompressed_bytes",
+            "max_entry_uncompressed_bytes",
+        ):
             if getattr(self, name) < 1:
                 raise ValueError(f"{name} must be at least 1")
         for name in ("max_compression_ratio", "max_entry_compression_ratio"):
@@ -120,6 +132,8 @@ def inspect_archive(
     root: Path,
     archive: Path,
     thresholds: BombThresholds,
+    *,
+    include_entries: bool = False,
 ) -> dict[str, object]:
     """Inspect one ZIP without reading any member payload."""
     relative = sanitize_relative_path(archive.relative_to(root).as_posix())
@@ -141,6 +155,7 @@ def inspect_archive(
     symlinks: set[str] = set()
     nested: set[str] = set()
     suspicious_entries: list[dict[str, object]] = []
+    entry_records: list[dict[str, object]] = []
     entry_count = 0
     compressed_bytes = 0
     uncompressed_bytes = 0
@@ -163,6 +178,21 @@ def inspect_archive(
                     symlinks.add(reported_path)
                 if _is_nested_archive(info.filename):
                     nested.add(reported_path)
+                if include_entries:
+                    entry_records.append(
+                        {
+                            "path": reported_path,
+                            "bytes": info.file_size,
+                            "compressed_bytes": info.compress_size,
+                            "crc32": f"{info.CRC:08x}",
+                            "is_directory": info.is_dir(),
+                            "encrypted": bool(info.flag_bits & 0x1),
+                            "symlink": _is_zip_symlink(
+                                info.create_system, info.external_attr
+                            ),
+                            "nested_archive": _is_nested_archive(info.filename),
+                        }
+                    )
 
                 entry_reasons: list[str] = []
                 if info.file_size > thresholds.max_entry_uncompressed_bytes:
@@ -190,7 +220,10 @@ def inspect_archive(
         bomb_reasons.append("uncompressed_bytes_exceeded")
     if compression_ratio is None and uncompressed_bytes:
         bomb_reasons.append("zero_compressed_nonempty")
-    elif compression_ratio is not None and compression_ratio > thresholds.max_compression_ratio:
+    elif (
+        compression_ratio is not None
+        and compression_ratio > thresholds.max_compression_ratio
+    ):
         bomb_reasons.append("compression_ratio_exceeded")
     if suspicious_entries:
         bomb_reasons.append("suspicious_entry")
@@ -202,7 +235,7 @@ def inspect_archive(
     if errors:
         disposition = "review_required"
 
-    return {
+    result = {
         "root": _sanitize_label(root_label),
         "path": relative,
         "sha256": archive_sha256,
@@ -226,12 +259,18 @@ def inspect_archive(
         "extracted": False,
         "disposition": disposition,
     }
+    if include_entries:
+        result["entries"] = sorted(
+            entry_records, key=lambda item: str(item["path"]).casefold()
+        )
+    return result
 
 
 def build_inventory(
     roots: Iterable[tuple[str, Path]],
     *,
     thresholds: BombThresholds | None = None,
+    include_entries: bool = False,
 ) -> dict[str, object]:
     """Inventory all ``.zip`` files below one or more labeled roots."""
     limits = thresholds or BombThresholds()
@@ -250,15 +289,30 @@ def build_inventory(
     archives: list[dict[str, object]] = []
     for label, root in sorted(normalized_roots, key=lambda item: item[0]):
         candidates = sorted(
-            (path for path in root.rglob("*") if path.is_file() and path.suffix.casefold() == ".zip"),
+            (
+                path
+                for path in root.rglob("*")
+                if path.is_file() and path.suffix.casefold() == ".zip"
+            ),
             key=lambda path: path.relative_to(root).as_posix().casefold(),
         )
-        archives.extend(inspect_archive(label, root, archive, limits) for archive in candidates)
+        archives.extend(
+            inspect_archive(
+                label,
+                root,
+                archive,
+                limits,
+                include_entries=include_entries,
+            )
+            for archive in candidates
+        )
 
     archives.sort(key=lambda item: (str(item["root"]), str(item["path"])))
     return {
         "schema_version": "1.0",
-        "roots": [label for label, _ in sorted(normalized_roots, key=lambda item: item[0])],
+        "roots": [
+            label for label, _ in sorted(normalized_roots, key=lambda item: item[0])
+        ],
         "bomb_thresholds": asdict(limits),
         "archives": archives,
         "summary": {
@@ -267,7 +321,9 @@ def build_inventory(
             "quarantine_recommended_count": sum(
                 item["disposition"] == "quarantine_recommended" for item in archives
             ),
-            "suspicious_bomb_count": sum(bool(item["suspicious_bomb"]) for item in archives),
+            "suspicious_bomb_count": sum(
+                bool(item["suspicious_bomb"]) for item in archives
+            ),
         },
     }
 
@@ -279,7 +335,11 @@ def write_archive_maps(report: dict[str, object], maps_dir: Path) -> int:
     for archive in report.get("archives", ()):
         identity = f"{archive['root']}:{archive['path']}"
         map_id = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:20]
-        payload = {"schema_version": "1.0", "archive_map_id": map_id, "archive": archive}
+        payload = {
+            "schema_version": "1.0",
+            "archive_map_id": map_id,
+            "archive": archive,
+        }
         (maps_dir / f"archive-{map_id}.json").write_text(
             json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
         )
@@ -307,8 +367,19 @@ def build_parser() -> argparse.ArgumentParser:
         metavar="LABEL=PATH",
         help="labeled search root; may be supplied more than once",
     )
-    parser.add_argument("--output", required=True, type=Path, help="inventory JSON path")
-    parser.add_argument("--maps-dir", type=Path, help="optional directory for one deterministic JSON map per archive")
+    parser.add_argument(
+        "--output", required=True, type=Path, help="inventory JSON path"
+    )
+    parser.add_argument(
+        "--maps-dir",
+        type=Path,
+        help="optional directory for one deterministic JSON map per archive",
+    )
+    parser.add_argument(
+        "--include-entries",
+        action="store_true",
+        help="include sanitized central-directory records in the inventory and per-archive maps",
+    )
     parser.add_argument("--max-entries", type=int, default=defaults.max_entries)
     parser.add_argument(
         "--max-uncompressed-bytes",
@@ -342,7 +413,11 @@ def main(argv: Sequence[str] | None = None) -> int:
             max_entry_uncompressed_bytes=args.max_entry_uncompressed_bytes,
             max_entry_compression_ratio=args.max_entry_compression_ratio,
         )
-        report = build_inventory(args.root, thresholds=thresholds)
+        report = build_inventory(
+            args.root,
+            thresholds=thresholds,
+            include_entries=args.include_entries,
+        )
     except ValueError as exc:
         parser.error(str(exc))
     args.output.parent.mkdir(parents=True, exist_ok=True)

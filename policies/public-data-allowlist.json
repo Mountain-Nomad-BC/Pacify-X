@@ -8,7 +8,14 @@
       "reason": "Published security contact and package author contact"
     }
   ],
-  "inert_test_domains": ["example.invalid"],
+  "inert_test_domains": [
+    "acme.com",
+    "company.com",
+    "corp.com",
+    "db.internal",
+    "example.com",
+    "example.invalid"
+  ],
   "technical_uri_tokens": ["git@github.com"],
   "binary_types": {
     ".png": "89504e470d0a1a0a"

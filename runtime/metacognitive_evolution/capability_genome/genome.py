@@ -4,18 +4,37 @@ from typing import Any
 from ..common.mathx import weighted_jaccard
 
 RELATION_TYPES = {
-    "depends_on", "requires", "produces", "improves", "conflicts_with",
-    "extends", "replaces", "supersedes", "duplicates", "composes_with"
+    "depends_on",
+    "requires",
+    "produces",
+    "improves",
+    "conflicts_with",
+    "extends",
+    "replaces",
+    "supersedes",
+    "duplicates",
+    "composes_with",
 }
+
 
 def _token_weights(capability: dict[str, Any]) -> dict[str, float]:
     tokens: dict[str, float] = {}
-    for field, weight in (("tags", 1.0), ("inputs", 0.8), ("outputs", 0.9), ("mechanisms", 1.2)):
+    for field, weight in (
+        ("tags", 1.0),
+        ("inputs", 0.8),
+        ("outputs", 0.9),
+        ("mechanisms", 1.2),
+    ):
         for value in capability.get(field, []):
-            tokens[str(value).lower()] = max(tokens.get(str(value).lower(), 0.0), weight)
+            tokens[str(value).lower()] = max(
+                tokens.get(str(value).lower(), 0.0), weight
+            )
     return tokens
 
-def build(capabilities: list[dict[str, Any]], relations: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+
+def build(
+    capabilities: list[dict[str, Any]], relations: list[dict[str, Any]] | None = None
+) -> dict[str, Any]:
     relations = list(relations or [])
     ids = {str(c["id"]) for c in capabilities}
     errors: list[str] = []
@@ -26,15 +45,17 @@ def build(capabilities: list[dict[str, Any]], relations: list[dict[str, Any]] | 
             errors.append(f"relation references unknown node: {relation}")
     duplicates = []
     for i, left in enumerate(capabilities):
-        for right in capabilities[i + 1:]:
+        for right in capabilities[i + 1 :]:
             similarity = weighted_jaccard(_token_weights(left), _token_weights(right))
             if similarity >= 0.72:
-                duplicates.append({
-                    "left": left["id"],
-                    "right": right["id"],
-                    "similarity": round(similarity, 6),
-                    "disposition": "review_for_merge_or_alias",
-                })
+                duplicates.append(
+                    {
+                        "left": left["id"],
+                        "right": right["id"],
+                        "similarity": round(similarity, 6),
+                        "disposition": "review_for_merge_or_alias",
+                    }
+                )
     indegree = defaultdict(int)
     outdegree = defaultdict(int)
     for relation in relations:
@@ -43,12 +64,14 @@ def build(capabilities: list[dict[str, Any]], relations: list[dict[str, Any]] | 
     nodes = []
     for capability in capabilities:
         cid = str(capability["id"])
-        nodes.append({
-            **capability,
-            "incoming_relations": indegree[cid],
-            "outgoing_relations": outdegree[cid],
-            "orphan": indegree[cid] == 0 and outdegree[cid] == 0,
-        })
+        nodes.append(
+            {
+                **capability,
+                "incoming_relations": indegree[cid],
+                "outgoing_relations": outdegree[cid],
+                "orphan": indegree[cid] == 0 and outdegree[cid] == 0,
+            }
+        )
     return {
         "valid": not errors,
         "errors": errors,
@@ -62,6 +85,7 @@ def build(capabilities: list[dict[str, Any]], relations: list[dict[str, Any]] | 
             "duplicate_candidate_count": len(duplicates),
         },
     }
+
 
 def dependency_health(genome: dict[str, Any]) -> dict[str, Any]:
     nodes = {n["id"]: n for n in genome.get("nodes", [])}
@@ -107,6 +131,7 @@ def dependency_health(genome: dict[str, Any]) -> dict[str, Any]:
         "critical_dependencies": critical,
     }
 
+
 def mutation_plan(genome: dict[str, Any], desired_outputs: list[str]) -> dict[str, Any]:
     available = {str(x) for n in genome.get("nodes", []) for x in n.get("outputs", [])}
     missing = sorted(set(map(str, desired_outputs)) - available)
@@ -115,8 +140,17 @@ def mutation_plan(genome: dict[str, Any], desired_outputs: list[str]) -> dict[st
             "gap": gap,
             "proposal_id": f"capability-for-{gap.replace(' ', '-').lower()}",
             "status": "proposal_only",
-            "required_validation": ["unit", "integration", "held_out_outcome", "rollback"],
+            "required_validation": [
+                "unit",
+                "integration",
+                "held_out_outcome",
+                "rollback",
+            ],
         }
         for gap in missing
     ]
-    return {"desired_outputs": desired_outputs, "missing_outputs": missing, "proposals": proposals}
+    return {
+        "desired_outputs": desired_outputs,
+        "missing_outputs": missing,
+        "proposals": proposals,
+    }

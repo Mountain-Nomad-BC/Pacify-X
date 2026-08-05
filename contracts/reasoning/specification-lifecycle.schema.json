@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:reasoning:specification-lifecycle",
+  "title": "Specification lifecycle closure",
+  "type": "object",
+  "required": ["valid", "closed", "stage_counts", "missing_stages", "orphan_tasks", "errors", "closure_sha256"],
+  "properties": {
+    "valid": {"type": "boolean"},
+    "closed": {"type": "boolean"},
+    "stage_counts": {"type": "object"},
+    "missing_stages": {"type": "array", "items": {"type": "string"}},
+    "orphan_tasks": {"type": "array", "items": {"type": "string"}},
+    "errors": {"type": "array", "items": {"type": "string"}},
+    "closure_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": true
+}

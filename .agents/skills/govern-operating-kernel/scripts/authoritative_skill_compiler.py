@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Compile a bounded authoritative skill contract; fail closed on YAML ambiguity."""
+
 from __future__ import annotations
 
 import argparse
@@ -26,7 +27,9 @@ def _scalar(value: str) -> Any:
     if not value:
         raise ContractParseError("empty scalar is ambiguous")
     if UNSAFE_YAML.search(value) or value.startswith(("|", ">")):
-        raise ContractParseError("aliases, anchors, tags, and block scalars are unsupported")
+        raise ContractParseError(
+            "aliases, anchors, tags, and block scalars are unsupported"
+        )
     if value.startswith(('"', "'")):
         if len(value) < 2 or value[-1] != value[0]:
             raise ContractParseError("unterminated quoted scalar")
@@ -40,7 +43,9 @@ def _scalar(value: str) -> Any:
         try:
             return json.loads(value)
         except json.JSONDecodeError as error:
-            raise ContractParseError(f"flow collections must be valid JSON: {error}") from error
+            raise ContractParseError(
+                f"flow collections must be valid JSON: {error}"
+            ) from error
     if re.fullmatch(r"-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?", value):
         return float(value) if "." in value else int(value)
     return value
@@ -60,14 +65,18 @@ def _lines(path: Path) -> list[tuple[int, str, int]]:
             continue
         indent = len(raw) - len(raw.lstrip(" "))
         if indent % 2:
-            raise ContractParseError(f"line {number}: indentation must use two-space steps")
+            raise ContractParseError(
+                f"line {number}: indentation must use two-space steps"
+            )
         result.append((indent, raw.lstrip(), number))
     if len(result) > MAX_LINES:
         raise ContractParseError("contract exceeds the line limit")
     return result
 
 
-def _parse_block(lines: list[tuple[int, str, int]], index: int, indent: int, depth: int) -> tuple[Any, int]:
+def _parse_block(
+    lines: list[tuple[int, str, int]], index: int, indent: int, depth: int
+) -> tuple[Any, int]:
     if depth > MAX_DEPTH:
         raise ContractParseError("contract exceeds the nesting-depth limit")
     if index >= len(lines) or lines[index][0] != indent:
@@ -82,7 +91,9 @@ def _parse_block(lines: list[tuple[int, str, int]], index: int, indent: int, dep
             raise ContractParseError(f"line {number}: unexpected indentation")
         if sequence:
             if not content.startswith("- "):
-                raise ContractParseError(f"line {number}: cannot mix sequence and mapping entries")
+                raise ContractParseError(
+                    f"line {number}: cannot mix sequence and mapping entries"
+                )
             item = content[2:].strip()
             if not item:
                 value, index = _parse_block(lines, index + 1, indent + 2, depth + 1)
@@ -104,7 +115,9 @@ def _parse_block(lines: list[tuple[int, str, int]], index: int, indent: int, dep
             container[key] = _scalar(raw_value)
             index += 1
         else:
-            container[key], index = _parse_block(lines, index + 1, indent + 2, depth + 1)
+            container[key], index = _parse_block(
+                lines, index + 1, indent + 2, depth + 1
+            )
     return container, index
 
 
@@ -140,19 +153,50 @@ def main() -> int:
     try:
         contract = parse_bounded_yaml(args.contract)
         _validate(contract)
-    except (ContractParseError, UnicodeDecodeError, OSError, ValueError, RuntimeError) as error:
-        print(json.dumps({"status": "rejected", "error": type(error).__name__, "detail": str(error)}))
+    except (
+        ContractParseError,
+        UnicodeDecodeError,
+        OSError,
+        ValueError,
+        RuntimeError,
+    ) as error:
+        print(
+            json.dumps(
+                {
+                    "status": "rejected",
+                    "error": type(error).__name__,
+                    "detail": str(error),
+                }
+            )
+        )
         return 2
     output = args.out
     output.mkdir(parents=True, exist_ok=False)
-    registry = {key: contract.get(key) for key in ("id", "name", "summary", "category", "version", "security_class")}
-    (output / "registry_entry.json").write_text(json.dumps(registry, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    (output / "permission_manifest.json").write_text(json.dumps(contract.get("permissions", {}), indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    registry = {
+        key: contract.get(key)
+        for key in ("id", "name", "summary", "category", "version", "security_class")
+    }
+    (output / "registry_entry.json").write_text(
+        json.dumps(registry, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    (output / "permission_manifest.json").write_text(
+        json.dumps(contract.get("permissions", {}), indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     (output / "TEST_SKELETON.md").write_text(
         f"# {contract['name']} tests\n\n- preconditions\n- postconditions\n- invariants\n- permission denials\n- failure recovery\n- evidence contract\n",
         encoding="utf-8",
     )
-    print(json.dumps({"status": "compiled", "id": contract["id"], "outputs": sorted(path.name for path in output.iterdir())}, indent=2))
+    print(
+        json.dumps(
+            {
+                "status": "compiled",
+                "id": contract["id"],
+                "outputs": sorted(path.name for path in output.iterdir()),
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

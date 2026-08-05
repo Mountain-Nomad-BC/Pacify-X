@@ -1,4 +1,5 @@
 """Locate framework assets in a source checkout or installed distribution."""
+
 from __future__ import annotations
 
 from pathlib import Path

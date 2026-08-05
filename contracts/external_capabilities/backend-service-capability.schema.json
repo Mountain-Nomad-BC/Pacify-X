@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:external_capabilities:backend-service-capability",
+  "title": "Vendor-neutral backend service capability",
+  "type": "object",
+  "required": ["id", "domain", "provider_adapter", "effects"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "domain": {"enum": ["data", "authentication", "storage", "functions", "hosting", "model_gateways", "observability", "payments"]},
+    "provider_adapter": {"type": "string", "minLength": 1},
+    "effects": {"type": "array", "items": {"enum": ["read_local", "write_workspace", "network", "external_mutation"]}, "uniqueItems": true},
+    "cost": {"type": "number", "minimum": 0}
+  },
+  "additionalProperties": true
+}

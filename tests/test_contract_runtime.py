@@ -37,29 +37,50 @@ class ContractRuntimeTests(unittest.TestCase):
 
     def test_validation_rejects_invalid_commissioning_record(self) -> None:
         with self.assertRaises(ContractValidationError):
-            validate_instance({"schema_version": "1.0", "mode": "new"}, ROOT / "contracts/commissioning-questionnaire.schema.json")
+            validate_instance(
+                {"schema_version": "1.0", "mode": "new"},
+                ROOT / "contracts/commissioning-questionnaire.schema.json",
+            )
 
     def test_local_file_reference_is_enforced(self) -> None:
         valid = {
-            "schema_version": "1.0", "status": "active", "workspace_id": "wsp_demo",
-            "project_id": "prj_demo", "project_root": "projects/demo",
-            "memory_namespace": "project/prj_demo", "memory_root": "projects_tracking/projects/prj_demo/memory",
+            "schema_version": "1.0",
+            "status": "active",
+            "workspace_id": "wsp_demo",
+            "project_id": "prj_demo",
+            "project_root": "projects/demo",
+            "memory_namespace": "project/prj_demo",
+            "memory_root": "projects_tracking/projects/prj_demo/memory",
             "scope": {
-                "workspace_id": "wsp_demo", "project_id": "prj_demo", "agent_id": "agent_operator",
-                "session_id": "session_operator", "workstream_id": "work_1", "lease_id": "lease_1",
-                "intent_id": "intent_1", "correlation_id": "corr_1",
+                "workspace_id": "wsp_demo",
+                "project_id": "prj_demo",
+                "agent_id": "agent_operator",
+                "session_id": "session_operator",
+                "workstream_id": "work_1",
+                "lease_id": "lease_1",
+                "intent_id": "intent_1",
+                "correlation_id": "corr_1",
             },
-            "writable_roots": ["projects/demo"], "created_utc": "2026-08-02T00:00:00Z",
-            "expires_utc": "2026-08-02T01:00:00Z", "cross_project_access": "deny",
+            "writable_roots": ["projects/demo"],
+            "created_utc": "2026-08-02T00:00:00Z",
+            "expires_utc": "2026-08-02T01:00:00Z",
+            "cross_project_access": "deny",
         }
-        validate_instance(valid, ROOT / "contracts/project_stream/active-session.schema.json")
+        validate_instance(
+            valid, ROOT / "contracts/project_stream/active-session.schema.json"
+        )
 
     def test_unsupported_standard_keyword_is_rejected(self) -> None:
         from runtime.contracts import _schema_structure_errors
 
-        self.assertIn("$: unsupported schema keyword minProperties", _schema_structure_errors({"type": "object", "minProperties": 1}))
+        self.assertIn(
+            "$: unsupported schema keyword minProperties",
+            _schema_structure_errors({"type": "object", "minProperties": 1}),
+        )
 
-    def test_every_contract_accepts_generated_positive_and_rejects_empty_negative(self) -> None:
+    def test_every_contract_accepts_generated_positive_and_rejects_empty_negative(
+        self,
+    ) -> None:
         for path in sorted((ROOT / "contracts").rglob("*.json")):
             with self.subTest(contract=path.relative_to(ROOT).as_posix()):
                 validate_instance(build_minimal_instance(path), path)
@@ -71,14 +92,21 @@ class ContractRuntimeTests(unittest.TestCase):
     def test_property_named_type_is_not_misread_as_a_schema_keyword(self) -> None:
         from runtime.contracts import _schema_structure_errors
 
-        self.assertEqual(_schema_structure_errors({"type": "object", "properties": {"type": {"type": "string"}}}), [])
+        self.assertEqual(
+            _schema_structure_errors(
+                {"type": "object", "properties": {"type": {"type": "string"}}}
+            ),
+            [],
+        )
 
     def test_contract_ref_cannot_escape_contract_root(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             workspace = Path(temporary)
             contract_root = workspace / "contracts"
             self._write_schema(workspace, "outside.json", {"type": "string"})
-            schema = self._write_schema(contract_root, "root.json", {"$ref": "../outside.json"})
+            schema = self._write_schema(
+                contract_root, "root.json", {"$ref": "../outside.json"}
+            )
             with self.assertRaisesRegex(ValueError, "escapes contract root"):
                 validate_instance("value", schema, contract_root=contract_root)
 
@@ -87,8 +115,12 @@ class ContractRuntimeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             contract_root = Path(temporary) / "contracts"
             self._write_schema(contract_root, "child.json", {"type": "string"})
-            schema = self._write_schema(contract_root, "root.json", {"$ref": "child.json"})
-            validate_instance("value", schema, contract_root=Path(str(contract_root).upper()))
+            schema = self._write_schema(
+                contract_root, "root.json", {"$ref": "child.json"}
+            )
+            validate_instance(
+                "value", schema, contract_root=Path(str(contract_root).upper())
+            )
 
     @unittest.skipUnless(os.name == "nt", "Windows short-path alias regression")
     def test_contract_ref_accepts_short_name_alias_of_same_windows_root(self) -> None:
@@ -97,17 +129,25 @@ class ContractRuntimeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             contract_root = Path(temporary) / "contracts with a deliberately long name"
             self._write_schema(contract_root, "child.json", {"type": "string"})
-            schema = self._write_schema(contract_root, "root.json", {"$ref": "child.json"})
+            schema = self._write_schema(
+                contract_root, "root.json", {"$ref": "child.json"}
+            )
 
             get_short_path = ctypes.windll.kernel32.GetShortPathNameW
-            get_short_path.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32]
+            get_short_path.argtypes = [
+                ctypes.c_wchar_p,
+                ctypes.c_wchar_p,
+                ctypes.c_uint32,
+            ]
             get_short_path.restype = ctypes.c_uint32
             buffer = ctypes.create_unicode_buffer(32768)
             length = get_short_path(str(contract_root), buffer, len(buffer))
             if length == 0 or length >= len(buffer):
                 self.skipTest("Windows short-path aliases are unavailable")
             short_root = Path(buffer.value)
-            if os.path.normcase(str(short_root)) == os.path.normcase(str(contract_root)):
+            if os.path.normcase(str(short_root)) == os.path.normcase(
+                str(contract_root)
+            ):
                 self.skipTest("8.3 short-name generation is disabled on this volume")
 
             validate_instance("value", schema, contract_root=short_root)
@@ -115,8 +155,12 @@ class ContractRuntimeTests(unittest.TestCase):
     def test_contract_ref_rejects_absolute_path(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             contract_root = Path(temporary) / "contracts"
-            target = self._write_schema(contract_root, "target.json", {"type": "string"})
-            schema = self._write_schema(contract_root, "root.json", {"$ref": str(target.resolve())})
+            target = self._write_schema(
+                contract_root, "target.json", {"type": "string"}
+            )
+            schema = self._write_schema(
+                contract_root, "root.json", {"$ref": str(target.resolve())}
+            )
             with self.assertRaises(ValueError):
                 validate_instance("value", schema, contract_root=contract_root)
 
@@ -131,14 +175,18 @@ class ContractRuntimeTests(unittest.TestCase):
                 link.symlink_to(outside)
             except OSError as error:
                 self.skipTest(f"symlinks are unavailable on this platform: {error}")
-            schema = self._write_schema(contract_root, "root.json", {"$ref": "linked.json"})
+            schema = self._write_schema(
+                contract_root, "root.json", {"$ref": "linked.json"}
+            )
             with self.assertRaisesRegex(ValueError, "symlinked schema references"):
                 validate_instance("value", schema, contract_root=contract_root)
 
     def test_contract_ref_cycle_is_detected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             contract_root = Path(temporary) / "contracts"
-            first = self._write_schema(contract_root, "first.json", {"$ref": "second.json"})
+            first = self._write_schema(
+                contract_root, "first.json", {"$ref": "second.json"}
+            )
             self._write_schema(contract_root, "second.json", {"$ref": "first.json"})
             with self.assertRaisesRegex(ValueError, "schema reference cycle detected"):
                 validate_instance("value", first, contract_root=contract_root)
@@ -146,10 +194,16 @@ class ContractRuntimeTests(unittest.TestCase):
     def test_contract_digest_includes_referenced_schema(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             contract_root = Path(temporary) / "contracts"
-            child = self._write_schema(contract_root, "child.json", {"type": "string", "minLength": 1})
-            root = self._write_schema(contract_root, "root.json", {"$ref": "child.json"})
+            child = self._write_schema(
+                contract_root, "child.json", {"type": "string", "minLength": 1}
+            )
+            root = self._write_schema(
+                contract_root, "root.json", {"$ref": "child.json"}
+            )
             before = contract_digest(root, contract_root=contract_root)
-            self._write_schema(contract_root, child.name, {"type": "string", "minLength": 2})
+            self._write_schema(
+                contract_root, child.name, {"type": "string", "minLength": 2}
+            )
             after = contract_digest(root, contract_root=contract_root)
             self.assertNotEqual(before, after)
 
@@ -187,40 +241,68 @@ class ContractRuntimeTests(unittest.TestCase):
     def test_strict_datetime_format(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             contract_root = Path(temporary) / "contracts"
-            schema = self._write_schema(contract_root, "datetime.json", {"type": "string", "format": "date-time"})
-            validate_instance("2026-08-03T12:34:56.123Z", schema, contract_root=contract_root)
-            for invalid in ("2026-08-03 12:34:56Z", "2026-08-03T12:34:56", "2026-08-03T12:34:56z"):
-                with self.subTest(value=invalid), self.assertRaises(ContractValidationError):
+            schema = self._write_schema(
+                contract_root,
+                "datetime.json",
+                {"type": "string", "format": "date-time"},
+            )
+            validate_instance(
+                "2026-08-03T12:34:56.123Z", schema, contract_root=contract_root
+            )
+            for invalid in (
+                "2026-08-03 12:34:56Z",
+                "2026-08-03T12:34:56",
+                "2026-08-03T12:34:56z",
+            ):
+                with (
+                    self.subTest(value=invalid),
+                    self.assertRaises(ContractValidationError),
+                ):
                     validate_instance(invalid, schema, contract_root=contract_root)
 
     def test_uri_format_rejects_scheme_only_value(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             contract_root = Path(temporary) / "contracts"
-            schema = self._write_schema(contract_root, "uri.json", {"type": "string", "format": "uri"})
+            schema = self._write_schema(
+                contract_root, "uri.json", {"type": "string", "format": "uri"}
+            )
             with self.assertRaises(ContractValidationError):
                 validate_instance("https:", schema, contract_root=contract_root)
-            validate_instance("https://example.com/path", schema, contract_root=contract_root)
+            validate_instance(
+                "https://example.com/path", schema, contract_root=contract_root
+            )
             validate_instance("urn:example:value", schema, contract_root=contract_root)
 
     def test_multipleof_zero_schema_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             contract_root = Path(temporary) / "contracts"
-            schema = self._write_schema(contract_root, "number.json", {"type": "number", "multipleOf": 0})
-            with self.assertRaisesRegex(ValueError, "multipleOf must be greater than zero"):
+            schema = self._write_schema(
+                contract_root, "number.json", {"type": "number", "multipleOf": 0}
+            )
+            with self.assertRaisesRegex(
+                ValueError, "multipleOf must be greater than zero"
+            ):
                 validate_instance(1, schema, contract_root=contract_root)
 
     def test_nan_and_infinity_are_rejected_where_numeric(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             contract_root = Path(temporary) / "contracts"
-            schema = self._write_schema(contract_root, "number.json", {"type": "number"})
+            schema = self._write_schema(
+                contract_root, "number.json", {"type": "number"}
+            )
             for invalid in (float("nan"), float("inf"), float("-inf")):
-                with self.subTest(value=invalid), self.assertRaises(ContractValidationError):
+                with (
+                    self.subTest(value=invalid),
+                    self.assertRaises(ContractValidationError),
+                ):
                     validate_instance(invalid, schema, contract_root=contract_root)
 
     def test_boolean_is_not_accepted_as_integer(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             contract_root = Path(temporary) / "contracts"
-            schema = self._write_schema(contract_root, "integer.json", {"type": "integer"})
+            schema = self._write_schema(
+                contract_root, "integer.json", {"type": "integer"}
+            )
             with self.assertRaises(ContractValidationError):
                 validate_instance(True, schema, contract_root=contract_root)
 

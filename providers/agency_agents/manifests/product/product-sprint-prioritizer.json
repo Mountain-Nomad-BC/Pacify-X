@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.product.sprint-prioritizer",
+  "name": "Sprint Prioritizer",
+  "description": "Expert product manager specializing in agile sprint planning, feature prioritization, and resource allocation. Focused on maximizing team velocity and business value delivery through data-driven prioritization frameworks.",
+  "division": "product",
+  "source": {
+    "path": "product/product-sprint-prioritizer.md",
+    "sha256": "da5233770ca85a3931b72d80b37dd09616a54fd24075c607667853acf65b000a",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/product/product-sprint-prioritizer.md",
+    "sha256": "01dd2f1c456aad06cfef7437ebd41f5fb76af372d6c1ddd644b21fc1fd97bbde",
+    "audit_status": "HARDEN",
+    "audit_score": 52.6
+  },
+  "activation": {
+    "mode": "operator",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Sprint Prioritizer",
+      "sprint-prioritizer",
+      "product-sprint-prioritizer"
+    ]
+  },
+  "capabilities": [
+    "ai_ml",
+    "analytics",
+    "documentation",
+    "performance",
+    "product",
+    "product_management"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [
+      "WebFetch",
+      "WebSearch",
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "user problem and affected segment",
+    "business objective and constraints",
+    "qualitative and quantitative evidence",
+    "current product behavior",
+    "decision deadline and accountable owner"
+  ],
+  "deliverables": [
+    "problem framing and evidence quality",
+    "options with trade-offs",
+    "prioritized recommendation",
+    "experiment and measurement plan",
+    "risks, dependencies, and decision record"
+  ],
+  "quality_gates": [
+    "Distinguish user evidence from stakeholder opinion",
+    "Define metrics, guardrails, denominator, and time window",
+    "Check second-order effects, accessibility, privacy, and abuse cases",
+    "Do not invent customer demand or certainty"
+  ],
+  "boundaries": [
+    "Do not manipulate users through deceptive nudges or hidden defaults",
+    "Do not treat an experiment result as causal without an appropriate design and analysis"
+  ],
+  "handoffs": [
+    "product/product-manager.md",
+    "product/product-feedback-synthesizer.md",
+    "project-management/project-management-experiment-tracker.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Outputs are not defined as a stable deliverable contract",
+      "Scope, authority, and non-goals are not explicit",
+      "No freshness/version/source-date policy for changeable knowledge",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Success metrics contain hard-coded targets that can be mistaken for guarantees"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "status": "active",
   "body": ".agents/skills/dynamic-service-discovery/SKILL.md",
-  "body_sha256": "42f3408df8e7f2e2b9178f1ef960fbf6c21cc61a7ae5c3e7d8a4807722aa7bfe",
+  "body_sha256": "d14b5999d4836c5c25d38f17e06c505539f74c230fb5ca2bf423612b77483487",
   "references": [],
   "resources": [
     ".agents/skills/dynamic-service-discovery/scripts/audit_service_discovery.py"
@@ -44,8 +44,8 @@
     ]
   },
   "clean_room": true,
-  "tests": "tests/test_capability_mining_skills.py; tests/test_capability_assimilation.py",
-  "evidence": "evidence/capability-mining-receipt.json",
+  "tests": "tests/test_capability_mining_skills.py; tests/test_capability_assimilation.py; tests/test_clean_room_capabilities.py",
+  "evidence": "tests/test_clean_room_capabilities.py",
   "validation_freshness": "current",
   "context_budget_bytes": 24576
 }

@@ -1,79 +1,15 @@
 ---
 name: context-compactor
-description: "Reduce active context while preserving goals, constraints, decisions, evidence, unresolved questions, and state. Use when the task requires this bounded operational control; keep it inactive otherwise."
+description: Compress repeated progress and context within an explicit item budget while preserving failures, uncertainty, authority boundaries, recovery instructions, evidence, goals, and unresolved work. Use at context checkpoints, handoffs, or bounded multi-agent status aggregation.
 ---
 
-# context-compactor
+# Context Compactor
 
-## Purpose
+1. Classify every message before compression.
+2. Preserve every failure, uncertainty, authority boundary, recovery instruction, and evidence record verbatim or by an integrity-bound reference.
+3. Group only genuinely repeated optional progress messages.
+4. Reject a budget that cannot contain all mandatory records; never make safety information fit by dropping it.
+5. Emit retained source identities, explicit dropped identities, the original and retained denominators, and a deterministic receipt hash.
+6. Keep the operation read-only and authority-neutral.
 
-Reduce active context while preserving goals, constraints, decisions, evidence, unresolved questions, and state.
-
-## Use when
-- context approaches budget
-- long run crosses checkpoint
-- branches merge
-
-## Do not use when
-- evidence can remain by reference
-- required records would be discarded
-
-## Required inputs
-- events/conversation
-- state
-- evidence refs
-- decision log
-- unresolved requirements
-
-## Outputs
-- compact state
-- preserved refs
-- discard index
-- compaction confidence
-
-## Procedure
-1. extract facts/constraints.
-2. preserve decisions.
-3. preserve unresolved items.
-4. replace bulky evidence with refs.
-5. mark omissions.
-6. validate against state.
-
-## Guardrails
-- do not turn hypotheses into facts.
-- never remove negative constraints.
-- retain originals.
-
-## Integration points
-- session store
-- context assembler
-- checkpoint service
-
-## Failure modes to test
-- semantic drift
-- negative constraint loss
-- staleness
-
-## Operational metrics
-- token reduction
-- reconstruction accuracy
-- lost constraints
-- corrections
-
-## Completion requirements
-
-The skill is complete only when structured outputs are emitted, evidence references resolve, declared postconditions are checked, and the execution wrapper records the result. Any memory remains a candidate until framework promotion controls accept it.
-
-## Research basis
-- [How to Build Your Own Agent Harness](https://iii.dev/blog/how-to-build-your-own-agent-harness/)
-
-## Runtime binding
-
-- Family: `delegated`
-- Binding: `runtime/startup.py`
-- Activation: metadata is discoverable at startup; load this body only after selection.
-- Effects: read-only control-plane analysis unless a separately admitted composed capability declares more.
-
-## Completion and evidence
-
-Return a structured decision, reasons, outputs, and evidence references. Treat unresolved provenance, permissions, required inputs, or postconditions as a fail-closed result. Candidate memory, research, generated skills, and speculative work never become active without separate admission and evidence.
+Use `runtime.reasoning_controls.compact_communication` for the deterministic implementation. Completion requires positive repetition compression, mandatory-category retention, and budget-insufficient tests.

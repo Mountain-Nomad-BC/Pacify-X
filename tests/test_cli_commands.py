@@ -25,23 +25,65 @@ def invoke(*arguments: str) -> tuple[int, dict]:
 class CliCommandTests(unittest.TestCase):
     def test_review_candidate_exit_codes_distinguish_disposition(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            manifest = Path(directory) / "manifest.json"; manifest.write_text("{}", encoding="utf-8")
-            evidence = Path(directory) / "evidence.json"; evidence.write_text("{}", encoding="utf-8")
+            manifest = Path(directory) / "manifest.json"
+            manifest.write_text("{}", encoding="utf-8")
+            evidence = Path(directory) / "evidence.json"
+            evidence.write_text("{}", encoding="utf-8")
             cases = {"admit": 0, "restrict": 2, "quarantine": 3, "reject": 4}
             for disposition, expected in cases.items():
-                decision = AdmissionDecision(True, True, disposition in {"admit", "restrict"}, True, "test", disposition, (), "test", disposition)
-                with self.subTest(disposition=disposition), patch("runtime.admission_controller.review_authoritative", return_value=decision):
-                    status, output = invoke("review-candidate", "--manifest", str(manifest), "--evidence", str(evidence))
+                decision = AdmissionDecision(
+                    True,
+                    True,
+                    disposition in {"admit", "restrict"},
+                    True,
+                    "test",
+                    disposition,
+                    (),
+                    "test",
+                    disposition,
+                )
+                with (
+                    self.subTest(disposition=disposition),
+                    patch(
+                        "runtime.admission_controller.review_authoritative",
+                        return_value=decision,
+                    ),
+                ):
+                    status, output = invoke(
+                        "review-candidate",
+                        "--manifest",
+                        str(manifest),
+                        "--evidence",
+                        str(evidence),
+                    )
                     self.assertEqual(status, expected)
                     self.assertEqual(output["disposition"], disposition)
 
     def test_authoritative_verification_exit_codes_are_stable(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            request = Path(directory) / "request.json"; request.write_text("{}", encoding="utf-8")
-            cases = {"verified": 0, "verification_failed": 5, "insufficient_trusted_evidence": 6, "invalid_request": 7, "evidence_integrity_failure": 8}
+            request = Path(directory) / "request.json"
+            request.write_text("{}", encoding="utf-8")
+            cases = {
+                "verified": 0,
+                "verification_failed": 5,
+                "insufficient_trusted_evidence": 6,
+                "invalid_request": 7,
+                "evidence_integrity_failure": 8,
+            }
             for decision, expected in cases.items():
-                result = {"verified": decision == "verified", "authoritative": decision == "verified", "decision": decision, "reasons": []}
-                with self.subTest(decision=decision), patch("runtime.outcome_verifier.verify_authoritative", return_value=result):
+                result = {
+                    "verified": decision == "verified",
+                    "authoritative": decision == "verified",
+                    "decision": decision,
+                    "reasons": [],
+                }
+                with (
+                    self.subTest(decision=decision),
+                    patch(
+                        "runtime.outcome_verifier.verify_authoritative",
+                        return_value=result,
+                    ),
+                ):
                     status, output = invoke("verify-outcome", "--request", str(request))
                     self.assertEqual(status, expected)
                     self.assertEqual(output["decision"], decision)
@@ -76,19 +118,66 @@ class CliCommandTests(unittest.TestCase):
         self.assertEqual(status, 0)
         self.assertEqual(startup["hydrated_skill_bodies"], [])
         self.assertLessEqual(startup["capability_metadata_count"], 250)
-        status, classification = invoke("classify", "--task", "validate a retrieval workflow")
+        status, classification = invoke(
+            "classify", "--task", "validate a retrieval workflow"
+        )
         self.assertEqual(status, 0)
         self.assertIn("retrieval", classification["domains"])
         status, selected = invoke("working-set", "--goal", "verify outcome evidence")
         self.assertEqual(status, 0)
         self.assertLessEqual(len(selected["capability_ids"]), 3)
+        status, routed = invoke("route", "--task", "verify outcome evidence")
+        self.assertEqual(status, 0)
+        self.assertTrue(routed["package"]["complete"])
+        self.assertEqual(
+            set(routed["discovery"]),
+            {
+                "skill_catalog",
+                "semantic_capability_index",
+                "cognitive_map_index",
+                "agency_agent_registry",
+            },
+        )
 
     def test_specialties_exposes_metadata_states_without_skill_bodies(self) -> None:
         status, output = invoke("specialties", "--category", "security")
         self.assertEqual(status, 0)
         self.assertTrue(output["valid"])
         self.assertEqual(output["categories"][0]["id"], "security")
-        self.assertTrue(all("purpose" in item and "state" in item for item in output["categories"][0]["specialties"]))
+        self.assertTrue(
+            all(
+                "purpose" in item and "state" in item
+                for item in output["categories"][0]["specialties"]
+            )
+        )
+
+    def test_cognitive_cli_is_read_only_bounded_and_fresh(self) -> None:
+        status, health = invoke("cognitive", "status")
+        self.assertEqual(status, 0)
+        self.assertTrue(health["valid"])
+        self.assertEqual(health["index"]["unresolved_external_dependencies"], 0)
+        status, result = invoke(
+            "cognitive",
+            "query",
+            "--query",
+            "finite domain constraint solver",
+            "--limit",
+            "2",
+        )
+        self.assertEqual(status, 0)
+        self.assertEqual(
+            result["hits"][0]["identifier"], "finite-domain-constraint-solver"
+        )
+        status, plan = invoke(
+            "cognitive",
+            "hydrate-plan",
+            "--key",
+            "capability:finite-domain-constraint-solver",
+            "--max-records",
+            "4",
+        )
+        self.assertEqual(status, 0)
+        self.assertLessEqual(len(plan["records"]), 4)
 
     def test_plan_is_bounded_and_includes_unload_plan(self) -> None:
         status, output = invoke("plan", "--goal", "verify outcome evidence")
@@ -98,8 +187,15 @@ class CliCommandTests(unittest.TestCase):
         self.assertIn("release", output["unload_plan"])
 
     def test_caller_asserted_authorization_is_explicitly_simulated(self) -> None:
-        denied_status, denied = invoke("simulate-authorization", "--capability", "evidence-assembler")
-        allowed_status, allowed = invoke("simulate-authorization", "--capability", "evidence-assembler", "--policy-allowed")
+        denied_status, denied = invoke(
+            "simulate-authorization", "--capability", "evidence-assembler"
+        )
+        allowed_status, allowed = invoke(
+            "simulate-authorization",
+            "--capability",
+            "evidence-assembler",
+            "--policy-allowed",
+        )
         self.assertEqual(denied_status, 0)
         self.assertFalse(denied["approved"])
         self.assertFalse(denied["authoritative"])
@@ -111,24 +207,56 @@ class CliCommandTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             location = Path(directory)
             verification = location / "verification.json"
-            verification.write_text(json.dumps({
-                "postconditions": {"tests": True},
-                "evidence": [{"id": "E-1", "status": "current", "valid": True}],
-                "policy_allowed": True,
-                "executor_claimed_complete": True,
-            }), encoding="utf-8")
-            status, output = invoke("evaluate-outcome-claims", "--request", str(verification))
+            verification.write_text(
+                json.dumps(
+                    {
+                        "postconditions": {"tests": True},
+                        "evidence": [{"id": "E-1", "status": "current", "valid": True}],
+                        "policy_allowed": True,
+                        "executor_claimed_complete": True,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            status, output = invoke(
+                "evaluate-outcome-claims", "--request", str(verification)
+            )
             self.assertEqual(status, 0)
             self.assertEqual(output["status"], "verified")
             self.assertFalse(output["authoritative"])
 
             failure = location / "failure.json"
-            failure.write_text(json.dumps({
-                "task_id": "task-1", "capability_id": "evidence-assembler",
-                "fingerprint": "abc", "attempt": 1, "evidence_ids": ["old"], "message": "failed",
-            }), encoding="utf-8")
-            denied_status, denied = invoke("retry-decision", "--failure", str(failure), "--attempt", "2", "--evidence-id", "old")
-            allowed_status, allowed = invoke("retry-decision", "--failure", str(failure), "--attempt", "2", "--evidence-id", "new")
+            failure.write_text(
+                json.dumps(
+                    {
+                        "task_id": "task-1",
+                        "capability_id": "evidence-assembler",
+                        "fingerprint": "abc",
+                        "attempt": 1,
+                        "evidence_ids": ["old"],
+                        "message": "failed",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            denied_status, denied = invoke(
+                "retry-decision",
+                "--failure",
+                str(failure),
+                "--attempt",
+                "2",
+                "--evidence-id",
+                "old",
+            )
+            allowed_status, allowed = invoke(
+                "retry-decision",
+                "--failure",
+                str(failure),
+                "--attempt",
+                "2",
+                "--evidence-id",
+                "new",
+            )
             self.assertEqual(denied_status, 1)
             self.assertIn("new evidence", denied["reason"])
             self.assertEqual(allowed_status, 0)

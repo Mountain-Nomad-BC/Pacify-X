@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:cognitive:shadow-behavior-comparison",
+  "title": "Contained shadow behavior comparison",
+  "type": "object",
+  "required": ["returned_result", "candidate_observed", "effects_contained", "mismatch", "kill_switch", "cutover_authorized", "cutover_eligible", "authority_granted", "comparison_sha256"],
+  "properties": {
+    "returned_result": {},
+    "candidate_observed": {"type": "boolean"},
+    "effects_contained": {"type": "boolean"},
+    "mismatch": {"type": "boolean"},
+    "kill_switch": {"type": "boolean"},
+    "cutover_authorized": {"type": "boolean"},
+    "cutover_eligible": {"type": "boolean"},
+    "authority_granted": {"const": false},
+    "comparison_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": true
+}

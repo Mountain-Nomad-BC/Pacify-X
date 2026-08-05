@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:memory:memory-recall-package",
+  "title": "Scoped explainable memory recall package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["project_id", "selected", "rejected", "budget"],
+  "properties": {
+    "project_id": {"type": "string", "minLength": 1},
+    "selected": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["memory_id", "score", "layer", "reasons"],
+        "properties": {
+          "memory_id": {"type": "string"},
+          "score": {"type": "number", "minimum": 0},
+          "layer": {"enum": ["L0", "L1", "L2", "L3"]},
+          "reasons": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "rejected": {"type": "array", "items": {"type": "object"}},
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_chars", "used_chars"],
+      "properties": {"max_chars": {"type": "integer", "minimum": 1}, "used_chars": {"type": "integer", "minimum": 0}}
+    }
+  }
+}

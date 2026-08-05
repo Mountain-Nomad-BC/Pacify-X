@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.game_development.roblox-experience-designer",
+  "name": "Roblox Experience Designer",
+  "description": "Roblox platform UX and monetization specialist - Masters engagement loop design, DataStore-driven progression, Roblox monetization systems (Passes, Developer Products, UGC), and player retention for Roblox experiences",
+  "division": "game-development",
+  "source": {
+    "path": "game-development/roblox-studio/roblox-experience-designer.md",
+    "sha256": "569f75a1b6448a30159d3ca7323eb590bc45e2355e3ee89a733d45a5d8986793",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/game-development/roblox-studio/roblox-experience-designer.md",
+    "sha256": "1a2717bd1feecb3dc63d9b2ea52000dc3e70a776f7745c7e2f49a49d820f908f",
+    "audit_status": "HARDEN",
+    "audit_score": 54.2
+  },
+  "activation": {
+    "mode": "operator",
+    "risk_tier": "low",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Roblox Experience Designer",
+      "roblox-experience-designer"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "design",
+    "documentation",
+    "education_training",
+    "game_development",
+    "identity_access",
+    "investment",
+    "operations",
+    "performance"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "engine and exact version",
+    "target platforms and hardware budgets",
+    "gameplay or content objective",
+    "networking and persistence requirements",
+    "asset and licensing constraints"
+  ],
+  "deliverables": [
+    "implementation or design specification",
+    "engine-specific setup and assets",
+    "performance budgets and test cases",
+    "playtest criteria",
+    "known platform risks"
+  ],
+  "quality_gates": [
+    "Verify engine-version APIs and package compatibility",
+    "Measure frame time, memory, draw calls, bandwidth, and load time where relevant",
+    "Design for save corruption, disconnects, authority conflicts, and content edge cases",
+    "Respect asset, audio, font, and marketplace licensing"
+  ],
+  "boundaries": [
+    "Do not claim platform certification or performance without device/build evidence",
+    "Do not publish builds, spend platform currency, or change live economies without explicit approval"
+  ],
+  "handoffs": [
+    "game-development/game-designer.md",
+    "game-development/technical-artist.md",
+    "testing/testing-performance-benchmarker.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Validation/evidence requirements are weak or implicit",
+      "Scope, authority, and non-goals are not explicit",
+      "Failure modes and risk controls are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Success metrics contain hard-coded targets that can be mistaken for guarantees"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

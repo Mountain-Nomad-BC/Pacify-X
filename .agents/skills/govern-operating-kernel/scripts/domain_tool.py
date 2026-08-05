@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Run a declared domain helper through the fail-closed shared runtime."""
+
 import argparse
 import json
 from pathlib import Path
 import sys
+
 try:
     from engineering_bootstrap.declared_suite import run_script_outcome
     from engineering_bootstrap.paths import framework_root

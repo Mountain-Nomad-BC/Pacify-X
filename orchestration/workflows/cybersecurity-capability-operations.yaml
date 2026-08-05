@@ -1,0 +1,47 @@
+{
+  "id": "cybersecurity-capability-operations",
+  "version": "1.0.0",
+  "purpose": "Route security work through one metadata-first provider and canonical fail-closed authority, tool, evidence, finding, cleanup, and outcome controls.",
+  "loading_rule": "Load provider metadata first; hydrate at most five selected bodies from a separately supplied hash-verified archive.",
+  "steps": [
+    {"id": "normalize", "skill": "govern-cybersecurity-capabilities", "depends_on": []},
+    {"id": "authority-filter", "skill": "supervise-contained-execution", "depends_on": ["normalize"]},
+    {"id": "discover", "skill": "govern-cybersecurity-capabilities", "depends_on": ["authority-filter"]},
+    {"id": "rank", "skill": "skill-bundle-resolver", "depends_on": ["discover"]},
+    {"id": "hydrate", "skill": "govern-cybersecurity-capabilities", "depends_on": ["rank"]},
+    {"id": "tool-admission", "skill": "quarantine-external-tools", "depends_on": ["hydrate", "authority-filter"]},
+    {"id": "validate-outcome", "skill": "validate-engineering-outcomes", "depends_on": ["tool-admission"]},
+    {"id": "record-learning", "skill": "govern-metacognitive-evolution", "depends_on": ["validate-outcome"]}
+  ],
+  "scenarios": [
+    "advisory-security-architecture-review",
+    "read-only-ai-agent-mcp-audit",
+    "software-supply-chain-devsecops-assessment",
+    "vulnerability-triage-remediation-verification",
+    "incident-response-evidence-preservation",
+    "threat-hunt-detection-engineering",
+    "cloud-container-kubernetes-assessment",
+    "identity-zero-trust-assessment",
+    "ot-ics-safety-aware-assessment",
+    "application-api-security-review",
+    "approved-isolated-lab-purple-team-validation",
+    "denied-active-production-request"
+  ],
+  "bounds": {
+    "default_body_count": 5,
+    "maximum_body_count": 15,
+    "default_graph_depth": 2,
+    "provider_scripts_executable": false,
+    "R4_production_execution": false,
+    "hard_delete": false
+  },
+  "failure_policy": "Fail closed on unknown ownership, missing authorization, target scope drift, production-active testing, unadmitted tools, source/body hash drift, evidence gaps, cleanup failure, or external outcome failure.",
+  "outputs": [
+    "explainable candidate package",
+    "authority decision",
+    "body-hash hydration receipt",
+    "evidence-backed finding state",
+    "cleanup and rollback evidence",
+    "non-authorizing learning proposal"
+  ]
+}

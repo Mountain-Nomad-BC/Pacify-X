@@ -24,7 +24,15 @@ class Rel008AssimilationTests(unittest.TestCase):
         self.assertFalse(receipt["intake_quarantine"]["hard_delete"])
 
     def test_all_authoritative_declared_contracts_are_assimilated(self) -> None:
-        owners = ["govern-operating-kernel", "analyze-repository-intelligence", "engineer-verification-lab", "operate-memory-retrieval-observability", "secure-agent-supply-chain", "govern-runtime-protocol-deployment", "manage-revocable-certification"]
+        owners = [
+            "govern-operating-kernel",
+            "analyze-repository-intelligence",
+            "engineer-verification-lab",
+            "operate-memory-retrieval-observability",
+            "secure-agent-supply-chain",
+            "govern-runtime-protocol-deployment",
+            "manage-revocable-certification",
+        ]
         total = 0
         for owner in owners:
             base = ROOT / ".agents" / "skills" / owner / "references"
@@ -32,22 +40,47 @@ class Rel008AssimilationTests(unittest.TestCase):
                 contracts = load(base / name)["contracts"]
                 total += len(contracts)
                 for contract in contracts:
-                    self.assertTrue("authoritative_sha256" in contract or "authoritative_source_sha256" in contract, contract["id"])
+                    self.assertTrue(
+                        "authoritative_sha256" in contract
+                        or "authoritative_source_sha256" in contract,
+                        contract["id"],
+                    )
                     self.assertNotIn("historical_non_claim", contract)
-        workflows = load(ROOT / "orchestration" / "workflows" / "declared-suite.yaml")["workflows"]
+        workflows = load(ROOT / "orchestration" / "workflows" / "declared-suite.yaml")[
+            "workflows"
+        ]
         total += len(workflows)
         self.assertEqual(total, 257)
-        self.assertTrue(all("authoritative_sha256" in workflow for workflow in workflows))
+        self.assertTrue(
+            all("authoritative_sha256" in workflow for workflow in workflows)
+        )
 
     def test_unsafe_upstream_bodies_are_not_admitted(self) -> None:
         tools = load(ROOT / "registry" / "declared_suite_authoritative_tools.json")
         rejected = {item["id"] for item in tools["rejected"]}
-        self.assertEqual(rejected, {"archive-hygiene", "benchmark-harness", "scenario-runner"})
+        self.assertEqual(
+            rejected, {"archive-hygiene", "benchmark-harness", "scenario-runner"}
+        )
         admitted_paths = {item["target"] for item in tools["admitted"]}
-        self.assertFalse(any("archive_hygiene" in path or "benchmark_harness" in path or "scenario_runner" in path for path in admitted_paths))
+        self.assertFalse(
+            any(
+                "archive_hygiene" in path
+                or "benchmark_harness" in path
+                or "scenario_runner" in path
+                for path in admitted_paths
+            )
+        )
 
     def test_contracts_are_split_for_single_outcome_lazy_loading(self) -> None:
-        owners = ["govern-operating-kernel", "analyze-repository-intelligence", "engineer-verification-lab", "operate-memory-retrieval-observability", "secure-agent-supply-chain", "govern-runtime-protocol-deployment", "manage-revocable-certification"]
+        owners = [
+            "govern-operating-kernel",
+            "analyze-repository-intelligence",
+            "engineer-verification-lab",
+            "operate-memory-retrieval-observability",
+            "secure-agent-supply-chain",
+            "govern-runtime-protocol-deployment",
+            "manage-revocable-certification",
+        ]
         split_total = 0
         for owner in owners:
             references = ROOT / ".agents" / "skills" / owner / "references"
@@ -57,22 +90,51 @@ class Rel008AssimilationTests(unittest.TestCase):
                 for record in index["records"]:
                     self.assertTrue((ROOT / record["path"]).is_file())
         self.assertEqual(split_total, 195)
-        meta = load(ROOT / ".agents" / "skills" / "govern-metacognitive-evolution" / "references" / "capability-index.json")
+        meta = load(
+            ROOT
+            / ".agents"
+            / "skills"
+            / "govern-metacognitive-evolution"
+            / "references"
+            / "capability-index.json"
+        )
         self.assertEqual(meta["count"], 50)
-        self.assertTrue(all((ROOT / record["path"]).is_file() for record in meta["records"]))
+        self.assertTrue(
+            all((ROOT / record["path"]).is_file() for record in meta["records"])
+        )
 
     def test_exact_recovery_report_covers_all_previously_missing_bodies(self) -> None:
         recovery = load(ROOT / "registry/declared_capability_recovery_map.json")
-        exact = [record for record in recovery["records"] if record["source_body_state"] == "exact_authoritative_recovery"]
+        exact = [
+            record
+            for record in recovery["records"]
+            if record["source_body_state"] == "exact_authoritative_recovery"
+        ]
         self.assertEqual(len(exact), 257)
-        self.assertTrue(all(record["historical_validation_state"] == "supplied_and_revalidated" for record in exact))
-        self.assertEqual(load(ROOT / "evidence/rel008-assimilation.json")["declared_suite"]["authoritative_body_matches"], 1233)
+        self.assertTrue(
+            all(
+                record["historical_validation_state"] == "supplied_and_revalidated"
+                for record in exact
+            )
+        )
+        self.assertEqual(
+            load(ROOT / "evidence/rel008-assimilation.json")["declared_suite"][
+                "authoritative_body_matches"
+            ],
+            1233,
+        )
 
     def test_skill_package_body_hash_is_current(self) -> None:
-        package = load(ROOT / "registry" / "skill_packages" / "govern-metacognitive-evolution.json")
+        package = load(
+            ROOT / "registry" / "skill_packages" / "govern-metacognitive-evolution.json"
+        )
         body = ROOT / package["body"]
-        self.assertEqual(package["body_sha256"], hashlib.sha256(body.read_bytes()).hexdigest())
-        self.assertEqual(package["provenance"]["type"], "sanitized_authoritative_assimilation")
+        self.assertEqual(
+            package["body_sha256"], hashlib.sha256(body.read_bytes()).hexdigest()
+        )
+        self.assertEqual(
+            package["provenance"]["type"], "sanitized_authoritative_assimilation"
+        )
 
 
 if __name__ == "__main__":

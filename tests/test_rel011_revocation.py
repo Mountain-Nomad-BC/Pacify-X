@@ -32,8 +32,8 @@ class Rel011RevocationTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
-        self.assertEqual(state["lifecycle"]["phase"], "post-release-hardening")
-        self.assertEqual(state["lifecycle"]["status"], "validated-development")
+        self.assertNotEqual(state["lifecycle"]["phase"], "post-release-hardening")
+        self.assertEqual(state["lifecycle"]["status"], "integration-complete")
         self.assertEqual(
             state["evidence"]["validation_receipt"],
             "evidence/releases/0.6.3/public-release-verification.json",

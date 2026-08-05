@@ -1,4 +1,5 @@
 """Schema-validated, lazy integration handler registry."""
+
 from __future__ import annotations
 
 import importlib
@@ -20,9 +21,14 @@ def _import_target(target: str) -> Callable[..., Any]:
     try:
         module = importlib.import_module(module_name)
     except ModuleNotFoundError as error:
-        if not module_name.startswith("engineering_bootstrap.") or error.name not in {"engineering_bootstrap", module_name}:
+        if not module_name.startswith("engineering_bootstrap.") or error.name not in {
+            "engineering_bootstrap",
+            module_name,
+        }:
             raise
-        module = importlib.import_module("runtime." + module_name.removeprefix("engineering_bootstrap."))
+        module = importlib.import_module(
+            "runtime." + module_name.removeprefix("engineering_bootstrap.")
+        )
     value = getattr(module, symbol, None)
     if not callable(value):
         raise ValueError(f"integration target is not callable: {target}")
@@ -36,7 +42,9 @@ def validate_integrations(root: Path, *, smoke: bool = False) -> dict[str, Any]:
     records = registry.get("integrations", ())
     seen: set[str] = set()
     for record in records:
-        identifier = str(record.get("id", "missing")) if isinstance(record, dict) else "invalid"
+        identifier = (
+            str(record.get("id", "missing")) if isinstance(record, dict) else "invalid"
+        )
         try:
             validate_instance(record, schema)
             if identifier in seen:
@@ -49,13 +57,23 @@ def validate_integrations(root: Path, *, smoke: bool = False) -> dict[str, Any]:
                 if not isinstance(result, dict) or result.get("valid") is not True:
                     raise ValueError(f"healthcheck failed: {result!r}")
             del handler
-        except (ContractValidationError, ImportError, AttributeError, OSError, TypeError, ValueError) as error:
+        except (
+            ContractValidationError,
+            ImportError,
+            AttributeError,
+            OSError,
+            TypeError,
+            ValueError,
+        ) as error:
             errors.append(f"{identifier}: {error}")
     return {
         "valid": not errors,
         "loading_rule": registry.get("loading_rule"),
         "count": len(records),
-        "active_count": sum(isinstance(item, dict) and item.get("status") == "active" for item in records),
+        "active_count": sum(
+            isinstance(item, dict) and item.get("status") == "active"
+            for item in records
+        ),
         "smoke_tested": smoke,
         "errors": errors,
     }

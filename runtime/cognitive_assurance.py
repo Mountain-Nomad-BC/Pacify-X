@@ -1,4 +1,5 @@
 """Integrated evidence, trust, drift, identity, benchmark, and runtime-health controls."""
+
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
@@ -10,17 +11,32 @@ from typing import Callable, Iterable, Mapping, Sequence
 
 
 INJECTION_MARKERS = (
-    "ignore previous", "override system", "reveal secret", "disable policy",
-    "bypass approval", "expand permissions", "hidden instruction",
+    "ignore previous",
+    "override system",
+    "reveal secret",
+    "disable policy",
+    "bypass approval",
+    "expand permissions",
+    "hidden instruction",
 )
 PASSPORT_COMPONENTS = (
-    "identity", "memory", "knowledge", "reasoning", "correction",
-    "evidence", "health", "certification", "drift", "version",
+    "identity",
+    "memory",
+    "knowledge",
+    "reasoning",
+    "correction",
+    "evidence",
+    "health",
+    "certification",
+    "drift",
+    "version",
 )
 
 
 def _stable(value: object) -> str:
-    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()).hexdigest()
+    return hashlib.sha256(
+        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()
+    ).hexdigest()
 
 
 @dataclass(frozen=True, slots=True)
@@ -68,9 +84,20 @@ def evaluate_memory_trust(value: TrustEvidence) -> TrustDecision:
         reasons.append("memory_poison_indicator")
     score = max(0.0, min(1.0, value.confidence * sum(checks.values()) / len(checks)))
     return TrustDecision(
-        value.memory_id, "use" if not reasons else "quarantine", round(score, 6),
+        value.memory_id,
+        "use" if not reasons else "quarantine",
+        round(score, 6),
         tuple(sorted(reasons)),
-        ("retrieve", "evidence", "current_revision", "telemetry", "knowledge_graph", "confidence", "correction", "use"),
+        (
+            "retrieve",
+            "evidence",
+            "current_revision",
+            "telemetry",
+            "knowledge_graph",
+            "confidence",
+            "correction",
+            "use",
+        ),
         _stable(asdict(value)),
     )
 
@@ -84,9 +111,12 @@ class IdentityBaseline:
     policy_sha256: str
 
 
-def validate_identity(expected: IdentityBaseline, observed: IdentityBaseline) -> dict[str, object]:
+def validate_identity(
+    expected: IdentityBaseline, observed: IdentityBaseline
+) -> dict[str, object]:
     mismatches = tuple(
-        name for name in asdict(expected)
+        name
+        for name in asdict(expected)
         if getattr(expected, name) != getattr(observed, name)
     )
     return {
@@ -106,14 +136,19 @@ def validate_personality(
     if not 0 <= tolerance <= 1:
         raise ValueError("personality tolerance must be between zero and one")
     missing = tuple(sorted(set(baseline) - set(observed)))
-    drift = tuple(sorted(
-        name for name in set(baseline) & set(observed)
-        if abs(float(baseline[name]) - float(observed[name])) > tolerance
-    ))
+    drift = tuple(
+        sorted(
+            name
+            for name in set(baseline) & set(observed)
+            if abs(float(baseline[name]) - float(observed[name])) > tolerance
+        )
+    )
     return {
         "decision": "valid" if not missing and not drift else "drifted",
-        "missing_traits": missing, "drifted_traits": drift,
-        "baseline_sha256": _stable(baseline), "observed_sha256": _stable(observed),
+        "missing_traits": missing,
+        "drifted_traits": drift,
+        "baseline_sha256": _stable(baseline),
+        "observed_sha256": _stable(observed),
     }
 
 
@@ -141,9 +176,13 @@ def detect_runtime_drift(
         if not left or len(left) != len(right):
             scores[name] = 1.0
             continue
-        scores[name] = round(sum(abs(a - b) for a, b in zip(left, right)) / len(left), 6)
+        scores[name] = round(
+            sum(abs(a - b) for a, b in zip(left, right)) / len(left), 6
+        )
     drift = tuple(name for name in names if scores[name] > threshold)
-    return DriftReport("within_threshold" if not drift else "drifted", drift, scores, threshold)
+    return DriftReport(
+        "within_threshold" if not drift else "drifted", drift, scores, threshold
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -162,21 +201,33 @@ def run_golden_benchmarks(
     for case in cases:
         try:
             actual = runner(case.prompt)
-            passed = actual == case.expected if case.match == "exact" else case.expected in actual if case.match == "contains" else False
+            passed = (
+                actual == case.expected
+                if case.match == "exact"
+                else case.expected in actual
+                if case.match == "contains"
+                else False
+            )
             error = None if passed else "output_mismatch"
         except Exception as exception:
             actual = ""
             passed = False
             error = type(exception).__name__
-        results.append({
-            "case_id": case.case_id, "passed": passed, "error": error,
-            "actual_sha256": hashlib.sha256(actual.encode()).hexdigest(),
-            "expected_sha256": hashlib.sha256(case.expected.encode()).hexdigest(),
-        })
+        results.append(
+            {
+                "case_id": case.case_id,
+                "passed": passed,
+                "error": error,
+                "actual_sha256": hashlib.sha256(actual.encode()).hexdigest(),
+                "expected_sha256": hashlib.sha256(case.expected.encode()).hexdigest(),
+            }
+        )
     passed = sum(item["passed"] for item in results)
     return {
         "decision": "passed" if results and passed == len(results) else "failed",
-        "passed": passed, "total": len(results), "results": tuple(results),
+        "passed": passed,
+        "total": len(results),
+        "results": tuple(results),
     }
 
 
@@ -192,7 +243,11 @@ def cognitive_ekg(metrics: Mapping[str, float]) -> dict[str, object]:
     abnormalities = []
     for name, (limit, direction) in thresholds.items():
         value = float(metrics.get(name, -1))
-        if value < 0 or (direction == "minimum" and value < limit) or (direction == "maximum" and value > limit):
+        if (
+            value < 0
+            or (direction == "minimum" and value < limit)
+            or (direction == "maximum" and value > limit)
+        ):
             abnormalities.append(name)
     return {
         "health": "healthy" if not abnormalities else "degraded",
@@ -210,7 +265,9 @@ def build_runtime_passport(
     benchmarks: Mapping[str, object],
 ) -> dict[str, object]:
     missing = tuple(name for name in PASSPORT_COMPONENTS if not components.get(name))
-    untrusted = tuple(sorted(item.memory_id for item in trust_decisions if item.decision != "use"))
+    untrusted = tuple(
+        sorted(item.memory_id for item in trust_decisions if item.decision != "use")
+    )
     reasons = []
     if missing:
         reasons.append("passport_components_missing")
@@ -221,9 +278,15 @@ def build_runtime_passport(
     if benchmarks.get("decision") != "passed":
         reasons.append("golden_benchmarks_failed")
     passport = {
-        "schema_version": "1.0", "components": {name: dict(components.get(name, {})) for name in PASSPORT_COMPONENTS},
-        "untrusted_memory_ids": untrusted, "drift": asdict(drift), "benchmarks": dict(benchmarks),
-        "decision": "certified" if not reasons else "degraded", "reasons": tuple(reasons),
+        "schema_version": "1.0",
+        "components": {
+            name: dict(components.get(name, {})) for name in PASSPORT_COMPONENTS
+        },
+        "untrusted_memory_ids": untrusted,
+        "drift": asdict(drift),
+        "benchmarks": dict(benchmarks),
+        "decision": "certified" if not reasons else "degraded",
+        "reasons": tuple(reasons),
     }
     return {**passport, "passport_sha256": _stable(passport)}
 
@@ -231,22 +294,40 @@ def build_runtime_passport(
 class BlackBoxRecorder:
     """Append-only redacted runtime event recorder; never stores prompts, responses, or secrets."""
 
-    PROHIBITED = {"raw_prompt", "raw_response", "prompt", "response", "secret", "token", "credential"}
+    PROHIBITED = {
+        "raw_prompt",
+        "raw_response",
+        "prompt",
+        "response",
+        "secret",
+        "token",
+        "credential",
+    }
 
     def __init__(self, root: Path, *, runtime_id: str) -> None:
         self.root = root.resolve()
         self.runtime_id = runtime_id
 
-    def record(self, event_type: str, payload: Mapping[str, object], *, evidence_refs: Sequence[str]) -> str:
+    def record(
+        self,
+        event_type: str,
+        payload: Mapping[str, object],
+        *,
+        evidence_refs: Sequence[str],
+    ) -> str:
         prohibited = sorted(key for key in payload if key.casefold() in self.PROHIBITED)
         if prohibited:
             raise ValueError("prohibited black-box fields: " + ", ".join(prohibited))
         existing = tuple(sorted(self.root.glob("*.json"))) if self.root.is_dir() else ()
         sequence = len(existing) + 1
         record = {
-            "schema_version": "1.0", "sequence": sequence, "runtime_id": self.runtime_id,
-            "event_type": event_type, "payload_hash": _stable(payload),
-            "evidence_refs": list(evidence_refs), "created_utc": datetime.now(timezone.utc).isoformat(),
+            "schema_version": "1.0",
+            "sequence": sequence,
+            "runtime_id": self.runtime_id,
+            "event_type": event_type,
+            "payload_hash": _stable(payload),
+            "evidence_refs": list(evidence_refs),
+            "created_utc": datetime.now(timezone.utc).isoformat(),
         }
         path = self.root / f"{sequence:06d}-{event_type}.json"
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -272,7 +353,9 @@ def verify_reality(
         if claim.get("contradicted") is True:
             contradicted.append(claim_id)
     return {
-        "decision": "reality_supported" if not unsupported and not contradicted else "not_supported",
+        "decision": "reality_supported"
+        if not unsupported and not contradicted
+        else "not_supported",
         "unsupported_claims": tuple(sorted(unsupported)),
         "contradicted_claims": tuple(sorted(contradicted)),
         "anti_bs_internal_control": True,

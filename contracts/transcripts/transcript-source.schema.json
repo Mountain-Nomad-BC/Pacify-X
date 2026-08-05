@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:transcripts:transcript-source",
+  "title": "Immutable transcript source receipt",
+  "type": "object",
+  "required": ["source_id", "conversation_id", "source_file", "source_date", "source_sha256", "bytes", "ingested_copy"],
+  "properties": {
+    "source_id": {"type": "string", "minLength": 1},
+    "conversation_id": {"type": "string", "minLength": 1},
+    "source_file": {"type": "string", "minLength": 1},
+    "source_date": {"type": ["string", "null"]},
+    "source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "bytes": {"type": "integer", "minimum": 0},
+    "ingested_copy": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

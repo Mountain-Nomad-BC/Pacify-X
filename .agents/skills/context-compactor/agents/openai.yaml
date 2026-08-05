@@ -1,4 +1,4 @@
 interface:
   display_name: "Context Compactor"
-  short_description: "Governed Context Compactor workflow"
-  default_prompt: "Use $context-compactor to evaluate this task with bounded evidence."
+  short_description: "Compress context without losing safety evidence"
+  default_prompt: "Use $context-compactor to compress this status while preserving mandatory failures, uncertainty, authority, recovery, and evidence."

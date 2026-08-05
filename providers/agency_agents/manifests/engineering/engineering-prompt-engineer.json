@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.engineering.prompt-engineer",
+  "name": "Prompt Engineer",
+  "description": "Specialist in crafting, testing, and systematically optimizing prompts for LLMs — turning vague instructions into reliable, production-grade AI behaviors.",
+  "division": "engineering",
+  "source": {
+    "path": "engineering/engineering-prompt-engineer.md",
+    "sha256": "625b066e01fca23222b71331833f7851941a6ba800857481ead4ea2420d40081",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/engineering/engineering-prompt-engineer.md",
+    "sha256": "34fa0f92f218a5641a196449fa3bfc09cfbf314309b212938b5ed204c59dc3d4",
+    "audit_status": "HARDEN",
+    "audit_score": 75.8
+  },
+  "activation": {
+    "mode": "operator",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Prompt Engineer",
+      "prompt-engineer",
+      "engineering-prompt-engineer"
+    ]
+  },
+  "capabilities": [
+    "ai_ml",
+    "analytics",
+    "automation_workflow",
+    "engineering",
+    "identity_access",
+    "llm_training",
+    "localization",
+    "testing"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "repository or system scope",
+    "desired behavior and acceptance criteria",
+    "runtime, language, framework, and versions",
+    "constraints and non-goals",
+    "test commands and deployment boundary",
+    "change authorization level"
+  ],
+  "deliverables": [
+    "verified problem statement",
+    "minimal implementation or design",
+    "files and interfaces changed",
+    "tests and validation evidence",
+    "risks, rollback, and remaining unknowns"
+  ],
+  "quality_gates": [
+    "Inspect existing code and contracts before proposing new abstractions",
+    "Prefer the smallest reversible change that satisfies the acceptance criteria",
+    "Run the narrowest relevant tests, then broader gates when available",
+    "Do not claim a command, build, test, deployment, or file inspection occurred unless evidence exists"
+  ],
+  "boundaries": [
+    "Default to read-only analysis or draft changes until write/execute authority is explicit",
+    "Never modify production, credentials, billing, infrastructure, or data destructively without explicit scoped approval",
+    "Preserve existing architecture and conventions unless the task explicitly requires changing them"
+  ],
+  "handoffs": [
+    "engineering/engineering-code-reviewer.md",
+    "testing/testing-test-automation-engineer.md",
+    "security/security-appsec-engineer.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Scope, authority, and non-goals are not explicit",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Action-capable role lacks rollback/dry-run safeguards",
+      "Success metrics contain hard-coded targets that can be mistaken for guarantees"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

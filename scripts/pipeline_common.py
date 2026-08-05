@@ -1,4 +1,5 @@
 """Shared deterministic helpers for corpus reduction scripts."""
+
 from __future__ import annotations
 
 from collections import Counter
@@ -12,7 +13,16 @@ _PRIVATE_TERMS = ("r" + "ie", "re" + "my", "rh" + "eem")
 _PRIVATE_PATTERN = re.compile(
     rf"(?i)(?:(?<![A-Za-z])({'|'.join(_PRIVATE_TERMS[:2])})(?![A-Za-z])|({_PRIVATE_TERMS[2]}))"
 )
-_REPLACEMENTS = dict(zip(_PRIVATE_TERMS, ("intelligent_integrations_and_engines", "governed_retrieval_system_with_deterministic_rails", "enterprise")))
+_REPLACEMENTS = dict(
+    zip(
+        _PRIVATE_TERMS,
+        (
+            "intelligent_integrations_and_engines",
+            "governed_retrieval_system_with_deterministic_rails",
+            "enterprise",
+        ),
+    )
+)
 _LEGACY_TERMS = ("integration" + "_" + "engine", "governed" + "_" + "retrieval")
 _LEGACY_REPLACEMENTS = dict(zip(_LEGACY_TERMS, tuple(_REPLACEMENTS.values())[:2]))
 _LEGACY_PATTERN = re.compile(
@@ -21,8 +31,12 @@ _LEGACY_PATTERN = re.compile(
 
 
 def sanitize(value: str) -> str:
-    cleaned = _PRIVATE_PATTERN.sub(lambda match: _REPLACEMENTS[match.group(0).lower()], value)
-    return _LEGACY_PATTERN.sub(lambda match: _LEGACY_REPLACEMENTS[match.group(1).lower()], cleaned)
+    cleaned = _PRIVATE_PATTERN.sub(
+        lambda match: _REPLACEMENTS[match.group(0).lower()], value
+    )
+    return _LEGACY_PATTERN.sub(
+        lambda match: _LEGACY_REPLACEMENTS[match.group(1).lower()], cleaned
+    )
 
 
 def sha256_file(path: Path, chunk_size: int = 1024 * 1024) -> str:
@@ -45,7 +59,9 @@ def read_jsonl(path: Path) -> Iterator[dict]:
             try:
                 yield json.loads(line)
             except json.JSONDecodeError as error:
-                raise ValueError(f"{path}:{line_number}: invalid JSONL: {error}") from error
+                raise ValueError(
+                    f"{path}:{line_number}: invalid JSONL: {error}"
+                ) from error
 
 
 def write_jsonl(path: Path, records: Iterable[dict]) -> tuple[int, str]:
@@ -84,7 +100,9 @@ def simhash64(tokens: list[str]) -> str | None:
         return None
     weights = [0] * 64
     for token, count in Counter(tokens).items():
-        value = int.from_bytes(hashlib.sha256(token.encode("utf-8")).digest()[:8], "big")
+        value = int.from_bytes(
+            hashlib.sha256(token.encode("utf-8")).digest()[:8], "big"
+        )
         for bit in range(64):
             weights[bit] += count if value & (1 << bit) else -count
     result = sum(1 << bit for bit, weight in enumerate(weights) if weight >= 0)

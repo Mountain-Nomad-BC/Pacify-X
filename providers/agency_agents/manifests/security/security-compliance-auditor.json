@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.security.compliance-auditor",
+  "name": "Compliance Auditor",
+  "description": "Expert technical compliance auditor specializing in SOC 2, ISO 27001, HIPAA, and PCI-DSS audits — from readiness assessment through evidence collection to certification.",
+  "division": "security",
+  "source": {
+    "path": "security/security-compliance-auditor.md",
+    "sha256": "ebb550ceef8011be23fe5a6fab0a7b3f77c2433f4d6aa22617a7eb87db97274f",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/security/security-compliance-auditor.md",
+    "sha256": "c96fe58421de8d49c20f80be29193bfb35d7933a20ab20c07ca71142b56d20dd",
+    "audit_status": "REWRITE",
+    "audit_score": 57.8
+  },
+  "activation": {
+    "mode": "reviewer",
+    "risk_tier": "high",
+    "autonomy": "draft_or_read_only_until_explicit_approval",
+    "freshness_sensitive": true,
+    "requires_human_review": true,
+    "max_parallel_specialists": 2,
+    "aliases": [
+      "Compliance Auditor",
+      "compliance-auditor",
+      "security-compliance-auditor"
+    ]
+  },
+  "capabilities": [
+    "automation_workflow",
+    "compliance_governance",
+    "documentation",
+    "identity_access",
+    "security"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "written authorized scope",
+    "target environment and owner",
+    "rules of engagement and prohibited actions",
+    "test window and safety constraints",
+    "evidence handling and disclosure path"
+  ],
+  "deliverables": [
+    "scope confirmation",
+    "reproducible findings with severity and confidence",
+    "evidence with secrets redacted",
+    "remediation and verification steps",
+    "incident or disclosure escalation"
+  ],
+  "quality_gates": [
+    "Operate only inside explicit authorization and stop on scope ambiguity",
+    "Use safe proofs; avoid persistence, destructive payloads, uncontrolled scanning, and data exfiltration",
+    "Redact secrets and sensitive data from outputs",
+    "Verify remediation and distinguish tested coverage from untested areas"
+  ],
+  "boundaries": [
+    "No unauthorized access, exploitation, credential use, lateral movement, persistence, or disruption",
+    "Do not claim a system secure, compliant, or remediated beyond the tested denominator"
+  ],
+  "handoffs": [
+    "security/security-appsec-engineer.md",
+    "security/security-architect.md",
+    "security/security-incident-responder.md"
+  ],
+  "audit": {
+    "critical_issues": [
+      "High-risk role lacks explicit professional/operational boundaries",
+      "Security-sensitive role lacks authorized-scope-only constraint"
+    ],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit",
+      "Acceptance criteria are missing or weak",
+      "Action-capable role lacks an explicit permission/authorization boundary",
+      "Action-capable role lacks rollback/dry-run safeguards"
+    ],
+    "recommendation": "Substantial rewrite/hardening required before direct activation"
+  },
+  "source_audit_status": "REWRITE",
+  "lifecycle_state": "reference_only",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable",
+    "direct activation until the specialist content is hardened and independently reviewed"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": true,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

@@ -9,14 +9,14 @@ Deliver a model-agnostic, drop-in bootstrap that lets an LLM safely commission e
 ## Current state
 
 Mode: `existing`  
-Phase: `post-release trust-boundary hardening`
-Status: `validated development on main; public CI passed`
-Active card: `none`
-Next action: open a future signed-release card when publication is authorized; do not rewrite the immutable v0.6.3 release.
+Phase: `post-closure validation complete`
+Status: `development tree validated; source and repair intakes closed`
+Active card: none
+Next action: preserve the validated development tree; issue a new signed release only through the exact-artifact finalizer when explicitly authorized.
 
 Release 0.6.3 is the current signed, self-certified release. The annotated tag, exact public distribution files, trusted publisher signature, complete evidence set, checksums, SBOM, provenance, and fresh installed-wheel verification agree. Canonical evidence is under `evidence/releases/0.6.3/`; the public release is at [GitHub v0.6.3](https://github.com/Mountain-Nomad-BC/Pacify-X/releases/tag/v0.6.3).
 
-The current development tree adds the REL-012 trust-boundary and reproducibility repairs. Those changes have passed local source, selective assurance-gate, sanitation, clean-build, installed-wheel, and public CI validation, but they do not rewrite or expand the immutable v0.6.3 certificate. A future signed release must bind these new bytes before they are described as release-certified.
+The current development tree adds the REL-012 trust-boundary repairs, the REL-013 full-capability integration, and the REL-014 distribution-integrity repairs. The integrated product passed 813 source tests plus 585 subtests in one uninterrupted run, 424 independent `unittest` discovery tests, exact installed-wheel checks from an unrelated working directory, deterministic source export, all eight independently receipted assurance gates, all 24 strict release-audit checks, all 21 structural maturity checks, and zero-hit sanitation across 2,495 files. These bytes do not rewrite or expand the immutable v0.6.3 certificate. A future signed release must bind them before they are described as release-certified.
 
 Release 0.6.2 is historical and revoked for deployment. Its validation proved internal consistency under the included profile, but did not authenticate one immutable chain from Git commit through the exact tested and publicly distributed package bytes. Revocation evidence is retained at `evidence/release-revocation-0.6.2.json`; the original certificate remains unchanged as historical evidence.
 
@@ -178,6 +178,55 @@ Release evidence: `evidence/releases/0.6.3/certificate.json`, `evidence/releases
 - [x] Pass focused tests, repaired-failure reruns, all current assurance gates, sanitation, clean build, and installed-wheel smoke validation.
 
 Repair evidence: `evidence/repairs/trust-boundary-hardening/`. This card is complete on `main` and passed public CI; it remains development state until later bound into a new signed release.
+
+## Full capability integration card - REL-013
+
+- [x] Open an isolated integration branch and record the exact starting state.
+- [x] Open a mutation-tracked intake and capture the current full-tree denominator.
+- [x] Validate every supplied pack independently and retain source defects separately.
+- [x] Reconcile every source file and declared capability to one disposition and canonical owner.
+- [x] Integrate project mapping, normalized multi-path discovery, bounded graph scoring, and minimum-package construction.
+- [x] Integrate cognitive, agent, transcript, engineering-reasoning, external-provider, n8n/Supabase, and cybersecurity capabilities without parallel authority owners.
+- [x] Rebuild all lazy registries, graphs, aliases, contracts, package records, and evidence projections deterministically.
+- [x] Pass focused, full-source, sanitation, installed-package, clean-clone, rollback, and independent certification gates.
+- [x] Close and quarantine the intake after explicit user closure, two matching 4,030-file snapshots, 30 seconds of stability, and immediate equality verification.
+- [x] Reconcile the 553 late-added files absent from the earlier 3,477-file ledger; implement their non-overlapping mechanisms through five canonical lazy skills and five executable workflows.
+
+### Clean-room reference capability queue
+
+The separately inventoried `incase-reference` archive set is requirements evidence only. No source archive, code, prompt, skill prose, schema, template, branding, binary, or generated asset from that set may enter the product tree. Each item below requires an independently authored contract, bounded implementation, orchestration reachability, negative-permission tests, packaging proof, and disposition evidence before it can be marked complete.
+
+- [x] Independent-hypothesis panel with isolated branches, an independent critic, bounded convergence, and preserved dissent.
+- [x] Skill behavioral-delta certification based on observable decisions, negative triggers, hard gates, and evidence hashes—not private reasoning traces.
+- [x] Communication-budget controller that compresses repetition without dropping failures, uncertainty, authority boundaries, recovery instructions, or mandatory evidence.
+- [x] Fleet-readiness evaluator and project-scoped bounded inbox with identity, permission, heartbeat, cost, ownership, and cross-project isolation checks.
+- [x] Memory-graph health and dependency-ordered remediation planner with typed temporal claims, citations, mutation approval, spend caps, and post-step verification.
+- [x] Durable-goal state machine with acceptance-backed completion, continuation budgets, pause/resume isolation, and evidence-based blocked semantics.
+- [x] Optional terminal-session adapter contract that cannot execute, attach, or persist a process without separately granted authority.
+- [x] Vendor-neutral backend-service capability model covering data, authentication, storage, functions, hosting, model gateways, observability, and payments.
+- [x] Shadow-behavior comparator that always returns the incumbent result before authorized cutover, contains candidate effects, records mismatches, and provides a kill switch.
+- [x] Specification-lifecycle closure connecting principles, specification, clarification, design, tasks, implementation evidence, and acceptance without orphan work.
+
+The external intake inventory contains 27 SHA-256-mapped archives and 31,425 mapped central-directory entries. Three archives contain symlinks and remain unexpanded. The complete per-archive disposition and maps stay outside the distribution in operator-controlled intake evidence.
+
+### Validation debt discovered during REL-013
+
+- [x] Establish an explicit repository-wide Ruff policy, reduce the 480-finding legacy denominator to zero, and enforce it through an independently receipted lint gate.
+
+Integration evidence: `evidence/integration/pxi-20260804/`. The closed source snapshot contains 4,030 files and 60,996,936 bytes at tree SHA-256 `7f353ca7ade3e9fe061c82f58831f676f7e8ccbbab178128c7861b4a34ab1908`; the final disposition accounts for those files plus its post-closure custody manifest with zero unaccounted records. The 553 late additions produced five consolidated clean-room owners for candidate resolution, distributed work, epistemic skill evolution, physical/media validation, and mechanism-level engineering research rather than 63 duplicate micro-skills or parallel runtimes. The post-closure validation denominator is recorded in `integration_validation_summary.json`. Release 0.6.3 remains immutable and this development wave is not release-certified until a future exact-artifact finalizer is authorized.
+
+## Audit repair and distribution integrity card - REL-014
+
+- [x] Account for all 13 repair-pack files with one hash-bound disposition, zero rejects, and zero unaccounted files.
+- [x] Replace extension-limited skill packaging with an idempotent recursive regular-file projection that preserves nested JSON, YAML, schemas, templates, scripts, and references.
+- [x] Enforce exact source-to-wheel and source-to-sdist skill path and hash equivalence with an explicit empty source-only policy.
+- [x] Add feature-level OpenSSH health reporting to `doctor` without making basic inspection depend on signing availability.
+- [x] Fail authoritative signing operations with one stable actionable preflight when Ed25519 or SSH signature features are unavailable.
+- [x] Add a byte-deterministic, non-destructive clean-source export that excludes VCS metadata, build products, and disposable caches.
+- [x] Preserve uninterrupted-run evidence separately from focused reruns; never aggregate failures and reruns into a fictional clean pass.
+- [x] Complete the uninterrupted post-repair full suite, installed distribution, sanitation, CLI validation, and final cache/junk audit.
+
+Repair-pack evidence: `evidence/integration/pxi-20260804/audit_repair_pack_disposition.json`. The pack closed on two matching 13-file snapshots after a 30-second stability interval and moved to recoverable external quarantine with tree SHA-256 `e4c7e20be030148b55afd1da861632f945c7c7812b61f572c6c17e4f4ca1f369`. Full validation is recorded in `evidence/integration/pxi-20260804/integration_validation_summary.json`; no new signed release certificate was issued.
 
 ## Primary user entry points
 

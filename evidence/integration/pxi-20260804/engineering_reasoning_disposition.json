@@ -1,0 +1,325 @@
+{
+  "schema_version": "1.0",
+  "generator": "pacify-x.integration-disposition/1.0.0",
+  "source_alias": "engineering-reasoning-skills-expansion",
+  "expected_tree_sha256": null,
+  "inventory_sha256": "8801c0b5a555b478ede16cabfbc9b44c03dd8db918a5aafbd37595ac31301151",
+  "file_count": 34,
+  "byte_count": 51335,
+  "unaccounted_count": 0,
+  "disposition_counts": {
+    "derived-regenerate": 9,
+    "fragment": 1,
+    "merge": 8,
+    "retain": 16
+  },
+  "records": [
+    {
+      "source_path": "docs/COMPARISON_AND_FINDINGS.md",
+      "bytes": 1367,
+      "sha256": "ec4e8e9b041fd267412674ed6ce875c593b649f0696226ddad99cfc0b854f820",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reasoning source comparison and implementation guidance retained as provenance"
+    },
+    {
+      "source_path": "docs/source_comparison.json",
+      "bytes": 5791,
+      "sha256": "be40963453cb582f12a1403f660e6e78d128d84826e211706b5c0f26fbc8b1ad",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reasoning source comparison and implementation guidance retained as provenance"
+    },
+    {
+      "source_path": "install.py",
+      "bytes": 913,
+      "sha256": "74ca81de4c12fdea0c0d96fdadeeed0f5c8155afd95fb3c37c43fe0ab9db9f21",
+      "disposition": "fragment",
+      "canonical_owner": "runtime/project_reasoning",
+      "target_path": null,
+      "rationale": "dry-run and collision-checking semantics retained without overlay installation"
+    },
+    {
+      "source_path": "MANIFEST.json",
+      "bytes": 4323,
+      "sha256": "379b50cf0d8dbef7167efaedc684ecbc533b50bc0ff7e7635118e83d49e8cd58",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reasoning source comparison and implementation guidance retained as provenance"
+    },
+    {
+      "source_path": "overlay/.agents/skills/architecture-deepening-audit/SKILL.md",
+      "bytes": 764,
+      "sha256": "4b3249edacd5f8e4a4d1b56a1895f2ac36a5a71eb30e8c7e3cdb5db543c9eea7",
+      "disposition": "retain",
+      "canonical_owner": ".agents/skills/architecture-deepening-audit/SKILL.md",
+      "target_path": ".agents/skills/architecture-deepening-audit/SKILL.md",
+      "rationale": "exact target duplicate; canonical target retained"
+    },
+    {
+      "source_path": "overlay/.agents/skills/context-handoff-package/SKILL.md",
+      "bytes": 704,
+      "sha256": "9b33e508ea92d590b854f69134596e53febe87fe086e34a1a06f5650cb9658b4",
+      "disposition": "retain",
+      "canonical_owner": ".agents/skills/context-handoff-package/SKILL.md",
+      "target_path": ".agents/skills/context-handoff-package/SKILL.md",
+      "rationale": "exact target duplicate; canonical target retained"
+    },
+    {
+      "source_path": "overlay/.agents/skills/decision-wayfinding/SKILL.md",
+      "bytes": 870,
+      "sha256": "285ccda597022c182eb86be5e3dab40a4260e675d9ae83d58716a420c2258869",
+      "disposition": "retain",
+      "canonical_owner": ".agents/skills/decision-wayfinding/SKILL.md",
+      "target_path": ".agents/skills/decision-wayfinding/SKILL.md",
+      "rationale": "exact target duplicate; canonical target retained"
+    },
+    {
+      "source_path": "overlay/.agents/skills/deep-module-design/SKILL.md",
+      "bytes": 1145,
+      "sha256": "9464e69f622c924e2d08e4813439435d4e05f99a6dc06d8c2dd6409c5a573b32",
+      "disposition": "retain",
+      "canonical_owner": ".agents/skills/deep-module-design/SKILL.md",
+      "target_path": ".agents/skills/deep-module-design/SKILL.md",
+      "rationale": "exact target duplicate; canonical target retained"
+    },
+    {
+      "source_path": "overlay/.agents/skills/design-it-twice/SKILL.md",
+      "bytes": 833,
+      "sha256": "15fa7a60105052643706326f55f58ae325cf19850e92aff3cfaa8f5307a9f3ec",
+      "disposition": "retain",
+      "canonical_owner": ".agents/skills/design-it-twice/SKILL.md",
+      "target_path": ".agents/skills/design-it-twice/SKILL.md",
+      "rationale": "exact target duplicate; canonical target retained"
+    },
+    {
+      "source_path": "overlay/.agents/skills/domain-language-maintenance/SKILL.md",
+      "bytes": 1109,
+      "sha256": "8b727330d295fb266b8fa1d1e389a14956e1ee126bd0edcb01800aff0d8163ba",
+      "disposition": "retain",
+      "canonical_owner": ".agents/skills/domain-language-maintenance/SKILL.md",
+      "target_path": ".agents/skills/domain-language-maintenance/SKILL.md",
+      "rationale": "exact target duplicate; canonical target retained"
+    },
+    {
+      "source_path": "overlay/.agents/skills/dual-axis-code-review/SKILL.md",
+      "bytes": 712,
+      "sha256": "b7c507bcf4008e3d1a4d3991d952a4d79ed095fc1e4474cc66e9491d936248c8",
+      "disposition": "retain",
+      "canonical_owner": ".agents/skills/dual-axis-code-review/SKILL.md",
+      "target_path": ".agents/skills/dual-axis-code-review/SKILL.md",
+      "rationale": "exact target duplicate; canonical target retained"
+    },
+    {
+      "source_path": "overlay/.agents/skills/frontier-questioning/SKILL.md",
+      "bytes": 1392,
+      "sha256": "76b0d8dd66a6bf68a3c67e3a41bc27e2b1dbcfd5f5db695ccae5c900810e1002",
+      "disposition": "retain",
+      "canonical_owner": ".agents/skills/frontier-questioning/SKILL.md",
+      "target_path": ".agents/skills/frontier-questioning/SKILL.md",
+      "rationale": "exact target duplicate; canonical target retained"
+    },
+    {
+      "source_path": "overlay/.agents/skills/guided-procedure-wizard/SKILL.md",
+      "bytes": 674,
+      "sha256": "42fe1e69b7ce78d824d351a3220b912d0b6a802eee3ee6885bba047be831c137",
+      "disposition": "retain",
+      "canonical_owner": ".agents/skills/guided-procedure-wizard/SKILL.md",
+      "target_path": ".agents/skills/guided-procedure-wizard/SKILL.md",
+      "rationale": "exact target duplicate; canonical target retained"
+    },
+    {
+      "source_path": "overlay/.agents/skills/intent-preserving-merge-resolution/SKILL.md",
+      "bytes": 860,
+      "sha256": "62e581370fb71200d8279fec5facd505c978507a23a94b375256c583e0555045",
+      "disposition": "retain",
+      "canonical_owner": ".agents/skills/intent-preserving-merge-resolution/SKILL.md",
+      "target_path": ".agents/skills/intent-preserving-merge-resolution/SKILL.md",
+      "rationale": "exact target duplicate; canonical target retained"
+    },
+    {
+      "source_path": "overlay/.agents/skills/questionnaire-delegation/SKILL.md",
+      "bytes": 675,
+      "sha256": "1b7d57606b11b8cde821dfed00891623c9c0a90ddfa1c9435aba820099b8a9cd",
+      "disposition": "retain",
+      "canonical_owner": ".agents/skills/questionnaire-delegation/SKILL.md",
+      "target_path": ".agents/skills/questionnaire-delegation/SKILL.md",
+      "rationale": "exact target duplicate; canonical target retained"
+    },
+    {
+      "source_path": "overlay/.agents/skills/tracer-bullet-planning/SKILL.md",
+      "bytes": 727,
+      "sha256": "fc98ba040e8ea46ac2ce2c36eab21741ee1cbe181dbbd4fee0e3b0b61b4ef669",
+      "disposition": "retain",
+      "canonical_owner": ".agents/skills/tracer-bullet-planning/SKILL.md",
+      "target_path": ".agents/skills/tracer-bullet-planning/SKILL.md",
+      "rationale": "exact target duplicate; canonical target retained"
+    },
+    {
+      "source_path": "overlay/registry/engineering_reasoning_expansion.json",
+      "bytes": 4611,
+      "sha256": "6e89c3d537e5b15c63e427d4fdefee9190d8e14fdc519f7de18d1bd27231c0f6",
+      "disposition": "merge",
+      "canonical_owner": "registry/engineering_reasoning_expansion.json",
+      "target_path": "registry/engineering_reasoning_expansion.json",
+      "rationale": "target exists; semantic merge and target tests required"
+    },
+    {
+      "source_path": "overlay/runtime/project_reasoning/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "merge",
+      "canonical_owner": "runtime/project_reasoning/__init__.py",
+      "target_path": "runtime/project_reasoning/__init__.py",
+      "rationale": "target exists; semantic merge and target tests required"
+    },
+    {
+      "source_path": "overlay/runtime/project_reasoning/__pycache__/__init__.cpython-313.pyc",
+      "bytes": 200,
+      "sha256": "37cc3acfa371cd287371370f1ff882ec2515c18dd2ed98c6a6d961a67912e0e2",
+      "disposition": "derived-regenerate",
+      "canonical_owner": "external quarantine custody",
+      "target_path": null,
+      "rationale": "generated cache is never installed"
+    },
+    {
+      "source_path": "overlay/runtime/project_reasoning/__pycache__/deep_module_audit.cpython-313.pyc",
+      "bytes": 3239,
+      "sha256": "7ae251d49dfe9c947609e5df7c6558214887e6e629f60cce19284e7ee4317cf1",
+      "disposition": "derived-regenerate",
+      "canonical_owner": "external quarantine custody",
+      "target_path": null,
+      "rationale": "generated cache is never installed"
+    },
+    {
+      "source_path": "overlay/runtime/project_reasoning/__pycache__/frontier.cpython-313.pyc",
+      "bytes": 4069,
+      "sha256": "11f884d0c8d821f6114ff32b7ef6a64338166a2a5e285c09067e28c3bcee5e0e",
+      "disposition": "derived-regenerate",
+      "canonical_owner": "external quarantine custody",
+      "target_path": null,
+      "rationale": "generated cache is never installed"
+    },
+    {
+      "source_path": "overlay/runtime/project_reasoning/__pycache__/glossary_audit.cpython-313.pyc",
+      "bytes": 2121,
+      "sha256": "9e042641465275917470c3a12593ec95d23fa9a11ef77cd4983dc32e81bd47e1",
+      "disposition": "derived-regenerate",
+      "canonical_owner": "external quarantine custody",
+      "target_path": null,
+      "rationale": "generated cache is never installed"
+    },
+    {
+      "source_path": "overlay/runtime/project_reasoning/deep_module_audit.py",
+      "bytes": 975,
+      "sha256": "417d314a618a9ae26300814c881659cfc25f04f1a85fb5bb66174ff4485c6082",
+      "disposition": "merge",
+      "canonical_owner": "runtime/project_reasoning/deep_module_audit.py",
+      "target_path": "runtime/project_reasoning/deep_module_audit.py",
+      "rationale": "target exists; semantic merge and target tests required"
+    },
+    {
+      "source_path": "overlay/runtime/project_reasoning/frontier.py",
+      "bytes": 1429,
+      "sha256": "bf5f3bcd08ac35651c7de0e97ffc1d55ab3b541578d2c0e01d7ce8779e5cd0cf",
+      "disposition": "merge",
+      "canonical_owner": "runtime/project_reasoning/frontier.py",
+      "target_path": "runtime/project_reasoning/frontier.py",
+      "rationale": "target exists; semantic merge and target tests required"
+    },
+    {
+      "source_path": "overlay/runtime/project_reasoning/glossary_audit.py",
+      "bytes": 814,
+      "sha256": "ea15e599b8a68789f9d6738c29006bef5b632686274875ec3b65f9676180edb8",
+      "disposition": "merge",
+      "canonical_owner": "runtime/project_reasoning/glossary_audit.py",
+      "target_path": "runtime/project_reasoning/glossary_audit.py",
+      "rationale": "target exists; semantic merge and target tests required"
+    },
+    {
+      "source_path": "README.md",
+      "bytes": 647,
+      "sha256": "8b6fdf2d76ee36e238eafed28f670100890748b2becd83db9e19de26f827df10",
+      "disposition": "retain",
+      "canonical_owner": "evidence/integration/pxi-20260804",
+      "target_path": null,
+      "rationale": "reasoning source comparison and implementation guidance retained as provenance"
+    },
+    {
+      "source_path": "source_attribution/LICENSE-mattpocock-skills-MIT.txt",
+      "bytes": 1068,
+      "sha256": "0e7ac423bf2c6e223b7c5b156f8cf72da49d748e56a1641402c31f22ad07dbb5",
+      "disposition": "merge",
+      "canonical_owner": "LICENSES",
+      "target_path": null,
+      "rationale": "MIT license and attribution preserved in the distribution"
+    },
+    {
+      "source_path": "source_attribution/NOTICE.md",
+      "bytes": 245,
+      "sha256": "898a989d520b024384f26c4958df2d1709fa9bc39f5f3a0e6e6420e27318c6f2",
+      "disposition": "merge",
+      "canonical_owner": "LICENSES",
+      "target_path": null,
+      "rationale": "MIT license and attribution preserved in the distribution"
+    },
+    {
+      "source_path": "tests/.pytest_cache/.gitignore",
+      "bytes": 37,
+      "sha256": "3ed731b65d06150c138e2dadb0be0697550888a6b47eb8c45ecc9adba8b8e9bd",
+      "disposition": "derived-regenerate",
+      "canonical_owner": "external quarantine custody",
+      "target_path": null,
+      "rationale": "generated cache is never installed"
+    },
+    {
+      "source_path": "tests/.pytest_cache/CACHEDIR.TAG",
+      "bytes": 191,
+      "sha256": "37dc88ef9a0abeddbe81053a6dd8fdfb13afb613045ea1eb4a5c815a74a3bde4",
+      "disposition": "derived-regenerate",
+      "canonical_owner": "external quarantine custody",
+      "target_path": null,
+      "rationale": "generated cache is never installed"
+    },
+    {
+      "source_path": "tests/.pytest_cache/README.md",
+      "bytes": 302,
+      "sha256": "73fd6fccdd802c419a6b2d983d6c3173b7da97558ac4b589edec2dfe443db9ad",
+      "disposition": "derived-regenerate",
+      "canonical_owner": "external quarantine custody",
+      "target_path": null,
+      "rationale": "generated cache is never installed"
+    },
+    {
+      "source_path": "tests/.pytest_cache/v/cache/nodeids",
+      "bytes": 167,
+      "sha256": "85b04dafb08184dc98420bd8491685ff9afbb87daf5b263ee2a98babe3afec4a",
+      "disposition": "derived-regenerate",
+      "canonical_owner": "external quarantine custody",
+      "target_path": null,
+      "rationale": "generated cache is never installed"
+    },
+    {
+      "source_path": "tests/__pycache__/test_pack.cpython-313-pytest-9.0.2.pyc",
+      "bytes": 7119,
+      "sha256": "cf5f147093abe34ce60c1fc9b5400ae0db30531ba2f76eb5dc1533c5b212b8de",
+      "disposition": "derived-regenerate",
+      "canonical_owner": "external quarantine custody",
+      "target_path": null,
+      "rationale": "generated cache is never installed"
+    },
+    {
+      "source_path": "tests/test_pack.py",
+      "bytes": 1242,
+      "sha256": "2520392b89d072c08e648d1651025362c1b33e7f412efec37b6e31f9371e2ab4",
+      "disposition": "merge",
+      "canonical_owner": "tests/test_project_reasoning.py",
+      "target_path": null,
+      "rationale": "behavioral and negative reasoning tests adapted into canonical coverage"
+    }
+  ],
+  "report_sha256": "521b8a35bb4ea99fd91587d4fdd1694593e401f49fc72cea0222e40d5977a92a"
+}

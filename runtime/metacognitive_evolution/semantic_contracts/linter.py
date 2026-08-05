@@ -11,9 +11,17 @@ REQUIRED = {
 }
 
 SENSITIVE_PREFIXES = (
-    "memory.", "registry.", "permissions.", "external.", "runtime.",
-    "filesystem.", "network.", "secrets.", "model."
+    "memory.",
+    "registry.",
+    "permissions.",
+    "external.",
+    "runtime.",
+    "filesystem.",
+    "network.",
+    "secrets.",
+    "model.",
 )
+
 
 def lint(contract: dict[str, Any]) -> dict[str, Any]:
     errors: list[str] = []
@@ -24,21 +32,48 @@ def lint(contract: dict[str, Any]) -> dict[str, Any]:
         elif not isinstance(contract[name], expected):
             errors.append(f"{name} must be {expected.__name__}")
 
-    reads = set(contract.get("reads", [])) if isinstance(contract.get("reads"), list) else set()
-    writes = set(contract.get("writes", [])) if isinstance(contract.get("writes"), list) else set()
-    prohibited = set(contract.get("prohibited_effects", [])) if isinstance(contract.get("prohibited_effects"), list) else set()
-    evidence = contract.get("evidence_required", []) if isinstance(contract.get("evidence_required"), list) else []
-    rollback = contract.get("rollback", {}) if isinstance(contract.get("rollback"), dict) else {}
+    reads = (
+        set(contract.get("reads", []))
+        if isinstance(contract.get("reads"), list)
+        else set()
+    )
+    writes = (
+        set(contract.get("writes", []))
+        if isinstance(contract.get("writes"), list)
+        else set()
+    )
+    prohibited = (
+        set(contract.get("prohibited_effects", []))
+        if isinstance(contract.get("prohibited_effects"), list)
+        else set()
+    )
+    evidence = (
+        contract.get("evidence_required", [])
+        if isinstance(contract.get("evidence_required"), list)
+        else []
+    )
+    rollback = (
+        contract.get("rollback", {})
+        if isinstance(contract.get("rollback"), dict)
+        else {}
+    )
 
     overlap = writes & prohibited
     if overlap:
-        errors.append("declared writes conflict with prohibited effects: " + ", ".join(sorted(overlap)))
+        errors.append(
+            "declared writes conflict with prohibited effects: "
+            + ", ".join(sorted(overlap))
+        )
     undeclared_sensitive = [
-        effect for effect in contract.get("observed_effects", [])
+        effect
+        for effect in contract.get("observed_effects", [])
         if effect.startswith(SENSITIVE_PREFIXES) and effect not in writes
     ]
     if undeclared_sensitive:
-        errors.append("observed sensitive effects were not declared: " + ", ".join(sorted(undeclared_sensitive)))
+        errors.append(
+            "observed sensitive effects were not declared: "
+            + ", ".join(sorted(undeclared_sensitive))
+        )
     if writes and not rollback.get("required", False):
         warnings.append("writes are declared but rollback.required is false")
     if writes and not rollback.get("method"):
@@ -48,7 +83,9 @@ def lint(contract: dict[str, Any]) -> dict[str, Any]:
     if not contract.get("epistemic_effects"):
         warnings.append("no epistemic effects declared")
     if reads & writes:
-        warnings.append("same resources appear in reads and writes; verify mutation intent")
+        warnings.append(
+            "same resources appear in reads and writes; verify mutation intent"
+        )
     return {
         "capability_id": contract.get("capability_id"),
         "valid": not errors,

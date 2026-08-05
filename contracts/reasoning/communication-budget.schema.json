@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:reasoning:communication-budget",
+  "title": "Communication budget result",
+  "type": "object",
+  "required": ["valid", "decision", "items", "mandatory_count", "max_items", "dropped"],
+  "properties": {
+    "valid": {"type": "boolean"},
+    "decision": {"enum": ["compacted", "budget_insufficient"]},
+    "items": {"type": "array", "items": {"type": "object"}},
+    "mandatory_count": {"type": "integer", "minimum": 0},
+    "max_items": {"type": "integer", "minimum": 1},
+    "dropped": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

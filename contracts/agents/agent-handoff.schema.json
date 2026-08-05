@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:agents:agent-handoff",
+  "title": "Agent Handoff",
+  "type": "object",
+  "required": [
+    "task_id",
+    "from_agent",
+    "to_agent",
+    "reason",
+    "scope",
+    "evidence_refs",
+    "open_questions"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "from_agent": {
+      "type": "string"
+    },
+    "to_agent": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "authority_remaining": {
+      "type": "object"
+    },
+    "status": {
+      "enum": [
+        "requested",
+        "accepted",
+        "declined",
+        "complete"
+      ]
+    }
+  }
+}

@@ -15,20 +15,27 @@ ROOT = Path(__file__).parents[1]
 def _clone() -> Path:
     directory = Path(tempfile.mkdtemp())
     target = directory / "framework"
-    shutil.copytree(ROOT, target, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache"))
+    shutil.copytree(
+        ROOT, target, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache")
+    )
     return target
 
 
 def test_structural_integrity_has_closed_denominators() -> None:
     result = audit_structural_integrity(ROOT)
-    non_document_errors = [item for item in result["errors"] if not item.startswith("documentation: stale deployment claim")]
+    non_document_errors = [
+        item
+        for item in result["errors"]
+        if not item.startswith("documentation: stale deployment claim")
+    ]
     assert not non_document_errors, non_document_errors
 
 
 def test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection() -> None:
     result = audit_structural_integrity(ROOT)
     groups = [
-        item for item in result["duplicate_file_groups"]
+        item
+        for item in result["duplicate_file_groups"]
         if item["classification"] == "ledger-authority-head-anchor"
     ]
     assert len(groups) == 1
@@ -61,7 +68,9 @@ def test_orphan_registry_file_fails_closed() -> None:
 
 def test_defined_but_unbound_orchestration_fails_closed() -> None:
     root = _clone()
-    (root / "orchestration/workflows/unbound.yaml").write_text("id: unbound\n", encoding="utf-8")
+    (root / "orchestration/workflows/unbound.yaml").write_text(
+        "id: unbound\n", encoding="utf-8"
+    )
     result = audit_structural_integrity(root)
     assert not result["categories"]["orchestrations"]["passed"]
 
@@ -113,17 +122,27 @@ def test_project_management_checkpoint_drift_fails_closed() -> None:
 
 def test_declared_generated_duplicates_regenerate_cleanly() -> None:
     result = audit_structural_integrity(ROOT)
-    declared = [item for item in result["duplicate_file_groups"] if item["classification"] != "unreviewed"]
+    declared = [
+        item
+        for item in result["duplicate_file_groups"]
+        if item["classification"] != "unreviewed"
+    ]
     assert all(item.get("equivalence_rule") for item in declared)
 
 
 def test_undeclared_duplicate_group_fails_audit() -> None:
-    root = _clone(); (root / "docs/a.md").write_text("duplicate", encoding="utf-8"); (root / "docs/b.md").write_text("duplicate", encoding="utf-8")
+    root = _clone()
+    (root / "docs/a.md").write_text("duplicate", encoding="utf-8")
+    (root / "docs/b.md").write_text("duplicate", encoding="utf-8")
     result = audit_structural_integrity(root)
     assert not result["categories"]["duplicate_files"]["passed"]
 
 
 def test_portable_hash_helpers_have_behavioral_parity() -> None:
     result = audit_structural_integrity(ROOT)
-    helpers = [item for item in result["duplicate_logic_groups"] if item["classification"] == "portable-skill-hash-helpers"]
+    helpers = [
+        item
+        for item in result["duplicate_logic_groups"]
+        if item["classification"] == "portable-skill-hash-helpers"
+    ]
     assert all(item["equivalence_rule"] == "behavioral parity" for item in helpers)

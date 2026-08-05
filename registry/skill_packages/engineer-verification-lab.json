@@ -1,6 +1,6 @@
 {
   "body": ".agents/skills/engineer-verification-lab/SKILL.md",
-  "body_sha256": "268b6dabad70bf2dddac2991040b5f7caf92724395ddbd670d2d54521020f130",
+  "body_sha256": "dfa4d00acfe7f08912ee652eda9bc06f4befa5b43d4a5bc92cb1392d47be4b79",
   "capability_tags": [
     "authoritative",
     "declared-suite",
@@ -30,7 +30,7 @@
     ".agents/skills/engineer-verification-lab/references/scripts-index.json"
   ],
   "status": "active",
-  "tests": "tests/test_exact_tool_certification.py",
+  "tests": "tests/test_exact_tool_certification.py; tests/test_clean_room_capabilities.py",
   "validation_freshness": "current",
   "version": "0.2.0"
 }

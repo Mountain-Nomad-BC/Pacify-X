@@ -1,4 +1,5 @@
 """Synchronize specialty admission states across catalog, packages, and ledger."""
+
 from __future__ import annotations
 
 import argparse
@@ -24,8 +25,12 @@ def reconcile(root: Path) -> dict[str, object]:
         for item in category["specialties"]
     }
     specialty["candidate_count"] = len(states)
-    specialty["active_candidate_count"] = sum(state == "active" for state in states.values())
-    specialty["deferred_candidate_count"] = sum(state == "mapped_deferred" for state in states.values())
+    specialty["active_candidate_count"] = sum(
+        state == "active" for state in states.values()
+    )
+    specialty["deferred_candidate_count"] = sum(
+        state == "mapped_deferred" for state in states.values()
+    )
     _write_json(specialty_path, specialty)
     package_updates = []
     for skill_id, state in sorted(states.items()):
@@ -63,12 +68,17 @@ def reconcile(root: Path) -> dict[str, object]:
     rendered = []
     cursor = 0
     for match in BLOCK.finditer(catalog_text):
-        rendered.append(catalog_text[cursor:match.start()])
+        rendered.append(catalog_text[cursor : match.start()])
         block = match.group(0)
         identity = re.search(r'(?m)^id = "([a-z0-9-]+)"$', block)
         if identity and identity.group(1) in states:
             skill_id = identity.group(1)
-            block, count = re.subn(r'(?m)^status = "[^"]+"$', f'status = "{states[skill_id]}"', block, count=1)
+            block, count = re.subn(
+                r'(?m)^status = "[^"]+"$',
+                f'status = "{states[skill_id]}"',
+                block,
+                count=1,
+            )
             if count != 1:
                 raise ValueError(f"catalog status is missing: {skill_id}")
             catalog_updates.append(skill_id)

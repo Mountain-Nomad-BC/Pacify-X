@@ -1,4 +1,5 @@
 """Refresh map-level hashes after a bounded mechanical sanitization pass."""
+
 from __future__ import annotations
 
 import argparse
@@ -9,7 +10,9 @@ from pathlib import Path
 
 def rehash(parts_root: Path) -> dict[str, object]:
     updated: list[dict[str, object]] = []
-    for inventory in sorted(parts_root.rglob("inventory.jsonl"), key=lambda path: path.as_posix()):
+    for inventory in sorted(
+        parts_root.rglob("inventory.jsonl"), key=lambda path: path.as_posix()
+    ):
         summary = inventory.with_name("file_inventory_summary.json")
         if not summary.is_file():
             continue
@@ -20,10 +23,19 @@ def rehash(parts_root: Path) -> dict[str, object]:
         markdown = inventory.with_name("file_inventory_summary.md")
         if markdown.is_file():
             lines = markdown.read_text(encoding="utf-8").splitlines()
-            lines = [f"- Inventory SHA-256: `{digest}`" if line.startswith("- Inventory SHA-256:") else line for line in lines]
+            lines = [
+                f"- Inventory SHA-256: `{digest}`"
+                if line.startswith("- Inventory SHA-256:")
+                else line
+                for line in lines
+            ]
             markdown.write_text("\n".join(lines) + "\n", encoding="utf-8")
         updated.append({"partition": inventory.parent.name, "inventory_sha256": digest})
-    return {"schema_version": "1.0", "updated_count": len(updated), "partitions": updated}
+    return {
+        "schema_version": "1.0",
+        "updated_count": len(updated),
+        "partitions": updated,
+    }
 
 
 def main() -> int:

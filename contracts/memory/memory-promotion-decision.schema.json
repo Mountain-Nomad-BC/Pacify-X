@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:memory:memory-promotion-decision",
+  "title": "Evidence-gated memory promotion decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["decision", "target_status", "required_reviews", "evidence_count", "reasons"],
+  "properties": {
+    "decision": {"enum": ["promote", "hold", "skip", "quarantine", "dispute"]},
+    "target_status": {"enum": ["candidate", "validated", "disputed", "quarantined"]},
+    "required_reviews": {"type": "integer", "minimum": 0},
+    "evidence_count": {"type": "integer", "minimum": 0},
+    "reasons": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

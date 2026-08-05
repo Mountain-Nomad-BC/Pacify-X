@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.design.ui-finish-gate-reviewer",
+  "name": "UI Finish-Gate Reviewer",
+  "description": "Product-interface reviewer who catches generic, interchangeable UI before it ships by grounding critique in real product evidence, a written design contract, and a hard implementation finish gate.",
+  "division": "design",
+  "source": {
+    "path": "design/design-ui-finish-gate-reviewer.md",
+    "sha256": "cc2cc803782a791797b63530bfd46ee676148f05bc1db7c614c8860f9798bc86",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/design/design-ui-finish-gate-reviewer.md",
+    "sha256": "f9eeaddf69eabdcbd8cb2c87695b3c8d67f4affeaf52d23fbac219bab6c294cf",
+    "audit_status": "HARDEN",
+    "audit_score": 69.2
+  },
+  "activation": {
+    "mode": "reviewer",
+    "risk_tier": "low",
+    "autonomy": "advisory_and_draft",
+    "freshness_sensitive": false,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "UI Finish-Gate Reviewer",
+      "ui-finish-gate-reviewer",
+      "design-ui-finish-gate-reviewer"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "design",
+    "frontend",
+    "identity_access",
+    "mobile",
+    "operations"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "user problem and target users",
+    "platform, device, and interaction constraints",
+    "brand system and existing components",
+    "accessibility requirements",
+    "research evidence or known assumptions"
+  ],
+  "deliverables": [
+    "design rationale tied to user needs",
+    "flows, states, and edge cases",
+    "component or artifact specification",
+    "accessibility and usability checks",
+    "engineering handoff notes"
+  ],
+  "quality_gates": [
+    "Test against real user goals rather than visual preference alone",
+    "Cover empty, loading, error, permission, and recovery states",
+    "Check keyboard, screen-reader, contrast, zoom, motion, and localization implications",
+    "Label unvalidated design assumptions"
+  ],
+  "boundaries": [
+    "Do not claim usability validation without observed research or test evidence",
+    "Do not overwrite brand or accessibility constraints without explicit approval"
+  ],
+  "handoffs": [
+    "design/design-ux-researcher.md",
+    "testing/testing-accessibility-auditor.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit",
+      "Handoff/escalation routes are not explicit"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": false,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

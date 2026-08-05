@@ -3,6 +3,7 @@
 The navigator ranks registry summaries only. It does not import, load, or execute
 the selected capability packages.
 """
+
 from __future__ import annotations
 
 from collections import Counter
@@ -15,11 +16,26 @@ import re
 from typing import Iterable, Mapping, Sequence
 
 TOKEN = re.compile(r"[a-z0-9]+")
-STOPWORDS = {"a", "an", "and", "for", "in", "of", "on", "or", "the", "to", "use", "with"}
+STOPWORDS = {
+    "a",
+    "an",
+    "and",
+    "for",
+    "in",
+    "of",
+    "on",
+    "or",
+    "the",
+    "to",
+    "use",
+    "with",
+}
 
 
 def _tokens(value: str) -> set[str]:
-    return {token for token in TOKEN.findall(value.casefold()) if token not in STOPWORDS}
+    return {
+        token for token in TOKEN.findall(value.casefold()) if token not in STOPWORDS
+    }
 
 
 @dataclass(frozen=True)
@@ -42,6 +58,21 @@ class CapabilitySummary:
     synonyms: tuple[str, ...] = ()
     tools: tuple[str, ...] = ()
     relations: tuple[str, ...] = ()
+    outcomes: tuple[str, ...] = ()
+    inputs: tuple[str, ...] = ()
+    outputs: tuple[str, ...] = ()
+    negative_matches: tuple[str, ...] = ()
+    avoid_when: tuple[str, ...] = ()
+    conflicts_with: tuple[str, ...] = ()
+    supersedes: tuple[str, ...] = ()
+    handoff_to: tuple[str, ...] = ()
+    reviewed_by: tuple[str, ...] = ()
+    authority_class: str = "read_only"
+    evidence_quality: float = 0.0
+    validation_coverage: float = 0.0
+    contract_coverage: float = 0.0
+    contracts: tuple[str, ...] = ()
+    validators: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -83,7 +114,10 @@ RISK_ORDER = {"R0": 0, "R1": 1, "R2": 2, "R3": 3, "R4": 4}
 
 def capability_index_revision(capability_index: Iterable[CapabilitySummary]) -> str:
     """Hash sorted metadata only; never load a skill body to compute a revision."""
-    payload = [asdict(item) for item in sorted(capability_index, key=lambda value: value.capability_id)]
+    payload = [
+        asdict(item)
+        for item in sorted(capability_index, key=lambda value: value.capability_id)
+    ]
     encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(encoded).hexdigest()
 
@@ -94,6 +128,7 @@ def _field_tokens(item: CapabilitySummary) -> dict[str, set[str]]:
         for value in values:
             result.update(_tokens(value))
         return result
+
     return {
         "id": _tokens(item.capability_id.replace("-", " ")),
         "purpose": _tokens(item.purpose),
@@ -103,6 +138,9 @@ def _field_tokens(item: CapabilitySummary) -> dict[str, set[str]]:
         "synonyms": combined(item.synonyms),
         "tags": combined(item.capability_tags),
         "relations": combined(item.relations),
+        "outcomes": combined(item.outcomes),
+        "inputs": combined(item.inputs),
+        "outputs": combined(item.outputs),
     }
 
 
@@ -124,7 +162,11 @@ def navigate(
     summaries = tuple(sorted(capability_index, key=lambda item: item.capability_id))
     supplied = set((available_inputs or {}).keys())
     policy = constraints or {}
-    available_tools = {str(value) for value in policy.get("available_tools", ())} if isinstance(policy.get("available_tools", ()), (list, tuple, set)) else set()
+    available_tools = (
+        {str(value) for value in policy.get("available_tools", ())}
+        if isinstance(policy.get("available_tools", ()), (list, tuple, set))
+        else set()
+    )
     tools_declared = "available_tools" in policy
     max_risk = str(policy.get("max_risk", "R4"))
     if max_risk not in RISK_ORDER:
@@ -136,17 +178,30 @@ def navigate(
     eligible: list[CapabilitySummary] = []
     for summary in summaries:
         if summary.status not in allowed_statuses:
-            excluded.append((summary.capability_id, f"lifecycle status {summary.status} is not selectable"))
+            excluded.append(
+                (
+                    summary.capability_id,
+                    f"lifecycle status {summary.status} is not selectable",
+                )
+            )
             continue
         if kinds and summary.kind.casefold() not in kinds:
-            excluded.append((summary.capability_id, f"kind {summary.kind} is not requested"))
+            excluded.append(
+                (summary.capability_id, f"kind {summary.kind} is not requested")
+            )
             continue
         if RISK_ORDER.get(summary.risk, RISK_ORDER["R4"]) > RISK_ORDER[max_risk]:
-            excluded.append((summary.capability_id, f"risk {summary.risk} exceeds {max_risk}"))
+            excluded.append(
+                (summary.capability_id, f"risk {summary.risk} exceeds {max_risk}")
+            )
             continue
-        missing_tools = sorted(set(summary.tools) - available_tools) if tools_declared else []
+        missing_tools = (
+            sorted(set(summary.tools) - available_tools) if tools_declared else []
+        )
         if missing_tools:
-            excluded.append((summary.capability_id, "missing tools: " + ", ".join(missing_tools)))
+            excluded.append(
+                (summary.capability_id, "missing tools: " + ", ".join(missing_tools))
+            )
             continue
         eligible.append(summary)
 
@@ -155,7 +210,19 @@ def navigate(
     for item_fields in fields.values():
         for term in set().union(*item_fields.values()):
             document_frequency[term] += 1
-    weights = {"id": 4.0, "aliases": 4.0, "triggers": 3.0, "synonyms": 3.0, "concepts": 2.5, "purpose": 2.0, "tags": 2.0, "relations": 1.0}
+    weights = {
+        "id": 4.0,
+        "aliases": 4.0,
+        "triggers": 3.0,
+        "synonyms": 3.0,
+        "concepts": 2.5,
+        "purpose": 2.0,
+        "tags": 2.0,
+        "outcomes": 2.0,
+        "outputs": 1.5,
+        "inputs": 1.0,
+        "relations": 1.0,
+    }
     total = max(len(eligible), 1)
     normalized_goal = " ".join(sorted(goal_terms))
     goal_phrase = " ".join(TOKEN.findall(goal.casefold()))
@@ -170,11 +237,30 @@ def navigate(
             field_matches = sorted(goal_terms & field_terms)
             if not field_matches:
                 continue
-            contribution = sum(weights[field] * math.log(1.0 + (total - document_frequency[term] + 0.5) / (document_frequency[term] + 0.5)) for term in field_matches)
+            contribution = sum(
+                weights[field]
+                * math.log(
+                    1.0
+                    + (total - document_frequency[term] + 0.5)
+                    / (document_frequency[term] + 0.5)
+                )
+                for term in field_matches
+            )
             score += contribution
             reasons.append(f"{field}={','.join(field_matches)}")
-        searchable = " ".join((summary.capability_id.replace("-", " "), summary.purpose, *summary.triggers, *summary.aliases, *summary.synonyms)).casefold()
-        exact_phrases = {" ".join(TOKEN.findall(value.casefold())) for value in (*summary.aliases, *summary.synonyms)}
+        searchable = " ".join(
+            (
+                summary.capability_id.replace("-", " "),
+                summary.purpose,
+                *summary.triggers,
+                *summary.aliases,
+                *summary.synonyms,
+            )
+        ).casefold()
+        exact_phrases = {
+            " ".join(TOKEN.findall(value.casefold()))
+            for value in (*summary.aliases, *summary.synonyms)
+        }
         if goal_phrase in exact_phrases:
             score += 100.0
             reasons.append("exact governed alias")
@@ -182,15 +268,28 @@ def navigate(
             score += 1.0
             reasons.append("normalized phrase coverage")
         missing = tuple(sorted(set(summary.required_inputs) - supplied))
-        ranked.append(NavigationCandidate(summary.capability_id, round(score, 6), tuple(sorted(matched)), missing, summary.risk, tuple(reasons)))
+        ranked.append(
+            NavigationCandidate(
+                summary.capability_id,
+                round(score, 6),
+                tuple(sorted(matched)),
+                missing,
+                summary.risk,
+                tuple(reasons),
+            )
+        )
 
-    ranked.sort(key=lambda item: (-item.score, len(item.missing_inputs), item.capability_id))
+    ranked.sort(
+        key=lambda item: (-item.score, len(item.missing_inputs), item.capability_id)
+    )
     selected = tuple(ranked[:max_candidates])
     return NavigationResult(
         candidates=selected,
         examined=len(summaries),
         truncated=len(ranked) > max_candidates,
-        reason="bounded weighted metadata and policy match" if selected else "no admitted capability matched",
+        reason="bounded weighted metadata and policy match"
+        if selected
+        else "no admitted capability matched",
         excluded=tuple(sorted(excluded)),
         index_revision=capability_index_revision(summaries),
     )
@@ -207,7 +306,11 @@ def select_working_set(
     """Rank a minimal metadata-only working set and include bounded dependencies."""
     if default_limit < 1 or hard_limit < default_limit or dependency_depth < 0:
         raise ValueError("invalid selection budget")
-    records = {item.capability_id: item for item in capability_index if item.status in {"admitted", "active"}}
+    records = {
+        item.capability_id: item
+        for item in capability_index
+        if item.status in {"admitted", "active"}
+    }
     navigation = navigate(goal, records.values(), max_candidates=hard_limit)
     chosen: list[str] = []
     decisions: list[SelectionReason] = []
@@ -219,11 +322,14 @@ def select_working_set(
             return True
         item = records.get(capability_id)
         if item is None:
-            rejected.append((capability_id, "dependency is unavailable")); return False
+            rejected.append((capability_id, "dependency is unavailable"))
+            return False
         if depth > dependency_depth:
-            rejected.append((capability_id, "dependency depth exceeds budget")); return False
+            rejected.append((capability_id, "dependency depth exceeds budget"))
+            return False
         if item.redundancy_group and item.redundancy_group in groups:
-            rejected.append((capability_id, "redundant capability group")); return False
+            rejected.append((capability_id, "redundant capability group"))
+            return False
         chosen_before = len(chosen)
         decisions_before = len(decisions)
         groups_before = set(groups)
@@ -232,29 +338,62 @@ def select_working_set(
             if not add(dependency, depth + 1, f"required by {capability_id}"):
                 del chosen[chosen_before:]
                 del decisions[decisions_before:]
-                groups.clear(); groups.update(groups_before)
+                groups.clear()
+                groups.update(groups_before)
                 del rejected[rejected_before:]
-                rejected.append((capability_id, f"dependency bundle does not fit: {dependency}"))
+                rejected.append(
+                    (capability_id, f"dependency bundle does not fit: {dependency}")
+                )
                 return False
         if len(chosen) >= min(default_limit, hard_limit):
             del chosen[chosen_before:]
             del decisions[decisions_before:]
-            groups.clear(); groups.update(groups_before)
+            groups.clear()
+            groups.update(groups_before)
             del rejected[rejected_before:]
-            rejected.append((capability_id, "dependency bundle exceeds active skill budget")); return False
+            rejected.append(
+                (capability_id, "dependency bundle exceeds active skill budget")
+            )
+            return False
         safety = {"R0": 1.0, "R1": 0.8, "R2": 0.4, "R3": 0.0}.get(item.risk, 0.0)
-        fit = next((candidate.score for candidate in navigation.candidates if candidate.capability_id == capability_id), 0)
-        score = round(10 * fit + 3 * item.freshness + 2 * safety - item.cost - item.latency, 3)
+        fit = next(
+            (
+                candidate.score
+                for candidate in navigation.candidates
+                if candidate.capability_id == capability_id
+            ),
+            0,
+        )
+        score = round(
+            10 * fit + 3 * item.freshness + 2 * safety - item.cost - item.latency, 3
+        )
         chosen.append(capability_id)
         if item.redundancy_group:
             groups.add(item.redundancy_group)
-        decisions.append(SelectionReason(capability_id, score, (reason, f"fit={fit}", f"risk={item.risk}", f"freshness={item.freshness}")))
+        decisions.append(
+            SelectionReason(
+                capability_id,
+                score,
+                (
+                    reason,
+                    f"fit={fit}",
+                    f"risk={item.risk}",
+                    f"freshness={item.freshness}",
+                ),
+            )
+        )
         return True
 
     ranked = sorted(
         navigation.candidates,
         key=lambda candidate: (
-            -(10 * candidate.score + 3 * records[candidate.capability_id].freshness + 2 * ({"R0": 1, "R1": .8, "R2": .4}.get(candidate.risk, 0)) - records[candidate.capability_id].cost - records[candidate.capability_id].latency),
+            -(
+                10 * candidate.score
+                + 3 * records[candidate.capability_id].freshness
+                + 2 * ({"R0": 1, "R1": 0.8, "R2": 0.4}.get(candidate.risk, 0))
+                - records[candidate.capability_id].cost
+                - records[candidate.capability_id].latency
+            ),
             candidate.capability_id,
         ),
     )

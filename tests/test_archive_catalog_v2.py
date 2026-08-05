@@ -15,7 +15,8 @@ class ArchiveCatalogV2Tests(unittest.TestCase):
             with ZipFile(first, "w") as archive:
                 archive.writestr("a/file.txt", "value")
             (root / "nested").mkdir()
-            second = root / "nested/two.zip"; second.write_bytes(first.read_bytes())
+            second = root / "nested/two.zip"
+            second.write_bytes(first.read_bytes())
             result = build_catalog(root)
         self.assertEqual(result["source_occurrence_count"], 2)
         self.assertEqual(result["unique_archive_count"], 1)

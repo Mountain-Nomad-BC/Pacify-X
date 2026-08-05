@@ -37,14 +37,30 @@ def built_distribution(tmp_path_factory):
         ROOT,
         source,
         ignore=shutil.ignore_patterns(
-            ".git", "__pycache__", ".pytest_cache", ".ruff_cache",
-            "*.pyc", "*.pyo", "*.egg-info", "build", "dist",
+            ".git",
+            "__pycache__",
+            ".pytest_cache",
+            ".ruff_cache",
+            "*.pyc",
+            "*.pyo",
+            "*.egg-info",
+            "build",
+            "dist",
         ),
     )
     output = temporary / "dist"
     output.mkdir()
     process = subprocess.run(
-        [sys.executable, "-m", "build", "--no-isolation", "--wheel", "--sdist", "--outdir", str(output)],
+        [
+            sys.executable,
+            "-m",
+            "build",
+            "--no-isolation",
+            "--wheel",
+            "--sdist",
+            "--outdir",
+            str(output),
+        ],
         cwd=source,
         text=True,
         capture_output=True,
@@ -55,8 +71,17 @@ def built_distribution(tmp_path_factory):
     return source, next(output.glob("*.whl")), next(output.glob("*.tar.gz")), manifest
 
 
-def _modified_wheel(source: Path, destination: Path, *, omit: str | None = None, extra: str | None = None) -> Path:
-    with zipfile.ZipFile(source) as original, zipfile.ZipFile(destination, "w") as changed:
+def _modified_wheel(
+    source: Path,
+    destination: Path,
+    *,
+    omit: str | None = None,
+    extra: str | None = None,
+) -> Path:
+    with (
+        zipfile.ZipFile(source) as original,
+        zipfile.ZipFile(destination, "w") as changed,
+    ):
         for item in original.infolist():
             if item.filename != omit:
                 changed.writestr(item, original.read(item))
@@ -69,7 +94,10 @@ def _artifact_set(root: Path, version: str = "1.2.3") -> list[dict]:
     wheel = root / f"engineering_loop_bootstrap-{version}-py3-none-any.whl"
     with zipfile.ZipFile(wheel, "w") as archive:
         archive.writestr("engineering_bootstrap/__init__.py", "")
-        archive.writestr(f"engineering_loop_bootstrap-{version}.dist-info/METADATA", f"Metadata-Version: 2.4\nVersion: {version}\n")
+        archive.writestr(
+            f"engineering_loop_bootstrap-{version}.dist-info/METADATA",
+            f"Metadata-Version: 2.4\nVersion: {version}\n",
+        )
     sdist = root / f"engineering_loop_bootstrap-{version}.tar.gz"
     with tarfile.open(sdist, "w:gz") as archive:
         data = f"Metadata-Version: 2.4\nVersion: {version}\n".encode()
@@ -89,7 +117,9 @@ def test_release_build_occurs_once() -> None:
         _artifact_set(output)
         return subprocess.CompletedProcess(command, 0, "", "")
 
-    result = build_release_artifacts_once(root, output, python_executable="python", environment={}, runner=runner)
+    result = build_release_artifacts_once(
+        root, output, python_executable="python", environment={}, runner=runner
+    )
     assert result["valid"], result["errors"]
     assert result["build_invocations"] == len(calls) == 1
 
@@ -110,8 +140,12 @@ def test_release_build_intermediates_move_to_recoverable_custody() -> None:
         return subprocess.CompletedProcess(command, 0, "", "")
 
     result = build_release_artifacts_once(
-        root, output, python_executable="python", environment={},
-        intermediate_quarantine=custody, runner=runner,
+        root,
+        output,
+        python_executable="python",
+        environment={},
+        intermediate_quarantine=custody,
+        runner=runner,
     )
     assert result["valid"], result["errors"]
     assert result["intermediate_custody"]["hard_delete"] is False
@@ -128,7 +162,10 @@ def test_certification_installs_exact_built_wheel(monkeypatch) -> None:
     wheel = root / "fixture.whl"
     wheel.write_bytes(b"exact-wheel-bytes")
     expected = hashlib.sha256(wheel.read_bytes()).hexdigest()
-    monkeypatch.setattr("runtime.release_distribution.venv.EnvBuilder.create", lambda self, target: Path(target).mkdir(parents=True))
+    monkeypatch.setattr(
+        "runtime.release_distribution.venv.EnvBuilder.create",
+        lambda self, target: Path(target).mkdir(parents=True),
+    )
     monkeypatch.setenv("SYSTEMROOT", r"C:\Windows")
     monkeypatch.setenv("WINDIR", r"C:\Windows")
     monkeypatch.setenv("PROGRAMDATA", r"C:\ProgramData")
@@ -168,7 +205,9 @@ def test_published_artifact_hash_matches_certificate() -> None:
 def test_sdist_and_wheel_are_bound_to_same_source_snapshot() -> None:
     root = Path(tempfile.mkdtemp())
     records = _artifact_set(root)
-    result = bind_artifact_set(root, records, source_product_digest="a" * 64, version="1.2.3")
+    result = bind_artifact_set(
+        root, records, source_product_digest="a" * 64, version="1.2.3"
+    )
     assert result["valid"], result["errors"]
     assert result["source_product_digest"] == "a" * 64
 
@@ -176,7 +215,9 @@ def test_sdist_and_wheel_are_bound_to_same_source_snapshot() -> None:
 def test_wheel_metadata_version_matches_tag() -> None:
     root = Path(tempfile.mkdtemp())
     records = _artifact_set(root)
-    result = bind_artifact_set(root, records, source_product_digest="a" * 64, version="1.2.4")
+    result = bind_artifact_set(
+        root, records, source_product_digest="a" * 64, version="1.2.4"
+    )
     assert not result["valid"]
     assert any("wheel metadata version" in error for error in result["errors"])
 
@@ -184,7 +225,9 @@ def test_wheel_metadata_version_matches_tag() -> None:
 def test_sdist_metadata_version_matches_tag() -> None:
     root = Path(tempfile.mkdtemp())
     records = _artifact_set(root)
-    result = bind_artifact_set(root, records, source_product_digest="a" * 64, version="1.2.4")
+    result = bind_artifact_set(
+        root, records, source_product_digest="a" * 64, version="1.2.4"
+    )
     assert not result["valid"]
     assert any("sdist metadata version" in error for error in result["errors"])
 
@@ -213,27 +256,39 @@ def test_required_resource_omission_fails_build(built_distribution, tmp_path) ->
     changed = _modified_wheel(wheel, tmp_path / wheel.name, omit=required)
     result = verify_built_artifact(changed, manifest, package_target="wheel")
     assert not result["valid"]
-    assert any("required wheel resource is missing" in error for error in result["errors"])
+    assert any(
+        "required wheel resource is missing" in error for error in result["errors"]
+    )
 
 
 def test_undeclared_package_file_fails_build(built_distribution, tmp_path) -> None:
     _, wheel, _, manifest = built_distribution
-    changed = _modified_wheel(wheel, tmp_path / wheel.name, extra="engineering_bootstrap/undeclared.py")
+    changed = _modified_wheel(
+        wheel, tmp_path / wheel.name, extra="engineering_bootstrap/undeclared.py"
+    )
     result = verify_built_artifact(changed, manifest, package_target="wheel")
     assert not result["valid"]
-    assert "undeclared wheel file: engineering_bootstrap/undeclared.py" in result["errors"]
+    assert (
+        "undeclared wheel file: engineering_bootstrap/undeclared.py" in result["errors"]
+    )
 
 
-def test_declared_projection_duplicates_match_expected_hashes(built_distribution) -> None:
+def test_declared_projection_duplicates_match_expected_hashes(
+    built_distribution,
+) -> None:
     _, wheel, sdist, manifest = built_distribution
     wheel_entries = {item["path"]: item for item in inspect_wheel(wheel)["entries"]}
     sdist_entries = {item["path"]: item for item in inspect_sdist(sdist)["entries"]}
-    result = verify_declared_projection_duplicates(manifest, wheel_entries, sdist_entries)
+    result = verify_declared_projection_duplicates(
+        manifest, wheel_entries, sdist_entries
+    )
     assert result["valid"], result["errors"]
     assert result["duplicate_source_count"] > 0
 
 
-def test_runtime_wheel_contains_only_declared_distribution_classes(built_distribution) -> None:
+def test_runtime_wheel_contains_only_declared_distribution_classes(
+    built_distribution,
+) -> None:
     _, wheel, _, manifest = built_distribution
     result = verify_built_artifact(wheel, manifest, package_target="wheel")
     assert result["valid"], result["errors"]
@@ -255,16 +310,28 @@ def test_runtime_install_does_not_require_release_testkit(built_distribution) ->
     _, wheel, _, _ = built_distribution
     inspected = inspect_wheel(wheel)
     names = {item["path"] for item in inspected["entries"]}
-    assert not any(".data/data/share/engineering-bootstrap/tests/" in name for name in names)
+    assert not any(
+        ".data/data/share/engineering-bootstrap/tests/" in name for name in names
+    )
     with zipfile.ZipFile(wheel) as archive:
-        metadata_name = next(name for name in archive.namelist() if name.endswith(".dist-info/METADATA"))
+        metadata_name = next(
+            name for name in archive.namelist() if name.endswith(".dist-info/METADATA")
+        )
         metadata = archive.read(metadata_name).decode("utf-8")
-    unconditional = [line for line in metadata.splitlines() if line.startswith("Requires-Dist:") and "extra ==" not in line]
+    unconditional = [
+        line
+        for line in metadata.splitlines()
+        if line.startswith("Requires-Dist:") and "extra ==" not in line
+    ]
     assert unconditional == []
 
 
 def test_certificate_version_matches_artifact_version() -> None:
     root = Path(tempfile.mkdtemp())
     records = _artifact_set(root, version="1.2.3")
-    assert bind_artifact_set(root, records, source_product_digest="a" * 64, version="1.2.3")["valid"]
-    assert not bind_artifact_set(root, records, source_product_digest="a" * 64, version="1.2.4")["valid"]
+    assert bind_artifact_set(
+        root, records, source_product_digest="a" * 64, version="1.2.3"
+    )["valid"]
+    assert not bind_artifact_set(
+        root, records, source_product_digest="a" * 64, version="1.2.4"
+    )["valid"]

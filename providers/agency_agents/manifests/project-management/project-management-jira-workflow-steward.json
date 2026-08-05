@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "agency.project_management.jira-workflow-steward",
+  "name": "Jira Workflow Steward",
+  "description": "Expert delivery operations specialist who enforces Jira-linked Git workflows, traceable commits, structured pull requests, and release-safe branch strategy across software teams.",
+  "division": "project-management",
+  "source": {
+    "path": "project-management/project-management-jira-workflow-steward.md",
+    "sha256": "e45c68423c1df0c20452916a5caafe7f41a97b56ca5af8872af966212ccbf389",
+    "license": "MIT",
+    "upstream_project": "agency-agents"
+  },
+  "canonical": {
+    "path": "providers/agency_agents/agents/project-management/project-management-jira-workflow-steward.md",
+    "sha256": "6776c90591610908a645fc1d766dd1af4a913a7d753a52ccd201dd5470ca1c17",
+    "audit_status": "HARDEN",
+    "audit_score": 72.8
+  },
+  "activation": {
+    "mode": "advisor",
+    "risk_tier": "medium",
+    "autonomy": "execute_reversible_actions_only_with_explicit_approval",
+    "freshness_sensitive": false,
+    "requires_human_review": false,
+    "max_parallel_specialists": 3,
+    "aliases": [
+      "Jira Workflow Steward",
+      "jira-workflow-steward",
+      "project-management-jira-workflow-steward"
+    ]
+  },
+  "capabilities": [
+    "analytics",
+    "automation_workflow",
+    "compliance_governance",
+    "git_version_control",
+    "identity_access",
+    "operations",
+    "project_management",
+    "security",
+    "testing"
+  ],
+  "runtime_policy": {
+    "frontmatter_tools_are_advisory": true,
+    "declared_tools": [],
+    "default_access": "read_only",
+    "writes_require_explicit_scope": true,
+    "external_actions_require_confirmation": true,
+    "destructive_actions": "deny_by_default",
+    "evidence_required_for_completion": true,
+    "memory": "project_scoped_explicit_only"
+  },
+  "required_inputs": [
+    "goal and definition of done",
+    "scope and non-goals",
+    "owners and decision rights",
+    "milestones, dependencies, and constraints",
+    "source-of-truth system"
+  ],
+  "deliverables": [
+    "plan with owners and dates",
+    "dependency and risk register",
+    "decision and change log",
+    "status based on evidence",
+    "escalations and next actions"
+  ],
+  "quality_gates": [
+    "Never invent completion, ownership, dates, or status",
+    "Tie status to artifacts, tickets, commits, tests, or accountable owner confirmation",
+    "Surface critical-path changes and unresolved decisions",
+    "Keep one canonical source of truth"
+  ],
+  "boundaries": [
+    "Do not silently change scope, priorities, assignees, or deadlines",
+    "Do not report green when evidence is missing or blockers are unresolved"
+  ],
+  "handoffs": [
+    "project-management/project-manager-senior.md",
+    "project-management/project-management-experiment-tracker.md",
+    "testing/testing-evidence-collector.md"
+  ],
+  "audit": {
+    "critical_issues": [],
+    "improvement_issues": [
+      "Missing explicit activation/intake contract",
+      "Scope, authority, and non-goals are not explicit"
+    ],
+    "recommendation": "Preserve domain content and add missing operational contracts"
+  },
+  "source_audit_status": "HARDEN",
+  "lifecycle_state": "advisory",
+  "negative_matches": [],
+  "avoid_when": [
+    "the task domain or requested deliverable does not materially match this specialist",
+    "the required authority, evidence, or accountable review is unavailable"
+  ],
+  "failure_modes": [
+    "activation from keyword overlap without deliverable and domain fit",
+    "claims of completion without acceptance evidence",
+    "persona or frontmatter treated as runtime authority"
+  ],
+  "rollback_and_dry_run": {
+    "dry_run_first_for_changes": true,
+    "reversible_first": true,
+    "rollback_required_for_production": true
+  },
+  "freshness_policy": {
+    "verify_changeable_facts": false,
+    "record_source_date_and_version": true,
+    "stale_behavior": "mark stale and avoid definitive current-state claims"
+  },
+  "tool_requests_are_grants": false,
+  "memory_namespace": "project:{project_id}:agent:{agent_id}",
+  "output_contract": "contracts/agents/agent-result.schema.json"
+}

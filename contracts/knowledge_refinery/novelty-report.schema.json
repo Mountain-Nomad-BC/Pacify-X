@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:knowledge_refinery:novelty-report",
+  "title": "Seven-way semantic novelty report",
+  "type": "object", "additionalProperties": false,
+  "required": ["valid", "candidate_count", "decision_count", "decisions", "decision_classes"],
+  "properties": {
+    "valid": {"const": true}, "candidate_count": {"type": "integer", "minimum": 0},
+    "decision_count": {"type": "integer", "minimum": 0},
+    "decisions": {"type": "array", "items": {"type": "object"}},
+    "decision_classes": {"type": "array", "minItems": 7, "maxItems": 7, "uniqueItems": true, "items": {"enum": ["DUPLICATE", "ENRICH", "VARIANT", "CONFLICT", "SUPERSEDE", "NOVEL", "REVIEW"]}}
+  }
+}

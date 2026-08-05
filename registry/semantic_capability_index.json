@@ -1,9 +1,71 @@
 {
   "schema_version": "1.0",
   "loading_rule": "metadata_only",
-  "revision": "21b775ffd1c276be2262af6184b5821e0ffd83cc90a3de14b27423fb535aa124",
-  "record_count": 89,
+  "revision": "09348847553037d528d65ac79cd3bf83c9789ea2f05e49255705c127b9e81613",
+  "record_count": 171,
   "records": [
+    {
+      "id": "acquire-install-n8n",
+      "kind": "skill",
+      "status": "active",
+      "description": "Acquire and install n8n through a supported, pinned, reversible channel.",
+      "domains": [
+        "docker",
+        "installation",
+        "n8n",
+        "npm",
+        "version-pinning"
+      ],
+      "intents": [],
+      "concepts": [
+        "acquire",
+        "docker",
+        "install",
+        "installation",
+        "n8n",
+        "npm",
+        "version-pinning"
+      ],
+      "synonyms": [
+        "acquire install n8n"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-install-commission"
+      ],
+      "body_sha256": "30b739e07091695f59d196f840527c2d8ddca3e80165d50e35c0294dc20db974"
+    },
+    {
+      "id": "acquire-install-supabase",
+      "kind": "skill",
+      "status": "active",
+      "description": "Acquire and install the Supabase CLI and official agent resources using supported, pinned channels.",
+      "domains": [
+        "agent-skills",
+        "local-stack",
+        "project-dependency",
+        "supabase",
+        "supabase-cli"
+      ],
+      "intents": [],
+      "concepts": [
+        "acquire",
+        "agent-skills",
+        "install",
+        "local-stack",
+        "project-dependency",
+        "supabase",
+        "supabase-cli"
+      ],
+      "synonyms": [
+        "acquire install supabase"
+      ],
+      "tools": [],
+      "relations": [
+        "supabase-local-to-production"
+      ],
+      "body_sha256": "536bcecab1eb8a9e3884f5ef258ca766a16205c04ec971ee9dc99faa9c51ab87"
+    },
     {
       "id": "active-evaluation-selector",
       "kind": "skill",
@@ -28,6 +90,49 @@
       "body_sha256": "4ae28d38833be838da409fd01ea4c45cdeb6b47e21ca20d469fe45fd5a34faa4"
     },
     {
+      "id": "adapt-human-learning-loop",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Clean-room adaptive-learning and progress-tracking mechanisms with strong",
+      "domains": [
+        "adapt",
+        "adaptive-learning",
+        "authorization",
+        "event-history",
+        "external-candidate",
+        "human",
+        "human-feedback",
+        "human-safety",
+        "learning",
+        "learning-evaluation",
+        "loop",
+        "reinforcement",
+        "state-machine"
+      ],
+      "intents": [],
+      "concepts": [
+        "adapt",
+        "adaptive-learning",
+        "authorization",
+        "event-history",
+        "external-candidate",
+        "human",
+        "human-feedback",
+        "human-safety",
+        "learning",
+        "learning-evaluation",
+        "loop",
+        "reinforcement",
+        "state-machine"
+      ],
+      "synonyms": [
+        "adapt human learning loop"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "61e3cdb546982669ad0fd5aafceac1ecb36836bfed11ee5baa55a6ad18841f76"
+    },
+    {
       "id": "admit-capability",
       "kind": "skill",
       "status": "active",
@@ -49,7 +154,9 @@
         "admit capability"
       ],
       "tools": [],
-      "relations": [],
+      "relations": [
+        "external-capability-intake"
+      ],
       "body_sha256": "12d9f91601589f440f246a0a5d003f341cd16b3845a99cbe8fe54d957baf3a7f"
     },
     {
@@ -144,6 +251,33 @@
       "body_sha256": "abee2ceeb4486f5fea39402fb7cd1f3223c2d09260c98bcecfc46384de282341"
     },
     {
+      "id": "architecture-deepening-audit",
+      "kind": "skill",
+      "status": "active",
+      "description": "Find shallow abstractions, leakage, duplication, and misplaced seams, then rank deepening opportunities.",
+      "domains": [
+        "architecture",
+        "audit",
+        "deepening",
+        "engineering-reasoning"
+      ],
+      "intents": [],
+      "concepts": [
+        "architecture",
+        "audit",
+        "deepening",
+        "engineering-reasoning"
+      ],
+      "synonyms": [
+        "architecture deepening audit"
+      ],
+      "tools": [],
+      "relations": [
+        "engineering-reasoning-loop"
+      ],
+      "body_sha256": "4b3249edacd5f8e4a4d1b56a1895f2ac36a5a71eb30e8c7e3cdb5db543c9eea7"
+    },
+    {
       "id": "audit-ai-runtime-assurance",
       "kind": "skill",
       "status": "active",
@@ -205,6 +339,33 @@
       "body_sha256": "220e3e23f737071eff9060e5b1fe9866c77759088791586e86d72b4c3b4693c7"
     },
     {
+      "id": "audit-interactive-systems",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Verify complete user action paths and final resolved state rather than",
+      "domains": [
+        "audit",
+        "external-candidate",
+        "interactive",
+        "systems",
+        "ui-verification"
+      ],
+      "intents": [],
+      "concepts": [
+        "audit",
+        "external-candidate",
+        "interactive",
+        "systems",
+        "ui-verification"
+      ],
+      "synonyms": [
+        "audit interactive systems"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "a339d2f10640afcea386c95d61753221efbfce30e68be37004752c87ffaebec3"
+    },
+    {
       "id": "audit-source-capabilities",
       "kind": "skill",
       "status": "active",
@@ -239,10 +400,106 @@
         "validate_planning_card_coverage"
       ],
       "relations": [
+        "candidate-pipeline",
+        "external-capability-intake",
         "external-tool-lifecycle",
+        "knowledge-refinery",
         "source-capability-assimilation"
       ],
       "body_sha256": "1c97d9ecc6b2c657609c5f1df7d8510b885332073d72ad6e21b1f82f70dba286"
+    },
+    {
+      "id": "automate-supabase-with-n8n",
+      "kind": "skill",
+      "status": "active",
+      "description": "Automate Supabase events and operations through n8n with authenticated triggers, idempotency, durable state, and reconciliation.",
+      "domains": [
+        "cross",
+        "database-webhooks",
+        "idempotency",
+        "outbox",
+        "reconciliation"
+      ],
+      "intents": [],
+      "concepts": [
+        "automate",
+        "cross",
+        "database-webhooks",
+        "idempotency",
+        "n8n",
+        "outbox",
+        "reconciliation",
+        "supabase",
+        "with"
+      ],
+      "synonyms": [
+        "automate supabase with n8n"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "27eb888ff5fab8bdc992ee02b47f50306117f7ea0adc5519c3588b76717931ee"
+    },
+    {
+      "id": "backup-deploy-recover-supabase",
+      "kind": "skill",
+      "status": "active",
+      "description": "Deploy and recover Supabase schema, data, functions, config, storage, and secrets with tested backups and rollback evidence.",
+      "domains": [
+        "backup",
+        "deployment",
+        "pitr",
+        "recovery",
+        "supabase"
+      ],
+      "intents": [],
+      "concepts": [
+        "backup",
+        "deploy",
+        "deployment",
+        "pitr",
+        "recover",
+        "recovery",
+        "supabase"
+      ],
+      "synonyms": [
+        "backup deploy recover supabase"
+      ],
+      "tools": [],
+      "relations": [
+        "supabase-local-to-production"
+      ],
+      "body_sha256": "ba63e7073a36ff2924097c0bd5073250975d5ced01f0e105cdab67dd6748fd17"
+    },
+    {
+      "id": "backup-upgrade-restore-n8n",
+      "kind": "skill",
+      "status": "active",
+      "description": "Back up, upgrade, roll back, and restore n8n with version-aware compatibility and recovery evidence.",
+      "domains": [
+        "backup",
+        "n8n",
+        "restore",
+        "rpo",
+        "rto",
+        "upgrade"
+      ],
+      "intents": [],
+      "concepts": [
+        "backup",
+        "n8n",
+        "restore",
+        "rpo",
+        "rto",
+        "upgrade"
+      ],
+      "synonyms": [
+        "backup upgrade restore n8n"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-install-commission"
+      ],
+      "body_sha256": "8e3ebcf27c0aeb717b4ebf8e2791cb90a789128e63fd2484759e44a3b7c622e3"
     },
     {
       "id": "behavior-to-code-mapper",
@@ -270,6 +527,37 @@
       "tools": [],
       "relations": [],
       "body_sha256": "5accb85afc143ea3e5f0ad732ac4c93cc39e37d49a5523669f04d9586f2554f5"
+    },
+    {
+      "id": "benchmark-and-route-agents",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Benchmark agent behavior and route models using evidence, reliability,",
+      "domains": [
+        "agents",
+        "and",
+        "benchmark",
+        "evaluation",
+        "external-candidate",
+        "model-routing",
+        "route"
+      ],
+      "intents": [],
+      "concepts": [
+        "agents",
+        "and",
+        "benchmark",
+        "evaluation",
+        "external-candidate",
+        "model-routing",
+        "route"
+      ],
+      "synonyms": [
+        "benchmark and route agents"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "2b92b657c421e1cd56ddde71013151c7751d7f9ec662c98ee325837d913ef79e"
     },
     {
       "id": "benchmark-domain-adapter",
@@ -322,6 +610,132 @@
       "tools": [],
       "relations": [],
       "body_sha256": "4481a54785bcb1af84202092e177ca4db29575e85c759e6a481798e3283570a4"
+    },
+    {
+      "id": "build-n8n-ai-workflows",
+      "kind": "skill",
+      "status": "active",
+      "description": "Build n8n AI workflows with bounded model/tool authority, structured outputs, retrieval evidence, evaluation, and escalation.",
+      "domains": [
+        "agents",
+        "evaluation",
+        "llm",
+        "n8n",
+        "structured-output",
+        "tools"
+      ],
+      "intents": [],
+      "concepts": [
+        "agents",
+        "ai",
+        "build",
+        "evaluation",
+        "llm",
+        "n8n",
+        "structured-output",
+        "tools",
+        "workflows"
+      ],
+      "synonyms": [
+        "build n8n ai workflows"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "da60dadc796cd2d23129a3d6d9a1bc91e2ff7b9007146025d3dfc522eb602aab"
+    },
+    {
+      "id": "build-n8n-custom-nodes",
+      "kind": "skill",
+      "status": "active",
+      "description": "Develop custom n8n nodes with typed operations, separate credentials, pagination, errors, tests, and release governance.",
+      "domains": [
+        "credentials",
+        "custom-node",
+        "n8n",
+        "pagination",
+        "typescript"
+      ],
+      "intents": [],
+      "concepts": [
+        "build",
+        "credentials",
+        "custom",
+        "custom-node",
+        "n8n",
+        "nodes",
+        "pagination",
+        "typescript"
+      ],
+      "synonyms": [
+        "build n8n custom nodes"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "f22ee7ccd43b49113ae2087b7212edebaff09e3a0d4ec01612e1a76ca05e3caa"
+    },
+    {
+      "id": "build-n8n-supabase-rag",
+      "kind": "skill",
+      "status": "active",
+      "description": "Build governed RAG ingestion and retrieval with n8n and Supabase pgvector.",
+      "domains": [
+        "cross",
+        "ingestion",
+        "match_documents",
+        "pgvector",
+        "rag",
+        "retrieval-evaluation"
+      ],
+      "intents": [],
+      "concepts": [
+        "build",
+        "cross",
+        "ingestion",
+        "match_documents",
+        "n8n",
+        "pgvector",
+        "rag",
+        "retrieval-evaluation",
+        "supabase"
+      ],
+      "synonyms": [
+        "build n8n supabase rag"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-supabase-rag-release"
+      ],
+      "body_sha256": "dbe7e95583579da5f3b7c7343dd2d8f82b96da75cfe6f9dddd63b96c687bd878"
+    },
+    {
+      "id": "build-supabase-edge-functions",
+      "kind": "skill",
+      "status": "active",
+      "description": "Build Supabase Edge Functions with explicit auth, secrets, CORS, bounds, idempotency, tests, and deployment evidence.",
+      "domains": [
+        "cors",
+        "deno",
+        "edge-functions",
+        "idempotency",
+        "supabase"
+      ],
+      "intents": [],
+      "concepts": [
+        "build",
+        "cors",
+        "deno",
+        "edge",
+        "edge-functions",
+        "functions",
+        "idempotency",
+        "supabase"
+      ],
+      "synonyms": [
+        "build supabase edge functions"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "25ba3abf95f631f7f495bffd18eb989d10aace92dd6607d71ca3148f1a48ab04"
     },
     {
       "id": "candidate-memory-promoter",
@@ -459,27 +873,122 @@
       "body_sha256": "26cc3a21835c8e5fd52610ad3b85cf50467588ef0fc8cc4789972b38b79b1b53"
     },
     {
+      "id": "configure-n8n",
+      "kind": "skill",
+      "status": "active",
+      "description": "Configure n8n URLs, database, encryption, execution, logging, retention, and runtime settings from an explicit contract.",
+      "domains": [
+        "environment-variables",
+        "n8n",
+        "reverse-proxy",
+        "runtime-contract"
+      ],
+      "intents": [],
+      "concepts": [
+        "configure",
+        "environment-variables",
+        "n8n",
+        "reverse-proxy",
+        "runtime-contract"
+      ],
+      "synonyms": [
+        "configure n8n"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-install-commission"
+      ],
+      "body_sha256": "88358555f9da1f345d96191ab50ada90b7e84f68fb244ba9080ea6b35fbb9cbe"
+    },
+    {
+      "id": "connect-n8n-to-supabase",
+      "kind": "skill",
+      "status": "active",
+      "description": "Connect n8n to Supabase through the built-in node, Data API, RPC, or Postgres with correct URLs, schemas, credentials, and RLS semantics.",
+      "domains": [
+        "cross",
+        "custom-schema",
+        "data-api",
+        "rpc",
+        "service-role",
+        "supabase-node"
+      ],
+      "intents": [],
+      "concepts": [
+        "connect",
+        "cross",
+        "custom-schema",
+        "data-api",
+        "n8n",
+        "rpc",
+        "service-role",
+        "supabase",
+        "supabase-node",
+        "to"
+      ],
+      "synonyms": [
+        "connect n8n to supabase"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-supabase-integration-release"
+      ],
+      "body_sha256": "870fdfa310dc54a8e43c7fc9322810f0c2581291df8cb06036624b0a3cce1d61"
+    },
+    {
       "id": "context-compactor",
       "kind": "skill",
-      "status": "mapped_deferred",
-      "description": "Reduce active context while preserving goals, constraints, decisions, evidence, unresolved questions, and state. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "status": "active",
+      "description": "Compress repeated progress and context within an explicit item budget while preserving failures, uncertainty, authority boundaries, recovery instructions, evidence, goals, and unresolved work. Use at context checkpoints, handoffs, or bounded multi-agent status aggregation.",
       "domains": [
-        "compactor",
+        "communication-budget",
         "context",
+        "evidence-preservation",
         "orchestration"
       ],
       "intents": [],
       "concepts": [
+        "communication-budget",
         "compactor",
         "context",
+        "evidence-preservation",
         "orchestration"
       ],
       "synonyms": [
         "context compactor"
       ],
       "tools": [],
-      "relations": [],
-      "body_sha256": "d8676a0faafdb5be6128fcb09aaded3ec2ed90f2a38026b7e259e98798a55c11"
+      "relations": [
+        "clean-room-capability-controls"
+      ],
+      "body_sha256": "2c5ecea8627ebfd6bf4b2024ad1c96b8a6e5a69c0b61e89a0b4fc947fbad843b"
+    },
+    {
+      "id": "context-handoff-package",
+      "kind": "skill",
+      "status": "active",
+      "description": "Produce a compact, evidence-linked state transfer that lets another agent continue without reconstructing the project.",
+      "domains": [
+        "context",
+        "engineering-reasoning",
+        "handoff",
+        "package"
+      ],
+      "intents": [],
+      "concepts": [
+        "context",
+        "engineering-reasoning",
+        "handoff",
+        "package"
+      ],
+      "synonyms": [
+        "context handoff package"
+      ],
+      "tools": [],
+      "relations": [
+        "engineering-reasoning-loop"
+      ],
+      "body_sha256": "9b33e508ea92d590b854f69134596e53febe87fe086e34a1a06f5650cb9658b4"
     },
     {
       "id": "corpus-to-skill-tree-compiler",
@@ -538,6 +1047,59 @@
       "body_sha256": "2fa7268a2870e550c02103ab0bf38b583f945bec75c4b5a3c9a4a3a6cf3187b6"
     },
     {
+      "id": "decision-wayfinding",
+      "kind": "skill",
+      "status": "active",
+      "description": "Map long-horizon uncertain work as decision tickets and advance only the unblocked knowledge frontier.",
+      "domains": [
+        "decision",
+        "engineering-reasoning",
+        "wayfinding"
+      ],
+      "intents": [],
+      "concepts": [
+        "decision",
+        "engineering-reasoning",
+        "wayfinding"
+      ],
+      "synonyms": [
+        "decision wayfinding"
+      ],
+      "tools": [],
+      "relations": [
+        "clean-room-capability-controls",
+        "engineering-reasoning-loop"
+      ],
+      "body_sha256": "fe397598cf59a97e5edffdffb72bfb87b085d819630d1f1275366a1c9b09b3ec"
+    },
+    {
+      "id": "deep-module-design",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design deep modules with small stable interfaces, strong locality, and explicit seams.",
+      "domains": [
+        "deep",
+        "design",
+        "engineering-reasoning",
+        "module"
+      ],
+      "intents": [],
+      "concepts": [
+        "deep",
+        "design",
+        "engineering-reasoning",
+        "module"
+      ],
+      "synonyms": [
+        "deep module design"
+      ],
+      "tools": [],
+      "relations": [
+        "engineering-reasoning-loop"
+      ],
+      "body_sha256": "9464e69f622c924e2d08e4813439435d4e05f99a6dc06d8c2dd6409c5a573b32"
+    },
+    {
       "id": "dependency-impact-tracer",
       "kind": "skill",
       "status": "mapped_deferred",
@@ -592,6 +1154,258 @@
       "body_sha256": "936a84618047127e17ce58c73ca1d6e00f4ea001254edd4051323401a0da8927"
     },
     {
+      "id": "deploy-n8n-docker",
+      "kind": "skill",
+      "status": "active",
+      "description": "Deploy a durable single-main n8n instance with Docker or Compose, TLS boundaries, health checks, and backup hooks.",
+      "domains": [
+        "docker-compose",
+        "n8n",
+        "persistence",
+        "postgres",
+        "tls"
+      ],
+      "intents": [],
+      "concepts": [
+        "deploy",
+        "docker",
+        "docker-compose",
+        "n8n",
+        "persistence",
+        "postgres",
+        "tls"
+      ],
+      "synonyms": [
+        "deploy n8n docker"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-install-commission"
+      ],
+      "body_sha256": "65d98e5a78333ba2c993c9f9047c5899ee2866579827ac1252c624bf1b2fa464"
+    },
+    {
+      "id": "design-build-n8n-workflows",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design maintainable n8n workflows with explicit contracts, modularity, idempotency, errors, and operator evidence.",
+      "domains": [
+        "error-paths",
+        "idempotency",
+        "n8n",
+        "sub-workflows",
+        "workflow-design"
+      ],
+      "intents": [],
+      "concepts": [
+        "build",
+        "design",
+        "error-paths",
+        "idempotency",
+        "n8n",
+        "sub-workflows",
+        "workflow-design",
+        "workflows"
+      ],
+      "synonyms": [
+        "design build n8n workflows"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-workflow-release"
+      ],
+      "body_sha256": "7596197bc84e03c98e5455ddacca706462db180930b56c9198126f275b7b5399"
+    },
+    {
+      "id": "design-it-twice",
+      "kind": "skill",
+      "status": "active",
+      "description": "Generate and compare genuinely different interface designs before locking an important seam.",
+      "domains": [
+        "design",
+        "engineering-reasoning",
+        "it",
+        "twice"
+      ],
+      "intents": [],
+      "concepts": [
+        "design",
+        "engineering-reasoning",
+        "it",
+        "twice"
+      ],
+      "synonyms": [
+        "design it twice"
+      ],
+      "tools": [],
+      "relations": [
+        "engineering-reasoning-loop"
+      ],
+      "body_sha256": "15fa7a60105052643706326f55f58ae325cf19850e92aff3cfaa8f5307a9f3ec"
+    },
+    {
+      "id": "design-n8n-supabase-reliability",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design reliable n8n-Supabase behavior for retries, duplicates, partial failure, transactions, concurrency, and backpressure.",
+      "domains": [
+        "backpressure",
+        "cross",
+        "dedupe",
+        "outbox",
+        "reliability",
+        "transactions"
+      ],
+      "intents": [],
+      "concepts": [
+        "backpressure",
+        "cross",
+        "dedupe",
+        "design",
+        "n8n",
+        "outbox",
+        "reliability",
+        "supabase",
+        "transactions"
+      ],
+      "synonyms": [
+        "design n8n supabase reliability"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-supabase-integration-release"
+      ],
+      "body_sha256": "3c91e7463bb18e4881b7ab92f95b40a9026d8248edf5194cd052e9725f8f05c4"
+    },
+    {
+      "id": "design-n8n-supabase-security-boundaries",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design trust boundaries between n8n users/workflows, Supabase RLS, service credentials, webhooks, logs, and AI tools.",
+      "domains": [
+        "ai-boundaries",
+        "cross",
+        "rbac",
+        "rls",
+        "service-role",
+        "webhook-security"
+      ],
+      "intents": [],
+      "concepts": [
+        "ai-boundaries",
+        "boundaries",
+        "cross",
+        "design",
+        "n8n",
+        "rbac",
+        "rls",
+        "security",
+        "service-role",
+        "supabase",
+        "webhook-security"
+      ],
+      "synonyms": [
+        "design n8n supabase security boundaries"
+      ],
+      "tools": [],
+      "relations": [
+        "ai-tool-access-review",
+        "n8n-supabase-integration-release"
+      ],
+      "body_sha256": "f695d58b98e63c1ee9dc713073ea95494bcc03acb1a63caff9c5258f611127cd"
+    },
+    {
+      "id": "design-supabase-postgres",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design Supabase Postgres schemas, constraints, indexes, functions, extensions, and connection patterns.",
+      "domains": [
+        "constraints",
+        "indexes",
+        "pooler",
+        "postgres",
+        "schema",
+        "supabase"
+      ],
+      "intents": [],
+      "concepts": [
+        "constraints",
+        "design",
+        "indexes",
+        "pooler",
+        "postgres",
+        "schema",
+        "supabase"
+      ],
+      "synonyms": [
+        "design supabase postgres"
+      ],
+      "tools": [],
+      "relations": [
+        "supabase-secure-application"
+      ],
+      "body_sha256": "0d081972a022382d9ae18d74eb87ed614574f5707528ab582af915988468d070"
+    },
+    {
+      "id": "develop-n8n-monorepo",
+      "kind": "skill",
+      "status": "active",
+      "description": "Work safely in the supplied n8n monorepo using repository-local agent rules, pnpm, package boundaries, and evidence gates.",
+      "domains": [
+        "agents.md",
+        "monorepo",
+        "n8n",
+        "package-gates",
+        "pnpm"
+      ],
+      "intents": [],
+      "concepts": [
+        "agents.md",
+        "develop",
+        "monorepo",
+        "n8n",
+        "package-gates",
+        "pnpm"
+      ],
+      "synonyms": [
+        "develop n8n monorepo"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "5a5de52f4427c3c40fe8c5cb6459933ec2e1a61af78156d753c66dcf33d85f3b"
+    },
+    {
+      "id": "develop-supabase-locally",
+      "kind": "skill",
+      "status": "active",
+      "description": "Run Supabase locally with reproducible config, migrations, seeds, tests, and clean reset behavior.",
+      "domains": [
+        "docker",
+        "local-development",
+        "migrations",
+        "seed",
+        "supabase"
+      ],
+      "intents": [],
+      "concepts": [
+        "develop",
+        "docker",
+        "local-development",
+        "locally",
+        "migrations",
+        "seed",
+        "supabase"
+      ],
+      "synonyms": [
+        "develop supabase locally"
+      ],
+      "tools": [],
+      "relations": [
+        "supabase-local-to-production"
+      ],
+      "body_sha256": "a39628d128198f8a104601e2df2b1be7035a400a7da13cba33debabe6e1bfdcd"
+    },
+    {
       "id": "diagnose-python-repair",
       "kind": "skill",
       "status": "active",
@@ -643,6 +1457,62 @@
       "body_sha256": "0b4895410f80dfddefdf8eed60ca3f1af72da0b68b162db951f952e819aeb503"
     },
     {
+      "id": "domain-language-maintenance",
+      "kind": "skill",
+      "status": "active",
+      "description": "Maintain a canonical project vocabulary and challenge ambiguous or overloaded terms during work.",
+      "domains": [
+        "domain",
+        "engineering-reasoning",
+        "language",
+        "maintenance"
+      ],
+      "intents": [],
+      "concepts": [
+        "domain",
+        "engineering-reasoning",
+        "language",
+        "maintenance"
+      ],
+      "synonyms": [
+        "domain language maintenance"
+      ],
+      "tools": [],
+      "relations": [
+        "engineering-reasoning-loop"
+      ],
+      "body_sha256": "8b727330d295fb266b8fa1d1e389a14956e1ee126bd0edcb01800aff0d8163ba"
+    },
+    {
+      "id": "dual-axis-code-review",
+      "kind": "skill",
+      "status": "active",
+      "description": "Review changes independently for repository standards and specification fidelity, then reconcile findings.",
+      "domains": [
+        "axis",
+        "code",
+        "dual",
+        "engineering-reasoning",
+        "review"
+      ],
+      "intents": [],
+      "concepts": [
+        "axis",
+        "code",
+        "dual",
+        "engineering-reasoning",
+        "review"
+      ],
+      "synonyms": [
+        "dual axis code review"
+      ],
+      "tools": [],
+      "relations": [
+        "engineering-reasoning-loop"
+      ],
+      "body_sha256": "b7c507bcf4008e3d1a4d3991d952a4d79ed095fc1e4474cc66e9491d936248c8"
+    },
+    {
       "id": "dynamic-service-discovery",
       "kind": "skill",
       "status": "active",
@@ -672,9 +1542,10 @@
         "audit_service_discovery"
       ],
       "relations": [
+        "clean-room-capability-controls",
         "secure-service-release"
       ],
-      "body_sha256": "42f3408df8e7f2e2b9178f1ef960fbf6c21cc61a7ae5c3e7d8a4807722aa7bfe"
+      "body_sha256": "d14b5999d4836c5c25d38f17e06c505539f74c230fb5ca2bf423612b77483487"
     },
     {
       "id": "dynamic-skill-detonator",
@@ -723,7 +1594,9 @@
         "enforce governance controls"
       ],
       "tools": [],
-      "relations": [],
+      "relations": [
+        "agency-specialist-routing"
+      ],
       "body_sha256": "bd4deaf4923623c8b1411995a824c4073f6be5825a6a1a687aa82121eeb02784"
     },
     {
@@ -754,6 +1627,8 @@
         "audit_import_boundaries"
       ],
       "relations": [
+        "external-capability-intake",
+        "knowledge-refinery",
         "source-capability-assimilation"
       ],
       "body_sha256": "70a2ffba4a09e0266f32752de47cc20562021ff7c60118fb77e75ed5e9bd9169"
@@ -783,6 +1658,8 @@
       ],
       "tools": [],
       "relations": [
+        "layered-memory-lifecycle",
+        "n8n-supabase-rag-release",
         "retrieval-readiness"
       ],
       "body_sha256": "a4b0eb434dc9fd552d9c54838bd9e0a70e0424f1aa1b9f04654ab97bd3892ad8"
@@ -847,8 +1724,40 @@
         "unit test designer"
       ],
       "tools": [],
-      "relations": [],
-      "body_sha256": "268b6dabad70bf2dddac2991040b5f7caf92724395ddbd670d2d54521020f130"
+      "relations": [
+        "candidate-pipeline",
+        "clean-room-capability-controls"
+      ],
+      "body_sha256": "dfa4d00acfe7f08912ee652eda9bc06f4befa5b43d4a5bc92cb1392d47be4b79"
+    },
+    {
+      "id": "evaluate-n8n-fit",
+      "kind": "skill",
+      "status": "active",
+      "description": "Evaluate whether n8n fits the workload compared with code, native integrations, or another orchestrator.",
+      "domains": [
+        "architecture-fit",
+        "decision-record",
+        "n8n",
+        "tradeoffs"
+      ],
+      "intents": [],
+      "concepts": [
+        "architecture-fit",
+        "decision-record",
+        "evaluate",
+        "fit",
+        "n8n",
+        "tradeoffs"
+      ],
+      "synonyms": [
+        "evaluate n8n fit"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-install-commission"
+      ],
+      "body_sha256": "681a27938f1bf8413bd8d17585aea577a206259794856ba312e90ccca69c1825"
     },
     {
       "id": "evaluate-retrieval-readiness",
@@ -881,10 +1790,39 @@
         "evaluate_retrieval_strategy"
       ],
       "relations": [
+        "layered-memory-lifecycle",
         "local-model-planning",
+        "n8n-supabase-rag-release",
         "retrieval-readiness"
       ],
       "body_sha256": "6a252addc62a76f46d9518eda00d1f4a60bc61cba829e3d593b245b4f06428d9"
+    },
+    {
+      "id": "evaluate-supabase-fit",
+      "kind": "skill",
+      "status": "active",
+      "description": "Evaluate Supabase against direct Postgres, another backend platform, or custom services.",
+      "domains": [
+        "architecture-fit",
+        "postgres-platform",
+        "supabase",
+        "tradeoffs"
+      ],
+      "intents": [],
+      "concepts": [
+        "architecture-fit",
+        "evaluate",
+        "fit",
+        "postgres-platform",
+        "supabase",
+        "tradeoffs"
+      ],
+      "synonyms": [
+        "evaluate supabase fit"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "ad4e5cbccead50dd7be7250b4f6885e287791e1de680c66c5bc57148c6e0084b"
     },
     {
       "id": "evaluation-budget-allocator",
@@ -933,6 +1871,33 @@
       "body_sha256": "199a3fc7747232bef216b05961d7ac994dd97098c98b1fdb6d0fcc04c4dd24e1"
     },
     {
+      "id": "evolve-session-learning",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Convert bounded session evidence into project-scoped candidate knowledge",
+      "domains": [
+        "continuous-learning",
+        "evolve",
+        "external-candidate",
+        "learning",
+        "session"
+      ],
+      "intents": [],
+      "concepts": [
+        "continuous-learning",
+        "evolve",
+        "external-candidate",
+        "learning",
+        "session"
+      ],
+      "synonyms": [
+        "evolve session learning"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "52350a4275af861a888aa055a7d84916a687d05b1dd4ed1fdb26c74a88f11be3"
+    },
+    {
       "id": "execution-contract-enforcer",
       "kind": "skill",
       "status": "active",
@@ -954,7 +1919,9 @@
         "execution contract enforcer"
       ],
       "tools": [],
-      "relations": [],
+      "relations": [
+        "agency-specialist-routing"
+      ],
       "body_sha256": "8cf2f0511b2c1a4362448deb12945f79c6d38618b02a89751b77869b1ea86214"
     },
     {
@@ -1015,6 +1982,31 @@
       "body_sha256": "41f54564e2e956a31637525f3b9111538f7f83308ec4c4b16c1164487fdc561e"
     },
     {
+      "id": "frontier-questioning",
+      "kind": "skill",
+      "status": "active",
+      "description": "Interrogate a plan by maintaining a question frontier instead of asking random or repeated questions.",
+      "domains": [
+        "engineering-reasoning",
+        "frontier",
+        "questioning"
+      ],
+      "intents": [],
+      "concepts": [
+        "engineering-reasoning",
+        "frontier",
+        "questioning"
+      ],
+      "synonyms": [
+        "frontier questioning"
+      ],
+      "tools": [],
+      "relations": [
+        "engineering-reasoning-loop"
+      ],
+      "body_sha256": "76b0d8dd66a6bf68a3c67e3a41bc27e2b1dbcfd5f5db695ccae5c900810e1002"
+    },
+    {
       "id": "gate-model-data-lifecycle",
       "kind": "skill",
       "status": "active",
@@ -1051,6 +2043,105 @@
       "body_sha256": "c09424ce8a07145ec061fa6c2e82ad365d1ea8b6d9c02d39f7e0ae70422371f4"
     },
     {
+      "id": "govern-candidate-resolution-pipeline",
+      "kind": "skill",
+      "status": "active",
+      "description": "Compile untrusted sources into governed capability candidates, preserve candidate identity through explicit resolver stages, score candidates independently, and build dependency-complete execution packages with reasoned exclusions. Use for source-to-skill compilation, candidate routing, package optimization, generated-skill admission, or resolver diagnostics.",
+      "domains": [
+        "candidate-compiler",
+        "fold-in",
+        "package-optimization",
+        "ranking",
+        "resolver"
+      ],
+      "intents": [],
+      "concepts": [
+        "candidate",
+        "candidate-compiler",
+        "fold-in",
+        "govern",
+        "package-optimization",
+        "pipeline",
+        "ranking",
+        "resolution",
+        "resolver"
+      ],
+      "synonyms": [
+        "govern candidate resolution pipeline"
+      ],
+      "tools": [],
+      "relations": [
+        "candidate-pipeline"
+      ],
+      "body_sha256": "90d88f7ac9eade7852881f51c57c230462e36d942e32ba141c9d450014eff37f"
+    },
+    {
+      "id": "govern-cross-harness-runtime",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Project capabilities across harnesses and MCP surfaces without losing",
+      "domains": [
+        "cross",
+        "cross-harness",
+        "external-candidate",
+        "govern",
+        "harness",
+        "mcp",
+        "runtime"
+      ],
+      "intents": [],
+      "concepts": [
+        "cross",
+        "cross-harness",
+        "external-candidate",
+        "govern",
+        "harness",
+        "mcp",
+        "runtime"
+      ],
+      "synonyms": [
+        "govern cross harness runtime"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "0b775822f61cb2c04273a38b9e360705ff2be0d96e6c0905331fa7dd60cc5030"
+    },
+    {
+      "id": "govern-cybersecurity-capabilities",
+      "kind": "skill",
+      "status": "active",
+      "description": "Discover, rank, and selectively hydrate the external cybersecurity catalog while enforcing R0-R4 authority, target scope, evidence, finding, tool, cleanup, and production safeguards. Use for security architecture, AI/MCP, supply-chain, vulnerability, incident response, hunting, cloud, identity, network, OT/ICS, application/API, cryptography, privacy, or authorized lab validation work.",
+      "domains": [
+        "authority",
+        "cybersecurity",
+        "evidence",
+        "external-provider",
+        "framework-mapping",
+        "risk",
+        "selective-hydration"
+      ],
+      "intents": [],
+      "concepts": [
+        "authority",
+        "capabilities",
+        "cybersecurity",
+        "evidence",
+        "external-provider",
+        "framework-mapping",
+        "govern",
+        "risk",
+        "selective-hydration"
+      ],
+      "synonyms": [
+        "govern cybersecurity capabilities"
+      ],
+      "tools": [],
+      "relations": [
+        "cybersecurity-capability-operations"
+      ],
+      "body_sha256": "150f0a33f1e5cf88753831e5cd38dea7c30fbcb27d4b3f1a86c068e2c01cb421"
+    },
+    {
       "id": "govern-deployment-safety",
       "kind": "skill",
       "status": "active",
@@ -1081,23 +2172,198 @@
       "body_sha256": "9d7f59ed09ed21233a8a0c1cae4eb51a1c4548c23420876863e078b72f5f2dc3"
     },
     {
+      "id": "govern-distributed-work-runtime",
+      "kind": "skill",
+      "status": "active",
+      "description": "Coordinate organization-scoped goals, atomic work checkout, multidimensional budgets, runtime placement, quotas, capability and secret leases, external jobs, and operator handoff without cross-project state bleed. Use for multi-project or multi-runtime execution, remote agents, notebooks, containers, MCP, A2A, or expensive operations.",
+      "domains": [
+        "a2a",
+        "budget",
+        "lease",
+        "mcp",
+        "multi-project",
+        "runtime-placement"
+      ],
+      "intents": [],
+      "concepts": [
+        "a2a",
+        "budget",
+        "distributed",
+        "govern",
+        "lease",
+        "mcp",
+        "multi-project",
+        "runtime",
+        "runtime-placement",
+        "work"
+      ],
+      "synonyms": [
+        "govern distributed work runtime"
+      ],
+      "tools": [],
+      "relations": [
+        "distributed-runtime"
+      ],
+      "body_sha256": "517e85cf43256df8065156efd124f6a5a0aa4bcd2a7f5768b56a259e796c2293"
+    },
+    {
+      "id": "govern-epistemic-skill-evolution",
+      "kind": "skill",
+      "status": "active",
+      "description": "Manage bitemporal and epistemic claims, causal invalidation, retrieval traces, and isolated skill-improvement experiments with independent judging and no live self-editing. Use when facts change over time, derived observations need recomputation, or a skill candidate must be evaluated safely.",
+      "domains": [
+        "bitemporal",
+        "causal-invalidation",
+        "epistemic",
+        "offline-skill-evaluation"
+      ],
+      "intents": [],
+      "concepts": [
+        "bitemporal",
+        "causal-invalidation",
+        "epistemic",
+        "evolution",
+        "govern",
+        "offline-skill-evaluation",
+        "skill"
+      ],
+      "synonyms": [
+        "govern epistemic skill evolution"
+      ],
+      "tools": [],
+      "relations": [
+        "epistemic-evolution"
+      ],
+      "body_sha256": "2338c3d42f54448994985d16cd6ecfeb0921d9d5519baacf8c605938b17191c7"
+    },
+    {
+      "id": "govern-external-capability-intake",
+      "kind": "skill",
+      "status": "active",
+      "description": "Search and assess non-canonical external capability metadata, create bounded project-local staging plans, govern hook re-entrancy, normalize cross-harness session snapshots, and evaluate routing economics without executing imported source or granting authority. Use when reviewing, staging, comparing, or revoking external capability candidates.",
+      "domains": [
+        "admission",
+        "external-candidates",
+        "hooks",
+        "routing",
+        "session-fabric",
+        "staging"
+      ],
+      "intents": [],
+      "concepts": [
+        "admission",
+        "capability",
+        "external",
+        "external-candidates",
+        "govern",
+        "hooks",
+        "intake",
+        "routing",
+        "session-fabric",
+        "staging"
+      ],
+      "synonyms": [
+        "govern external capability intake"
+      ],
+      "tools": [],
+      "relations": [
+        "external-capability-intake"
+      ],
+      "body_sha256": "c58e5a9c6e10485d5463caaad9446cc6665f25c28d2feda0a6cacf7fe021370e"
+    },
+    {
+      "id": "govern-hooked-execution",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Treat hooks and agent configuration as governed, validated runtime supply-chain",
+      "domains": [
+        "execution",
+        "external-candidate",
+        "govern",
+        "hooked",
+        "hooks",
+        "security"
+      ],
+      "intents": [],
+      "concepts": [
+        "execution",
+        "external-candidate",
+        "govern",
+        "hooked",
+        "hooks",
+        "security"
+      ],
+      "synonyms": [
+        "govern hooked execution"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "24d1cb75bb598eb9da03a37b96ff390a738647056befb07f54a2e1754b114a66"
+    },
+    {
+      "id": "govern-knowledge-refinery",
+      "kind": "skill",
+      "status": "active",
+      "description": "Inventory and admit untrusted knowledge sources, classify semantic novelty, plan non-destructive merges, audit graph coherence, simulate retrieval, and stage approval-bound proposals without writing canon. Use when adding or reconciling knowledge, skills, workflows, formulas, registries, or research corpora.",
+      "domains": [
+        "admission",
+        "graph-coherence",
+        "knowledge",
+        "novelty",
+        "ranking",
+        "retrieval"
+      ],
+      "intents": [],
+      "concepts": [
+        "admission",
+        "govern",
+        "graph-coherence",
+        "knowledge",
+        "novelty",
+        "ranking",
+        "refinery",
+        "retrieval"
+      ],
+      "synonyms": [
+        "govern knowledge refinery"
+      ],
+      "tools": [],
+      "relations": [
+        "knowledge-refinery",
+        "research-engine"
+      ],
+      "body_sha256": "0ec8432bc2dc73a44254aac390f6ce24f91410dad0a457b0f2b402f00b806e3c"
+    },
+    {
       "id": "govern-memory-fabric",
       "kind": "skill",
       "status": "active",
-      "description": "Govern project-scoped factual memory with provenance, confidence, deltas, graph links, compact candidate indexing, correction invalidation, and provider isolation. Use when ingesting, retrieving, repairing, transferring, or certifying memory and derived indexes.",
+      "description": "Govern project-scoped memory from sanitized evidence capture through layered distillation, conflict resolution, promotion, scoped loadouts, hybrid retrieval, bounded context assembly, reversible offload, evaluation, repair, and provider isolation. Use when ingesting, retrieving, assigning, compacting, repairing, transferring, or certifying memory and derived indexes.",
       "domains": [
+        "capture",
+        "context-assembly",
+        "evaluation",
         "isolation",
+        "layered-memory",
+        "loadout",
         "memory",
+        "offload",
         "provenance",
         "repair",
         "sharding"
       ],
       "intents": [],
       "concepts": [
+        "capture",
+        "context-assembly",
+        "evaluation",
         "fabric",
         "govern",
         "isolation",
+        "layered-memory",
+        "loadout",
         "memory",
+        "offload",
         "provenance",
         "repair",
         "sharding"
@@ -1106,8 +2372,12 @@
         "govern memory fabric"
       ],
       "tools": [],
-      "relations": [],
-      "body_sha256": "056f8ee0ffb4877671b2723f5cb8983433657a56c271310750884e8071d0c9e9"
+      "relations": [
+        "clean-room-capability-controls",
+        "epistemic-evolution",
+        "layered-memory-lifecycle"
+      ],
+      "body_sha256": "5e1015a29fda6bc4ec90d5500e5346eb32900babe5f04c32bdbcbe4b2ead126b"
     },
     {
       "id": "govern-metacognitive-evolution",
@@ -1186,8 +2456,42 @@
         "workflow autotuning advisor"
       ],
       "tools": [],
-      "relations": [],
+      "relations": [
+        "cybersecurity-capability-operations"
+      ],
       "body_sha256": "fbf555b37234ecf0f84bbdf60982e08a4584ef5ecbc5de949c23dccc43af845d"
+    },
+    {
+      "id": "govern-n8n-community-nodes",
+      "kind": "skill",
+      "status": "active",
+      "description": "Assess, admit, isolate, pin, update, and retire n8n community nodes as executable supply-chain components.",
+      "domains": [
+        "allowlist",
+        "community-nodes",
+        "n8n",
+        "npm",
+        "supply-chain"
+      ],
+      "intents": [],
+      "concepts": [
+        "allowlist",
+        "community",
+        "community-nodes",
+        "govern",
+        "n8n",
+        "nodes",
+        "npm",
+        "supply-chain"
+      ],
+      "synonyms": [
+        "govern n8n community nodes"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-production-security-review"
+      ],
+      "body_sha256": "620259d7a7ec1b16d9579778c13716a83e44413ecd1414f50ff7ba92be5d6ddb"
     },
     {
       "id": "govern-operating-kernel",
@@ -1306,7 +2610,9 @@
         "validate protocol compatibility"
       ],
       "tools": [],
-      "relations": [],
+      "relations": [
+        "distributed-runtime"
+      ],
       "body_sha256": "5718a6c60791ca0ffe47d9794abb9abe6b09a00628aee877fdc9ef9111a98484"
     },
     {
@@ -1334,6 +2640,63 @@
       "tools": [],
       "relations": [],
       "body_sha256": "ad3cd975cd7b6cbb7a42b2e1950620d707ef44c28009e8912738e45f4b713605"
+    },
+    {
+      "id": "guided-procedure-wizard",
+      "kind": "skill",
+      "status": "active",
+      "description": "Generate a resumable human-guided procedure for setup, migration, or other manual state transitions.",
+      "domains": [
+        "engineering-reasoning",
+        "guided",
+        "procedure",
+        "wizard"
+      ],
+      "intents": [],
+      "concepts": [
+        "engineering-reasoning",
+        "guided",
+        "procedure",
+        "wizard"
+      ],
+      "synonyms": [
+        "guided procedure wizard"
+      ],
+      "tools": [],
+      "relations": [
+        "engineering-reasoning-loop"
+      ],
+      "body_sha256": "42fe1e69b7ce78d824d351a3220b912d0b6a802eee3ee6885bba047be831c137"
+    },
+    {
+      "id": "handle-debug-n8n-executions",
+      "kind": "skill",
+      "status": "active",
+      "description": "Diagnose failed, stuck, slow, or incorrect executions from evidence without unsafe reruns.",
+      "domains": [
+        "error-workflow",
+        "execution-debugging",
+        "n8n",
+        "replay",
+        "root-cause"
+      ],
+      "intents": [],
+      "concepts": [
+        "debug",
+        "error-workflow",
+        "execution-debugging",
+        "executions",
+        "handle",
+        "n8n",
+        "replay",
+        "root-cause"
+      ],
+      "synonyms": [
+        "handle debug n8n executions"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "b74f7925b5ab1c9a21bb0494a07f99719deed863470c6156d88bdfdb362aca00"
     },
     {
       "id": "harden-container-boundaries",
@@ -1390,6 +2753,39 @@
       "tools": [],
       "relations": [],
       "body_sha256": "d547f50aa5bcd149fda972330aee1278b58eaa9dd7a22c4619cf09f676269300"
+    },
+    {
+      "id": "implement-supabase-auth",
+      "kind": "skill",
+      "status": "active",
+      "description": "Implement Supabase Auth with correct client/server sessions, redirects, JWT/RLS integration, lifecycle, and abuse controls.",
+      "domains": [
+        "authentication",
+        "jwt",
+        "oauth",
+        "redirects",
+        "ssr",
+        "supabase"
+      ],
+      "intents": [],
+      "concepts": [
+        "auth",
+        "authentication",
+        "implement",
+        "jwt",
+        "oauth",
+        "redirects",
+        "ssr",
+        "supabase"
+      ],
+      "synonyms": [
+        "implement supabase auth"
+      ],
+      "tools": [],
+      "relations": [
+        "supabase-secure-application"
+      ],
+      "body_sha256": "56b9e42676cee3e94a423bc720ee63ea24362fcc045bee9e67e3126cd3d2c95d"
     },
     {
       "id": "inspect-live-contracts",
@@ -1457,6 +2853,128 @@
       "body_sha256": "594294286c2e9f5031e41c87fafdc97a69445e9731f3368a62f03ab996ea859b"
     },
     {
+      "id": "install-capabilities-selectively",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Plan and apply target-specific capability subsets with deterministic",
+      "domains": [
+        "capabilities",
+        "external-candidate",
+        "install",
+        "installation",
+        "selectively"
+      ],
+      "intents": [],
+      "concepts": [
+        "capabilities",
+        "external-candidate",
+        "install",
+        "installation",
+        "selectively"
+      ],
+      "synonyms": [
+        "install capabilities selectively"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "74dcdad77386f29e83686e5d49d1f2e0e9ff40bb7bbdcebf5b71d34a42e6cb98"
+    },
+    {
+      "id": "integrate-n8n-webhooks-and-apis",
+      "kind": "skill",
+      "status": "active",
+      "description": "Build secure webhook and API integrations with authentication, validation, pagination, rate limits, timeouts, and idempotency.",
+      "domains": [
+        "http",
+        "n8n",
+        "pagination",
+        "rate-limits",
+        "signatures",
+        "webhooks"
+      ],
+      "intents": [],
+      "concepts": [
+        "and",
+        "apis",
+        "http",
+        "integrate",
+        "n8n",
+        "pagination",
+        "rate-limits",
+        "signatures",
+        "webhooks"
+      ],
+      "synonyms": [
+        "integrate n8n webhooks and apis"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "ed7c587a6341acf4b6bf7b0f0dd914d60df5e189bfd24cbc38d10b12fce28245"
+    },
+    {
+      "id": "integrate-supabase-data-api-and-clients",
+      "kind": "skill",
+      "status": "active",
+      "description": "Use Supabase clients and Data APIs with correct keys, RLS, projection, pagination, errors, typing, and connection boundaries.",
+      "domains": [
+        "connection-modes",
+        "data-api",
+        "pagination",
+        "rpc",
+        "supabase",
+        "supabase-js"
+      ],
+      "intents": [],
+      "concepts": [
+        "and",
+        "api",
+        "clients",
+        "connection-modes",
+        "data",
+        "data-api",
+        "integrate",
+        "pagination",
+        "rpc",
+        "supabase",
+        "supabase-js"
+      ],
+      "synonyms": [
+        "integrate supabase data api and clients"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "f70bf975c1a035974d27e65a5461e8dfa4af71913a6f1dad3d75c4c785c24020"
+    },
+    {
+      "id": "intent-preserving-merge-resolution",
+      "kind": "skill",
+      "status": "active",
+      "description": "Resolve merge and rebase conflicts by reconstructing each side\u2019s intent and preserving both valid outcomes.",
+      "domains": [
+        "engineering-reasoning",
+        "intent",
+        "merge",
+        "preserving",
+        "resolution"
+      ],
+      "intents": [],
+      "concepts": [
+        "engineering-reasoning",
+        "intent",
+        "merge",
+        "preserving",
+        "resolution"
+      ],
+      "synonyms": [
+        "intent preserving merge resolution"
+      ],
+      "tools": [],
+      "relations": [
+        "engineering-reasoning-loop"
+      ],
+      "body_sha256": "62e581370fb71200d8279fec5facd505c978507a23a94b375256c583e0555045"
+    },
+    {
       "id": "isolate-project-streams",
       "kind": "skill",
       "status": "active",
@@ -1488,29 +3006,96 @@
     {
       "id": "long-horizon-progress-ledger",
       "kind": "skill",
-      "status": "mapped_deferred",
-      "description": "Represent long work as evidence-backed milestones with partial completion, blockers, regression, and recoverability. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+      "status": "active",
+      "description": "Manage long-running goals as project-scoped state machines with continuation budgets, isolated pause and resume, acceptance-backed completion, repeated-evidence blocked semantics, and durable evidence history. Use when work spans sessions, agents, or bounded continuation turns.",
       "domains": [
-        "evaluation",
-        "horizon",
-        "ledger",
-        "long",
-        "progress"
+        "acceptance",
+        "durable-goals",
+        "long-horizon",
+        "progress",
+        "state-machine"
       ],
       "intents": [],
       "concepts": [
-        "evaluation",
+        "acceptance",
+        "durable-goals",
         "horizon",
         "ledger",
         "long",
-        "progress"
+        "long-horizon",
+        "progress",
+        "state-machine"
       ],
       "synonyms": [
         "long horizon progress ledger"
       ],
       "tools": [],
+      "relations": [
+        "clean-room-capability-controls"
+      ],
+      "body_sha256": "7e3aa3e6cd7b2bdc6ba6881a117a3c112d680d8ecbc78e488131dd9612323877"
+    },
+    {
+      "id": "maintain-capability-catalog",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Keep skills, rules, decisions, and workspace recommendations searchable,",
+      "domains": [
+        "architecture-governance",
+        "capability",
+        "capability-discovery",
+        "catalog",
+        "external-candidate",
+        "maintain",
+        "rule-governance",
+        "skill-governance"
+      ],
+      "intents": [],
+      "concepts": [
+        "architecture-governance",
+        "capability",
+        "capability-discovery",
+        "catalog",
+        "external-candidate",
+        "maintain",
+        "rule-governance",
+        "skill-governance"
+      ],
+      "synonyms": [
+        "maintain capability catalog"
+      ],
+      "tools": [],
       "relations": [],
-      "body_sha256": "07b54ae4bcb43633195f75eb8423b0ba3dee57129a9478388ab9c9b15ed6a267"
+      "body_sha256": "61fb5dbc2972f902f7c0a4c8dba0158a3701bf0f74b35e1685ced2972eb32a72"
+    },
+    {
+      "id": "manage-agent-session-fabric",
+      "kind": "skill",
+      "status": "active",
+      "description": "Inspect and plan optional terminal-session adapter actions without executing, attaching, or persisting a process unless the exact action has separate authority and remains project scoped. Use for resumable terminal or harness session integrations.",
+      "domains": [
+        "agent",
+        "authority",
+        "session",
+        "terminal-adapter"
+      ],
+      "intents": [],
+      "concepts": [
+        "agent",
+        "authority",
+        "fabric",
+        "manage",
+        "session",
+        "terminal-adapter"
+      ],
+      "synonyms": [
+        "manage agent session fabric"
+      ],
+      "tools": [],
+      "relations": [
+        "clean-room-capability-controls"
+      ],
+      "body_sha256": "1ee9fb15339afb2e8353de1aa598dd8fbc9fcedcccd571510468452bfb40af7a"
     },
     {
       "id": "manage-mcp-lifecycle",
@@ -1539,6 +3124,35 @@
         "external-tool-lifecycle"
       ],
       "body_sha256": "416f2d4353bad6355206665f955b9eec00bab95df5756ea1e3ffd3a10e8986af"
+    },
+    {
+      "id": "manage-n8n-credentials",
+      "kind": "skill",
+      "status": "active",
+      "description": "Create, scope, rotate, test, and retire n8n credentials without exposing values or breaking hidden consumers.",
+      "domains": [
+        "credential-lifecycle",
+        "n8n",
+        "oauth",
+        "secret-rotation"
+      ],
+      "intents": [],
+      "concepts": [
+        "credential-lifecycle",
+        "credentials",
+        "manage",
+        "n8n",
+        "oauth",
+        "secret-rotation"
+      ],
+      "synonyms": [
+        "manage n8n credentials"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-production-security-review"
+      ],
+      "body_sha256": "3e3abadf736bdbf5ba62fcf45f8a146ec9dd45c9c9ba4b666f292688b5a20687"
     },
     {
       "id": "manage-revocable-certification",
@@ -1595,6 +3209,100 @@
       "body_sha256": "b86848859c54e7d5faf23859414317daec93af33f1c9ea163c8ecdc9c1eae6f7"
     },
     {
+      "id": "manage-supabase-environments",
+      "kind": "skill",
+      "status": "active",
+      "description": "Isolate local, preview, staging, and production Supabase projects, credentials, links, secrets, and promotion paths.",
+      "domains": [
+        "environment-isolation",
+        "preview",
+        "project-ref",
+        "staging",
+        "supabase"
+      ],
+      "intents": [],
+      "concepts": [
+        "environment-isolation",
+        "environments",
+        "manage",
+        "preview",
+        "project-ref",
+        "staging",
+        "supabase"
+      ],
+      "synonyms": [
+        "manage supabase environments"
+      ],
+      "tools": [],
+      "relations": [
+        "supabase-local-to-production"
+      ],
+      "body_sha256": "b399b51164a755801e010b7bcabc3831840fea52db9cd9d38b7b4f9a4364bf8f"
+    },
+    {
+      "id": "manage-supabase-migrations",
+      "kind": "skill",
+      "status": "active",
+      "description": "Create, review, test, deploy, reconcile, and roll back Supabase migrations without dashboard drift.",
+      "domains": [
+        "backfill",
+        "expand-contract",
+        "migrations",
+        "schema-drift",
+        "supabase"
+      ],
+      "intents": [],
+      "concepts": [
+        "backfill",
+        "expand-contract",
+        "manage",
+        "migrations",
+        "schema-drift",
+        "supabase"
+      ],
+      "synonyms": [
+        "manage supabase migrations"
+      ],
+      "tools": [],
+      "relations": [
+        "supabase-local-to-production"
+      ],
+      "body_sha256": "532eef79602b517be9a097573045a293d55e754082345ce018a4045fed1ea30c"
+    },
+    {
+      "id": "map-project-intelligence",
+      "kind": "skill",
+      "status": "active",
+      "description": "Build or refresh a complete, evidence-backed project map covering files, symbols, dependencies, calls, runtime services, data flow, integrations, configuration keys, ownership, contracts, tests, traceability, risks, and retrieval. Use when onboarding a project, before broad changes, after architecture drift, or when the AI lacks a dependable model of how the project works.",
+      "domains": [
+        "architecture",
+        "inventory",
+        "project-map",
+        "repository",
+        "retrieval"
+      ],
+      "intents": [],
+      "concepts": [
+        "architecture",
+        "intelligence",
+        "inventory",
+        "map",
+        "project",
+        "project-map",
+        "repository",
+        "retrieval"
+      ],
+      "synonyms": [
+        "map project intelligence"
+      ],
+      "tools": [
+        "build_project_map",
+        "validate_project_map"
+      ],
+      "relations": [],
+      "body_sha256": "4f129ae395b5db769ab994147b1934dd8b76886fb11a9d4fe5492e18e3661512"
+    },
+    {
       "id": "memory-applicability-critic",
       "kind": "skill",
       "status": "mapped_deferred",
@@ -1641,6 +3349,100 @@
       "tools": [],
       "relations": [],
       "body_sha256": "753137baa8d89328c072dfc417b081c03f5bbf1b9131da90980971f8092e512d"
+    },
+    {
+      "id": "observe-debug-supabase",
+      "kind": "skill",
+      "status": "active",
+      "description": "Diagnose Supabase database, API, RLS, Auth, Storage, Realtime, Function, and client failures from correlated evidence.",
+      "domains": [
+        "connections",
+        "logging",
+        "query-plans",
+        "rls-debugging",
+        "supabase"
+      ],
+      "intents": [],
+      "concepts": [
+        "connections",
+        "debug",
+        "logging",
+        "observe",
+        "query-plans",
+        "rls-debugging",
+        "supabase"
+      ],
+      "synonyms": [
+        "observe debug supabase"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "c810d89c49b7d5eedd1c0c1fe8652f9ac1083b440ca033c81e99a09bd77153ec"
+    },
+    {
+      "id": "observe-operate-n8n",
+      "kind": "skill",
+      "status": "active",
+      "description": "Operate n8n using platform, queue, database, workflow, credential, capacity, and business-outcome observability.",
+      "domains": [
+        "capacity",
+        "logs",
+        "metrics",
+        "n8n",
+        "observability",
+        "slo"
+      ],
+      "intents": [],
+      "concepts": [
+        "capacity",
+        "logs",
+        "metrics",
+        "n8n",
+        "observability",
+        "observe",
+        "operate",
+        "slo"
+      ],
+      "synonyms": [
+        "observe operate n8n"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-production-security-review"
+      ],
+      "body_sha256": "798ba11bdea5e396739126f1f1ec9cc1b5f81b4343e9ad3e8c31d5bba521350d"
+    },
+    {
+      "id": "operate-engineering-research-engine",
+      "kind": "skill",
+      "status": "active",
+      "description": "Discover and compare engineering repositories and research sources at mechanism level, fingerprint versions, score evidence, synthesize cross-source patterns, and submit provenance-bound capability deltas. Use for distributed engineering research, trend analysis, or research-to-capability intake.",
+      "domains": [
+        "capability-delta",
+        "mechanism-graph",
+        "repository-fingerprint",
+        "research",
+        "version-drift"
+      ],
+      "intents": [],
+      "concepts": [
+        "capability-delta",
+        "engine",
+        "engineering",
+        "mechanism-graph",
+        "operate",
+        "repository-fingerprint",
+        "research",
+        "version-drift"
+      ],
+      "synonyms": [
+        "operate engineering research engine"
+      ],
+      "tools": [],
+      "relations": [
+        "research-engine"
+      ],
+      "body_sha256": "8118164b966b1df64e16c10181ba445dac250aa831089e8ddd8d2d3178ffe77b"
     },
     {
       "id": "operate-memory-retrieval-observability",
@@ -1704,8 +3506,141 @@
         "working memory manager"
       ],
       "tools": [],
-      "relations": [],
+      "relations": [
+        "layered-memory-lifecycle"
+      ],
       "body_sha256": "3e41f74c9ef68980603481113754b8aa667e06ddd6fe67aafd106eb7688706b7"
+    },
+    {
+      "id": "operate-n8n-supabase-production",
+      "kind": "skill",
+      "status": "active",
+      "description": "Operate a production n8n-Supabase stack with combined SLOs, capacity, cost, backup, security, incident, and change controls.",
+      "domains": [
+        "capacity",
+        "cost",
+        "cross",
+        "incident",
+        "production-operations",
+        "recovery",
+        "slo"
+      ],
+      "intents": [],
+      "concepts": [
+        "capacity",
+        "cost",
+        "cross",
+        "incident",
+        "n8n",
+        "operate",
+        "production",
+        "production-operations",
+        "recovery",
+        "slo",
+        "supabase"
+      ],
+      "synonyms": [
+        "operate n8n supabase production"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-supabase-integration-release"
+      ],
+      "body_sha256": "668d58661f13269d37df5465da7ef91c5c8a55b17cf1f633bb11a1d709e7764e"
+    },
+    {
+      "id": "operate-supabase-vector-search",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design and operate pgvector schemas, embedding lifecycle, indexes, filtered matching RPCs, and retrieval evaluation.",
+      "domains": [
+        "embeddings",
+        "hnsw",
+        "match_documents",
+        "pgvector",
+        "retrieval-evaluation",
+        "supabase"
+      ],
+      "intents": [],
+      "concepts": [
+        "embeddings",
+        "hnsw",
+        "match_documents",
+        "operate",
+        "pgvector",
+        "retrieval-evaluation",
+        "search",
+        "supabase",
+        "vector"
+      ],
+      "synonyms": [
+        "operate supabase vector search"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-supabase-rag-release"
+      ],
+      "body_sha256": "e133b865f97203834cdcb019ffe1ac5f6323b139f6ae5d6fb5b93d5968025842"
+    },
+    {
+      "id": "optimize-agent-harness",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Audit and reduce the gap between available agent tooling and reliable",
+      "domains": [
+        "agent",
+        "agent-harness",
+        "context-management",
+        "external-candidate",
+        "harness",
+        "optimize"
+      ],
+      "intents": [],
+      "concepts": [
+        "agent",
+        "agent-harness",
+        "context-management",
+        "external-candidate",
+        "harness",
+        "optimize"
+      ],
+      "synonyms": [
+        "optimize agent harness"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "b1f3e0c26401ee7be543cd7a554de2cea1876fe37198d7c66c642705eac1f8b2"
+    },
+    {
+      "id": "orchestrate-agent-fleets",
+      "kind": "skill",
+      "status": "active",
+      "description": "Evaluate and coordinate a bounded project-scoped agent fleet with stable identity, explicit permissions and ownership, heartbeat freshness, cost caps, an isolated bounded inbox, and fail-closed cross-project checks. Use before activating or continuing multi-agent work.",
+      "domains": [
+        "agent",
+        "bounded-inbox",
+        "fleet-readiness",
+        "isolation",
+        "orchestration"
+      ],
+      "intents": [],
+      "concepts": [
+        "agent",
+        "bounded-inbox",
+        "fleet-readiness",
+        "fleets",
+        "isolation",
+        "orchestrate",
+        "orchestration"
+      ],
+      "synonyms": [
+        "orchestrate agent fleets"
+      ],
+      "tools": [],
+      "relations": [
+        "clean-room-capability-controls"
+      ],
+      "body_sha256": "3be96b8ba0fb58853f564451dfad02ad302d7aff1b5dca975b70ba1421479a96"
     },
     {
       "id": "orchestrate-capability-scheduling",
@@ -1763,7 +3698,9 @@
         "skill arbitration engine"
       ],
       "tools": [],
-      "relations": [],
+      "relations": [
+        "distributed-runtime"
+      ],
       "body_sha256": "6a698cfe38d3578b6e7ed0cd7110b1f903416e9b4f0a4df96d459d7acb2d0990"
     },
     {
@@ -2054,9 +3991,67 @@
       ],
       "tools": [],
       "relations": [
+        "cybersecurity-capability-operations",
         "external-tool-lifecycle"
       ],
       "body_sha256": "d6dfe57ca49e8131f93c8d9b7cb28967f343939d85c627928a249c5db2818d41"
+    },
+    {
+      "id": "query-project-map",
+      "kind": "skill",
+      "status": "active",
+      "description": "Search a PACIFY-X project intelligence map and produce a minimal source hydration plan. Use before exploring an unfamiliar project, locating implementation ownership, tracing behavior, planning changes, debugging, or answering architecture questions.",
+      "domains": [
+        "evidence",
+        "hydration",
+        "project-map",
+        "repository",
+        "retrieval"
+      ],
+      "intents": [],
+      "concepts": [
+        "evidence",
+        "hydration",
+        "map",
+        "project",
+        "project-map",
+        "query",
+        "repository",
+        "retrieval"
+      ],
+      "synonyms": [
+        "query project map"
+      ],
+      "tools": [
+        "query_project_map"
+      ],
+      "relations": [],
+      "body_sha256": "3aed1a640e86c3df5a0404db0cc0d60465d8c62ed970571d486584820459b77f"
+    },
+    {
+      "id": "questionnaire-delegation",
+      "kind": "skill",
+      "status": "active",
+      "description": "Turn unresolved decisions into an evidence-bearing questionnaire for the person or system that actually owns the answers.",
+      "domains": [
+        "delegation",
+        "engineering-reasoning",
+        "questionnaire"
+      ],
+      "intents": [],
+      "concepts": [
+        "delegation",
+        "engineering-reasoning",
+        "questionnaire"
+      ],
+      "synonyms": [
+        "questionnaire delegation"
+      ],
+      "tools": [],
+      "relations": [
+        "engineering-reasoning-loop"
+      ],
+      "body_sha256": "1b7d57606b11b8cde821dfed00891623c9c0a90ddfa1c9435aba820099b8a9cd"
     },
     {
       "id": "read-only-speculation-controller",
@@ -2164,6 +4159,33 @@
       "body_sha256": "226ddc1e8bcb13403c99047cccd043e9c02ac1a2c5a95f54243564bc2771a9a0"
     },
     {
+      "id": "research-first-capability-use",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Ground current technology use in authoritative, version-aware documentation",
+      "domains": [
+        "capability",
+        "external-candidate",
+        "first",
+        "research",
+        "use"
+      ],
+      "intents": [],
+      "concepts": [
+        "capability",
+        "external-candidate",
+        "first",
+        "research",
+        "use"
+      ],
+      "synonyms": [
+        "research first capability use"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "64681a0953a12c9d1b3e8219bf4adafda3289b7421733bd8d72d5ac1e95b6cd6"
+    },
+    {
       "id": "research-to-capability",
       "kind": "skill",
       "status": "active",
@@ -2216,6 +4238,122 @@
       "body_sha256": "eb10bf6f136275a0c9d8d55b314fce65d6d41d4a282b65a82383124a9b0e5528"
     },
     {
+      "id": "route-n8n-capabilities",
+      "kind": "skill",
+      "status": "active",
+      "description": "Route n8n requests to the smallest relevant PACIFY-X capability set.",
+      "domains": [
+        "capability-selection",
+        "n8n",
+        "routing",
+        "workflow-automation"
+      ],
+      "intents": [],
+      "concepts": [
+        "capabilities",
+        "capability-selection",
+        "n8n",
+        "route",
+        "routing",
+        "workflow-automation"
+      ],
+      "synonyms": [
+        "route n8n capabilities"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "e2809c14bb2d98c2e70a7de4b1362631f5b9dac47141ab72c146f60f1a72c706"
+    },
+    {
+      "id": "route-n8n-supabase-stack",
+      "kind": "skill",
+      "status": "active",
+      "description": "Route combined n8n and Supabase work across integration, automation, RAG, security, reliability, testing, and operations.",
+      "domains": [
+        "combined-stack",
+        "cross",
+        "routing",
+        "trust-boundaries"
+      ],
+      "intents": [],
+      "concepts": [
+        "combined-stack",
+        "cross",
+        "n8n",
+        "route",
+        "routing",
+        "stack",
+        "supabase",
+        "trust-boundaries"
+      ],
+      "synonyms": [
+        "route n8n supabase stack"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "a139acaabd598b87f1a6ca8861940452ae4cc04329711d84c8918d5e12960a6c"
+    },
+    {
+      "id": "route-specialist-agents",
+      "kind": "skill",
+      "status": "active",
+      "description": "Select and compile a bounded panel from PACIFY-X's local specialist-agent provider. Use when a task materially benefits from a domain specialist or independent reviewer and the agent corpus must remain metadata-first, project-scoped, evidence-governed, and authority-neutral.",
+      "domains": [
+        "agents",
+        "governance",
+        "lazy-loading",
+        "routing",
+        "specialists"
+      ],
+      "intents": [],
+      "concepts": [
+        "agents",
+        "governance",
+        "lazy-loading",
+        "route",
+        "routing",
+        "specialist",
+        "specialists"
+      ],
+      "synonyms": [
+        "route specialist agents"
+      ],
+      "tools": [
+        "route_specialist_agents"
+      ],
+      "relations": [
+        "agency-specialist-routing"
+      ],
+      "body_sha256": "44126f3f611b82304114c8e21a0a5820471648223f4084b99de50f4c52657a20"
+    },
+    {
+      "id": "route-supabase-capabilities",
+      "kind": "skill",
+      "status": "active",
+      "description": "Route Supabase requests across Postgres, RLS, Auth, Storage, Realtime, Edge Functions, vectors, CLI, self-hosting, and MCP.",
+      "domains": [
+        "capability-selection",
+        "postgres-platform",
+        "routing",
+        "supabase"
+      ],
+      "intents": [],
+      "concepts": [
+        "capabilities",
+        "capability-selection",
+        "postgres-platform",
+        "route",
+        "routing",
+        "supabase"
+      ],
+      "synonyms": [
+        "route supabase capabilities"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "fba482aa973ade3fbde099e47780e87c947c6773e5fbfd638059b30fa4f30497"
+    },
+    {
       "id": "run-evidence-campaigns",
       "kind": "skill",
       "status": "active",
@@ -2240,6 +4378,9 @@
       ],
       "tools": [],
       "relations": [
+        "external-capability-intake",
+        "knowledge-refinery",
+        "research-engine",
         "retrieval-readiness",
         "secure-service-release",
         "semantic-capability-query-certification",
@@ -2275,6 +4416,36 @@
         "failure-and-recovery"
       ],
       "body_sha256": "9c4112ba2a93de91ad6b89a7d43fca9070e6969b607330b6b9280ff7a8494a23"
+    },
+    {
+      "id": "scale-n8n-queue-mode",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design and operate n8n queue mode with Postgres, Redis, workers, webhook processors, and task runners.",
+      "domains": [
+        "n8n",
+        "queue-mode",
+        "redis",
+        "task-runners",
+        "workers"
+      ],
+      "intents": [],
+      "concepts": [
+        "mode",
+        "n8n",
+        "queue",
+        "queue-mode",
+        "redis",
+        "scale",
+        "task-runners",
+        "workers"
+      ],
+      "synonyms": [
+        "scale n8n queue mode"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "981a60b9811004875c930fd471a9edfb0ca9c3e4f24f9be7110ad3620fc8d134"
     },
     {
       "id": "scenario-audit-generator",
@@ -2368,6 +4539,95 @@
       "body_sha256": "d818a9df088f22044de0cc03707394b7b22a837dcb91cb397a265411d767b4d5"
     },
     {
+      "id": "secure-n8n",
+      "kind": "skill",
+      "status": "active",
+      "description": "Harden n8n identity, network, credentials, execution, nodes, updates, and retained data.",
+      "domains": [
+        "execution-isolation",
+        "least-privilege",
+        "n8n",
+        "retention",
+        "webhook-security"
+      ],
+      "intents": [],
+      "concepts": [
+        "execution-isolation",
+        "least-privilege",
+        "n8n",
+        "retention",
+        "secure",
+        "webhook-security"
+      ],
+      "synonyms": [
+        "secure n8n"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-production-security-review"
+      ],
+      "body_sha256": "65e6ddb296e3ef7ef75443afcf53fa863ce734cbb0d17370b68b6f7eb24a972c"
+    },
+    {
+      "id": "secure-supabase-rls",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design and test Supabase Row Level Security for anonymous, authenticated, service, tenant, and administrative access.",
+      "domains": [
+        "auth.uid",
+        "policies",
+        "rls",
+        "supabase",
+        "tenant-isolation"
+      ],
+      "intents": [],
+      "concepts": [
+        "auth.uid",
+        "policies",
+        "rls",
+        "secure",
+        "supabase",
+        "tenant-isolation"
+      ],
+      "synonyms": [
+        "secure supabase rls"
+      ],
+      "tools": [],
+      "relations": [
+        "supabase-secure-application"
+      ],
+      "body_sha256": "45f0d683b083a8757ecdb42cccb241d6b6404a9c62562084eeb824c3abe006cc"
+    },
+    {
+      "id": "self-host-supabase",
+      "kind": "skill",
+      "status": "active",
+      "description": "Evaluate, deploy, secure, update, and operate self-hosted Supabase with ownership of every service.",
+      "domains": [
+        "docker",
+        "operations",
+        "secrets",
+        "self-hosting",
+        "supabase"
+      ],
+      "intents": [],
+      "concepts": [
+        "docker",
+        "host",
+        "operations",
+        "secrets",
+        "self",
+        "self-hosting",
+        "supabase"
+      ],
+      "synonyms": [
+        "self host supabase"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "ea187f08817c7c84bda8b81ed49fb5148ad7d37fdf80e3a2e0cd71a08e594182"
+    },
+    {
       "id": "skill-admission-controller",
       "kind": "skill",
       "status": "active",
@@ -2389,8 +4649,11 @@
         "skill admission controller"
       ],
       "tools": [],
-      "relations": [],
-      "body_sha256": "2a5465f2473419245768bbad383ad4ee78e73da126b5075663eaa23f6c630703"
+      "relations": [
+        "clean-room-capability-controls",
+        "epistemic-evolution"
+      ],
+      "body_sha256": "b4e9f683f31f0906380b14eaad66a3ec08d6fa52f8f38f2972780a65f6228d30"
     },
     {
       "id": "skill-bundle-resolver",
@@ -2415,6 +4678,7 @@
       ],
       "tools": [],
       "relations": [
+        "cybersecurity-capability-operations",
         "semantic-capability-query-certification"
       ],
       "body_sha256": "f713ba80888d80b6db7a81468b0a0c34893f0629b7842a28cf8953691d6193aa"
@@ -2502,7 +4766,10 @@
         "supervise contained execution"
       ],
       "tools": [],
-      "relations": [],
+      "relations": [
+        "ai-tool-access-review",
+        "cybersecurity-capability-operations"
+      ],
       "body_sha256": "18ec489a204669e2eb2392caa73e00432813b88c665e5150688b94fc433eb91e"
     },
     {
@@ -2533,6 +4800,73 @@
         "source-capability-assimilation"
       ],
       "body_sha256": "fef2e5475c6a8f2d0c434ecd5891b8fe2c2d20b99ba17496de9535a70a8f2a3d"
+    },
+    {
+      "id": "test-n8n-supabase-integrations",
+      "kind": "skill",
+      "status": "active",
+      "description": "Test n8n-Supabase integrations end to end with local services, seeded role matrices, failures, and external outcome assertions.",
+      "domains": [
+        "cross",
+        "e2e",
+        "failure-injection",
+        "fixtures",
+        "rls-tests"
+      ],
+      "intents": [],
+      "concepts": [
+        "cross",
+        "e2e",
+        "failure-injection",
+        "fixtures",
+        "integrations",
+        "n8n",
+        "rls-tests",
+        "supabase",
+        "test"
+      ],
+      "synonyms": [
+        "test n8n supabase integrations"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-supabase-integration-release",
+        "n8n-supabase-rag-release",
+        "supabase-secure-application"
+      ],
+      "body_sha256": "23c0b549b22743d4347330cc62769c45263d7fd2a57ee4f5108cdd9f7c2a520b"
+    },
+    {
+      "id": "test-validate-n8n-workflows",
+      "kind": "skill",
+      "status": "active",
+      "description": "Test n8n workflows using fixtures, contracts, failure injection, replay checks, and external outcome assertions.",
+      "domains": [
+        "contracts",
+        "failure-injection",
+        "fixtures",
+        "n8n",
+        "outcome-verification"
+      ],
+      "intents": [],
+      "concepts": [
+        "contracts",
+        "failure-injection",
+        "fixtures",
+        "n8n",
+        "outcome-verification",
+        "test",
+        "validate",
+        "workflows"
+      ],
+      "synonyms": [
+        "test validate n8n workflows"
+      ],
+      "tools": [],
+      "relations": [
+        "n8n-workflow-release"
+      ],
+      "body_sha256": "35d51b1e75c68cc675a92bec34863892f7a79c3e654fded531e67757e091813a"
     },
     {
       "id": "tool-loop-circuit-breaker",
@@ -2589,6 +4923,34 @@
       "body_sha256": "609452f65cb671be3d8efab56dd3c14843b438de5b731618aaa15495ea9605c1"
     },
     {
+      "id": "tracer-bullet-planning",
+      "kind": "skill",
+      "status": "active",
+      "description": "Break work into vertical, independently verifiable slices with explicit blocking edges.",
+      "domains": [
+        "bullet",
+        "engineering-reasoning",
+        "planning",
+        "tracer"
+      ],
+      "intents": [],
+      "concepts": [
+        "bullet",
+        "engineering-reasoning",
+        "planning",
+        "tracer"
+      ],
+      "synonyms": [
+        "tracer bullet planning"
+      ],
+      "tools": [],
+      "relations": [
+        "clean-room-capability-controls",
+        "engineering-reasoning-loop"
+      ],
+      "body_sha256": "f118fb4a174410f7233c89dbce4abdd1cdb768e57dc27854347d8d52049f705b"
+    },
+    {
       "id": "trajectory-failure-sentinel",
       "kind": "skill",
       "status": "mapped_deferred",
@@ -2612,6 +4974,39 @@
       "tools": [],
       "relations": [],
       "body_sha256": "79da68a94e6db3d29028b22c6dc538d68c529db82d0252987630458f4c965cd8"
+    },
+    {
+      "id": "transcript-analysis",
+      "kind": "skill",
+      "status": "active",
+      "description": "Ingest, validate, and export source-traceable transcript evidence through queue-scoped adapters. Use for support-call or conversation analysis involving issues, components, actions, outcomes, serials, measurements, lifecycle states, or concise canonical CSV/JSON results.",
+      "domains": [
+        "evidence",
+        "nlp",
+        "provenance",
+        "transcripts",
+        "validation"
+      ],
+      "intents": [],
+      "concepts": [
+        "analysis",
+        "evidence",
+        "nlp",
+        "provenance",
+        "transcript",
+        "transcripts",
+        "validation"
+      ],
+      "synonyms": [
+        "transcript analysis"
+      ],
+      "tools": [
+        "export_transcript_summary"
+      ],
+      "relations": [
+        "transcript-evidence-extraction"
+      ],
+      "body_sha256": "173fc8743679546fef3d133d8e86fb68832f723c79a291e04713258d7e33cfb8"
     },
     {
       "id": "triage-cross-surface-failures",
@@ -2642,6 +5037,158 @@
         "failure-and-recovery"
       ],
       "body_sha256": "474618a8b085690466a075b3b2812b9c5c3e5d701a9477c1745ae252092264ef"
+    },
+    {
+      "id": "use-n8n-expressions-and-data",
+      "kind": "skill",
+      "status": "active",
+      "description": "Use n8n items, expressions, mappings, and transformations without cardinality, type, or item-linking mistakes.",
+      "domains": [
+        "binary-data",
+        "expressions",
+        "items",
+        "mapping",
+        "n8n"
+      ],
+      "intents": [],
+      "concepts": [
+        "and",
+        "binary-data",
+        "data",
+        "expressions",
+        "items",
+        "mapping",
+        "n8n",
+        "use"
+      ],
+      "synonyms": [
+        "use n8n expressions and data"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "9b89a33de357e24e1cd27d06ca9f98e608ff0dc3e07636014d3e4e73459bc5bc"
+    },
+    {
+      "id": "use-n8n-mcp",
+      "kind": "skill",
+      "status": "active",
+      "description": "Expose or consume n8n capabilities through MCP with narrow tools, authentication, schemas, approvals, and injection defenses.",
+      "domains": [
+        "approval",
+        "mcp",
+        "n8n",
+        "prompt-injection",
+        "tool-schemas"
+      ],
+      "intents": [],
+      "concepts": [
+        "approval",
+        "mcp",
+        "n8n",
+        "prompt-injection",
+        "tool-schemas",
+        "use"
+      ],
+      "synonyms": [
+        "use n8n mcp"
+      ],
+      "tools": [],
+      "relations": [
+        "ai-tool-access-review"
+      ],
+      "body_sha256": "4614a6b1edd76c2b4094a63dbf013e5ac8758e34a175973f282c1fe4a97d7647"
+    },
+    {
+      "id": "use-supabase-mcp-and-agent-skills",
+      "kind": "skill",
+      "status": "active",
+      "description": "Install and use official Supabase MCP, agent skills, or plugin with project scope, read-only defaults, and injection defenses.",
+      "domains": [
+        "agent-skills",
+        "mcp",
+        "plugin",
+        "prompt-injection",
+        "read-only",
+        "supabase"
+      ],
+      "intents": [],
+      "concepts": [
+        "agent",
+        "agent-skills",
+        "and",
+        "mcp",
+        "plugin",
+        "prompt-injection",
+        "read-only",
+        "skills",
+        "supabase",
+        "use"
+      ],
+      "synonyms": [
+        "use supabase mcp and agent skills"
+      ],
+      "tools": [],
+      "relations": [
+        "ai-tool-access-review"
+      ],
+      "body_sha256": "3f3f6cf2c9395d27779bbcc6bf516a9d13f65c5ce1b623f009c4a50b6685dc71"
+    },
+    {
+      "id": "use-supabase-realtime",
+      "kind": "skill",
+      "status": "active",
+      "description": "Use Supabase Realtime for database changes, broadcast, and presence with authorization and convergence.",
+      "domains": [
+        "broadcast",
+        "presence",
+        "realtime",
+        "supabase",
+        "websockets"
+      ],
+      "intents": [],
+      "concepts": [
+        "broadcast",
+        "presence",
+        "realtime",
+        "supabase",
+        "use",
+        "websockets"
+      ],
+      "synonyms": [
+        "use supabase realtime"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "6a98e3baa4ca3c8ac91dc51b1baaa8c0ba3046e61edc6b8f964efad8fd1a28d3"
+    },
+    {
+      "id": "use-supabase-storage",
+      "kind": "skill",
+      "status": "active",
+      "description": "Design Supabase Storage buckets, paths, uploads, signed access, transformations, and RLS policies.",
+      "domains": [
+        "buckets",
+        "object-storage",
+        "signed-urls",
+        "storage-rls",
+        "supabase"
+      ],
+      "intents": [],
+      "concepts": [
+        "buckets",
+        "object-storage",
+        "signed-urls",
+        "storage",
+        "storage-rls",
+        "supabase",
+        "use"
+      ],
+      "synonyms": [
+        "use supabase storage"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "f6b2b4083f9d679ecb90d657242d2b37283d7b576fffe4c48ef0083d5f7ed571"
     },
     {
       "id": "validate-contract-boundaries",
@@ -2700,7 +5247,10 @@
         "audit_bootstrap"
       ],
       "relations": [
-        "local-model-planning"
+        "agency-specialist-routing",
+        "cybersecurity-capability-operations",
+        "local-model-planning",
+        "transcript-evidence-extraction"
       ],
       "body_sha256": "f8f5202a618e921ffa1996b197278773449a7a754b77eb76527052e2c725dca1"
     },
@@ -2729,10 +5279,43 @@
       ],
       "tools": [],
       "relations": [
+        "knowledge-refinery",
         "retrieval-readiness",
         "source-capability-assimilation"
       ],
       "body_sha256": "b287f2332cc74c0a1a57c316ca3ca8eb08259543e671aeca1f7045ae8d226126"
+    },
+    {
+      "id": "validate-physical-media-deliverables",
+      "kind": "skill",
+      "status": "active",
+      "description": "Validate CAD, manufacturing, robotics, and media deliverables against explicit technical promises and independent checks. Use when generated geometry, robot descriptions, fabrication artifacts, images, audio, or video must be proven complete rather than merely produced.",
+      "domains": [
+        "cad",
+        "manufacturing",
+        "media",
+        "robotics",
+        "validation"
+      ],
+      "intents": [],
+      "concepts": [
+        "cad",
+        "deliverables",
+        "manufacturing",
+        "media",
+        "physical",
+        "robotics",
+        "validate",
+        "validation"
+      ],
+      "synonyms": [
+        "validate physical media deliverables"
+      ],
+      "tools": [],
+      "relations": [
+        "deliverable-validation"
+      ],
+      "body_sha256": "dcf56a29f3126e888db4f9cf8ffce890ce1a7a930193e5b6a34226ce5579333a"
     },
     {
       "id": "validate-production-containers",
@@ -2785,7 +5368,11 @@
         "verify outcome"
       ],
       "tools": [],
-      "relations": [],
+      "relations": [
+        "deliverable-validation",
+        "distributed-runtime",
+        "n8n-workflow-release"
+      ],
       "body_sha256": "59041723adc187c93ace1d9e5ec412bea3963b0fd94b6801c733af6a89f22538"
     }
   ]

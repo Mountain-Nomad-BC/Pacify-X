@@ -1,0 +1,4 @@
+interface:
+  display_name: "Architecture Deepening Audit"
+  short_description: "Find shallow abstractions, leakage, duplication, and misplaced seams, then rank "
+  default_prompt: "Use $architecture-deepening-audit to find shallow abstractions, leakage, duplication, and misplaced seams, then rank deepening opportunities."

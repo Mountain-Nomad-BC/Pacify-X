@@ -44,13 +44,33 @@ class ArchiveInventoryTests(unittest.TestCase):
                 archive.writestr("two.txt", "two")
             output = root / "inventory.json"
             maps = root / "maps"
-            status = main(["--root", f"fixture={root}", "--output", str(output), "--maps-dir", str(maps)])
+            status = main(
+                [
+                    "--root",
+                    f"fixture={root}",
+                    "--output",
+                    str(output),
+                    "--maps-dir",
+                    str(maps),
+                ]
+            )
             self.assertEqual(status, 0)
             first = sorted(path.read_bytes() for path in maps.glob("*.json"))
             self.assertEqual(len(first), 2)
-            status = main(["--root", f"fixture={root}", "--output", str(output), "--maps-dir", str(maps)])
+            status = main(
+                [
+                    "--root",
+                    f"fixture={root}",
+                    "--output",
+                    str(output),
+                    "--maps-dir",
+                    str(maps),
+                ]
+            )
             self.assertEqual(status, 0)
-            self.assertEqual(first, sorted(path.read_bytes() for path in maps.glob("*.json")))
+            self.assertEqual(
+                first, sorted(path.read_bytes() for path in maps.glob("*.json"))
+            )
 
     def test_safe_archive_has_hash_sizes_ratio_and_no_extraction(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -62,7 +82,9 @@ class ArchiveInventoryTests(unittest.TestCase):
             item = report["archives"][0]
 
             self.assertEqual(item["path"], "packs/safe.zip")
-            self.assertEqual(item["sha256"], hashlib.sha256(archive.read_bytes()).hexdigest())
+            self.assertEqual(
+                item["sha256"], hashlib.sha256(archive.read_bytes()).hexdigest()
+            )
             self.assertEqual(item["size_bytes"], archive.stat().st_size)
             self.assertEqual(item["entry_count"], 1)
             self.assertGreater(item["compressed_bytes"], 0)
@@ -72,7 +94,30 @@ class ArchiveInventoryTests(unittest.TestCase):
             self.assertEqual(item["disposition"], "inventory_only")
             self.assertEqual(list(root.rglob("*")), [root / "packs", archive])
 
-    def test_detects_malicious_paths_symlink_nested_archive_and_encryption(self) -> None:
+    def test_optional_entry_map_is_sanitized_and_deterministic(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            archive = root / "mapped.zip"
+            write_zip(
+                archive,
+                [("z/file.py", b"print('z')"), ("a/readme.md", b"read me")],
+            )
+
+            first = build_inventory([("source", root)], include_entries=True)
+            second = build_inventory([("source", root)], include_entries=True)
+            entries = first["archives"][0]["entries"]
+
+            self.assertEqual(first, second)
+            self.assertEqual(
+                [item["path"] for item in entries], ["a/readme.md", "z/file.py"]
+            )
+            self.assertEqual(entries[0]["crc32"], "7b7278e1")
+            self.assertFalse(entries[0]["encrypted"])
+            self.assertFalse(entries[0]["symlink"])
+
+    def test_detects_malicious_paths_symlink_nested_archive_and_encryption(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             archive = root / "malicious.zip"
@@ -135,7 +180,9 @@ class ArchiveInventoryTests(unittest.TestCase):
             self.assertTrue(archive.exists())
             self.assertFalse(item["extracted"])
 
-    def test_inventory_order_and_json_are_deterministic_across_multiple_roots(self) -> None:
+    def test_inventory_order_and_json_are_deterministic_across_multiple_roots(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             base = Path(temporary)
             alpha = base / "alpha"
