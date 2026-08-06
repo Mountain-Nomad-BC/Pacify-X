@@ -1,8 +1,8 @@
 {
   "id": "artifact-preservation",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "active",
-  "summary": "Preserve source, owned, unknown, superseded, failed, and generated artifacts through recoverable quarantine rather than hard deletion.",
+  "summary": "Preserve protected, evidentiary, external, and unclassified artifacts while reclaiming only conclusively owned ephemerals after retention and safety gates pass.",
   "applies_to": ["source_intake", "cleanup", "migration", "generated_artifacts", "failed_evidence", "temporary_files", "caches"],
-  "enforcement": "Hard deletion is forbidden. Before removal from an active location, resolve the exact bounded target, record its path and SHA-256 inventory, move it to a recoverable quarantine, verify the post-move inventory, emit a recovery receipt, and retain it for human review. Intake sources may move only after explicit closure and two matching full-tree snapshots followed by an immediate equality check. Abort on drift."
+  "enforcement": "Never destructively delete user-owned, authoritative, evidentiary, externally owned, or unclassified data without explicit authorization. Register PACIFY-X-owned ephemerals when created and reclaim them only after ownership, ended-run, recovery, active-reference, evidence-promotion, allowed-root, link-safety, and receipt checks all pass. Intake sources still require explicit closure, two matching full-tree snapshots, and an immediate equality check. Unknown means retain."
 }

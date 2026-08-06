@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "startup_policy_ids": ["analyze-plan-execute-verify", "canonical-owner", "risk-classification", "permission-boundary", "evidence-required", "change-control", "recovery", "skeptical-certification", "contained-execution", "external-tool-quarantine", "runtime-assurance-privacy", "artifact-preservation"],
+  "startup_policy_ids": ["analyze-plan-execute-verify", "canonical-owner", "risk-classification", "permission-boundary", "evidence-required", "change-control", "recovery", "skeptical-certification", "contained-execution", "external-tool-quarantine", "runtime-assurance-privacy", "artifact-preservation", "resource-lifecycle-retention"],
   "policies": [
     {"id": "analyze-plan-execute-verify", "summary": "Separate discovery, planning, execution, and verification; never infer completion from execution alone.", "body": "policies/analyze-plan-execute-verify.json"},
     {"id": "canonical-owner", "summary": "Assign one canonical owner to every responsibility, contract, state, and generated artifact.", "body": "policies/canonical-owner.json"},
@@ -13,7 +13,9 @@
     {"id": "contained-execution", "summary": "Keep execution inside approved effects, paths, budgets, and approval boundaries.", "body": "policies/contained-execution.json"},
     {"id": "external-tool-quarantine", "summary": "Keep external tools inert until provenance, integrity, permissions, license, and risk pass review.", "body": "policies/external-tool-quarantine.json"},
     {"id": "runtime-assurance-privacy", "summary": "Collect only opt-in, redacted assurance signals with bounded retention.", "body": "policies/runtime-assurance-privacy.json"},
-    {"id": "artifact-preservation", "summary": "Never hard-delete source, owned, unknown, generated, failed, or superseded artifacts; use hash-verified recoverable quarantine.", "body": "policies/artifact-preservation.json"},
+    {"id": "artifact-preservation", "summary": "Preserve protected, evidentiary, external, and unknown data; reclaim only conclusively owned ephemerals after safety and retention gates.", "body": "policies/artifact-preservation.json"},
+    {"id": "resource-lifecycle-retention", "summary": "Register and reconcile owned workspaces and process trees across completion, failure, cancellation, and recovery.", "body": "policies/resource-lifecycle-retention.json"},
+    {"id": "hardware-aware-execution", "summary": "Route optional accelerators only with compatibility, VRAM, correctness, benchmark, telemetry, and fallback evidence.", "body": "policies/hardware-aware-execution.json"},
     {"id": "release-artifact-classification", "summary": "Classify every release file as product input, evidence output, generated intermediate, or bounded control output before hashing and certification.", "body": "policies/release-artifact-policy.json"},
     {"id": "release-coverage-assurance", "summary": "Require executed branch coverage and per-test contexts for safety-critical release classes.", "body": "policies/coverage-assurance.json"},
     {"id": "effect-grant-trust", "summary": "Trust effect authority only when a scoped, unexpired grant has a verified publisher signature.", "body": "policies/effect-grant-trust.json"},

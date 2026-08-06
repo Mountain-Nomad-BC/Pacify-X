@@ -1,0 +1,36 @@
+{
+  "body": ".agents/skills/hardware-aware-execution-routing/SKILL.md",
+  "body_sha256": "ec2782183f3bd8973410a2f04b77d9d382e0d3007111a71a57a08d0c4e5ee64c",
+  "capability_tags": [
+    "benchmark",
+    "cpu",
+    "cuda",
+    "fallback",
+    "gpu",
+    "hardware",
+    "routing",
+    "vram"
+  ],
+  "clean_room": true,
+  "context_budget_bytes": 16384,
+  "effects": [
+    "read_local"
+  ],
+  "evidence": "tests/test_hardware_routing.py",
+  "id": "hardware-aware-execution-routing",
+  "provenance": {
+    "basis": [
+      "policies/hardware-aware-execution.json",
+      "runtime/hardware_routing.py",
+      "tests/test_hardware_routing.py"
+    ],
+    "type": "clean_room_user_specification_implementation"
+  },
+  "references": [
+    ".agents/skills/hardware-aware-execution-routing/references/routing-policy.md"
+  ],
+  "status": "active",
+  "tests": "tests/test_hardware_routing.py",
+  "validation_freshness": "current",
+  "version": "1.0.0"
+}

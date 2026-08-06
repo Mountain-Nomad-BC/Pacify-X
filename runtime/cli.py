@@ -25,6 +25,54 @@ def parser() -> argparse.ArgumentParser:
     lifecycle = commands.add_parser("lifecycle")
     lifecycle.add_argument("action", choices=("status", "plan"))
     lifecycle.add_argument("--project", type=Path, required=True)
+    resources = commands.add_parser("resources")
+    resource_commands = resources.add_subparsers(
+        dest="resources_action", required=True
+    )
+    resource_status_parser = resource_commands.add_parser("status")
+    resource_status_parser.add_argument(
+        "--ledger", type=Path, default=Path(".pacify-x/resource-ledger.json")
+    )
+    resource_status_parser.add_argument("--storage-path", type=Path)
+    resource_reconcile = resource_commands.add_parser("reconcile")
+    resource_reconcile.add_argument(
+        "--ledger", type=Path, default=Path(".pacify-x/resource-ledger.json")
+    )
+    resource_reconcile.add_argument("--apply", action="store_true")
+    hardware = commands.add_parser("hardware")
+    hardware_commands = hardware.add_subparsers(dest="hardware_action", required=True)
+    hardware_report = hardware_commands.add_parser("report")
+    hardware_report.add_argument("--no-external-probe", action="store_true")
+    hardware_report.add_argument("--no-library-probe", action="store_true")
+    hardware_route = hardware_commands.add_parser("route")
+    hardware_route.add_argument(
+        "--kind",
+        choices=(
+            "filesystem_io",
+            "database",
+            "serialization",
+            "hashing",
+            "compression",
+            "sorting",
+            "text_analysis",
+            "embedding",
+            "model_inference",
+            "vector_search",
+            "dataframe",
+            "image_inference",
+            "numerical",
+        ),
+        required=True,
+    )
+    hardware_route.add_argument("--items", type=int, required=True)
+    hardware_route.add_argument("--bytes", type=int, required=True)
+    hardware_route.add_argument("--batchable", action="store_true")
+    hardware_route.add_argument("--estimated-device-bytes", type=int)
+    hardware_route.add_argument("--operation-id", default="cli-workload")
+    hardware_route.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
+    hardware_route.add_argument("--benchmark", type=Path)
+    hardware_route.add_argument("--no-external-probe", action="store_true")
+    hardware_route.add_argument("--no-library-probe", action="store_true")
     contracts = commands.add_parser("contracts")
     contract_commands = contracts.add_subparsers(dest="contracts_action", required=True)
     contract_commands.add_parser("status")
@@ -723,6 +771,63 @@ def main(argv: list[str] | None = None) -> int:
                     ],
                     "metadata_only": True,
                 }
+        elif args.command == "resources":
+            from .resource_lifecycle import ResourceManager, resource_status
+
+            ledger = args.ledger if args.ledger.is_absolute() else root / args.ledger
+            if args.resources_action == "status":
+                storage_path = args.storage_path
+                if storage_path is not None and not storage_path.is_absolute():
+                    storage_path = root / storage_path
+                output = resource_status(ledger, storage_path=storage_path)
+            else:
+                output = ResourceManager(ledger).reconcile(apply=args.apply)
+        elif args.command == "hardware":
+            from .hardware_routing import (
+                BenchmarkEvidence,
+                WorkloadKind,
+                WorkloadProfile,
+                discover_hardware,
+                hardware_report,
+                route_workload,
+            )
+
+            probe_external = not args.no_external_probe
+            probe_libraries = not args.no_library_probe
+            if args.hardware_action == "report":
+                output = hardware_report(
+                    probe_external=probe_external,
+                    probe_libraries=probe_libraries,
+                )
+            else:
+                profile = discover_hardware(
+                    probe_external=probe_external,
+                    probe_libraries=probe_libraries,
+                )
+                benchmark = None
+                if args.benchmark:
+                    benchmark = BenchmarkEvidence(
+                        **json.loads(args.benchmark.read_text(encoding="utf-8"))
+                    )
+                decision = route_workload(
+                    WorkloadProfile(
+                        kind=WorkloadKind(args.kind),
+                        item_count=args.items,
+                        total_bytes=args.bytes,
+                        batchable=args.batchable,
+                        estimated_device_bytes=args.estimated_device_bytes,
+                        operation_id=args.operation_id,
+                    ),
+                    profile,
+                    benchmark=benchmark,
+                    requested_device=args.device,
+                )
+                output = {
+                    "valid": True,
+                    "hardware_fingerprint": profile.fingerprint,
+                    "routing_decision": asdict(decision),
+                    "probe_errors": profile.probe_errors,
+                }
         elif args.command == "contracts":
             from .contracts import validate_contract_corpus, validate_instance
 
@@ -1001,6 +1106,9 @@ def main(argv: list[str] | None = None) -> int:
 
             output = validate_profile_set(root / "bootstrap" / "profiles")
         elif args.command == "test-profile":
+            from uuid import uuid4
+
+            from .resource_lifecycle import ResourceManager
             from .test_profiles import resolve_test_profile
             from .test_runner import run_test_command
 
@@ -1012,11 +1120,21 @@ def main(argv: list[str] | None = None) -> int:
                 environment.update(
                     {"PYTHONDONTWRITEBYTECODE": "1", "PYTHONNOUSERSITE": "1"}
                 )
+                run_id = f"test-profile-{args.name}-{uuid4().hex}"
+                resource_manager = ResourceManager(
+                    root
+                    / ".engineering-bootstrap"
+                    / "resource-lifecycle"
+                    / "ledger.json"
+                )
                 execution = run_test_command(
                     output["command"],
                     cwd=root,
                     environment=environment,
                     timeout_seconds=output["timeout_seconds"],
+                    resource_manager=resource_manager,
+                    run_id=run_id,
+                    lane_id=args.name,
                 )
                 output = {
                     **output,

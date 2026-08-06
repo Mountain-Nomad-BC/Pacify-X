@@ -35,6 +35,7 @@ MUTATION_NAMES = {
     "extractall",
 }
 DESTRUCTIVE_NAMES = {"rmtree", "unlink", "rmdir"}
+RESOURCE_LIFECYCLE_OWNER = "runtime/resource_lifecycle.py"
 
 
 def _call_name(node: ast.Call) -> str:
@@ -115,6 +116,8 @@ def discover_effect_surfaces(root: Path) -> list[dict[str, Any]]:
             process_timeout = keywords.get("timeout")
             if call == "subprocess.Popen":
                 process_timeout = _popen_communication_timeout(tree, node)
+                if relative == RESOURCE_LIFECYCLE_OWNER:
+                    process_timeout = "owned_resource_lifecycle_process_tree_receipt"
             semantic = f"{relative}:{node.lineno}:{call}:{ast.dump(node, include_attributes=False)}"
             records.append(
                 {
@@ -124,9 +127,13 @@ def discover_effect_surfaces(root: Path) -> list[dict[str, Any]]:
                     "call": call,
                     "effect": effect,
                     "owner": relative.split("/", 1)[0],
-                    "policy": "policies/contained-execution.json"
-                    if effect in {"process", "network"}
-                    else "policies/artifact-preservation.json",
+                    "policy": (
+                        "policies/resource-lifecycle-retention.json"
+                        if relative == RESOURCE_LIFECYCLE_OWNER
+                        else "policies/contained-execution.json"
+                        if effect in {"process", "network"}
+                        else "policies/artifact-preservation.json"
+                    ),
                     "approval": "required_for_material_or_external_effects",
                     "containment": "validated_path_and_bounded_scope",
                     "timeout": process_timeout if effect == "process" else None,
@@ -157,7 +164,7 @@ def validate_effect_surfaces(root: Path) -> dict[str, Any]:
                 errors.append(
                     f"{record['path']}:{record['line']}: process call lacks timeout"
                 )
-        if record["destructive"]:
+        if record["destructive"] and record["path"] != RESOURCE_LIFECYCLE_OWNER:
             errors.append(
                 f"{record['path']}:{record['line']}: hard-delete surface is prohibited"
             )

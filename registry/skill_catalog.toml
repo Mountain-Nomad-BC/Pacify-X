@@ -1537,3 +1537,21 @@ body = ".agents/skills/operate-engineering-research-engine/SKILL.md"
 contract = "registry/skill_packages/operate-engineering-research-engine.json"
 admission_record = "operate-engineering-research-engine"
 tags = ["capability-delta", "mechanism-graph", "repository-fingerprint", "research", "version-drift"]
+
+[[skills]]
+id = "manage-resource-lifecycle"
+version = "1.0.0"
+status = "active"
+body = ".agents/skills/manage-resource-lifecycle/SKILL.md"
+contract = "registry/skill_packages/manage-resource-lifecycle.json"
+admission_record = "manage-resource-lifecycle"
+tags = ["cleanup", "ephemeral", "lifecycle", "process-tree", "quarantine", "recovery", "retention"]
+
+[[skills]]
+id = "hardware-aware-execution-routing"
+version = "1.0.0"
+status = "active"
+body = ".agents/skills/hardware-aware-execution-routing/SKILL.md"
+contract = "registry/skill_packages/hardware-aware-execution-routing.json"
+admission_record = "hardware-aware-execution-routing"
+tags = ["benchmark", "cpu", "cuda", "fallback", "gpu", "hardware", "routing", "vram"]

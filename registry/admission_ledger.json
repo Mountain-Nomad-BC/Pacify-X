@@ -2426,6 +2426,36 @@
       "effects": [
         "read_local"
       ],
+      "id": "hardware-aware-execution-routing",
+      "implementation": "clean_room",
+      "notes": "Centralized compatibility, free-VRAM, benchmark, correctness, telemetry, and bounded CPU-fallback routing.",
+      "source_disposition": "adopt",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 9
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace",
+        "destructive"
+      ],
+      "id": "manage-resource-lifecycle",
+      "implementation": "clean_room",
+      "notes": "Fail-closed owned resource ledger, safe reclamation gate, process-tree cancellation, receipts, pressure reporting, and run reconciliation.",
+      "source_disposition": "adopt",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 10
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
       "id": "workflow-orchestrator",
       "implementation": "clean_room",
       "notes": "Resolves at most one handler and only after registry, input, contract, and policy checks.",

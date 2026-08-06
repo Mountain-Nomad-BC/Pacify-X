@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "loading_rule": "metadata_only",
-  "revision": "09348847553037d528d65ac79cd3bf83c9789ea2f05e49255705c127b9e81613",
-  "record_count": 171,
+  "revision": "5a16620871bbb871a1465eb133cd7760c71262fb1117b9b22b01ec992f59cdd7",
+  "record_count": 173,
   "records": [
     {
       "id": "acquire-install-n8n",
@@ -2611,7 +2611,8 @@
       ],
       "tools": [],
       "relations": [
-        "distributed-runtime"
+        "distributed-runtime",
+        "hardware-aware-execution-routing"
       ],
       "body_sha256": "5718a6c60791ca0ffe47d9794abb9abe6b09a00628aee877fdc9ef9111a98484"
     },
@@ -2726,6 +2727,43 @@
         "secure-service-release"
       ],
       "body_sha256": "f5814185400bb02296f582e49521cf67ca14f59b3e9fac94b58cec1c3799e0ed"
+    },
+    {
+      "id": "hardware-aware-execution-routing",
+      "kind": "skill",
+      "status": "active",
+      "description": "Discover local CPU, CUDA, VRAM, provider, Windows, WSL2, Linux, and container capabilities; classify workloads; and choose an explainable execution device using compatibility, resource limits, current end-to-end benchmark evidence, correctness, determinism, bounded retries, and CPU fallback. Use for GPU acceleration, CUDA/ONNX/PyTorch routing, hardware reports, workload placement, VRAM/OOM policy, optional WSL2 analytics, or deciding whether acceleration is justified.",
+      "domains": [
+        "benchmark",
+        "cpu",
+        "cuda",
+        "fallback",
+        "gpu",
+        "hardware",
+        "routing",
+        "vram"
+      ],
+      "intents": [],
+      "concepts": [
+        "aware",
+        "benchmark",
+        "cpu",
+        "cuda",
+        "execution",
+        "fallback",
+        "gpu",
+        "hardware",
+        "routing",
+        "vram"
+      ],
+      "synonyms": [
+        "hardware aware execution routing"
+      ],
+      "tools": [],
+      "relations": [
+        "hardware-aware-execution-routing"
+      ],
+      "body_sha256": "ec2782183f3bd8973410a2f04b77d9d382e0d3007111a71a57a08d0c4e5ee64c"
     },
     {
       "id": "human-handoff-state-transfer",
@@ -3153,6 +3191,41 @@
         "n8n-production-security-review"
       ],
       "body_sha256": "3e3abadf736bdbf5ba62fcf45f8a146ec9dd45c9c9ba4b666f292688b5a20687"
+    },
+    {
+      "id": "manage-resource-lifecycle",
+      "kind": "skill",
+      "status": "active",
+      "description": "Classify, register, retain, reconcile, and safely reclaim PACIFY-X-owned workspaces and process trees with fail-closed path, evidence, quarantine, recovery, budget, and receipt controls. Use when tests, scans, builds, temporary environments, staging, certification, cancellation, restart recovery, cleanup, storage pressure, or quarantine disposition create resources that must not leak or be deleted unsafely.",
+      "domains": [
+        "cleanup",
+        "ephemeral",
+        "lifecycle",
+        "process-tree",
+        "quarantine",
+        "recovery",
+        "retention"
+      ],
+      "intents": [],
+      "concepts": [
+        "cleanup",
+        "ephemeral",
+        "lifecycle",
+        "manage",
+        "process-tree",
+        "quarantine",
+        "recovery",
+        "resource",
+        "retention"
+      ],
+      "synonyms": [
+        "manage resource lifecycle"
+      ],
+      "tools": [],
+      "relations": [
+        "resource-lifecycle-reconciliation"
+      ],
+      "body_sha256": "418f87a6f2b21746e7202c297405d0d08761fd7325b0cbc5774f30737a5e6755"
     },
     {
       "id": "manage-revocable-certification",
@@ -5249,7 +5322,9 @@
       "relations": [
         "agency-specialist-routing",
         "cybersecurity-capability-operations",
+        "hardware-aware-execution-routing",
         "local-model-planning",
+        "resource-lifecycle-reconciliation",
         "transcript-evidence-extraction"
       ],
       "body_sha256": "f8f5202a618e921ffa1996b197278773449a7a754b77eb76527052e2c725dca1"

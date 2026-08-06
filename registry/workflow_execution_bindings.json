@@ -84,8 +84,18 @@
       "entrypoint": "runtime.completion_controls:validate_completion_control_workflow",
       "mode": "executable_validator",
       "path": "orchestration/workflows/completion-controls.yaml"
+    },
+    {
+      "entrypoint": "runtime.hardware_routing:route_workload",
+      "mode": "executable_runtime",
+      "path": "orchestration/workflows/hardware-aware-execution-routing.yaml"
+    },
+    {
+      "entrypoint": "runtime.resource_lifecycle:resource_status",
+      "mode": "executable_runtime",
+      "path": "orchestration/workflows/resource-lifecycle-reconciliation.yaml"
     }
   ],
-  "count": 17,
+  "count": 19,
   "schema_version": "1.0"
 }

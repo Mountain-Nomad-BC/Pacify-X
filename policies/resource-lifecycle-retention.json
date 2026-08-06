@@ -1,0 +1,8 @@
+{
+  "id": "resource-lifecycle-retention",
+  "version": "1.0.0",
+  "status": "active",
+  "summary": "Make owned workspace, process, evidence, quarantine, storage, cleanup, and recovery state explicit and reconciled.",
+  "applies_to": ["tests", "scans", "builds", "staging", "temporary_environments", "subprocesses", "cancellation", "recovery", "quarantine", "certification"],
+  "enforcement": "Classify every managed resource; register ownership at creation; promote and validate retained outputs; fail closed on protected, evidence, external, unknown, active, recoverable, out-of-root, or link-ambiguous targets; bound cleanup concurrency; terminate only provably owned process trees; retain receipts; and fail overall certification when resource reconciliation fails."
+}

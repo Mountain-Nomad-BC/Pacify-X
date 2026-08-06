@@ -1,5 +1,5 @@
 {
-  "count": 28,
+  "count": 30,
   "loading_rule": "Load workflow and skill metadata first; hydrate one selected skill body at a time.",
   "schema_version": "1.0",
   "workflows": [
@@ -1211,6 +1211,29 @@
         {"id": "synthesize", "skill": "operate-engineering-research-engine", "depends_on": ["fingerprint"]},
         {"id": "admit", "skill": "govern-knowledge-refinery", "depends_on": ["synthesize"]},
         {"id": "verify", "skill": "run-evidence-campaigns", "depends_on": ["admit"]}
+      ]
+    },
+    {
+      "id": "resource-lifecycle-reconciliation",
+      "purpose": "Classify, promote, reclaim, and reconcile PACIFY-X-owned resources without unsafe deletion or orphan processes.",
+      "failure_policy": "Retain and fail resource certification on unknown ownership, unresolved retention, recovery need, active references, evidence gaps, root or link ambiguity, process identity uncertainty, cleanup failure, or residue.",
+      "steps": [
+        {"id": "classify-register", "skill": "manage-resource-lifecycle", "depends_on": []},
+        {"id": "promote-validate", "skill": "manage-resource-lifecycle", "depends_on": ["classify-register"]},
+        {"id": "reconcile", "skill": "manage-resource-lifecycle", "depends_on": ["promote-validate"]},
+        {"id": "certify", "skill": "validate-engineering-outcomes", "depends_on": ["reconcile"]}
+      ]
+    },
+    {
+      "id": "hardware-aware-execution-routing",
+      "purpose": "Select CPU or CUDA from workload, compatibility, resource, correctness, benchmark, and fallback evidence.",
+      "failure_policy": "Use CPU or skip optional enrichment when CUDA evidence is absent or fails; fail closed on required correctness disagreement.",
+      "steps": [
+        {"id": "classify", "skill": "hardware-aware-execution-routing", "depends_on": []},
+        {"id": "discover", "skill": "hardware-aware-execution-routing", "depends_on": ["classify"]},
+        {"id": "route", "skill": "hardware-aware-execution-routing", "depends_on": ["discover"]},
+        {"id": "execute", "skill": "govern-runtime-protocol-deployment", "depends_on": ["route"]},
+        {"id": "validate", "skill": "validate-engineering-outcomes", "depends_on": ["execute"]}
       ]
     }
   ]

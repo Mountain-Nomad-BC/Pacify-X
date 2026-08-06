@@ -1,0 +1,21 @@
+schema_version: "1.0"
+id: resource-lifecycle-reconciliation
+loading_rule: Load ledger metadata first; inventory only a selected owned target after the reclamation gate passes.
+steps:
+  - id: classify-register
+    skill: manage-resource-lifecycle
+    depends_on: []
+    evidence: owned resource records with explicit classification and cleanup roots
+  - id: promote-validate
+    skill: manage-resource-lifecycle
+    depends_on: [classify-register]
+    evidence: required output and evidence promotion validation
+  - id: reconcile
+    skill: manage-resource-lifecycle
+    depends_on: [promote-validate]
+    evidence: cleanup and process-tree receipts with retained residue reasons
+  - id: certify
+    skill: validate-engineering-outcomes
+    depends_on: [reconcile]
+    evidence: zero unexplained ephemerals and active owned child processes
+failure_policy: Retain on unknown ownership, protected or evidentiary classification, recoverable runs, active references, missing promoted evidence, root escape, link ambiguity, process identity uncertainty, cleanup failure, or unreconciled residue.
