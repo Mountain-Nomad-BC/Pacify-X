@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "handoff_id": "20260807T030012Z-map-impact-hold",
+  "status": "paused",
+  "status_basis": "explicit_user_request",
+  "project": {
+    "name": "Pacify-X",
+    "root": ".",
+    "base_branch": "main",
+    "base_commit": "6c0d60c1d9514509c9b0969442a2aa16768b0621"
+  },
+  "objective": {
+    "type": "inference",
+    "statement": "Add sensitive-source-safe project mapping, external map output, native bounded impact analysis, project-change-intelligence workflow wiring, ownership projections, and regression coverage."
+  },
+  "phase": "implementation_unaccepted",
+  "recovery": {
+    "hold_ref": "refs/heads/hold/map-impact-20260807T030012Z",
+    "apply_command": "git stash apply refs/heads/hold/map-impact-20260807T030012Z",
+    "drop_forbidden_until_accepted": true,
+    "snapshot_note_ref": "refs/notes/pacify-x-holds"
+  },
+  "working_tree": {
+    "tracked_modified": 21,
+    "untracked": 3,
+    "insertions": 530,
+    "deletions": 144,
+    "artifacts": [
+      {"path": ".agents/skills/map-project-intelligence/agents/openai.yaml", "bytes": 283, "sha256": "3ca373aba4b58547efb1165a11eee03dc3c9a73115e2de017188bafef5de0af3"},
+      {"path": ".agents/skills/map-project-intelligence/scripts/build_project_map.py", "bytes": 849, "sha256": "d8d38c11f97f318adc4cf0979cdd6f74b4da87d02fcbb8f6de579806d0a3be2d"},
+      {"path": ".agents/skills/map-project-intelligence/SKILL.md", "bytes": 1834, "sha256": "be4d0fdd32ead5ac6917a465045f44359ee63b518b5ce3f3960352e1c3b0e06a"},
+      {"path": ".agents/skills/query-project-map/agents/openai.yaml", "bytes": 255, "sha256": "b5a73ac847586894e35034e4792617052126b6abf4dbfd40e1662cfd4e82ccd0"},
+      {"path": ".agents/skills/query-project-map/SKILL.md", "bytes": 1449, "sha256": "8086bdba63af752d58ab14ae65d9fafe546d88dd912aeae021c37c738a343eca"},
+      {"path": ".engineering-bootstrap/project-registry.json", "bytes": 39185, "sha256": "25547b6beb5afdd7d1d82be1ddbeb9fd31c9882e67f26875a9b5c64382cc4c96"},
+      {"path": "contracts/project-impact.schema.json", "bytes": 2089, "sha256": "205b97cf4bbb2995751506236ff2acb500020842b2d1460fc788a4812bd1d886"},
+      {"path": "orchestration/workflows/project-change-intelligence.yaml", "bytes": 1160, "sha256": "a4e8cd47e814a8d935473ab36d7555c1a5baaf34f223c875c7377ca5ae4105c8"},
+      {"path": "registry/artifact_reachability.json", "bytes": 330518, "sha256": "4b215b04326ed5ed5fd8e71d5c9c60a7e1340530e464191046d01816f3dda844"},
+      {"path": "registry/cognitive_map_index.json", "bytes": 1756105, "sha256": "c2fe4ac97f70119721b0270c92079c6069e1c662b8961372db094db10ca585ff"},
+      {"path": "registry/contract_ownership.json", "bytes": 95178, "sha256": "14490e296f8e6a4ef8a4dd5568937d0f92aeb679287e8122d992c86145ebee21"},
+      {"path": "registry/effect_surface_ownership.json", "bytes": 252919, "sha256": "d8523a9ab7e5dbf46cf114521460b2c68b14bed29e256068aeb1e5dc3083e366"},
+      {"path": "registry/semantic_capability_index.json", "bytes": 161241, "sha256": "f6a96d8cbe3b9eb0448e4a9e56c4aa601403278af207057650fabd9ec739ea4b"},
+      {"path": "registry/skill_orchestrations.json", "bytes": 37400, "sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3"},
+      {"path": "registry/skill_packages/map-project-intelligence.json", "bytes": 1124, "sha256": "ed5a62f298241412589f1ceeff655efb90c36b1e849a9871a8e50c760b9c212f"},
+      {"path": "registry/skill_packages/query-project-map.json", "bytes": 1010, "sha256": "ad0a79cedaae72d5f1a22cd096fe7f33f666ddaa73b4718121bc93208e6a765c"},
+      {"path": "registry/workflow_execution_bindings.json", "bytes": 3693, "sha256": "f5b2111f1c4ea307aafac0777dc033e32cd8b545d4b35ed73523e8b9ac5b2b66"},
+      {"path": "runtime/cli.py", "bytes": 91549, "sha256": "cd6a4a3fec7f10fdc7ccc2d67069306b83dafe3dacd2ef09b5b706477ae6bc34"},
+      {"path": "runtime/project_impact.py", "bytes": 13304, "sha256": "a7f074503934ed83ee05d0a074b964db852559a0c07216079c1baf51c54addc3"},
+      {"path": "runtime/project_intelligence.py", "bytes": 123360, "sha256": "55beb6620f15a0cde79b13e5263a90fe74262c9471ff92eefca8b705bd8299af"},
+      {"path": "scripts/build_contract_ownership_registry.py", "bytes": 18038, "sha256": "e443ede4c321bad1f455475784783f43d411e5aa1bcaba660dcee441dc9be832"},
+      {"path": "START_HERE_FOR_AI.md", "bytes": 14615, "sha256": "477c6e8a04a695faa91d981710261800a943e2e82f7db81f7b0ad7fe2af1f6d1"},
+      {"path": "tests/test_effect_surface.py", "bytes": 2627, "sha256": "82a245e1489cde2eab24676c244334216a59ef46ba29bf15720d181367a1db3a"},
+      {"path": "tests/test_project_mapping.py", "bytes": 7343, "sha256": "1c4bc5beb7ea06ac519d4a9f2524770b2f45794680c69cbcdd65df26397134cd"}
+    ]
+  },
+  "validation": [
+    {"command": "python -m pytest tests/test_effect_surface.py tests/test_project_mapping.py -v", "result": "passed", "tests": 10},
+    {"command": "python -m runtime.cli --root . project-map validate --project . --fresh", "result": "failed_closed", "reason": "project intelligence map not found"},
+    {"command": "python -m unittest tests.test_effect_surface tests.test_project_mapping -v", "result": "non_certifying_invocation_error", "reason": "tests directory is not an import package"},
+    {"command": "python -m unittest discover -s tests -p <affected-file> -v", "result": "non_certifying_zero_tests", "reason": "affected files use pytest-style functions"}
+  ],
+  "unknowns": [
+    "Original acceptance criteria and active punch-card identity are absent from project-management state.",
+    "Repository-wide validation status for these uncommitted changes is unknown.",
+    "The stored project-management repository checkpoint is stale relative to the current branch and commit."
+  ],
+  "blockers": [
+    "No fresh project intelligence map exists for native impact evidence."
+  ],
+  "next_action": "Reconcile drift, apply the durable hold ref without dropping it, define acceptance criteria, build and validate the project map, run impact analysis, and execute full required gates.",
+  "forbidden_actions": [
+    "Do not drop the stash or delete the hold ref before accepted replacement evidence exists.",
+    "Do not claim completion or release readiness from targeted tests.",
+    "Do not hard-delete generated, cache, unknown, or failed artifacts."
+  ]
+}
