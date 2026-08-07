@@ -8,6 +8,18 @@ from pathlib import Path
 
 
 ROOT_OWNERS = {
+    "project-impact.schema.json": (
+        "runtime/project_impact.py",
+        ["runtime/project_impact.py", "runtime/cli.py"],
+        "runtime_enforced",
+        ["tests/test_project_mapping.py"],
+    ),
+    "project-map.schema.json": (
+        "runtime/project_intelligence.py",
+        ["runtime/project_intelligence.py"],
+        "runtime_enforced",
+        ["tests/test_project_mapping.py"],
+    ),
     "authorization-request.schema.json": (
         "runtime/execution_contract.py",
         ["runtime/cli.py"],

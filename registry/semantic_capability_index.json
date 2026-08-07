@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "loading_rule": "metadata_only",
-  "revision": "09348847553037d528d65ac79cd3bf83c9789ea2f05e49255705c127b9e81613",
+  "revision": "97dbdf21f1bcc9362f305c1a643cafed5723c29f8afa6507bc5c5ff6fa94899d",
   "record_count": 171,
   "records": [
     {
@@ -3299,8 +3299,10 @@
         "build_project_map",
         "validate_project_map"
       ],
-      "relations": [],
-      "body_sha256": "4f129ae395b5db769ab994147b1934dd8b76886fb11a9d4fe5492e18e3661512"
+      "relations": [
+        "project-change-intelligence"
+      ],
+      "body_sha256": "be4d0fdd32ead5ac6917a465045f44359ee63b518b5ce3f3960352e1c3b0e06a"
     },
     {
       "id": "memory-applicability-critic",
@@ -4000,7 +4002,7 @@
       "id": "query-project-map",
       "kind": "skill",
       "status": "active",
-      "description": "Search a PACIFY-X project intelligence map and produce a minimal source hydration plan. Use before exploring an unfamiliar project, locating implementation ownership, tracing behavior, planning changes, debugging, or answering architecture questions.",
+      "description": "Search a PACIFY-X project intelligence map, produce a minimal source hydration plan, and calculate bounded upstream/downstream symbol impact. Use before exploring an unfamiliar project, locating implementation ownership, tracing behavior, planning or editing symbols, debugging, replacing GitNexus-style blast-radius checks, or answering architecture questions.",
       "domains": [
         "evidence",
         "hydration",
@@ -4025,8 +4027,10 @@
       "tools": [
         "query_project_map"
       ],
-      "relations": [],
-      "body_sha256": "3aed1a640e86c3df5a0404db0cc0d60465d8c62ed970571d486584820459b77f"
+      "relations": [
+        "project-change-intelligence"
+      ],
+      "body_sha256": "8086bdba63af752d58ab14ae65d9fafe546d88dd912aeae021c37c738a343eca"
     },
     {
       "id": "questionnaire-delegation",
@@ -5371,7 +5375,8 @@
       "relations": [
         "deliverable-validation",
         "distributed-runtime",
-        "n8n-workflow-release"
+        "n8n-workflow-release",
+        "project-change-intelligence"
       ],
       "body_sha256": "59041723adc187c93ace1d9e5ec412bea3963b0fd94b6801c733af6a89f22538"
     }

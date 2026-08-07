@@ -1,4 +1,4 @@
 interface:
   display_name: "Query Project Map"
-  short_description: "Retrieve structural project evidence first"
-  default_prompt: "Use $query-project-map to retrieve map evidence and a bounded source hydration plan."
+  short_description: "Retrieve evidence and trace change impact"
+  default_prompt: "Use $query-project-map to retrieve bounded project evidence and run fresh-map impact analysis before symbol or file edits."
