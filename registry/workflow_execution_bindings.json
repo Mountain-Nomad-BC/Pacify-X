@@ -66,6 +66,11 @@
       "path": "orchestration/workflows/metacognitive-evolution.yaml"
     },
     {
+      "entrypoint": "runtime.project_impact:validate_project_change_intelligence_orchestration",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/project-change-intelligence.yaml"
+    },
+    {
       "entrypoint": "runtime.query_certification:certify_queries",
       "mode": "executable_runtime",
       "path": "orchestration/workflows/semantic-capability-query.yaml"
@@ -86,6 +91,6 @@
       "path": "orchestration/workflows/completion-controls.yaml"
     }
   ],
-  "count": 17,
+  "count": 18,
   "schema_version": "1.0"
 }

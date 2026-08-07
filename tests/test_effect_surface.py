@@ -5,10 +5,33 @@ from pathlib import Path
 import shutil
 import tempfile
 
-from runtime.effect_surface import validate_effect_surfaces
+from runtime.effect_surface import discover_effect_surfaces, validate_effect_surfaces
 
 
 ROOT = Path(__file__).parents[1]
+def _copy_effect_fixture(destination: Path) -> Path:
+    root = destination / "framework"
+    root.mkdir()
+    (root / "runtime").mkdir()
+    (root / "runtime/base_effect.py").write_text(
+        "from pathlib import Path\n\n"
+        "def write_bounded():\n"
+        "    Path('bounded.txt').write_text('bounded', encoding='utf-8')\n",
+        encoding="utf-8",
+    )
+    (root / "registry").mkdir()
+    shutil.copytree(ROOT / "policies", root / "policies")
+    records = discover_effect_surfaces(root)
+    (root / "registry/effect_surface_ownership.json").write_text(
+        json.dumps(
+            {"schema_version": "1.0", "record_count": len(records), "records": records},
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return root
 
 
 def test_every_executable_effect_surface_is_owned_and_bounded() -> None:
@@ -19,10 +42,7 @@ def test_every_executable_effect_surface_is_owned_and_bounded() -> None:
 
 
 def test_new_shell_execution_fails_closed() -> None:
-    root = Path(tempfile.mkdtemp()) / "framework"
-    shutil.copytree(
-        ROOT, root, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache")
-    )
+    root = _copy_effect_fixture(Path(tempfile.mkdtemp()))
     target = root / "runtime/unsafe_effect.py"
     target.write_text(
         "import subprocess\nsubprocess.run('echo unsafe', shell=True, timeout=1)\n",
@@ -34,10 +54,7 @@ def test_new_shell_execution_fails_closed() -> None:
 
 
 def test_registry_cannot_claim_removed_effect_surface() -> None:
-    root = Path(tempfile.mkdtemp()) / "framework"
-    shutil.copytree(
-        ROOT, root, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache")
-    )
+    root = _copy_effect_fixture(Path(tempfile.mkdtemp()))
     path = root / "registry/effect_surface_ownership.json"
     registry = json.loads(path.read_text(encoding="utf-8"))
     registry["records"] = registry["records"][1:]
@@ -46,10 +63,7 @@ def test_registry_cannot_claim_removed_effect_surface() -> None:
 
 
 def test_popen_without_bounded_communication_fails_closed() -> None:
-    root = Path(tempfile.mkdtemp()) / "framework"
-    shutil.copytree(
-        ROOT, root, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache")
-    )
+    root = _copy_effect_fixture(Path(tempfile.mkdtemp()))
     target = root / "runtime/unbounded_process.py"
     target.write_text(
         "import subprocess\nprocess = subprocess.Popen(['tool'])\nprocess.communicate()\n",

@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "policy": "Every shipped schema has one explicit owner and an honest enforcement classification.",
-  "contract_count": 146,
+  "contract_count": 147,
   "records": [
     {
       "path": "contracts/agents/agency-agent-manifest.schema.json",
@@ -1458,6 +1458,26 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_execution_contract.py"
+      ]
+    },
+    {
+      "path": "contracts/project-impact.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:project-impact",
+      "contract_version": "1.0.0",
+      "title": "PACIFY-X Project Impact Receipt",
+      "owner": "runtime/project_impact.py",
+      "producers": [
+        "runtime/project_impact.py",
+        "runtime/cli.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_project_mapping.py"
       ]
     },
     {

@@ -13,11 +13,16 @@ from runtime.project_intelligence import build_project_map
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("project", type=Path)
+    parser.add_argument("--output-dir", type=Path)
     parser.add_argument("--no-incremental", action="store_true")
     args = parser.parse_args(argv)
     print(
         json.dumps(
-            build_project_map(args.project, incremental=not args.no_incremental),
+            build_project_map(
+                args.project,
+                output_dir=args.output_dir,
+                incremental=not args.no_incremental,
+            ),
             indent=2,
             sort_keys=True,
         )

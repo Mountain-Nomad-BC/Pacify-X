@@ -1,9 +1,9 @@
 {
   "schema_version": "1.1",
   "loading_rule": "metadata_only_global_map_then_hydrate_selected_records",
-  "revision": "3f23c7b24cffbd928e44c85d641b5f1ba846a9f3897c00779c45b39e3051689d",
-  "record_count": 972,
-  "edge_count": 1888,
+  "revision": "c3a0f5307e4a3211c4d0c543ec7db1d9bb2ef0bf34e772a11c0fbaa55d00e298",
+  "record_count": 973,
+  "edge_count": 1892,
   "kind_counts": {
     "agent": 270,
     "capability": 298,
@@ -11,7 +11,7 @@
     "knowledge": 4,
     "script": 61,
     "skill": 171,
-    "workflow": 65
+    "workflow": 66
   },
   "records": [
     {
@@ -36238,10 +36238,12 @@
       "outputs": [],
       "dependencies": [],
       "formula_refs": [],
-      "relations": [],
+      "relations": [
+        "project-change-intelligence"
+      ],
       "path": ".agents/skills/map-project-intelligence/SKILL.md",
       "implementation_path": "",
-      "source_sha256": "4f129ae395b5db769ab994147b1934dd8b76886fb11a9d4fe5492e18e3661512",
+      "source_sha256": "be4d0fdd32ead5ac6917a465045f44359ee63b518b5ce3f3960352e1c3b0e06a",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -37040,7 +37042,7 @@
       "id": "query-project-map",
       "kind": "skill",
       "title": "query project map",
-      "summary": "Search a PACIFY-X project intelligence map and produce a minimal source hydration plan. Use before exploring an unfamiliar project, locating implementation ownership, tracing behavior, planning changes, debugging, or answering architecture questions.",
+      "summary": "Search a PACIFY-X project intelligence map, produce a minimal source hydration plan, and calculate bounded upstream/downstream symbol impact. Use before exploring an unfamiliar project, locating implementation ownership, tracing behavior, planning or editing symbols, debugging, replacing GitNexus-style blast-radius checks, or answering architecture questions.",
       "owner": "query-project-map",
       "status": "active",
       "domain": "evidence hydration project-map repository retrieval",
@@ -37062,10 +37064,12 @@
       "outputs": [],
       "dependencies": [],
       "formula_refs": [],
-      "relations": [],
+      "relations": [
+        "project-change-intelligence"
+      ],
       "path": ".agents/skills/query-project-map/SKILL.md",
       "implementation_path": "",
-      "source_sha256": "3aed1a640e86c3df5a0404db0cc0d60465d8c62ed970571d486584820459b77f",
+      "source_sha256": "8086bdba63af752d58ab14ae65d9fafe546d88dd912aeae021c37c738a343eca",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -38602,7 +38606,8 @@
       "relations": [
         "deliverable-validation",
         "distributed-runtime",
-        "n8n-workflow-release"
+        "n8n-workflow-release",
+        "project-change-intelligence"
       ],
       "path": ".agents/skills/verify-outcome/SKILL.md",
       "implementation_path": "",
@@ -38636,7 +38641,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -38695,7 +38700,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -38783,7 +38788,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -38911,7 +38916,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39009,7 +39014,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39037,7 +39042,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39097,7 +39102,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39135,7 +39140,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39164,7 +39169,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39195,7 +39200,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39224,7 +39229,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39254,7 +39259,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39441,7 +39446,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39471,7 +39476,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39502,7 +39507,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39627,7 +39632,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39657,7 +39662,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39688,7 +39693,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39719,7 +39724,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39748,7 +39753,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -39838,6 +39843,35 @@
       "path": "",
       "implementation_path": "",
       "source_sha256": "",
+      "risk": "R1",
+      "loading_rule": "metadata_only_until_selected"
+    },
+    {
+      "key": "workflow:project-change-intelligence",
+      "id": "project-change-intelligence",
+      "kind": "workflow",
+      "title": "project change intelligence",
+      "summary": "Build or validate a sensitive-source-safe project map, retrieve bounded evidence, trace change impact, and verify the pre-edit receipt.",
+      "owner": "workflow-registry",
+      "status": "active",
+      "domain": "orchestration",
+      "aliases": [
+        "project change intelligence"
+      ],
+      "triggers": [],
+      "concepts": [],
+      "inputs": [],
+      "outputs": [],
+      "dependencies": [],
+      "formula_refs": [],
+      "relations": [
+        "map-project-intelligence",
+        "query-project-map",
+        "verify-outcome"
+      ],
+      "path": "registry/skill_orchestrations.json",
+      "implementation_path": "",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -40078,7 +40112,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -40139,7 +40173,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -40293,7 +40327,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -40322,7 +40356,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -40447,7 +40481,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -40478,7 +40512,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -40508,7 +40542,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -40536,7 +40570,7 @@
       ],
       "path": "registry/skill_orchestrations.json",
       "implementation_path": "",
-      "source_sha256": "3a4fb8981dc8296c4f7c150b78ebeb2828551ab5829883b40c2bae55bb332ce0",
+      "source_sha256": "a3a793109c91b9439b470ef42c88e0a14b783f0a9a55fdd5967c9bc97b92b4e3",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -49458,6 +49492,26 @@
       "source": "workflow:profile-and-transfer-engineering-dna",
       "target": "skill:govern-metacognitive-evolution",
       "relation": "owned_by"
+    },
+    {
+      "source": "workflow:project-change-intelligence",
+      "target": "skill:map-project-intelligence",
+      "relation": "step:0"
+    },
+    {
+      "source": "workflow:project-change-intelligence",
+      "target": "skill:query-project-map",
+      "relation": "step:1"
+    },
+    {
+      "source": "workflow:project-change-intelligence",
+      "target": "skill:query-project-map",
+      "relation": "step:2"
+    },
+    {
+      "source": "workflow:project-change-intelligence",
+      "target": "skill:verify-outcome",
+      "relation": "step:3"
     },
     {
       "source": "workflow:project_close",

@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "status": "active",
   "body": ".agents/skills/query-project-map/SKILL.md",
-  "body_sha256": "3aed1a640e86c3df5a0404db0cc0d60465d8c62ed970571d486584820459b77f",
+  "body_sha256": "8086bdba63af752d58ab14ae65d9fafe546d88dd912aeae021c37c738a343eca",
   "references": [
     ".agents/skills/query-project-map/references/retrieval-policy.md"
   ],
   "resources": [
     ".agents/skills/query-project-map/scripts/query_project_map.py"
   ],
-  "capability_tags": ["evidence", "hydration", "project-map", "repository", "retrieval"],
+  "capability_tags": ["evidence", "hydration", "impact-analysis", "project-map", "repository", "retrieval"],
   "effects": ["read_local"],
   "provenance": {
     "type": "admitted_user_supplied_clean_room_pack",
