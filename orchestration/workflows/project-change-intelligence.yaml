@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "id": "project-change-intelligence",
+  "purpose": "Build or validate a sensitive-source-safe project map, retrieve bounded evidence, trace change impact, and verify the pre-edit receipt.",
+  "steps": [
+    {
+      "id": "map",
+      "skill": "map-project-intelligence",
+      "depends_on": [],
+      "evidence": "fresh map receipt and exclusion counts"
+    },
+    {
+      "id": "retrieve",
+      "skill": "query-project-map",
+      "depends_on": ["map"],
+      "evidence": "bounded structural hits and source hydration plan"
+    },
+    {
+      "id": "impact",
+      "skill": "query-project-map",
+      "depends_on": ["map", "retrieve"],
+      "evidence": "schema-valid affected symbol, file, route, contract, test, and service receipt"
+    },
+    {
+      "id": "verify",
+      "skill": "verify-outcome",
+      "depends_on": ["impact"],
+      "evidence": "freshness, boundedness, ambiguity, and affected-test checks"
+    }
+  ],
+  "failure_policy": "Fail closed on a missing or stale map, sensitive-source admission, ambiguous target, traversal truncation without warning, invalid impact receipt, or missing affected-test plan."
+}

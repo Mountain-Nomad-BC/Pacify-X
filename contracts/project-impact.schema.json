@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project-impact",
+  "title": "PACIFY-X Project Impact Receipt",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "valid",
+    "target",
+    "resolved_target",
+    "map_revision",
+    "source_inventory_sha256",
+    "freshness_checked",
+    "risk",
+    "affected_files",
+    "affected_symbols",
+    "affected_routes",
+    "affected_contracts",
+    "affected_tests",
+    "affected_services",
+    "evidence",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "valid": {"const": true},
+    "target": {"type": "string", "minLength": 1},
+    "resolved_target": {"type": "string", "minLength": 1},
+    "map_revision": {"type": "string", "minLength": 16},
+    "source_inventory_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "freshness_checked": {"const": true},
+    "risk": {
+      "type": "object",
+      "required": ["level", "score", "direct_affected_nodes", "transitive_affected_nodes", "truncated"],
+      "properties": {
+        "level": {"enum": ["low", "medium", "high", "critical"]},
+        "score": {"type": "integer", "minimum": 0, "maximum": 100},
+        "direct_affected_nodes": {"type": "integer", "minimum": 0},
+        "transitive_affected_nodes": {"type": "integer", "minimum": 0},
+        "truncated": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "affected_files": {"type": "array", "items": {"type": "object"}},
+    "affected_symbols": {"type": "array", "items": {"type": "object"}},
+    "affected_routes": {"type": "array", "items": {"type": "string"}},
+    "affected_contracts": {"type": "array", "items": {"type": "string"}},
+    "affected_tests": {"type": "array", "items": {"type": "string"}},
+    "affected_services": {"type": "array", "items": {"type": "string"}},
+    "evidence": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

@@ -84,6 +84,17 @@ Startup must remain metadata-only and report zero hydrated skill bodies. Do not 
 
 The startup response includes a read-only tooling assessment. Treat detected tools and project signals as observations. Treat missing-tool suggestions as proposals only. Obsidian may be proposed for documentation-heavy projects; Graphify is reference-only and has governed built-in alternatives. Any installation or configuration requires a separate bounded plan with declared effects and explicit user approval.
 
+## Mapping and pre-edit impact
+
+Use the built-in project map as the default repository-intelligence owner. Before editing a file, function, class, or method:
+
+```powershell
+python -m runtime.cli --root <BOOTSTRAP_DIR> project-map validate --project <PROJECT_DIR> --fresh
+python -m runtime.cli --root <BOOTSTRAP_DIR> project-map impact --project <PROJECT_DIR> --target "<PATH>::<QUALNAME>" --direction upstream
+```
+
+If the map is absent or stale, rebuild it before impact analysis. Sensitive sources such as environment files, credential stores, and private-key material must be excluded before inventory or parsing. An ambiguous symbol target must fail closed until a path-qualified target is supplied. Warn the user before a high or critical impact edit, retain the impact receipt with the change evidence, and run the affected tests plus broader gates required by the project contract. External graph tools may supplement this lane, but they are not required when the native fresh-map impact receipt is valid.
+
 ## Assistant and IDE integration
 
 The framework root provides model-neutral instructions plus adapters for common assistants and IDEs: `AGENTS.md`, `AI_ASSISTANT.md`, `.ai/assistant.toml`, `.github/copilot-instructions.md`, `.cursor/rules/`, `.windsurf/rules/`, `.codex/`, and `.vscode/`. Commissioning writes managed copies under the project's `.engineering-bootstrap/` directory and installs owner-visible files only when there is no collision. Existing owner files are preserved and reported in the commissioning receipt.

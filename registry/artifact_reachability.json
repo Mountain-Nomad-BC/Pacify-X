@@ -1,5 +1,5 @@
 {
-  "record_count": 1080,
+  "record_count": 1081,
   "records": [
     {
       "kind": "registry",
@@ -97,14 +97,14 @@
       "owner": "runtime/structural_integrity.py",
       "path": "registry/cognitive_map_index.json",
       "reachability": "release_validated",
-      "sha256": "352c00a8e79b0fce4a96482a6d3f52a052a32db8e7122874e1b3a0e9b2d07d0c"
+      "sha256": "a92986336057200ce730e882baf62407019215c3ab1b5ed1fd57ed6be7b4a19d"
     },
     {
       "kind": "registry",
       "owner": "runtime/contracts.py",
       "path": "registry/contract_ownership.json",
       "reachability": "release_validated",
-      "sha256": "18872e1bd0225967dd8ba5ff8ea1c4cf3e4a6d405d798e0ca396c1d1b76524ee"
+      "sha256": "5d2bb5d29372208108724287aeedf8eee4017b921690ff63c9d84acad7b19fdb"
     },
     {
       "kind": "registry",
@@ -195,7 +195,7 @@
       "owner": "runtime/effect_surface.py",
       "path": "registry/effect_surface_ownership.json",
       "reachability": "release_validated",
-      "sha256": "93ad49e403f6424b466feec8f440c88f34e19ed6029955eceac1085c57192ce3"
+      "sha256": "ce2114a74d8702a6f44d27358d05844204d3a5d3260ed85c543436cedf342ad2"
     },
     {
       "kind": "registry",
@@ -601,7 +601,7 @@
       "owner": "runtime/semantic_index.py",
       "path": "registry/semantic_capability_index.json",
       "reachability": "release_validated",
-      "sha256": "a126431df51c0295dc81e2a7987562500a711fbd047eadd58e61e74032ee5cde"
+      "sha256": "c052bda65a5930d204bd565f5929f8f4004169968580b0c9fde443d7881fcdf4"
     },
     {
       "kind": "registry",
@@ -636,7 +636,7 @@
       "owner": "runtime/skill_navigator.py",
       "path": "registry/skill_orchestrations.json",
       "reachability": "release_validated",
-      "sha256": "cebd2dcacc11b2c708d015759fa62b4c631b4de9e59fb372bf9ad25b7253366b"
+      "sha256": "9bb236ae568cce8f33f1ece662ddc913f26d42b29ba7f193d11d100bfb973b7b"
     },
     {
       "kind": "registry",
@@ -1357,7 +1357,7 @@
       "owner": "runtime/structural_integrity.py",
       "path": "registry/skill_packages/map-project-intelligence.json",
       "reachability": "release_validated",
-      "sha256": "0fb6802ea5374a04cab1186a5229e82418a96bdd3bd4287506adeadd501998b4"
+      "sha256": "ed5a62f298241412589f1ceeff655efb90c36b1e849a9871a8e50c760b9c212f"
     },
     {
       "kind": "registry",
@@ -1511,7 +1511,7 @@
       "owner": "runtime/structural_integrity.py",
       "path": "registry/skill_packages/query-project-map.json",
       "reachability": "release_validated",
-      "sha256": "e0f5842f7978fe0ef0d51a097c7f973f707abd41f021ccb8351a94137c2d775f"
+      "sha256": "ad0a79cedaae72d5f1a22cd096fe7f33f666ddaa73b4718121bc93208e6a765c"
     },
     {
       "kind": "registry",
@@ -2211,7 +2211,7 @@
       "owner": "runtime/structural_integrity.py",
       "path": "registry/workflow_execution_bindings.json",
       "reachability": "release_validated",
-      "sha256": "8bf0d6138128345f721cb68bdbb2e9d5e2fb5d8134cbc67ee9caa87cd664e91d"
+      "sha256": "3c8bbd41aabb460b0c17910bf6830fa8c2016c1f4b70e8975e5e285416eef454"
     },
     {
       "entrypoint": "runtime.agent_provider:validate_agent_orchestration",
@@ -2340,6 +2340,14 @@
       "path": "orchestration/workflows/metacognitive-evolution.yaml",
       "reachability": "executable_validator",
       "sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "entrypoint": "runtime.project_impact:validate_project_change_intelligence_orchestration",
+      "kind": "orchestration",
+      "owner": "runtime/structural_integrity.py",
+      "path": "orchestration/workflows/project-change-intelligence.yaml",
+      "reachability": "executable_validator",
+      "sha256": "a4e8cd47e814a8d935473ab36d7555c1a5baaf34f223c875c7377ca5ae4105c8"
     },
     {
       "entrypoint": "runtime.project_stream_orchestrator:agent_create_validate",
@@ -7029,7 +7037,7 @@
       "owner": ".agents/skills/map-project-intelligence/SKILL.md",
       "path": ".agents/skills/map-project-intelligence/agents/openai.yaml",
       "reachability": "lazy_skill_interface",
-      "sha256": "48213b4e813a7eff6e2be60995ac2b8a6fd9930b401ac5a9b32bff052c14911c"
+      "sha256": "3ca373aba4b58547efb1165a11eee03dc3c9a73115e2de017188bafef5de0af3"
     },
     {
       "kind": "yaml",
@@ -7190,7 +7198,7 @@
       "owner": ".agents/skills/query-project-map/SKILL.md",
       "path": ".agents/skills/query-project-map/agents/openai.yaml",
       "reachability": "lazy_skill_interface",
-      "sha256": "0d2b8e44ec47008d2d78cb499da64a31e867ee8fe96143169f69c8574c39526f"
+      "sha256": "b5a73ac847586894e35034e4792617052126b6abf4dbfd40e1662cfd4e82ccd0"
     },
     {
       "kind": "yaml",

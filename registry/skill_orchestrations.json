@@ -1,5 +1,5 @@
 {
-  "count": 30,
+  "count": 31,
   "loading_rule": "Load workflow and skill metadata first; hydrate one selected skill body at a time.",
   "schema_version": "1.0",
   "workflows": [
@@ -1199,6 +1199,17 @@
         {"id": "declare", "skill": "validate-physical-media-deliverables", "depends_on": []},
         {"id": "inspect", "skill": "validate-physical-media-deliverables", "depends_on": ["declare"]},
         {"id": "verify", "skill": "verify-outcome", "depends_on": ["inspect"]}
+      ]
+    },
+    {
+      "id": "project-change-intelligence",
+      "purpose": "Build or validate a sensitive-source-safe project map, retrieve bounded evidence, trace change impact, and verify the pre-edit receipt.",
+      "failure_policy": "Fail closed on a missing or stale map, sensitive-source admission, ambiguous target, traversal truncation without warning, invalid impact receipt, or missing affected-test plan.",
+      "steps": [
+        {"id": "map", "skill": "map-project-intelligence", "depends_on": []},
+        {"id": "retrieve", "skill": "query-project-map", "depends_on": ["map"]},
+        {"id": "impact", "skill": "query-project-map", "depends_on": ["map", "retrieve"]},
+        {"id": "verify", "skill": "verify-outcome", "depends_on": ["impact"]}
       ]
     },
     {

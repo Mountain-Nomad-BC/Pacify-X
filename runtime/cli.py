@@ -193,6 +193,7 @@ def parser() -> argparse.ArgumentParser:
     )
     project_map_build = project_map_commands.add_parser("build")
     project_map_build.add_argument("--project", type=Path, required=True)
+    project_map_build.add_argument("--output-dir", type=Path)
     project_map_build.add_argument("--max-files", type=int, default=100_000)
     project_map_build.add_argument("--max-depth", type=int, default=96)
     project_map_build.add_argument(
@@ -216,6 +217,15 @@ def parser() -> argparse.ArgumentParser:
     project_map_query.add_argument("--path-prefix")
     project_map_query.add_argument("--relation-depth", type=int, default=1)
     project_map_query.add_argument("--max-hydration-files", type=int, default=8)
+    project_map_impact = project_map_commands.add_parser("impact")
+    project_map_impact.add_argument("--project", type=Path, required=True)
+    project_map_impact.add_argument("--target", required=True)
+    project_map_impact.add_argument(
+        "--direction", choices=("upstream", "downstream", "both"), default="upstream"
+    )
+    project_map_impact.add_argument("--max-depth", type=int, default=4)
+    project_map_impact.add_argument("--max-nodes", type=int, default=500)
+    project_map_impact.add_argument("--allow-stale", action="store_true")
     project_map_diff = project_map_commands.add_parser("diff")
     project_map_diff.add_argument("--left", type=Path, required=True)
     project_map_diff.add_argument("--right", type=Path, required=True)
@@ -1138,6 +1148,7 @@ def main(argv: list[str] | None = None) -> int:
             if args.project_map_action == "build":
                 output = build_project_map(
                     args.project,
+                    output_dir=args.output_dir,
                     max_files=args.max_files,
                     max_depth=args.max_depth,
                     max_bytes=args.max_bytes,
@@ -1158,6 +1169,17 @@ def main(argv: list[str] | None = None) -> int:
                     path_prefix=args.path_prefix,
                     relation_depth=args.relation_depth,
                     max_hydration_files=args.max_hydration_files,
+                )
+            elif args.project_map_action == "impact":
+                from .project_impact import analyze_project_impact
+
+                output = analyze_project_impact(
+                    args.project,
+                    args.target,
+                    direction=args.direction,
+                    max_depth=args.max_depth,
+                    max_nodes=args.max_nodes,
+                    require_fresh=not args.allow_stale,
                 )
             else:
                 output = diff_project_maps(args.left, args.right)

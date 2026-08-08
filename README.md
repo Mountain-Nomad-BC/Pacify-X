@@ -131,8 +131,8 @@ These exact counts are checked automatically for drift; ordinary users do not ne
 
 | Layer | Exact count |
 |---|---:|
-| Runtime modules | 163 |
-| Contracts | 156 |
+| Runtime modules | 164 |
+| Contracts | 157 |
 | Registry artifacts | 319 |
 | Tool and support scripts | 125 |
 

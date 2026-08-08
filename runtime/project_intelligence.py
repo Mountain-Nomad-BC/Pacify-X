@@ -27,9 +27,9 @@ import uuid
 from .bounded_walk import FilesystemWalkError, WalkLimits, bounded_walk
 
 
-SCHEMA_VERSION = "1.0"
-MAPPER_VERSION = "0.2.0"
-ADAPTER_VERSION = "2026-08-04.1"
+SCHEMA_VERSION = "1.1"
+MAPPER_VERSION = "0.3.0"
+ADAPTER_VERSION = "2026-08-06.1"
 
 DEFAULT_EXCLUDES = {
     ".git",
@@ -48,6 +48,29 @@ DEFAULT_EXCLUDES = {
     ".ruff_cache",
     ".tox",
     ".idea",
+}
+
+SENSITIVE_FILE_NAMES = {
+    ".env",
+    ".git-credentials",
+    ".netrc",
+    ".npmrc",
+    ".pypirc",
+    "credentials.json",
+    "service-account.json",
+    "service_account.json",
+    "id_dsa",
+    "id_ecdsa",
+    "id_ed25519",
+    "id_rsa",
+}
+SENSITIVE_FILE_SUFFIXES = {
+    ".jks",
+    ".key",
+    ".keystore",
+    ".p12",
+    ".pfx",
+    ".pem",
 }
 
 LANGUAGE_BY_SUFFIX = {
@@ -311,6 +334,26 @@ def _language(path: Path) -> str:
     if name == "dockerfile" or name.endswith(".dockerfile"):
         return "dockerfile"
     return LANGUAGE_BY_SUFFIX.get(path.suffix.casefold(), "unknown")
+
+
+def _exclusion_category(relative: str) -> str | None:
+    """Classify a path before inventory, hashing, parsing, or indexing."""
+    path = Path(relative)
+    parts = tuple(part.casefold() for part in path.parts)
+    if any(part in DEFAULT_EXCLUDES for part in parts):
+        return "default"
+    name = path.name.casefold()
+    if name in SENSITIVE_FILE_NAMES or name.startswith(".env."):
+        return "sensitive_file"
+    if path.suffix.casefold() in SENSITIVE_FILE_SUFFIXES:
+        return "sensitive_key_material"
+    if any(part in {".secrets", ".credentials"} for part in parts):
+        return "sensitive_directory"
+    return None
+
+
+def _excluded_source(relative: str) -> bool:
+    return _exclusion_category(relative) is not None
 
 
 def _role(relative: str, language: str) -> str:
@@ -2857,15 +2900,22 @@ def build_project_map(
         raise RuntimeError(f"project map lock already exists: {lock}") from error
     stage_root = control / f".{output.name}.staging" / run_id
     try:
+        exclusion_counts: Counter[str] = Counter()
+
+        def exclude_source(relative: str) -> bool:
+            category = _exclusion_category(relative)
+            if category is not None:
+                exclusion_counts[category] += 1
+                return True
+            return False
+
         walk = bounded_walk(
             root,
             limits=WalkLimits(
                 max_files=max_files, max_depth=max_depth, max_bytes=max_bytes
             ),
             symlink_policy="reject",
-            exclude=lambda relative: any(
-                part.casefold() in DEFAULT_EXCLUDES for part in Path(relative).parts
-            ),
+            exclude=exclude_source,
         )
         previous: dict[str, dict[str, Any]] = {}
         previous_facts = output / "file-facts.jsonl"
@@ -2960,6 +3010,11 @@ def build_project_map(
             "retrieval_revision": _stable_hash(
                 {"documents": retrieval["documents"], "postings": retrieval["postings"]}
             ),
+            "exclusion_policy": {
+                "default_parts": sorted(DEFAULT_EXCLUDES),
+                "sensitive_names": sorted(SENSITIVE_FILE_NAMES),
+                "sensitive_suffixes": sorted(SENSITIVE_FILE_SUFFIXES),
+            },
         }
         map_revision = _stable_hash(revision_payload)
         manifest = {
@@ -2980,6 +3035,12 @@ def build_project_map(
             "incremental": incremental,
             "build_stats": build_stats,
             "source_excludes": sorted(DEFAULT_EXCLUDES),
+            "sensitive_source_excludes": {
+                "names": sorted(SENSITIVE_FILE_NAMES),
+                "suffixes": sorted(SENSITIVE_FILE_SUFFIXES),
+                "directory_names": [".credentials", ".secrets"],
+            },
+            "exclusion_counts": dict(sorted(exclusion_counts.items())),
             "map_files": [
                 name for name in REQUIRED_MAP_FILES if name != "map-receipt.json"
             ],
@@ -3031,6 +3092,7 @@ def build_project_map(
             "created_utc": _now(),
             "run_id": run_id,
             "promotion": "prepared",
+            "exclusion_counts": dict(sorted(exclusion_counts.items())),
         }
         receipt_payload["receipt_payload_sha256"] = _stable_hash(receipt_payload)
         _write_json(stage_root / "map-receipt.json", receipt_payload)
@@ -3147,12 +3209,30 @@ def validate_project_map(
     inventory_paths = {str(item.get("path")) for item in inventory}
     if fact_paths != inventory_paths:
         errors.append("file facts and inventory path sets differ")
+    forbidden_inventory = sorted(path for path in inventory_paths if _excluded_source(path))
+    if forbidden_inventory:
+        errors.append(
+            "sensitive/excluded source paths entered inventory: "
+            + ", ".join(forbidden_inventory[:10])
+        )
     documents = retrieval.get("documents", [])
     if len(documents) != retrieval.get("document_count"):
         errors.append("retrieval document count is inconsistent")
     identifiers = [str(item.get("id")) for item in documents]
     if len(identifiers) != len(set(identifiers)):
         errors.append("retrieval document identifiers are not unique")
+    forbidden_documents = sorted(
+        {
+            str(item.get("path"))
+            for item in documents
+            if item.get("path") and _excluded_source(str(item.get("path")))
+        }
+    )
+    if forbidden_documents:
+        errors.append(
+            "sensitive/excluded source paths entered retrieval: "
+            + ", ".join(forbidden_documents[:10])
+        )
     document_count = len(documents)
     for token, postings in retrieval.get("postings", {}).items():
         for posting in postings:
@@ -3194,10 +3274,7 @@ def validate_project_map(
                         max_bytes=int(manifest["limits"]["max_bytes"]),
                     ),
                     symlink_policy="reject",
-                    exclude=lambda relative: any(
-                        part.casefold() in DEFAULT_EXCLUDES
-                        for part in Path(relative).parts
-                    ),
+                    exclude=_excluded_source,
                 )
                 current = [
                     {
