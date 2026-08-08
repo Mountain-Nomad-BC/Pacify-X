@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:benchmark-custody",
+  "title": "Sealed benchmark evidence custody record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_id", "cold", "artifacts", "aggregate", "sealed", "parent_run_id", "benchmark_informed", "custody_hash"],
+  "properties": {
+    "run_id": {"type": "string", "minLength": 1},
+    "cold": {"type": "boolean"},
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "aggregate": {"type": "object"},
+    "sealed": {"const": true},
+    "parent_run_id": {"type": ["string", "null"]},
+    "benchmark_informed": {"type": "boolean"},
+    "custody_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

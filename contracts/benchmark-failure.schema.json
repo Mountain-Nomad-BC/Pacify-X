@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:benchmark-failure",
+  "title": "Multi-cause benchmark failure attribution",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_id", "task_id", "classification", "graded_failure", "contributors", "evidence"],
+  "properties": {
+    "run_id": {"type": "string", "minLength": 1},
+    "task_id": {"type": "string", "minLength": 1},
+    "classification": {"enum": ["task_reasoning_failure", "implementation_failure", "validation_failure", "timeout", "context_limit", "tool_failure", "container_failure", "dependency_failure", "model_provider_failure", "pacify_x_bootstrap_failure", "harness_failure", "oracle_ambiguous", "contamination_block", "resource_exhaustion", "unknown"]},
+    "graded_failure": {"type": "boolean"},
+    "contributors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cause", "confidence"],
+        "properties": {
+          "cause": {"type": "string", "minLength": 1},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    },
+    "evidence": {"type": "array", "items": {"type": "string"}}
+  }
+}

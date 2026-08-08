@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 import hashlib
 import importlib
@@ -71,6 +71,23 @@ class WorkloadProfile:
     estimated_device_bytes: int | None = None
     operation_id: str = "anonymous"
 
+    @property
+    def fingerprint(self) -> str:
+        payload = {
+            "kind": self.kind.value,
+            "item_count": self.item_count,
+            "total_bytes": self.total_bytes,
+            "batchable": self.batchable,
+            "arithmetic_intensity": self.arithmetic_intensity,
+            "latency_sensitive": self.latency_sensitive,
+            "deterministic_required": self.deterministic_required,
+            "estimated_device_bytes": self.estimated_device_bytes,
+            "operation_id": self.operation_id,
+        }
+        return hashlib.sha256(
+            json.dumps(payload, sort_keys=True).encode("utf-8")
+        ).hexdigest()
+
 
 @dataclass(frozen=True, slots=True)
 class HardwareProfile:
@@ -116,6 +133,8 @@ class BenchmarkEvidence:
     peak_vram_bytes: int
     measured_at: str
     numerical_tolerance: float | None = None
+    workload_fingerprint: str | None = None
+    software_fingerprint: str | None = None
 
     @property
     def speedup(self) -> float:
@@ -135,6 +154,8 @@ class RoutingPolicy:
     oom_retry_count: int = 2
     fallback_to_cpu: bool = True
     require_benchmark: bool = True
+    maximum_benchmark_age_seconds: int = 7 * 24 * 60 * 60
+    require_workload_fingerprint: bool = True
 
     def validate(self) -> None:
         if self.minimum_gpu_items < 1 or self.minimum_gpu_bytes < 0:
@@ -145,6 +166,25 @@ class RoutingPolicy:
             raise ValueError("VRAM fraction must be in (0, 1]")
         if self.default_batch_size < 1 or self.oom_retry_count < 0:
             raise ValueError("batch size and retry count are invalid")
+        if self.maximum_benchmark_age_seconds < 1:
+            raise ValueError("maximum benchmark age must be positive")
+
+
+def _benchmark_is_current(
+    benchmark: BenchmarkEvidence, workload: WorkloadProfile, policy: RoutingPolicy
+) -> bool:
+    try:
+        measured = datetime.fromisoformat(benchmark.measured_at.replace("Z", "+00:00"))
+        if measured.tzinfo is None:
+            return False
+        age = datetime.now(timezone.utc) - measured.astimezone(timezone.utc)
+    except (TypeError, ValueError):
+        return False
+    if age < timedelta(0) or age > timedelta(seconds=policy.maximum_benchmark_age_seconds):
+        return False
+    if policy.require_workload_fingerprint:
+        return benchmark.workload_fingerprint == workload.fingerprint
+    return benchmark.workload_fingerprint in {None, workload.fingerprint}
 
 
 @dataclass(frozen=True, slots=True)
@@ -400,6 +440,7 @@ def route_workload(
         benchmark
         and benchmark.operation_id == workload.operation_id
         and benchmark.hardware_fingerprint == hardware.fingerprint
+        and _benchmark_is_current(benchmark, workload, policy)
         and benchmark.correctness_passed
         and benchmark.peak_vram_bytes <= vram_limit
         and benchmark.speedup >= policy.minimum_gpu_speedup
@@ -503,6 +544,8 @@ def benchmark_devices(
     compare: Callable[[T, T], bool],
     synchronize: Callable[[], None] | None = None,
     peak_vram_bytes: Callable[[], int] | None = None,
+    workload: WorkloadProfile | None = None,
+    software_fingerprint: str | None = None,
 ) -> BenchmarkEvidence:
     cpu_started = time.perf_counter()
     cpu_result = cpu_fn()
@@ -523,6 +566,8 @@ def benchmark_devices(
         correctness_passed=bool(compare(cpu_result, gpu_result)),
         peak_vram_bytes=int(peak_vram_bytes() if peak_vram_bytes else 0),
         measured_at=datetime.now(timezone.utc).isoformat(),
+        workload_fingerprint=workload.fingerprint if workload else None,
+        software_fingerprint=software_fingerprint,
     )
 
 

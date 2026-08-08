@@ -1,5 +1,5 @@
 {
-  "record_count": 547,
+  "record_count": 548,
   "records": [
     {
       "approval": "required_for_material_or_external_effects",
@@ -3325,13 +3325,27 @@
       "containment": "validated_path_and_bounded_scope",
       "destructive": false,
       "effect": "process",
-      "id": "549c6792f7efb0a4ef92",
-      "line": 214,
+      "id": "ff5f09d73cb460a3a0d3",
+      "line": 254,
       "owner": "runtime",
       "path": "runtime/hardware_routing.py",
       "policy": "policies/contained-execution.json",
       "shell": null,
       "timeout": "timeout_seconds"
+    },
+    {
+      "approval": "required_for_material_or_external_effects",
+      "call": "benchmark.measured_at.replace",
+      "containment": "validated_path_and_bounded_scope",
+      "destructive": false,
+      "effect": "filesystem_mutation",
+      "id": "55dcfd2377197f3051a5",
+      "line": 177,
+      "owner": "runtime",
+      "path": "runtime/hardware_routing.py",
+      "policy": "policies/artifact-preservation.json",
+      "shell": null,
+      "timeout": null
     },
     {
       "approval": "required_for_material_or_external_effects",
@@ -6055,8 +6069,8 @@
       "containment": "validated_path_and_bounded_scope",
       "destructive": false,
       "effect": "filesystem_mutation",
-      "id": "6b5d33a3c82956ccaceb",
-      "line": 470,
+      "id": "ab6c2a67076df638f332",
+      "line": 530,
       "owner": "scripts",
       "path": "scripts/build_contract_ownership_registry.py",
       "policy": "policies/artifact-preservation.json",

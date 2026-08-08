@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:hardware-equivalence",
+  "title": "Hardware route correctness and performance equivalence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["workload", "baseline_backend", "candidate_backend", "correctness_equivalent", "performance", "evidence"],
+  "properties": {
+    "workload": {"type": "string", "minLength": 1},
+    "baseline_backend": {"type": "string", "minLength": 1},
+    "candidate_backend": {"type": "string", "minLength": 1},
+    "correctness_equivalent": {"type": "boolean"},
+    "tolerance": {"type": ["object", "null"]},
+    "performance": {"type": "object"},
+    "evidence": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

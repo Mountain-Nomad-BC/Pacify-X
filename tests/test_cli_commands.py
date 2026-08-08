@@ -23,6 +23,45 @@ def invoke(*arguments: str) -> tuple[int, dict]:
 
 
 class CliCommandTests(unittest.TestCase):
+    def test_benchmark_and_assurance_commands_expose_governed_controls(self) -> None:
+        profile = {
+            "schema_version": "1.0",
+            "run_id": "run-cli",
+            "lane": "cold",
+            "benchmark": {"name": "suite", "version": "1"},
+            "agent": {"name": "agent", "version": "1"},
+            "model": {"id": "model", "reasoning": "fixed"},
+            "pacify_x": {"enabled": True, "version": "0.6.3", "sha": "a" * 40, "capabilities": []},
+            "limits": {"seconds": 60},
+            "permissions": {"network": False},
+            "retry_policy": {"max_retries": 0, "retryable_classes": []},
+            "environment": {"container": "fixed", "memory": "disabled", "cache": "empty"},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            profile_path = base / "profile.json"
+            profile_path.write_text(json.dumps(profile), encoding="utf-8")
+            status, frozen = invoke("benchmark", "freeze", "--profile", str(profile_path))
+            self.assertEqual(status, 0)
+            self.assertTrue(frozen["profile"]["frozen"])
+            axes_path = base / "axes.json"
+            axes_path.write_text(
+                json.dumps(
+                    {
+                        "behavior": 1,
+                        "evaluator_calibration": 1,
+                        "evidence_integrity": 1,
+                        "coverage": 1,
+                        "regression": 1,
+                        "operations": 1,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            status, score = invoke("assurance", "score", "--axes", str(axes_path))
+            self.assertEqual(status, 0)
+            self.assertTrue(score["admissible"])
+
     def test_review_candidate_exit_codes_distinguish_disposition(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             manifest = Path(directory) / "manifest.json"

@@ -4,5 +4,5 @@
   "status": "active",
   "summary": "Route optional acceleration by workload compatibility, resource policy, correctness, current end-to-end benchmarks, and declared fallback.",
   "applies_to": ["hardware_discovery", "cpu", "cuda", "onnx", "pytorch", "wsl2", "containers", "gpu_enrichment", "benchmarking"],
-  "enforcement": "Keep filesystem, operating-system, ordinary database, serialization, report, and cleanup-safety work on CPU. Select GPU automatically only for compatible batched work with sufficient free VRAM, current correctness evidence, and at least the configured end-to-end speedup. Preserve determinism and precision, use bounded OOM retries, declare CPU fallback, emit routing telemetry, and never transmit local inventory data implicitly."
+  "enforcement": "Keep filesystem, operating-system, ordinary database, serialization, report, and cleanup-safety work on CPU. Select GPU automatically only for compatible batched work with sufficient free VRAM, bounded-age correctness evidence for the exact workload fingerprint, and at least the configured end-to-end speedup. Bind evidence to the GPU, driver, runtime, workload shape, and operation identity. Preserve determinism and precision, use bounded OOM retries, declare CPU fallback, emit routing telemetry, and never transmit local inventory data implicitly."
 }

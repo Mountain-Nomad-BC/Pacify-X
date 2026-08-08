@@ -53,6 +53,7 @@ class HardwareRoutingTests(unittest.TestCase):
             correctness_passed=correct,
             peak_vram_bytes=1024**3,
             measured_at=datetime.now(timezone.utc).isoformat(),
+            workload_fingerprint=self.workload.fingerprint,
         )
 
     def test_filesystem_database_and_serialization_are_always_cpu(self) -> None:
@@ -99,6 +100,16 @@ class HardwareRoutingTests(unittest.TestCase):
             route_workload(self.workload, self.hardware, benchmark=stale).device,
             Device.CPU,
         )
+        expired = replace(self._benchmark(), measured_at="2020-01-01T00:00:00+00:00")
+        self.assertEqual(
+            route_workload(self.workload, self.hardware, benchmark=expired).device,
+            Device.CPU,
+        )
+        wrong_shape = replace(self._benchmark(), workload_fingerprint="0" * 64)
+        self.assertEqual(
+            route_workload(self.workload, self.hardware, benchmark=wrong_shape).device,
+            Device.CPU,
+        )
         incorrect = self._benchmark(correct=False)
         self.assertEqual(
             route_workload(self.workload, self.hardware, benchmark=incorrect).device,
@@ -122,7 +133,11 @@ class HardwareRoutingTests(unittest.TestCase):
             route_workload(conditional, self.hardware).device,
             Device.CPU,
         )
-        evidence = replace(self._benchmark(), operation_id=conditional.operation_id)
+        evidence = replace(
+            self._benchmark(),
+            operation_id=conditional.operation_id,
+            workload_fingerprint=conditional.fingerprint,
+        )
         self.assertEqual(
             route_workload(conditional, self.hardware, benchmark=evidence).device,
             Device.CUDA,

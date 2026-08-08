@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1",
   "loading_rule": "metadata_only_global_map_then_hydrate_selected_records",
-  "revision": "293c8610da4575b7f4a12d14be18f261a9cdbe0bf7b5d3d789c9f13d5e822826",
+  "revision": "8c712aeed5112968bf09079dc572a3dfc623b76deb160740b56b02b93f3fcff1",
   "record_count": 976,
   "edge_count": 1897,
   "kind_counts": {
@@ -49131,23 +49131,23 @@
     },
     {
       "source": "workflow:hardware-aware-execution-routing",
-      "target": "skill:validate-engineering-outcomes",
-      "relation": "step:4"
-    },
-    {
-      "source": "workflow:hardware-aware-execution-routing",
-      "target": "unresolved:hardware-aware-execution-routing",
+      "target": "skill:hardware-aware-execution-routing",
       "relation": "step:0"
     },
     {
       "source": "workflow:hardware-aware-execution-routing",
-      "target": "unresolved:hardware-aware-execution-routing",
+      "target": "skill:hardware-aware-execution-routing",
       "relation": "step:1"
     },
     {
       "source": "workflow:hardware-aware-execution-routing",
-      "target": "unresolved:hardware-aware-execution-routing",
+      "target": "skill:hardware-aware-execution-routing",
       "relation": "step:2"
+    },
+    {
+      "source": "workflow:hardware-aware-execution-routing",
+      "target": "skill:validate-engineering-outcomes",
+      "relation": "step:4"
     },
     {
       "source": "workflow:incident_diagnose_recover",

@@ -73,6 +73,27 @@ def parser() -> argparse.ArgumentParser:
     hardware_route.add_argument("--benchmark", type=Path)
     hardware_route.add_argument("--no-external-probe", action="store_true")
     hardware_route.add_argument("--no-library-probe", action="store_true")
+    benchmark = commands.add_parser("benchmark")
+    benchmark_commands = benchmark.add_subparsers(
+        dest="benchmark_action", required=True
+    )
+    benchmark_freeze = benchmark_commands.add_parser("freeze")
+    benchmark_freeze.add_argument("--profile", type=Path, required=True)
+    benchmark_preflight = benchmark_commands.add_parser("preflight")
+    benchmark_preflight.add_argument("--profile", type=Path, required=True)
+    benchmark_preflight.add_argument("--checks", type=Path, required=True)
+    benchmark_compare = benchmark_commands.add_parser("compare")
+    benchmark_compare.add_argument("--on-profile", type=Path, required=True)
+    benchmark_compare.add_argument("--off-profile", type=Path, required=True)
+    assurance = commands.add_parser("assurance")
+    assurance_commands = assurance.add_subparsers(
+        dest="assurance_action", required=True
+    )
+    assurance_attribute = assurance_commands.add_parser("attribute")
+    assurance_attribute.add_argument("--signals", type=Path, required=True)
+    assurance_score_parser = assurance_commands.add_parser("score")
+    assurance_score_parser.add_argument("--axes", type=Path, required=True)
+    assurance_score_parser.add_argument("--minimum-axis", type=float, default=0.70)
     contracts = commands.add_parser("contracts")
     contract_commands = contracts.add_subparsers(dest="contracts_action", required=True)
     contract_commands.add_parser("status")
@@ -828,6 +849,45 @@ def main(argv: list[str] | None = None) -> int:
                     "routing_decision": asdict(decision),
                     "probe_errors": profile.probe_errors,
                 }
+        elif args.command == "benchmark":
+            from .benchmark_operations import (
+                evaluate_preflight,
+                freeze_execution_profile,
+                matched_control_comparison,
+                verify_frozen_profile,
+            )
+
+            if args.benchmark_action == "freeze":
+                profile = json.loads(args.profile.read_text(encoding="utf-8"))
+                frozen = freeze_execution_profile(profile)
+                valid, reasons = verify_frozen_profile(frozen)
+                output = {"valid": valid, "profile": frozen, "errors": reasons}
+            elif args.benchmark_action == "preflight":
+                profile = json.loads(args.profile.read_text(encoding="utf-8"))
+                checks = json.loads(args.checks.read_text(encoding="utf-8"))
+                decision = evaluate_preflight(profile, checks)
+                output = {"valid": decision.scoreable, **asdict(decision)}
+            else:
+                on_profile = json.loads(args.on_profile.read_text(encoding="utf-8"))
+                off_profile = json.loads(args.off_profile.read_text(encoding="utf-8"))
+                output = matched_control_comparison(on_profile, off_profile)
+        elif args.command == "assurance":
+            from .behavioral_assurance import (
+                FailureSignals,
+                assurance_score,
+                attribute_failure,
+            )
+
+            if args.assurance_action == "attribute":
+                signals = json.loads(args.signals.read_text(encoding="utf-8"))
+                output = {
+                    "valid": True,
+                    **attribute_failure(FailureSignals(**signals)),
+                }
+            else:
+                axes = json.loads(args.axes.read_text(encoding="utf-8"))
+                result = assurance_score(axes, minimum_axis=args.minimum_axis)
+                output = {"valid": result["admissible"], **result}
         elif args.command == "contracts":
             from .contracts import validate_contract_corpus, validate_instance
 

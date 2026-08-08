@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "policy": "Resolve cognitive dependencies only through reviewed exact aliases or canonical ownership; fuzzy linking is forbidden.",
-  "count": 9,
+  "count": 10,
   "records": [
     {
       "identifier": "archive-hygiene",
@@ -31,6 +31,12 @@
       "identifier": "hybrid-retrieval",
       "target_key": "skill:operate-memory-retrieval-observability",
       "basis": "registry/declared_capability_recovery_map.json authoritative owner",
+      "status": "reviewed"
+    },
+    {
+      "identifier": "hardware-aware-execution-routing",
+      "target_key": "skill:hardware-aware-execution-routing",
+      "basis": "workflow steps invoke the admitted canonical skill with the same identifier",
       "status": "reviewed"
     },
     {

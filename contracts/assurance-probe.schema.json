@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:assurance-probe",
+  "title": "Discriminating behavioral assurance probe",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "probe_id", "component", "behavior", "controls", "freshness_seconds", "required_evidence"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "probe_id": {"type": "string", "minLength": 1},
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "identity", "config_sha256"],
+      "properties": {
+        "kind": {"enum": ["embedding", "reranker", "retrieval", "memory", "router", "tool", "model", "parser", "diagnostic_kernel", "outcome_verifier", "benchmark_runner", "other"]},
+        "identity": {"type": "string", "minLength": 1},
+        "version": {"type": ["string", "null"]},
+        "config_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "behavior": {"type": "string", "minLength": 1},
+    "controls": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["control_id", "input", "oracle", "role"],
+        "properties": {
+          "control_id": {"type": "string", "minLength": 1},
+          "input": {},
+          "oracle": {},
+          "role": {"enum": ["positive", "negative", "boundary", "degradation"]}
+        }
+      }
+    },
+    "max_latency_ms": {"type": ["number", "null"], "minimum": 0},
+    "freshness_seconds": {"type": "integer", "minimum": 1},
+    "required_evidence": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

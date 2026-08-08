@@ -1,0 +1,8 @@
+{
+  "id": "benchmark-operational-assurance",
+  "version": "1.0.0",
+  "status": "active",
+  "summary": "Keep cold benchmark evidence uncontaminated, treatments frozen, retries bounded, and infrastructure failures outside graded results.",
+  "applies_to": ["benchmarking", "evaluation", "cold_runs", "control_runs", "retry", "evidence_custody"],
+  "enforcement": "Run oracle, harness, dependency, permission, and evidence-sink preflight before scoring. Freeze the complete treatment and retry budget before the first graded attempt. Keep protected cases and oracles hidden from the treatment, seal cold evidence before analysis, classify infrastructure and oracle failures as non-graded, and require matched treatment profiles for PACIFY-X ON/OFF comparisons. Benchmark-informed remediation may begin only in the post-run improvement lane."
+}

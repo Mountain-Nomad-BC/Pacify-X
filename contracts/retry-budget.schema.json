@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:retry-budget",
+  "title": "Frozen benchmark retry budget",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_id", "max_retries", "retryable_classes", "frozen_hash"],
+  "properties": {
+    "run_id": {"type": "string", "minLength": 1},
+    "max_retries": {"type": "integer", "minimum": 0},
+    "retryable_classes": {"type": "array", "items": {"type": "string"}},
+    "backoff": {"type": "string"},
+    "frozen_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

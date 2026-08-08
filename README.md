@@ -118,6 +118,7 @@ Read [START_HERE_FOR_AI.md](START_HERE_FOR_AI.md) before taking any project acti
 - [AI setup and operating contract](START_HERE_FOR_AI.md)
 - [Architecture, governance, and risk](ARCHITECTURE_GOVERNANCE_AND_RISK.md)
 - [Release and verification process](docs/release-process.md)
+- [Benchmark operational assurance](docs/benchmark-operational-assurance.md)
 - [Security policy](SECURITY.md)
 - [Trust boundary and CLI decisions](docs/trust-boundary.md)
 - [Project management and punch-card state](PROJECT_MANAGEMENT.md)
@@ -130,9 +131,9 @@ These exact counts are checked automatically for drift; ordinary users do not ne
 
 | Layer | Exact count |
 |---|---:|
-| Runtime modules | 159 |
-| Contracts | 146 |
-| Registry artifacts | 317 |
+| Runtime modules | 163 |
+| Contracts | 156 |
+| Registry artifacts | 319 |
 | Tool and support scripts | 125 |
 
 </details>

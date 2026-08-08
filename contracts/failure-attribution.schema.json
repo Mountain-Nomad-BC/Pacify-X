@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:failure-attribution",
+  "title": "Evidence-backed failure attribution",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "attribution_id", "case_id", "primary", "contributors", "confidence", "evidence_refs", "recommended_route", "mutation_allowed"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "attribution_id": {"type": "string", "minLength": 1},
+    "case_id": {"type": "string", "minLength": 1},
+    "primary": {"enum": ["source_absent", "source_insufficient", "retrieval_miss", "ranking_failure", "reasoning_failure", "scope_refusal_failure", "dependency_degraded", "stale_knowledge", "contradiction", "policy_denial", "tool_failure", "oracle_ambiguous", "unknown"]},
+    "contributors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cause", "confidence"],
+        "properties": {
+          "cause": {"type": "string", "minLength": 1},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    },
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "evidence_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "recommended_route": {"enum": ["source", "retrieval", "ranking", "reasoning", "scope", "dependency", "freshness", "contradiction_review", "policy_review", "tooling", "oracle_review", "manual_triage"]},
+    "mutation_allowed": {"const": false},
+    "notes": {"type": "array", "items": {"type": "string"}}
+  }
+}

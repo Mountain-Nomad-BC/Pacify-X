@@ -1,8 +1,27 @@
 {
   "schema_version": "1.0",
   "promotion_required": true,
-  "required_evidence": ["model_identity", "version", "task_dataset", "quality", "latency", "safety", "privacy", "tool_behavior", "failure_modes"],
+  "required_evidence": ["model_identity", "version", "task_dataset", "quality", "latency", "safety", "privacy", "tool_behavior", "failure_modes", "frozen_treatment", "retry_budget", "preflight", "evaluation_lineage", "evidence_custody", "hardware_route"],
   "missing_evidence_state": "uncertified",
   "drift_requires_recheck": true,
+  "cold_lane": {
+    "preflight_required": true,
+    "oracle_visibility": ["hidden", "post_run_only"],
+    "treatment_visibility": ["hidden", "metadata_only"],
+    "benchmark_informed_changes_allowed": false,
+    "seal_before_analysis": true
+  },
+  "comparison": {
+    "matched_on_off_required": true,
+    "retry_budget_is_treatment": true,
+    "infrastructure_failures_are_graded": false
+  },
+  "improvement": {
+    "starts_after_cold_seal": true,
+    "admission_required": true,
+    "generated_evaluators_self_certify": false,
+    "production_demand_is_oracle": false,
+    "required_assurance_axes": ["behavior", "evaluator_calibration", "evidence_integrity", "coverage", "regression", "operations"]
+  },
   "registered_benchmarks": []
 }

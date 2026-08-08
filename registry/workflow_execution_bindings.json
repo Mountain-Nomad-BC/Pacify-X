@@ -91,11 +91,16 @@
       "path": "orchestration/workflows/hardware-aware-execution-routing.yaml"
     },
     {
+      "entrypoint": "runtime.benchmark_operations:evaluate_preflight",
+      "mode": "executable_runtime",
+      "path": "orchestration/workflows/benchmark-operational-assurance.yaml"
+    },
+    {
       "entrypoint": "runtime.resource_lifecycle:resource_status",
       "mode": "executable_runtime",
       "path": "orchestration/workflows/resource-lifecycle-reconciliation.yaml"
     }
   ],
-  "count": 19,
+  "count": 20,
   "schema_version": "1.0"
 }

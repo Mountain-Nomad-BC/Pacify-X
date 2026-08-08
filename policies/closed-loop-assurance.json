@@ -1,0 +1,8 @@
+{
+  "id": "closed-loop-assurance",
+  "version": "1.0.0",
+  "status": "active",
+  "summary": "Convert sealed evaluation evidence into bounded, reviewable improvement candidates without self-certification or automatic mutation.",
+  "applies_to": ["behavioral_probes", "failure_attribution", "coverage_frontier", "judge_calibration", "improvement_candidates", "regression"],
+  "enforcement": "Require discriminating positive and negative or boundary controls for component health. Preserve evaluation lineage and visibility. Treat generated cases, judges, and production-demand signals as provisional until independently grounded. Record multi-cause attribution with uncertainty, propose rather than apply remediation, pass contamination and held-out checks, require admission before mutation, independently verify outcomes, and gate on every required assurance axis rather than an average alone."
+}

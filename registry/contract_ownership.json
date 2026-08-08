@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "policy": "Every shipped schema has one explicit owner and an honest enforcement classification.",
-  "contract_count": 146,
+  "contract_count": 156,
   "records": [
     {
       "path": "contracts/agents/agency-agent-manifest.schema.json",
@@ -223,6 +223,25 @@
       ]
     },
     {
+      "path": "contracts/assurance-probe.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:assurance-probe",
+      "contract_version": "1.0.0",
+      "title": "Discriminating behavioral assurance probe",
+      "owner": "runtime/behavioral_assurance.py",
+      "producers": [
+        "runtime/behavioral_assurance.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_behavioral_assurance.py"
+      ]
+    },
+    {
       "path": "contracts/authoritative-skill-contract.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:authoritative-skill-contract",
       "contract_version": "1.0.0",
@@ -258,6 +277,63 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_trust_boundaries.py"
+      ]
+    },
+    {
+      "path": "contracts/benchmark-custody.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:benchmark-custody",
+      "contract_version": "1.0.0",
+      "title": "Sealed benchmark evidence custody record",
+      "owner": "runtime/benchmark_operations.py",
+      "producers": [
+        "runtime/benchmark_operations.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_benchmark_operations.py"
+      ]
+    },
+    {
+      "path": "contracts/benchmark-execution-profile.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:benchmark-execution-profile",
+      "contract_version": "1.0.0",
+      "title": "Frozen benchmark execution treatment",
+      "owner": "runtime/benchmark_operations.py",
+      "producers": [
+        "runtime/benchmark_operations.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_benchmark_operations.py"
+      ]
+    },
+    {
+      "path": "contracts/benchmark-failure.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:benchmark-failure",
+      "contract_version": "1.0.0",
+      "title": "Multi-cause benchmark failure attribution",
+      "owner": "runtime/benchmark_operations.py",
+      "producers": [
+        "runtime/benchmark_operations.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_benchmark_operations.py"
       ]
     },
     {
@@ -528,6 +604,25 @@
       ]
     },
     {
+      "path": "contracts/coverage-frontier-event.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:coverage-frontier-event",
+      "contract_version": "1.0.0",
+      "title": "Sanitized weak-interaction coverage frontier event",
+      "owner": "runtime/behavioral_assurance.py",
+      "producers": [
+        "runtime/behavioral_assurance.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_behavioral_assurance.py"
+      ]
+    },
+    {
       "path": "contracts/decision-record.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:decision-record",
       "contract_version": "1.0.0",
@@ -582,6 +677,25 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_declared_suite_support.py"
+      ]
+    },
+    {
+      "path": "contracts/evaluation-lineage.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:evaluation-lineage",
+      "contract_version": "1.0.0",
+      "title": "Evaluation case lineage and visibility",
+      "owner": "runtime/behavioral_assurance.py",
+      "producers": [
+        "runtime/behavioral_assurance.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_behavioral_assurance.py"
       ]
     },
     {
@@ -801,6 +915,25 @@
       ]
     },
     {
+      "path": "contracts/failure-attribution.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:failure-attribution",
+      "contract_version": "1.0.0",
+      "title": "Evidence-backed failure attribution",
+      "owner": "runtime/behavioral_assurance.py",
+      "producers": [
+        "runtime/behavioral_assurance.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_behavioral_assurance.py"
+      ]
+    },
+    {
       "path": "contracts/failure.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:failure",
       "contract_version": "1.0.0",
@@ -817,6 +950,44 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_declared_suite_support.py"
+      ]
+    },
+    {
+      "path": "contracts/hardware-equivalence.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:hardware-equivalence",
+      "contract_version": "1.0.0",
+      "title": "Hardware route correctness and performance equivalence",
+      "owner": "runtime/hardware_routing.py",
+      "producers": [
+        "runtime/hardware_routing.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_hardware_routing.py"
+      ]
+    },
+    {
+      "path": "contracts/improvement-candidate.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:improvement-candidate",
+      "contract_version": "1.0.0",
+      "title": "Non-mutating improvement candidate",
+      "owner": "runtime/behavioral_assurance.py",
+      "producers": [
+        "runtime/behavioral_assurance.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_behavioral_assurance.py"
       ]
     },
     {
@@ -2099,6 +2270,25 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_research_contract_admission.py"
+      ]
+    },
+    {
+      "path": "contracts/retry-budget.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:retry-budget",
+      "contract_version": "1.0.0",
+      "title": "Frozen benchmark retry budget",
+      "owner": "runtime/benchmark_operations.py",
+      "producers": [
+        "runtime/benchmark_operations.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_benchmark_operations.py"
       ]
     },
     {

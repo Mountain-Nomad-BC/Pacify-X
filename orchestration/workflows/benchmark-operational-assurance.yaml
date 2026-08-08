@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "workflow": {
+    "id": "benchmark-operational-assurance",
+    "purpose": "Preserve a cold benchmark lane and turn sealed evidence into governed, independently verified improvement candidates.",
+    "steps": [
+      {"id": "declare-lineage", "owner": "runtime.behavioral_assurance:validate_evaluation_lineage", "depends_on": []},
+      {"id": "freeze-treatment", "owner": "runtime.benchmark_operations:freeze_execution_profile", "depends_on": ["declare-lineage"]},
+      {"id": "preflight", "owner": "runtime.benchmark_operations:evaluate_preflight", "depends_on": ["freeze-treatment"]},
+      {"id": "contamination-gate", "owner": "runtime.benchmark_operations:evaluate_contamination", "depends_on": ["preflight"]},
+      {"id": "execute-cold-run", "owner": "external_benchmark_harness", "depends_on": ["contamination-gate"]},
+      {"id": "seal-custody", "owner": "runtime.benchmark_operations:build_custody_record", "depends_on": ["execute-cold-run"]},
+      {"id": "attribute-failures", "owner": "runtime.behavioral_assurance:attribute_failure", "depends_on": ["seal-custody"]},
+      {"id": "propose-improvement", "owner": "runtime.behavioral_assurance:prioritize_improvement", "depends_on": ["attribute-failures"]},
+      {"id": "admission-gate", "owner": "runtime.admission", "depends_on": ["propose-improvement"]},
+      {"id": "held-out-validation", "owner": "runtime.behavioral_assurance:assurance_score", "depends_on": ["admission-gate"]},
+      {"id": "verify-outcome", "owner": "runtime.outcome_verifier:verify_authoritative", "depends_on": ["held-out-validation"]}
+    ],
+    "failure_policy": "Fail closed on mutable treatments, failed preflight, cold-lane visibility or benchmark-informed changes, unsealed evidence, self-certified evaluators, non-discriminating probes, missing assurance axes, or unadmitted mutations.",
+    "outputs": ["frozen treatment profile", "preflight decision", "cold evidence custody record", "failure attribution", "non-mutating improvement candidate", "independent outcome decision"]
+  }
+}

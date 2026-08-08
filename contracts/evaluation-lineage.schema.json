@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:evaluation-lineage",
+  "title": "Evaluation case lineage and visibility",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "case_id", "case_class", "origin", "oracle_authority", "treatment_visibility", "oracle_visibility", "source_refs", "content_sha256"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "case_id": {"type": "string", "minLength": 1},
+    "case_class": {"enum": ["development", "generated_candidate", "production_frontier", "adversarial", "calibration", "holdout", "external_benchmark"]},
+    "origin": {"enum": ["human", "deterministic_generator", "model_generated", "production_trace", "external_suite", "derived"]},
+    "oracle_authority": {"enum": ["deterministic", "human_verified", "source_grounded", "model_provisional", "external_authoritative", "unknown"]},
+    "treatment_visibility": {"enum": ["visible", "metadata_only", "hidden"]},
+    "oracle_visibility": {"enum": ["visible", "post_run_only", "hidden"]},
+    "source_refs": {"type": "array", "items": {"type": "string"}},
+    "derived_from_case_ids": {"type": "array", "items": {"type": "string"}},
+    "content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "created_at": {"type": ["string", "null"], "format": "date-time"}
+  }
+}

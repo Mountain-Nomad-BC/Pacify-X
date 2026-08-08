@@ -8,6 +8,66 @@ from pathlib import Path
 
 
 ROOT_OWNERS = {
+    "assurance-probe.schema.json": (
+        "runtime/behavioral_assurance.py",
+        ["runtime/behavioral_assurance.py"],
+        "runtime_enforced",
+        ["tests/test_behavioral_assurance.py"],
+    ),
+    "benchmark-custody.schema.json": (
+        "runtime/benchmark_operations.py",
+        ["runtime/benchmark_operations.py"],
+        "runtime_enforced",
+        ["tests/test_benchmark_operations.py"],
+    ),
+    "benchmark-execution-profile.schema.json": (
+        "runtime/benchmark_operations.py",
+        ["runtime/benchmark_operations.py"],
+        "runtime_enforced",
+        ["tests/test_benchmark_operations.py"],
+    ),
+    "benchmark-failure.schema.json": (
+        "runtime/benchmark_operations.py",
+        ["runtime/benchmark_operations.py"],
+        "runtime_enforced",
+        ["tests/test_benchmark_operations.py"],
+    ),
+    "coverage-frontier-event.schema.json": (
+        "runtime/behavioral_assurance.py",
+        ["runtime/behavioral_assurance.py"],
+        "runtime_enforced",
+        ["tests/test_behavioral_assurance.py"],
+    ),
+    "evaluation-lineage.schema.json": (
+        "runtime/behavioral_assurance.py",
+        ["runtime/behavioral_assurance.py"],
+        "runtime_enforced",
+        ["tests/test_behavioral_assurance.py"],
+    ),
+    "failure-attribution.schema.json": (
+        "runtime/behavioral_assurance.py",
+        ["runtime/behavioral_assurance.py"],
+        "runtime_enforced",
+        ["tests/test_behavioral_assurance.py"],
+    ),
+    "hardware-equivalence.schema.json": (
+        "runtime/hardware_routing.py",
+        ["runtime/hardware_routing.py"],
+        "runtime_enforced",
+        ["tests/test_hardware_routing.py"],
+    ),
+    "improvement-candidate.schema.json": (
+        "runtime/behavioral_assurance.py",
+        ["runtime/behavioral_assurance.py"],
+        "runtime_enforced",
+        ["tests/test_behavioral_assurance.py"],
+    ),
+    "retry-budget.schema.json": (
+        "runtime/benchmark_operations.py",
+        ["runtime/benchmark_operations.py"],
+        "runtime_enforced",
+        ["tests/test_benchmark_operations.py"],
+    ),
     "authorization-request.schema.json": (
         "runtime/execution_contract.py",
         ["runtime/cli.py"],

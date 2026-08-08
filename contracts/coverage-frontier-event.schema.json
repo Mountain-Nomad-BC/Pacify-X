@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:coverage-frontier-event",
+  "title": "Sanitized weak-interaction coverage frontier event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "project_id", "normalized_query", "query_sha256", "signal", "observed_at", "sanitized", "oracle_known"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "event_id": {"type": "string", "minLength": 1},
+    "project_id": {"type": "string", "minLength": 1},
+    "normalized_query": {"type": "string", "minLength": 1},
+    "query_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "signal": {"enum": ["zero_result", "weak_result", "unsupported_answer", "user_correction", "scope_confusion", "repeat_failure", "other"]},
+    "retrieval_trace_ref": {"type": ["string", "null"]},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "sanitized": {"const": true},
+    "demand_count": {"type": "integer", "minimum": 1},
+    "oracle_known": {"type": "boolean"},
+    "oracle_evidence_refs": {"type": "array", "items": {"type": "string"}}
+  }
+}
