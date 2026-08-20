@@ -1,0 +1,39 @@
+{
+  "admission_record": "cross-paper-mechanism-fuser",
+  "body_sha256": "2fa7268a2870e550c02103ab0bf38b583f945bec75c4b5a3c9a4a3a6cf3187b6",
+  "contract": {
+    "available": true,
+    "sha256": "8d7cdf5176e1c99bf3ac23a7b7262c4d3996d3bee51402ea73740a1a59e9b6bc",
+    "source": "registry/skill_packages/cross-paper-mechanism-fuser.json"
+  },
+  "description": "Combine compatible research primitives into a stronger subsystem while exposing conflicts. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "cross-paper-mechanism-fuser",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/cross-paper-mechanism-fuser"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "cross",
+    "fuser",
+    "mechanism",
+    "paper",
+    "research-ops"
+  ],
+  "version": "0.1.0"
+}

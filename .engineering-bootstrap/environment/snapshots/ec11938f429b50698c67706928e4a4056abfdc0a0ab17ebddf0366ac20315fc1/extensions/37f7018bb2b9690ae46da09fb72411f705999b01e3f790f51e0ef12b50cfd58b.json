@@ -1,0 +1,354 @@
+{
+  "id": "Anthropic.claude-code",
+  "name": "Claude Code for VS Code",
+  "version": "2.1.167",
+  "publisher": "Anthropic",
+  "active": true,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "jsonValidation",
+    "keybindings",
+    "menus",
+    "views",
+    "viewsContainers",
+    "walkthroughs"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "Anthropic.claude-code",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "Anthropic.claude-code",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "Anthropic.claude-code",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "Anthropic.claude-code",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "Anthropic.claude-code",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "Anthropic.claude-code",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "Anthropic.claude-code",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "Anthropic.claude-code",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "claude-code.acceptProposedDiff",
+      "invocation": "vscode.commands.executeCommand('claude-code.acceptProposedDiff', ...args)",
+      "title": "Claude Code: Accept Proposed Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "claude-code.viewingProposedDiff"
+    },
+    {
+      "id": "claude-code.insertAtMentioned",
+      "invocation": "vscode.commands.executeCommand('claude-code.insertAtMentioned', ...args)",
+      "title": "Claude Code: Insert At-Mentioned",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-code.rejectProposedDiff",
+      "invocation": "vscode.commands.executeCommand('claude-code.rejectProposedDiff', ...args)",
+      "title": "Claude Code: Reject Proposed Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "claude-code.viewingProposedDiff"
+    },
+    {
+      "id": "claude-vscode.acceptProposedDiff",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.acceptProposedDiff', ...args)",
+      "title": "Claude Code: Accept Proposed Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "claude-vscode.viewingProposedDiff"
+    },
+    {
+      "id": "claude-vscode.blur",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.blur', ...args)",
+      "title": "Claude Code: Blur input",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.createWorktree",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.createWorktree', ...args)",
+      "title": "Claude Code: Create Worktree",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.editor.open",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.editor.open', ...args)",
+      "title": "Claude Code: Open in New Tab",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.editor.openLast",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.editor.openLast', ...args)",
+      "title": "Claude Code: Open",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.focus",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.focus', ...args)",
+      "title": "Claude Code: Focus input",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.insertAtMention",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.insertAtMention', ...args)",
+      "title": "Claude Code: Insert @-Mention Reference",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.installPlugin",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.installPlugin', ...args)",
+      "title": "Claude Code: Install Plugin",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.logout",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.logout', ...args)",
+      "title": "Claude Code: Logout",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.newConversation",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.newConversation', ...args)",
+      "title": "Claude Code: New Conversation",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.openWalkthrough",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.openWalkthrough', ...args)",
+      "title": "Claude Code: Open Walkthrough",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.primaryEditor.open",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.primaryEditor.open', ...args)",
+      "title": "Claude Code: Open in Primary Editor",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.rejectProposedDiff",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.rejectProposedDiff', ...args)",
+      "title": "Claude Code: Reject Proposed Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "claude-vscode.viewingProposedDiff"
+    },
+    {
+      "id": "claude-vscode.reopenClosedSession",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.reopenClosedSession', ...args)",
+      "title": "Claude Code: Reopen Closed Session",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.showLogs",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.showLogs', ...args)",
+      "title": "Claude Code: Show Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.sidebar.open",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.sidebar.open', ...args)",
+      "title": "Claude Code: Open in Side Bar",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.terminal.open",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.terminal.open', ...args)",
+      "title": "Claude Code: Open in Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.update",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.update', ...args)",
+      "title": "Claude Code: Update extension",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "claude-vscode.window.open",
+      "invocation": "vscode.commands.executeCommand('claude-vscode.window.open', ...args)",
+      "title": "Claude Code: Open in New Window",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onStartupFinished",
+    "onWebviewPanel:claudeVSCodePanel"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": false,
+      "description": "untusted workspaces are not supported"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "Anthropic.claude-code",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:jsonValidation",
+      "contribution:keybindings",
+      "contribution:menus",
+      "contribution:views",
+      "contribution:viewsContainers",
+      "contribution:walkthroughs"
+    ],
+    "interface": [
+      "claude-code.acceptProposedDiff",
+      "claude-code.insertAtMentioned",
+      "claude-code.rejectProposedDiff",
+      "claude-vscode.acceptProposedDiff",
+      "claude-vscode.blur",
+      "claude-vscode.createWorktree",
+      "claude-vscode.editor.open",
+      "claude-vscode.editor.openLast",
+      "claude-vscode.focus",
+      "claude-vscode.insertAtMention",
+      "claude-vscode.installPlugin",
+      "claude-vscode.logout",
+      "claude-vscode.newConversation",
+      "claude-vscode.openWalkthrough",
+      "claude-vscode.primaryEditor.open",
+      "claude-vscode.rejectProposedDiff",
+      "claude-vscode.reopenClosedSession",
+      "claude-vscode.showLogs",
+      "claude-vscode.sidebar.open",
+      "claude-vscode.terminal.open",
+      "claude-vscode.update",
+      "claude-vscode.window.open"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": false,
+        "description": "untusted workspaces are not supported"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

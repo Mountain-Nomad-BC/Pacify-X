@@ -1,0 +1,38 @@
+{
+  "admission_record": "audit-incomplete-implementations",
+  "body_sha256": "220e3e23f737071eff9060e5b1fe9866c77759088791586e86d72b4c3b4693c7",
+  "contract": {
+    "available": true,
+    "sha256": "bb766aed7f65f1d17ec4a430746606b027d6aa30f85cb5ccb1307deadede3297",
+    "source": "registry/skill_packages/audit-incomplete-implementations.json"
+  },
+  "description": "Find and classify unfinished-task markers, stubs, placeholder returns, unimplemented branches, mocks, fabricated fallbacks, and silent degradation using syntax-aware and text-aware scans with deterministic evidence. Use for completeness audits, production-readiness reviews, inherited repositories, or verifying that unfinished behavior is not hidden behind passing tests.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "audit-incomplete-implementations",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/audit-incomplete-implementations"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "completeness",
+    "stub",
+    "fallback",
+    "audit"
+  ],
+  "version": "0.1.0"
+}

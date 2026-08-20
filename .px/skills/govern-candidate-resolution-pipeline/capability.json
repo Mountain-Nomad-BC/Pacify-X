@@ -1,0 +1,39 @@
+{
+  "admission_record": "govern-candidate-resolution-pipeline",
+  "body_sha256": "90d88f7ac9eade7852881f51c57c230462e36d942e32ba141c9d450014eff37f",
+  "contract": {
+    "available": true,
+    "sha256": "6359901d3eb6ec6c06be9f6ba8364e689a417fe9eb9bba062a303bc53c2c9997",
+    "source": "registry/skill_packages/govern-candidate-resolution-pipeline.json"
+  },
+  "description": "Compile untrusted sources into governed capability candidates, preserve candidate identity through explicit resolver stages, score candidates independently, and build dependency-complete execution packages with reasoned exclusions. Use for source-to-skill compilation, candidate routing, package optimization, generated-skill admission, or resolver diagnostics.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-candidate-resolution-pipeline",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-candidate-resolution-pipeline"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "candidate-compiler",
+    "fold-in",
+    "package-optimization",
+    "ranking",
+    "resolver"
+  ],
+  "version": "1.0.0"
+}

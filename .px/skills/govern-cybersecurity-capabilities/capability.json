@@ -1,0 +1,41 @@
+{
+  "admission_record": "govern-cybersecurity-capabilities",
+  "body_sha256": "150f0a33f1e5cf88753831e5cd38dea7c30fbcb27d4b3f1a86c068e2c01cb421",
+  "contract": {
+    "available": true,
+    "sha256": "a3c67c8a5873ae3d55c8efcb940859ef07f97c3ecadd794371efee9f73714774",
+    "source": "registry/skill_packages/govern-cybersecurity-capabilities.json"
+  },
+  "description": "Discover, rank, and selectively hydrate the external cybersecurity catalog while enforcing R0-R4 authority, target scope, evidence, finding, tool, cleanup, and production safeguards. Use for security architecture, AI/MCP, supply-chain, vulnerability, incident response, hunting, cloud, identity, network, OT/ICS, application/API, cryptography, privacy, or authorized lab validation work.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-cybersecurity-capabilities",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-cybersecurity-capabilities"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "authority",
+    "cybersecurity",
+    "evidence",
+    "external-provider",
+    "framework-mapping",
+    "risk",
+    "selective-hydration"
+  ],
+  "version": "1.0.0"
+}

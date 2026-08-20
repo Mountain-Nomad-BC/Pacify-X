@@ -1,0 +1,32 @@
+{
+  "cleanup_id": "cleanup-cd3ca41f5eb4420f993bf232807a16b1",
+  "project_id": "pacify-x",
+  "run_id": "pxa2-reproduction-20260814",
+  "lane_id": "audit-replay",
+  "start_time": "2026-08-14T14:46:55.692069+00:00",
+  "end_time": "2026-08-14T14:46:55.815864+00:00",
+  "reason": "Reproduction evidence retained; reclaim registered disposable audit extraction",
+  "validated_roots": [
+    "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.engineering-bootstrap\\audit-replays"
+  ],
+  "workers": 1,
+  "priority_mode": "conservative_sequential",
+  "resources_considered": 1,
+  "resources_reclaimed": 0,
+  "resources_skipped": 1,
+  "resources_failed": 0,
+  "files_removed": 0,
+  "directories_removed": 0,
+  "bytes_reclaimed": 0,
+  "retained_artifacts": [
+    "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.engineering-bootstrap\\audit-replays\\replay-eh8hpozw"
+  ],
+  "promoted_artifacts": [
+    "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\evidence\\adversarial-audit\\pxa2-delivered-bundle-reproduction-20260814.json"
+  ],
+  "links_encountered": 0,
+  "orphan_processes_reaped": 0,
+  "errors": [],
+  "remaining_owned_ephemeral_resources": 1,
+  "dry_run": true
+}

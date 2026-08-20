@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "punch-card-O02-cross-language-instrumentation-sdk-20260811",
+  "created_utc": "2026-08-18T14:11:01.047684+00:00",
+  "card": "O02",
+  "accepted": true,
+  "artifacts": {
+    "runtime/instrumentation_sdk.py": "24d43788c6c33664f161bbd5fd4f740ec599e06cd042c9e01131827b193d9bdb",
+    "tests/test_instrumentation_sdk.py": "e408d5d775e5730fc892a6686a95a2a46f85a75cb14424bbde88d4478d93b03c",
+    "tests/fixtures/operation-event-input.json": "4177999e9cdeb1665a205f0f724eb88668d78fe8cbaebf0d94c833914e338577",
+    "extension/src/instrumentationSdk.js": "419c8ca3b21fea22229e9f9f23df548598ed53c449a898ce7593d3d1113203c8",
+    "extension/tests/instrumentation-sdk.test.js": "b206502d1282c603bccce337deab69604ddf0f04147eac67e37d2779e7996fa8",
+    "extension/package.json": "31830b5844953a1bd2c1de3c00f46560176d27a98b04f32cf6ef9ed7fe715ada"
+  },
+  "verification": {
+    "python": "3 passed",
+    "node": "2 passed",
+    "ruff": "passed",
+    "cross_language": "Python and Node produce structurally identical canonical events from one fixed fixture",
+    "unknown_version": "refused by both implementations",
+    "lifecycle": [
+      "started/pending",
+      "completed/success",
+      "failed/failure"
+    ]
+  },
+  "privacy": "Lifecycle wrappers do not capture exception text or payload content."
+}

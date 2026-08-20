@@ -61,7 +61,7 @@ def describe_outcome(root: Path, kind: str, outcome_id: str) -> dict:
         name = (
             "capability-contracts.json" if kind == "skill" else "script-contracts.json"
         )
-        contracts = _load(root, f".agents/skills/{record['owner']}/references/{name}")[
+        contracts = _load(root, f".px/skills/{record['owner']}/references/{name}")[
             "contracts"
         ]
         contract = next(item for item in contracts if item["id"] == outcome_id)

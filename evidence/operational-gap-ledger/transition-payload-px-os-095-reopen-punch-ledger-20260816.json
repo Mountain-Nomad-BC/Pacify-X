@@ -1,0 +1,17 @@
+{
+  "gap_id": "PX-OS-095",
+  "from_state": "narrowly_verified",
+  "to_state": "reopened",
+  "reason": "The required testing-governance section detected a stale generated structural scan inventory after adding the punch-ledger reconciliation scripts.",
+  "reopen_reason": "New control-plane scripts invalidated the previously current generated test-group scan inventory.",
+  "regression_strengthening": [
+    "Regenerate the bounded derived test-group index after punch-ledger script additions.",
+    "Rerun exactly the testing-governance section and retain both failing and passing receipts."
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/operational-gap-ledger/testing-governance-failed-punch-ledger-20260816.json",
+      "claim": "The retained governed section receipt records 67 passing tests, 9 passing subtests, and one scan_inventory_current failure."
+    }
+  ]
+}

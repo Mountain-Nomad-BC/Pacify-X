@@ -1,0 +1,108 @@
+[
+  {
+    "event_type": "card_discovered",
+    "actor": "codex-primary:late-discovery-reconciliation",
+    "payload": {
+      "gap_id": "PX-OS-849",
+      "parent_surface": "dashboard-control-plane",
+      "feature": "control-disposition-revision",
+      "control_action": "revise an evidence-backed control disposition without deleting its prior state",
+      "discovery_source": "runtime/operational_gap_ledger.py",
+      "discovered_at": "2026-08-16T18:45:00Z",
+      "discovered_by": "codex-primary",
+      "source_refs": [{"path": "runtime/operational_gap_ledger.py", "symbols": ["control_disposition", "control_disposition_revised", "control_disposition_sha256"]}],
+      "expected_behavior": "A gap disposition can later become operational, or operational evidence can later be contradicted, using a predecessor-bound append-only revision that retains all prior evidence.",
+      "observed_behavior": "The initial ledger rejected every second disposition, making the first gap/operational conclusion permanent.",
+      "interaction_chain": {
+        "open_load": {"state": "unknown", "detail": "Current-source operational use has not yet exercised this stage.", "evidence": []},
+        "display": {"state": "unknown", "detail": "Current-source operational use has not yet exercised this stage.", "evidence": []},
+        "user_edit_action": {"state": "unknown", "detail": "Current-source operational use has not yet exercised this stage.", "evidence": []},
+        "input_validation": {"state": "partial", "detail": "The reducer validates the new revision envelope; current-host use remains pending.", "evidence": ["runtime/operational_gap_ledger.py"]},
+        "authorization": {"state": "not_applicable", "detail": "This internal append-only reducer does not grant host authority.", "evidence": ["runtime/operational_gap_ledger.py"]},
+        "backend_dispatch": {"state": "present", "detail": "The authoritative reducer accepts the new event type.", "evidence": ["runtime/operational_gap_ledger.py"]},
+        "runtime_effect": {"state": "partial", "detail": "Targeted reducer behavior is proven; live walker integration is pending.", "evidence": ["tests/test_operational_gap_ledger.py"]},
+        "progress_reporting": {"state": "present", "detail": "Current operational/gap counts derive from the revised disposition.", "evidence": ["runtime/operational_gap_ledger.py"]},
+        "result_acknowledgement": {"state": "unknown", "detail": "Current-source operational use has not yet exercised this stage.", "evidence": []},
+        "persistence": {"state": "present", "detail": "The revision is retained in the append-only event stream and projected snapshot.", "evidence": ["runtime/operational_gap_ledger.py"]},
+        "reload_reopen": {"state": "partial", "detail": "Full replay is covered by the focused reducer test; installed-host reload remains pending.", "evidence": ["tests/test_operational_gap_ledger.py"]},
+        "failure_handling": {"state": "present", "detail": "A mismatched predecessor hash is rejected.", "evidence": ["tests/test_operational_gap_ledger.py"]},
+        "recovery_rollback": {"state": "partial", "detail": "Prior disposition evidence is retained in history; a live contradictory-evidence recovery pass is pending.", "evidence": ["runtime/operational_gap_ledger.py"]}
+      },
+      "classification": "revisioning",
+      "severity": "critical",
+      "operational_impact": "Without revisioning, no initially conservative control gap could ever be promoted and no later contradiction could safely demote an operational claim.",
+      "dependencies": [],
+      "blockers": [],
+      "assigned_owner": "codex-primary",
+      "tests_required": ["tests/test_operational_gap_ledger.py::test_control_disposition_revision_is_predecessor_bound_and_retains_history"],
+      "completion_evidence": [],
+      "next_action": "Integrate predecessor-bound control disposition revisions into the exact current-source walker importer.",
+      "discovery_evidence": [{"reference": "runtime/operational_gap_ledger.py", "claim": "The original reducer rejected any second control disposition and had no revision event."}]
+    }
+  },
+  {
+    "event_type": "card_transition", "actor": "codex-primary:late-discovery-reconciliation",
+    "payload": {"gap_id": "PX-OS-849", "from_state": "discovered", "to_state": "reproduced", "reason": "Source review confirmed the second-disposition rejection path.", "evidence": [{"reference": "runtime/operational_gap_ledger.py", "claim": "The original control_disposition path rejected an already-dispositioned control."}]}
+  },
+  {
+    "event_type": "card_transition", "actor": "codex-primary:late-discovery-reconciliation",
+    "payload": {"gap_id": "PX-OS-849", "from_state": "reproduced", "to_state": "scoped", "reason": "The repair was scoped to one predecessor-bound revision event and retained disposition history.", "evidence": [{"reference": "runtime/operational_gap_ledger.py", "claim": "The new event has an isolated reducer branch and canonical predecessor helper."}]}
+  },
+  {
+    "event_type": "card_transition", "actor": "codex-primary:late-discovery-reconciliation",
+    "payload": {"gap_id": "PX-OS-849", "from_state": "scoped", "to_state": "approved", "reason": "Disposition evolution is required by the user-mandated reopening and evidence-correction behavior.", "evidence": [{"reference": "C:/Users/Ben/.codex/attachments/9722e486-cbd2-43c1-9d2a-c8d77c4773f3/pasted-text.txt", "claim": "The work order requires contradictory evidence to reopen prior conclusions without deleting history."}]}
+  },
+  {
+    "event_type": "card_transition", "actor": "codex-primary:late-discovery-reconciliation",
+    "payload": {"gap_id": "PX-OS-849", "from_state": "approved", "to_state": "implementing", "reason": "Implementation added a new append-only revision event and predecessor identity check.", "evidence": [{"reference": "runtime/operational_gap_ledger.py", "claim": "Current source contains control_disposition_revised."}]}
+  },
+  {
+    "event_type": "card_transition", "actor": "codex-primary:late-discovery-reconciliation",
+    "payload": {"gap_id": "PX-OS-849", "from_state": "implementing", "to_state": "implemented", "reason": "The authoritative reducer now retains prior dispositions and projects the current one.", "implementation_evidence": [{"reference": "runtime/operational_gap_ledger.py", "claim": "Predecessor-bound disposition revisions and retained history are implemented."}], "evidence": [{"reference": "runtime/operational_gap_ledger.py", "claim": "Current implementation is present in the authoritative append/replay path."}]}
+  },
+  {
+    "event_type": "card_transition", "actor": "codex-primary:late-discovery-reconciliation",
+    "payload": {"gap_id": "PX-OS-849", "from_state": "implemented", "to_state": "narrowly_verified", "reason": "The focused ledger suite passed the positive revision path, stale-predecessor rejection, retained history, and current progress counts.", "verification": {"tests_run": ["python -m pytest -q tests/test_operational_gap_ledger.py"], "results": [{"reference": "tests/test_operational_gap_ledger.py", "claim": "38 focused tests passed, including predecessor-bound disposition revision."}]}, "evidence": [{"reference": "tests/test_operational_gap_ledger.py", "claim": "Focused ledger suite passed 38 tests."}]}
+  },
+  {
+    "event_type": "card_discovered",
+    "actor": "codex-primary:late-discovery-reconciliation",
+    "payload": {
+      "gap_id": "PX-OS-850",
+      "parent_surface": "dashboard-control-plane",
+      "feature": "pre-implementation-card-enforcement",
+      "control_action": "require an active checkpoint/card before a governed control-plane edit",
+      "discovery_source": "evidence/operational-gap-ledger/late-discovery-reconciliation-events-20260816.json",
+      "discovered_at": "2026-08-16T18:47:00Z",
+      "discovered_by": "codex-primary",
+      "source_refs": [{"path": "runtime/operational_gap_ledger.py", "symbols": ["work_checkpoint", "card_discovered"]}],
+      "expected_behavior": "Every newly discovered defect is carded and checkpointed before implementation begins.",
+      "observed_behavior": "The control-disposition revision defect was implemented before its stable card was appended, requiring this explicit late reconstruction.",
+      "interaction_chain": {
+        "open_load": {"state": "unknown", "detail": "Enforced edit admission is not implemented.", "evidence": []},
+        "display": {"state": "unknown", "detail": "Enforced edit admission is not implemented.", "evidence": []},
+        "user_edit_action": {"state": "missing", "detail": "A direct host edit can occur without an active ledger checkpoint.", "evidence": ["evidence/operational-gap-ledger/late-discovery-reconciliation-events-20260816.json"]},
+        "input_validation": {"state": "missing", "detail": "No pre-edit ledger admission validation exists.", "evidence": ["runtime/operational_gap_ledger.py"]},
+        "authorization": {"state": "partial", "detail": "PX governance is procedural and does not steal Codex host authority; an explicit PX-scoped admission hook is still needed.", "evidence": ["AGENTS.md"]},
+        "backend_dispatch": {"state": "missing", "detail": "No governed edit wrapper verifies an active card before dispatch.", "evidence": ["runtime/operational_gap_ledger.py"]},
+        "runtime_effect": {"state": "missing", "detail": "No enforcement effect exists for direct control-plane edits.", "evidence": ["runtime/operational_gap_ledger.py"]},
+        "progress_reporting": {"state": "partial", "detail": "Late reconciliation is visible, but prevention is absent.", "evidence": ["registry/operational_gap_ledger.jsonl"]},
+        "result_acknowledgement": {"state": "unknown", "detail": "Enforced edit admission is not implemented.", "evidence": []},
+        "persistence": {"state": "present", "detail": "The lapse and reconstructed card are retained append-only.", "evidence": ["registry/operational_gap_ledger.jsonl"]},
+        "reload_reopen": {"state": "unknown", "detail": "Enforced edit admission is not implemented.", "evidence": []},
+        "failure_handling": {"state": "missing", "detail": "There is no fail-closed response when no active card exists.", "evidence": ["runtime/operational_gap_ledger.py"]},
+        "recovery_rollback": {"state": "partial", "detail": "Late reconstruction preserves truth but does not prevent recurrence.", "evidence": ["evidence/operational-gap-ledger/late-discovery-reconciliation-events-20260816.json"]}
+      },
+      "classification": "backend",
+      "severity": "high",
+      "operational_impact": "A newly discovered branch can be repaired before it is durably tracked, recreating the exact skipping risk this ledger is intended to prevent.",
+      "dependencies": [],
+      "blockers": ["Codex retains host execution authority; enforcement must apply only to PX-controlled edit workflows."],
+      "assigned_owner": "codex-primary",
+      "tests_required": ["A PX-scoped edit admission check fails closed without an active card and admits an exact checkpointed card."],
+      "completion_evidence": [],
+      "next_action": "Add a PX-scoped pre-edit admission contract that checks the active work checkpoint without attempting to override Codex host authority.",
+      "discovery_evidence": [{"reference": "evidence/operational-gap-ledger/late-discovery-reconciliation-events-20260816.json", "claim": "The disposition revision card had to be reconstructed after its code change."}]
+    }
+  }
+]

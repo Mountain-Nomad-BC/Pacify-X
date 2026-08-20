@@ -2,12 +2,12 @@
 
 You are operating the Engineering Loop Bootstrap at `<BOOTSTRAP_DIR>`. The governed multi-project workspace is `<WORKSPACE_DIR>` and the new project name is `<PROJECT_NAME>`.
 
-Keep startup metadata-only. Do not install tools, select a provider, access credentials, start services, create a project, or mutate a repository before showing the relevant preview and receiving explicit approval.
+Keep startup metadata-only. Before applying effects, show the relevant preview, scope, and rollback. Proceed with reversible effects inside the user-approved task scope; ask only before an irreversible destructive action.
 
 1. Validate the framework with `engineering-bootstrap doctor` and `engineering-bootstrap validate`. If the installed command is unavailable, use `python -m runtime.cli --root "<BOOTSTRAP_DIR>" ...` from the source checkout.
 2. Preview `engineering-bootstrap workspace init --workspace "<WORKSPACE_DIR>"`. Explain that the project drop root will be `<WORKSPACE_DIR>/projects`, central state will be under `projects_tracking`, cleanup will use `repo_quarantine`, and reusable sanitized assets will use `shared_capabilities`.
-3. Stop for approval, then apply the same command with `--apply`.
-4. Preview `engineering-bootstrap workspace create-project --workspace "<WORKSPACE_DIR>" --name "<PROJECT_NAME>"`. Stop for approval, then apply with `--apply`. Do not create the project anywhere except `<WORKSPACE_DIR>/projects/<PROJECT_NAME>`.
+3. Apply the same command with `--apply` when the preview is reversible and inside the user-approved task scope.
+4. Preview `engineering-bootstrap workspace create-project --workspace "<WORKSPACE_DIR>" --name "<PROJECT_NAME>"`, then apply with `--apply` when it is reversible and inside scope. Do not create the project anywhere except `<WORKSPACE_DIR>/projects/<PROJECT_NAME>`.
 5. Run `engineering-bootstrap workspace status --workspace "<WORKSPACE_DIR>"`. Require a valid central registry, a project-local workspace binding, an isolated tracking root, and an isolated memory root.
 6. Allocate a stable `<AGENT_ID>` and `<SESSION_ID>` for this agent/team. Activate the generated project ID with `engineering-bootstrap project activate --workspace "<WORKSPACE_DIR>" --project-id "prj_<PROJECT_NAME>" --agent-id "<AGENT_ID>" --session-id "<SESSION_ID>"`. One session may hold only one writable project, while separate sessions may operate separate projects concurrently. Read both `projects_tracking/PROJECT_MANAGEMENT.md` and the project's `PROJECT_MANAGEMENT.md`.
 7. Run `engineering-bootstrap project-check --project "<WORKSPACE_DIR>/projects/<PROJECT_NAME>"` and `engineering-bootstrap startup --project "<WORKSPACE_DIR>/projects/<PROJECT_NAME>"`. Startup must report zero hydrated skill bodies. Review its read-only tooling assessment, separate observations from recommendations, and present any proposed installation/configuration effects for explicit approval; never install from the startup result itself. If a standalone report is useful, run `engineering-bootstrap tooling assess --project "<WORKSPACE_DIR>/projects/<PROJECT_NAME>"`.

@@ -1,0 +1,39 @@
+{
+  "admission_record": "observe-debug-supabase",
+  "body_sha256": "c810d89c49b7d5eedd1c0c1fe8652f9ac1083b440ca033c81e99a09bd77153ec",
+  "contract": {
+    "available": true,
+    "sha256": "a62529b8fd05f154cfdbf3d63728428cadf38c9dfbb02071bc4e8b5ec85dea26",
+    "source": "registry/skill_packages/observe-debug-supabase.json"
+  },
+  "description": "Diagnose Supabase database, API, RLS, Auth, Storage, Realtime, Function, and client failures from correlated evidence.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "observe-debug-supabase",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/observe-debug-supabase"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "connections",
+    "logging",
+    "query-plans",
+    "rls-debugging",
+    "supabase"
+  ],
+  "version": "1.0.0"
+}

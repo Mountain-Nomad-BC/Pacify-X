@@ -1,0 +1,39 @@
+[
+  {
+    "gap_id": "PX-OS-085",
+    "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000003181",
+    "effect": "execute",
+    "scope": [
+      "extension/scripts/run-isolated-current-source-walk.js",
+      "extension/scripts/run-operational-ui-walk.js",
+      "extension/scripts/operational-ui-control-records.js",
+      "registry/operational_surface_inventory.json",
+      "evidence/operational-ui-walk-current-source-*",
+      "evidence/operational-gap-ledger/current-source-host-walk-*"
+    ],
+    "authority": "Codex retains native process/tool authority; PX supplies the user-authorized isolation, scope, evidence, and cleanup contract.",
+    "expected_effect": "Launch one owned disposable VS Code development host and one bounded walker against the exact repository source.",
+    "rollback": "Terminate and reconcile the complete owned process tree; retain failure evidence and stop without modifying the user VS Code profile.",
+    "evidence": [{"reference":"extension/scripts/run-isolated-current-source-walk.js","claim":"The launcher defines the owned profile, exact current-source development path, timeout, and process reconciliation."}]
+  },
+  {
+    "gap_id": "PX-OS-085",
+    "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000003181",
+    "effect": "network",
+    "scope": ["Pinned VS Code 1.132.1 test-host cache acquisition only if the repository-owned cache is absent"],
+    "authority": "Codex retains native network authority under the user-authorized current-source operational walk; PX permits no provider, billable, or product network traffic.",
+    "expected_effect": "Reuse the owned local VS Code 1.132.1 cache, or download only that pinned host artifact if missing.",
+    "rollback": "On acquisition failure, stop the launch, retain the lifecycle report, and make no host or operational claims.",
+    "evidence": [{"reference":"extension/scripts/run-isolated-current-source-walk.js","claim":"The launcher pins VS Code 1.132.1 and routes only through the repository test-host cache helper."}]
+  },
+  {
+    "gap_id": "PX-OS-085",
+    "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000003181",
+    "effect": "destructive",
+    "scope": ["PACIFY-X-owned OS temporary directory with prefix pacify-x-current-source-walk- and a valid ownership marker"],
+    "authority": "Codex retains native filesystem authority; PX permits reclamation only for the exact owned ephemeral after verified process-tree closure.",
+    "expected_effect": "Remove only the disposable host workspace, user-data, and empty extensions directories after verified closure.",
+    "rollback": "If ownership or process closure is not verified, retain the temporary root and record its recovery path instead of deleting it.",
+    "evidence": [{"reference":"extension/scripts/run-isolated-current-source-walk.js","claim":"safeOwnedEphemeralCleanup checks parent, prefix, marker, symlink status, ownership classification, and process-tree closure."}]
+  }
+]

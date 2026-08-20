@@ -1,0 +1,508 @@
+{
+  "id": "GitHub.codespaces",
+  "name": "GitHub Codespaces",
+  "version": "1.18.15",
+  "publisher": "GitHub",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [
+    "ui",
+    "workspace"
+  ],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "continueEditSession",
+    "jsonValidation",
+    "languages",
+    "menus",
+    "remoteHelp",
+    "resourceLabelFormatters",
+    "views",
+    "viewsWelcome"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "GitHub.codespaces",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "GitHub.codespaces",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:continueEditSession",
+      "kind": "continueEditSession",
+      "provider": "GitHub.codespaces",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "GitHub.codespaces",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languages",
+      "kind": "languages",
+      "provider": "GitHub.codespaces",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "GitHub.codespaces",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:remoteHelp",
+      "kind": "remoteHelp",
+      "provider": "GitHub.codespaces",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:resourceLabelFormatters",
+      "kind": "resourceLabelFormatters",
+      "provider": "GitHub.codespaces",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "GitHub.codespaces",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "GitHub.codespaces",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "_codespaces.embedder.myCodespaces",
+      "invocation": "vscode.commands.executeCommand('_codespaces.embedder.myCodespaces', ...args)",
+      "title": "My Codespaces",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.activate",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.activate', ...args)",
+      "title": "Activate",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.addEnvironment",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.addEnvironment', ...args)",
+      "title": "Create New Codespace...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isWeb || remoteName != codespaces"
+    },
+    {
+      "id": "github.codespaces.addExtensionToConfiguration",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.addExtensionToConfiguration', ...args)",
+      "title": "Add to devcontainer.json",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.changeMachineType",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.changeMachineType', ...args)",
+      "title": "Change Machine Type",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.configureDevContainerCommand",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.configureDevContainerCommand', ...args)",
+      "title": "Add Dev Container Configuration Files...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.configureDevContainerSidebar",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.configureDevContainerSidebar', ...args)",
+      "title": "Add Dev Container Configuration Files...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.connect",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.connect', ...args)",
+      "title": "Connect to Codespace...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isWeb || remoteName != codespaces"
+    },
+    {
+      "id": "github.codespaces.continueEditSessionInCodespace",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.continueEditSessionInCodespace', ...args)",
+      "title": "Create New Codespace...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.continueEditSessionInCodespaceWithJupyterServer",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.continueEditSessionInCodespaceWithJupyterServer', ...args)",
+      "title": "Connect to Codespace...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.copyIdToClipboard",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.copyIdToClipboard', ...args)",
+      "title": "Copy ID to Clipboard",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.deleteEnvironment",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.deleteEnvironment', ...args)",
+      "title": "Delete Codespace...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.disconnectEnvironment",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.disconnectEnvironment', ...args)",
+      "title": "Disconnect",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "remoteName == codespaces"
+    },
+    {
+      "id": "github.codespaces.disconnectSuspend",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.disconnectSuspend', ...args)",
+      "title": "Stop Current Codespace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.export",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.export', ...args)",
+      "title": "Export Changes to a Branch",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.exportLogs",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.exportLogs', ...args)",
+      "title": "Export Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.labelPortAndUpdateConfig",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.labelPortAndUpdateConfig', ...args)",
+      "title": "Set Label and Update devcontainer.json",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "remoteName == codespaces"
+    },
+    {
+      "id": "github.codespaces.manageUserSecrets",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.manageUserSecrets', ...args)",
+      "title": "Manage User Secrets",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.openExtension",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.openExtension', ...args)",
+      "title": "Open Extension",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.openInBrowser",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.openInBrowser', ...args)",
+      "title": "Open in Browser",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isWeb"
+    },
+    {
+      "id": "github.codespaces.openInInsiders",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.openInInsiders', ...args)",
+      "title": "Open in VS Code Insiders Desktop",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "isWeb && remoteName == codespaces"
+    },
+    {
+      "id": "github.codespaces.openInNewWindow",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.openInNewWindow', ...args)",
+      "title": "Open Codespace in New Window",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isWeb"
+    },
+    {
+      "id": "github.codespaces.openInStable",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.openInStable', ...args)",
+      "title": "Open in VS Code Desktop",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "isWeb && remoteName == codespaces"
+    },
+    {
+      "id": "github.codespaces.rebuildEnvironment",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.rebuildEnvironment', ...args)",
+      "title": "Rebuild Container",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.refresh",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.reloadServer",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.reloadServer', ...args)",
+      "title": "Kill VS Code Server on Host...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.removePath",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.removePath', ...args)",
+      "title": "Remove From Recent List",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.reportIssue",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.reportIssue', ...args)",
+      "title": "Report Issue",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.sendFeedback",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.sendFeedback', ...args)",
+      "title": "Send Feedback",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.showDetails",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.showDetails', ...args)",
+      "title": "Details",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "remoteName == codespaces"
+    },
+    {
+      "id": "github.codespaces.shutdownEnvironment",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.shutdownEnvironment', ...args)",
+      "title": "Stop Codespace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.signIn",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.signIn', ...args)",
+      "title": "Sign In",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "codespaces:isSignedIn != true && remoteName != codespaces"
+    },
+    {
+      "id": "github.codespaces.switchUserAccount",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.switchUserAccount', ...args)",
+      "title": "Switch User Account",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.codespaces.viewCreationLog",
+      "invocation": "vscode.commands.executeCommand('github.codespaces.viewCreationLog', ...args)",
+      "title": "View Creation Log",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "remoteName == codespaces"
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:github.codespaces.addEnvironment",
+    "onCommand:github.codespaces.changeMachineType",
+    "onCommand:github.codespaces.connect",
+    "onCommand:github.codespaces.deleteEnvironment",
+    "onCommand:github.codespaces.disconnectEnvironment",
+    "onCommand:github.codespaces.disconnectSuspend",
+    "onCommand:github.codespaces.documentationLink",
+    "onCommand:github.codespaces.environmentsList",
+    "onCommand:github.codespaces.export",
+    "onCommand:github.codespaces.exportLogs",
+    "onCommand:github.codespaces.feedbackLink",
+    "onCommand:github.codespaces.getStartedLink",
+    "onCommand:github.codespaces.openExtension",
+    "onCommand:github.codespaces.rebuildEnvironment",
+    "onCommand:github.codespaces.shutdownEnvironment",
+    "onCommand:github.codespaces.signIn",
+    "onNotebook:jupyter-notebook",
+    "onResolveRemoteAuthority:codespaces",
+    "onUri",
+    "onView:github.codespaces.explorer",
+    "onView:github.codespaces.performanceExplorer"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "ui",
+      "workspace"
+    ],
+    "workspace_trust": {
+      "supported": true
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "GitHub.codespaces",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:continueEditSession",
+      "contribution:jsonValidation",
+      "contribution:languages",
+      "contribution:menus",
+      "contribution:remoteHelp",
+      "contribution:resourceLabelFormatters",
+      "contribution:views",
+      "contribution:viewsWelcome"
+    ],
+    "interface": [
+      "_codespaces.embedder.myCodespaces",
+      "github.codespaces.activate",
+      "github.codespaces.addEnvironment",
+      "github.codespaces.addExtensionToConfiguration",
+      "github.codespaces.changeMachineType",
+      "github.codespaces.configureDevContainerCommand",
+      "github.codespaces.configureDevContainerSidebar",
+      "github.codespaces.connect",
+      "github.codespaces.continueEditSessionInCodespace",
+      "github.codespaces.continueEditSessionInCodespaceWithJupyterServer",
+      "github.codespaces.copyIdToClipboard",
+      "github.codespaces.deleteEnvironment",
+      "github.codespaces.disconnectEnvironment",
+      "github.codespaces.disconnectSuspend",
+      "github.codespaces.export",
+      "github.codespaces.exportLogs",
+      "github.codespaces.labelPortAndUpdateConfig",
+      "github.codespaces.manageUserSecrets",
+      "github.codespaces.openExtension",
+      "github.codespaces.openInBrowser",
+      "github.codespaces.openInInsiders",
+      "github.codespaces.openInNewWindow",
+      "github.codespaces.openInStable",
+      "github.codespaces.rebuildEnvironment",
+      "github.codespaces.refresh",
+      "github.codespaces.reloadServer",
+      "github.codespaces.removePath",
+      "github.codespaces.reportIssue",
+      "github.codespaces.sendFeedback",
+      "github.codespaces.showDetails",
+      "github.codespaces.shutdownEnvironment",
+      "github.codespaces.signIn",
+      "github.codespaces.switchUserAccount",
+      "github.codespaces.viewCreationLog"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "ui",
+        "workspace"
+      ],
+      "workspace_trust": {
+        "supported": true
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

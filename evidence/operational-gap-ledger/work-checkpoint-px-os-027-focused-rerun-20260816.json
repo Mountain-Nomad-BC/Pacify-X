@@ -1,0 +1,12 @@
+{
+  "active_gap_id": "PX-OS-027",
+  "learned": "The conditional-never assertion was stale against intentional durable skip semantics, and the parallel fixture declared conflicting exclusive claims on one scope. Both focused contracts are corrected. The pause wait now reports its final durable state and failure if it misses the bound.",
+  "next_action": "Run only the three corrected workflow checks once and use the exposed durable pause state to repair the runtime if it still fails.",
+  "unresolved_branch_gap_ids": ["PX-OS-027", "PX-OS-056", "PX-OS-057"],
+  "evidence": [
+    {
+      "claim": "Focused workflow contracts were corrected under admission 4934.",
+      "reference": "tests/test_workflow_studio.py"
+    }
+  ]
+}

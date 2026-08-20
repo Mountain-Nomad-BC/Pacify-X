@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-877",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004945",
+  "authority": "The corrected bounded knowledge-project fixture requires one focused verification.",
+  "effect": "execute",
+  "scope": ["python -m pytest -q -p no:cacheprovider tests/test_knowledge_core_controller.py"],
+  "expected_effect": "Verify all knowledge proposal, conflict, recovery, route, sibling, source mutation, and authenticated trailing-event behavior.",
+  "rollback": "Read-only focused execution; retain exact failures without broadening the run.",
+  "evidence": [
+    {
+      "claim": "Immediate policy-bootstrap checkpoint.",
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004945"
+    }
+  ]
+}

@@ -38,7 +38,7 @@ class DeclaredCapabilityRecoveryTests(unittest.TestCase):
         self.assertEqual(len(identities), 260)
         for item in records:
             owner = item["canonical_owner"]
-            body = ROOT / ".agents" / "skills" / owner / "SKILL.md"
+            body = ROOT / ".px" / "skills" / owner / "SKILL.md"
             self.assertIn(statuses[owner], {"active", "admitted"})
             self.assertEqual(
                 item["owner_body_sha256"], hashlib.sha256(body.read_bytes()).hexdigest()

@@ -1,0 +1,28 @@
+{
+  "cleanup_id": "cleanup-07ce4f1cf92a4ee3ace02a73635be011",
+  "project_id": "Pacify-X",
+  "run_id": "sanitation-recheck-0c9e1b4af49c48bf834b1ee4dbb7ed30",
+  "lane_id": "sanitation-recheck",
+  "start_time": "2026-08-15T21:11:15.247698+00:00",
+  "end_time": "2026-08-15T21:11:15.882516+00:00",
+  "reason": "sanitation recheck completed",
+  "validated_roots": [
+    "C:\\Users\\Ben\\Documents"
+  ],
+  "workers": 1,
+  "priority_mode": "conservative_sequential",
+  "resources_considered": 1,
+  "resources_reclaimed": 1,
+  "resources_skipped": 0,
+  "resources_failed": 0,
+  "files_removed": 3919,
+  "directories_removed": 1220,
+  "bytes_reclaimed": 108270176,
+  "retained_artifacts": [],
+  "promoted_artifacts": [],
+  "links_encountered": 0,
+  "orphan_processes_reaped": 0,
+  "errors": [],
+  "remaining_owned_ephemeral_resources": 0,
+  "dry_run": false
+}

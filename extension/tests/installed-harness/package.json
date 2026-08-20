@@ -1,0 +1,14 @@
+{
+  "name": "pacify-x-installed-certifier",
+  "displayName": "Pacify-X Installed Artifact Certifier",
+  "version": "0.0.0",
+  "publisher": "pacify-x-certification",
+  "private": true,
+  "engines": {
+    "vscode": "^1.132.0"
+  },
+  "main": "./extension.js",
+  "activationEvents": [
+    "*"
+  ]
+}

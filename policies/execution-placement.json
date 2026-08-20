@@ -1,0 +1,11 @@
+{
+  "schema_version": "px.execution-placement-policy/1.0",
+  "authority": "advisory-until-separately-approved",
+  "required_current_candidate": true,
+  "required_gates": ["baseline", "compatibility", "correctness", "boundary-cost", "rollback", "after-benchmark"],
+  "preferred_change_unit": ["adapter", "sidecar", "projection", "worker", "index", "partial-rollout"],
+  "provider_selection_stage": "after-platform-class-selection",
+  "cpu_authoritative": ["filesystem", "database-mutation", "serialization", "cleanup-safety", "destructive-decision"],
+  "production_authority_granted": false
+}
+

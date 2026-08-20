@@ -1,0 +1,93 @@
+{
+  "schema_version": "px.adversarial-audit/1.0",
+  "audit_id": "px-adversarial-audit-20260811",
+  "audit_date_local": "2026-08-11",
+  "timezone": "America/New_York",
+  "status": "repair-authorized",
+  "scope": [
+    "runtime",
+    "vscode-extension",
+    "codex-integration",
+    "environment",
+    "startup",
+    "permissions",
+    "lifecycle",
+    "performance",
+    "project-management",
+    "punch-cards",
+    "evidence",
+    "native-skill-boundary",
+    "skill-distribution-domain-isolation",
+    "preexisting-user-skill-custody",
+    "skill-library-ui"
+  ],
+  "effects": {
+    "initial_audit": "read-mostly; PX Doctor unexpectedly mutated WAL lock metadata",
+    "repair_authority_granted": true,
+    "network_authority": "official documentation and required local dependency/build operations only",
+    "deployment_authority": false,
+    "billable_provider_authority": false,
+    "destructive_cleanup_authority": false
+  },
+  "verified_counts": {
+    "tracked_modified_before_repairs": 48,
+    "untracked_paths_before_repairs": 3387,
+    "visibility_cards": 66,
+    "visibility_accepted_claimed": 38,
+    "visibility_partial": 7,
+    "visibility_open": 21,
+    "punch_evidence_files": 33,
+    "punch_artifact_references": 110,
+    "punch_artifact_hash_mismatches": 38,
+    "punch_evidence_files_with_mismatch": 25,
+    "punch_cards_affected_by_mismatch": 28,
+    "nonportable_extension_references": 7,
+    "doctor_route_coverage_blockers": 31,
+    "current_incomplete_scan_files": 503,
+    "current_incomplete_findings": 35,
+    "current_incomplete_unreviewed": 0,
+    "fresh_project_map_files": 6969,
+    "fresh_project_map_symbols": 46628,
+    "fresh_project_map_call_edges": 49088,
+    "fresh_project_map_retrieval_documents": 65089,
+    "fresh_project_map_rebuild_seconds": 83.7,
+    "reconciled_visibility_cards": 75,
+    "reconciled_visibility_accepted": 11,
+    "reconciled_visibility_partial": 35,
+    "reconciled_visibility_open": 29
+  },
+  "finding_ids": [
+    "PXA-001", "PXA-002", "PXA-003", "PXA-004", "PXA-005",
+    "PXA-006", "PXA-007", "PXA-008", "PXA-009", "PXA-010",
+    "PXA-011", "PXA-012", "PXA-013", "PXA-014", "PXA-015",
+    "PXA-016", "PXA-017", "PXA-018", "PXA-019", "PXA-020",
+    "PXA-021", "PXA-022", "PXA-023", "PXA-024", "PXA-025",
+    "PXA-026", "PXA-027", "PXA-028", "PXA-029", "PXA-030",
+    "PXA-031", "PXA-032", "PXA-033", "PXA-034", "PXA-035",
+    "PXA-036", "PXA-037", "PXA-038", "PXA-039", "PXA-040"
+  ],
+  "reopen_for_current_evidence": [
+    "D04", "D05", "D06", "D07", "F03", "F04", "F05", "H01",
+    "H02", "H03", "H05", "H06", "O01", "O02", "O04", "O05",
+    "O06", "O08", "O10", "O11", "O12", "O13", "O14", "R01",
+    "R09", "R10", "R11", "S01"
+  ],
+  "new_cards": [
+    "A01-audit-truth-reconciliation",
+    "A02-true-read-only-diagnostics",
+    "A03-canonical-extension-source-and-artifact",
+    "A04-transactional-extension-lifecycle",
+    "A05-px-native-lazy-skill-boundary",
+    "A06-codex-px-authority-convergence",
+    "A07-bounded-startup-and-runtime-governor",
+    "A08-current-evidence-and-state-convergence",
+    "S12-skill-library-projection"
+  ],
+  "evidence": {
+    "human_ledger": "docs/PX_ADVERSARIAL_AUDIT_20260811.md",
+    "project_map_receipt": ".engineering-bootstrap/project-map/map-receipt.json",
+    "extension_host_log": "host-log-reference:vscode-session-20260811T230544-extension-host",
+    "codex_log": "host-log-reference:vscode-session-20260811T230544-codex"
+  },
+  "completion_rule": "Close only when current source, exact package, installed behavior, tests, hashes, route coverage, and project state agree."
+}

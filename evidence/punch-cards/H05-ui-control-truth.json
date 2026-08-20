@@ -1,0 +1,19 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "H05",
+  "status": "accepted",
+  "recorded_at": "2026-08-12T06:53:13.266646+00:00",
+  "claim": "Every rendered UI action is generated into an exact mapping of mode, inbound schema, authority, effect, state transition, acknowledgement, and receipt, while UI-only controls are explicitly non-mutating and dead/fallthrough actions fail the check.",
+  "artifacts": [
+    {
+      "path": "evidence/extension-verification/H05-H06-control-and-health-truth.json",
+      "sha256": "13c8a58a20bbcaa1b456b87e560c35c1fd33da4ac9357039633e2e73bb70b54e"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --test tests/ui-action-inventory.test.js tests/system-surfaces.test.js tests/extension-contract.test.js",
+      "result": "21 passed independently"
+    }
+  ]
+}

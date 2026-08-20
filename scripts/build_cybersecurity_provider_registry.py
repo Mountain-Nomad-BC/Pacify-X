@@ -512,7 +512,7 @@ def build(root: Path, source: Path, *, check: bool = False) -> dict[str, object]
     )
 
     skill_id = "govern-cybersecurity-capabilities"
-    skill_body = f".agents/skills/{skill_id}/SKILL.md"
+    skill_body = f".px/skills/{skill_id}/SKILL.md"
     manifest = {
         "id": skill_id,
         "version": "1.0.0",
@@ -520,8 +520,8 @@ def build(root: Path, source: Path, *, check: bool = False) -> dict[str, object]
         "body": skill_body,
         "body_sha256": _sha(root / skill_body),
         "references": [
-            f".agents/skills/{skill_id}/references/authority-and-execution.md",
-            f".agents/skills/{skill_id}/references/domain-operations.md",
+            f".px/skills/{skill_id}/references/authority-and-execution.md",
+            f".px/skills/{skill_id}/references/domain-operations.md",
         ],
         "capability_tags": [
             "authority",
@@ -652,7 +652,7 @@ def build(root: Path, source: Path, *, check: bool = False) -> dict[str, object]
         elif path.startswith("skills/"):
             disposition, owner = (
                 "merge",
-                ".agents/skills/govern-cybersecurity-capabilities",
+                ".px/skills/govern-cybersecurity-capabilities",
             )
         elif path.startswith("workflows/"):
             disposition, owner = (

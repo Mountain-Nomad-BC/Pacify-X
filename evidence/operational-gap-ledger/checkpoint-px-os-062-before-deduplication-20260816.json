@@ -1,0 +1,10 @@
+{
+  "active_gap_id": "PX-OS-062",
+  "learned": "All 98 cross-file duplicate selectors are shared between modular styles and dashboard.css. The legacy sheet also contains 96 graph/relationship selector occurrences without modular equivalents, so deleting whole blocks would discard behavior. Selector-level canonicalization can retain unique compatibility rules and remove only shared ownership.",
+  "next_action": "Add a deterministic CSS ownership canonicalizer, remove only legacy selector branches with an existing modular owner, and keep the zero baseline unchanged.",
+  "unresolved_branch_gap_ids": ["PX-OS-062"],
+  "evidence": [
+    {"claim": "Exact audit reports 98 cross-file selectors and 142 cross-file duplicate occurrences.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005008"},
+    {"claim": "Read-only comparison found unique legacy graph helpers that must be preserved.", "reference": "extension/media/dashboard.css; extension/media/styles"}
+  ]
+}

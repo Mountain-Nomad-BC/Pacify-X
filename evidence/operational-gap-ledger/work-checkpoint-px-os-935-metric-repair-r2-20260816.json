@@ -1,0 +1,9 @@
+{
+  "active_gap_id": "PX-OS-935",
+  "learned": "The first PX-OS-935 admission was correctly rejected because the PX-OS-936 checkpoint superseded its active checkpoint. No metric repair was made. The registered metric interaction evidence and scope are unchanged.",
+  "next_action": "Admit the exact metric component/controller/browser-test repair against this immediate checkpoint.",
+  "unresolved_branch_gap_ids": ["PX-OS-935", "PX-OS-933"],
+  "evidence": [
+    {"claim": "Metric interaction gap is registered and the rejected admission appended no event.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004955"}
+  ]
+}

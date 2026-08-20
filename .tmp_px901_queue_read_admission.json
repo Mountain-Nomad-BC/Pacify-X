@@ -1,0 +1,26 @@
+{
+  "gap_id": "PX-OS-901",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000006279",
+  "effect": "read",
+  "scope": [
+    "inspect:registry/operational_gap_ledger.jsonl",
+    "inspect:registry/operational_gap_ledger.snapshot.json"
+  ],
+  "authority": "PX901 remains the active implementation card; this bounded read reconciles the remaining-card queue the user requested without mutating another card.",
+  "expected_effect": "Produce a deduplicated, dependency-ordered inventory of open cards and flag unsupported completion states.",
+  "rollback": "Read-only ledger and snapshot inspection; no rollback required.",
+  "evidence": [
+    {
+      "reference": "registry/operational_gap_ledger.jsonl",
+      "artifact_sha256": "fff65f7a007233476e5a8d6a0ce3d4987405f73d7f98f251b4ea0c100dab8c53",
+      "artifact_size": 13073219,
+      "claim": "The append-only ledger is the authoritative event history for remaining-card reconciliation."
+    },
+    {
+      "reference": "registry/operational_gap_ledger.snapshot.json",
+      "artifact_sha256": "02293eea5b2e1bda15575e03294a490db40e347080f13ad99ada6f4914969cdc",
+      "artifact_size": 17850140,
+      "claim": "The projected snapshot supplies current card state and next-action fields."
+    }
+  ]
+}

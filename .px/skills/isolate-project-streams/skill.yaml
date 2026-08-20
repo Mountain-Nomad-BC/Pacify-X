@@ -1,0 +1,39 @@
+{
+  "admission_record": "isolate-project-streams",
+  "body_sha256": "f9e9b72e34dccf638d7fe7022a987f23a92cea4f1e76686f1ce08bf353b998cc",
+  "contract": {
+    "available": true,
+    "sha256": "1cbe963fbb81b93c0ca0b17315b8996624bfe0ac08b9639e979eb51449e08a81",
+    "source": "registry/skill_packages/isolate-project-streams.json"
+  },
+  "description": "Enforce single-project execution sessions, scoped agent leases, context teardown, and explicit sanitized transfers. Use when starting, switching, pausing, resuming, or coordinating project work, or when checking that memory, tools, prompts, logs, and artifacts cannot cross project boundaries.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "isolate-project-streams",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/isolate-project-streams"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "project",
+    "session",
+    "lease",
+    "transfer",
+    "isolation"
+  ],
+  "version": "0.1.0"
+}

@@ -1,0 +1,9 @@
+{
+  "active_gap_id": "PX-OS-936",
+  "learned": "The newly exposed failures are assertion-scope/copy drift only: the underlying catalog shortcut is a valid duplicate action and the current graph relationship inspector is present and browser-exercised.",
+  "next_action": "Scope the tab state assertion to .catalog-tabs and assert the current relationship-inspector source contract.",
+  "unresolved_branch_gap_ids": ["PX-OS-936"],
+  "evidence": [
+    {"claim": "Both additional stale assumptions are retained in card annotation 4964.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004964"}
+  ]
+}

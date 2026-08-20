@@ -2,13 +2,13 @@
   "id": "maintain-capability-catalog",
   "version": "0.1.0",
   "status": "mapped_deferred",
-  "body": ".agents/skills/maintain-capability-catalog/SKILL.md",
+  "body": ".px/skills/maintain-capability-catalog/SKILL.md",
   "body_sha256": "61fb5dbc2972f902f7c0a4c8dba0158a3701bf0f74b35e1685ced2972eb32a72",
   "references": [
-    ".agents/skills/maintain-capability-catalog/references/capture-architecture-decisions.json",
-    ".agents/skills/maintain-capability-catalog/references/detect-workspace-capability-needs.json",
-    ".agents/skills/maintain-capability-catalog/references/distill-operational-rules.json",
-    ".agents/skills/maintain-capability-catalog/references/maintain-skill-health.json"
+    ".px/skills/maintain-capability-catalog/references/capture-architecture-decisions.json",
+    ".px/skills/maintain-capability-catalog/references/detect-workspace-capability-needs.json",
+    ".px/skills/maintain-capability-catalog/references/distill-operational-rules.json",
+    ".px/skills/maintain-capability-catalog/references/maintain-skill-health.json"
   ],
   "capability_tags": [
     "architecture-governance",

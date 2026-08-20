@@ -1,0 +1,88 @@
+{
+  "schema_version": "px.operational-gap-audit-manifest/1.0",
+  "report_id": "punch-card-system-adversarial-audit-20260816",
+  "observed_at": "2026-08-16T21:41:00Z",
+  "authority": "read-only source, canonical snapshot, tests, and current-host receipt inspection",
+  "scope": [
+    "C:/Users/Ben/.codex/attachments/9722e486-cbd2-43c1-9d2a-c8d77c4773f3/pasted-text.txt",
+    "runtime/operational_gap_ledger.py",
+    "scripts/operational_gap_ledger.py",
+    "tests/test_operational_gap_ledger.py",
+    "registry/operational_gap_ledger.snapshot.json",
+    "evidence/operational-ui-walk-current-source-20260816T213500Z/receipt.json"
+  ],
+  "finding_ids": [
+    "PCS-001",
+    "PCS-002",
+    "PCS-003",
+    "PCS-004",
+    "PCS-005",
+    "PCS-006",
+    "PCS-007",
+    "PCS-008",
+    "PCS-009",
+    "PCS-010"
+  ],
+  "findings": [
+    {
+      "finding_id": "PCS-001",
+      "summary": "Card admission accepts empty source-symbol arrays and non-ISO discovery timestamps.",
+      "source_refs": ["runtime/operational_gap_ledger.py:_validate_card"]
+    },
+    {
+      "finding_id": "PCS-002",
+      "summary": "Completion evidence is an arbitrary string array rather than structured, hash-bound evidence.",
+      "source_refs": ["runtime/operational_gap_ledger.py:_validate_card", "runtime/operational_gap_ledger.py:card_transition"]
+    },
+    {
+      "finding_id": "PCS-003",
+      "summary": "The operator CLI does not expose predecessor-safe control disposition revision or transition-admission backfill supported by the runtime.",
+      "source_refs": ["scripts/operational_gap_ledger.py:main", "runtime/operational_gap_ledger.py:append_transition_admission_backfill"]
+    },
+    {
+      "finding_id": "PCS-004",
+      "summary": "Host-owned and not-applicable boundaries lack terminal proof rules; partial stages can reach operational verification.",
+      "source_refs": ["runtime/operational_gap_ledger.py:_validate_transition_admission"]
+    },
+    {
+      "finding_id": "PCS-005",
+      "summary": "Task switches do not prove exhaustive reconciliation of newly discovered branches or bind outgoing and incoming checkpoints.",
+      "source_refs": ["runtime/operational_gap_ledger.py:work_checkpoint"]
+    },
+    {
+      "finding_id": "PCS-006",
+      "summary": "Report registration trusts caller-supplied finding IDs and does not validate them against machine-readable report content.",
+      "source_refs": ["runtime/operational_gap_ledger.py:report_registered"]
+    },
+    {
+      "finding_id": "PCS-007",
+      "summary": "Reopen transitions do not bind the contradicted prior verification/closure event, and duplicate replacement cards can conceal failed closure.",
+      "source_refs": ["runtime/operational_gap_ledger.py:card_transition", "runtime/operational_gap_ledger.py:card_relationship"]
+    },
+    {
+      "finding_id": "PCS-008",
+      "summary": "Progress reports evidence-lacking and unbound-evidence cards separately, allowing a zero required-evidence count while unbound evidence remains.",
+      "source_refs": ["runtime/operational_gap_ledger.py:project_events.progress"]
+    },
+    {
+      "finding_id": "PCS-009",
+      "summary": "Control operational dispositions lacked exact current-host 13-stage proof and surface examination conflated disposition with behavior.",
+      "source_refs": ["runtime/operational_gap_ledger.py:control_disposition", "runtime/operational_gap_ledger.py:project_events.progress"]
+    },
+    {
+      "finding_id": "PCS-010",
+      "summary": "Direct PX-controlled host effects can occur without a predecessor-bound work admission.",
+      "source_refs": ["runtime/operational_gap_ledger.py:work_admitted", "AGENTS.md"]
+    }
+  ],
+  "current_work_correction": {
+    "workflow_layout_revisioning": "PX-OS-068",
+    "workflow_authority_binding_editor": "PX-OS-069",
+    "edit_as_new_save_reopen": "PX-OS-070",
+    "agent_host_tools": "PX-OS-071",
+    "agent_memory": "PX-OS-072",
+    "agent_handoff": "PX-OS-073"
+  },
+  "certification_status": "not_started",
+  "claim_boundary": "This manifest is gap discovery and reconciliation evidence only; it is not implementation, integration, operational verification, certification, or closure."
+}

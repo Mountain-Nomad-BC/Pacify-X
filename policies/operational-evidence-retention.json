@@ -1,0 +1,32 @@
+{
+  "schema_version": "px.operational-evidence-retention/1.0",
+  "authority": "Local PX maintenance policy; it never overrides user ownership or host approval controls.",
+  "defaults": {
+    "automatic_reclamation": false,
+    "dry_run": true,
+    "hard_delete_without_verified_archive": false
+  },
+  "classes": [
+    {
+      "id": "project-map-history",
+      "source_root": ".engineering-bootstrap/project-map-history",
+      "archive_root": ".engineering-bootstrap/project-map-history-archives",
+      "retain_live": 1,
+      "command": "python -B scripts/archive_project_map_history.py --root . --keep-latest 1 --apply"
+    },
+    {
+      "id": "committed-operation-wal",
+      "source_root": ".engineering-bootstrap/operation-bus/wal/committed",
+      "archive_root": ".engineering-bootstrap/operation-bus/wal/archives",
+      "retain_live": 200,
+      "command": "python -B scripts/archive_committed_wal.py --root . --keep-latest 200 --apply"
+    }
+  ],
+  "required_gates": [
+    "target resolves below the exact admitted PX-owned root",
+    "no symlink or reparse-point input is accepted",
+    "archive membership, CRC, manifest, and every member SHA-256 verify",
+    "only archive-bound source directories are reclaimed",
+    "a hash-bound recovery receipt is retained"
+  ]
+}

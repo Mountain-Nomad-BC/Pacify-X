@@ -1,0 +1,356 @@
+{
+  "count": 50,
+  "records": [
+    {
+      "domain": "reasoning-kernel",
+      "id": "epistemic-state-manager",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/epistemic-state-manager.json",
+      "sha256": "ac26fb170e89ee4890928df8dd00fe51644171e7a22cf2baa19f548bcc398e11",
+      "when_to_use": "Use whenever material information is incomplete, conflicting, probabilistic, stale, or scope-sensitive."
+    },
+    {
+      "domain": "reasoning-kernel",
+      "id": "uncertainty-calibration-engine",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/uncertainty-calibration-engine.json",
+      "sha256": "e267d501e7262be5c1452ccbc835b22ff30e2c242bcf80430e7802cb15ef7b3d",
+      "when_to_use": "Use when repeated predictions or decisions have comparable ground-truth outcomes."
+    },
+    {
+      "domain": "reasoning-kernel",
+      "id": "contradiction-resolution-engine",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/contradiction-resolution-engine.json",
+      "sha256": "f4f704345129caed752e080111dac6564e2cccee2c74144d169462f2f694fb4c",
+      "when_to_use": "Use when sources, memory, tests, documentation, or runtime observations disagree."
+    },
+    {
+      "domain": "reasoning-kernel",
+      "id": "assumption-lineage-ledger",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/assumption-lineage-ledger.json",
+      "sha256": "bfc149f645c148e9e3bfaa127005205deae529fac9540c238dc12530b81c777e",
+      "when_to_use": "Use before architecture, planning, estimates, diagnostics, automation, or any decision whose correctness depends on unstated conditions."
+    },
+    {
+      "domain": "reasoning-kernel",
+      "id": "hypothesis-portfolio-manager",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/hypothesis-portfolio-manager.json",
+      "sha256": "e855293759a2508d14948a8775f3713d98c86f766e3638a4a88bc1c3547d58eb",
+      "when_to_use": "Use for diagnostics, incident response, research, reverse engineering, and ambiguous requirements."
+    },
+    {
+      "domain": "reasoning-kernel",
+      "id": "causal-reasoning-planner",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/causal-reasoning-planner.json",
+      "sha256": "4d355fb436a9727e8868c27c409d7c03d48e025eef7b5026a41bd542ad57ac4c",
+      "when_to_use": "Use whenever a task asks what caused an outcome or what an intervention will change."
+    },
+    {
+      "domain": "reasoning-kernel",
+      "id": "evidence-weighting-engine",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/evidence-weighting-engine.json",
+      "sha256": "420f4941cd2d08ad41824151e64f606d6ec78bd3f89a22360af4a3d90d695748",
+      "when_to_use": "Use before confidence aggregation, conflict resolution, certification, or high-impact decisions."
+    },
+    {
+      "domain": "reasoning-kernel",
+      "id": "explanation-provenance-builder",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/explanation-provenance-builder.json",
+      "sha256": "bf239c50f5d107fe08a28e0ced7c38712f906ea2e82fdc6110c12218559a8bd5",
+      "when_to_use": "Use for high-impact decisions, debugging, certification, handoff, and user-facing explanations."
+    },
+    {
+      "domain": "semantic-contracts",
+      "id": "semantic-effect-contract-designer",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/semantic-effect-contract-designer.json",
+      "sha256": "3c97fc58f4c77ace0ecd634ce273d53b352d8e369668f9007a18a8871f16e227",
+      "when_to_use": "Use when admitting or changing any capability with persistent, epistemic, or external effects."
+    },
+    {
+      "domain": "semantic-contracts",
+      "id": "state-mutation-auditor",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/state-mutation-auditor.json",
+      "sha256": "cac43041c9653d3afb16f5f73a4b6f44a49560891fcbf1a98c8985780582c5d7",
+      "when_to_use": "Use during canary runs, testing, certification, and incident investigation."
+    },
+    {
+      "domain": "semantic-contracts",
+      "id": "uncertainty-reduction-contract",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/uncertainty-reduction-contract.json",
+      "sha256": "6fe5d03e6aaa7d7e23e79a0af01dbaac7c2ba7d53206e1c9b24abf20a179ee67",
+      "when_to_use": "Use for diagnostic, retrieval, research, classification, ranking, and decision-support capabilities."
+    },
+    {
+      "domain": "semantic-contracts",
+      "id": "semantic-contract-linter",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/semantic-contract-linter.json",
+      "sha256": "57a61df4c547d4b72d7b7a4f8ede884a8fb2d77ff610a1f3e0f5e57c32f07286",
+      "when_to_use": "Use in pre-commit, CI, capability admission, orchestration validation, and release certification."
+    },
+    {
+      "domain": "introspection",
+      "id": "reasoning-trace-recorder",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/reasoning-trace-recorder.json",
+      "sha256": "9d7b742c9d50d58d6f18399c13bbdbfaffdd41d3ca9c662ea6805c1f59825653",
+      "when_to_use": "Use for multi-step, autonomous, expensive, or high-impact workflows."
+    },
+    {
+      "domain": "introspection",
+      "id": "decision-path-reconstructor",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/decision-path-reconstructor.json",
+      "sha256": "bd5ece59cac324bbe9270e663fb5bb41e6b5341ce53b20e1cb54cbad00dd8be7",
+      "when_to_use": "Use after failures, surprises, audits, disputes, and human handoff."
+    },
+    {
+      "domain": "introspection",
+      "id": "memory-influence-auditor",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/memory-influence-auditor.json",
+      "sha256": "d52f4808bcc030a26f67662b5d36326fd7cc5444557aeb048fdcd714af0e9418",
+      "when_to_use": "Use when stale, poisoned, cross-project, or overgeneralized memory may have influenced behavior."
+    },
+    {
+      "domain": "introspection",
+      "id": "alternative-path-analyzer",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/alternative-path-analyzer.json",
+      "sha256": "eb15453201317df2562dba9b245f222af58c81b60300f3698bba99e97d6e7a53",
+      "when_to_use": "Use for costly, risky, failed, or repeatedly suboptimal decisions."
+    },
+    {
+      "domain": "introspection",
+      "id": "introspection-report-builder",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/introspection-report-builder.json",
+      "sha256": "efd53ad57c340bd1459c5cb32c4542384ce62dbe888fc6c10c337136bb1fc2ba",
+      "when_to_use": "Use for certification, incident review, debugging, external validation, and handoff."
+    },
+    {
+      "domain": "capability-genome",
+      "id": "capability-genome-builder",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/capability-genome-builder.json",
+      "sha256": "0658fad9a496f710cebfe31267faf2517e521ac305275f0b1ae2cd1d45562b0d",
+      "when_to_use": "Use during integration, skill admission, architecture review, large imports, and release certification."
+    },
+    {
+      "domain": "capability-genome",
+      "id": "capability-relation-inferencer",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/capability-relation-inferencer.json",
+      "sha256": "8e34d7ee52002d4e8b750a2d69fb0b8197a0745aa6c49082ac6bc706de66241d",
+      "when_to_use": "Use after corpus imports, generated skill waves, refactors, and merges."
+    },
+    {
+      "domain": "capability-genome",
+      "id": "duplication-supersession-resolver",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/duplication-supersession-resolver.json",
+      "sha256": "7848f49744e5d4dd6cb1d2d0c87f8db99e662425783b7c9ae7fff4a68d3bb457",
+      "when_to_use": "Use before integrating external packs or deleting apparently redundant capabilities."
+    },
+    {
+      "domain": "capability-genome",
+      "id": "capability-dependency-health",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/capability-dependency-health.json",
+      "sha256": "f68954018e21db6fbbf3f2fef0535df20e34c3cfc0da81b897d3feda9d040706",
+      "when_to_use": "Use nightly, before releases, and after integrations or registry changes."
+    },
+    {
+      "domain": "capability-genome",
+      "id": "capability-gap-mutation-planner",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/capability-gap-mutation-planner.json",
+      "sha256": "3a34d25425a4b67f9676688363a85df2f9aef5060cc01a003698a0e4c84413b7",
+      "when_to_use": "Use when admitted capabilities cannot satisfy a workflow contract."
+    },
+    {
+      "domain": "agent-genetics",
+      "id": "agent-cognitive-profile-designer",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/agent-cognitive-profile-designer.json",
+      "sha256": "cd69bbb2ab64e7dd38b169cdce5a0fcbd4f5c7e2975b28aea33e00ab5b71008a",
+      "when_to_use": "Use when registering a model, provider, local agent, verifier, or specialized worker."
+    },
+    {
+      "domain": "agent-genetics",
+      "id": "agent-profile-router",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/agent-profile-router.json",
+      "sha256": "0d89d3af1e21aec38eadd3e6d32182af9f1520ef9a8542a7470c6cbaacaa7371",
+      "when_to_use": "Use before assigning significant agent work."
+    },
+    {
+      "domain": "agent-genetics",
+      "id": "agent-risk-budgeter",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/agent-risk-budgeter.json",
+      "sha256": "cc4a29042b2ef00bb89590e817bdf11dfd6cb76e84f584a96206d3ae9d129745",
+      "when_to_use": "Use before tool-using or autonomous execution."
+    },
+    {
+      "domain": "agent-genetics",
+      "id": "agent-failure-mode-calibrator",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/agent-failure-mode-calibrator.json",
+      "sha256": "4a181553a5b851cc67b953c3d65cc8cef513a1daa5e0e97eb19c050c0d666adc",
+      "when_to_use": "Use after evaluation campaigns, provider changes, model updates, or incidents."
+    },
+    {
+      "domain": "agent-genetics",
+      "id": "multi-agent-composition-planner",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/multi-agent-composition-planner.json",
+      "sha256": "8f1e6822fbbab9fa905c6d01c9a5b8163f6d3f751e1e3b1131363c0c98749ae2",
+      "when_to_use": "Use when planning, execution, critique, and verification require different profiles."
+    },
+    {
+      "domain": "optimization",
+      "id": "closed-loop-system-optimizer",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/closed-loop-system-optimizer.json",
+      "sha256": "29c252490b4e9316d0d592fbfef9f615045884708aab7d9761fec7296bf02f70",
+      "when_to_use": "Use only after a stable baseline and measurable objectives exist."
+    },
+    {
+      "domain": "optimization",
+      "id": "optimization-experiment-manager",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/optimization-experiment-manager.json",
+      "sha256": "f4629e475c3650163d69aca75dca7e8e4ff27afd2354c59a6b10ba083068fb92",
+      "when_to_use": "Use before any automated optimization, canary, or A/B comparison."
+    },
+    {
+      "domain": "optimization",
+      "id": "pareto-improvement-selector",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/pareto-improvement-selector.json",
+      "sha256": "b3ad4710eb8492ef46c15a0c6bbb290017a4aaa3669427f27fb5b2f30ae82757",
+      "when_to_use": "Use when accuracy, latency, cost, memory, safety, and maintainability compete."
+    },
+    {
+      "domain": "optimization",
+      "id": "regression-rollback-controller",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/regression-rollback-controller.json",
+      "sha256": "15cc44eba2d0fe93a265fa27887ce55834954873fd98dee00aed2aec92900ad4",
+      "when_to_use": "Use after any workflow, model, tool, retrieval, or routing change is promoted."
+    },
+    {
+      "domain": "optimization",
+      "id": "workflow-autotuning-advisor",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/workflow-autotuning-advisor.json",
+      "sha256": "5c643fc9d6584f7f47a1b8ef750cae8879c6e7fc5f4bdd3976e4c72b4d15c5aa",
+      "when_to_use": "Use when a workflow is correct but inefficient, unstable, or wasteful."
+    },
+    {
+      "domain": "theory-induction",
+      "id": "concept-cluster-inducer",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/concept-cluster-inducer.json",
+      "sha256": "76f6738b2db47c65b9e45f17c8d388ee3ec226bcb8675b99be30aca87fd6f44d",
+      "when_to_use": "Use when many capabilities appear to describe overlapping mechanisms."
+    },
+    {
+      "domain": "theory-induction",
+      "id": "shared-mechanism-extractor",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/shared-mechanism-extractor.json",
+      "sha256": "9118c7b087abd05f45e7ebbd6a038f8452b35de8f4d90eb95a950311541bc216",
+      "when_to_use": "Use before merging related skills or creating a higher-order abstraction."
+    },
+    {
+      "domain": "theory-induction",
+      "id": "meta-capability-proposer",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/meta-capability-proposer.json",
+      "sha256": "d85908bab58ca155f518b3ae26f928360ff59d7f0d322d0a9f8259ff2dad380f",
+      "when_to_use": "Use after stable shared mechanisms recur across domains or projects."
+    },
+    {
+      "domain": "theory-induction",
+      "id": "theory-validation-gate",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/theory-validation-gate.json",
+      "sha256": "bc71c100641a6f0e9da3969b6c45900b04bbb1f56bbafc7a6ddf178d6da73a75",
+      "when_to_use": "Use before promoting an inferred abstraction into canonical architecture."
+    },
+    {
+      "domain": "engineering-dna",
+      "id": "engineering-dna-profiler",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/engineering-dna-profiler.json",
+      "sha256": "44d234196a910bb54f786172ef84271d801e48afb58047f7513645584a39b357",
+      "when_to_use": "Use after enough project history exists to distinguish patterns from isolated events."
+    },
+    {
+      "domain": "engineering-dna",
+      "id": "team-pattern-transfer-controller",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/team-pattern-transfer-controller.json",
+      "sha256": "5d9b180f309b8f36943684e73f0b1062fb870daa41c6003823b7afa35293d3e1",
+      "when_to_use": "Use during project onboarding, bootstrap, and shared-capability promotion."
+    },
+    {
+      "domain": "engineering-dna",
+      "id": "architecture-habit-detector",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/architecture-habit-detector.json",
+      "sha256": "f7d6286f2a03b27a4ad7bd0f003b05f0ce9a727e234e9b6a0b0450fe4d33941b",
+      "when_to_use": "Use during architecture review, modernization, and repeated design disputes."
+    },
+    {
+      "domain": "engineering-dna",
+      "id": "anti-pattern-lineage-tracer",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/anti-pattern-lineage-tracer.json",
+      "sha256": "e68f3cd87a3408eccded46ee8ff68d5c06010e4b03dadbd6e440cffeaaa0825f",
+      "when_to_use": "Use when the same failure class repeatedly reappears after local fixes."
+    },
+    {
+      "domain": "knowledge-physics",
+      "id": "knowledge-dynamics-modeler",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/knowledge-dynamics-modeler.json",
+      "sha256": "47b515d1ae5740c8a5af1dac4907370e75bca073fa31831978cc80447429c42d",
+      "when_to_use": "Use to operate a large, evolving capability and knowledge ecosystem."
+    },
+    {
+      "domain": "knowledge-physics",
+      "id": "trust-decay-controller",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/trust-decay-controller.json",
+      "sha256": "23d5fc58961e69b801b72eced48ddc9bd652503cc0e899ea9d5831044b61dd1c",
+      "when_to_use": "Use continuously for time-sensitive knowledge and after dependency or source changes."
+    },
+    {
+      "domain": "knowledge-physics",
+      "id": "capability-entropy-monitor",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/capability-entropy-monitor.json",
+      "sha256": "49b756a50a8531d0e241a0eef91f34c8c40d5d04bdc30cae7de0460859b76c6d",
+      "when_to_use": "Use after imports, skill-generation waves, large merges, and before release."
+    },
+    {
+      "domain": "knowledge-physics",
+      "id": "capability-attractor-detector",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/capability-attractor-detector.json",
+      "sha256": "627592b9e023606559fb44208ee4a0d2afbe5c4a2e8d7f3330e5c96dfeaa9aeb",
+      "when_to_use": "Use when certain skills or bundles become central to many workflows."
+    },
+    {
+      "domain": "knowledge-physics",
+      "id": "contradiction-pressure-monitor",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/contradiction-pressure-monitor.json",
+      "sha256": "3e9ad26cf537d58dd803ee199603907a170817772b72da40b4b768196c122856",
+      "when_to_use": "Use in rapidly changing, multi-source, or contested domains."
+    },
+    {
+      "domain": "knowledge-physics",
+      "id": "knowledge-stability-simulator",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/knowledge-stability-simulator.json",
+      "sha256": "4688e5caa04fe68a4494337195156e29880a543b17d300d2c7026dc67a9c6ded",
+      "when_to_use": "Use before major source removals, policy changes, integrations, or recertification."
+    },
+    {
+      "domain": "knowledge-physics",
+      "id": "revalidation-scheduler",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/revalidation-scheduler.json",
+      "sha256": "0bfa9519098397d2bc9d1515e4bd5d29af3a98eea861780360f4202437cc8cf6",
+      "when_to_use": "Use nightly, after dependency changes, and before release."
+    },
+    {
+      "domain": "release-hygiene",
+      "id": "cache-transient-release-cleaner",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/cache-transient-release-cleaner.json",
+      "sha256": "044ae50f23d9f62fa2c181cf1294453275e5e9aecacae3d889d0c06b2d350d23",
+      "when_to_use": "Use before every public or certified archive."
+    },
+    {
+      "domain": "release-hygiene",
+      "id": "integration-conflict-mapper",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/integration-conflict-mapper.json",
+      "sha256": "1c7c2a81b304206d70f6ac6820cf094522fd4bf28aaedd351b679448b66f76f6",
+      "when_to_use": "Use before applying the pack to an existing bootstrap."
+    },
+    {
+      "domain": "release-hygiene",
+      "id": "metacognitive-certification",
+      "path": ".px/skills/govern-metacognitive-evolution/references/capabilities/metacognitive-certification.json",
+      "sha256": "95b4c43644bf7a9908ef0f95aab4d45f94edaec5b3e3a4c9dab85d95568e999f",
+      "when_to_use": "Use before integration, release, and after every material change."
+    }
+  ],
+  "schema_version": "1.0"
+}

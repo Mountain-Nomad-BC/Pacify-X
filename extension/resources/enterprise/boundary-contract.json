@@ -1,0 +1,26 @@
+{
+  "schema_version": "px.ms-enterprise.boundary/1.0",
+  "canonical_catalog": "Pacify-X registry/ms_enterprise_catalog.json via runtime.dashboard_api",
+  "id_prefix": "ms-enterprise/",
+  "project_state_root": ".engineering-bootstrap/enterprise",
+  "project_state_schema": "px.ms-enterprise.state/1.0",
+  "defaults": {
+    "network_egress": "deny",
+    "mutation": "deny",
+    "credential_reads": "deny",
+    "billable_services": "disabled",
+    "connectors": "disabled-or-not-installed"
+  },
+  "separate_namespaces": [
+    "enterprise pack state",
+    "enterprise target aliases",
+    "authentication identity",
+    "billing identity",
+    "connector readiness",
+    "enterprise receipts",
+    "canonical project memory"
+  ],
+  "memory_import": "explicit-reviewed-promotion-only",
+  "cloud_connection_implemented": false,
+  "paid_api_configuration_included": false
+}

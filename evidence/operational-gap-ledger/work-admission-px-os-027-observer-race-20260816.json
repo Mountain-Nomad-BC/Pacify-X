@@ -1,0 +1,18 @@
+{
+  "gap_id": "PX-OS-027",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004939",
+  "authority": "Exact lifecycle evidence authorizes repair of the detached terminal-observer publication race.",
+  "effect": "write",
+  "scope": [
+    "runtime/studio_terminal_observer.py",
+    "tests/test_workflow_studio.py"
+  ],
+  "expected_effect": "Observer startup waits only for its exact active resource identity within a fixed bound, then preserves existing fail-closed validation and terminal publication.",
+  "rollback": "Isolated observer handshake and lifecycle regression coverage; revert through explicit patch if process custody or failure closure regresses.",
+  "evidence": [
+    {
+      "claim": "Immediate observer-race checkpoint.",
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004939"
+    }
+  ]
+}

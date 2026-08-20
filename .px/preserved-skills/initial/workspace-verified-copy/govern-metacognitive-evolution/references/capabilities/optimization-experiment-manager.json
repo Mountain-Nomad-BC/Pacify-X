@@ -1,0 +1,67 @@
+{
+  "dependencies": [
+    "run-evidence-campaigns",
+    "provenance-signature-verifier"
+  ],
+  "domain": "optimization",
+  "failure_modes": [
+    "metric gaming",
+    "moving benchmark",
+    "single-run promotion",
+    "rollback that was never tested"
+  ],
+  "formula_refs": [
+    "effect-size",
+    "confidence-interval-reference",
+    "normalized-improvement"
+  ],
+  "id": "optimization-experiment-manager",
+  "inputs": [
+    "frozen baseline",
+    "candidate change",
+    "metrics, guardrails, environment, and rollback"
+  ],
+  "invariants": [
+    "No optimization without a stable baseline.",
+    "Safety and correctness constraints cannot be silently traded away.",
+    "Negative results and failed candidates are retained."
+  ],
+  "outputs": [
+    "reproducible experiment",
+    "Pareto/guardrail comparison",
+    "promotion, defer, reject, or rollback decision"
+  ],
+  "procedure": [
+    "Freeze baseline, data, environment, objective hierarchy, and falsifier.",
+    "Generate one bounded reversible candidate.",
+    "Run repeated controlled trials with full evidence.",
+    "Compare target metrics, guardrails, cost, and regression surface.",
+    "Promote only with reproducible evidence and tested rollback."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Create reproducible experiment cards with frozen data, environment fingerprints, seeds, hypotheses, falsifiers, metrics, guardrails, budgets, and rollback artifacts.",
+  "title": "Optimization Experiment Manager",
+  "version": "1.0.0",
+  "when_to_use": "Use before any automated optimization, canary, or A/B comparison."
+}

@@ -105,6 +105,100 @@ def validate_event_ledger(
     }
 
 
+def read_event_tail(
+    ledger: Path, *, limit: int = 100, require_head: bool = True
+) -> dict[str, object]:
+    """Stream the valid event prefix and return a bounded tail plus ancestry health."""
+    if limit < 0 or limit > 10_000:
+        raise ValueError("event tail limit must be between zero and 10000")
+    ledger = ledger.resolve()
+    event_paths = tuple(sorted(ledger.glob("*.json"))) if ledger.is_dir() else ()
+    if not event_paths:
+        return {
+            "schema_version": "1.0",
+            "events": [],
+            "health": {
+                "status": "missing",
+                "valid_prefix_count": 0,
+                "failed_file": None,
+                "ignored_suffix_files": 0,
+                "reason": None,
+                "ancestry_head_sha256": ZERO_SHA256,
+            },
+        }
+    required = {
+        "schema_version",
+        "sequence",
+        "kind",
+        "created_utc",
+        "payload",
+        "payload_sha256",
+        "previous_event_sha256",
+        "event_sha256",
+    }
+    previous = ZERO_SHA256
+    records: list[dict[str, object]] = []
+    failure: tuple[str, str] | None = None
+    for expected, path in enumerate(event_paths, start=1):
+        try:
+            record = json.loads(path.read_text(encoding="utf-8"))
+            if not isinstance(record, dict) or set(record) != required:
+                raise ValueError("event fields are not exact")
+            if record.get("sequence") != expected or not path.name.startswith(
+                f"{expected:08d}-"
+            ):
+                raise ValueError("event sequence is not contiguous")
+            payload = record.get("payload")
+            if not isinstance(payload, Mapping) or record.get("payload_sha256") != _sha(
+                payload
+            ):
+                raise ValueError("payload digest mismatch")
+            if record.get("previous_event_sha256") != previous:
+                raise ValueError("previous-event link mismatch")
+            if record.get("event_sha256") != _event_hash(record):
+                raise ValueError("event digest mismatch")
+        except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
+            reason = (
+                "truncated-or-malformed-event"
+                if isinstance(error, json.JSONDecodeError)
+                else str(error)
+            )
+            failure = (path.name, reason)
+            break
+        previous = str(record["event_sha256"])
+        records.append(record)
+    if failure is None and require_head:
+        head_path, anchors = _paths(ledger)
+        expected_head = {
+            "schema_version": "1.0",
+            "sequence": len(records),
+            "event_sha256": previous,
+        }
+        try:
+            head = json.loads(head_path.read_text(encoding="utf-8"))
+            anchor = anchors / f"{len(records):08d}-{previous}.json"
+            if head != expected_head or json.loads(
+                anchor.read_text(encoding="utf-8")
+            ) != expected_head:
+                raise ValueError("protected ledger head mismatch")
+        except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
+            failure = (head_path.name, str(error))
+    failed_index = len(records)
+    health = {
+        "status": "degraded" if failure else "healthy",
+        "valid_prefix_count": len(records),
+        "failed_file": failure[0] if failure else None,
+        "ignored_suffix_files": len(event_paths) - failed_index if failure else 0,
+        "reason": failure[1] if failure else None,
+        "ancestry_head_sha256": previous,
+    }
+    return {
+        "schema_version": "1.0",
+        "events": records[-limit:] if limit else [],
+        "health": health,
+    }
+
+
 def _publish_head(ledger: Path, sequence: int, event_sha256: str) -> None:
     head_path, anchors = _paths(ledger)
     anchors.mkdir(parents=True, exist_ok=True)

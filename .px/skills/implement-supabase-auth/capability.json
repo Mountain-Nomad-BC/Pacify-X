@@ -1,0 +1,40 @@
+{
+  "admission_record": "implement-supabase-auth",
+  "body_sha256": "56b9e42676cee3e94a423bc720ee63ea24362fcc045bee9e67e3126cd3d2c95d",
+  "contract": {
+    "available": true,
+    "sha256": "6117c20ba3ac3193cc0a6032705af9013376b00331682148078a0f77bdd0c937",
+    "source": "registry/skill_packages/implement-supabase-auth.json"
+  },
+  "description": "Implement Supabase Auth with correct client/server sessions, redirects, JWT/RLS integration, lifecycle, and abuse controls.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "implement-supabase-auth",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/implement-supabase-auth"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "authentication",
+    "jwt",
+    "oauth",
+    "redirects",
+    "ssr",
+    "supabase"
+  ],
+  "version": "1.0.0"
+}

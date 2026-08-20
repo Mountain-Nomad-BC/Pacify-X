@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-936",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004958",
+  "authority": "The registered stale-contract gap authorizes correction of exactly two superseded assertions.",
+  "effect": "write",
+  "scope": ["extension/tests/extension-contract.test.js"],
+  "expected_effect": "Owned source checks validate version 0.6.19 and visible advanced surfaces while retaining all functional assertions.",
+  "rollback": "Two assertion edits only; revert through explicit patch if package intent changes.",
+  "evidence": [{"claim": "Immediate stale-contract checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004958"}]
+}

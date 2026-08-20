@@ -25,7 +25,7 @@ from .project_control_plane import (
     promote_capability,
     quarantine_candidates,
     record_project_transition,
-    register_agent,
+    validate_agent_specification,
     register_existing_project,
     recover_incident,
     switch_project,
@@ -266,12 +266,12 @@ def _path(context: ProjectStreamContext, name: str) -> Path:
     return value
 
 
-def agent_create_validate(context: ProjectStreamContext) -> Mapping[str, object]:
+def agent_specification_validate(context: ProjectStreamContext) -> Mapping[str, object]:
     specification = context.payload.get("specification")
     if not isinstance(specification, Mapping):
         raise ValueError("agent workflow requires specification mapping")
     return {
-        "agent_active_or_rejected": register_agent(
+        "validated_agent_candidate": validate_agent_specification(
             _path(context, "ledger"), specification
         )
     }
@@ -479,7 +479,7 @@ def workstream_plan_dispatch(context: ProjectStreamContext) -> Mapping[str, obje
 
 
 BUILTIN_HANDLERS: dict[str, Handler] = {
-    "agent_create_validate": agent_create_validate,
+    "agent_create_validate": agent_specification_validate,
     "chaos_resilience_cycle": chaos_resilience_cycle,
     "cross_project_transfer": cross_project_transfer,
     "guarded_change": guarded_change,

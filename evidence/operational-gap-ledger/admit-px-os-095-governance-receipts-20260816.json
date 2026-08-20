@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-095",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005018",
+  "effect": "write",
+  "scope": [".engineering-bootstrap/test-evidence/sections/testing-governance.json", ".engineering-bootstrap/resource-lifecycle/ledger.json"],
+  "authority": "The governed test runner owns exact-input section and resource-lifecycle receipts.",
+  "expected_effect": "Retain the current testing-governance result and reconciled child-process/resource evidence.",
+  "rollback": "Receipts are evidence; failed results remain retained and are never replaced by a completion claim.",
+  "evidence": [{"claim": "Immediate current-index checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005018"}]
+}

@@ -1,0 +1,38 @@
+{
+  "admission_record": "paper-mechanism-extractor",
+  "body_sha256": "ac4463c1adf019ef167469f9ec90403011339d4be5791e597a2e9b25f577dc8e",
+  "contract": {
+    "available": true,
+    "sha256": "67e5eeb30b3dace5552bdaea698866f680f3094b833b93fdca4d13797b5e02ef",
+    "source": "registry/skill_packages/paper-mechanism-extractor.json"
+  },
+  "description": "Extract the actual mechanism, assumptions, data, evidence, and limitations from a paper. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "paper-mechanism-extractor",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/paper-mechanism-extractor"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "extractor",
+    "mechanism",
+    "paper",
+    "research-ops"
+  ],
+  "version": "0.1.0"
+}

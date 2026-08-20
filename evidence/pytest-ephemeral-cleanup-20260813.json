@@ -1,0 +1,46 @@
+{
+  "schema_version": "px.pytest-ephemeral-cleanup/1.0",
+  "created_utc": "2026-08-13T18:36:58.7724702Z",
+  "authority": "explicit_user_request_2026-08-13",
+  "root": "${USER_TEMP}\\pytest-of-ben",
+  "classification": "ephemeral",
+  "hard_delete": true,
+  "protected_data_touched": false,
+  "removed_target_count": 14,
+  "removed_file_count": 149393,
+  "logical_bytes_reclaimed": 26396919814,
+  "reparse_points_removed": 1,
+  "retained": [
+    {
+      "path": "${USER_TEMP}\\pytest-of-ben\\pytest-1622",
+      "reason": "UnauthorizedAccessException",
+      "message": "Access to the path '${USER_TEMP}\\pytest-of-ben\\pytest-1622' is denied."
+    },
+    {
+      "path": "${USER_TEMP}\\pytest-of-ben\\pytest-1827",
+      "reason": "NullReferenceException",
+      "message": "Object reference not set to an instance of an object."
+    }
+  ],
+  "retained_count": 2,
+  "root_absent": false,
+  "free_bytes_before": 3213328384,
+  "free_bytes_after": 29952905216,
+  "free_bytes_gained": 26739576832,
+  "locator_redaction": {
+    "schema_version": "px.host-locator-redaction/1.0",
+    "host_paths_removed": true,
+    "portable_tokens": [
+      "${PROJECT_ROOT}",
+      "${USER_HOME}",
+      "${USER_TEMP}"
+    ],
+    "semantic_fields_preserved": true
+  },
+  "evidence_classification": {
+    "class": "historical_forensic_cleanup_record",
+    "current_release_authority": false,
+    "accounting_independently_validated": false,
+    "limitation": "Retained/remaining objects and filesystem logical-byte accounting prevent this historical receipt from proving a clean current release tree."
+  }
+}

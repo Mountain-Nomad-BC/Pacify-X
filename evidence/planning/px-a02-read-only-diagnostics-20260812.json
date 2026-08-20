@@ -1,0 +1,46 @@
+{
+  "schema_version": "px.card-evidence/1.0",
+  "card_id": "A02",
+  "status": "accepted",
+  "acceptance": {
+    "wal_inspection_creates_paths": false,
+    "wal_inspection_acquires_lock": false,
+    "wal_inspection_applies_recovery": false,
+    "pending_recovery_reported": true,
+    "committed_target_drift_fails_closed": true,
+    "reconciler_callbacks_receive_apply_mode": true,
+    "doctor_degraded_is_operable_not_ready": true,
+    "git_tracked_and_untracked_counted": true
+  },
+  "artifacts": [
+    {"path": "runtime/wal_transaction.py", "sha256": "ba42f568f7cdcacf06b4afa72ea6ee7423ada9f7392f1f0b74f5b59107f43723"},
+    {"path": "runtime/recovery.py", "sha256": "38c0e64e410c473cbed0fda7f95da3f3820456df8d7b367c61a5a356d7b2a4ae"},
+    {"path": "runtime/px_doctor.py", "sha256": "a8987300c376b2937f5124329e2c87ccac4b373e61549b37b109a1dc73a3e073"},
+    {"path": "tests/test_wal_transaction.py", "sha256": "89b348bfd2c1362f86a2285c1319c05babaea3dca8a89709dd461b3adb096ed9"},
+    {"path": "tests/test_recovery_coordinator_retention.py", "sha256": "8b023b2afccc61afab629981484e6104906ad7062ffdea9bddafa6ba91b8e14c"},
+    {"path": "tests/test_px_doctor.py", "sha256": "4fa46c846cc79d0239af1fddee422bccf08e9e8f2e74b8516c1f8a54ea911805"}
+  ],
+  "validation": {
+    "ruff": "passed",
+    "focused": "28 passed in 10.98s",
+    "runtime_cli_validate": {"valid": true, "active_count": 6, "errors": []},
+    "live_doctor": {
+      "overall_state": "degraded",
+      "operable": true,
+      "ready": false,
+      "certification_ready": false,
+      "wal_mode": "dry_run",
+      "tracked_changes": 51,
+      "untracked_files": 3410
+    },
+    "mandated_full_unittest": {
+      "tests": 477,
+      "seconds": 467.207,
+      "failures": 6,
+      "errors": 1,
+      "a02_regressions": 0,
+      "disposition": "remaining current-tree/package/state/cache failures stay open under A03, A05, A07, and A08"
+    },
+    "focused_release_audit_retry": "timed out at 184s; no completion claim"
+  }
+}

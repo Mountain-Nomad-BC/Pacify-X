@@ -34,12 +34,36 @@ def test_generated_skill_projection_is_complete_and_idempotent():
         for values in config["tool"]["setuptools"]["data-files"].values()
         for item in values
     }
-    for skill in (ROOT / ".agents/skills").iterdir():
+    for skill in (ROOT / ".px/skills").iterdir():
         if not skill.is_dir() or skill.name in generator.EXISTING_MANUAL_SKILLS:
             continue
         assert {
             item.relative_to(ROOT).as_posix() for item in generator._owned_files(skill)
         } <= declared
+    for facade in (ROOT / ".px/skills").iterdir():
+        if not facade.is_dir():
+            continue
+        facade_files = {
+            item.relative_to(ROOT).as_posix()
+            for item in generator._owned_files(facade)
+        }
+        assert facade_files <= declared
+        assert any(
+            target.startswith("share/engineering-bootstrap/.px/skills/")
+            and facade.name in target
+            for target in config["tool"]["setuptools"]["data-files"]
+        )
+
+
+def test_generator_replaces_a_prior_generated_section_without_duplicate_keys():
+    generator = load_generator()
+    current = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    generated = "\n".join(generator._generated_lines())
+    duplicated = current.replace(generator.START, generated + "\n" + generator.START, 1)
+    rendered = generator.render(duplicated)
+    tomllib.loads(rendered)
+    assert rendered.count(generator.START) == 1
+    assert rendered.count('"share/engineering-bootstrap/.px/skills/acquire-install-n8n" =') == 1
 
 
 def test_nested_non_markdown_skill_resources_are_projected():
@@ -47,13 +71,41 @@ def test_nested_non_markdown_skill_resources_are_projected():
     rendered = generator.render((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
     nested = [
         path.relative_to(ROOT).as_posix()
-        for path in (ROOT / ".agents/skills").glob("*/references/**/*")
+        for path in (ROOT / ".px/skills").glob("*/references/**/*")
         if path.is_file() and path.suffix.casefold() not in {".md"}
     ]
     assert nested
     for relative in nested:
         if relative.split("/")[2] not in generator.EXISTING_MANUAL_SKILLS:
             assert f'"{relative}"' in rendered
+
+
+def test_future_skill_overlay_renders_canonical_paths_before_publication(tmp_path):
+    generator = load_generator()
+    (tmp_path / ".px/skills/existing").mkdir(parents=True)
+    (tmp_path / ".px/skills/existing/SKILL.md").write_text("# Existing\n", encoding="utf-8")
+    staged = tmp_path / ".engineering-bootstrap/staged/demo"
+    staged.mkdir(parents=True)
+    (staged / "SKILL.md").write_text("# Future\n", encoding="utf-8")
+    (staged / "resources").mkdir()
+    (staged / "resources/data.json").write_text("{}\n", encoding="utf-8")
+    current = '[tool.setuptools.data-files]\nplaceholder = ["README.md"]\n'
+
+    rendered = generator.render(
+        current,
+        tmp_path,
+        skill_overlays={"demo": staged},
+    )
+
+    parsed = tomllib.loads(rendered)
+    values = {
+        item
+        for files in parsed["tool"]["setuptools"]["data-files"].values()
+        for item in files
+    }
+    assert ".px/skills/demo/SKILL.md" in values
+    assert ".px/skills/demo/resources/data.json" in values
+    assert not any(".engineering-bootstrap/staged" in item for item in values)
 
 
 def test_canonical_manifest_proves_exact_skill_source_projection():

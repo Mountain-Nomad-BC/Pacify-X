@@ -1,0 +1,60 @@
+{
+  "count": 9,
+  "records": [
+    {
+      "id": "ai-bom",
+      "path": ".px/skills/secure-agent-supply-chain/references/scripts/ai-bom.json",
+      "sha256": "548e09bf733436e8d937776e1accc64b6e66768a50dc89fb28dd9c5b5bfbafbd",
+      "trigger": "Use when the requested outcome is ai bom or when that outcome is a required dependency."
+    },
+    {
+      "id": "deterministic-archive",
+      "path": ".px/skills/secure-agent-supply-chain/references/scripts/deterministic-archive.json",
+      "sha256": "f5e1d6cdee452d233037cef94d2a8de51bcce1beda320705a998b1492cc72baa",
+      "trigger": "Use when the requested outcome is deterministic archive or when that outcome is a required dependency."
+    },
+    {
+      "id": "prompt-injection-scanner",
+      "path": ".px/skills/secure-agent-supply-chain/references/scripts/prompt-injection-scanner.json",
+      "sha256": "8dd9d0a3283394724bd1e2292bad405fd236ace6fab2d28d1e095363c88ec718",
+      "trigger": "Use when the requested outcome is prompt injection scanner or when that outcome is a required dependency."
+    },
+    {
+      "id": "provenance-generator",
+      "path": ".px/skills/secure-agent-supply-chain/references/scripts/provenance-generator.json",
+      "sha256": "a51adc4da685364777df0384a0a0ce3c7bf787761fb161cff11686aa69a486b9",
+      "trigger": "Use when the requested outcome is provenance generator or when that outcome is a required dependency."
+    },
+    {
+      "id": "sandbox-profile",
+      "path": ".px/skills/secure-agent-supply-chain/references/scripts/sandbox-profile.json",
+      "sha256": "6c2114c359d4ab6587b9a07a702f1468aec9497541232dd9b3f960fbc7ed9ae9",
+      "trigger": "Use when the requested outcome is sandbox profile or when that outcome is a required dependency."
+    },
+    {
+      "id": "sbom-lite",
+      "path": ".px/skills/secure-agent-supply-chain/references/scripts/sbom-lite.json",
+      "sha256": "4be940b2501a87bffa5cc2036a2c4f7ec73dd17e88079f9cf039436c23e39c68",
+      "trigger": "Use when the requested outcome is sbom lite or when that outcome is a required dependency."
+    },
+    {
+      "id": "secret-scanner",
+      "path": ".px/skills/secure-agent-supply-chain/references/scripts/secret-scanner.json",
+      "sha256": "e647a897278f67210e3fca950fa4c581b6158fc1b7f173a6f704a14c0c6bf552",
+      "trigger": "Use when the requested outcome is secret scanner or when that outcome is a required dependency."
+    },
+    {
+      "id": "threat-model",
+      "path": ".px/skills/secure-agent-supply-chain/references/scripts/threat-model.json",
+      "sha256": "ade982f571212069fd865c6c32c9d7f9aa833d0fd66edb8f016d0b89eb217cf9",
+      "trigger": "Use when the requested outcome is threat model or when that outcome is a required dependency."
+    },
+    {
+      "id": "tool-policy-enforcer",
+      "path": ".px/skills/secure-agent-supply-chain/references/scripts/tool-policy-enforcer.json",
+      "sha256": "3bc686bf25808e6889f5382fe644acd23b8b6c1e018967b070afe861b7e455de",
+      "trigger": "Use when the requested outcome is tool policy enforcer or when that outcome is a required dependency."
+    }
+  ],
+  "schema_version": "1.0"
+}

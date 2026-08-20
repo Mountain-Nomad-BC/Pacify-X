@@ -1,0 +1,54 @@
+{
+  "count": 8,
+  "records": [
+    {
+      "id": "agents-md-generator",
+      "path": ".px/skills/analyze-repository-intelligence/references/scripts/agents-md-generator.json",
+      "sha256": "9758cfe299567794bc068b3f1dc5e455903f36d9d2de5c94fd31f7ff4dfbc728",
+      "trigger": "Use when the requested outcome is agents md generator or when that outcome is a required dependency."
+    },
+    {
+      "id": "change-impact",
+      "path": ".px/skills/analyze-repository-intelligence/references/scripts/change-impact.json",
+      "sha256": "55d4521aa7722417e00aa351e82ce3fd00c35c3e7f6cb114554473d4a6914e66",
+      "trigger": "Use when the requested outcome is change impact or when that outcome is a required dependency."
+    },
+    {
+      "id": "config-trace",
+      "path": ".px/skills/analyze-repository-intelligence/references/scripts/config-trace.json",
+      "sha256": "6c974bf8809ce6fc0d8fc3eae699a906586457192c488f73922ede07a8b8e3dc",
+      "trigger": "Use when the requested outcome is config trace or when that outcome is a required dependency."
+    },
+    {
+      "id": "patch-scope-guard",
+      "path": ".px/skills/analyze-repository-intelligence/references/scripts/patch-scope-guard.json",
+      "sha256": "725e05bd394484e2be29b0b77f8d5b6298c6c61365ce10e4009d534794da7e1b",
+      "trigger": "Use when the requested outcome is patch scope guard or when that outcome is a required dependency."
+    },
+    {
+      "id": "repo-mapper",
+      "path": ".px/skills/analyze-repository-intelligence/references/scripts/repo-mapper.json",
+      "sha256": "d542ff6e9e1c9e8747566999943159c4401ee167f9cc78130afa6c9e1da45622",
+      "trigger": "Use when the requested outcome is repo mapper or when that outcome is a required dependency."
+    },
+    {
+      "id": "reproduction-scaffold",
+      "path": ".px/skills/analyze-repository-intelligence/references/scripts/reproduction-scaffold.json",
+      "sha256": "733ccc4a1be3cd473b7f24942e9fb5102eb4754dcb6d56df68a4d61da7702cd9",
+      "trigger": "Use when the requested outcome is reproduction scaffold or when that outcome is a required dependency."
+    },
+    {
+      "id": "runtime-path",
+      "path": ".px/skills/analyze-repository-intelligence/references/scripts/runtime-path.json",
+      "sha256": "fada4fdf7b9abdc25186a667db29efd9599a95f686788352d7338de2aa4da5a0",
+      "trigger": "Use when the requested outcome is runtime path or when that outcome is a required dependency."
+    },
+    {
+      "id": "symbol-index",
+      "path": ".px/skills/analyze-repository-intelligence/references/scripts/symbol-index.json",
+      "sha256": "d115d9bbb0884b05d864746ced6b99ece7c79217d6ce7dcc8f139c433b874249",
+      "trigger": "Use when the requested outcome is symbol index or when that outcome is a required dependency."
+    }
+  ],
+  "schema_version": "1.0"
+}

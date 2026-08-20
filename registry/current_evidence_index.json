@@ -1,0 +1,330 @@
+{
+  "artifact_count": 2,
+  "authority": "Exact byte identities plus live semantic receipt currentness; historical evidence is never current by presence alone.",
+  "blocking_reasons": [],
+  "current_required_receipt_count": 16,
+  "engine_identity": {
+    "file_total": 3651,
+    "manifest_path": "registry/engine_identity.json",
+    "manifest_sha256": "d48158ba7f40cf128a484c1ad11c93385ff3cd26f2d0fcdcece52cf5680067ad",
+    "schema_version": "px.engine-identity-validation/1.0",
+    "tree_sha256": "c011b65160517a0464394042b0a41e0bac1139df982d3ed5c7336f12771eded5",
+    "valid": true
+  },
+  "generated_utc": "2026-08-16T02:00:36.967631Z",
+  "identity": {
+    "extension_version": "0.6.9",
+    "python_version": "0.7.0.dev0"
+  },
+  "limitations": [
+    "linux installed smoke: Extension installation or enablement was not mutated in the live host; the extensions event is covered by the injected VS Code API matrix.",
+    "linux installed smoke: Listener events were batch-published to the canonical Python operational bus.",
+    "linux installed smoke: Terminal shell integration, debug-adapter startup, and built-in Git activation are host-dependent; their exact live results are reported without promotion.",
+    "linux installed smoke: test:unsupported:The test-result event is proposed/host-gated in some VS Code builds; unavailable getters are reported instead of breaking activation.",
+    "win32 installed smoke: Extension installation or enablement was not mutated in the live host; the extensions event is covered by the injected VS Code API matrix.",
+    "win32 installed smoke: Listener events were batch-published to the canonical Python operational bus.",
+    "win32 installed smoke: Terminal shell integration, debug-adapter startup, and built-in Git activation are host-dependent; their exact live results are reported without promotion.",
+    "win32 installed smoke: test:unsupported:The test-result event is proposed/host-gated in some VS Code builds; unavailable getters are reported instead of breaking activation."
+  ],
+  "namespace": "python-0.7.0.dev0__vscode-0.6.9",
+  "record_count": 20,
+  "records": [
+    {
+      "bytes": 618,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+      "receipt_state": {
+        "current": true,
+        "dependencies_current": true,
+        "expected_input_sha256": "09b32f90b4062ce54da0304feb2fba8adcdd3195dd2298bd1782211a6e71bd26",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "dashboard-extension",
+        "receipt_scope": "section"
+      },
+      "sha256": "49e89d36a6baa685a1f9feb61641f8b5ae83645c0596fa6fab62ca2fd5b3d7f9"
+    },
+    {
+      "bytes": 669,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/execution-placement.json",
+      "receipt_state": {
+        "current": true,
+        "dependencies_current": true,
+        "expected_input_sha256": "4e92a1289c2e36b0d6d31503e711a1b23d25ea0fbe7bdb6b738cb8e4d5c239ed",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "execution-placement",
+        "receipt_scope": "section"
+      },
+      "sha256": "0f3f19254571936afa2a38773f234fbee98612dcd8d0f44d22516b914e40732b"
+    },
+    {
+      "bytes": 547,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/hardware-routing.json",
+      "receipt_state": {
+        "current": true,
+        "dependencies_current": true,
+        "expected_input_sha256": "ea263a6bd0cd30941c239bf5d8323499ea1837a50e04a282e5c1d2d54dea1a69",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "hardware-routing",
+        "receipt_scope": "section"
+      },
+      "sha256": "16b71a96cbe4fa06c5fa6e4da4750b5199b27cb2946ec9bb9cac0f1607ee6af6"
+    },
+    {
+      "bytes": 604,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/learning-promotion.json",
+      "receipt_state": {
+        "current": true,
+        "dependencies_current": true,
+        "expected_input_sha256": "6fb3613b18fee41512e3e936ea867b365b23e8bb653d58ffbe738288eabbc237",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "learning-promotion",
+        "receipt_scope": "section"
+      },
+      "sha256": "1aed797ab9579ef1615177cb6f6914b5f369af4080f37950d1997535030f4cb8"
+    },
+    {
+      "bytes": 932,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
+      "receipt_state": {
+        "current": true,
+        "dependencies_current": true,
+        "expected_input_sha256": "3d5ad36f5caaf06b12c54341d1c75b02de3a9e5dcd89d216df17eefbea030729",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "studio-memory-graph",
+        "receipt_scope": "section"
+      },
+      "sha256": "cd74e6d24b011a6b57ff0d4dfcfbd2be3285e8813b9c799a0fb03e0927fc649e"
+    },
+    {
+      "bytes": 783,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "receipt_state": {
+        "current": true,
+        "dependencies_current": true,
+        "expected_input_sha256": "0ea19c0644fb235aabc2ebc0fb697ea511f5c444731dba3f79e5e3646175dc43",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "testing-governance",
+        "receipt_scope": "section"
+      },
+      "sha256": "9172446d36600d835a6fc49113d919f7025e1d0f25da53f088f0c532182c377b"
+    },
+    {
+      "bytes": 659,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/core-a-f.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "0765d2310d46a6a4431792875b5d6836ffcd98cda223e6879807cc579c544c00",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "core-a-f",
+        "receipt_scope": "group"
+      },
+      "sha256": "b4607580ec65bd5752b61f35293a6d71f99501d30797131da2d6a76cadfabb79"
+    },
+    {
+      "bytes": 659,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/core-g-m.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "4e9c4a9219843bb52237393ecf69bd93e1cf97f4b4626752165a2d721b30abb5",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "core-g-m",
+        "receipt_scope": "group"
+      },
+      "sha256": "e6051986487f584816a25a98e77ff858fbc9d532a94ae83941765d4fc5d81f6d"
+    },
+    {
+      "bytes": 659,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/core-n-s.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "cdff7adfa503fba89d4a9a9f04e5b1d0a783c12721b4bca84e644c12621d11a8",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "core-n-s",
+        "receipt_scope": "group"
+      },
+      "sha256": "ade8c660c78884fb4ccd7688004a1392f94a43d464e88c2e09b29a0629320494"
+    },
+    {
+      "bytes": 657,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/core-t-z.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "2128dd1edc06ee6f4c4245d67072c006d79855bee416a882b5d69a4be85d6459",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "core-t-z",
+        "receipt_scope": "group"
+      },
+      "sha256": "114ea1c5748b5f4d4bb67da952a9b07ca0f3c00435426a7ca8d7c828b8001ff7"
+    },
+    {
+      "bytes": 667,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/derived-integrity.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "ca2b26fa89df8f14d70ba92887b6721b90d95f6d8775e0f474a92ea7e1ca0b5a",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "derived-integrity",
+        "receipt_scope": "group"
+      },
+      "sha256": "12d0337d8d28aea4401bf20f658e6e2b0174d9ad515515726259836f5192661e"
+    },
+    {
+      "bytes": 666,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/exact-installed.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "0e477dca9b741b10c3361fc5914f52ee761c03b2e4c8645e51f80f2168ccf5c9",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "exact-installed",
+        "receipt_scope": "group"
+      },
+      "sha256": "b14861fe3a8acdaacd9ee69c7d8a97c013a6b857e4999444a19cc1a33f9e111a"
+    },
+    {
+      "bytes": 668,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/process-recovery.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "632b147aeb8d86fc733fdac71fb51863cdcab078417090c5ed0ca45530d3c242",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "process-recovery",
+        "receipt_scope": "group"
+      },
+      "sha256": "38b35ea41a3ee84c2bb0f755fa910e698d80c83d6fbc377516a0ec361b57639f"
+    },
+    {
+      "bytes": 663,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/release-audit.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "060f8ad23704d6b7f913816344dd3a43b3459cee8ac3f1e5b939d1538e80b028",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "release-audit",
+        "receipt_scope": "group"
+      },
+      "sha256": "db273586cf24c8a051547e0b3e24c45aaed441a5d9307def5fc9a32523067367"
+    },
+    {
+      "bytes": 664,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/release-build.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "783bb09b15e060180e094566d7214dae505559684b19a357d0a7694f09f2a19d",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "release-build",
+        "receipt_scope": "group"
+      },
+      "sha256": "5ff562bee9f746cb970ad2f8235cde315b4800935ddc7305360d07e54899d7f1"
+    },
+    {
+      "bytes": 673,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/structural-adversarial.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "98a5b4909f50eb3d6c9535f5163c2938f0852e8d8e5ff923749618d6b1c8bb0b",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "structural-adversarial",
+        "receipt_scope": "group"
+      },
+      "sha256": "aec1452733cbe3c40533945910f0d5414531514d0f3593c47f8fce62f2406a12"
+    },
+    {
+      "artifact_version": "0.6.9",
+      "bytes": 4003602,
+      "kind": "vsix",
+      "locator_kind": "caller-supplied-file",
+      "path": "pacify-x-vscode-0.6.9.vsix",
+      "sha256": "a11c2e6ce8bda6a1ea085cde0ca0f96f8f25b3dfbf948422b13a43499f015c0e",
+      "version_current": true
+    },
+    {
+      "artifact_version": "0.6.9",
+      "bytes": 4003602,
+      "kind": "vsix",
+      "locator_kind": "caller-supplied-file",
+      "path": "pacify-x-vscode-linux-0.6.9.vsix",
+      "sha256": "a11c2e6ce8bda6a1ea085cde0ca0f96f8f25b3dfbf948422b13a43499f015c0e",
+      "version_current": true
+    },
+    {
+      "artifact_bound": true,
+      "artifact_sha256": "a11c2e6ce8bda6a1ea085cde0ca0f96f8f25b3dfbf948422b13a43499f015c0e",
+      "bytes": 19137,
+      "coverage_complete": true,
+      "coverage_tier": "B",
+      "engine_identity": {
+        "file_total": 3651,
+        "manifest_path": "registry/engine_identity.json",
+        "manifest_sha256": "d48158ba7f40cf128a484c1ad11c93385ff3cd26f2d0fcdcece52cf5680067ad",
+        "tree_sha256": "c011b65160517a0464394042b0a41e0bac1139df982d3ed5c7336f12771eded5"
+      },
+      "kind": "installed-vsix-smoke",
+      "limitations": [
+        "Extension installation or enablement was not mutated in the live host; the extensions event is covered by the injected VS Code API matrix.",
+        "Listener events were batch-published to the canonical Python operational bus.",
+        "Terminal shell integration, debug-adapter startup, and built-in Git activation are host-dependent; their exact live results are reported without promotion.",
+        "test:unsupported:The test-result event is proposed/host-gated in some VS Code builds; unavailable getters are reported instead of breaking activation."
+      ],
+      "path": "extension/evidence/installed-vsix-smoke.json",
+      "platform": "win32",
+      "sha256": "2693db0baebb2246516eb4240b15f89a4a13f011dc2d1dc4654b7cdf42011fa6"
+    },
+    {
+      "artifact_bound": true,
+      "artifact_sha256": "a11c2e6ce8bda6a1ea085cde0ca0f96f8f25b3dfbf948422b13a43499f015c0e",
+      "bytes": 19143,
+      "coverage_complete": true,
+      "coverage_tier": "B",
+      "engine_identity": {
+        "file_total": 3651,
+        "manifest_path": "registry/engine_identity.json",
+        "manifest_sha256": "d48158ba7f40cf128a484c1ad11c93385ff3cd26f2d0fcdcece52cf5680067ad",
+        "tree_sha256": "c011b65160517a0464394042b0a41e0bac1139df982d3ed5c7336f12771eded5"
+      },
+      "kind": "installed-vsix-smoke",
+      "limitations": [
+        "Extension installation or enablement was not mutated in the live host; the extensions event is covered by the injected VS Code API matrix.",
+        "Listener events were batch-published to the canonical Python operational bus.",
+        "Terminal shell integration, debug-adapter startup, and built-in Git activation are host-dependent; their exact live results are reported without promotion.",
+        "test:unsupported:The test-result event is proposed/host-gated in some VS Code builds; unavailable getters are reported instead of breaking activation."
+      ],
+      "path": "extension/evidence/installed-vsix-smoke-linux.json",
+      "platform": "linux",
+      "sha256": "38022f04caff663e6cd3df55e7c8ef872469e69ded46a237dd789330dbabe89b"
+    }
+  ],
+  "required_receipt_count": 16,
+  "schema_version": "px.current-evidence-index/1.3",
+  "valid": true
+}

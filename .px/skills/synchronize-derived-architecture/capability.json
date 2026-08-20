@@ -1,0 +1,38 @@
+{
+  "admission_record": "synchronize-derived-architecture",
+  "body_sha256": "fef2e5475c6a8f2d0c434ecd5891b8fe2c2d20b99ba17496de9535a70a8f2a3d",
+  "contract": {
+    "available": true,
+    "sha256": "06751e736b0071ea517aa519c777519f75e39bee9923099456b0473558c0a460",
+    "source": "registry/skill_packages/synchronize-derived-architecture.json"
+  },
+  "description": "Keep routes, service ownership, contracts, generated code, diagrams, and documentation synchronized from declared canonical sources. Use when changing architecture maps, generated clients, route registries, documentation graphs, or when duplicate/stale derived artifacts may drift from their owner.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "synchronize-derived-architecture",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/synchronize-derived-architecture"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "architecture",
+    "documents",
+    "graph",
+    "synchronization"
+  ],
+  "version": "0.1.0"
+}

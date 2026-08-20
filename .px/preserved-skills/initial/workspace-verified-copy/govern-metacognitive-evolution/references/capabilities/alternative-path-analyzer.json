@@ -1,0 +1,67 @@
+{
+  "dependencies": [
+    "skill-navigator",
+    "reasoning-utility-controller"
+  ],
+  "domain": "introspection",
+  "failure_modes": [
+    "post-hoc story presented as fact",
+    "secret leakage",
+    "timestamp-only causality",
+    "retrieved memory treated as used memory"
+  ],
+  "formula_refs": [
+    "expected-plan-utility",
+    "regret",
+    "routing-utility"
+  ],
+  "id": "alternative-path-analyzer",
+  "inputs": [
+    "structured workflow events",
+    "policy/contract snapshots",
+    "evidence and memory references"
+  ],
+  "invariants": [
+    "No private hidden reasoning is requested or stored.",
+    "Every explanation distinguishes recorded fact from reconstruction.",
+    "Trace data is minimized and scope-bound."
+  ],
+  "outputs": [
+    "sanitized operational trace",
+    "decision reconstruction",
+    "compact and forensic report"
+  ],
+  "procedure": [
+    "Capture structured operational events without private chain-of-thought.",
+    "Redact secrets and sensitive data.",
+    "Link decisions, evidence, tools, policies, alternatives, and state transitions.",
+    "Reconstruct gaps as labeled inference, never recorded fact.",
+    "Emit reproducible reports and machine-readable graphs."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Enumerate feasible alternatives available at a decision point and compare selected versus rejected agents, skills, tools, and plans by utility, risk, permissions, and uncertainty.",
+  "title": "Alternative Path Analyzer",
+  "version": "1.0.0",
+  "when_to_use": "Use for costly, risky, failed, or repeatedly suboptimal decisions."
+}

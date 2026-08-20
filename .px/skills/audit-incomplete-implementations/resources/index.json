@@ -1,0 +1,11 @@
+{
+  "resources": [
+    "agents/openai.yaml",
+    "contracts/manifest.json",
+    "scripts/audit_incomplete.py",
+    "scripts/reconcile_incomplete_findings.py",
+    "SKILL.md",
+    "tests/validation.json"
+  ],
+  "schema_version": "px.skill-resources/1.0"
+}

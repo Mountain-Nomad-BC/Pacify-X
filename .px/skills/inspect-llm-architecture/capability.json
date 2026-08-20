@@ -1,0 +1,39 @@
+{
+  "admission_record": "inspect-llm-architecture",
+  "body_sha256": "594294286c2e9f5031e41c87fafdc97a69445e9731f3368a62f03ab996ea859b",
+  "contract": {
+    "available": true,
+    "sha256": "030e313b5ca8b8b492138d08f00fd1a8fc78c5a925f478072ff94b8eadca593f",
+    "source": "registry/skill_packages/inspect-llm-architecture.json"
+  },
+  "description": "Inspect an LLM configuration without importing model code, normalize architecture fields, classify attention and model topology, and estimate parameter, weight, and KV-cache requirements with explicit assumptions. Use for unknown model configs, architecture comparisons, VRAM estimates, long-context feasibility, quantization planning, MoE review, or evidence-backed local deployment analysis.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "inspect-llm-architecture",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/inspect-llm-architecture"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "model",
+    "architecture",
+    "memory",
+    "inspection",
+    "local-inference"
+  ],
+  "version": "0.1.0"
+}

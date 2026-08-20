@@ -1,0 +1,4 @@
+interface:
+  display_name: "Run Resilience Drills"
+  short_description: "Execute approval-gated recovery experiments"
+  default_prompt: "Use $run-resilience-drills to perform this workflow with explicit evidence and safety boundaries."

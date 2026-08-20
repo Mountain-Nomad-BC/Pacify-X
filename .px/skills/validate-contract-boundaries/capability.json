@@ -1,0 +1,40 @@
+{
+  "admission_record": "validate-contract-boundaries",
+  "body_sha256": "12e41b4b444f396dd69d0f3a7c3a05b09b63ea01bbc49e79a9f2492cf1ac505c",
+  "contract": {
+    "available": true,
+    "sha256": "e45f557165658aae5f63f0c2d1f357f90fa122919d1d394093e6c04749da465f",
+    "source": "registry/skill_packages/validate-contract-boundaries.json"
+  },
+  "description": "Compare provider and consumer ownership, routes, methods, versions, schemas, required fields, authorization scopes, and negative-path tests. Use for OpenAPI or JSON Schema changes, frontend/backend payload mismatches, event contracts, database-facing interfaces, API integration failures, or any shared contract migration.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "validate-contract-boundaries",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/validate-contract-boundaries"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "contract",
+    "api",
+    "schema",
+    "event",
+    "permission",
+    "integration"
+  ],
+  "version": "0.1.0"
+}

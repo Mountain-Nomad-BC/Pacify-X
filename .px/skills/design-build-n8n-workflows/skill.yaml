@@ -1,0 +1,39 @@
+{
+  "admission_record": "design-build-n8n-workflows",
+  "body_sha256": "7596197bc84e03c98e5455ddacca706462db180930b56c9198126f275b7b5399",
+  "contract": {
+    "available": true,
+    "sha256": "97f81c012f4e4426c05ca8dbcc9eb9566570d19dc17aa61b7bf03adc1250b4df",
+    "source": "registry/skill_packages/design-build-n8n-workflows.json"
+  },
+  "description": "Design maintainable n8n workflows with explicit contracts, modularity, idempotency, errors, and operator evidence.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "design-build-n8n-workflows",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/design-build-n8n-workflows"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "error-paths",
+    "idempotency",
+    "n8n",
+    "sub-workflows",
+    "workflow-design"
+  ],
+  "version": "1.0.0"
+}

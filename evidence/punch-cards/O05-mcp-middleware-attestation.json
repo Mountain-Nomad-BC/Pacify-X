@@ -1,0 +1,36 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "O05",
+  "status": "accepted",
+  "recorded_at": "2026-08-12T06:53:13.271180+00:00",
+  "claim": "Every bundled MCP tool is registered through one lifecycle middleware that emits metadata-only canonical-contract attestations, uses an internally generated correlation identity, preserves caller correlation only as a reported parent, labels self-asserted and unattested actors, sanitizes failures, and exposes event-drop health.",
+  "artifacts": [
+    {
+      "path": "evidence/extension-verification/O05-mcp-middleware.json",
+      "sha256": "9ac54736777c447370ab279d1d9d9e1da14f5048b73f4125e469074d54248cd5"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --test tests/mcp-server.test.js tests/mcp-activity-integration.test.js tests/instrumentation-sdk.test.js",
+      "result": "9 passed"
+    },
+    {
+      "command": "npm run build",
+      "result": "97 passed, 0 failed/skipped/todo; Playwright route traversal passed"
+    }
+  ],
+  "acceptance": {
+    "all_registered_tools_share_middleware": true,
+    "started_completed_failed_lifecycles": true,
+    "explicit_emit_reported_correlation_linked": true,
+    "self_asserted_and_unattested_identity_labels": true,
+    "error_text_and_payload_retained": false,
+    "drop_counters_and_degraded_health": true,
+    "authority_granted": false
+  },
+  "limitations": [
+    "MCP events are Tier-C canonical-contract attestations retained in the project activity ledger; direct publication into the Python canonical bus remains an O11 reconciliation dependency.",
+    "No caller-supplied MCP identity is labeled verified because this stdio boundary has no cryptographic client identity."
+  ]
+}

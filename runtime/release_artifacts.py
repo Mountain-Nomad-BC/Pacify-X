@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from .bounded_walk import FilesystemWalkError, WalkLimits, bounded_walk
+from .repository_scope import is_external_environment_relative
 
 
 def _load_policy(root: Path) -> dict[str, Any]:
@@ -30,6 +31,9 @@ def classify_tree(root: Path) -> dict[str, Any]:
     product_roots = {item.casefold() for item in policy["product_roots"]}
     product_files = {item.casefold() for item in policy["product_root_files"]}
     evidence_roots = {item.casefold() for item in policy["evidence_roots"]}
+    audit_roots = {item.casefold() for item in policy.get("audit_roots", [])}
+    audit_root_files = {item.casefold() for item in policy.get("audit_root_files", [])}
+    audit_suffixes = {item.casefold() for item in policy.get("audit_allowed_suffixes", [])}
     intermediate_names = {item.casefold() for item in policy["intermediate_names"]}
     intermediate_name_suffixes = {
         item.casefold() for item in policy.get("intermediate_name_suffixes", [])
@@ -51,6 +55,7 @@ def classify_tree(root: Path) -> dict[str, Any]:
                 max_files=100_000, max_depth=128, max_bytes=2 * 1024 * 1024 * 1024
             ),
             symlink_policy="reject",
+            exclude=is_external_environment_relative,
         )
     except FilesystemWalkError as error:
         return {
@@ -102,6 +107,11 @@ def classify_tree(root: Path) -> dict[str, Any]:
                     errors.append(
                         f"executable or unapproved evidence payload: {relative}"
                     )
+            elif folded_parts[0] in audit_roots or (len(parts) == 1 and folded in audit_root_files):
+                classification = "audit_artifact"
+                reason = "bounded final audit handoff surface"
+                if suffix not in audit_suffixes:
+                    errors.append(f"unapproved audit artifact payload: {relative}")
             elif folded_parts[0] in product_roots or (
                 len(parts) == 1 and folded in product_files
             ):

@@ -1,0 +1,10 @@
+{
+  "active_gap_id": "PX-OS-936",
+  "learned": "The stateful walk passed every interaction through the final mobile Settings assertion; that assertion now targets its owning panel.",
+  "next_action": "Run the single stateful browser walk again to completion.",
+  "unresolved_branch_gap_ids": ["PX-OS-936", "PX-OS-941", "PX-OS-940", "PX-OS-938", "PX-OS-939", "PX-OS-937", "PX-OS-062"],
+  "evidence": [
+    {"claim": "Browser reached the final mobile Settings containment step.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005001"},
+    {"claim": "Owning-panel selector corrected under admission 5004.", "reference": "extension/tests/dashboard-e2e.test.js:444"}
+  ]
+}

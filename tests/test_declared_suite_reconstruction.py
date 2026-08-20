@@ -68,7 +68,7 @@ class DeclaredSuiteReconstructionTests(unittest.TestCase):
             output = temp / "ledger.json"
             script = (
                 ROOT
-                / ".agents/skills/audit-source-capabilities/scripts/build_declared_suite_reconstruction.py"
+                / ".px/skills/audit-source-capabilities/scripts/build_declared_suite_reconstruction.py"
             )
             result = subprocess.run(
                 [

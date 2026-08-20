@@ -1,0 +1,22 @@
+{
+  "id": "admit-capability",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".px/skills/admit-capability/SKILL.md",
+  "body_sha256": "12d9f91601589f440f246a0a5d003f341cd16b3845a99cbe8fe54d957baf3a7f",
+  "references": [
+    ".px/skills/admit-capability/agents/openai.yaml",
+    ".px/skills/admit-capability/contracts/manifest.json",
+    ".px/skills/admit-capability/references/admission-contract.md",
+    ".px/skills/admit-capability/resources/index.json",
+    ".px/skills/admit-capability/tests/validation.json"
+  ],
+  "capability_tags": ["admission", "governance"],
+  "effects": ["read_local"],
+  "provenance": {"adapted": false, "source": ".px/preserved-skills/initial/workspace-original/admit-capability", "type": "preserved_workspace_original", "basis": [".px/preserved-skills/initial/workspace-original/admit-capability"]},
+  "clean_room": false,
+  "tests": "tests/test_native_skills.py",
+  "evidence": "tests/test_native_skills.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 32768
+}

@@ -1,0 +1,38 @@
+{
+  "admission_record": "execution-contract-enforcer",
+  "body_sha256": "8cf2f0511b2c1a4362448deb12945f79c6d38618b02a89751b77869b1ea86214",
+  "contract": {
+    "available": true,
+    "sha256": "fea463fbad3a4737f751c92e51ead473010ebc4acda196c571d2db7fa7c5972d",
+    "source": "registry/skill_packages/execution-contract-enforcer.json"
+  },
+  "description": "Wrap every skill with validation, authorization, budget, idempotency, execution, verification, and trace controls. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "execution-contract-enforcer",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/execution-contract-enforcer"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "contract",
+    "enforcer",
+    "execution",
+    "orchestration"
+  ],
+  "version": "0.1.0"
+}

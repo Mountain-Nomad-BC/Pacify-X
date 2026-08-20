@@ -1,0 +1,70 @@
+{
+  "schema_version": "px.operational-builder-trace.v1",
+  "trace_id": "agent-builder-operational-trace-20260816",
+  "trace_mode": "read-only-source-walk",
+  "generated_utc": "2026-08-16T19:48:00Z",
+  "state_claim": "gap-only-no-operational-promotion",
+  "sources": [
+    {"path": "extension/media/dashboard/90-controller.js", "size": 284692, "sha256": "6a2c67fca34053b06836cf5939f6de5ec22fc57c53d1ee293a74e2be14ec52af"},
+    {"path": "extension/media/dashboard/49-studio-editors.js", "size": 37339, "sha256": "b678b4fbb590dcc262b7b99d78316144d6715845e2776aa3db40a4fb1bfe36e0"},
+    {"path": "extension/src/uiActionInventory.js", "size": 22355, "sha256": "58264bcdefd25377fb55b564adb65a4ee0092ab3fcb45c3db6a7023b0a5b32be"},
+    {"path": "runtime/studio_models.py", "size": 24172, "sha256": "b747de45384c7a56c3be2fdba6f5d53a39ae36caa1dca19a33c56c6ce435809e"},
+    {"path": "runtime/studio_api.py", "size": 33957, "sha256": "8ad22045d98c5cccc825f5ab6da8a756ebe4d1b75687469ba0e00350c851cf60"},
+    {"path": "runtime/agent_runtime.py", "size": 62505, "sha256": "c984f1338f8a3a376bcb5b3f0907980f87ddfb8ec481312aa49f25ec0136546a"}
+  ],
+  "findings": [
+    {
+      "finding_id": "agent-builder-trace:PX-OS-880",
+      "gap_ids": ["PX-OS-880"],
+      "finding": "Agent Studio renders a literal topology/navigation diagram over a monolithic AgentSpec; it has no persisted editable semantic graph.",
+      "exact_controls": [
+        "pxui.agent-studio.editor.visualBuilder",
+        "pxui.agent-studio.menu.topologySections",
+        "pxui.agent-studio.gesture.selectTopologySection",
+        "pxui.agent-studio.action.agentSelectSection.identity",
+        "pxui.agent-studio.action.agentSelectSection.behavior",
+        "pxui.agent-studio.action.agentSelectSection.model",
+        "pxui.agent-studio.action.agentSelectSection.harness",
+        "pxui.agent-studio.action.agentSelectSection.capabilities",
+        "pxui.agent-studio.action.agentSelectSection.tools",
+        "pxui.agent-studio.action.agentSelectSection.workflows",
+        "pxui.agent-studio.action.agentSelectSection.memory",
+        "pxui.agent-studio.action.agentSelectSection.authority",
+        "pxui.agent-studio.action.agentSelectSection.tests",
+        "pxui.agent-studio.action.agentSelectSection.approval",
+        "pxui.agent-studio.action.agentSelectSection.candidate"
+      ],
+      "source_symbols": ["upgradeAgentTopology", "drawAgentTopologyEdges", "agentEditorHtml", "AgentSpec"]
+    },
+    {
+      "finding_id": "agent-builder-trace:PX-OS-881",
+      "gap_ids": ["PX-OS-881"],
+      "finding": "No agent port or edge mutation controls exist. drawAgentTopologyEdges paints thirteen literal links without stable edge identity, type validation, serialization, reopen, or runtime meaning.",
+      "missing_controls": ["agentTopologyPort.output", "agentTopologyPort.input", "agentConnectPorts", "agentRemoveConnection", "agentConnectionValidity"],
+      "source_symbols": ["drawAgentTopologyEdges"]
+    },
+    {
+      "finding_id": "agent-builder-trace:PX-OS-882",
+      "gap_ids": ["PX-OS-882"],
+      "finding": "No node inspector exists. The inventory's selected-inspector wording is unsupported: selection changes CSS and scroll/focus only.",
+      "missing_controls": ["agentSelectNode", "agentNodeInspector", "agentNodeDelete", "agentNodeDuplicate", "agentNodeValidation"],
+      "source_symbols": ["upgradeAgentTopology", "agentEditorHtml"]
+    },
+    {
+      "finding_id": "agent-builder-trace:PX-OS-883",
+      "gap_ids": ["PX-OS-883"],
+      "finding": "A real admitted-revision preview route exists, but it is detached from builder nodes and returns a generic human record rather than a node-bound runtime overlay.",
+      "exact_controls": ["pxui.agent-studio.action.studioLifecycle.preview", "pxui.agent-studio.action.operateStudioRevision.preview"],
+      "source_symbols": ["studioLifecycle", "operateStudioRevision", "studio_api", "AgentRuntimeController.preview"]
+    }
+  ],
+  "bounded_repair_order": [
+    "Define a Python-authoritative AgentBuilderGraph with stable node, port, and edge identities and closed compatibility rules.",
+    "Compile the graph deterministically into AgentSpec and reject graph/spec mismatches.",
+    "Persist and hash-bind builder graph, editor layout, and compiler receipt to each immutable revision; reopen exact.",
+    "Replace the literal navigation topology with graph-backed canvas controls.",
+    "Add typed connection mutation and validation.",
+    "Add a real selected-node inspector.",
+    "Bind admitted runtime preview to the selected revision and graph nodes."
+  ]
+}

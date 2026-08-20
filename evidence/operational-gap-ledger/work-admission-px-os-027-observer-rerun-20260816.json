@@ -1,0 +1,17 @@
+{
+  "gap_id": "PX-OS-027",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004941",
+  "authority": "The bounded observer-race repair requires one exact lifecycle verification.",
+  "effect": "execute",
+  "scope": [
+    "python -m pytest -vv -p no:cacheprovider tests/test_workflow_studio.py::test_workflow_pause_resume_cancel_and_checkpoint_recovery"
+  ],
+  "expected_effect": "Verify pause, resume, five cancellation cycles, terminal publication, process closure, and immediate subsequent runs.",
+  "rollback": "Read-only focused execution; retain exact failure evidence if unresolved.",
+  "evidence": [
+    {
+      "claim": "Immediate post-repair checkpoint.",
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004941"
+    }
+  ]
+}

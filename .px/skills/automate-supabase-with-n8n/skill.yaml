@@ -1,0 +1,39 @@
+{
+  "admission_record": "automate-supabase-with-n8n",
+  "body_sha256": "27eb888ff5fab8bdc992ee02b47f50306117f7ea0adc5519c3588b76717931ee",
+  "contract": {
+    "available": true,
+    "sha256": "94fbffb3db98fadbc4d502fc37474c85647bb7cac53d4f7f9e83a18da75486d3",
+    "source": "registry/skill_packages/automate-supabase-with-n8n.json"
+  },
+  "description": "Automate Supabase events and operations through n8n with authenticated triggers, idempotency, durable state, and reconciliation.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "automate-supabase-with-n8n",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/automate-supabase-with-n8n"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "cross",
+    "database-webhooks",
+    "idempotency",
+    "outbox",
+    "reconciliation"
+  ],
+  "version": "1.0.0"
+}

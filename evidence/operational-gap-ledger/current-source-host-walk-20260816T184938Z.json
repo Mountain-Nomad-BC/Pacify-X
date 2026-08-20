@@ -1,0 +1,110 @@
+{
+  "schema_version": "px.isolated-current-source-operational-walk/1.0",
+  "observed_utc": "2026-08-16T18:51:41.515Z",
+  "status": "failed",
+  "authority": "Codex host retained execution authority; PX governed scope, evidence, isolation, and cleanup.",
+  "effects": {
+    "created": [
+      "PACIFY-X-owned temporary workspace",
+      "PACIFY-X-owned user-data profile",
+      "PACIFY-X-owned empty extensions directory",
+      "repository evidence"
+    ],
+    "spawned": [
+      "pinned VS Code development host",
+      "existing operational UI walker"
+    ],
+    "user_main_vscode_profile_touched": false,
+    "product_ui_modified": false,
+    "broad_tests_run": false
+  },
+  "source": {
+    "mode": "extensionDevelopmentPath",
+    "extension_version": "0.6.19",
+    "extension_entry_sha256": "bbc31eb861955094a88a4a279f6e3f2865d4d2177f25fdec73244fb7824fd18f",
+    "walker_sha256": "f640a5c8bed104579a1ec7ae59783ad6a8e5de586f3978fbd5f88b18817ae811",
+    "vscode_version": "1.132.1"
+  },
+  "isolation": {
+    "workspace": "PACIFY-X-owned ephemeral",
+    "user_data": "PACIFY-X-owned ephemeral; not the user profile",
+    "extensions": "PACIFY-X-owned empty directory",
+    "cdp": {
+      "endpoint": "http://127.0.0.1:61132",
+      "address": "127.0.0.1",
+      "port": 61132,
+      "ready_after_ms": 526
+    },
+    "extension_loading": "current repository source only"
+  },
+  "walk": {
+    "path": "evidence/operational-ui-walk-current-source-20260816T184938Z/receipt.json",
+    "present": false
+  },
+  "child_lifecycle": {
+    "schema_version": "px.isolated-current-source-host-child/1.0",
+    "started_utc": "2026-08-16T18:49:38.276Z",
+    "source_mode": "extensionDevelopmentPath",
+    "vscode_pid": 21280,
+    "walker_pid": 22788,
+    "cdp": {
+      "endpoint": "http://127.0.0.1:61132",
+      "address": "127.0.0.1",
+      "port": 61132,
+      "ready_after_ms": 526
+    },
+    "vscode_termination_verified": true,
+    "walker_termination_verified": true,
+    "status": "failed",
+    "executable": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-vscode-test-cache\\vscode-win32-x64-archive-1.132.1\\Code.exe",
+    "launch_arguments": [
+      "[owned-workspace]",
+      "--new-window",
+      "--no-sandbox",
+      "--disable-gpu-sandbox",
+      "--disable-updates",
+      "--disable-workspace-trust",
+      "--skip-welcome",
+      "--skip-release-notes",
+      "--no-cached-data",
+      "--user-data-dir=[owned-user-data]",
+      "--extensions-dir=[owned-empty-extensions]",
+      "--extensionDevelopmentPath=[current-source]",
+      "--remote-debugging-address=127.0.0.1",
+      "--remote-debugging-port=61132"
+    ],
+    "walker_exit": {
+      "code": 1,
+      "signal": null
+    },
+    "error": "AssertionError [ERR_ASSERTION]: operational-walker-exit:1\n    at childMain (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\run-isolated-current-source-walk.js:189:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+    "finished_utc": "2026-08-16T18:51:40.758Z",
+    "stdout_tail": "\r\n[main 2026-08-16T18:49:38.761Z] StorageMainService: creating application shared storage\n[main 2026-08-16T18:49:38.816Z] [shared storage] Creating shared storage database at 'c:\\Users\\Ben\\.vscode-shared\\sharedStorage\\state.vscdb' (wasCreated: false)\n[main 2026-08-16T18:49:38.818Z] [shared storage] Initializing fallback application storage (path: c:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-current-source-walk-DffSzm\\user-data\\User\\globalStorage\\state.vscdb)\n[main 2026-08-16T18:49:38.872Z] [shared storage] Fallback application storage initialized with 3 items\n[main 2026-08-16T18:49:38.873Z] update#setState disabled\n[main 2026-08-16T18:49:38.873Z] update#ctor - updates are disabled by the environment\n[main 2026-08-16T18:49:39.804Z] AgentHostProcessManager: agent host started\n",
+    "stderr_tail": "\r\nDevTools listening on ws://127.0.0.1:61132/devtools/browser/c2e98569-ff5a-44d7-9c23-d20a36f5922c\r\nWarning: 'cached-data' is not in the list of known options, but still passed to Electron/Chromium.\nWarning: 'remote-debugging-address' is not in the list of known options, but still passed to Electron/Chromium.\nWarning: 'remote-debugging-port' is not in the list of known options, but still passed to Electron/Chromium.\n[main 2026-08-16T18:49:41.485Z] [AgentHost:stderr] (node:27540) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.\n(Use `Code --trace-deprecation ...` to show where the warning was created)\n\nUnknown channel: agentHostClientProxy\nError: The installed extension did not produce the Pacify-X dashboard webview.\n    at main (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\run-operational-ui-walk.js:277:27)\n"
+  },
+  "owner_lifecycle": {
+    "schema_version": "px.owned-host-run/1.0",
+    "run_id": "4ca214fc-8437-4bed-9a9b-6f141e485080",
+    "owner_pid": 6384,
+    "worker_pid": 28596,
+    "status": "failed",
+    "started_utc": "2026-08-16T18:49:38.214Z",
+    "timeout_ms": 300000,
+    "termination_requested": false,
+    "worker_exit_verified": true,
+    "exit_code": 1,
+    "signal": null,
+    "residual_owned_pids_before": [],
+    "reconciled_owned_pids": [],
+    "residual_owned_pids_after": [],
+    "process_tree_closed_verified": true,
+    "error": "owned-host-worker-exit-1",
+    "finished_utc": "2026-08-16T18:51:41.514Z",
+    "duration_ms": 123300
+  },
+  "error": "Error: owned-host-worker-exit-1\n    at runOwnedHostWorker (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\owned-host-runner.js:141:29)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async main (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\run-isolated-current-source-walk.js:257:11)",
+  "cleanup": {
+    "reclaimed": true,
+    "reason": "verified-process-tree-closure"
+  }
+}

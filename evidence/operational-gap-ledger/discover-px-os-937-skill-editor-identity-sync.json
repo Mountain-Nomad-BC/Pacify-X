@@ -1,0 +1,44 @@
+{
+  "gap_id": "PX-OS-937",
+  "feature": "skill-studio-new-revision-identity-synchronization",
+  "parent_surface": "skill-studio",
+  "control_action": "open or create a Skill Studio candidate revision",
+  "severity": "high",
+  "classification": "editor",
+  "observed_behavior": "Skill Studio normalizes the outer candidate ID/version but leaves capability.json, skill.yaml, and SKILL.md identity fields at the prior/default revision, so a newly opened editor fails its own preflight.",
+  "expected_behavior": "Opening any new skill candidate atomically synchronizes all editable identity-bearing package files to the candidate ID/version before validation or user edits.",
+  "operational_impact": "Users cannot begin from a valid Skill Studio candidate, and unrelated resource edits remain blocked by an identity mismatch the editor created itself.",
+  "discovered_at": "2026-08-16T20:38:30Z",
+  "discovered_by": "codex-host:focused-dashboard-browser-walk",
+  "discovery_source": "focused browser run under gap-event:PX-OPERATIONAL-GAPS-20260816:000000004968",
+  "discovery_evidence": [
+    {"claim": "Browser validation reports capability.json ID and version must match the Studio revision after opening a skill draft.", "reference": "extension/tests/dashboard-e2e.test.js:174-179"},
+    {"claim": "normalizeSkill preserves supplied file identities and default capability.json omits version; synchronization only occurs later in studioPayload submit.", "reference": "extension/media/dashboard/49-studio-editors.js:336-379; extension/media/dashboard/90-controller.js:555,565-575"}
+  ],
+  "source_refs": [
+    {"path": "extension/media/dashboard/49-studio-editors.js", "symbols": ["normalizeSkill", "synchronizeSkillIdentityFiles", "validateSkill"]},
+    {"path": "extension/media/dashboard/90-controller.js", "symbols": ["openStudioDraftModal", "skillPackageEditorResult"]},
+    {"path": "extension/tests/dashboard-e2e.test.js", "symbols": ["Skill Studio package editing path"]}
+  ],
+  "assigned_owner": "codex-primary",
+  "dependencies": [],
+  "blockers": [],
+  "next_action": "Synchronize identity-bearing editor files immediately after skill normalization and verify both fresh and loaded-package candidates.",
+  "tests_required": ["extension/tests/ui-scaffold.test.js", "extension/tests/dashboard-e2e.test.js", "python -m runtime.cli test-section run dashboard-extension"],
+  "completion_evidence": [],
+  "interaction_chain": {
+    "open_load": {"state": "partial", "detail": "Editor opens but begins invalid.", "evidence": ["extension/media/dashboard/90-controller.js:565-575"]},
+    "display": {"state": "present", "detail": "Preflight visibly reports the identity mismatch.", "evidence": ["extension/media/dashboard/90-controller.js:497-503"]},
+    "user_edit_action": {"state": "present", "detail": "User can edit files, but unrelated edits cannot cure hidden identity drift.", "evidence": ["extension/tests/dashboard-e2e.test.js:177-179"]},
+    "input_validation": {"state": "present", "detail": "Validator correctly rejects mismatched package identity.", "evidence": ["extension/media/dashboard/49-studio-editors.js:381-394"]},
+    "authorization": {"state": "not_applicable", "detail": "Candidate editing remains non-authorizing.", "evidence": []},
+    "backend_dispatch": {"state": "not_applicable", "detail": "Defect occurs before save/dispatch.", "evidence": []},
+    "runtime_effect": {"state": "missing", "detail": "Valid candidate save remains disabled by editor-created mismatch.", "evidence": ["extension/tests/dashboard-e2e.test.js:179-180"]},
+    "progress_reporting": {"state": "present", "detail": "Preflight reports one package issue.", "evidence": ["focused browser run under gap-event:PX-OPERATIONAL-GAPS-20260816:000000004968"]},
+    "result_acknowledgement": {"state": "partial", "detail": "Failure is acknowledged, but the editor does not self-repair its generated identity.", "evidence": ["extension/media/dashboard/90-controller.js:498-503"]},
+    "failure_handling": {"state": "partial", "detail": "Save is fail-closed, but generated invalid state is not recovered.", "evidence": ["extension/media/dashboard/90-controller.js:1458"]},
+    "persistence": {"state": "not_applicable", "detail": "No invalid candidate is persisted.", "evidence": []},
+    "reload_reopen": {"state": "missing", "detail": "Loaded prior package identity is not adapted to the new revision on open.", "evidence": ["extension/media/dashboard/90-controller.js:1905"]},
+    "recovery_rollback": {"state": "missing", "detail": "Only submit-time synchronization exists, after validation already blocks progress.", "evidence": ["extension/media/dashboard/90-controller.js:555"]}
+  }
+}

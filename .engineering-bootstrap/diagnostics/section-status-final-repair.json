@@ -1,0 +1,76 @@
+﻿{
+  "schema_version": "px.test-section-status/1.0",
+  "valid": false,
+  "required_sections": [
+    "testing-governance",
+    "dashboard-extension",
+    "studio-memory-graph",
+    "learning-promotion",
+    "execution-placement",
+    "hardware-routing"
+  ],
+  "sections": [
+    {
+      "section": "dashboard-extension",
+      "dependencies": [],
+      "passed": true,
+      "fresh": true,
+      "dependencies_current": true,
+      "current": true,
+      "input_sha256": "1c4faa6873a087c15b9efd648df4b381251950686d02f72fecf09bd1bf5ca23d",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/sections/dashboard-extension.json"
+    },
+    {
+      "section": "execution-placement",
+      "dependencies": [
+        "learning-promotion"
+      ],
+      "passed": true,
+      "fresh": true,
+      "dependencies_current": true,
+      "current": true,
+      "input_sha256": "4e92a1289c2e36b0d6d31503e711a1b23d25ea0fbe7bdb6b738cb8e4d5c239ed",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/sections/execution-placement.json"
+    },
+    {
+      "section": "hardware-routing",
+      "dependencies": [],
+      "passed": true,
+      "fresh": true,
+      "dependencies_current": true,
+      "current": true,
+      "input_sha256": "ea263a6bd0cd30941c239bf5d8323499ea1837a50e04a282e5c1d2d54dea1a69",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/sections/hardware-routing.json"
+    },
+    {
+      "section": "learning-promotion",
+      "dependencies": [],
+      "passed": true,
+      "fresh": true,
+      "dependencies_current": true,
+      "current": true,
+      "input_sha256": "6fb3613b18fee41512e3e936ea867b365b23e8bb653d58ffbe738288eabbc237",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/sections/learning-promotion.json"
+    },
+    {
+      "section": "studio-memory-graph",
+      "dependencies": [],
+      "passed": true,
+      "fresh": true,
+      "dependencies_current": true,
+      "current": true,
+      "input_sha256": "eb3b626a05449c39c8c992dae0b166028a0f7c1ea8088dcc08b329fcf42c7b5b",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/sections/studio-memory-graph.json"
+    },
+    {
+      "section": "testing-governance",
+      "dependencies": [],
+      "passed": true,
+      "fresh": false,
+      "dependencies_current": true,
+      "current": false,
+      "input_sha256": "c67843dbd6f952cdb36fbe696fd8802f8ead0a4517566e7ff3457daf5a4e7146",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/sections/testing-governance.json"
+    }
+  ]
+}

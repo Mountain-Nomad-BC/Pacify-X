@@ -1,0 +1,10 @@
+{
+  "active_gap_id": "PX-OS-095",
+  "learned": "Current governed membership omits the new CSS canonicalizer and its ui-scaffold regression from dashboard-extension, and omits runtime/studio_terminal_observer.py from studio-memory-graph. The prior membership receipt is therefore stale.",
+  "next_action": "Add exact source/command ownership and regression assertions, then regenerate the derived group index once.",
+  "unresolved_branch_gap_ids": ["PX-OS-095", "PX-OS-062", "PX-OS-937", "PX-OS-938", "PX-OS-939", "PX-OS-940", "PX-OS-941"],
+  "evidence": [
+    {"claim": "dashboard-extension source patterns do not include deduplicate-legacy-css.js and its command omits ui-scaffold.test.js.", "reference": "registry/test_profiles.json:dashboard-extension"},
+    {"claim": "studio-memory-graph source patterns omit studio_terminal_observer.py.", "reference": "registry/test_profiles.json:studio-memory-graph"}
+  ]
+}

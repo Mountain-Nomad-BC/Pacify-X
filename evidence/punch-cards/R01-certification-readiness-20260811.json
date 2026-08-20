@@ -1,0 +1,96 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "R01",
+  "status": "accepted",
+  "recorded_at": "2026-08-12T08:17:47.245707+00:00",
+  "disposition": "accepted-after-current-full-suite-and-cli-validation",
+  "scope": "Hermetic readiness classification for Python, Python build, Node, npm, locked Node dependencies, browser, VS Code, and the PX engine",
+  "effects": {
+    "runtime_probe": "read-only",
+    "network_access": "not-used",
+    "install_performed": false,
+    "service_started": false,
+    "external_workspace_mutated": false
+  },
+  "acceptance": {
+    "machine_readable_schema": "px.certification-readiness/1.0",
+    "required_prerequisite_count": 8,
+    "missing_dependency_classification": "environment-unready",
+    "skip_success_permitted": false,
+    "positive_fixture": "ready",
+    "negative_fixtures": [
+      "missing-browser",
+      "package-lock-drift",
+      "floating-direct-dependency",
+      "unsupported-version-constraint",
+      "cli-nonzero-environment-unready"
+    ]
+  },
+  "verification": [
+    {
+      "command": "python -m unittest discover -s tests -p test_certification_readiness.py -v",
+      "result": "passed",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "command": "python -m pytest -q tests/test_contract_runtime.py tests/test_certification_readiness.py -p no:cacheprovider",
+      "result": "passed",
+      "tests": 26,
+      "subtests": 326,
+      "failures": 0
+    },
+    {
+      "command": "python -m pytest -q tests/test_certification_readiness.py tests/test_contract_runtime.py tests/test_release_environment.py tests/test_bootstrap_cli.py -p no:cacheprovider",
+      "result": "passed",
+      "tests": 41,
+      "subtests": 326,
+      "failures": 0
+    },
+    {
+      "command": "python -m unittest discover -s tests -v",
+      "result": "passed",
+      "tests": 495,
+      "duration_seconds": 663.015,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "command": "python -m runtime.cli validate",
+      "result": "valid=true; active_count=6; errors=[]"
+    }
+  ],
+  "current_machine_observation": {
+    "command": "python scripts/bootstrap_certification.py --engine-root . --extension-root <parameterized-extension-root>",
+    "exit_code": 2,
+    "classification": "environment-unready",
+    "ready": 7,
+    "unready": 1,
+    "diagnosis": "The exact-pinned Python build==1.5.0 package is not visible in the scrubbed certification interpreter environment.",
+    "interpretation": "Expected hard environment failure; no test was skipped or reported successful."
+  },
+  "artifacts": [
+    {
+      "path": "runtime/certification_readiness.py",
+      "sha256": "6f4de4bb54d3215d589e1413e6f8992a5ae1a93b34bee2ce05ecc451e19b208e"
+    },
+    {
+      "path": "contracts/certification-readiness.schema.json",
+      "sha256": "6dcc12e91fc5cd455267e3e46c7dd45a80fc406b9afe687fc09201b9bfba5165"
+    },
+    {
+      "path": "tests/test_certification_readiness.py",
+      "sha256": "27afd9254dda96acee844e1cdf37e6afec34f3dccded24c5946df4f4d6e207c3"
+    },
+    {
+      "path": "scripts/bootstrap_certification.py",
+      "sha256": "9b7ddec485ab0dd04fd61ef5d8ff20d447bb1d1761303fd62cc25bc40d64122f"
+    }
+  ],
+  "residual_scope": [
+    "R02 owns executable unit, browser E2E, and certify lanes.",
+    "R03 and later cards own exact VSIX build, install, and live-host certification.",
+    "This receipt does not claim that the current developer machine is release-ready."
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "admission_record": "govern-visual-runtime-accessibility",
+  "body_sha256": "ad3cd975cd7b6cbb7a42b2e1950620d707ef44c28009e8912738e45f4b713605",
+  "contract": {
+    "available": true,
+    "sha256": "97dfcdb675b530c909fd0445543d085c96b1f415622dca78936c1de170f9f99d",
+    "source": "registry/skill_packages/govern-visual-runtime-accessibility.json"
+  },
+  "description": "Audit or implement WebGL, canvas, SVG, animation, and embedded visual surfaces so motion preferences, GPU/memory budgets, keyboard access, state freshness, and cross-frame settings are enforced. Use for Three.js, graph renderers, animation loops, export buffers, or iframe-hosted visualizations.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-visual-runtime-accessibility",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-visual-runtime-accessibility"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "visual",
+    "runtime",
+    "accessibility",
+    "webgl"
+  ],
+  "version": "0.1.0"
+}

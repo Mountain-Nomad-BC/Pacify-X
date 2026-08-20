@@ -1,0 +1,6 @@
+{
+  "schema_version": "px.skill-validation-links/1.0",
+  "checks": ["native-package-schema", "body-hash", "domain-policy", "bounded-hydration", "keep-current-baseline", "boundary-cost", "rollback-gate", "cross-mode-isolation"],
+  "shared_suite": "tests/test_execution_placement.py"
+}
+

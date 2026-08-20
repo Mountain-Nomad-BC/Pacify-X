@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-062",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005009",
+  "effect": "write",
+  "scope": ["extension/scripts/deduplicate-legacy-css.js", "extension/media/dashboard.css"],
+  "authority": "The registered CSS ownership gap authorizes deterministic selector-level removal of legacy branches already owned by modular styles.",
+  "expected_effect": "Cross-file duplicate selector count and occurrences become zero without changing the baseline or deleting unique compatibility selectors.",
+  "rollback": "The transformation is deterministic and limited to selector branches; revert both admitted files through explicit patch if CSS parsing or browser layout regresses.",
+  "evidence": [{"claim": "Immediate pre-canonicalization CSS checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005009"}]
+}

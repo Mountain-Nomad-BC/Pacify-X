@@ -1,0 +1,22 @@
+{
+  "id": "orchestrate-engineering-loop",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".px/skills/orchestrate-engineering-loop/SKILL.md",
+  "body_sha256": "677b5d3a75054b902e701bb212c1b769a81f5a8425983eaf45ca8309e0b39003",
+  "references": [
+    ".px/skills/orchestrate-engineering-loop/agents/openai.yaml",
+    ".px/skills/orchestrate-engineering-loop/contracts/manifest.json",
+    ".px/skills/orchestrate-engineering-loop/references/runtime-contract.md",
+    ".px/skills/orchestrate-engineering-loop/resources/index.json",
+    ".px/skills/orchestrate-engineering-loop/tests/validation.json"
+  ],
+  "capability_tags": ["orchestration", "workflow"],
+  "effects": ["read_local"],
+  "provenance": {"adapted": false, "source": ".px/preserved-skills/initial/workspace-original/orchestrate-engineering-loop", "type": "preserved_workspace_original", "basis": [".px/preserved-skills/initial/workspace-original/orchestrate-engineering-loop"]},
+  "clean_room": false,
+  "tests": "tests/test_native_skills.py",
+  "evidence": "tests/test_native_skills.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 32768
+}

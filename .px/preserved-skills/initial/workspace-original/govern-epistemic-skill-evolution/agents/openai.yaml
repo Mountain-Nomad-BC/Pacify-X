@@ -1,0 +1,6 @@
+interface:
+  display_name: "Govern Epistemic Skill Evolution"
+  short_description: "Track claims and test skill changes safely"
+  default_prompt: "Use $govern-epistemic-skill-evolution to model these claims over time and evaluate the proposed skill change offline."
+policy:
+  allow_implicit_invocation: true

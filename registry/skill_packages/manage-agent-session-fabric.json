@@ -2,19 +2,29 @@
   "id": "manage-agent-session-fabric",
   "version": "1.0.0",
   "status": "active",
-  "body": ".agents/skills/manage-agent-session-fabric/SKILL.md",
+  "body": ".px/skills/manage-agent-session-fabric/SKILL.md",
   "body_sha256": "1ee9fb15339afb2e8353de1aa598dd8fbc9fcedcccd571510468452bfb40af7a",
   "references": [],
-  "capability_tags": ["agent", "authority", "session", "terminal-adapter"],
-  "effects": ["read_local"],
+  "capability_tags": [
+    "agent",
+    "manage",
+    "session",
+    "terminal-adapter"
+  ],
+  "effects": [
+    "read_local"
+  ],
   "provenance": {
-    "type": "clean_room_reference_requirement_implementation",
-    "basis": ["runtime/agent_fleet_controls.py", "contracts/agents/terminal-session-adapter.schema.json", "tests/test_clean_room_capabilities.py"],
+    "type": "clean_room_reconstruction",
+    "basis": [
+      "tests/test_clean_room_capabilities.py",
+      "tests/test_agent_session_coordinator.py"
+    ],
     "canonical_owner": "runtime/agent_fleet_controls.py"
   },
   "clean_room": true,
   "tests": "tests/test_clean_room_capabilities.py",
-  "evidence": "tests/test_clean_room_capabilities.py",
+  "evidence": "tests/test_agent_session_coordinator.py",
   "validation_freshness": "current",
-  "context_budget_bytes": 16384
+  "context_budget_bytes": 24576
 }

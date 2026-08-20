@@ -1,0 +1,95 @@
+{
+  "schema_version": "px.operational-gap-audit-manifest/1.0",
+  "report_id": "operational-ui-walker-adversarial-audit-20260816",
+  "observed_at": "2026-08-16T21:44:00Z",
+  "authority": "read-only current-host receipt, walker source, inventory source, and canonical ledger inspection",
+  "source_receipt": "evidence/operational-ui-walk-current-source-20260816T213500Z/receipt.json",
+  "finding_ids": [
+    "WALK-001",
+    "WALK-002",
+    "WALK-003",
+    "WALK-004",
+    "WALK-005",
+    "WALK-006",
+    "WALK-007",
+    "WALK-008",
+    "WALK-009",
+    "WALK-010"
+  ],
+  "counts": {
+    "inventory_controls": 859,
+    "attempted_controls": 15,
+    "complete_interaction_chains": 0,
+    "skipped_requires_authority": 438,
+    "not_rendered": 345,
+    "observed_only": 76,
+    "inventory_only_without_runtime_selector": 523,
+    "ambiguous_action_records": 32,
+    "exact_rendered_actions_not_attempted": 72,
+    "builder_surfaces_skipped": 4,
+    "controls_with_before_after_hashes": 0,
+    "controls_with_screenshot_references": 0,
+    "controls_with_observed_effects": 0
+  },
+  "findings": [
+    {
+      "finding_id": "WALK-001",
+      "summary": "The control denominator is hand-assembled and not reconciled to one current-source manifest with selectors, handlers, effects, symbols, and hashes.",
+      "source_refs": ["scripts/build_typed_operational_surface_inventory.py", "extension/scripts/build-ui-action-inventory.js", "extension/src/uiActionInventory.js"]
+    },
+    {
+      "finding_id": "WALK-002",
+      "summary": "Action discovery scans only literal dashboard data-action values and does not prove outbound, host-handler, backend, acknowledgement, persistence, or failure contracts.",
+      "source_refs": ["extension/scripts/build-ui-action-inventory.js", "extension/src/uiActionInventory.js"]
+    },
+    {
+      "finding_id": "WALK-003",
+      "summary": "The runtime resolver supports action/command only; 523 records have no runtime selector and repeated control instances become ambiguous.",
+      "source_refs": ["extension/scripts/operational-ui-control-records.js:controlResolver"]
+    },
+    {
+      "finding_id": "WALK-004",
+      "summary": "Authority classification is inferred from control kind and label instead of the canonical effect contract, causing safe local/read controls to be skipped.",
+      "source_refs": ["extension/scripts/operational-ui-control-records.js:interactionProfiles"]
+    },
+    {
+      "finding_id": "WALK-005",
+      "summary": "The walk attempts only dashboard open plus fourteen navigation controls; both builders and four modal surfaces are hardcoded skipped.",
+      "source_refs": ["extension/scripts/run-operational-ui-walk.js"]
+    },
+    {
+      "finding_id": "WALK-006",
+      "summary": "Per-control chain evidence is structurally empty: no later lifecycle stages, state digests, screenshots, observed effects, or computed complete chains.",
+      "source_refs": ["extension/scripts/operational-ui-control-records.js:buildPerControlRecords"]
+    },
+    {
+      "finding_id": "WALK-007",
+      "summary": "Surface discovery is current-DOM-led rather than denominator-led, does not await typed ready contracts, and does not attach screenshots/errors/overflow to exact controls.",
+      "source_refs": ["extension/scripts/run-operational-ui-walk.js"]
+    },
+    {
+      "finding_id": "WALK-008",
+      "summary": "The empty disposable workspace cannot prove seeded project persistence, attached memory, revision reopen, runtime integration, or recovery; a fixture matrix is required.",
+      "source_refs": ["extension/scripts/run-isolated-current-source-walk.js"]
+    },
+    {
+      "finding_id": "WALK-009",
+      "summary": "Launcher completion is based on process exit despite zero complete chains and skipped builders, while host unresponsive/no-token diagnostics are absent from host_errors.",
+      "source_refs": ["extension/scripts/run-isolated-current-source-walk.js"]
+    },
+    {
+      "finding_id": "WALK-010",
+      "summary": "The current receipt is not reconciled per control into canonical typed observations; legacy gap dispositions therefore prove inventory only.",
+      "source_refs": ["registry/operational_gap_ledger.snapshot.json", "evidence/operational-ui-walk-current-source-20260816T213500Z/receipt.json"]
+    }
+  ],
+  "recommended_order": [
+    "canonical current-source manifest and source/action/handler reconciliation",
+    "exact runtime selectors and repeated-instance identities",
+    "state and fixture route matrix",
+    "per-control reversible local/read walker including builders",
+    "authorized isolated write/runtime/reload/failure profiles",
+    "lossless report-to-ledger reconciliation"
+  ],
+  "claim_boundary": "This report proves gaps only. Process completion is not operational completeness, and no certification or closure is claimed."
+}

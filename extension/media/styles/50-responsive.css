@@ -1,0 +1,151 @@
+@layer px.responsive {
+  @media (max-width: 1320px) {
+    .cockpit-header { grid-template-columns: minmax(200px, 1fr) repeat(2, minmax(140px, .7fr)) minmax(326px, auto); }
+    .coordination-cell { display: none; }
+  }
+
+  @media (max-width: 1220px) {
+    .surface-knowledgeCore { --knowledge-core-columns: 1fr; }
+  }
+
+  @media (max-width: 1040px) {
+    .cockpit-header { grid-template-columns: minmax(180px, 1fr) minmax(132px, .65fr) minmax(260px, auto); }
+    .branch-cell { display: none; }
+    .cockpit-actions { gap: 7px; padding-left: 10px; }
+    .studio-modal { --workflow-editor-columns: 130px minmax(360px, 1fr); --skill-editor-columns: 180px minmax(360px, 1fr); --agent-builder-side: minmax(230px, .42fr); }
+    .studio-modal .agent-topology { grid-template-columns: repeat(3, minmax(145px, 1fr)); }
+    .studio-modal .workflow-node-inspector, .studio-modal .skill-editor-side { grid-column: 1 / -1; }
+    .identity-warning[role="alert"] { --identity-warning-columns: 1fr; }
+    .surface-dashboard .metric-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 1180px) {
+    .plugin-row { grid-template-columns: minmax(220px, 1fr) auto minmax(130px, .75fr) 65px; }
+    .plugin-row > b { display: none; }
+  }
+
+  @media (max-width: 760px) {
+    .surface-knowledgeCore .learning-toolbar { align-items: stretch; flex-direction: column; }
+    .surface-knowledgeCore .learning-record-list { grid-template-columns: minmax(0, 1fr); }
+    .control-modal .studio-topology article { grid-template-columns: 1fr; }
+    .studio-modal .studio-guided-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cockpit-header { grid-template-columns: minmax(0, 1fr) minmax(188px, auto); }
+    .telemetry-cell, .sync-button { display: none; }
+    .cockpit-actions { grid-template-columns: minmax(104px, auto) 40px; padding-left: 8px; }
+    .plugin-row { grid-template-columns: minmax(0, 1fr) auto; }
+    .plugin-row > span:nth-of-type(n+2) { display: none; }
+    .plugin-connector { grid-template-columns: 1fr auto; }
+    .plugin-connector > span:last-child { grid-column: 1 / -1; }
+    .sensor-summary { grid-template-columns: 1fr; }
+    .sensor-row { grid-template-columns: 54px minmax(0, 1fr); }
+    .sensor-row > b { grid-column: 2; }
+    .plugin-actions button { min-height: 44px; }
+    .studio-modal { --workflow-editor-columns: 1fr; --skill-editor-columns: 1fr; width: calc(100vw - 20px); }
+    .studio-modal .agent-builder-layout { grid-template-columns: 1fr; }
+    .studio-modal .agent-graph-grid { grid-template-columns: 1fr; }
+    .studio-modal .agent-node-inspector { max-height: 390px; border-top: 1px solid var(--line); border-left: 0; }
+    .studio-modal .agent-canvas-toolbar { align-items: stretch; flex-direction: column; }
+    .studio-modal .agent-topology { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+    .studio-modal .agent-builder-side { grid-template-columns: 1fr 1fr; }
+    .studio-modal .agent-builder-domain { grid-template-columns: 1fr; }
+    .studio-modal .agent-builder-fields, .studio-modal .agent-builder-fields.identity { grid-template-columns: 1fr; }
+    .studio-modal .workflow-palette { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .studio-modal .workflow-palette > b, .studio-modal .workflow-palette > p { grid-column: 1 / -1; }
+    .studio-modal .workflow-edge-editor > div { grid-template-columns: 1fr 1fr; }
+    .studio-modal .workflow-editor-canvas { min-height: 430px; }
+    .studio-modal .skill-text-editor textarea { min-height: 380px; }
+    .studio-modal button { min-height: 44px; }
+    .identity-warning[role="alert"] { --identity-warning-detail-columns: 1fr; }
+    .surface-dashboard .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  .identity-warning[role="alert"] > div:first-child > span { display: block; margin-bottom: 4px; }
+  .surface-dashboard .metric-card > .metric-label { display: block; width: calc(100% - 98px); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .surface-dashboard .metric-card > .inspect-cue { white-space: nowrap; }
+
+  @media (max-width: 520px) {
+    .cockpit-header { grid-template-columns: minmax(0, 1fr) 40px; }
+    .control-button { display: none; }
+    .cockpit-actions { grid-template-columns: 40px; }
+    .surface-knowledgeCore { --governed-action-columns: 1fr; }
+    .studio-modal .agent-builder-side { grid-template-columns: 1fr; }
+    .studio-modal .agent-canvas-toolbar > div:last-child { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .studio-modal .agent-topology { grid-template-columns: minmax(140px, 1fr); }
+  }
+
+  @media (max-width: 699px) {
+    .px-layout-grid { grid-template-columns: minmax(0, 1fr); }
+    .px-layout-full { grid-column: 1; }
+  }
+
+  @media (max-width: 1040px) {
+    .surface-settings { --guardrail-column-count: 2; }
+  }
+
+  @media (min-width: 701px) and (max-width: 980px) {
+    .surface-assurance {
+      --readiness-summary-columns: 1fr 1fr;
+      --readiness-row-columns: minmax(210px, 1fr) minmax(90px, .5fr) auto;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .surface-assurance .readiness-row > span:nth-of-type(3),
+    .surface-assurance .readiness-row > b { display: none; }
+  }
+
+  @media (max-width: 700px) {
+    .surface-assurance {
+      --readiness-summary-columns: 1fr;
+      --readiness-note-columns: 1fr;
+      --readiness-row-columns: 1fr auto;
+      --readiness-row-min-height: 58px;
+      --readiness-lanes-columns: 1fr;
+    }
+    .surface-assurance .readiness-meter,
+    .surface-assurance .readiness-row > span:nth-of-type(4) { display: none; }
+  }
+
+  @media (max-width: 1180px) {
+    .surface-knowledgeGraph .graph-workspace { grid-template-columns: minmax(0, 1fr); }
+    .surface-knowledgeGraph .relationship-inspector { max-height: 390px; }
+    .surface-knowledgeGraph .relationship-list { max-height: 230px; }
+  }
+
+  @media (max-width: 760px) {
+    .surface-knowledgeGraph .graph-panel > .panel-heading { flex-direction: column; align-items: stretch; }
+    .surface-knowledgeGraph .graph-tools { min-width: 0; display: grid; grid-template-columns: 1fr 1fr; }
+    .surface-knowledgeGraph .graph-tools input,
+    .surface-knowledgeGraph .graph-tools .primary { grid-column: 1 / -1; width: 100%; }
+    .surface-knowledgeGraph .graph-tools select { width: 100%; min-width: 0; }
+    .surface-knowledgeGraph .graph-commandbar { display: grid; grid-template-columns: 1fr; margin-inline: 8px; }
+    .surface-knowledgeGraph .graph-segmented,
+    .surface-knowledgeGraph .graph-zoom-controls { width: 100%; justify-content: center; }
+    .surface-knowledgeGraph .graph-segmented button,
+    .surface-knowledgeGraph .graph-zoom-controls button { flex: 1; }
+    .surface-knowledgeGraph .graph-gesture-help { min-width: 0; text-align: left; }
+    .surface-knowledgeGraph .graph-workspace { padding-inline: 8px; }
+    .surface-knowledgeGraph .graph-workspace .graph-canvas { height: 62vh; min-height: 480px; }
+    .surface-knowledgeGraph .graph-selection-card { left: 8px; top: 8px; width: calc(100% - 112px); }
+    .surface-knowledgeGraph .graph-minimap { right: 8px; top: 8px; width: 90px; height: 64px; }
+    .surface-knowledgeGraph .graph-accessible-map { margin-inline: 8px; }
+    .surface-knowledgeGraph .graph-accessible-map > div { grid-template-columns: minmax(0, 1fr); }
+    .surface-knowledgeGraph .graph-community-index { margin-inline: 8px; }
+  }
+
+  @media (max-width: 520px) {
+    .project-map-stats,
+    .project-operational-grid,
+    .runtime-operational-grid,
+    .skill-operation-grid,
+    .plugin-lifecycle-grid { grid-template-columns: minmax(0, 1fr); }
+    .project-map-head,
+    .settings-handoff { align-items: stretch; flex-direction: column; }
+    .project-map-head button,
+    .settings-handoff button { width: 100%; }
+    .surface-knowledgeGraph .graph-community-index > div { grid-template-columns: minmax(0, 1fr); }
+    .surface-knowledgeGraph .graph-inspector-actions { grid-template-columns: minmax(0, 1fr); }
+    .surface-knowledgeGraph .graph-focus-mode { inset: 5px; }
+    .surface-knowledgeGraph .graph-focus-mode .graph-workspace .graph-canvas { height: 62vh; min-height: 460px; }
+  }
+}

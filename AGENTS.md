@@ -2,10 +2,12 @@
 
 - Keep startup bounded: inspect compact metadata before loading detailed skills or policy text.
 - Use only admitted capabilities and declare effects before execution.
-- Ask for approval before writes, installs, network access, services, migrations, or destructive work.
+- Proceed with reversible work inside the user-approved task scope, including writes, installs, network access, services, and reversible migrations. Ask for approval only before a destructive action that cannot be reversed.
 - Checkpoint material steps and retain evidence for completion claims.
-- Run `python -m unittest discover -s tests -v` and `python -m runtime.cli validate` after control-plane changes.
+- After a control-plane change, run its governed `python -m runtime.cli test-section run <section>` gate. Before certification, require every section receipt to be current, then run exactly one owned `python -m runtime.cli test-profile run full` and `python -m runtime.cli validate`; do not use the unsupervised raw unittest entrypoint as a certification owner.
 - Never destructively delete user-owned, authoritative, evidentiary, externally owned, or unclassified data without explicit authorization. Reclaim only PACIFY-X-owned ephemerals after their retention obligations end, the safe reclamation gate passes, the target remains below an allowed root, and a verified cleanup receipt is retained.
 - Register owned temporary workspaces and child processes at creation; reconcile them on success, failure, timeout, cancellation, and restart before certifying run closure.
 - Keep filesystem, database, serialization, cleanup-safety, and destructive decisions CPU-authoritative. Route optional acceleration only through current compatibility, VRAM, correctness, benchmark, observability, and fallback evidence.
 - Treat staged intake as open until the user explicitly closes it. Require two matching full-tree snapshots and an immediate pre-move equality check before sanitization or quarantine.
+- Before a PX-controlled write, execution, network, install, service, or destructive effect, checkpoint the exact active gap and append a predecessor-bound `work_admitted` record with exact scope, host authority, expected effect, and rollback. This governs PX-controlled scope without replacing Codex host authority.
+- A task assignment, user approval, plan, or implementation request is not a work admission. Before the first scoped effect, root and every delegated agent must receive the exact active checkpoint and admission event IDs and run `python scripts/operational_gap_ledger.py guard-work --gap-id <id> --effect <effect> --scope <exact-scope> --admission-event-id <event-id>`. Fail closed when any ID, effect, or scope differs; delegated agents must not write while waiting for root to switch/admit their card.

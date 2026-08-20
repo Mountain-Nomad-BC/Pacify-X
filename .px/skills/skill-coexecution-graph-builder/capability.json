@@ -1,0 +1,39 @@
+{
+  "admission_record": "skill-coexecution-graph-builder",
+  "body_sha256": "1bd8885c4437a041084bfa8d088bb5f350ad188fa0837cb06d05001cd7a54973",
+  "contract": {
+    "available": true,
+    "sha256": "7daba4a321bd8bdf4477abafcb9ccfc640154b9240fc2ba01152a029ac16a8fb",
+    "source": "registry/skill_packages/skill-coexecution-graph-builder.json"
+  },
+  "description": "Build a typed graph of skills/tools used together, order, context, outcomes, cost, and latency. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "skill-coexecution-graph-builder",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/skill-coexecution-graph-builder"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "builder",
+    "coexecution",
+    "graph",
+    "knowledge",
+    "skill"
+  ],
+  "version": "0.1.0"
+}

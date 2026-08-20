@@ -1,0 +1,106 @@
+{
+  "schema_version": "px.operational-gap-ledger-implementation-review/1.0",
+  "report_id": "ledger-implementation-adversarial-review-20260816",
+  "actor": "codex-subagent:ledger_impl_review",
+  "timestamp": "2026-08-16T18:10:24.9477721Z",
+  "scope": [
+    "runtime/operational_gap_ledger.py",
+    "runtime/dashboard_api.py",
+    "scripts/bootstrap_operational_gap_ledger.py",
+    "scripts/operational_gap_ledger.py",
+    "tests/test_operational_gap_ledger.py"
+  ],
+  "findings": [
+    {
+      "id": "ledger-impl-review-001",
+      "severity": "high",
+      "classification": "integrity",
+      "title": "Full replay bypasses transition admission and loses reopen strengthening",
+      "observation": "Special implementation, verification, integration, operational, supersession, and reopen admission was enforced before append but not by the authoritative replay reducer. Transition history also omitted regression_strengthening.",
+      "source_refs": [
+        "runtime/operational_gap_ledger.py:594",
+        "runtime/operational_gap_ledger.py:621",
+        "runtime/operational_gap_ledger.py:1095",
+        "runtime/operational_gap_ledger.py:1299"
+      ],
+      "required_repair": "Enforce semantic transition admission inside the shared reducer and retain transition-specific evidence in projected history."
+    },
+    {
+      "id": "ledger-impl-review-002",
+      "severity": "high",
+      "classification": "inventory-integrity",
+      "title": "Legacy control addition can re-pollute a typed surface",
+      "observation": "surface_controls_added accepted arbitrary strings after surface_inventory_revised established typed control_records.",
+      "source_refs": [
+        "runtime/operational_gap_ledger.py:473",
+        "runtime/operational_gap_ledger.py:485",
+        "scripts/operational_gap_ledger.py:76"
+      ],
+      "required_repair": "Require typed records for additions to an already typed surface and update known_controls and control_records atomically."
+    },
+    {
+      "id": "ledger-impl-review-003",
+      "severity": "high",
+      "classification": "resource-bounds",
+      "title": "Advertised file bounds were checked after unbounded reads",
+      "observation": "Compact head, full snapshot, and recovery ledger content were materialized before enforcing their byte bounds.",
+      "source_refs": [
+        "runtime/operational_gap_ledger.py:1016",
+        "runtime/operational_gap_ledger.py:1036",
+        "runtime/operational_gap_ledger.py:1168",
+        "runtime/operational_gap_ledger.py:1338"
+      ],
+      "required_repair": "Open regular files, fstat before allocation, and read at most maximum+1 bytes."
+    },
+    {
+      "id": "ledger-impl-review-004",
+      "severity": "medium",
+      "classification": "resource-bounds",
+      "title": "Batch iterable was materialized before its event bound",
+      "observation": "append_events called list(entries) before enforcing MAX_BATCH_EVENTS.",
+      "source_refs": ["runtime/operational_gap_ledger.py:1373"],
+      "required_repair": "Consume at most MAX_BATCH_EVENTS+1 entries before admission."
+    },
+    {
+      "id": "ledger-impl-review-005",
+      "severity": "medium",
+      "classification": "recovery-contract",
+      "title": "Dashboard collapsed checkpoint recovery states to invalid",
+      "observation": "Checkpoint disagreement did fail closed, but the dashboard did not distinguish checkpoint_stale from recovery_required.",
+      "source_refs": ["runtime/dashboard_api.py:973"],
+      "required_repair": "Return typed recovery status and an explicit bounded recovery action."
+    }
+  ],
+  "verification_gaps": [
+    {
+      "id": "ledger-impl-verification-001",
+      "required_test": "Incremental and full replay equality across every supported event type."
+    },
+    {
+      "id": "ledger-impl-verification-002",
+      "required_test": "Snapshot/head publication failure followed by exactly-once recovery into a coherent checkpoint."
+    },
+    {
+      "id": "ledger-impl-verification-003",
+      "required_test": "Concurrent dashboard reads return coherent data or a typed fail-closed recovery state."
+    },
+    {
+      "id": "ledger-impl-verification-004",
+      "required_test": "Replay admission, typed-surface legacy-add refusal, and oversized recovery-source refusal."
+    }
+  ],
+  "documented_limitations": [
+    {
+      "id": "ledger-impl-limit-001",
+      "detail": "Project-local self-hashes and filesystem metadata are not an external trust anchor; coordinated privileged replacement remains outside this trust model."
+    },
+    {
+      "id": "ledger-impl-limit-002",
+      "detail": "Batch append is ordered rather than transactionally all-or-nothing; every complete hash-valid prefix remains authoritative after a crash."
+    },
+    {
+      "id": "ledger-impl-limit-003",
+      "detail": "POSIX directory fsync is used where supported; equivalent power-loss directory durability is platform-dependent on Windows."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "body": ".px/skills/execution-placement-decision/SKILL.md",
+  "body_sha256": "db11b84c5df0a5ae8bd306a80efdbc4e450793c9c27ce5a80791ed01db4908e6",
+  "capability_tags": ["a-b", "baseline", "database", "deployment", "placement", "promotion", "rollback", "runtime"],
+  "clean_room": false,
+  "context_budget_bytes": 16384,
+  "effects": ["read_local"],
+  "evidence": "tests/test_execution_placement.py",
+  "id": "execution-placement-decision",
+  "provenance": {
+    "basis": [
+      "urn:px-intake:execution-placement-decision-addon:sha256:803152bcbb81b0570b3114ff54465c218c5569acaafb0895a48f23e3bbf4adca",
+      "runtime/execution_placement.py",
+      "runtime/learning_promotion.py",
+      "tests/test_execution_placement.py"
+    ],
+    "source_package_sha256": "803152bcbb81b0570b3114ff54465c218c5569acaafb0895a48f23e3bbf4adca",
+    "type": "user_supplied_addon_adapted"
+  },
+  "references": [
+    ".px/skills/execution-placement-decision/resources/placement-policy.md",
+    ".px/skills/execution-placement-decision/resources/source-provenance.json"
+  ],
+  "status": "active",
+  "tests": "tests/test_execution_placement.py",
+  "validation_freshness": "current",
+  "version": "1.0.0"
+}

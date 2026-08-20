@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:operations:health-model-registry",
+  "title": "PACIFY-X canonical health taxonomy registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "canonical_owner", "policy", "state_precedence", "lifecycle_dimensions", "domains", "surfaces"],
+  "properties": {
+    "schema_version": {"const": "px.health-registry/1.0"},
+    "canonical_owner": {"const": "runtime/health_model.py"},
+    "policy": {"type": "string", "minLength": 1},
+    "state_precedence": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": {"enum": ["healthy", "degraded", "blocked", "stale", "unknown"]}
+    },
+    "lifecycle_dimensions": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": {"enum": ["configured", "detected", "connected", "authoritative", "ready"]}
+    },
+    "domains": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "uniqueItems": true,
+      "items": {"enum": ["runtime", "extension", "providers", "observers", "sensors", "coordination", "memory"]}
+    },
+    "surfaces": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["surface_id", "domain", "authority", "ttl_seconds", "remediation", "projection_consumers"],
+        "properties": {
+          "surface_id": {"type": "string", "pattern": "^[a-z][a-z0-9.-]{2,95}$"},
+          "domain": {"enum": ["runtime", "extension", "providers", "observers", "sensors", "coordination", "memory"]},
+          "authority": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["owner", "kind", "source"],
+            "properties": {
+              "owner": {"type": "string", "minLength": 1},
+              "kind": {"enum": ["authoritative", "observer", "self_asserted"]},
+              "source": {"type": "string", "minLength": 1}
+            }
+          },
+          "ttl_seconds": {"type": "integer", "minimum": 1, "maximum": 86400},
+          "remediation": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["summary", "deep_link"],
+            "properties": {
+              "summary": {"type": "string", "minLength": 1},
+              "deep_link": {"type": "string", "minLength": 1}
+            }
+          },
+          "projection_consumers": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {"enum": ["runtime_cli", "vscode_extension", "dashboard"]}
+          }
+        }
+      }
+    }
+  }
+}

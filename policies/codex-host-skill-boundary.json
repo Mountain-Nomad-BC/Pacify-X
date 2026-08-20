@@ -1,0 +1,31 @@
+{
+  "schema_version": "px.codex-skill-host-boundary-policy/1.0",
+  "authority_model": {
+    "px": "defines repository governance, allowed scope, contracts, and validation requirements",
+    "codex_host": "retains native discovery, execution, tool, approval, and security authority"
+  },
+  "project_default": {
+    "visible_project_skills": "facade-only",
+    "selection": "semantic or exact PX broker query",
+    "candidate_limit": 3,
+    "hydrated_bodies": 1,
+    "default_domains": ["px-standard"]
+  },
+  "vendor_boundary": {
+    "microsoft_vendor_requires_explicit_intent": true,
+    "microsoft_vendor_requires_px_grant_when_using_px_broker": true,
+    "enterprise_restricted_requires_explicit_intent": true,
+    "enterprise_restricted_requires_px_grant_when_using_px_broker": true
+  },
+  "host_limitation": "PX repository policy cannot prevent Codex from directly discovering skills in a user-global .agents tree.",
+  "remediation": {
+    "owner": "Codex host or user configuration",
+    "preferred": "A host-supported workspace skill profile or allowlist exposing only project PX facades by default.",
+    "interim": "Report the boundary as advisory, require explicit vendor intent, and never claim PX-enforced host isolation."
+  },
+  "prohibited_claims": [
+    "PX owns Codex host authority",
+    "PX blocks direct global skill discovery",
+    "global Microsoft or Foundry skills are isolated by PX when Codex enumerates them directly"
+  ]
+}

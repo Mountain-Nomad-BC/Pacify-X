@@ -2,12 +2,12 @@
   "id": "audit-incomplete-implementations",
   "version": "0.1.0",
   "status": "active",
-  "body": ".agents/skills/audit-incomplete-implementations/SKILL.md",
+  "body": ".px/skills/audit-incomplete-implementations/SKILL.md",
   "body_sha256": "220e3e23f737071eff9060e5b1fe9866c77759088791586e86d72b4c3b4693c7",
   "references": [],
   "resources": [
-    ".agents/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
-    ".agents/skills/audit-incomplete-implementations/scripts/reconcile_incomplete_findings.py"
+    ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
+    ".px/skills/audit-incomplete-implementations/scripts/reconcile_incomplete_findings.py"
   ],
   "capability_tags": [
     "completeness",

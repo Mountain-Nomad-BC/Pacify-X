@@ -176,7 +176,7 @@ def hydrate_service_skills(
         record = by_id.get(identifier)
         if record is None:
             raise KeyError(f"unknown service skill: {identifier}")
-        body = root / ".agents/skills" / identifier / "SKILL.md"
+        body = root / ".px/skills" / identifier / "SKILL.md"
         data = body.read_bytes()
         if hashlib.sha256(data).hexdigest() != record.get("body_sha256"):
             raise ValueError(f"service skill body hash drift: {identifier}")

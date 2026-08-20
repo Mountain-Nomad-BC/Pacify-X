@@ -1,0 +1,119 @@
+{
+  "schema_version": "px.isolated-current-source-operational-walk/1.1",
+  "observed_utc": "2026-08-19T00:32:47.617Z",
+  "status": "failed",
+  "status_truth": {
+    "schema_version": "px.operational-ui-launcher-status/1.0",
+    "terminal_state": "failed",
+    "operationally_complete": false,
+    "walk_terminal_state": null,
+    "summary": {
+      "issue_count": 4,
+      "occurrence_count": 4,
+      "blocking_issue_count": 4,
+      "by_source": {
+        "process": 4
+      },
+      "by_severity": {
+        "error": 4
+      }
+    },
+    "issues": [
+      {
+        "source": "process",
+        "code": "launcher-error",
+        "severity": "error",
+        "blocking": true,
+        "message": "Error: owned-host-already-running:pid-15324\n    at acquireHostLease (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\owned-host-runner.js:61:15)\n    at runOwnedHostWorker (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\owned-host-runner.js:78:17)\n    at main (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\run-isolated-current-source-walk.js:402:17)\n    at Object.<anonymous> (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\run-isolated-current-source-walk.js:480:5)\n    at Module._compile (node:internal/modules/cjs/loader:1854:14)\n    at Object..js (node:internal/modules/cjs/loader:1985:10)\n    at Module.load (node:internal/modules/cjs/loader:1577:32)\n    at Module._load (node:internal/modules/cjs/loader:1379:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)",
+        "context": null,
+        "details": null,
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "process",
+        "code": "owned-worker-exit-unverified",
+        "severity": "error",
+        "blocking": true,
+        "message": "The owned worker exit was not verified.",
+        "context": null,
+        "details": null,
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "process",
+        "code": "owner-process-tree-closure-unverified",
+        "severity": "error",
+        "blocking": true,
+        "message": "The owner did not verify closure of the complete child process tree.",
+        "context": null,
+        "details": null,
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "process",
+        "code": "walk-status-missing",
+        "severity": "error",
+        "blocking": true,
+        "message": "The child did not retain a typed walk status.",
+        "context": null,
+        "details": null,
+        "occurrences": 1,
+        "recovered": null
+      }
+    ]
+  },
+  "authority": "Codex host retained execution authority; PX governed scope, evidence, isolation, and cleanup.",
+  "effects": {
+    "created": [
+      "PACIFY-X-owned temporary workspace",
+      "PACIFY-X-owned user-data profile",
+      "PACIFY-X-owned empty extensions directory",
+      "PACIFY-X-owned shared-data directory",
+      "repository evidence"
+    ],
+    "spawned": [
+      "pinned VS Code development host",
+      "existing operational UI walker"
+    ],
+    "user_main_vscode_profile_touched": null,
+    "isolation_boundary_verified": false,
+    "product_ui_modified": false,
+    "broad_tests_run": false
+  },
+  "source": {
+    "mode": "extensionDevelopmentPath",
+    "extension_version": "0.6.21",
+    "extension_entry_sha256": "9cbf4932ae957c76b6792a18ed6ccdeedc7f6674ec0621db63bc262038d0b86c",
+    "artifact": null,
+    "walker_sha256": "8e66b147423e151ed49b47a7032b1253484d8d30be70dc512a88457779e93890",
+    "bootstrap_sha256": "7a68e54eb1fe079ea2615b3d6f0449389cb8284a9e2a0c13752060b12c55631a",
+    "vscode_version": "1.132.1"
+  },
+  "isolation": {
+    "workspace": "PACIFY-X-owned ephemeral",
+    "user_data": "PACIFY-X-owned ephemeral; not the user profile",
+    "extensions": "PACIFY-X-owned empty directory",
+    "shared_data_requested": "PACIFY-X-owned ephemeral; explicitly supplied through --shared-data-dir",
+    "shared_data_observed_mode": "unverified",
+    "cdp": null,
+    "extension_loading": "current repository source only"
+  },
+  "walk": {
+    "path": "evidence/operational-ui-walk-current-source-20260819T003247Z/receipt.json",
+    "present": false
+  },
+  "child_lifecycle": null,
+  "owner_lifecycle": null,
+  "error": "Error: owned-host-already-running:pid-15324\n    at acquireHostLease (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\owned-host-runner.js:61:15)\n    at runOwnedHostWorker (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\owned-host-runner.js:78:17)\n    at main (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\run-isolated-current-source-walk.js:402:17)\n    at Object.<anonymous> (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\run-isolated-current-source-walk.js:480:5)\n    at Module._compile (node:internal/modules/cjs/loader:1854:14)\n    at Object..js (node:internal/modules/cjs/loader:1985:10)\n    at Module.load (node:internal/modules/cjs/loader:1577:32)\n    at Module._load (node:internal/modules/cjs/loader:1379:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)",
+  "cleanup": {
+    "reclaimed": false,
+    "reason": "process-tree-closure-unverified"
+  },
+  "recovery": {
+    "retained_temporary_root": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-current-source-walk-0oMChS",
+    "reason": "process-tree-closure-unverified"
+  }
+}

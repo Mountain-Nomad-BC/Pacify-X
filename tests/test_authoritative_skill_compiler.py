@@ -7,7 +7,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = (
     ROOT
-    / ".agents/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py"
+    / ".px/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py"
 )
 SPEC = importlib.util.spec_from_file_location("authoritative_skill_compiler", SCRIPT)
 MODULE = importlib.util.module_from_spec(SPEC)

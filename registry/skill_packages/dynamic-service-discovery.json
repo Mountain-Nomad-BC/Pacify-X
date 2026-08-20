@@ -2,11 +2,11 @@
   "id": "dynamic-service-discovery",
   "version": "0.1.0",
   "status": "active",
-  "body": ".agents/skills/dynamic-service-discovery/SKILL.md",
+  "body": ".px/skills/dynamic-service-discovery/SKILL.md",
   "body_sha256": "d14b5999d4836c5c25d38f17e06c505539f74c230fb5ca2bf423612b77483487",
   "references": [],
   "resources": [
-    ".agents/skills/dynamic-service-discovery/scripts/audit_service_discovery.py"
+    ".px/skills/dynamic-service-discovery/scripts/audit_service_discovery.py"
   ],
   "capability_tags": [
     "service-discovery",

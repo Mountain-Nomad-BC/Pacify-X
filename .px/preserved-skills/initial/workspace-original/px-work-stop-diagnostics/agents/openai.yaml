@@ -1,0 +1,4 @@
+interface:
+  display_name: "PX Work Stop Diagnostics"
+  short_description: "Classify stopped parallel work safely"
+  default_prompt: "Use $px-work-stop-diagnostics to classify why this coordinated task stopped before retrying it."

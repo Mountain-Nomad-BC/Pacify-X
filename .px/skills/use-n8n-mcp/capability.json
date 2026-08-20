@@ -1,0 +1,39 @@
+{
+  "admission_record": "use-n8n-mcp",
+  "body_sha256": "4614a6b1edd76c2b4094a63dbf013e5ac8758e34a175973f282c1fe4a97d7647",
+  "contract": {
+    "available": true,
+    "sha256": "ed0d9404caffe073902537bc6bcee8b860b19edb607465dfe821b8eb6e56cd86",
+    "source": "registry/skill_packages/use-n8n-mcp.json"
+  },
+  "description": "Expose or consume n8n capabilities through MCP with narrow tools, authentication, schemas, approvals, and injection defenses.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "use-n8n-mcp",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/use-n8n-mcp"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "approval",
+    "mcp",
+    "n8n",
+    "prompt-injection",
+    "tool-schemas"
+  ],
+  "version": "1.0.0"
+}

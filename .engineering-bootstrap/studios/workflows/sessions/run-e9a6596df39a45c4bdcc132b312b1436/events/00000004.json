@@ -1,0 +1,81 @@
+{
+  "actor": "human:vscode-local-user",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "e0d7f1bde7445d622401e3682e8b4eeffedf994196980d2a311b21e5d4d206d1",
+    "payload_sha256": "f1932a729c4b15d8c6250d3935ee14592735522d71d1176d80db5edcc8a5a5b9",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "event_sha256": "e27aa978a7b958827b9523087ecf6473ad4a07540089a4f30ece662b76835cea",
+  "operation": "workflow.succeeded",
+  "previous_event_sha256": "24ed1e93071a8d1cea033ea3f4f5c74c42757bf89ca15b41387b75a9cf292d19",
+  "recorded_utc": "2026-08-20T19:20:26.995Z",
+  "run_id": "run-e9a6596df39a45c4bdcc132b312b1436",
+  "schema_version": "px.studio-durable-run-event/1.0",
+  "sequence": 4,
+  "state": {
+    "authority_state": "codex-host-retained",
+    "checkpoint": {
+      "completed_nodes": [
+        "step:identity"
+      ],
+      "next_node": null,
+      "node_receipts": [
+        {
+          "approval_execution": {},
+          "attempts": [
+            {
+              "adapter_admitted": true,
+              "adapter_id": "identity",
+              "approval_execution": {},
+              "attempt": 1,
+              "correlation_id": "3c56974d474bb827d3306f4f",
+              "exit_code": 0,
+              "failure_message": null,
+              "failure_type": null,
+              "node_config_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+              "node_kind": "task",
+              "process_receipt": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.engineering-bootstrap\\studios\\workflows\\cleanup-receipts\\process-769d61d527504665a87ccf7cf72d9835.json",
+              "response_sha256": "27f8c2620162e5dd639947428305221955327e173b411350b56a7a3e60100086",
+              "status": "exited",
+              "task_cleanup_receipt": "cleanup-1db69acc5ddd4cf9ac508e07ad2a1389",
+              "task_content_retained": false,
+              "tree_closed": true,
+              "validation": {
+                "check_count": 0,
+                "checks": [],
+                "passed": true
+              }
+            }
+          ],
+          "kind": "task",
+          "node_id": "step:identity",
+          "output_sha256": "0dc1347df2da2be8edad2026ccee432fbebeee96eb23d711afcc9deffeee2218",
+          "state": "succeeded"
+        }
+      ],
+      "ready_nodes": [],
+      "results": {
+        "step:identity": {
+          "value": "Studio is operational."
+        }
+      }
+    },
+    "created_utc": "2026-08-20T19:20:26.345Z",
+    "failure": null,
+    "heartbeat_utc": "2026-08-20T19:20:26.995Z",
+    "kind": "workflow",
+    "owner": "human:vscode-local-user",
+    "request_sha256": "d2a3d234fb0aea931110ab8a527b4acffa590996b624a0ecff299e2352739ee9",
+    "resume_count": 0,
+    "revision_sha256": "c900c66f6cdfae46e797bf73c234eb350da7ab9e9ad0c5f48fa2bc5307b683e4",
+    "run_id": "run-e9a6596df39a45c4bdcc132b312b1436",
+    "schema_version": "px.studio-durable-run/1.0",
+    "sequence": 4,
+    "state": "succeeded",
+    "subject_id": "workflow:pacify-x-starter",
+    "updated_utc": "2026-08-20T19:20:26.995Z",
+    "version": "1.0.0"
+  }
+}

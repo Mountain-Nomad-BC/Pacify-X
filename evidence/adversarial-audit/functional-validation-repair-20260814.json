@@ -1,0 +1,80 @@
+{
+  "schema_version": "px.functional-validation-repair-evidence/1.0",
+  "evidence_id": "evidence:functional-validation-repair:20260814",
+  "task_id": "repair:PACIFY_X_REPAIRS_ONLY_FUNCTIONAL_VALIDATION_20260814",
+  "created_utc": "2026-08-14T16:17:12.1900937Z",
+  "sensitivity": "internal-sanitized",
+  "status": "supports_repair_pending_independent_verification",
+  "source": {
+    "report": "FUNCTIONAL_VALIDATION_REPORT.md",
+    "report_sha256": "d70c0ef5efcb6477cf7395afdac8660fb8b67f6bd8d5b328594f729720c58bca",
+    "findings_sha256": "36b55d72ea0efc794e39ee7e4204000f6642ebb14932f313d8de3af29a8c74da",
+    "checksum_manifest_valid": true
+  },
+  "claims": [
+    {
+      "id": "FVAL-001",
+      "relationship": "supports",
+      "postcondition": "Agent and Workflow nested workers resolve the same non-default Studio key root without forwarding secrets.",
+      "result": "passed"
+    },
+    {
+      "id": "FVAL-002",
+      "relationship": "supports",
+      "postcondition": "Silent 1.9, 2.0, and 2.2 second nodes succeed under a five-second declaration; declared timeout failures remain bounded.",
+      "result": "passed"
+    },
+    {
+      "id": "FVAL-003",
+      "relationship": "supports",
+      "postcondition": "Caller-authored approver identity and wrong-secret issuance fail; an enrolled VS Code host broker issues a fixed-identity capability.",
+      "result": "passed"
+    },
+    {
+      "id": "FVAL-004",
+      "relationship": "supports",
+      "postcondition": "Below-limit, exact-limit, and overflow captures conserve bytes, never report negative drops, and derive truncation exactly from dropped bytes.",
+      "result": "passed"
+    },
+    {
+      "id": "FVAL-005",
+      "relationship": "supports",
+      "postcondition": "Modular and compatibility stylesheets have zero cross-file selector duplicates and lower ratcheted total ceilings.",
+      "result": "passed",
+      "metrics": {
+        "before_duplicate_selectors": 177,
+        "after_duplicate_selectors": 167,
+        "before_duplicate_occurrences": 224,
+        "after_duplicate_occurrences": 208,
+        "cross_file_duplicate_selectors": 0,
+        "cross_file_duplicate_occurrences": 0
+      }
+    }
+  ],
+  "governed_receipts": [
+    {
+      "section": "testing-governance",
+      "passed": true,
+      "tests": "63 passed, 9 subtests passed",
+      "sha256": "91233162a887283d2d62d1deccd01de54575fd914d06e772932978cb422bc7ea"
+    },
+    {
+      "section": "studio-memory-graph",
+      "passed": true,
+      "tests": "132 passed",
+      "sha256": "d9abdcf83969c66fc2f9fef51cc87f52eb979ade5f01318f98c35abe992f3047"
+    },
+    {
+      "section": "dashboard-extension",
+      "passed": true,
+      "tests": "29 passed including browser lane",
+      "sha256": "88fbc8634b7feec6041e18990131bc653b368f01e973d415cb5b46a22300ea78"
+    }
+  ],
+  "decision": {
+    "repairs_complete": true,
+    "independently_verified": false,
+    "certified": false,
+    "reason": "Focused and governed section evidence supports the repairs, but external exact-bundle verification and the final certification profile have not run."
+  }
+}

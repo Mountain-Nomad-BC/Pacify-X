@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-934",
+  "learned": "The metadata/tree stamp missed a same-size registry/tools.json rewrite because size, mtime, and ctime were identical within the filesystem timestamp granularity. The direct watched control-file set below the existing 1 MiB per-file content bound is about 1.49 MiB, so a 4 MiB global direct-file sentinel remains bounded while detecting this class immediately.",
+  "next_action": "Add a 4 MiB total direct-file content sentinel to the per-refresh watch stamp; keep directory children metadata-only and preserve the full fingerprint path after sentinel change.",
+  "unresolved_branch_gap_ids": ["PX-OS-934"],
+  "evidence": [
+    {
+      "claim": "Focused cache suite passed 11/12; only the same-size watch-stamp assertion failed.",
+      "reference": "focused run under gap-event:PX-OPERATIONAL-GAPS-20260816:000000004948"
+    },
+    {
+      "claim": "Eligible direct engine control files total approximately 1.49 MiB; the proposed global cap is 4 MiB.",
+      "reference": "bounded watched-file size inventory 2026-08-16T20:28"
+    }
+  ]
+}

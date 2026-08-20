@@ -1,0 +1,18 @@
+{
+  "gap_id": "PX-OS-988",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005690",
+  "effect": "execute",
+  "scope": [
+    "skill-query:px-knowledge-memory",
+    "skill-query:px-learn"
+  ],
+  "authority": "The PX knowledge-memory and learning router skills require metadata-first semantic queries for this promotion provenance repair; Codex retains execution authority.",
+  "expected_effect": "Return at most three admitted metadata candidates per query and hydrate exactly one relevant body without changing promotion state or canonical memory.",
+  "rollback": "Queries are read-only; discard any candidate that is not admitted, domain-correct, or directly relevant to the typed parser repair.",
+  "evidence": [
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005687",
+      "claim": "Exact layered promotion parser gap"
+    }
+  ]
+}

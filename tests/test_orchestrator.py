@@ -70,6 +70,25 @@ class OrchestratorTests(unittest.TestCase):
         self.assertEqual(result.status, "blocked")
         self.assertEqual(resolutions, [])
 
+    def test_nested_px_executor_is_blocked_before_handler_resolution(self) -> None:
+        resolutions: list[str] = []
+        orchestrator = Orchestrator(
+            ROOT,
+            lambda capability_id: resolutions.append(capability_id),
+            now=lambda: NOW,
+        )
+        result = orchestrator.run(
+            request(
+                executor="px-owned-executor",
+                explicit_delegation=True,
+                active_executors=("codex-host",),
+            ),
+            PolicyDecision(True, ("read_local",)),
+        )
+        self.assertEqual(result.status, "blocked")
+        self.assertIn("overlapping active executor", " ".join(result.errors))
+        self.assertEqual(resolutions, [])
+
     def test_missing_inputs_blocks_before_activation(self) -> None:
         resolutions: list[str] = []
         orchestrator = Orchestrator(

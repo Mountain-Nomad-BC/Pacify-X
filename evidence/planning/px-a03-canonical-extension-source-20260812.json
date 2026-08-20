@@ -1,0 +1,34 @@
+{
+  "schema_version": "px.card-evidence/1.0",
+  "card_id": "A03",
+  "status": "accepted",
+  "canonical_root": "extension",
+  "migration": {
+    "method": "copy-and-hash-verify; originals retained",
+    "initial_files": 130,
+    "initial_bytes": 5796779,
+    "initial_copy_tree_sha256": "712b3ce406be1c08c7d6ff094bbe57f33793ff5642f1715819c74b076aaa338c",
+    "initial_hash_mismatches": 0,
+    "excluded": ["node_modules", ".vscode-test", "dist", "evidence", "tests/artifacts"],
+    "external_development_original_preserved": true,
+    "installed_extension_original_preserved": true
+  },
+  "source_inventories": [
+    {"alias": "external-development-original", "files": 133, "bytes": 5798786, "tree_sha256": "1fb2cb9f18de2296c2e7ee6b8b3871cb6e7254869eb562497ac23afd346df205"},
+    {"alias": "installed-extension-0.5.0", "files": 50, "bytes": 5081942, "tree_sha256": "636950b1b9b62f39ff4da9455747c87a9044fd4a671560df69806eea80b199b4"},
+    {"alias": "repository-canonical", "files": 133, "bytes": 5798923, "tree_sha256": "5cfe4535028b86c0325490ba9d054fa27f02220f96f575b407a2c98ab58f1d77"}
+  ],
+  "build_contract": {
+    "package_lock_sha256": "b4145eb67a5809a07a09bead703da516c5e48dc2aae370b255df4c6a4c21e503",
+    "package_json_sha256": "056db87127938ec5e24efbf83b294fe92707474c59ce621058b562d522b9f8ab",
+    "package_script_sha256": "77867c20c1a5d9e0f8feee09645eda61765abcc14ac770efd6cf09acaa6be7c3",
+    "exact_vsix_build_and_install": "R03-R04 after A04-A07 source closure"
+  },
+  "validation": {
+    "npm_ci": "44 packages installed from lock; 0 vulnerabilities",
+    "npm_test": "160 passed, 0 failed",
+    "python_node_instrumentation_contract": "3 passed",
+    "nonportable_source_references": 0,
+    "canonical_source_git_owned": true
+  }
+}

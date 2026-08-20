@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-095",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005015",
+  "effect": "execute",
+  "scope": ["python scripts/build_test_group_index.py"],
+  "authority": "The reopened membership card requires one deterministic derived-index regeneration after current source changes.",
+  "expected_effect": "Parse changed Python sources/tests and reuse unchanged metadata; do not execute tests or certification.",
+  "rollback": "The index is deterministic and regenerable; retain command output if generation fails.",
+  "evidence": [{"claim": "Immediate current-membership checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005015"}]
+}

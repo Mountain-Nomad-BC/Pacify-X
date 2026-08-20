@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "punch-cards-F03-F05-operational-visibility-20260811",
+  "created_utc": "2026-08-12T06:55:43.877446+00:00",
+  "cards": [
+    "F03",
+    "F04",
+    "F05"
+  ],
+  "accepted": true,
+  "artifacts": {
+    "docs/operational-visibility-contract.md": "7452cd1412ccfa5f4612cffa90fd0093949acfb4d65090eef2461b56b352928a",
+    "docs/operational-visibility-threat-model.md": "5407d317b87d05d0a850d813970935b42ed18797a2c9bdd81436bf52765897e7",
+    "contracts/operations/operation-event.schema.json": "ecda59ecda1191f05bf82c6f08233d112d94bfd9b3728eec550272c48abb575b",
+    "contracts/operations/route-observer-registry.schema.json": "04fb22f0288a064b5636d5a01a710b91313bbac5e8bf61af3afd7eba3800ad9a",
+    "registry/operation_route_registry.json": "4fde6be2ebba2143a55beefd7eb401148aad68df5ebe2e8439fdca90388beea1",
+    "runtime/operational_visibility.py": "d6a42001be4d2180c4bbb9d731bec5317ae721a9352ba62d63f6aa03911a76f9",
+    "tests/test_operational_visibility.py": "d132a82608152a9f36c56c6270f17a686e95b2ca1b398630bb31af880bc56c67"
+  },
+  "verification": {
+    "pytest": "24 passed, 324 contract subtests passed",
+    "ruff": "passed",
+    "route_registry": {
+      "valid": true,
+      "route_count": 13,
+      "advertised_count": 13,
+      "tiers": {
+        "A": 0,
+        "B": 1,
+        "C": 4,
+        "D": 8
+      },
+      "certifiable": false
+    }
+  },
+  "truth_note": "Eight advertised Tier-D routes are explicitly visible and block universal-visibility certification until later punch cards instrument or declare them unsupported."
+}

@@ -1,0 +1,67 @@
+{
+  "dependencies": [
+    "evaluation-budget-allocator",
+    "certify-reversible-validation"
+  ],
+  "domain": "knowledge-physics",
+  "failure_modes": [
+    "numerology",
+    "trust by popularity",
+    "one half-life for every domain",
+    "unbounded graph propagation"
+  ],
+  "formula_refs": [
+    "revalidation-priority",
+    "blast-radius-score",
+    "exponential-trust-decay"
+  ],
+  "id": "revalidation-scheduler",
+  "inputs": [
+    "event-sourced capability state",
+    "validation/use/dependency/contradiction events",
+    "domain calibration policy"
+  ],
+  "invariants": [
+    "Physics language is an operational metaphor, not literal law.",
+    "Composite scores expose raw components and calibration.",
+    "Trust loss is reversible with valid new evidence."
+  ],
+  "outputs": [
+    "trust/entropy/stability/volatility state",
+    "risk and revalidation signals",
+    "reproducible simulation or intervention plan"
+  ],
+  "procedure": [
+    "Initialize explicit dimensions and raw components.",
+    "Apply bounded evidence, validation, contradiction, dependency, use, and decay events.",
+    "Preserve the full event ledger and explain every score change.",
+    "Detect unstable, fragmented, stale, or over-centralized regions.",
+    "Simulate before canonical mutation and schedule risk-based revalidation."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Prioritize validation campaigns from trust decay, criticality, dependency changes, contradiction pressure, use frequency, blast radius, and certification age.",
+  "title": "Revalidation Scheduler",
+  "version": "1.0.0",
+  "when_to_use": "Use nightly, after dependency changes, and before release."
+}

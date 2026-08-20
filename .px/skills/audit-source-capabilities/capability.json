@@ -1,0 +1,38 @@
+{
+  "admission_record": "audit-source-capabilities",
+  "body_sha256": "1c97d9ecc6b2c657609c5f1df7d8510b885332073d72ad6e21b1f82f70dba286",
+  "contract": {
+    "available": true,
+    "sha256": "d546c31dea054c6e6fb3339ace3b1c4cc91bb028299008ae32f400b4bad39ebd",
+    "source": "registry/skill_packages/audit-source-capabilities.json"
+  },
+  "description": "Inventory a large source or reference tree without mutation, identify reusable engineering mechanisms across skills, code, configuration, and process documents, reconcile candidates against an existing skill catalog, and produce deterministic coverage and disposition evidence. Use for source mining, migration intake, capability-gap audits, or any task where sampling could miss valuable operational behavior.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "audit-source-capabilities",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/audit-source-capabilities"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "source",
+    "audit",
+    "coverage",
+    "reconciliation"
+  ],
+  "version": "0.1.0"
+}

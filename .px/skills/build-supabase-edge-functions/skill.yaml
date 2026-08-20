@@ -1,0 +1,39 @@
+{
+  "admission_record": "build-supabase-edge-functions",
+  "body_sha256": "25ba3abf95f631f7f495bffd18eb989d10aace92dd6607d71ca3148f1a48ab04",
+  "contract": {
+    "available": true,
+    "sha256": "a8f1d9a75d1b8681df8aa7137ac611bc37d5b276b8d2a7557289513a1b9fa862",
+    "source": "registry/skill_packages/build-supabase-edge-functions.json"
+  },
+  "description": "Build Supabase Edge Functions with explicit auth, secrets, CORS, bounds, idempotency, tests, and deployment evidence.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "build-supabase-edge-functions",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/build-supabase-edge-functions"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "cors",
+    "deno",
+    "edge-functions",
+    "idempotency",
+    "supabase"
+  ],
+  "version": "1.0.0"
+}

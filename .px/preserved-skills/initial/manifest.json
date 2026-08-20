@@ -1,0 +1,43 @@
+{
+  "created_utc": "2026-08-12T00:00:00Z",
+  "retention": "permanent-until-explicit-user-authorized-export-or-removal",
+  "schema_version": "px.skill-custody-backup/1.0",
+  "sources": [
+    {
+      "auto_purge": "never",
+      "file_count": 850,
+      "id": "workspace-original",
+      "inventory": "inventories/workspace-original.json",
+      "inventory_sha256": "de4d3505ce7b89818fae028995d412c19fc9815f053e08e768e39e2bf74331ce",
+      "original_path": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.agents\\skills",
+      "ownership": "user-owned-evidence",
+      "relative_backup": "workspace-original",
+      "size_bytes": 4296638,
+      "tree_sha256": "151520cdc46c1ce21b009a812ed6324929a8a832bd77e42253324e19018825f0"
+    },
+    {
+      "auto_purge": "never",
+      "file_count": 850,
+      "id": "workspace-verified-copy",
+      "inventory": "inventories/workspace-verified-copy.json",
+      "inventory_sha256": "5f89ae9855b23f9d7d14fe03188e85259de3becaddc9c7b17912118495dc5c25",
+      "original_path": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.agents\\skills",
+      "ownership": "user-owned-evidence",
+      "relative_backup": "workspace-verified-copy",
+      "size_bytes": 4296638,
+      "tree_sha256": "151520cdc46c1ce21b009a812ed6324929a8a832bd77e42253324e19018825f0"
+    },
+    {
+      "auto_purge": "never",
+      "file_count": 184,
+      "id": "user-original",
+      "inventory": "inventories/user-original.json",
+      "inventory_sha256": "c6df198e44ee6114476e444138c8c419a239a2982064216ac3f8fb9639d4a406",
+      "original_path": "C:\\Users\\Ben\\.agents\\skills",
+      "ownership": "user-owned-evidence",
+      "relative_backup": "user-original",
+      "size_bytes": 1151682,
+      "tree_sha256": "122b5843bf28f768c3f28b4042b43842afc7e7224e3260e5b9bc94b72b587da1"
+    }
+  ]
+}

@@ -14,6 +14,8 @@ PACIFY-X is the project and framework. `engineering-bootstrap` is its Python pac
 
 **Current release:** [v0.6.3](https://github.com/Mountain-Nomad-BC/Pacify-X/releases/tag/v0.6.3)
 
+**Development tree:** v0.7.0.dev0 (unreleased; not certified as v0.6.3)
+
 **Status:** Signed self-certified release published; public assets reproduced and verified
 
 **Requires:** Python 3.11–3.14, Git, and an AI coding assistant
@@ -131,10 +133,17 @@ These exact counts are checked automatically for drift; ordinary users do not ne
 
 | Layer | Exact count |
 |---|---:|
-| Runtime modules | 164 |
-| Contracts | 157 |
-| Registry artifacts | 319 |
-| Tool and support scripts | 125 |
+| Runtime modules | 211 |
+| Contracts | 165 |
+| Registry artifacts | 361 |
+| Tool and support scripts | 155 |
+
+The machine-readable source for release and inventory claims is [`registry/build_claims.json`](registry/build_claims.json).
+
+PX-owned map history and committed transaction journals use explicit, dry-run-first
+archive gates. Older evidence is reclaimed only after a deterministic archive,
+member-level SHA-256 verification, and a recovery receipt are complete; see
+[`policies/operational-evidence-retention.json`](policies/operational-evidence-retention.json).
 
 </details>
 

@@ -1,0 +1,59 @@
+{
+  "schema_version": "px.external-operational-validation-remediation/1.0",
+  "source": {
+    "name": "OPERATIONAL_VALIDATION_R3_REPORT.md",
+    "sha256": "da0abff6c9c0f61eb5a7cd34de96e6e620ac83842a71aa70009a3b84d39f794c",
+    "findings_sha256": "80855ed9cfe34e3717116a47e53f3eead6295d108473b958c9a5e6b82cbf43c0",
+    "matrix_sha256": "4b179c9b9a185ae254ac435d07cb73f801096a49dafaced355ba30e591b1965e",
+    "target_archive": "PACIFY_X_R2_REPAIRS_UNCERTIFIED_AUDIT_20260814_R3.zip",
+    "target_sha256": "86ca7b84896c3fa6beb94d071e1e8da6be6725dc40e55992b57cfbb7b94fc27a",
+    "received_date": "2026-08-14",
+    "checksum_manifest_entries": 23,
+    "checksum_manifest_valid": true
+  },
+  "denominator": {
+    "total": 2,
+    "severity": {"high": 1, "medium": 1}
+  },
+  "status_counts": {
+    "open": 0,
+    "fixed_pending_independent_verification": 2,
+    "accepted": 0,
+    "blocked": 0
+  },
+  "release_claim": {
+    "complete": false,
+    "certified": false,
+    "reason": "Both R3 operational findings pass focused tests and affected governed gates, but a new exact audit artifact, independent verification, and deferred full certification remain outstanding."
+  },
+  "repair_evidence": "evidence/adversarial-audit/operational-validation-r3-repair-20260814.json",
+  "findings": [
+    {
+      "id": "OP-R3-001",
+      "severity": "high",
+      "finding": "Host and Python canonicalize valid JSON payloads differently",
+      "external_status": "open",
+      "status": "fixed_pending_independent_verification",
+      "root_cause": "The host hashed JavaScript JSON formatting while Python recomputed a hash after parsing with different number formatting and key-order semantics.",
+      "repair": "The host now signs the SHA-256 of the exact UTF-8 payload JSON and carries that representation in the proof. Python verifies those exact bytes, parses the signed payload as the authoritative operation input, and rejects a separately supplied mismatch without cross-runtime reserialization.",
+      "evidence_refs": ["extension/src/studioApprovalHost.js", "extension/src/pxBridge.js", "runtime/studio_authority.py", "runtime/studio_api.py", "extension/tests/px-bridge-cache.test.js", "tests/test_studio_api.py"]
+    },
+    {
+      "id": "OP-R3-002",
+      "severity": "medium",
+      "finding": "Workflow post-cancel campaign can fail and retain active resource records",
+      "external_status": "open-intermittent",
+      "status": "fixed_pending_independent_verification",
+      "root_cause": "Terminal cancellation could become externally visible before the durable session worker closed its resource record; resource updates also used a non-atomic get/upsert pair and repeated completion was not idempotent. Node failure receipts dropped the exception message and correlation context.",
+      "repair": "Durable workflow cancellation now finalizes the session resource before publishing the terminal state, current-process completion is idempotent, resource updates are one locked transaction, and every node attempt retains a bounded sanitized failure message plus deterministic correlation ID.",
+      "evidence_refs": ["runtime/workflow_studio.py", "runtime/studio_session_worker.py", "runtime/resource_lifecycle.py", "tests/test_workflow_studio.py", "tests/test_resource_lifecycle.py"]
+    }
+  ],
+  "non_blocking_debt": [
+    {
+      "area": "UI CSS",
+      "status": "improved_residual_debt",
+      "summary": "R3 independently confirmed 157 same-file duplicate selectors, 193 duplicate occurrences, zero cross-file duplicates, and passing contrast checks."
+    }
+  ]
+}

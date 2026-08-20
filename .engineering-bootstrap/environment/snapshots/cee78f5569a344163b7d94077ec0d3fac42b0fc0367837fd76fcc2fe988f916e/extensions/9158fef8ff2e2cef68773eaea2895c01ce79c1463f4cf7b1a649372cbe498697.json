@@ -1,0 +1,234 @@
+{
+  "id": "gitguardian-secret-security.gitguardian",
+  "name": "GitGuardian - Secrets Security",
+  "version": "0.23.0",
+  "publisher": "gitguardian-secret-security",
+  "active": true,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "menus",
+    "views",
+    "viewsContainers",
+    "viewsWelcome"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "gitguardian-secret-security.gitguardian",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "gitguardian-secret-security.gitguardian",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "gitguardian-secret-security.gitguardian",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "gitguardian-secret-security.gitguardian",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "gitguardian-secret-security.gitguardian",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "gitguardian-secret-security.gitguardian",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "gitguardian.authenticate",
+      "invocation": "vscode.commands.executeCommand('gitguardian.authenticate', ...args)",
+      "title": "Authenticate",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gitguardian.ignore",
+      "invocation": "vscode.commands.executeCommand('gitguardian.ignore', ...args)",
+      "title": "Ignore last found incidents",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gitguardian.logout",
+      "invocation": "vscode.commands.executeCommand('gitguardian.logout', ...args)",
+      "title": "Logout",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gitguardian.openInstanceSettings",
+      "invocation": "vscode.commands.executeCommand('gitguardian.openInstanceSettings', ...args)",
+      "title": "Configure instance URL",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gitguardian.openProblems",
+      "invocation": "vscode.commands.executeCommand('gitguardian.openProblems', ...args)",
+      "title": "Open Problems",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gitguardian.openSidebar",
+      "invocation": "vscode.commands.executeCommand('gitguardian.openSidebar', ...args)",
+      "title": "Open Sidebar",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gitguardian.quota",
+      "invocation": "vscode.commands.executeCommand('gitguardian.quota', ...args)",
+      "title": "Show quota",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gitguardian.refreshFindings",
+      "invocation": "vscode.commands.executeCommand('gitguardian.refreshFindings', ...args)",
+      "title": "Refresh Findings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gitguardian.refreshQuota",
+      "invocation": "vscode.commands.executeCommand('gitguardian.refreshQuota', ...args)",
+      "title": "Refresh Quota",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gitguardian.showOutput",
+      "invocation": "vscode.commands.executeCommand('gitguardian.showOutput', ...args)",
+      "title": "Show Output",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gitguardian.updateAuthenticationStatus",
+      "invocation": "vscode.commands.executeCommand('gitguardian.updateAuthenticationStatus', ...args)",
+      "title": "gitguardian: Update authentication status",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onStartupFinished"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": false,
+      "description": "GitGuardian runs ggshield in the workspace directory, which loads configuration files (.gitguardian.yaml, .env) from the repository. Running in an untrusted workspace could allow a malicious repository to influence ggshield's behavior."
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "gitguardian-secret-security.gitguardian",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:menus",
+      "contribution:views",
+      "contribution:viewsContainers",
+      "contribution:viewsWelcome"
+    ],
+    "interface": [
+      "gitguardian.authenticate",
+      "gitguardian.ignore",
+      "gitguardian.logout",
+      "gitguardian.openInstanceSettings",
+      "gitguardian.openProblems",
+      "gitguardian.openSidebar",
+      "gitguardian.quota",
+      "gitguardian.refreshFindings",
+      "gitguardian.refreshQuota",
+      "gitguardian.showOutput",
+      "gitguardian.updateAuthenticationStatus"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": false,
+        "description": "GitGuardian runs ggshield in the workspace directory, which loads configuration files (.gitguardian.yaml, .env) from the repository. Running in an untrusted workspace could allow a malicious repository to influence ggshield's behavior."
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

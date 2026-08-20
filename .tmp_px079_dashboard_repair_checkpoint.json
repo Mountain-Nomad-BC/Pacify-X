@@ -1,0 +1,9 @@
+{
+  "active_gap_id": "PX-OS-079",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005667",
+  "unresolved_branch_gap_ids": ["PX-OS-079", "PX-OS-962", "PX-OS-963", "PX-OS-976", "PX-OS-978", "PX-OS-979", "PX-OS-981", "PX-OS-983", "PX-OS-984", "PX-OS-985", "PX-OS-986", "PX-OS-987"],
+  "newly_discovered_gap_ids": [],
+  "learned": "The section's three failures are fixture expectations, not permission to weaken the repaired production contracts. Proofs must remain request-unique, editor text must remain NUL-free, and raw versions must remain canonical.",
+  "next_action": "Repair only the three dashboard owner fixtures, rerun only dashboard-extension, and run studio-memory-graph only if dashboard passes. Do not run testing-governance again unless its inputs change, and do not run the full profile.",
+  "evidence": [{"reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005671", "claim": "Exact dashboard failure classification"}]
+}

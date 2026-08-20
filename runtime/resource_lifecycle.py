@@ -16,11 +16,56 @@ import os
 from pathlib import Path
 import shutil
 import signal
+import stat
 import subprocess
 import tempfile
 import threading
+import time
 from typing import Iterator, Mapping, Sequence
 from uuid import uuid4
+
+from .file_lock import FileLock, _process_exists
+from .wal_transaction import JsonArtifact, JsonWal
+
+
+_RECLAIM_RETRY_DELAYS_SECONDS = (0.0, 0.05, 0.15, 0.35)
+
+
+def _retry_writable_removal(function: object, path: str, _exc_info: object) -> None:
+    """Retry one Windows-style read-only removal without widening scope."""
+
+    os.chmod(path, stat.S_IREAD | stat.S_IWRITE)
+    function(path)  # type: ignore[operator]
+
+
+def _remove_owned_target(target: Path) -> None:
+    """Remove one already-authorized target with bounded transient-lock retries."""
+
+    last_error: OSError | None = None
+    for delay in _RECLAIM_RETRY_DELAYS_SECONDS:
+        if delay:
+            time.sleep(delay)
+        try:
+            if target.is_dir():
+                # ``onerror`` retains Python 3.11 compatibility. It is invoked
+                # only for children of the target already admitted by the
+                # reclamation gate and makes a read-only entry writable before
+                # retrying that exact failed operation.
+                shutil.rmtree(target, onerror=_retry_writable_removal)
+            else:
+                try:
+                    target.unlink()
+                except PermissionError:
+                    target.chmod(stat.S_IREAD | stat.S_IWRITE)
+                    target.unlink()
+            return
+        except OSError as error:
+            last_error = error
+            if not target.exists():
+                return
+    if last_error is not None:
+        raise last_error
+    raise OSError("owned cleanup target remains after bounded reclamation")
 
 
 class ResourceClassification(str, Enum):
@@ -53,6 +98,16 @@ class StoragePressure(str, Enum):
     WARNING = "warning"
     HIGH = "high"
     CRITICAL = "critical"
+
+
+class RetentionClass(str, Enum):
+    """Storage intent; this does not itself authorize deletion."""
+
+    PROTECTED = "protected"
+    EVIDENCE = "evidence"
+    OPERATIONAL = "operational"
+    TRANSIENT = "transient"
+    UNKNOWN = "unknown"
 
 
 ENDED_RUN_STATES = {
@@ -162,44 +217,68 @@ class ResourceLedger:
 
     def __init__(self, path: Path) -> None:
         self.path = path.resolve()
+        self.lock_path = self.path.with_suffix(f"{self.path.suffix}.lock")
         self._lock = threading.RLock()
 
+    def _load_unlocked(self) -> tuple[ResourceRecord, ...]:
+        if not self.path.is_file():
+            return ()
+        payload = json.loads(self.path.read_text(encoding="utf-8"))
+        if payload.get("schema_version") != "1.0":
+            raise ValueError("unsupported resource ledger schema")
+        return tuple(ResourceRecord(**item) for item in payload.get("resources", ()))
+
     def load(self) -> tuple[ResourceRecord, ...]:
+        # Atomic replacement makes an unlocked cross-process read see either
+        # the complete predecessor or successor. Mutating transactions take
+        # the OS lock below so no successor can discard another writer.
         with self._lock:
-            if not self.path.is_file():
-                return ()
-            payload = json.loads(self.path.read_text(encoding="utf-8"))
-            if payload.get("schema_version") != "1.0":
-                raise ValueError("unsupported resource ledger schema")
-            return tuple(ResourceRecord(**item) for item in payload.get("resources", ()))
+            return self._load_unlocked()
+
+    def _write_unlocked(self, records: Sequence[ResourceRecord]) -> None:
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        payload = {
+            "schema_version": "1.0",
+            "updated_at": _utc_now(),
+            "resources": [asdict(item) for item in records],
+        }
+        handle, temporary_name = tempfile.mkstemp(
+            prefix=f".{self.path.name}.", suffix=".tmp", dir=self.path.parent
+        )
+        temporary = Path(temporary_name)
+        try:
+            with os.fdopen(handle, "w", encoding="utf-8", newline="\n") as stream:
+                json.dump(payload, stream, indent=2)
+                stream.write("\n")
+                stream.flush()
+                os.fsync(stream.fileno())
+            os.replace(temporary, self.path)
+        finally:
+            if temporary.exists():
+                temporary.unlink()
 
     def write(self, records: Sequence[ResourceRecord]) -> None:
-        with self._lock:
-            self.path.parent.mkdir(parents=True, exist_ok=True)
-            payload = {
-                "schema_version": "1.0",
-                "updated_at": _utc_now(),
-                "resources": [asdict(item) for item in records],
-            }
-            handle, temporary_name = tempfile.mkstemp(
-                prefix=f".{self.path.name}.", suffix=".tmp", dir=self.path.parent
-            )
-            temporary = Path(temporary_name)
-            try:
-                with os.fdopen(handle, "w", encoding="utf-8", newline="\n") as stream:
-                    json.dump(payload, stream, indent=2)
-                    stream.write("\n")
-                    stream.flush()
-                    os.fsync(stream.fileno())
-                os.replace(temporary, self.path)
-            finally:
-                if temporary.exists():
-                    temporary.unlink()
+        with self._lock, FileLock(self.lock_path, timeout_seconds=30.0):
+            self._write_unlocked(records)
 
     def upsert(self, record: ResourceRecord) -> None:
-        records = {item.resource_id: item for item in self.load()}
-        records[record.resource_id] = record
-        self.write(tuple(records[key] for key in sorted(records)))
+        # The re-entrant lock covers threads in this process; FileLock covers
+        # independent CLI/worker processes sharing the same ledger.
+        with self._lock, FileLock(self.lock_path, timeout_seconds=30.0):
+            records = {item.resource_id: item for item in self._load_unlocked()}
+            records[record.resource_id] = record
+            self._write_unlocked(tuple(records[key] for key in sorted(records)))
+
+    def update(self, resource_id: str, **changes: object) -> ResourceRecord:
+        """Atomically update one record without a cross-process read/write gap."""
+        with self._lock, FileLock(self.lock_path, timeout_seconds=30.0):
+            records = {item.resource_id: item for item in self._load_unlocked()}
+            if resource_id not in records:
+                raise KeyError(resource_id)
+            updated = replace(records[resource_id], **changes)
+            records[resource_id] = updated
+            self._write_unlocked(tuple(records[key] for key in sorted(records)))
+            return updated
 
     def get(self, resource_id: str) -> ResourceRecord:
         for record in self.load():
@@ -213,7 +292,9 @@ class ResourceManager:
 
     def __init__(self, ledger_path: Path, *, receipt_dir: Path | None = None) -> None:
         self.ledger = ResourceLedger(ledger_path)
-        self.receipt_dir = (receipt_dir or ledger_path.parent / "cleanup-receipts").resolve()
+        self.receipt_dir = (
+            receipt_dir or ledger_path.parent / "cleanup-receipts"
+        ).resolve()
         self._processes: dict[str, subprocess.Popen[object]] = {}
 
     def register_path(
@@ -233,7 +314,9 @@ class ResourceManager:
         target = path.absolute()
         root = allowed_cleanup_root.resolve(strict=True)
         if not _inside(target, root) or target.resolve(strict=False) == root:
-            raise ValueError("resource target must be a child of the allowed cleanup root")
+            raise ValueError(
+                "resource target must be a child of the allowed cleanup root"
+            )
         if target.exists() and _path_is_link_or_reparse(target):
             link_status = "link_or_reparse"
         else:
@@ -287,14 +370,11 @@ class ResourceManager:
             raise
 
     def update(self, resource_id: str, **changes: object) -> ResourceRecord:
-        current = self.ledger.get(resource_id)
         allowed = set(ResourceRecord.__dataclass_fields__) - {"resource_id"}
         unknown = set(changes) - allowed
         if unknown:
             raise ValueError(f"unknown resource fields: {sorted(unknown)}")
-        updated = replace(current, last_activity_at=_utc_now(), **changes)
-        self.ledger.upsert(updated)
-        return updated
+        return self.ledger.update(resource_id, last_activity_at=_utc_now(), **changes)
 
     def mark_run_ended(
         self,
@@ -308,6 +388,11 @@ class ResourceManager:
         updated: list[ResourceRecord] = []
         for record in self.ledger.load():
             if record.run_id != run_id:
+                continue
+            # Process closure and an earlier path reclamation are terminal. A
+            # later run-level transition must not resurrect either resource as
+            # reclaimable and make reconciliation report a false leak.
+            if record.status == ResourceStatus.RECLAIMED.value:
                 continue
             status = (
                 ResourceStatus.RETAINED.value
@@ -327,6 +412,32 @@ class ResourceManager:
             )
         return tuple(updated)
 
+    def reclaim_ephemeral_path(
+        self,
+        resource_id: str,
+        *,
+        reason: str,
+        state: RunState = RunState.COMPLETED,
+    ) -> CleanupReceipt:
+        """End and reclaim one registered ephemeral path without ending sibling resources."""
+
+        if state.value not in ENDED_RUN_STATES:
+            raise ValueError("path cleanup requires an ended run state")
+        record = self.ledger.get(resource_id)
+        if record.resource_type != "path":
+            raise ValueError("resource is not a registered path")
+        if record.classification != ResourceClassification.EPHEMERAL.value:
+            raise ValueError("resource is not an owned ephemeral path")
+        if record.status == ResourceStatus.RECLAIMED.value:
+            raise ValueError("ephemeral path is already reclaimed")
+        self.update(
+            resource_id,
+            run_state=state.value,
+            active=False,
+            status=ResourceStatus.RECLAIMABLE.value,
+        )
+        return self.reclaim(resource_id, reason=reason, apply=True)
+
     def promote_outputs(
         self, resource_id: str, outputs: Sequence[Path], *, validated: bool
     ) -> ResourceRecord:
@@ -336,7 +447,9 @@ class ResourceManager:
         for output in outputs:
             resolved = output.resolve(strict=True)
             if _inside(resolved, target):
-                raise ValueError("promoted output must be outside the disposable resource")
+                raise ValueError(
+                    "promoted output must be outside the disposable resource"
+                )
             if not resolved.is_file():
                 raise ValueError("promoted output must be a readable file")
             with resolved.open("rb") as stream:
@@ -395,8 +508,10 @@ class ResourceManager:
                     reasons.append("cleanup target is the allowed root itself")
             except OSError:
                 reasons.append("target resolution is ambiguous")
-        if record.path and Path(record.path).exists() and _path_is_link_or_reparse(
-            Path(record.path)
+        if (
+            record.path
+            and Path(record.path).exists()
+            and _path_is_link_or_reparse(Path(record.path))
         ):
             reasons.append("target is a link or reparse point")
         return not reasons, tuple(sorted(set(reasons)))
@@ -438,6 +553,28 @@ class ResourceManager:
             "links": links,
         }
 
+    @staticmethod
+    def nested_links_are_internal(path: Path) -> bool:
+        """Prove every nested link resolves inside the disposable root."""
+
+        root = path.resolve(strict=True)
+        stack = [root]
+        try:
+            while stack:
+                current = stack.pop()
+                with os.scandir(current) as entries:
+                    for entry in entries:
+                        entry_path = Path(entry.path)
+                        if entry.is_symlink() or _path_is_link_or_reparse(entry_path):
+                            if not _inside(entry_path.resolve(strict=False), root):
+                                return False
+                            continue
+                        if entry.is_dir(follow_symlinks=False):
+                            stack.append(entry_path)
+            return True
+        except OSError:
+            return False
+
     def reclaim(
         self,
         resource_id: str,
@@ -455,14 +592,15 @@ class ResourceManager:
         if allowed:
             try:
                 inventory = self.inventory(Path(record.path or ""))
-                if inventory["links"]:
-                    errors.append("nested link or reparse point blocks recursive cleanup")
+                if inventory["links"] and not self.nested_links_are_internal(
+                    Path(record.path or "")
+                ):
+                    errors.append(
+                        "nested link or reparse point escapes the cleanup root or is ambiguous"
+                    )
                 elif apply and Path(record.path or "").exists():
                     target = Path(record.path or "")
-                    if target.is_dir():
-                        shutil.rmtree(target)
-                    else:
-                        target.unlink()
+                    _remove_owned_target(target)
                     if target.exists():
                         raise OSError("target remains after reclamation")
                     self.update(
@@ -554,15 +692,22 @@ class ResourceManager:
         environment: Mapping[str, str] | None = None,
         stdout: int | None = subprocess.PIPE,
         stderr: int | None = subprocess.PIPE,
+        text: bool = True,
+        start_suspended: bool = False,
     ) -> tuple[ResourceRecord, subprocess.Popen[object]]:
+        if start_suspended and os.name != "nt":
+            raise ValueError("suspended process creation is Windows-only")
         creationflags = subprocess.CREATE_NEW_PROCESS_GROUP if os.name == "nt" else 0
+        if start_suspended:
+            creationflags |= 0x00000004  # Windows CREATE_SUSPENDED
         process = subprocess.Popen(
             list(command),
             cwd=cwd,
             env=dict(environment) if environment is not None else None,
             stdout=stdout,
             stderr=stderr,
-            text=True,
+            text=text,
+            shell=False,
             start_new_session=os.name != "nt",
             creationflags=creationflags,
         )
@@ -603,6 +748,65 @@ class ResourceManager:
             run_state=RunState.COMPLETED.value,
             status=ResourceStatus.RECLAIMED.value,
             cleanup_result=f"exit_{process.returncode}",
+        )
+
+    def complete_current_process(
+        self,
+        resource_id: str,
+        *,
+        expected_pid: int,
+        exit_code: int,
+        run_state: RunState = RunState.COMPLETED,
+    ) -> ResourceRecord:
+        """Close a process record from inside its independently-owned worker.
+
+        A durable worker outlives the one-shot parent that created its Popen
+        handle.  The child may close only its exact active ledger identity; it
+        cannot close an arbitrary or reused PID.
+        """
+        record = self.ledger.get(resource_id)
+        if record.resource_type != "process" or record.pid != expected_pid or expected_pid != os.getpid():
+            raise PermissionError("current process does not own the resource record")
+        if not record.active:
+            if record.status == ResourceStatus.RECLAIMED.value:
+                return record
+            raise PermissionError("current process resource is already inactive")
+        return self.update(
+            resource_id,
+            active=False,
+            run_state=run_state.value,
+            status=ResourceStatus.RECLAIMED.value,
+            cleanup_result=f"exit_{int(exit_code)}",
+        )
+
+    def complete_persisted_process_after_exit(
+        self,
+        resource_id: str,
+        *,
+        expected_pid: int,
+        run_state: RunState,
+    ) -> ResourceRecord:
+        """Close durable process custody only after the exact PID is absent.
+
+        This is the external half of terminal publication for detached Studio
+        workers.  A worker cannot truthfully publish both its own death and the
+        terminal run state, so an observing host verifies absence first.
+        """
+        record = self.ledger.get(resource_id)
+        if record.resource_type != "process" or record.pid != expected_pid:
+            raise PermissionError("persisted process identity does not match")
+        if not record.active:
+            if record.status == ResourceStatus.RECLAIMED.value:
+                return record
+            raise PermissionError("persisted process resource is already inactive")
+        if _process_exists(expected_pid):
+            raise ValueError("persisted process is still alive")
+        return self.update(
+            resource_id,
+            active=False,
+            run_state=run_state.value,
+            status=ResourceStatus.RECLAIMED.value,
+            cleanup_result="process_absence_verified",
         )
 
     def terminate_owned_process(
@@ -701,6 +905,61 @@ class ResourceManager:
         self._write_receipt(receipt)
         return receipt
 
+    def retire_proven_absent_process(
+        self, resource_id: str, *, apply: bool
+    ) -> CleanupReceipt:
+        """Close persisted process custody only when the recorded PID is dead."""
+
+        record = self.ledger.get(resource_id)
+        started = _utc_now()
+        errors: list[str] = []
+        reclaimed = 0
+        if record.resource_type != "process" or not record.active:
+            errors.append("resource is not an active process")
+        elif record.pid is None or _process_exists(record.pid):
+            errors.append("persisted process absence is not proven")
+        elif apply:
+            self.update(
+                resource_id,
+                active=False,
+                run_state=RunState.ABANDONED.value,
+                status=ResourceStatus.RECLAIMED.value,
+                cleanup_result="persisted_process_proven_absent",
+            )
+            reclaimed = 1
+        receipt = CleanupReceipt(
+            cleanup_id=f"cleanup-{uuid4().hex}",
+            project_id=record.project_id,
+            run_id=record.run_id,
+            lane_id=record.lane_id,
+            start_time=started,
+            end_time=_utc_now(),
+            reason="persisted_owned_process_absence_reconciliation",
+            validated_roots=(),
+            workers=1,
+            priority_mode="identity_conservative_process_reconciliation",
+            resources_considered=1,
+            resources_reclaimed=reclaimed,
+            resources_skipped=int(not reclaimed),
+            resources_failed=0,
+            files_removed=0,
+            directories_removed=0,
+            bytes_reclaimed=0,
+            retained_artifacts=(),
+            promoted_artifacts=(),
+            links_encountered=0,
+            orphan_processes_reaped=0,
+            errors=tuple(errors),
+            remaining_owned_ephemeral_resources=sum(
+                item.classification == ResourceClassification.EPHEMERAL.value
+                and item.status != ResourceStatus.RECLAIMED.value
+                for item in self.ledger.load()
+            ),
+            dry_run=not apply,
+        )
+        self._write_receipt(receipt)
+        return receipt
+
     @contextmanager
     def workspace(
         self,
@@ -753,7 +1012,10 @@ class ResourceManager:
             and item.status != ResourceStatus.RECLAIMED.value
         ]
         owned_bytes = sum(item.bytes for item in owned)
-        if usage.free < budget.minimum_free_bytes or free_fraction <= budget.critical_free_fraction:
+        if (
+            usage.free < budget.minimum_free_bytes
+            or free_fraction <= budget.critical_free_fraction
+        ):
             pressure = StoragePressure.CRITICAL
         elif free_fraction <= budget.high_free_fraction:
             pressure = StoragePressure.HIGH
@@ -762,11 +1024,20 @@ class ResourceManager:
         else:
             pressure = StoragePressure.NORMAL
         alerts: list[str] = []
-        if budget.max_owned_ephemeral_bytes is not None and owned_bytes > budget.max_owned_ephemeral_bytes:
+        if (
+            budget.max_owned_ephemeral_bytes is not None
+            and owned_bytes > budget.max_owned_ephemeral_bytes
+        ):
             alerts.append("owned ephemeral byte budget exceeded")
-        if budget.max_workspace_count is not None and len(owned) > budget.max_workspace_count:
+        if (
+            budget.max_workspace_count is not None
+            and len(owned) > budget.max_workspace_count
+        ):
             alerts.append("workspace count budget exceeded")
-        if budget.max_file_count is not None and sum(item.files for item in owned) > budget.max_file_count:
+        if (
+            budget.max_file_count is not None
+            and sum(item.files for item in owned) > budget.max_file_count
+        ):
             alerts.append("owned ephemeral file budget exceeded")
         return {
             "valid": not alerts,
@@ -791,6 +1062,18 @@ class ResourceManager:
             if record.resource_type == "process" and record.active:
                 if record.resource_id in self._processes:
                     receipts.append(self.terminate_owned_process(record.resource_id))
+                elif record.pid is not None and not _process_exists(record.pid):
+                    receipt = self.retire_proven_absent_process(
+                        record.resource_id, apply=apply
+                    )
+                    receipts.append(receipt)
+                    if receipt.resources_reclaimed == 0:
+                        retained.append(
+                            {
+                                "resource_id": record.resource_id,
+                                "reason": "persisted process is absent; apply is required to close custody",
+                            }
+                        )
                 else:
                     retained.append(
                         {
@@ -803,7 +1086,9 @@ class ResourceManager:
                 ResourceStatus.CLEANUP_FAILED.value,
             }:
                 receipt = self.reclaim(
-                    record.resource_id, reason="startup_or_run_reconciliation", apply=apply
+                    record.resource_id,
+                    reason="startup_or_run_reconciliation",
+                    apply=apply,
                 )
                 receipts.append(receipt)
                 if receipt.resources_reclaimed == 0:
@@ -814,15 +1099,22 @@ class ResourceManager:
                         }
                     )
         final = self.ledger.load()
-        active_processes = sum(item.resource_type == "process" and item.active for item in final)
+        active_processes = sum(
+            item.resource_type == "process" and item.active for item in final
+        )
         unexplained = sum(
             item.classification == ResourceClassification.EPHEMERAL.value
-            and item.status not in {ResourceStatus.RECLAIMED.value, ResourceStatus.RETAINED.value}
+            and item.status
+            not in {ResourceStatus.RECLAIMED.value, ResourceStatus.RETAINED.value}
             for item in final
         )
-        cleanup_failures = sum(item.status == ResourceStatus.CLEANUP_FAILED.value for item in final)
+        cleanup_failures = sum(
+            item.status == ResourceStatus.CLEANUP_FAILED.value for item in final
+        )
         return {
-            "valid": active_processes == 0 and unexplained == 0 and cleanup_failures == 0,
+            "valid": active_processes == 0
+            and unexplained == 0
+            and cleanup_failures == 0,
             "dry_run": not apply,
             "owned_child_processes_active": active_processes,
             "owned_ephemeral_unexplained": unexplained,
@@ -833,21 +1125,258 @@ class ResourceManager:
         }
 
 
-def resource_status(ledger_path: Path, *, storage_path: Path | None = None) -> dict[str, object]:
+def resource_status(
+    ledger_path: Path, *, storage_path: Path | None = None
+) -> dict[str, object]:
     manager = ResourceManager(ledger_path)
     records = manager.ledger.load()
     classifications = {
-        classification.value: sum(item.classification == classification.value for item in records)
+        classification.value: sum(
+            item.classification == classification.value for item in records
+        )
         for classification in ResourceClassification
     }
     output: dict[str, object] = {
         "valid": True,
         "resource_count": len(records),
         "classifications": classifications,
-        "active_processes": sum(item.resource_type == "process" and item.active for item in records),
-        "reclaimable_paths": sum(item.resource_type == "path" and item.status == ResourceStatus.RECLAIMABLE.value for item in records),
-        "cleanup_failures": sum(item.status == ResourceStatus.CLEANUP_FAILED.value for item in records),
+        "active_processes": sum(
+            item.resource_type == "process" and item.active for item in records
+        ),
+        "reclaimable_paths": sum(
+            item.resource_type == "path"
+            and item.status == ResourceStatus.RECLAIMABLE.value
+            for item in records
+        ),
+        "cleanup_failures": sum(
+            item.status == ResourceStatus.CLEANUP_FAILED.value for item in records
+        ),
     }
     if storage_path is not None:
         output["storage"] = manager.storage_status(storage_path)
     return output
+
+
+OPERATIONAL_HISTORY_SCHEMA_VERSION = "px.operational-history/1.0"
+RETENTION_RECEIPT_SCHEMA_VERSION = "px.retention-receipt/1.0"
+
+
+def _canonical_json(value: object) -> bytes:
+    return (
+        json.dumps(
+            value,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        ).encode("utf-8")
+        + b"\n"
+    )
+
+
+def _record_digest(record: Mapping[str, object]) -> str:
+    value = dict(record)
+    value.pop("record_sha256", None)
+    return hashlib.sha256(_canonical_json(value)).hexdigest()
+
+
+def retention_policy(retention_class: RetentionClass | str) -> dict[str, object]:
+    """Return the non-authorizing disposition for one explicit retention class."""
+    try:
+        normalized = RetentionClass(retention_class)
+    except ValueError:
+        normalized = RetentionClass.UNKNOWN
+    decisions = {
+        RetentionClass.PROTECTED: ("retain", False, "protected material is immutable"),
+        RetentionClass.EVIDENCE: ("retain", False, "evidence requires explicit policy"),
+        RetentionClass.OPERATIONAL: (
+            "bounded_prune",
+            False,
+            "prune only through a retained ancestry anchor and receipt",
+        ),
+        RetentionClass.TRANSIENT: (
+            "safe_gate",
+            False,
+            "delegate only registered PACIFY-X ephemerals to ResourceManager",
+        ),
+        RetentionClass.UNKNOWN: ("retain", False, "classification is ambiguous"),
+    }
+    action, auto_delete, reason = decisions[normalized]
+    return {
+        "schema_version": "px.retention-policy-decision/1.0",
+        "retention_class": normalized.value,
+        "action": action,
+        "auto_delete": auto_delete,
+        "reason": reason,
+    }
+
+
+class RetentionManager:
+    """Bound operational history and delegate transient cleanup to its authority."""
+
+    def __init__(
+        self,
+        resource_manager: ResourceManager,
+        *,
+        allowed_root: Path,
+        wal_root: Path,
+        receipt_dir: Path | None = None,
+    ) -> None:
+        self.resource_manager = resource_manager
+        self.allowed_root = allowed_root.resolve(strict=True)
+        self.wal = JsonWal(wal_root, self.allowed_root)
+        self.receipt_dir = (
+            receipt_dir or self.allowed_root / ".pacify-x" / "retention-receipts"
+        ).resolve()
+        if not _inside(self.receipt_dir, self.allowed_root):
+            raise ValueError("retention receipt directory must stay below allowed root")
+
+    def reclaim_transient(
+        self, resource_id: str, *, reason: str, apply: bool = False
+    ) -> CleanupReceipt:
+        """Use the sole cleanup authority after proving transient/ephemeral identity."""
+        record = self.resource_manager.ledger.get(resource_id)
+        if record.classification != ResourceClassification.EPHEMERAL.value:
+            # A normal ResourceManager receipt records the refusal and retained target.
+            return self.resource_manager.reclaim(
+                resource_id, reason=reason, apply=apply
+            )
+        return self.resource_manager.reclaim(resource_id, reason=reason, apply=apply)
+
+    @staticmethod
+    def _validate_history(
+        value: object,
+    ) -> tuple[dict[str, object], list[dict[str, object]]]:
+        if not isinstance(value, dict) or set(value) != {
+            "schema_version",
+            "anchor",
+            "records",
+        }:
+            raise ValueError("operational history fields are not exact")
+        if value.get("schema_version") != OPERATIONAL_HISTORY_SCHEMA_VERSION:
+            raise ValueError("operational history schema is unsupported")
+        anchor = value.get("anchor")
+        if anchor is None:
+            previous: str | None = None
+            sequence = 0
+        elif (
+            not isinstance(anchor, dict)
+            or set(anchor) != {"through_sequence", "head_sha256"}
+            or not isinstance(anchor.get("through_sequence"), int)
+            or int(anchor["through_sequence"]) < 1
+            or not isinstance(anchor.get("head_sha256"), str)
+        ):
+            raise ValueError("operational ancestry anchor is invalid")
+        else:
+            previous = str(anchor["head_sha256"])
+            sequence = int(anchor["through_sequence"])
+        raw_records = value.get("records")
+        if not isinstance(raw_records, list) or len(raw_records) > 100_000:
+            raise ValueError("operational history record count is invalid")
+        records: list[dict[str, object]] = []
+        for raw in raw_records:
+            if (
+                not isinstance(raw, dict)
+                or set(raw)
+                != {
+                    "sequence",
+                    "previous_record_sha256",
+                    "payload",
+                    "record_sha256",
+                }
+                or raw.get("sequence") != sequence + 1
+                or raw.get("previous_record_sha256") != previous
+                or raw.get("record_sha256") != _record_digest(raw)
+            ):
+                raise ValueError("operational history ancestry is invalid")
+            sequence += 1
+            previous = str(raw["record_sha256"])
+            records.append(dict(raw))
+        return dict(value), records
+
+    def prune_operational_history(
+        self,
+        history_path: Path,
+        *,
+        max_records: int,
+        apply: bool = False,
+    ) -> dict[str, object]:
+        """Retain a bounded suffix with an immutable ancestry anchor and receipt."""
+        if max_records < 1 or max_records > 100_000:
+            raise ValueError("max_records must be between 1 and 100000")
+        path = history_path.resolve(strict=True)
+        if (
+            not path.is_file()
+            or path.is_symlink()
+            or not _inside(path, self.allowed_root)
+        ):
+            raise ValueError("operational history is outside bounded custody")
+        try:
+            raw = path.read_bytes()
+            value = json.loads(raw.decode("utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            raise ValueError("operational history is unreadable") from error
+        history, records = self._validate_history(value)
+        remove_count = max(0, len(records) - max_records)
+        before_sha256 = hashlib.sha256(raw).hexdigest()
+        if remove_count == 0:
+            return {
+                "schema_version": RETENTION_RECEIPT_SCHEMA_VERSION,
+                "valid": True,
+                "applied": False,
+                "reason": "within_bound",
+                "retention_class": RetentionClass.OPERATIONAL.value,
+                "records_before": len(records),
+                "records_after": len(records),
+                "before_sha256": before_sha256,
+                "after_sha256": before_sha256,
+            }
+        removed = records[:remove_count]
+        retained = records[remove_count:]
+        last_removed = removed[-1]
+        anchor = {
+            "through_sequence": last_removed["sequence"],
+            "head_sha256": last_removed["record_sha256"],
+        }
+        next_history = {
+            "schema_version": OPERATIONAL_HISTORY_SCHEMA_VERSION,
+            "anchor": anchor,
+            "records": retained,
+        }
+        # Revalidate the resulting suffix before any write is staged.
+        self._validate_history(next_history)
+        after_sha256 = hashlib.sha256(_canonical_json(next_history)).hexdigest()
+        receipt_id = f"retention-{int(anchor['through_sequence']):08d}-{str(anchor['head_sha256'])[:16]}"
+        anchor_path = (
+            self.receipt_dir
+            / "anchors"
+            / f"{int(anchor['through_sequence']):08d}-{anchor['head_sha256']}.json"
+        )
+        receipt_path = self.receipt_dir / f"{receipt_id}.json"
+        receipt = {
+            "schema_version": RETENTION_RECEIPT_SCHEMA_VERSION,
+            "receipt_id": receipt_id,
+            "valid": True,
+            "applied": apply,
+            "retention_class": RetentionClass.OPERATIONAL.value,
+            "history_path": path.as_posix(),
+            "records_before": len(records),
+            "records_pruned": remove_count,
+            "records_after": len(retained),
+            "before_sha256": before_sha256,
+            "after_sha256": after_sha256,
+            "anchor_path": anchor_path.as_posix(),
+            "anchor": anchor,
+            "ancestry_preserved": True,
+        }
+        if not apply:
+            return receipt
+        transaction = self.wal.commit(
+            (
+                JsonArtifact("state", path, next_history),
+                JsonArtifact("receipt", anchor_path, anchor),
+                JsonArtifact("receipt", receipt_path, receipt),
+            ),
+            transaction_id=receipt_id,
+        )
+        return {**receipt, "transaction": transaction}

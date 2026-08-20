@@ -1,0 +1,40 @@
+{
+  "admission_record": "optimize-agent-harness",
+  "body_sha256": "b1f3e0c26401ee7be543cd7a554de2cea1876fe37198d7c66c642705eac1f8b2",
+  "contract": {
+    "available": true,
+    "sha256": "66de069d21bce2f895dbac0ef9057d51d7210934fb2bced0e2b97ec25b51b9b4",
+    "source": "registry/skill_packages/optimize-agent-harness.json"
+  },
+  "description": "Audit and reduce the gap between available agent tooling and reliable",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "optimize-agent-harness",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/optimize-agent-harness"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "agent",
+    "agent-harness",
+    "context-management",
+    "external-candidate",
+    "harness",
+    "optimize"
+  ],
+  "version": "0.1.0"
+}

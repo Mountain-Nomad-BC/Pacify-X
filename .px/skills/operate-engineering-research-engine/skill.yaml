@@ -1,0 +1,39 @@
+{
+  "admission_record": "operate-engineering-research-engine",
+  "body_sha256": "8118164b966b1df64e16c10181ba445dac250aa831089e8ddd8d2d3178ffe77b",
+  "contract": {
+    "available": true,
+    "sha256": "bfdc37deb54494a70ab79350c7d8f3751ff919d3de5be6b509ae3e8b4322845f",
+    "source": "registry/skill_packages/operate-engineering-research-engine.json"
+  },
+  "description": "Discover and compare engineering repositories and research sources at mechanism level, fingerprint versions, score evidence, synthesize cross-source patterns, and submit provenance-bound capability deltas. Use for distributed engineering research, trend analysis, or research-to-capability intake.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "operate-engineering-research-engine",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/operate-engineering-research-engine"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "capability-delta",
+    "mechanism-graph",
+    "repository-fingerprint",
+    "research",
+    "version-drift"
+  ],
+  "version": "1.0.0"
+}

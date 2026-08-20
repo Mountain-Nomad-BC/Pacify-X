@@ -4,7 +4,7 @@
   "orchestrations": [
     {
       "orchestration_id": "agent_create_validate",
-      "title": "Validate and register a supplied agent specification",
+      "title": "Validate and record a supplied agent specification candidate",
       "version": "0.1.0",
       "trigger": "explicit-or-policy-scheduled",
       "project_binding": "required unless workspace bootstrap",
@@ -25,7 +25,7 @@
         "side_effect_budget_set"
       ],
       "outcomes": [
-        "agent_active_or_rejected"
+        "validated_agent_candidate"
       ],
       "failure_policy": "checkpoint-and-fail-closed-on-boundary-or-integrity-violation",
       "audit": true,

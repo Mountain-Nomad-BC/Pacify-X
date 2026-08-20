@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 from runtime.registry_envelope import (
+    UNOWNED_COUNT_FIELDS,
     discover_count_fields,
     validate_envelope_document,
     validate_registry_envelopes,
@@ -11,6 +12,20 @@ from scripts.build_registry_envelope_inventory import build_inventory
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_externally_derived_surface_counts_are_not_local_collection_invariants():
+    excluded = {
+        key
+        for path, key in UNOWNED_COUNT_FIELDS
+        if path == "registry/operational_surface_inventory.json"
+    }
+    assert excluded == {"dashboard_navigation_surface_count", "ui_action_count"}
+    discovered = discover_count_fields(ROOT)
+    assert (
+        "registry/operational_surface_inventory.json",
+        "dashboard_navigation_surface_count",
+    ) not in discovered
 
 
 def test_every_count_bearing_registry_field_has_one_owner_and_invariant():
@@ -53,3 +68,25 @@ def test_inventory_builder_is_deterministic():
     assert json.dumps(build_inventory(), sort_keys=True) == json.dumps(
         build_inventory(), sort_keys=True
     )
+
+
+def test_nested_object_filtered_count_tracks_current_receipts():
+    record = {
+        "count_key": "current_required_receipt_count",
+        "collection_key": "records",
+        "rule": "nested_object_filtered",
+        "nested": "receipt_state",
+        "field": "current",
+        "equals": True,
+    }
+    payload = {
+        "current_required_receipt_count": 1,
+        "records": [
+            {"receipt_state": {"current": True}},
+            {"receipt_state": {"current": False}},
+            {"kind": "vsix"},
+        ],
+    }
+    assert validate_envelope_document(payload, record) == []
+    payload["current_required_receipt_count"] = 2
+    assert validate_envelope_document(payload, record)

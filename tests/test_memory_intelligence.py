@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 import tempfile
@@ -153,6 +153,16 @@ class MemoryIntelligenceTests(unittest.TestCase):
         reasons = {item["memory_id"]: item["reason"] for item in result.rejected}
         self.assertEqual(reasons["foreign"], "scope_or_acl_denied")
         self.assertEqual(reasons["negative"], "negative_match")
+
+    def test_blank_query_returns_bounded_recent_eligible_memory(self) -> None:
+        caller = MemoryCaller("prj", "actor", "agent")
+        older = record("older")
+        newer = record("newer")
+        object.__setattr__(
+            older, "effective_at", older.effective_at - timedelta(days=1)
+        )
+        result = rank_memories("", (older, newer), caller=caller, max_items=1)
+        self.assertEqual([item.record.memory_id for item in result.selected], ["newer"])
 
     def test_loadout_is_bounded_and_same_project_only(self) -> None:
         caller = MemoryCaller("prj", "actor", "agent", team_id="team")

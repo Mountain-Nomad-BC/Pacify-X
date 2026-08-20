@@ -1,0 +1,37 @@
+{
+  "admission_record": "evaluation-budget-allocator",
+  "body_sha256": "1c808edce803d1cdc944a94fb6071511370f650b52357403baf966e241266208",
+  "contract": {
+    "available": true,
+    "sha256": "63fb8c183578f7ef7c602af3c41ade4236a519946f72c29fce9a3c5738d76afe",
+    "source": "registry/skill_packages/evaluation-budget-allocator.json"
+  },
+  "description": "Allocate automated and human review by risk, disagreement, novelty, impact, and evidence quality\\u2014not self-confidence. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "evaluation-budget-allocator",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/evaluation-budget-allocator"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "allocator",
+    "budget",
+    "evaluation"
+  ],
+  "version": "0.1.0"
+}

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Validate Physical and Media Deliverables"
+  short_description: "Verify CAD, robotics, manufacturing, and media"
+  default_prompt: "Use $validate-physical-media-deliverables to verify this deliverable against its explicit technical promises."
+policy:
+  allow_implicit_invocation: true

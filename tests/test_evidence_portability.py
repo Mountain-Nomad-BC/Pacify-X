@@ -22,7 +22,11 @@ def test_all_evidence_locators_are_project_relative() -> None:
 def test_new_sibling_reference_fails_until_disposition_registry_is_rebuilt() -> None:
     root = Path(tempfile.mkdtemp()) / "framework"
     shutil.copytree(
-        ROOT, root, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache")
+        ROOT,
+        root,
+        ignore=shutil.ignore_patterns(
+            ".git", ".engineering-bootstrap", "__pycache__", ".pytest_cache"
+        ),
     )
     (root / "evidence/new.json").write_text(
         '{"source":"../temp/unowned.json"}\n', encoding="utf-8"
@@ -33,7 +37,11 @@ def test_new_sibling_reference_fails_until_disposition_registry_is_rebuilt() -> 
 def test_generated_portability_registry_is_not_self_ingested() -> None:
     root = Path(tempfile.mkdtemp()) / "framework"
     shutil.copytree(
-        ROOT, root, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache")
+        ROOT,
+        root,
+        ignore=shutil.ignore_patterns(
+            ".git", ".engineering-bootstrap", "__pycache__", ".pytest_cache"
+        ),
     )
     registry = root / "registry/historical_external_references.json"
     registry.write_text(

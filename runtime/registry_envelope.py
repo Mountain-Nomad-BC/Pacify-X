@@ -12,6 +12,17 @@ from .corrective_release import SOURCE_CARD_IDS
 COUNT_SUFFIX = "_count"
 
 
+UNOWNED_COUNT_FIELDS = {
+    ("registry/operational_gap_ledger.head.json", "event_count"),
+    ("registry/operational_gap_ledger.snapshot.json", "event_count"),
+    (
+        "registry/operational_surface_inventory.json",
+        "dashboard_navigation_surface_count",
+    ),
+    ("registry/operational_surface_inventory.json", "ui_action_count"),
+}
+
+
 def _count_fields(payload: Mapping[str, Any]) -> set[str]:
     return {key for key in payload if key == "count" or key.endswith(COUNT_SUFFIX)}
 
@@ -23,7 +34,11 @@ def discover_count_fields(root: Path) -> set[tuple[str, str]]:
         payload = json.loads(path.read_text(encoding="utf-8"))
         if isinstance(payload, dict):
             relative = path.relative_to(root).as_posix()
-            discovered.update((relative, key) for key in _count_fields(payload))
+            discovered.update(
+                (relative, key)
+                for key in _count_fields(payload)
+                if (relative, key) not in UNOWNED_COUNT_FIELDS
+            )
     return discovered
 
 
@@ -39,6 +54,14 @@ def derive_count(payload: Mapping[str, Any], record: Mapping[str, Any]) -> int:
     rule = record["rule"]
     if rule == "length":
         return len(collection)
+    if rule == "filtered_values":
+        if not isinstance(collection, dict):
+            raise ValueError("rule 'filtered_values' requires an object collection")
+        return sum(
+            isinstance(item, dict)
+            and item.get(record["field"]) == record.get("equals")
+            for item in collection.values()
+        )
     if not isinstance(collection, list):
         raise ValueError(f"rule {rule!r} requires a list collection")
     if rule == "filtered":
@@ -78,6 +101,14 @@ def derive_count(payload: Mapping[str, Any], record: Mapping[str, Any]) -> int:
             for item in collection
             if isinstance(item, dict)
             for nested in item.get(record["nested"], ())
+        )
+    if rule == "nested_object_filtered":
+        return sum(
+            isinstance(item, dict)
+            and isinstance(item.get(record["nested"]), dict)
+            and item[record["nested"]].get(record["field"])
+            == record.get("equals")
+            for item in collection
         )
     raise ValueError(f"unsupported registry-envelope rule: {rule}")
 

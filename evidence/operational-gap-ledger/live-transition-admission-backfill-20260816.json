@@ -1,0 +1,109 @@
+{
+  "schema_version": "px.operational-gap-ledger-transition-admission-review/1.0",
+  "report_id": "px-live-transition-admission-backfill-20260816",
+  "generated_utc": "2026-08-16T18:17:39.3722867Z",
+  "scope": "Historical PX-OS-095 transition admission and current closure-evidence contradiction",
+  "authority_statement": "This report records immutable historical facts and typed admission mappings. It does not rewrite events 251-254, does not claim that their receipt is current, and does not preserve PX-OS-095 closure against contradictory later evidence.",
+  "findings": [
+    {
+      "finding_id": "PX-LEDGER-LEGACY-ADMISSION-001",
+      "severity": "high",
+      "status": "requires_append_only_backfill",
+      "claim": "Four consecutive historical PX-OS-095 transitions contain generic evidence but omit the transition-specific admission fields now required by the authoritative reducer.",
+      "targets": [
+        {
+          "sequence": 251,
+          "event_id": "gap-event:42b8b720c28b4ce98d26bbe0a111a40f",
+          "event_sha256": "3dcd3fc3f1722a58e39cf97900d08a6e0eb679e18fa2d4a136cd182587a62af7",
+          "gap_id": "PX-OS-095",
+          "to_state": "implemented",
+          "missing_admission_field": "implementation_evidence"
+        },
+        {
+          "sequence": 252,
+          "event_id": "gap-event:9c871b31974a40249aa7ab7e4715ff44",
+          "event_sha256": "d67a41c7e0e381fb8a0f133cc4f4079262ad5417b36b21f67cbc9c32f82a6a48",
+          "gap_id": "PX-OS-095",
+          "to_state": "narrowly_verified",
+          "missing_admission_field": "verification"
+        },
+        {
+          "sequence": 253,
+          "event_id": "gap-event:1557bd4919004175a4d0341dd899c661",
+          "event_sha256": "04c76913a66e9c481faa6fe300eff4c0554d69e02bffe86411051b0ea1621ad6",
+          "gap_id": "PX-OS-095",
+          "to_state": "integrated",
+          "missing_admission_field": "integration_evidence"
+        },
+        {
+          "sequence": 254,
+          "event_id": "gap-event:885eb6cc42684c4ea696ab77090f1479",
+          "event_sha256": "e5fc6b198910ef18915ff0d4870e939701087bc5442b82f3a61341cdf9dfedba",
+          "gap_id": "PX-OS-095",
+          "to_state": "operationally_verified",
+          "missing_admission_field": "operational_evidence"
+        }
+      ],
+      "attestation_mapping": [
+        {
+          "target_sequence": 251,
+          "typed_field": "implementation_evidence",
+          "source_claim": "Event 251 says the regenerated index was consumed by the owned test-section command.",
+          "qualification": "Historical claim only; not evidence of current membership."
+        },
+        {
+          "target_sequence": 252,
+          "typed_field": "verification",
+          "source_claim": "Event 252 says the historical section receipt recorded 68 passed and 9 subtests passed.",
+          "qualification": "Historical test result only; not a current verification receipt."
+        },
+        {
+          "target_sequence": 253,
+          "typed_field": "integration_evidence",
+          "source_claim": "Event 253 says the historical receipt input hash bound the refreshed membership index into that section execution.",
+          "qualification": "Historical integration claim only; not a current index-membership proof."
+        },
+        {
+          "target_sequence": 254,
+          "typed_field": "operational_evidence",
+          "source_claim": "Event 254 says the historical managed pytest process exited zero and its workspace was reclaimed.",
+          "qualification": "Historical process-lifecycle claim only; not current operational verification."
+        }
+      ]
+    },
+    {
+      "finding_id": "PX-LEDGER-STALE-CLOSURE-RECEIPT-001",
+      "severity": "high",
+      "status": "contradicts_current_closure",
+      "claim": "PX-OS-095 completion_evidence labels the receipt's internal receipt_sha256 as though it were the artifact SHA-256, while the actual current receipt bytes hash differently; the operational-ledger test population also changed after closure.",
+      "closure_event": {
+        "sequence": 256,
+        "event_id": "gap-event:b002fb7530c244769d8a8b76ff800d26",
+        "event_sha256": "3e77490e6549be3a601193664e347d0fa409601f807b3e5a67d1c1d2cd5efd38",
+        "timestamp": "2026-08-16T17:25:44.940367Z"
+      },
+      "receipt": {
+        "path": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+        "embedded_receipt_sha256": "0e70db14ce52f3790e6c3697aa9fe87e9559e7908ff37540847d5f2a78c16d34",
+        "actual_artifact_sha256": "ccc4871399b9a7d9d0ca93bf60f2d62820ab84bcbbfaf83ff6fa30e7b535ef34",
+        "artifact_size": 783,
+        "passed": true,
+        "reported_pass_count": 68,
+        "reported_subtest_pass_count": 9
+      },
+      "post_closure_change": {
+        "path": "tests/test_operational_gap_ledger.py",
+        "current_artifact_sha256": "d4627fa5c12aaba6d2bd7a09dd27e7cefbbba104b0cd6b0f654393476adf6632",
+        "current_artifact_size": 39837,
+        "current_test_function_count": 37,
+        "basis": "The ledger test file was materially extended after PX-OS-095 closed, including the append-only backfill regressions in this change. Therefore the historical testing-governance receipt cannot establish current test-population status."
+      },
+      "current_membership_index": {
+        "path": "registry/test_group_index.json",
+        "artifact_sha256": "2c120f1cb2139704e911c977edf3e949f81965e2fdb58c3bf8e0c03cfc5475fb",
+        "artifact_size": 333552
+      },
+      "required_disposition": "After full replay is restored, reopen PX-OS-095 under the same stable card and require current governed membership evidence before any later reclosure."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "admission_record": "long-horizon-progress-ledger",
+  "body_sha256": "7e3aa3e6cd7b2bdc6ba6881a117a3c112d680d8ecbc78e488131dd9612323877",
+  "contract": {
+    "available": true,
+    "sha256": "7f0db6f111cd271272c7e6580d6fc19a6c65554573a6aa32d1ffd554cb183329",
+    "source": "registry/skill_packages/long-horizon-progress-ledger.json"
+  },
+  "description": "Manage long-running goals as project-scoped state machines with continuation budgets, isolated pause and resume, acceptance-backed completion, repeated-evidence blocked semantics, and durable evidence history. Use when work spans sessions, agents, or bounded continuation turns.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "long-horizon-progress-ledger",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/long-horizon-progress-ledger"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "acceptance",
+    "durable-goals",
+    "long-horizon",
+    "progress",
+    "state-machine"
+  ],
+  "version": "1.0.0"
+}

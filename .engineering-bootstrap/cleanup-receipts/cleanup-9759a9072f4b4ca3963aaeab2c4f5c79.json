@@ -1,0 +1,28 @@
+{
+  "cleanup_id": "cleanup-9759a9072f4b4ca3963aaeab2c4f5c79",
+  "project_id": "Pacify-X",
+  "run_id": "clean-export-1d5adbf6dc564fa2b8c3c42bba793b91",
+  "lane_id": "final-candidate",
+  "start_time": "2026-08-14T18:36:40.386129+00:00",
+  "end_time": "2026-08-14T18:36:41.019096+00:00",
+  "reason": "clean export staging lifecycle closed",
+  "validated_roots": [
+    "C:\\Users\\Ben\\Documents"
+  ],
+  "workers": 1,
+  "priority_mode": "conservative_sequential",
+  "resources_considered": 1,
+  "resources_reclaimed": 1,
+  "resources_skipped": 0,
+  "resources_failed": 0,
+  "files_removed": 3899,
+  "directories_removed": 1214,
+  "bytes_reclaimed": 99553859,
+  "retained_artifacts": [],
+  "promoted_artifacts": [],
+  "links_encountered": 0,
+  "orphan_processes_reaped": 0,
+  "errors": [],
+  "remaining_owned_ephemeral_resources": 1,
+  "dry_run": false
+}

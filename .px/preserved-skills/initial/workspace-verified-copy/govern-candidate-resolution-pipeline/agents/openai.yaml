@@ -1,0 +1,6 @@
+interface:
+  display_name: "Govern Candidate Resolution Pipeline"
+  short_description: "Compile and resolve candidates with evidence"
+  default_prompt: "Use $govern-candidate-resolution-pipeline to compile, rank, and package these capability candidates under explicit invariants."
+policy:
+  allow_implicit_invocation: true

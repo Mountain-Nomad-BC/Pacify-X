@@ -1,0 +1,387 @@
+{
+  "id": "github.vscode-github-actions",
+  "name": "GitHub Actions",
+  "version": "0.32.1",
+  "publisher": "github",
+  "active": true,
+  "builtin": false,
+  "extension_kind": [
+    "workspace"
+  ],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "debuggers",
+    "grammars",
+    "languages",
+    "menus",
+    "views",
+    "viewsContainers",
+    "viewsWelcome"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "github.vscode-github-actions",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "github.vscode-github-actions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:debuggers",
+      "kind": "debuggers",
+      "provider": "github.vscode-github-actions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:grammars",
+      "kind": "grammars",
+      "provider": "github.vscode-github-actions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languages",
+      "kind": "languages",
+      "provider": "github.vscode-github-actions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "github.vscode-github-actions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "github.vscode-github-actions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "github.vscode-github-actions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "github.vscode-github-actions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "github-actions.debugger.connect",
+      "invocation": "vscode.commands.executeCommand('github-actions.debugger.connect', ...args)",
+      "title": "Debug Running Job…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.explorer.current-branch.refresh",
+      "invocation": "vscode.commands.executeCommand('github-actions.explorer.current-branch.refresh', ...args)",
+      "title": "Refresh current branch",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.explorer.openRun",
+      "invocation": "vscode.commands.executeCommand('github-actions.explorer.openRun', ...args)",
+      "title": "Open workflow run",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.explorer.openWorkflowFile",
+      "invocation": "vscode.commands.executeCommand('github-actions.explorer.openWorkflowFile', ...args)",
+      "title": "Open workflow",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.explorer.refresh",
+      "invocation": "vscode.commands.executeCommand('github-actions.explorer.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.explorer.triggerRun",
+      "invocation": "vscode.commands.executeCommand('github-actions.explorer.triggerRun', ...args)",
+      "title": "Trigger workflow",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.settings.secret.add",
+      "invocation": "vscode.commands.executeCommand('github-actions.settings.secret.add', ...args)",
+      "title": "Add new secret",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.settings.secret.copy",
+      "invocation": "vscode.commands.executeCommand('github-actions.settings.secret.copy', ...args)",
+      "title": "Copy secret name",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.settings.secret.delete",
+      "invocation": "vscode.commands.executeCommand('github-actions.settings.secret.delete', ...args)",
+      "title": "Delete secret",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.settings.secret.update",
+      "invocation": "vscode.commands.executeCommand('github-actions.settings.secret.update', ...args)",
+      "title": "Update secret",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.settings.secrets.manage",
+      "invocation": "vscode.commands.executeCommand('github-actions.settings.secrets.manage', ...args)",
+      "title": "Add new secret",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.settings.variable.add",
+      "invocation": "vscode.commands.executeCommand('github-actions.settings.variable.add', ...args)",
+      "title": "Add new variable",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.settings.variable.copy-name",
+      "invocation": "vscode.commands.executeCommand('github-actions.settings.variable.copy-name', ...args)",
+      "title": "Copy variable name",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.settings.variable.copy-value",
+      "invocation": "vscode.commands.executeCommand('github-actions.settings.variable.copy-value', ...args)",
+      "title": "Copy variable value",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.settings.variable.delete",
+      "invocation": "vscode.commands.executeCommand('github-actions.settings.variable.delete', ...args)",
+      "title": "Delete variable",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.settings.variable.update",
+      "invocation": "vscode.commands.executeCommand('github-actions.settings.variable.update', ...args)",
+      "title": "Update variable",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.sign-in",
+      "invocation": "vscode.commands.executeCommand('github-actions.sign-in', ...args)",
+      "title": "Sign in to GitHub",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.step.logs",
+      "invocation": "vscode.commands.executeCommand('github-actions.step.logs', ...args)",
+      "title": "View step logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.workflow.logs",
+      "invocation": "vscode.commands.executeCommand('github-actions.workflow.logs', ...args)",
+      "title": "View job logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.workflow.pin",
+      "invocation": "vscode.commands.executeCommand('github-actions.workflow.pin', ...args)",
+      "title": "Pin workflow",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.workflow.run.cancel",
+      "invocation": "vscode.commands.executeCommand('github-actions.workflow.run.cancel', ...args)",
+      "title": "Cancel workflow run",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.workflow.run.open",
+      "invocation": "vscode.commands.executeCommand('github-actions.workflow.run.open', ...args)",
+      "title": "Open workflow run",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.workflow.run.rerun",
+      "invocation": "vscode.commands.executeCommand('github-actions.workflow.run.rerun', ...args)",
+      "title": "Rerun workflow run",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github-actions.workflow.unpin",
+      "invocation": "vscode.commands.executeCommand('github-actions.workflow.unpin', ...args)",
+      "title": "Unpin workflow",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:github-actions.debugger.connect",
+    "onDebugResolve:github-actions-job",
+    "onView:settings",
+    "onView:workflows",
+    "workspaceContains:**/.github/workflows/**",
+    "workspaceContains:**/action.yaml",
+    "workspaceContains:**/action.yml"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "workspace"
+    ],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": true,
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "github.vscode-github-actions",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:debuggers",
+      "contribution:grammars",
+      "contribution:languages",
+      "contribution:menus",
+      "contribution:views",
+      "contribution:viewsContainers",
+      "contribution:viewsWelcome"
+    ],
+    "interface": [
+      "github-actions.debugger.connect",
+      "github-actions.explorer.current-branch.refresh",
+      "github-actions.explorer.openRun",
+      "github-actions.explorer.openWorkflowFile",
+      "github-actions.explorer.refresh",
+      "github-actions.explorer.triggerRun",
+      "github-actions.settings.secret.add",
+      "github-actions.settings.secret.copy",
+      "github-actions.settings.secret.delete",
+      "github-actions.settings.secret.update",
+      "github-actions.settings.secrets.manage",
+      "github-actions.settings.variable.add",
+      "github-actions.settings.variable.copy-name",
+      "github-actions.settings.variable.copy-value",
+      "github-actions.settings.variable.delete",
+      "github-actions.settings.variable.update",
+      "github-actions.sign-in",
+      "github-actions.step.logs",
+      "github-actions.workflow.logs",
+      "github-actions.workflow.pin",
+      "github-actions.workflow.run.cancel",
+      "github-actions.workflow.run.open",
+      "github-actions.workflow.run.rerun",
+      "github-actions.workflow.unpin"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "workspace"
+      ],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": true,
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

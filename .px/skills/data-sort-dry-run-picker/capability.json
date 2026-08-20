@@ -1,0 +1,39 @@
+{
+  "admission_record": "data-sort-dry-run-picker",
+  "body_sha256": "5e5453117178f57ea88a4c51aea18349d9c3530c390ae953605d8e125a50ab41",
+  "contract": {
+    "available": true,
+    "sha256": "4533edf09ce5a04c21683eda0a3e6c9827da0ca092dec66ab34e3f8864b72406",
+    "source": "registry/skill_packages/data-sort-dry-run-picker.json"
+  },
+  "description": "Benchmark and select a correct bulk-data sorting strategy without mutating source data. Use for JSON, JSONL, NDJSON, CSV, or line-oriented datasets when a sort must be chosen from measured evidence, especially when the full input is too large for an in-memory experiment.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "data-sort-dry-run-picker",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/data-sort-dry-run-picker"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "benchmark",
+    "bulk-data",
+    "correctness-trace",
+    "dry-run",
+    "sorting"
+  ],
+  "version": "1.0.0"
+}

@@ -1,0 +1,52 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "label observations as subjective",
+    "do not convert one observer score into a diagnosis",
+    "preserve corrections and disputed entries"
+  ],
+  "bundle": "adapt-human-learning-loop",
+  "category": "human-feedback",
+  "dependencies": [
+    "human-handoff-state-transfer",
+    "evidence-assembler",
+    "maintain-learner-profile-boundary"
+  ],
+  "id": "capture-human-observer-assessment",
+  "keywords": [
+    "human observer",
+    "caregiver feedback",
+    "rubric score",
+    "behavior note"
+  ],
+  "mechanisms": [
+    "observer identity",
+    "activity binding",
+    "rubric score",
+    "free-text comment",
+    "positive/negative/neutral labels",
+    "timestamp"
+  ],
+  "owner": "human-handoff-state-transfer",
+  "provenance": {
+    "derivation": "clean-room mechanism abstraction",
+    "source": "hyperlearning-clean-room",
+    "source_refs": [
+      "Manual de usuario e instalación.pdf sections 2.7 and 2.8.4",
+      "src/Comportamiento.java"
+    ]
+  },
+  "source": "hyperlearning-clean-room",
+  "source_refs": [
+    "Manual de usuario e instalación.pdf sections 2.7 and 2.8.4",
+    "src/Comportamiento.java"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Capture structured human observations after an activity with timestamp, context, rubric, free-text notes, confidence, and clear separation from machine inference.",
+  "title": "Capture Human Observer Assessment",
+  "use_when": [
+    "automated signals cannot observe the full outcome",
+    "a supervisor or caregiver must score performance",
+    "qualitative reactions matter"
+  ]
+}

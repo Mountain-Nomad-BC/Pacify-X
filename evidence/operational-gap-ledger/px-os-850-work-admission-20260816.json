@@ -1,0 +1,20 @@
+{
+  "gap_id": "PX-OS-850",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000003109",
+  "effect": "write",
+  "scope": [
+    "runtime/operational_gap_ledger.py",
+    "scripts/operational_gap_ledger.py",
+    "tests/test_operational_gap_ledger.py",
+    "AGENTS.md"
+  ],
+  "authority": "Codex retains native host execution authority and applies PX governance only within the user-authorized repository scope.",
+  "expected_effect": "Add predecessor-bound PX-scoped work admission records and document the required pre-edit check.",
+  "rollback": "If the focused ledger gate fails, retain the card and receipts, stop dependent work, and revert only these scoped source edits through an explicit governed repair.",
+  "evidence": [
+    {
+      "reference": "evidence/operational-gap-ledger/late-discovery-reconciliation-events-20260816.json",
+      "claim": "PX-OS-850 records the exact late-card reconstruction that requires this admission control."
+    }
+  ]
+}

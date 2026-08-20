@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "punch-card-R10-portable-audit-bundle-20260811",
+  "created_utc": "2026-08-12T06:53:13.284404+00:00",
+  "card": "R10",
+  "accepted": true,
+  "artifacts": {
+    "runtime/portable_audit_bundle.py": "19900c5e74bb7b08a49988cd6f60e07007561fa09f51acf515e7898d1a790660",
+    "scripts/portable_audit_bundle.py": "58869f8d2bbdbcab520af8b2f71e3699dccb6332eaf880b8b1117e9725b3dda6",
+    "tests/test_portable_audit_bundle.py": "cda77af9eb9c73f61b89f801937e89868cb6b43097330cbe834a87343abacacb",
+    "docs/R10_PORTABLE_AUDIT_BUNDLE.md": "90411b32bdd466d3333e24c530a19bed36e34fdceb00e78a37c149618d3834c6"
+  },
+  "verification": {
+    "pytest": "3 passed",
+    "ruff": "passed",
+    "clean_machine_model": "verification succeeds after the original input root is removed",
+    "tamper_fixtures": [
+      "external checksum mismatch",
+      "duplicate/tampered payload with recomputed outer hash"
+    ]
+  },
+  "properties": {
+    "parameterized_roots": true,
+    "developer_path_defaults": false,
+    "deterministic_zip": true,
+    "external_checksum": true,
+    "optional_attestation": true,
+    "full_member_verification": true
+  }
+}

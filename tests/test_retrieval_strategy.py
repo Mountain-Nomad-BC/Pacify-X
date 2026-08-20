@@ -8,7 +8,7 @@ import unittest
 ROOT = Path(__file__).parents[1]
 SCRIPT = (
     ROOT
-    / ".agents/skills/evaluate-retrieval-readiness/scripts/evaluate_retrieval_strategy.py"
+    / ".px/skills/evaluate-retrieval-readiness/scripts/evaluate_retrieval_strategy.py"
 )
 
 

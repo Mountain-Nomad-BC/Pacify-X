@@ -1,0 +1,4 @@
+interface:
+  display_name: "Execution Placement Decision"
+  short_description: "Compare bounded runtime, platform, or storage placement options."
+  default_prompt: "Use $execution-placement-decision to compare the current placement with bounded alternatives and return an evidence-gated recommendation."

@@ -389,7 +389,7 @@ def write_json(path: Path, value: object) -> None:
 
 
 def resources(skill_id: str) -> list[str]:
-    root = ROOT / ".agents" / "skills" / skill_id
+    root = ROOT / ".px" / "skills" / skill_id
     return [
         item.relative_to(ROOT).as_posix()
         for folder in ("scripts", "references", "assets")
@@ -408,14 +408,14 @@ def update_catalog() -> None:
         if re.search(rf'(?m)^id = "{re.escape(skill_id)}"$', text):
             continue
         rendered_tags = ", ".join(json.dumps(tag) for tag in tags)
-        text += f'\n[[skills]]\nid = "{skill_id}"\nversion = "0.1.0"\nstatus = "active"\nbody = ".agents/skills/{skill_id}/SKILL.md"\ncontract = "registry/skill_packages/{skill_id}.json"\nadmission_record = "{skill_id}"\ntags = [{rendered_tags}]\n'
+        text += f'\n[[skills]]\nid = "{skill_id}"\nversion = "0.1.0"\nstatus = "active"\nbody = ".px/skills/{skill_id}/SKILL.md"\ncontract = "registry/skill_packages/{skill_id}.json"\nadmission_record = "{skill_id}"\ntags = [{rendered_tags}]\n'
     path.write_text(text.rstrip() + "\n", encoding="utf-8", newline="\n")
 
 
 def main() -> int:
     update_catalog()
     for skill_id, (tags, effects) in SKILLS.items():
-        body = ROOT / ".agents" / "skills" / skill_id / "SKILL.md"
+        body = ROOT / ".px" / "skills" / skill_id / "SKILL.md"
         if not body.is_file():
             raise FileNotFoundError(body)
         package = {

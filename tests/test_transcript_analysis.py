@@ -272,7 +272,7 @@ def test_transcript_export_skill_script_executes_directly(tmp_path: Path) -> Non
     run, source = _run(tmp_path)
     write_canonical_records(ROOT, run, [_record(source)], apply=True)
     script = (
-        ROOT / ".agents/skills/transcript-analysis/scripts/export_transcript_summary.py"
+        ROOT / ".px/skills/transcript-analysis/scripts/export_transcript_summary.py"
     )
     completed = subprocess.run(
         [

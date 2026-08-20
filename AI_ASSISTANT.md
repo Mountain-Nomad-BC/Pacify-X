@@ -18,8 +18,8 @@ This repository is model-agnostic. Any coding assistant must follow `AGENTS.md`,
 - Never hard-delete owned or unknown material. Plan, dry-run, hash, quarantine, verify, and await review.
 - Never treat an index, model, or external memory provider as the canonical source of truth.
 - Never report success from command exit alone; verify revision-bound downstream outcomes.
-- Ask for approval before writes, installs, network calls, services, migrations, or destructive effects.
+- Proceed with reversible effects inside the user-approved task scope. Ask for approval only before a destructive effect that cannot be reversed.
 
 ## Validation
 
-Run `python -m runtime.cli validate` and `python -m unittest discover -s tests -v` after control-plane changes. Use `engineering-bootstrap project-check --project .` in a commissioned project.
+After the implementation is operationally ready, use the governed section gates, then exactly one owned full test profile and `python -m runtime.cli validate` for certification. Do not use the raw unittest entrypoint as a certification owner. Use `engineering-bootstrap project-check --project .` in a commissioned project.

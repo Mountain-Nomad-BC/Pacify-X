@@ -56,6 +56,17 @@ class MemoryVaultTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "revision must be append-only"):
                 vault.append(record())
 
+    def test_inspect_record_returns_integrity_checked_canonical_lineage(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            vault = MemoryVault(Path(directory), workspace_id="wsp", project_id="prj")
+            vault.append(record())
+            vault.transition("mem-one", "validated", evidence=("validation-receipt",))
+            inspected = vault.inspect_record("mem-one")
+            self.assertEqual(inspected["authority"], "canonical workspace memory vault")
+            self.assertEqual(inspected["lifecycle_state"], "validated")
+            self.assertEqual(len(inspected["record_sha256"]), 64)
+            self.assertEqual(inspected["lifecycle"][-1]["evidence"], ["validation-receipt"])
+
     def test_lifecycle_controls_retrieval_and_correction_supersedes_old_memory(
         self,
     ) -> None:

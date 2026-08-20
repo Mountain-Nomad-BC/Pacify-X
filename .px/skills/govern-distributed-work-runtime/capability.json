@@ -1,0 +1,40 @@
+{
+  "admission_record": "govern-distributed-work-runtime",
+  "body_sha256": "517e85cf43256df8065156efd124f6a5a0aa4bcd2a7f5768b56a259e796c2293",
+  "contract": {
+    "available": true,
+    "sha256": "561f3a251aa530b3f9b38fe6ef315f87678781b31c1ca51e97d6157570c99760",
+    "source": "registry/skill_packages/govern-distributed-work-runtime.json"
+  },
+  "description": "Coordinate organization-scoped goals, atomic work checkout, multidimensional budgets, runtime placement, quotas, capability and secret leases, external jobs, and operator handoff without cross-project state bleed. Use for multi-project or multi-runtime execution, remote agents, notebooks, containers, MCP, A2A, or expensive operations.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-distributed-work-runtime",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-distributed-work-runtime"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "a2a",
+    "budget",
+    "lease",
+    "mcp",
+    "multi-project",
+    "runtime-placement"
+  ],
+  "version": "1.0.0"
+}

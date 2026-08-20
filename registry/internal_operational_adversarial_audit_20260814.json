@@ -1,0 +1,194 @@
+{
+  "schema_version": "px.internal-operational-adversarial-audit/1.0",
+  "audit_id": "px-operational-adversarial-20260814-r2",
+  "generated_utc": "2026-08-15T02:22:00Z",
+  "scope": [
+    "chat and cybersecurity payload boundaries",
+    "startup and lazy-loading behavior",
+    "runtime event publication and replay",
+    "authority and capability-domain isolation",
+    "extension and dashboard operational health",
+    "persistence, recovery, cleanup, and resource custody",
+    "release, packaging, evidence, and independent acceptance"
+  ],
+  "authority": "Internal implementation audit. It may establish reproducible defects and repair evidence, but it cannot self-accept findings reserved for an independent auditor or override Codex host safety controls.",
+  "findings": [
+    {
+      "id": "PX-OA-001",
+      "severity": "P1",
+      "status": "repaired_verified",
+      "title": "Security metadata search emits raw capability descriptions by default",
+      "evidence": "runtime/cybersecurity_provider.py search results include the complete external description even though selection remains metadata-only. Broad diagnostic output surfaced restricted vocabulary into the chat transcript and triggered host cybersecurity safeguards.",
+      "required_outcome": "Default search output is payload-minimized while ranking may still use descriptions internally; full descriptions require an explicit opt-in and never grant authority.",
+      "repair_evidence": "Default security-capability search returned three candidates in 2,391 bytes with descriptions_included=false, zero description fields, and authority_granted=false; targeted provider and CLI tests passed."
+    },
+    {
+      "id": "PX-OA-002",
+      "severity": "P1",
+      "status": "repaired_verified",
+      "title": "Bounded startup performs an eager 5,000-file tooling walk",
+      "evidence": "runtime.cli startup measured about 326 ms and returned tooling_assessment.inventory.examined_files=5000, truncated=true, source_files=0. The scan runs despite a separate explicit tooling command and traverses operational/untracked trees before useful source.",
+      "required_outcome": "Startup remains metadata-only and defers project tooling inventory to the explicit tooling command.",
+      "repair_evidence": "Seven clean process runs had a 212.9 ms median; tooling_deferred=true, hydrated_skill_bodies=[], and no inventory was present."
+    },
+    {
+      "id": "PX-OA-003",
+      "severity": "P1",
+      "status": "repaired_verified",
+      "title": "Current-head consumers perform full forensic event replay",
+      "evidence": "OperationalEventBus.replay(limit=1) validated 1,196 historical events and took about 991 ms. Provider, runtime-lifecycle, and agent publication paths use replay only to obtain the current digest.",
+      "required_outcome": "Provide a fail-closed anchored-head read for hot paths while retaining explicit full replay for forensic verification and session reconstruction.",
+      "repair_evidence": "Anchored head verification passed at revision 1,224 in 60.6 ms; full replay independently verified the complete 1,224-event prefix. Hot publication call sites use head(), while replay remains the forensic owner."
+    },
+    {
+      "id": "PX-OA-004",
+      "severity": "P1",
+      "status": "repaired_verified",
+      "title": "Committed WAL custody amplifies every operational event into many retained files",
+      "evidence": "The live operation bus contains 1,196 events but 11,958 committed WAL files and 15,550 total files. Retention is evidentiary, but no compaction or archive lifecycle is declared.",
+      "required_outcome": "Define and implement hash-preserving committed-WAL archival/retention without weakening recovery or deleting evidence.",
+      "repair_evidence": "A dry-run-first archive gate sealed 1,024 committed transactions with member hashes and a recovery receipt, retained 200 live transactions, reduced live WAL files from 12,227 to 2,002, and preserved valid head, full replay, and WAL recovery."
+    },
+    {
+      "id": "PX-OA-005",
+      "severity": "P2",
+      "status": "repaired_verified",
+      "title": "Runtime-owned and portable-runtime trees pollute Git/context discovery",
+      "evidence": "Git reports 23,272 untracked files: 16,479 under .engineering-bootstrap, including 15,550 operation-bus files, and 2,718 under Python. VS Code exclusions exist, but Git/Codex discovery still enumerates them because repository ignore rules do not.",
+      "required_outcome": "Exclude non-source runtime custody and the portable Python installation from Git/context discovery without deleting or hiding authoritative source/evidence required for audit.",
+      "repair_evidence": "Repository ignore boundaries now exclude the portable runtime and high-churn PX custody trees; untracked discovery dropped from 23,272 to roughly 4,521 without deleting canonical skills or evidence."
+    },
+    {
+      "id": "PX-OA-006",
+      "severity": "P1",
+      "status": "repaired_verified",
+      "title": "PX Doctor is operable but not ready or certification-ready",
+      "evidence": "Doctor reports overall_state=degraded with four coverage blockers: missing current health states for extension.vscode-listener, provider.remote-model, provider.local-model, and runtime.package-environment. Extension host health is unobserved and two Tier-D/observer blind spots remain visible.",
+      "required_outcome": "Live producers publish fresh, scope-correct health evidence or the routes are truthfully marked optional/unadvertised; Doctor must not infer health.",
+      "repair_evidence": "Exact VSIX d5f2c3dc451e159510d708489fb82a0fb0f2dd6c780113746e2ee9e0ce774c39 passed a clean-profile VS Code 1.132.1 smoke: listener status healthy, complete available-route coverage, zero drops, engine connected, sidebar resolved with zero contract rejections, dashboard counts matched, graph rendered, and the owned host process tree closed."
+    },
+    {
+      "id": "PX-OA-007",
+      "severity": "P2",
+      "status": "repaired_verified",
+      "title": "Environment and handoff evidence is stale relative to the active build",
+      "evidence": "Doctor reads environment evidence from 2026-08-11 and a handoff generated 2026-08-12 while evaluating the 2026-08-14 build, yet labels the section healthy because presence and schema pass.",
+      "required_outcome": "Freshness affects readiness and stale evidence is regenerated or reported stale rather than healthy.",
+      "repair_evidence": "Doctor now reports environment_stale, accepts both current environment schemas, and proves the older handoff current through an exact coordination state-hash match. An explicitly approved bounded refresh persisted schema 2.0 generation 1 with zero failures/ambiguities and snapshot hash 6657c790eb5aab79aae1fa364fc4ccb6153b83f1b5a2143c1df35c11736587a1."
+    },
+    {
+      "id": "PX-OA-008",
+      "severity": "P2",
+      "status": "repaired_verified",
+      "title": "Route registry validation is repeated on every event publication",
+      "evidence": "OperationalEventBus._route_tier validates and reloads the entire route registry for each event. Extension batch publication therefore repeats identical source validation under the publication lock.",
+      "required_outcome": "Use hash-aware validated metadata caching with invalidation on registry identity change.",
+      "repair_evidence": "OperationalEventBus caches validated route tiers by size, mtime_ns, and ctime_ns and reloads fail-closed when registry identity changes; operational event-bus tests passed."
+    },
+    {
+      "id": "PX-OA-009",
+      "severity": "P2",
+      "status": "repaired_verified",
+      "title": "Large default audit output causes context and latency pressure",
+      "evidence": "A valid structure audit emitted roughly 3,199 lines, including every accepted duplicate projection group, although the operational decision required only category status and exceptions.",
+      "required_outcome": "Provide a bounded summary mode and retain detailed records as file evidence rather than flooding interactive transcripts.",
+      "repair_evidence": "Structure audit --summary emitted 34 lines and about 1.2 KB instead of roughly 3,199 lines while the default complete report remains available."
+    },
+    {
+      "id": "PX-OA-010",
+      "severity": "P1",
+      "status": "external_acceptance_pending",
+      "title": "Independent audit acceptance remains open",
+      "evidence": "registry/completion_status.json retains 39 pending IDs: 34 adversarial, 3 functional, and 2 operational. Internal gates cannot self-accept these findings.",
+      "required_outcome": "Supply a clean exact-artifact audit handoff and retain the gate until an independent verifier accepts or contradicts each finding."
+    },
+    {
+      "id": "PX-OA-011",
+      "severity": "P1",
+      "status": "open",
+      "title": "Repository state is too noisy for an independently attributable release candidate",
+      "evidence": "Doctor reports 1,152 tracked changes and 23,272 untracked files. Many changes are intentional migration work, but a clean immutable source identity cannot be inferred from this workspace state.",
+      "required_outcome": "Package a deterministic clean handoff with complete byte manifest and explicitly separate internal source certification from independent release acceptance."
+    },
+    {
+      "id": "PX-OA-012",
+      "severity": "P1",
+      "status": "repaired_verified",
+      "title": "Governed tests inherited the operator's real host authority-key location",
+      "evidence": "Agent-runtime tests attempted to create prepared authority keys below the real LOCALAPPDATA host key root, causing permission failures and risking test interaction with operator-owned authority material.",
+      "required_outcome": "Every governed pytest run receives an isolated authority-key root inside its registered and reclaimed temporary workspace unless the caller supplies a narrower test root.",
+      "repair_evidence": "The testing-governance section passed 65 tests and 9 subtests; its nested pytest test wrote a test-only key below the managed temporary authority root and the complete workspace was reclaimed."
+    },
+    {
+      "id": "PX-OA-013",
+      "severity": "P1",
+      "status": "repaired_verified",
+      "title": "Synthetic repository clones attempted to copy protected Git authentication keys",
+      "evidence": "Release and portability fixtures recursively copied the live .git directory and failed on .git/pacify-x-auth private keys.",
+      "required_outcome": "Synthetic product fixtures exclude repository metadata and host authentication material while retaining the PX state explicitly required by the test.",
+      "repair_evidence": "Portability integrity passed 27 tests, release build passed 81 tests, and exact-installed passed 21 tests without reading or copying protected Git keys."
+    },
+    {
+      "id": "PX-OA-014",
+      "severity": "P1",
+      "status": "repaired_verified",
+      "title": "Recoverable archival tools were not admitted by the effect-surface policy",
+      "evidence": "The effect validator rejected the WAL and project-map archive tools solely because their verified archive-then-reclaim flow uses shutil.rmtree outside the generic resource-lifecycle module.",
+      "required_outcome": "Admit only the two named recoverable-reclamation owners under the operational evidence retention policy and continue rejecting every unadmitted delete surface.",
+      "repair_evidence": "Derived integrity passed the admitted archive owners and a new adversarial test proved an arbitrary unlink remains prohibited."
+    },
+    {
+      "id": "PX-OA-015",
+      "severity": "P1",
+      "status": "repaired_verified",
+      "title": "Windows persisted-process reconciliation hid host authority denial",
+      "evidence": "A proven persisted PID returned an opaque reconcile_failed result when the Codex host denied taskkill, leaving no classified reason and tempting a false tree-closure inference.",
+      "required_outcome": "Preserve the Codex host authority boundary, return bounded failure classification, retain the active cleanup-failed record on denial, and claim closure only after an admitted termination and liveness check.",
+      "repair_evidence": "Process recovery passed 119 tests. Admitted termination returns reaped/tree_closed=true; simulated host denial returns reconcile_failed/tree_closed=false and retains CLEANUP_FAILED custody."
+    },
+    {
+      "id": "PX-OA-016",
+      "severity": "P2",
+      "status": "repaired_verified",
+      "title": "Failed group receipts omitted actionable output evidence",
+      "evidence": "Long group campaigns wrote only pass/exit/duration fields, forcing complete group reruns to discover which test failed.",
+      "required_outcome": "Retain bounded, secret-minimized failure evidence without copying raw assertion or environment output into durable receipts.",
+      "repair_evidence": "Group receipts now hash stdout/stderr, record byte counts, and retain at most 50 sanitized failing node IDs; tests prove assertion and stderr payload text are not persisted."
+    },
+    {
+      "id": "PX-OA-017",
+      "severity": "P2",
+      "status": "repaired_verified",
+      "title": "Completion status builder failed when invoked as a direct script",
+      "evidence": "python scripts/build_completion_status.py failed with ModuleNotFoundError while python -m scripts.build_completion_status worked.",
+      "required_outcome": "Both documented Python entry styles resolve the repository runtime consistently.",
+      "repair_evidence": "Direct invocation now loads the same builder and writes the non-certifying projection; its expected exit code remains 2 while independent acceptance is pending."
+    },
+    {
+      "id": "PX-OA-018",
+      "severity": "P1",
+      "status": "repaired_verified",
+      "title": "Operation health builder could not read the actual installed-VSIX receipt envelope",
+      "evidence": "The builder expected listener_health at the receipt root while installed certification stores the authoritative projection below host.listener_health, so Doctor could never receive current listener route evidence from a real smoke receipt.",
+      "required_outcome": "Accept the installed receipt envelope, derive route state and canonical extension lifecycle facts without hand-authored claims, and retain raw host limitations without strengthening them.",
+      "repair_evidence": "The builder now reads both direct unit fixtures and host-enveloped installed receipts, emits a four-route certifiable health snapshot plus an extension health claim, and Doctor reports coverage healthy and extension healthy against the exact smoke receipt."
+    }
+  ],
+  "confirmed_safe_boundaries": [
+    {
+      "id": "PX-OA-SAFE-001",
+      "claim": "External cybersecurity capabilities do not execute or self-authorize by discovery.",
+      "evidence": "Provider validation reports execution_enabled=false, provider_scripts_admitted=0, provider_scripts_executable=false, metadata_only=true, authority_granted=false."
+    },
+    {
+      "id": "PX-OA-SAFE-002",
+      "claim": "Standard PX skill routing does not grant Microsoft, enterprise, preserved-user, or cybersecurity-provider authority.",
+      "evidence": "The PX-native broker defaults to px-standard and requires explicit domain grants; the external cybersecurity provider is a separate candidate-only catalog."
+    },
+    {
+      "id": "PX-OA-SAFE-003",
+      "claim": "Current structure, release-hygiene, licensing, graph, recovery, and resource inspections are valid.",
+      "evidence": "Structure audit passed 15 categories and 21 required items; release and licensing audits returned valid; graph registry reports six valid artifacts; recovery is healthy; active managed resources and processes are zero."
+    }
+  ]
+}

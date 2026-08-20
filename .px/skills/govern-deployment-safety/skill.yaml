@@ -1,0 +1,38 @@
+{
+  "admission_record": "govern-deployment-safety",
+  "body_sha256": "9d7f59ed09ed21233a8a0c1cae4eb51a1c4548c23420876863e078b72f5f2dc3",
+  "contract": {
+    "available": true,
+    "sha256": "b91e3fc2b5e47843e821881ec71cc40add61e29d44d486127a418ddb7f4463a2",
+    "source": "registry/skill_packages/govern-deployment-safety.json"
+  },
+  "description": "Certify release hygiene, environment contracts, migration state, persistence across restart, artifact identity, health, rollback, and cryptographic evidence before deployment. Use when declaring an application or package production-ready, promoting images, applying migrations, or validating a deployment candidate.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-deployment-safety",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-deployment-safety"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "deployment",
+    "migration",
+    "release",
+    "rollback"
+  ],
+  "version": "0.1.0"
+}

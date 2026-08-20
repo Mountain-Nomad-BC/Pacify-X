@@ -1,0 +1,52 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "O11",
+  "status": "accepted",
+  "recorded_at": "2026-08-18T14:11:01.053069+00:00",
+  "claim": "The coverage reconciler classifies every declared operation route A/B/C/D and fails certification for undeclared routes, dishonest mechanism/tier pairs, missing or stale health, stale acceptance artifacts, receipt mismatches, and undeclared or unhealthy blind spots.",
+  "artifacts": [
+    {
+      "path": "runtime/operation_coverage.py",
+      "sha256": "c35bba64f2399959da0c84f9869a5dd83f66ed7e15ed83c388015a242ec9e8d3"
+    },
+    {
+      "path": "tests/test_operation_coverage.py",
+      "sha256": "b380a2f4550a8f4267e6b255bd256af970173e53d27263a09858b356fdd9675d"
+    },
+    {
+      "path": "runtime/cli.py",
+      "sha256": "68c7c2fd467cf673635875e9c58010c0d43da44b5c119dacdc9ff40c1d6defbe"
+    }
+  ],
+  "verification": [
+    {
+      "command": "python -m pytest tests/test_operation_coverage.py tests/test_operational_observers.py tests/test_contract_runtime.py -q",
+      "result": "47 passed and 332 contract subtests independently"
+    },
+    {
+      "command": "expanded O11 lane",
+      "result": "50 passed and 332 contract subtests"
+    },
+    {
+      "command": "python -m runtime.cli --root . visibility coverage",
+      "result": "exit 1, valid=false, certifiable=false, all 13 routes classified; live gaps and stale evidence reported"
+    },
+    {
+      "command": "python -m runtime.cli validate",
+      "result": "valid=true"
+    }
+  ],
+  "acceptance": {
+    "all_routes_classified": true,
+    "unknown_route_blocks": true,
+    "dishonest_tier_blocks": true,
+    "stale_or_unhealthy_observer_blocks": true,
+    "acceptance_artifact_hashes_checked": true,
+    "mediation_receipt_hashes_checked": true,
+    "unsupported_tier_d_visible": true,
+    "current_repository_certifiable": false
+  },
+  "limitations": [
+    "The reconciler is accepted because it truthfully blocks incomplete coverage; the current repository remains non-certifiable until the reported route, health, and evidence gaps are closed."
+  ]
+}

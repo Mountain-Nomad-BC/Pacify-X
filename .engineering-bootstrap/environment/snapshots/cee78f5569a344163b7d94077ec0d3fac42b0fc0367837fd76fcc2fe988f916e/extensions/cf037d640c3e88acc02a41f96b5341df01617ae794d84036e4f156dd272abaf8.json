@@ -1,0 +1,539 @@
+{
+  "id": "ms-azuretools.vscode-azureappservice",
+  "name": "Azure App Service",
+  "version": "0.27.0",
+  "publisher": "ms-azuretools",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "menus",
+    "submenus",
+    "x-azResources"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-azuretools.vscode-azureappservice",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-azuretools.vscode-azureappservice",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-azuretools.vscode-azureappservice",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "ms-azuretools.vscode-azureappservice",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:x-azResources",
+      "kind": "x-azResources",
+      "provider": "ms-azuretools.vscode-azureappservice",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "appService.appSettings.Add",
+      "invocation": "vscode.commands.executeCommand('appService.appSettings.Add', ...args)",
+      "title": "Add New Setting...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.appSettings.Delete",
+      "invocation": "vscode.commands.executeCommand('appService.appSettings.Delete', ...args)",
+      "title": "Delete...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.appSettings.Download",
+      "invocation": "vscode.commands.executeCommand('appService.appSettings.Download', ...args)",
+      "title": "Download Remote Settings...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.appSettings.Edit",
+      "invocation": "vscode.commands.executeCommand('appService.appSettings.Edit', ...args)",
+      "title": "Edit...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.appSettings.Rename",
+      "invocation": "vscode.commands.executeCommand('appService.appSettings.Rename', ...args)",
+      "title": "Rename...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.appSettings.ToggleSlotSetting",
+      "invocation": "vscode.commands.executeCommand('appService.appSettings.ToggleSlotSetting', ...args)",
+      "title": "Switch Slot Setting",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.appSettings.Upload",
+      "invocation": "vscode.commands.executeCommand('appService.appSettings.Upload', ...args)",
+      "title": "Upload Local Settings...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.Browse",
+      "invocation": "vscode.commands.executeCommand('appService.Browse', ...args)",
+      "title": "Browse Website",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.ConfigureDeploymentSource",
+      "invocation": "vscode.commands.executeCommand('appService.ConfigureDeploymentSource', ...args)",
+      "title": "Configure Deployment Source...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.connectToGitHub",
+      "invocation": "vscode.commands.executeCommand('appService.connectToGitHub', ...args)",
+      "title": "Connect to GitHub Repository...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.CreateSlot",
+      "invocation": "vscode.commands.executeCommand('appService.CreateSlot', ...args)",
+      "title": "Create New Deployment Slot...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.CreateWebApp",
+      "invocation": "vscode.commands.executeCommand('appService.CreateWebApp', ...args)",
+      "title": "Create New Web App...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.CreateWebAppAdvanced",
+      "invocation": "vscode.commands.executeCommand('appService.CreateWebAppAdvanced', ...args)",
+      "title": "Create New Web App... (Advanced)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.Delete",
+      "invocation": "vscode.commands.executeCommand('appService.Delete', ...args)",
+      "title": "Delete...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.Deploy",
+      "invocation": "vscode.commands.executeCommand('appService.Deploy', ...args)",
+      "title": "Deploy to Web App...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.deployImageApi",
+      "invocation": "vscode.commands.executeCommand('appService.deployImageApi', ...args)",
+      "title": "Deploy Image to Web App",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.DeploymentScript",
+      "invocation": "vscode.commands.executeCommand('appService.DeploymentScript', ...args)",
+      "title": "Generate Azure CLI Script",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.DeploySlot",
+      "invocation": "vscode.commands.executeCommand('appService.DeploySlot', ...args)",
+      "title": "Deploy to Slot...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.DisconnectRepo",
+      "invocation": "vscode.commands.executeCommand('appService.DisconnectRepo', ...args)",
+      "title": "Disconnect from Repo...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.enableAppInsights",
+      "invocation": "vscode.commands.executeCommand('appService.enableAppInsights', ...args)",
+      "title": "Create or Attach Application Insights...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.EnableFileLogging",
+      "invocation": "vscode.commands.executeCommand('appService.EnableFileLogging', ...args)",
+      "title": "Enable File Logging",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.enableProfilerCodeOptimization",
+      "invocation": "vscode.commands.executeCommand('appService.enableProfilerCodeOptimization', ...args)",
+      "title": "Enable Profiler for Code Optimizations",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.fixCodeOptimization",
+      "invocation": "vscode.commands.executeCommand('appService.fixCodeOptimization', ...args)",
+      "title": "Ask Copilot to fix Code Optimization",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.InstallCosmosDBExtension",
+      "invocation": "vscode.commands.executeCommand('appService.InstallCosmosDBExtension', ...args)",
+      "title": "Install Azure Databases Extension",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.learnMoreCodeOptimizations",
+      "invocation": "vscode.commands.executeCommand('appService.learnMoreCodeOptimizations', ...args)",
+      "title": "Learn More about Code Optimizations",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.OpenInPortal",
+      "invocation": "vscode.commands.executeCommand('appService.OpenInPortal', ...args)",
+      "title": "Open in Portal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.promptAddProfilerLinux",
+      "invocation": "vscode.commands.executeCommand('appService.promptAddProfilerLinux', ...args)",
+      "title": "Ask Copilot to add Profiler for Code Optimizations",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.Redeploy",
+      "invocation": "vscode.commands.executeCommand('appService.Redeploy', ...args)",
+      "title": "Redeploy",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.Refresh",
+      "invocation": "vscode.commands.executeCommand('appService.Refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.RemoveCosmosDBConnection",
+      "invocation": "vscode.commands.executeCommand('appService.RemoveCosmosDBConnection', ...args)",
+      "title": "Remove Connection...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.ReportIssue",
+      "invocation": "vscode.commands.executeCommand('appService.ReportIssue', ...args)",
+      "title": "Report Issue...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.Restart",
+      "invocation": "vscode.commands.executeCommand('appService.Restart', ...args)",
+      "title": "Restart",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.RevealConnection",
+      "invocation": "vscode.commands.executeCommand('appService.RevealConnection', ...args)",
+      "title": "Reveal in Azure Databases Extension",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.RevealConnectionInAppSettings",
+      "invocation": "vscode.commands.executeCommand('appService.RevealConnectionInAppSettings', ...args)",
+      "title": "Reveal in Application Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.ScaleUp",
+      "invocation": "vscode.commands.executeCommand('appService.ScaleUp', ...args)",
+      "title": "Scale up App Service Plan...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.Start",
+      "invocation": "vscode.commands.executeCommand('appService.Start', ...args)",
+      "title": "Start",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.StartRemoteDebug",
+      "invocation": "vscode.commands.executeCommand('appService.StartRemoteDebug', ...args)",
+      "title": "Start Remote Debugging",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.StartSsh",
+      "invocation": "vscode.commands.executeCommand('appService.StartSsh', ...args)",
+      "title": "SSH into Web App",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.startStreamingLogs",
+      "invocation": "vscode.commands.executeCommand('appService.startStreamingLogs', ...args)",
+      "title": "Start Streaming Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.Stop",
+      "invocation": "vscode.commands.executeCommand('appService.Stop', ...args)",
+      "title": "Stop",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.StopLogStream",
+      "invocation": "vscode.commands.executeCommand('appService.StopLogStream', ...args)",
+      "title": "Stop Streaming Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.SwapSlots",
+      "invocation": "vscode.commands.executeCommand('appService.SwapSlots', ...args)",
+      "title": "Swap Deployment Slot...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.toggleAppSettingVisibility",
+      "invocation": "vscode.commands.executeCommand('appService.toggleAppSettingVisibility', ...args)",
+      "title": "Toggle App Value Visibility",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.ViewCommitInGitHub",
+      "invocation": "vscode.commands.executeCommand('appService.ViewCommitInGitHub', ...args)",
+      "title": "View Commit in GitHub",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.viewDeploymentLogs",
+      "invocation": "vscode.commands.executeCommand('appService.viewDeploymentLogs', ...args)",
+      "title": "View Deployment Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "appService.ViewProperties",
+      "invocation": "vscode.commands.executeCommand('appService.ViewProperties', ...args)",
+      "title": "View Properties",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "ms-azuretools.vscode-azureresourcegroups"
+  ],
+  "activation_events": [
+    "onFileSystem:azureAppService"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-azuretools.vscode-azureappservice",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:menus",
+      "contribution:submenus",
+      "contribution:x-azResources"
+    ],
+    "interface": [
+      "appService.appSettings.Add",
+      "appService.appSettings.Delete",
+      "appService.appSettings.Download",
+      "appService.appSettings.Edit",
+      "appService.appSettings.Rename",
+      "appService.appSettings.ToggleSlotSetting",
+      "appService.appSettings.Upload",
+      "appService.Browse",
+      "appService.ConfigureDeploymentSource",
+      "appService.connectToGitHub",
+      "appService.CreateSlot",
+      "appService.CreateWebApp",
+      "appService.CreateWebAppAdvanced",
+      "appService.Delete",
+      "appService.Deploy",
+      "appService.deployImageApi",
+      "appService.DeploymentScript",
+      "appService.DeploySlot",
+      "appService.DisconnectRepo",
+      "appService.enableAppInsights",
+      "appService.EnableFileLogging",
+      "appService.enableProfilerCodeOptimization",
+      "appService.fixCodeOptimization",
+      "appService.InstallCosmosDBExtension",
+      "appService.learnMoreCodeOptimizations",
+      "appService.OpenInPortal",
+      "appService.promptAddProfilerLinux",
+      "appService.Redeploy",
+      "appService.Refresh",
+      "appService.RemoveCosmosDBConnection",
+      "appService.ReportIssue",
+      "appService.Restart",
+      "appService.RevealConnection",
+      "appService.RevealConnectionInAppSettings",
+      "appService.ScaleUp",
+      "appService.Start",
+      "appService.StartRemoteDebug",
+      "appService.StartSsh",
+      "appService.startStreamingLogs",
+      "appService.Stop",
+      "appService.StopLogStream",
+      "appService.SwapSlots",
+      "appService.toggleAppSettingVisibility",
+      "appService.ViewCommitInGitHub",
+      "appService.viewDeploymentLogs",
+      "appService.ViewProperties"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

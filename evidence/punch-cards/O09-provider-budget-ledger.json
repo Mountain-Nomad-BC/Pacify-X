@@ -1,0 +1,70 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "O09",
+  "status": "accepted",
+  "recorded_at": "2026-08-14T01:09:20.375773+00:00",
+  "refreshed_utc": "2026-08-14T23:55:00Z",
+  "claim": "Every admitted provider invocation requires a durable identity-bound reservation; request, token, and cost limits are deterministic; known, estimated, unknown, and local non-billable usage settle conservatively; and policy-controlled fallbacks cannot bypass budget authority.",
+  "artifacts": [
+    {
+      "path": "runtime/provider_budget.py",
+      "sha256": "374dd5e90353d0e23f27818d1c7b28ada652035677a57a110e1439cd2f68515f"
+    },
+    {
+      "path": "runtime/provider_gateway.py",
+      "sha256": "34c64e2afc36a38846e001ce9a2ddf9e647153538483ce07f41b2e26ff244fbd"
+    },
+    {
+      "path": "tests/test_provider_budget.py",
+      "sha256": "ae3e9f42743ea6d74849ae0f916cf11ae769ec63aa8e4aab0dbe02415008ac25"
+    },
+    {
+      "path": "tests/test_provider_gateway.py",
+      "sha256": "a65064f37540b35e0a44261d7b1d240e2353081ff364322ea43d64880d089373"
+    },
+    {
+      "path": "contracts/operations/provider-budget-policy.schema.json",
+      "sha256": "129399914ca75c5f12388db617edded1e324a6511d8a73241a173d74165209f5"
+    },
+    {
+      "path": "registry/provider_budget_policy.json",
+      "sha256": "5c1555a3cd5161fb38670ca8ff221b518b64f75f8248ee169cfce3b8c7ab022b"
+    }
+  ],
+  "verification": [
+    {
+      "command": "python -B -m pytest -q --rootdir=. -p no:cacheprovider tests/test_runtime_lifecycle.py tests/test_agent_session_coordinator.py tests/test_provider_gateway.py tests/test_provider_budget.py tests/test_operational_visibility.py tests/test_operational_event_bus.py",
+      "result": "45 passed in 35.16s after anchored-head optimization"
+    },
+    {
+      "command": "python -m pytest tests/test_provider_budget.py tests/test_provider_gateway.py tests/test_operational_event_bus.py tests/test_operational_visibility.py tests/test_contract_runtime.py -q",
+      "result": "46 passed and 330 subtests independently"
+    },
+    {
+      "command": "agent expanded O09 lane",
+      "result": "47 passed and 330 subtests"
+    },
+    {
+      "command": "ruff check focused O09 files",
+      "result": "passed"
+    },
+    {
+      "command": "python -m runtime.cli validate",
+      "result": "valid=true"
+    }
+  ],
+  "acceptance": {
+    "reservation_before_adapter_call": true,
+    "warning_and_hard_limits": true,
+    "unknown_billing_conservative_burn": true,
+    "local_non_billable_explicit": true,
+    "duplicate_tamper_and_cross_root_refusal": true,
+    "fallback_policy_and_exhaustion": true,
+    "payload_and_exception_text_retained": false,
+    "live_spending_authority_enabled": false
+  },
+  "limitations": [
+    "Cross-provider fallback is denied within one invocation because it requires a separately identified provider budget.",
+    "The shipped budget policy has zero enabled budgets and remains default-deny."
+  ]
+}

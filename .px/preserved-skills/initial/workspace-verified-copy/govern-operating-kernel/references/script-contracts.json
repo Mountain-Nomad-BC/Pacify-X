@@ -1,0 +1,322 @@
+{
+  "contracts": [
+    {
+      "authoritative_source_sha256": "2e6d990be494ef10d0d97110da24dd6bea36c1e122ceda824a4b9f126e4616bd",
+      "authority_and_safety": "Deny effects outside the approved task scope; preserve prior durable state and require idempotency or compensation for repeatable work.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "capability-router",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-operating-kernel/scripts/authoritative_capability_router.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "establish-scope",
+        "authorize-effects",
+        "execute-bounded-work",
+        "independently-verify",
+        "commit-evidence-and-state"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/scripts/capability_router.py"
+      ],
+      "trigger": "Use when the requested outcome is capability router or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "3fea365348823a1f589949fa38d7009935ec827188e248ac1bbb598fb1ed65ac",
+      "authority_and_safety": "Deny effects outside the approved task scope; preserve prior durable state and require idempotency or compensation for repeatable work.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "claim-ledger",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-operating-kernel/scripts/authoritative_claim_ledger.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "establish-scope",
+        "authorize-effects",
+        "execute-bounded-work",
+        "independently-verify",
+        "commit-evidence-and-state"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/scripts/claim_ledger.py"
+      ],
+      "trigger": "Use when the requested outcome is claim ledger or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "2eaf1de1416488dca24b1765da135a862b69b7ec39f1e9eed94bab0f7816d15d",
+      "authority_and_safety": "Deny effects outside the approved task scope; preserve prior durable state and require idempotency or compensation for repeatable work.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "durable-state",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-operating-kernel/scripts/authoritative_durable_state.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "establish-scope",
+        "authorize-effects",
+        "execute-bounded-work",
+        "independently-verify",
+        "commit-evidence-and-state"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/scripts/durable_state.py"
+      ],
+      "trigger": "Use when the requested outcome is durable state or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "480d11614568a3f919be0dc864c1245fad64abcef37615c1bfa99323613c9597",
+      "authority_and_safety": "Deny effects outside the approved task scope; preserve prior durable state and require idempotency or compensation for repeatable work.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "evidence-bundle",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-operating-kernel/scripts/authoritative_evidence_bundle.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "establish-scope",
+        "authorize-effects",
+        "execute-bounded-work",
+        "independently-verify",
+        "commit-evidence-and-state"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/scripts/evidence_bundle.py"
+      ],
+      "trigger": "Use when the requested outcome is evidence bundle or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "6c4d9c2c1ceca211906bec091f11689811eee65eebcc9bf74cd9a653346c8720",
+      "authority_and_safety": "Deny effects outside the approved task scope; preserve prior durable state and require idempotency or compensation for repeatable work.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "failure-normalizer",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-operating-kernel/scripts/authoritative_failure_normalizer.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "establish-scope",
+        "authorize-effects",
+        "execute-bounded-work",
+        "independently-verify",
+        "commit-evidence-and-state"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/scripts/failure_normalizer.py"
+      ],
+      "trigger": "Use when the requested outcome is failure normalizer or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "3e821875f1b424f5f4e923e716c044d8fed90b388a467d3c1e8c5528da3ccb08",
+      "authority_and_safety": "Deny effects outside the approved task scope; preserve prior durable state and require idempotency or compensation for repeatable work.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "permission-guard",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-operating-kernel/scripts/authoritative_permission_guard.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "establish-scope",
+        "authorize-effects",
+        "execute-bounded-work",
+        "independently-verify",
+        "commit-evidence-and-state"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/scripts/permission_guard.py"
+      ],
+      "trigger": "Use when the requested outcome is permission guard or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "45112b3c5b0bde9b3ae37a1c2ea18c85297f9263f647f894b99e0ae77f9935be",
+      "authority_and_safety": "Deny effects outside the approved task scope; preserve prior durable state and require idempotency or compensation for repeatable work.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "run-smoke-tests",
+      "implementation_disposition": "validation_only_existing_framework_gate",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "establish-scope",
+        "authorize-effects",
+        "execute-bounded-work",
+        "independently-verify",
+        "commit-evidence-and-state"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/scripts/run_smoke_tests.py",
+        "packs/02-repository-intelligence-aci_v1.0.0/scripts/run_smoke_tests.py",
+        "packs/03-verification-evaluation-lab_v1.0.0/scripts/run_smoke_tests.py",
+        "packs/04-memory-retrieval-observability_v1.0.0/scripts/run_smoke_tests.py",
+        "packs/05-security-sandbox-supply-chain_v1.0.0/scripts/run_smoke_tests.py",
+        "packs/06-runtime-protocols-deployment_v1.0.0/scripts/run_smoke_tests.py",
+        "packs/07-revocable-certification-integration_v1.0.0/scripts/run_smoke_tests.py"
+      ],
+      "trigger": "Use when the requested outcome is run smoke tests or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "263407a24c812613c823b909c6a3d56a0962fad2f196ec4c7d3b81226cb21589",
+      "authority_and_safety": "Deny effects outside the approved task scope; preserve prior durable state and require idempotency or compensation for repeatable work.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "skill-compiler",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "establish-scope",
+        "authorize-effects",
+        "execute-bounded-work",
+        "independently-verify",
+        "commit-evidence-and-state"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/scripts/skill_compiler.py"
+      ],
+      "trigger": "Use when the requested outcome is skill compiler or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "94ca1c2d7dc10f63548835927f0f50ef8e16f7593b5808ff09da02c7feb797d5",
+      "authority_and_safety": "Deny effects outside the approved task scope; preserve prior durable state and require idempotency or compensation for repeatable work.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "validate-pack",
+      "implementation_disposition": "validation_only_existing_framework_gate",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "establish-scope",
+        "authorize-effects",
+        "execute-bounded-work",
+        "independently-verify",
+        "commit-evidence-and-state"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/01-expert-operating-kernel_v1.0.0/scripts/validate_pack.py",
+        "packs/02-repository-intelligence-aci_v1.0.0/scripts/validate_pack.py",
+        "packs/03-verification-evaluation-lab_v1.0.0/scripts/validate_pack.py",
+        "packs/04-memory-retrieval-observability_v1.0.0/scripts/validate_pack.py",
+        "packs/05-security-sandbox-supply-chain_v1.0.0/scripts/validate_pack.py",
+        "packs/06-runtime-protocols-deployment_v1.0.0/scripts/validate_pack.py",
+        "packs/07-revocable-certification-integration_v1.0.0/scripts/validate_pack.py"
+      ],
+      "trigger": "Use when the requested outcome is validate pack or when that outcome is a required dependency."
+    }
+  ],
+  "owner": "govern-operating-kernel",
+  "schema_version": "1.0"
+}

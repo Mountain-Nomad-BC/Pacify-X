@@ -1,0 +1,39 @@
+{
+  "admission_record": "scale-n8n-queue-mode",
+  "body_sha256": "981a60b9811004875c930fd471a9edfb0ca9c3e4f24f9be7110ad3620fc8d134",
+  "contract": {
+    "available": true,
+    "sha256": "caef81c16a67340fc0b2f780ff8527c20d76c3417629fd360751e8592baf4eef",
+    "source": "registry/skill_packages/scale-n8n-queue-mode.json"
+  },
+  "description": "Design and operate n8n queue mode with Postgres, Redis, workers, webhook processors, and task runners.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "scale-n8n-queue-mode",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/scale-n8n-queue-mode"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "n8n",
+    "queue-mode",
+    "redis",
+    "task-runners",
+    "workers"
+  ],
+  "version": "1.0.0"
+}

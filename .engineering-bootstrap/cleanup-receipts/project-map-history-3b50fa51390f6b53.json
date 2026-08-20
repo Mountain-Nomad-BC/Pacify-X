@@ -1,0 +1,26 @@
+{
+  "schema_version": "px.project-map-history-archive-receipt/1.0",
+  "created_utc": "2026-08-15T00:01:09.937004+00:00",
+  "archive": ".engineering-bootstrap/project-map-history-archives/project-map-history-20260811T033053161059Z-1302c1beed34af42-20260812T034637039196Z-bffc443e1dd4c4ac-3b50fa51390f6b53.zip",
+  "archive_sha256": "805a7df091be8902dcf8056e05a3c02d72e5b8becf6ce63655723771cea9ad15",
+  "manifest_sha256": "3b50fa51390f6b53e62f34de825b8f0a0076d37134bc622be52051beab6ecc81",
+  "archived_snapshots": [
+    "20260811T033053161059Z-1302c1beed34af42",
+    "20260811T040236082639Z-ca86af6e5eec940b",
+    "20260811T043535950441Z-56df56aed21c5b8d",
+    "20260811T045756657711Z-a44ec04c175aa71a",
+    "20260811T045951400468Z-eab47485acbdb63d",
+    "20260811T134618740837Z-88c728fec8af4db7",
+    "20260812T034637039196Z-bffc443e1dd4c4ac"
+  ],
+  "retained_live_snapshots": [
+    "20260812T054123736079Z-ce8b7b52965e0e78",
+    "20260814T065050392870Z-7d4279fb0099800f"
+  ],
+  "file_count": 133,
+  "source_size_bytes": 484885267,
+  "archive_size_bytes": 37353245,
+  "reclaimed_bytes": 447532022,
+  "recovery": "Verify archive_sha256, then extract below .engineering-bootstrap/project-map-history.",
+  "hard_delete_without_archive": false
+}

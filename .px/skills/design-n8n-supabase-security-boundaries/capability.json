@@ -1,0 +1,40 @@
+{
+  "admission_record": "design-n8n-supabase-security-boundaries",
+  "body_sha256": "f695d58b98e63c1ee9dc713073ea95494bcc03acb1a63caff9c5258f611127cd",
+  "contract": {
+    "available": true,
+    "sha256": "0f5b6f7ec9a2605ed2466c2a386743a26b90d861e48414584c38bccc53654154",
+    "source": "registry/skill_packages/design-n8n-supabase-security-boundaries.json"
+  },
+  "description": "Design trust boundaries between n8n users/workflows, Supabase RLS, service credentials, webhooks, logs, and AI tools.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "design-n8n-supabase-security-boundaries",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/design-n8n-supabase-security-boundaries"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "ai-boundaries",
+    "cross",
+    "rbac",
+    "rls",
+    "service-role",
+    "webhook-security"
+  ],
+  "version": "1.0.0"
+}

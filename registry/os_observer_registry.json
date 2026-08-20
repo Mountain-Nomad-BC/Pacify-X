@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "policy": "Observers are opt-in metadata-only adapters. They never auto-start and require platform match, admitted fixed configuration, exact scope, backend availability, explicit unexpired consent, and required privilege.",
+  "adapters": [
+    {
+      "observer_id": "windows-etw",
+      "adapter_version": "1.0.0",
+      "route_id": "os.windows.etw",
+      "platform": "win32",
+      "mechanism": "ETW",
+      "implementation": "runtime/operational_observers.py",
+      "status": "partial",
+      "auto_start": false,
+      "capture_classification": "metadata_only",
+      "exact_scope_required": true,
+      "argument_policy": "admitted_fixed_profile_only",
+      "privilege": "administrator_or_provider_specific_acl",
+      "backend_requirements": ["logman", "admitted_metadata_decoder"],
+      "command_profiles": ["windows-etw.kernel-process.start.v1", "windows-etw.kernel-process.stop.v1", "windows-etw.kernel-process.delete.v1"],
+      "support_limit": "Lifecycle control is implemented only for the allowlisted kernel-process provider; raw ETW decoding is not bundled."
+    },
+    {
+      "observer_id": "linux-audit-ebpf",
+      "adapter_version": "1.0.0",
+      "route_id": "os.linux.audit",
+      "platform": "linux",
+      "mechanism": "Linux Audit",
+      "implementation": "runtime/operational_observers.py",
+      "status": "partial",
+      "auto_start": false,
+      "capture_classification": "metadata_only",
+      "exact_scope_required": true,
+      "argument_policy": "admitted_fixed_profile_only",
+      "privilege": "root_or_cap_audit_control",
+      "backend_requirements": ["auditctl", "admitted_metadata_decoder"],
+      "command_profiles": ["linux-audit.directory-watch.start.v1", "linux-audit.directory-watch.stop.v1", "linux-audit.directory-watch.remove.v1"],
+      "support_limit": "Exact-directory Linux Audit lifecycle is implemented; eBPF loading and raw audit decoding are not bundled."
+    },
+    {
+      "observer_id": "macos-endpoint-security",
+      "adapter_version": "1.0.0",
+      "route_id": "os.macos.endpoint-security",
+      "platform": "darwin",
+      "mechanism": "EndpointSecurity",
+      "implementation": "runtime/operational_observers.py",
+      "status": "unsupported",
+      "auto_start": false,
+      "capture_classification": "metadata_only",
+      "exact_scope_required": true,
+      "argument_policy": "admitted_fixed_profile_only",
+      "privilege": "signed_system_extension_and_endpointsecurity_entitlement",
+      "backend_requirements": ["signed_notarized_system_extension", "apple_endpointsecurity_entitlement", "explicit_user_approval"],
+      "command_profiles": [],
+      "support_limit": "Unsupported without a separately signed, notarized, user-approved system extension carrying Apple's EndpointSecurity entitlement."
+    }
+  ]
+}

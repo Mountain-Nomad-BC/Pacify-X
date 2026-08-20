@@ -1,0 +1,94 @@
+{
+  "schema_version": "px.agent-builder-reference-audit/1.0",
+  "audit_id": "PX-AGENT-BUILDER-20260814",
+  "created_utc": "2026-08-14T00:00:00Z",
+  "status": "fixed_pending_independent_verification",
+  "scope": {
+    "px": [
+      "extension/media/dashboard/49-studio-editors.js",
+      "extension/media/dashboard/90-controller.js",
+      "runtime/studio_models.py",
+      "runtime/studio_api.py",
+      "runtime/agent_runtime.py"
+    ],
+    "reference": "user-supplied local Open Agent Builder source tree (external, non-runtime, not packaged)",
+    "reference_use": "Read-only behavioral and interaction comparison. No reference source is copied into Pacify-X.",
+    "reference_license_observed": "README declares MIT; no standalone LICENSE file was present in the supplied tree."
+  },
+  "summary": "PX has the stronger authority, immutable revision, admission, test, and owned-harness runtime, but Agent Studio exposes that model as a raw JSON textarea. The visual workflow reference demonstrates useful composition and inspector patterns without supplying PX governance.",
+  "findings": [
+    {
+      "id": "PX-AB-001",
+      "severity": "HIGH",
+      "status": "fixed_pending_independent_verification",
+      "finding": "Agent Studio has no structured editor even though Workflow Studio and Skill Studio do.",
+      "interface_burden": "The user must understand and edit the complete AgentSpec, EffectGrant, and CapabilityBinding JSON shapes at once.",
+      "affected_callers": ["openStudioDraftModal", "studioEditorPayload", "submitStudioDraft"],
+      "proposed_seam": "Add normalizeAgent and validateAgent to the existing Studio editor module, and render a governed visual Agent Builder as an exact projection of the canonical payload.",
+      "deletion_test": "Removing the proposed seam leaves Agent Studio as the current raw textarea and reproduces the usability defect.",
+      "blast_radius": "Dashboard webview only; canonical backend models and authority remain unchanged.",
+      "proof": ["unit normalization and validation", "Playwright structured-edit interaction", "canonical JSON round trip", "dashboard section gate"]
+    },
+    {
+      "id": "PX-AB-002",
+      "severity": "HIGH",
+      "status": "fixed_pending_independent_verification",
+      "finding": "Identity, instructions, harness, required tests, bindings, grants, effects, scope, cost, egress, credentials, and lifecycle boundaries are not visually separated.",
+      "interface_burden": "Authority-bearing fields are mixed with descriptive fields, increasing accidental authority drift and malformed candidate risk.",
+      "proposed_seam": "Use separate Identity, Behavior, Capabilities, Authority, Tests, and Canonical Preview panels with continuously visible preflight results.",
+      "reference_pattern": "Focused node inspector, model/tool configuration, and preview panels.",
+      "px_adaptation": "Treat harness/model and capabilities as declared bindings only; never infer credentials, provider authority, admission, or execution.",
+      "proof": ["all canonical fields remain represented", "MS+Enterprise identifiers fail closed in the standard builder", "no secrets are accepted"]
+    },
+    {
+      "id": "PX-AB-003",
+      "severity": "HIGH",
+      "status": "fixed_pending_independent_verification",
+      "finding": "Agent candidates have no live structural validation before Save.",
+      "interface_burden": "Malformed identities, versions, empty instructions/tests, mismatched subjects, unbound grants, permissive policy gaps, and duplicate identifiers are discovered only after host submission.",
+      "proposed_seam": "Mirror backend invariants in conservative browser preflight while retaining backend validation as authority.",
+      "contrary_evidence": "Browser validation cannot certify runtime admission or replace Python model validation.",
+      "proof": ["invalid candidates disable Save", "backend remains authoritative", "preflight and backend fixtures agree"]
+    },
+    {
+      "id": "PX-AB-004",
+      "severity": "MEDIUM",
+      "status": "fixed_pending_independent_verification",
+      "finding": "There is no bounded add/remove/edit interaction for tests, capability bindings, or effect grants.",
+      "proposed_seam": "Provide accessible collection editors with safe defaults, deterministic identifiers, linked subject updates, and explicit removal.",
+      "reference_pattern": "Palette-driven composition and focused inspectors.",
+      "px_adaptation": "No drag-and-drop dependency is required; keyboard-operable controls remain first class.",
+      "proof": ["add/edit/remove tests", "binding-to-grant consistency validation", "narrow viewport containment"]
+    },
+    {
+      "id": "PX-AB-005",
+      "severity": "HIGH",
+      "status": "fixed_pending_independent_verification",
+      "finding": "The standard Agent Studio does not explicitly prevent Microsoft/vendor or enterprise-restricted capability bleed.",
+      "proposed_seam": "Declare the builder domain as px-standard and reject enterprise/vendor namespaces unless a separately governed domain-specific flow is used.",
+      "proof": ["negative domain fixtures", "visible domain boundary", "unchanged separate enterprise catalog"]
+    },
+    {
+      "id": "PX-AB-006",
+      "severity": "MEDIUM",
+      "status": "fixed_pending_independent_verification",
+      "finding": "Canonical JSON has no governed round-trip path for Agent Studio.",
+      "proposed_seam": "Synchronize visual-to-JSON and JSON-to-visual representations through normalizeAgent, preserving unknown non-authority metadata while validating canonical fields.",
+      "risk": "A lossy normalizer could silently mutate an immutable candidate.",
+      "proof": ["round-trip equality fixture", "unknown metadata preservation", "explicit apply action"]
+    }
+  ],
+  "ranking": [
+    {"rank": 1, "finding_ids": ["PX-AB-001", "PX-AB-003"], "reason": "Highest leverage and local to the existing editor seam."},
+    {"rank": 2, "finding_ids": ["PX-AB-002", "PX-AB-005"], "reason": "Makes authority and domain separation visible before candidate creation."},
+    {"rank": 3, "finding_ids": ["PX-AB-004", "PX-AB-006"], "reason": "Completes efficient composition and auditable canonical synchronization."}
+  ],
+  "repair_evidence": {
+    "focused_python": "23 passed",
+    "dashboard_section": "39 passed",
+    "studio_memory_graph_section": "140 passed",
+    "css_governance": "157 duplicate selectors; 193 duplicate occurrences; 0 cross-file duplicates; contrast gate passed",
+    "status_note": "Implemented and section-validated; independent audit acceptance remains separate."
+  },
+  "certification_boundary": "Source repair does not imply admission, installed-host identity, full certification, or independent auditor acceptance."
+}

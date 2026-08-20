@@ -1,0 +1,31 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "O04",
+  "status": "accepted",
+  "recorded_at": "2026-08-12T06:53:13.270491+00:00",
+  "claim": "VS Code editor, file, watcher, terminal, shell, task, test, debug, SCM, configuration, and extension listeners converge through metadata-only activity recording and a bounded batch bridge to the canonical Python operational bus, with explicit API-unavailable and drop health.",
+  "artifacts": [
+    {
+      "path": "evidence/extension-verification/O04-vscode-canonical-listeners.json",
+      "sha256": "b87d0a20fa8ab39ea88699ee81349a5c321515c913541cfe208b13c6e10d4f80"
+    }
+  ],
+  "verification": [
+    {
+      "command": "npm run build",
+      "result": "134 passed, zero failures/skips/todo"
+    },
+    {
+      "command": "$env:PX_ENGINE_ROOT=<runtime>; npm run test:vscode-host",
+      "result": "VS Code 1.132.1 exit 0; listener drops 0; canonical bus connected; 38 retained revisions; activity integrity valid"
+    },
+    {
+      "command": "python -m pytest tests/test_operational_event_bus.py -q",
+      "result": "6 passed"
+    }
+  ],
+  "limitations": [
+    "The stable host does not expose the proposed test-result event and reports it unsupported.",
+    "Extension install/enable mutation is covered by the injected API matrix rather than changing the certification host."
+  ]
+}

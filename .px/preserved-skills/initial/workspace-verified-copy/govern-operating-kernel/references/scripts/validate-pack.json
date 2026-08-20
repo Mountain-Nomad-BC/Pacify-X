@@ -1,0 +1,39 @@
+{
+  "authoritative_source_sha256": "94ca1c2d7dc10f63548835927f0f50ef8e16f7593b5808ff09da02c7feb797d5",
+  "authority_and_safety": "Deny effects outside the approved task scope; preserve prior durable state and require idempotency or compensation for repeatable work.",
+  "evidence": [
+    "normalized inputs",
+    "owner and dependency resolution",
+    "structured result",
+    "negative-case result",
+    "content hashes",
+    "verification receipt"
+  ],
+  "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+  "id": "validate-pack",
+  "implementation_disposition": "validation_only_existing_framework_gate",
+  "inputs": {
+    "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+    "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+    "target": "Explicit file, repository, service, record set, or artifact scope."
+  },
+  "kind": "script",
+  "procedure": [
+    "establish-scope",
+    "authorize-effects",
+    "execute-bounded-work",
+    "independently-verify",
+    "commit-evidence-and-state"
+  ],
+  "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+  "source_paths": [
+    "packs/01-expert-operating-kernel_v1.0.0/scripts/validate_pack.py",
+    "packs/02-repository-intelligence-aci_v1.0.0/scripts/validate_pack.py",
+    "packs/03-verification-evaluation-lab_v1.0.0/scripts/validate_pack.py",
+    "packs/04-memory-retrieval-observability_v1.0.0/scripts/validate_pack.py",
+    "packs/05-security-sandbox-supply-chain_v1.0.0/scripts/validate_pack.py",
+    "packs/06-runtime-protocols-deployment_v1.0.0/scripts/validate_pack.py",
+    "packs/07-revocable-certification-integration_v1.0.0/scripts/validate_pack.py"
+  ],
+  "trigger": "Use when the requested outcome is validate pack or when that outcome is a required dependency."
+}

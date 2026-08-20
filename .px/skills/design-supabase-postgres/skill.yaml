@@ -1,0 +1,40 @@
+{
+  "admission_record": "design-supabase-postgres",
+  "body_sha256": "0d081972a022382d9ae18d74eb87ed614574f5707528ab582af915988468d070",
+  "contract": {
+    "available": true,
+    "sha256": "1f87921fbf757b4a289b89132d0dd6ebcfbf4fad6b14c804214b1c5715e17706",
+    "source": "registry/skill_packages/design-supabase-postgres.json"
+  },
+  "description": "Design Supabase Postgres schemas, constraints, indexes, functions, extensions, and connection patterns.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "design-supabase-postgres",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/design-supabase-postgres"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "constraints",
+    "indexes",
+    "pooler",
+    "postgres",
+    "schema",
+    "supabase"
+  ],
+  "version": "1.0.0"
+}

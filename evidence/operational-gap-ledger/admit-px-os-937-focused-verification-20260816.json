@@ -1,0 +1,16 @@
+{
+  "gap_id": "PX-OS-937",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004975",
+  "effect": "execute",
+  "scope": [
+    "node --check extension/media/dashboard/49-studio-editors.js",
+    "node --check extension/media/dashboard/90-controller.js",
+    "node --test extension/tests/ui-scaffold.test.js extension/tests/extension-contract.test.js extension/tests/dashboard-e2e.test.js"
+  ],
+  "authority": "The registered editor and contract gaps require bounded focused interaction verification before any governed section rerun.",
+  "expected_effect": "Fresh and loaded skill candidates validate with synchronized identities, malformed files remain repairable, graph source contracts match visible behavior, and the browser walk completes without console or interaction failures.",
+  "rollback": "Read-only focused execution; retain every exact failure as a ledger finding and do not advance to the owned dashboard section unless clean.",
+  "evidence": [
+    {"claim": "Immediate post-repair verification checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004975"}
+  ]
+}

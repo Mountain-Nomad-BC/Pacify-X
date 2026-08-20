@@ -1,0 +1,39 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "R11",
+  "status": "accepted",
+  "recorded_at": "2026-08-18T14:11:01.056772+00:00",
+  "claim": "PX Doctor emits human and JSON reports covering evidence-bound route coverage, integrity, recovery and WALs, provider admission and budgets, Git, environment handoff, runtime, and extension health, with canonical remediation deep links and optional WAL-retained receipts.",
+  "artifacts": [
+    {
+      "path": "runtime/px_doctor.py",
+      "sha256": "b954be86c6ce41812fd468dd2e584f23c453d0f8ee57084cdd8635367859defc"
+    },
+    {
+      "path": "runtime/cli.py",
+      "sha256": "68c7c2fd467cf673635875e9c58010c0d43da44b5c119dacdc9ff40c1d6defbe"
+    },
+    {
+      "path": "tests/test_px_doctor.py",
+      "sha256": "91327e3017322097e26954902d257ad38f4330189c39234dc12545a54364cc30"
+    }
+  ],
+  "verification": [
+    {
+      "command": "python -m pytest tests/test_px_doctor.py tests/test_health_model.py tests/test_operation_coverage.py -q",
+      "result": "34 passed independently"
+    },
+    {
+      "command": "python -m runtime.cli validate",
+      "result": "valid=true"
+    },
+    {
+      "command": "python -m runtime.cli doctor --format json",
+      "result": "valid=true; ready=false; overall_state=blocked with exact current blockers"
+    }
+  ],
+  "receipt": {
+    "path": ".engineering-bootstrap/diagnostics/receipts/60fc2c2c3612cd5754f4c3c9f5a4ff614a6e29a5af90e584c72726dbcf532f28.json",
+    "sha256": "62ffddda7ad4a0d8e41df13963f10840c1d285cfdedf4346a50fc3b22832c30f"
+  }
+}

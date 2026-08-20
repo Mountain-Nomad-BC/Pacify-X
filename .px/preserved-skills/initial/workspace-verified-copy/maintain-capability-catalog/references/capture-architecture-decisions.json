@@ -1,0 +1,54 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "do not fabricate alternatives after the fact",
+    "record uncertainty and dissent",
+    "ADRs do not override current evidence automatically"
+  ],
+  "bundle": "maintain-capability-catalog",
+  "category": "architecture-governance",
+  "dependencies": [
+    "propose-change-intelligence",
+    "long-horizon-progress-ledger",
+    "evidence-assembler"
+  ],
+  "id": "capture-architecture-decisions",
+  "keywords": [
+    "architecture decision record",
+    "adr",
+    "rationale",
+    "alternatives",
+    "decision history"
+  ],
+  "mechanisms": [
+    "decision-moment detection",
+    "ADR schema",
+    "alternative capture",
+    "consequence tracking",
+    "supersession links"
+  ],
+  "owner": "propose-change-intelligence",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "skills/architecture-decision-records/SKILL.md",
+      "skills/blueprint/SKILL.md",
+      "skills/product-lens/SKILL.md"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "skills/architecture-decision-records/SKILL.md",
+    "skills/blueprint/SKILL.md",
+    "skills/product-lens/SKILL.md"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Detect decision moments and record context, constraints, alternatives, rationale, consequences, evidence, and revocation triggers as structured architecture decisions.",
+  "title": "Capture Architecture Decisions",
+  "use_when": [
+    "a design choice changes system boundaries",
+    "future agents need to know why a path was chosen",
+    "repeated debates indicate missing decision memory"
+  ]
+}

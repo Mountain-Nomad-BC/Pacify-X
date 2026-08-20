@@ -1,0 +1,40 @@
+{
+  "admission_record": "use-supabase-mcp-and-agent-skills",
+  "body_sha256": "3f3f6cf2c9395d27779bbcc6bf516a9d13f65c5ce1b623f009c4a50b6685dc71",
+  "contract": {
+    "available": true,
+    "sha256": "89a14c88d67494e32b18892b735f4455df5cecc44019d47a69cb370669141220",
+    "source": "registry/skill_packages/use-supabase-mcp-and-agent-skills.json"
+  },
+  "description": "Install and use official Supabase MCP, agent skills, or plugin with project scope, read-only defaults, and injection defenses.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "use-supabase-mcp-and-agent-skills",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/use-supabase-mcp-and-agent-skills"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "agent-skills",
+    "mcp",
+    "plugin",
+    "prompt-injection",
+    "read-only",
+    "supabase"
+  ],
+  "version": "1.0.0"
+}

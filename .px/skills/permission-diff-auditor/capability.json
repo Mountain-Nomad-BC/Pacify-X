@@ -1,0 +1,38 @@
+{
+  "admission_record": "permission-diff-auditor",
+  "body_sha256": "cc82a82308a63a7323dd59e9e08c0326a3441116e741ce97409f0346eb2bfa39",
+  "contract": {
+    "available": true,
+    "sha256": "1d1e1386b4b52ddd31aa68c65bf7fd61f4b6b9fbb7cfb03e2bade10aab52bd01",
+    "source": "registry/skill_packages/permission-diff-auditor.json"
+  },
+  "description": "Identify new permissions, scopes, side effects, and destinations between versions. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "permission-diff-auditor",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/permission-diff-auditor"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "auditor",
+    "diff",
+    "permission",
+    "security"
+  ],
+  "version": "0.1.0"
+}

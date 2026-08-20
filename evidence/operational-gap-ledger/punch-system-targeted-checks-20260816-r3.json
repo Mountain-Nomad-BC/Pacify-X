@@ -1,0 +1,66 @@
+{
+  "schema_version": "px.targeted-check-receipt/1.0",
+  "scope": "Operational gap ledger, typed inventory, compact dashboard projection, and Diagnostics fail-closed rendering only",
+  "authoritative_ledger": {
+    "valid": true,
+    "event_count_before_this_receipt_is_attached": 787,
+    "head_event_sha256": "6aa25f14014e2a4507e2da183714f923eee9d6932f18f37f23cb579f6495867a"
+  },
+  "targeted_tests": [
+    {
+      "command": "python -m pytest -q tests/test_operational_gap_ledger.py",
+      "result": "37 passed",
+      "duration_seconds": 20.88
+    },
+    {
+      "command": "node --test tests/system-surfaces.test.js",
+      "cwd": "extension",
+      "result": "5 passed",
+      "duration_ms": 80.3766
+    },
+    {
+      "command": "python -m runtime.cli test-section run testing-governance",
+      "result": "68 passed; 9 subtests passed; managed workspace reclaimed",
+      "receipt": "evidence/operational-gap-ledger/testing-governance-passed-after-index-refresh-20260816.json",
+      "receipt_artifact_sha256": "2afc5288edd3c4027dbd7bc25f39fc7bbc951d1de0e48859753945f5c9453e39"
+    }
+  ],
+  "retained_negative_evidence": [
+    {
+      "claim": "The first Diagnostics recovery-state assertion failed after the UI rendered the correct blocking state because the command-string regex was brittle; the assertion was narrowed and the exact suite then passed.",
+      "result": "4 passed; 1 failed before assertion correction"
+    },
+    {
+      "claim": "The first governed testing-governance run correctly failed because the derived membership index was stale after ledger test changes.",
+      "receipt": "evidence/operational-gap-ledger/testing-governance-failed-after-ledger-change-20260816.json",
+      "receipt_artifact_sha256": "bf868648cb08c8cae340f41be6935479874b25cb0eb3947f8bc62a36471753df"
+    }
+  ],
+  "warm_read_benchmark_ms": {
+    "samples": 9,
+    "compact_head_median": 1.751,
+    "compact_head_max": 2.221,
+    "default_dashboard_median": 1.698,
+    "default_dashboard_max": 3.121,
+    "detailed_snapshot_median": 25.912,
+    "detailed_snapshot_max": 48.264
+  },
+  "source_artifacts": [
+    {"path":"runtime/operational_gap_ledger.py","sha256":"248320e04ec4ae9e5214cb2ebd195a6b72b19141fe018b5c2105569261f2a059"},
+    {"path":"runtime/dashboard_api.py","sha256":"8176c9603841965d84189abb9025d235adee38461039cb406ab6db6f261450db"},
+    {"path":"scripts/operational_gap_ledger.py","sha256":"bbc34532f3e8e8e1652d9c4873dc461ed232ff03b1aebca295852e899a00940d"},
+    {"path":"scripts/bootstrap_operational_gap_ledger.py","sha256":"8a54e6e46d60d3701deab87c4a1a7da6b679e73375e10bf8d0ae8398f170e102"},
+    {"path":"tests/test_operational_gap_ledger.py","sha256":"d4627fa5c12aaba6d2bd7a09dd27e7cefbbba104b0cd6b0f654393476adf6632"},
+    {"path":"extension/media/dashboard/45-system-surfaces.js","sha256":"57492ef2fac355ae14e483ee02c910d06e636263a5cc703bdb799e46a65abf5e"},
+    {"path":"extension/tests/system-surfaces.test.js","sha256":"8950d01c14e47c4018335c0eed5d8e9caff8bd2b40bedf6564406c571d287eae"},
+    {"path":"registry/operational_surface_inventory.json","sha256":"9e06f339616e645684436bd9382fd5e1957170f2c5618640fb7d7248d5c8c84c"},
+    {"path":"registry/test_group_index.json","sha256":"dc7f5dba27373434713f3ccfe9c899ad3bdadabbebcdbf09b59b75b4582dfda8"}
+  ],
+  "limitations": [
+    "No Agent, Workflow, Knowledge Graph, extension-host, release, export, or broad certification claim is made.",
+    "704 typed controls remain source-traced but not installed-host walked.",
+    "Filesystem hashes and metadata do not authenticate against a privileged coordinated rewrite.",
+    "Batch durability is ordered-prefix rather than transactional all-or-nothing.",
+    "Windows does not provide the same directory-fsync guarantee as POSIX."
+  ]
+}

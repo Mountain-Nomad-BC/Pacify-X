@@ -1,0 +1,64 @@
+{
+  "schema_version": "px.isolated-current-source-operational-walk/1.0",
+  "observed_utc": "2026-08-16T18:42:25.523Z",
+  "status": "failed",
+  "authority": "Codex host retained execution authority; PX governed scope, evidence, isolation, and cleanup.",
+  "effects": {
+    "created": [
+      "PACIFY-X-owned temporary workspace",
+      "PACIFY-X-owned user-data profile",
+      "PACIFY-X-owned empty extensions directory",
+      "repository evidence"
+    ],
+    "spawned": [
+      "pinned VS Code development host",
+      "existing operational UI walker"
+    ],
+    "user_main_vscode_profile_touched": false,
+    "product_ui_modified": false,
+    "broad_tests_run": false
+  },
+  "source": {
+    "mode": "extensionDevelopmentPath",
+    "extension_version": "0.6.19",
+    "extension_entry_sha256": "bbc31eb861955094a88a4a279f6e3f2865d4d2177f25fdec73244fb7824fd18f",
+    "walker_sha256": "3b866da0c4449a7f6cf3e27f9db792c34fa55ae0db221e43412e64fe006f5668",
+    "vscode_version": "1.132.1"
+  },
+  "isolation": {
+    "workspace": "PACIFY-X-owned ephemeral",
+    "user_data": "PACIFY-X-owned ephemeral; not the user profile",
+    "extensions": "PACIFY-X-owned empty directory",
+    "cdp": null,
+    "extension_loading": "current repository source only"
+  },
+  "walk": {
+    "path": "evidence/operational-ui-walk-current-source-20260816T184224Z/receipt.json",
+    "present": false
+  },
+  "child_lifecycle": null,
+  "owner_lifecycle": {
+    "schema_version": "px.owned-host-run/1.0",
+    "run_id": "c7d680d1-8edc-409d-b75a-dc9049c90fb9",
+    "owner_pid": 13372,
+    "worker_pid": 12496,
+    "status": "completed",
+    "started_utc": "2026-08-16T18:42:24.154Z",
+    "timeout_ms": 300000,
+    "termination_requested": false,
+    "worker_exit_verified": true,
+    "exit_code": 0,
+    "signal": null,
+    "residual_owned_pids_before": [],
+    "reconciled_owned_pids": [],
+    "residual_owned_pids_after": [],
+    "process_tree_closed_verified": true,
+    "finished_utc": "2026-08-16T18:42:25.522Z",
+    "duration_ms": 1368
+  },
+  "error": null,
+  "cleanup": {
+    "reclaimed": true,
+    "reason": "verified-process-tree-closure"
+  }
+}

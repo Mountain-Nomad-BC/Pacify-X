@@ -1,0 +1,7 @@
+{
+  "active_gap_id": "PX-OS-936",
+  "learned": "The product correctly upgraded workflow connections from node-only selection to exact typed endpoints; only the browser interaction retained the removed selector/value contract.",
+  "next_action": "Select step:validate-2|value to step:one|value through the current endpoint controls.",
+  "unresolved_branch_gap_ids": ["PX-OS-936"],
+  "evidence": [{"claim": "The exact drift was annotated.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004997"}]
+}

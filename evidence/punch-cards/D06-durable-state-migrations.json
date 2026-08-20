@@ -1,0 +1,59 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "D06",
+  "status": "accepted",
+  "recorded_at": "2026-08-12T06:53:13.257696+00:00",
+  "claim": "Durable state uses an explicit current schema, admits only supported source versions, migrates idempotently through the WAL, retains an exact-byte backup and receipt, and refuses unsupported versions and downgrades.",
+  "artifacts": [
+    {
+      "path": "runtime/recovery.py",
+      "sha256": "38c0e64e410c473cbed0fda7f95da3f3820456df8d7b367c61a5a356d7b2a4ae"
+    },
+    {
+      "path": "tests/test_recovery.py",
+      "sha256": "61d672dc6e450d1d19f99894c843d55d6ee405ea954107d0da0c583484f7b6be"
+    },
+    {
+      "path": "tests/fixtures/durable_state/1.0.json",
+      "sha256": "f8432417deda343a02c5f17b9fc212174d670cd253b5e1f25f387f954ccae8fd"
+    },
+    {
+      "path": "tests/fixtures/durable_state/2.0.json",
+      "sha256": "471ec8397c04edaee64f724cfc6b72ae96a1d6215a5ed3199e54bb9f1863e125"
+    },
+    {
+      "path": "tests/fixtures/durable_state/legacy-unversioned.json",
+      "sha256": "63c90e15a47162dbd35201a72b3951e47db0bc4221eac30f479070d16718431e"
+    }
+  ],
+  "verification": [
+    {
+      "command": "python -m pytest tests/test_recovery.py -q",
+      "result": "24 passed"
+    },
+    {
+      "command": "python -m unittest discover -s tests -p test_recovery.py -v",
+      "result": "8 passed"
+    },
+    {
+      "command": "python -m runtime.cli validate",
+      "result": "valid=true"
+    },
+    {
+      "command": "ruff check/format focused files",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "acceptance": {
+    "fixtures_cover_supported_versions": true,
+    "legacy_unversioned_compatibility_is_narrow": true,
+    "original_bytes_retained_base64_with_sha256": true,
+    "wal_coordinates_backup_state_receipt": true,
+    "repeated_migration_is_idempotent": true,
+    "newer_unknown_and_downgrade_refused": true
+  }
+}

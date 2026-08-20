@@ -452,8 +452,8 @@ def rank_memories(
     forbidden_ids: Iterable[str] = (),
     now: datetime | None = None,
 ) -> RecallResult:
-    if not query.strip() or max_items < 1:
-        raise ValueError("query and positive item budget are required")
+    if max_items < 1:
+        raise ValueError("positive item budget is required")
     semantic_scores = semantic_scores or {}
     graph_scores = graph_scores or {}
     forbidden = set(map(str, forbidden_ids))
@@ -517,10 +517,17 @@ def rank_memories(
         (item for item in eligible if caller.agent_id in item.fixed_agent_ids),
         key=lambda item: item.memory_id,
     )
+    recent = (
+        sorted(
+            eligible, key=lambda item: (-item.effective_at.timestamp(), item.memory_id)
+        )
+        if not query_terms
+        else []
+    )
     fused = _rrf(
         tuple(
             tuple(item.memory_id for item in values)
-            for values in (lexical, semantic, graph, bound)
+            for values in (lexical, semantic, graph, bound, recent)
         )
     )
     candidates = set(fused)

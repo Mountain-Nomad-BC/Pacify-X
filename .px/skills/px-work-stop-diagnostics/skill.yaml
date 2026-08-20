@@ -1,0 +1,38 @@
+{
+  "admission_record": "px-work-stop-diagnostics",
+  "body_sha256": "9c9f40e3d521fadaf63b59bc435e61febaf98403a927a9acf29afeeb6501000b",
+  "contract": {
+    "available": true,
+    "sha256": "3ec58dcb234baab7e5ff903431cb4147f3669ce6e4564ce1a50635c2fef7e302",
+    "source": "registry/skill_packages/px-work-stop-diagnostics.json"
+  },
+  "description": "Diagnose why Pacify-X parallel, agent, or cross-IDE work stopped before restarting it. Use when a task stalls, a worker disappears, a claim expires, a budget blocks execution, a provider changes, a worktree moves, a dependency remains incomplete, or a resume packet becomes stale.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "px-work-stop-diagnostics",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/px-work-stop-diagnostics"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "coordination",
+    "diagnostics",
+    "leases",
+    "recovery"
+  ],
+  "version": "1.0.0"
+}

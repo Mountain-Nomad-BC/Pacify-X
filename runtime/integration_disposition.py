@@ -90,7 +90,7 @@ def build_canonical_owner_index(root: Path) -> dict[str, object]:
             seen,
             object_type="skill",
             object_id=skill_id,
-            owner=str(item.get("path", f".agents/skills/{skill_id}/SKILL.md")),
+            owner=str(item.get("path", f".px/skills/{skill_id}/SKILL.md")),
             source="registry/skill_catalog.toml",
             lifecycle=str(item.get("status", "candidate")),
             authority=str(contract.get("risk", "R1")),
@@ -266,7 +266,7 @@ def _planned_owner(
         if "/skills/" in f"/{joined}":
             return (
                 "merge",
-                ".agents/skills/govern-candidate-resolution-pipeline",
+                ".px/skills/govern-candidate-resolution-pipeline",
                 "candidate compilation and resolution procedures consolidated into one clean-room lazy skill",
             )
         if "/orchestration/" in f"/{joined}":
@@ -321,11 +321,11 @@ def _planned_owner(
         )
         if "/skills/" in f"/{joined}":
             if any(term in skill_name for term in delivery_terms):
-                owner = ".agents/skills/validate-physical-media-deliverables"
+                owner = ".px/skills/validate-physical-media-deliverables"
             elif any(term in skill_name for term in epistemic_terms):
-                owner = ".agents/skills/govern-epistemic-skill-evolution"
+                owner = ".px/skills/govern-epistemic-skill-evolution"
             else:
-                owner = ".agents/skills/govern-distributed-work-runtime"
+                owner = ".px/skills/govern-distributed-work-runtime"
             return (
                 "merge",
                 owner,
@@ -357,7 +357,7 @@ def _planned_owner(
         if "/skills/" in f"/{joined}":
             return (
                 "merge",
-                ".agents/skills/govern-distributed-work-runtime",
+                ".px/skills/govern-distributed-work-runtime",
                 "external task, MCP, sandbox, and job procedures consolidated without a second agent loop",
             )
         if "/orchestration/" in f"/{joined}":
@@ -409,7 +409,7 @@ def _planned_owner(
     if joined.endswith("ekap_engineering_research_engine_expansion.md"):
         return (
             "merge",
-            ".agents/skills/operate-engineering-research-engine",
+            ".px/skills/operate-engineering-research-engine",
             "mechanism-level research discovery, fingerprint, synthesis, drift, and promotion procedure implemented clean-room",
         )
     if package == "pacify-x-full-project-mapping-pack":
@@ -434,7 +434,7 @@ def _planned_owner(
         if lowered.startswith("overlay/skills/"):
             return (
                 "merge",
-                ".agents/skills/map-project-intelligence",
+                ".px/skills/map-project-intelligence",
                 "project-map procedure merged into the canonical lazy skill",
             )
         return (
@@ -515,7 +515,7 @@ def _planned_owner(
         if "/skills/" in f"/{joined}":
             return (
                 "merge",
-                ".agents/skills/govern-memory-fabric",
+                ".px/skills/govern-memory-fabric",
                 "merged into existing discoverable memory and retrieval skills without duplicates",
             )
         if "/tests/" in f"/{joined}":
@@ -527,7 +527,7 @@ def _planned_owner(
         if "/knowledge/" in f"/{joined}" or "/registry/" in f"/{joined}":
             return (
                 "merge",
-                ".agents/skills/govern-memory-fabric/references/layered-memory-lifecycle.md",
+                ".px/skills/govern-memory-fabric/references/layered-memory-lifecycle.md",
                 "policy semantics merged into lazy-loaded operational guidance and runtime gates",
             )
         return (
@@ -562,7 +562,7 @@ def _planned_owner(
             skill = (
                 "/".join(external_parts[:3])
                 if len(external_parts) >= 3
-                else ".agents/skills"
+                else ".px/skills"
             )
             return (
                 "merge",
@@ -640,17 +640,17 @@ def _planned_owner(
         )
         if service_relative.startswith("pacify-x-overlay/"):
             service_relative = service_relative.removeprefix("pacify-x-overlay/")
-        if service_relative.startswith(".agents/skills/"):
+        if service_relative.startswith(".px/skills/"):
             skill_id = service_relative.split("/")[2]
             return (
                 "merge",
-                f".agents/skills/{skill_id}",
+                f".px/skills/{skill_id}",
                 "clean-room product skill admitted lazily with explicit effects and policy boundaries",
             )
         if service_relative.startswith("knowledge/"):
             return (
                 "merge",
-                ".agents/skills/route-n8n-supabase-stack/references/knowledge",
+                ".px/skills/route-n8n-supabase-stack/references/knowledge",
                 "product knowledge moved behind lazy router references",
             )
         if service_relative.startswith("orchestration/"):
@@ -724,7 +724,7 @@ def _planned_owner(
         if "/skills/" in f"/{joined}":
             return (
                 "merge",
-                ".agents/skills/govern-knowledge-refinery",
+                ".px/skills/govern-knowledge-refinery",
                 "source procedures consolidated into one discoverable canonical skill",
             )
         return (

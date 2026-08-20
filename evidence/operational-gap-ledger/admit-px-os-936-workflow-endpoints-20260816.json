@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-936",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004998",
+  "effect": "write",
+  "scope": ["extension/tests/dashboard-e2e.test.js"],
+  "authority": "The registered contract-drift gap authorizes correction of the two removed Workflow Builder endpoint selectors and values.",
+  "expected_effect": "The browser walk exercises the current typed node-and-port connection contract without a 30-second missing-selector wait.",
+  "rollback": "Two interaction selector/value changes only; revert explicitly if the product contract changes.",
+  "evidence": [{"claim": "Immediate Workflow Builder selector checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004998"}]
+}

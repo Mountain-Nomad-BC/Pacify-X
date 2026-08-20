@@ -2,15 +2,34 @@
   "chatgpt.commentCodeLensEnabled": true,
   "chatgpt.openOnStartup": false,
   "chatgpt.followUpQueueMode": "queue",
+  "pacifyX.workspaceRoot": "C:\\Users\\Ben\\Documents\\Pacify-X-Workspace",
   "files.watcherExclude": {
+    "**/.venv*/**": true,
+    "**/Python/**": true,
+    "**/__pycache__/**": true,
+    "**/node_modules/**": true,
+    "**/.engineering-bootstrap/coordination/activity/**": true,
+    "**/.engineering-bootstrap/operation-bus/**": true,
+    "**/.engineering-bootstrap/project-map-history/**": true,
     "**/raw/**": true,
     "**/quarantine/**": true,
     "**/evidence/**": true,
     "**/planning/inventory/**": true
   },
   "search.exclude": {
+    "**/.venv*/**": true,
+    "**/Python/**": true,
+    "**/__pycache__/**": true,
+    "**/node_modules/**": true,
+    "**/.engineering-bootstrap/coordination/activity/**": true,
+    "**/.engineering-bootstrap/operation-bus/**": true,
     "**/raw/**": true,
     "**/quarantine/**": true,
     "**/evidence/**": true
-  }
+  },
+  "python.analysis.exclude": [
+    "**/.venv*/**",
+    "**/Python/**",
+    "**/node_modules/**"
+  ]
 }

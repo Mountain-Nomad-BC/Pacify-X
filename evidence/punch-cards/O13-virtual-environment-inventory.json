@@ -1,0 +1,19 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "O13",
+  "status": "accepted",
+  "recorded_at": "2026-08-12T06:53:13.280653+00:00",
+  "claim": "Virtual environments are correlated by exact root, runtime, owner, package summary, health, and expiring active-use evidence; stale selection or activation degrades to unknown.",
+  "artifacts": [
+    {
+      "path": "evidence/extension-verification/H02-O12-O13-O14-environment-discovery.json",
+      "sha256": "70547c6872ce39df3fb907aa62478274810a7f88c8ca2c64503a69d892cca616"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --test tests/discovery-manager.test.js",
+      "result": "nested, moved, deleted, symlink, case, UNC, wrong-version, and stale-active fixtures passed"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "intake_id": "px-universal-visibility-source-intake-20260811",
+  "project_id": "pacify-x",
+  "created_utc": "2026-08-11T17:40:00Z",
+  "sources": [
+    {
+      "name": "PX_0.4.4_SECOND_PASS_OPERATIONAL_HARDENING_PLAN.md",
+      "bytes": 23064,
+      "sha256": "c25a72a81ca0e490bde75db888091d06183b109f4c8af88237af0542e18318c5",
+      "coverage": "28/28 numbered hardening requirements mapped"
+    },
+    {
+      "name": "PX_0.4.4_INDEPENDENT_ADVERSARIAL_AUDIT.md",
+      "bytes": 22523,
+      "sha256": "420e4101f9aa461dc1f82f51d5d21bf830d4e1b1dac48f7442a5b6f75fbe831a",
+      "coverage": "all priority findings, visual punch list, and certification matrix mapped"
+    },
+    {
+      "name": "PX_VSCODE_SIDEBAR_LIVE_OPERATIONS_CONSOLE_SPEC.md",
+      "bytes": 28840,
+      "sha256": "390359dc1ce5f673f29793e8f8a62c112d250cd2061f604a5f36bbb07cd0fe74",
+      "coverage": "40/40 numbered specification sections mapped"
+    }
+  ],
+  "baseline": {
+    "runtime_version": "0.6.3",
+    "runtime_validation": "passed",
+    "runtime_counts": {
+      "skills": 172,
+      "tools": 11,
+      "agents": 270,
+      "orchestrations": 72,
+      "graph_records": 983,
+      "graph_edges": 1917,
+      "tests": 141
+    },
+    "extension_version": "0.5.0",
+    "extension_activity_foundation": "implemented-and-tested",
+    "sidebar": "static-tree-provider-not-live-console",
+    "installed_vsix_live_runtime_certification": "not-yet-required-or-complete",
+    "canonical_provider_cost_ledger": "absent",
+    "canonical_sidebar_projection": "absent",
+    "system_tool_inventory": "not-implemented; canonical tool metadata and admission model captured in O12",
+    "virtual_environment_inventory": "not-implemented; active-use-aware local environment model captured in O13, S11, and H07",
+    "env_config_inventory_and_lifecycle": "not-implemented; value-redacted schema/consumer/exposure model captured in O14, S11, and H08",
+    "perfect_visibility_claim": "rejected-as-unverifiable; mediated-or-visible-gap target adopted"
+  },
+  "plan_artifacts": [
+    "docs/PX_UNIVERSAL_VISIBILITY_MASTER_PLAN.md",
+    "docs/PX_UNIVERSAL_VISIBILITY_PUNCH_CARDS.md",
+    "evidence/planning/px-universal-visibility-goal-state.json",
+    "evidence/planning/px-universal-visibility-plan-validation.json"
+  ],
+  "additional_user_requirements": [
+    "Show actual local virtual environments and which are actively selected, activated, or in use; do not confuse them with .env files.",
+    "Track .env path/scope/owner, variable names/schema and presence, required/optional state, consumers, change metadata, missing/duplicate/conflicting variables, ignore/exposure status, and secret-provider relationships without retaining values.",
+    "Do not use plain SHA-256 as a disclosure defense for low-entropy secrets; omit value fingerprints by default and allow keyed HMAC only with an approved secret source and justified change-detection need.",
+    "Track system tools by executable/path, version, install source, capabilities, project requirements, dependencies, environment requirements, health, last verification, update availability, conflicts, and trust/admission state.",
+    "Make tool, virtual-environment, and .env maintenance/deletion exact-target, impact-aware, confirm-gated, reversible where possible, and receipted."
+  ],
+  "authority_granted": false
+}

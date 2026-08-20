@@ -1,0 +1,55 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "never tie essential access, dignity, care, or safety to tokens",
+    "avoid coercive or addictive mechanics",
+    "no hidden variable rewards"
+  ],
+  "bundle": "adapt-human-learning-loop",
+  "category": "reinforcement",
+  "dependencies": [
+    "execution-contract-enforcer",
+    "evidence-assembler",
+    "capture-human-observer-assessment"
+  ],
+  "id": "govern-reinforcement-token-economy",
+  "keywords": [
+    "token economy",
+    "points",
+    "reward ledger",
+    "balance invariant",
+    "reinforcement"
+  ],
+  "mechanisms": [
+    "transaction ledger",
+    "balance invariant",
+    "earn/spend reason",
+    "bounded awards",
+    "insufficient-balance handling",
+    "human override"
+  ],
+  "owner": "execution-contract-enforcer",
+  "provenance": {
+    "derivation": "clean-room mechanism abstraction",
+    "source": "hyperlearning-clean-room",
+    "source_refs": [
+      "Manual de usuario e instalación.pdf sections 2.6 and 2.8",
+      "src/Paciente.java",
+      "src/Pacientes.java"
+    ]
+  },
+  "source": "hyperlearning-clean-room",
+  "source_refs": [
+    "Manual de usuario e instalación.pdf sections 2.6 and 2.8",
+    "src/Paciente.java",
+    "src/Pacientes.java"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Represent optional points or tokens as a transparent, bounded reinforcement mechanism with explicit earning and spending rules, immutable transactions, balance checks, and human oversight.",
+  "title": "Govern Reinforcement Token Economy",
+  "use_when": [
+    "training uses points to acknowledge completion",
+    "rewards must be auditable",
+    "balances currently mutate without trace"
+  ]
+}

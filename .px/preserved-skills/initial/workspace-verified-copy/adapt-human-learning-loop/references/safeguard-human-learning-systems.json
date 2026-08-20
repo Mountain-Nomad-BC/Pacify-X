@@ -1,0 +1,53 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "never claim therapy or diagnosis from app activity",
+    "do not manipulate vulnerable users",
+    "do not expose sensitive history by default"
+  ],
+  "bundle": "adapt-human-learning-loop",
+  "category": "human-safety",
+  "dependencies": [
+    "enforce-governance-controls",
+    "govern-memory-fabric",
+    "permission-diff-auditor"
+  ],
+  "id": "safeguard-human-learning-systems",
+  "keywords": [
+    "human learning safety",
+    "child privacy",
+    "non diagnostic",
+    "accessibility",
+    "anti coercion"
+  ],
+  "mechanisms": [
+    "data minimization",
+    "consent and role review",
+    "accessibility controls",
+    "anti-coercion review",
+    "human override",
+    "non-diagnostic labeling"
+  ],
+  "owner": "enforce-governance-controls",
+  "provenance": {
+    "derivation": "clean-room mechanism abstraction",
+    "source": "hyperlearning-clean-room",
+    "source_refs": [
+      "README.md",
+      "Manual de usuario e instalación.pdf"
+    ]
+  },
+  "source": "hyperlearning-clean-room",
+  "source_refs": [
+    "README.md",
+    "Manual de usuario e instalación.pdf"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Apply privacy, consent, accessibility, anti-coercion, age-appropriate design, human oversight, and non-diagnostic boundaries to adaptive learning and behavior-tracking systems.",
+  "title": "Safeguard Human Learning Systems",
+  "use_when": [
+    "software tracks children, patients, learners, or employees",
+    "reward systems or behavior labels are used",
+    "adaptive logic may influence people"
+  ]
+}

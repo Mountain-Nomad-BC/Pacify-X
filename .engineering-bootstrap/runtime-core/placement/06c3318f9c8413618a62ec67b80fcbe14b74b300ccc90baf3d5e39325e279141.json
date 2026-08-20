@@ -1,0 +1,22 @@
+{
+  "before_benchmark_sha256": "46840219086540c210ef043d49fcf0480991379b1970b8eb7b4f3bcc6980eacc",
+  "boundary_contract_sha256": "da37caa551ca2bf862d4cce9eb889f1ab694dc11cef33dd516ff00f0bd77f3d7",
+  "cpu_authoritative": true,
+  "current_placement": "python-dashboard-api-to-vscode-webview-on-cpu",
+  "hardware_route": {
+    "actual_device": "cpu",
+    "correctness_passed": true,
+    "fallback": false,
+    "fallback_reason": "serialization is CPU/operating-system authoritative",
+    "selected_device": "cpu"
+  },
+  "migration_authorized": false,
+  "rollback_artifact_sha256": "c1bd3ecab6fd1a9d2cb656b1ee23cdc7ce1b99624d9f623b12e294d62388c14c",
+  "scheduler_bus_revision": 69,
+  "scheduler_snapshot_sha256": "705be2584504641fe40b99022bfb87dd5d66a2c36af2425e2e614e502c93be7e",
+  "schema_version": "px.execution-placement-workload/1.0",
+  "source_sha256": "5933fc6573db40493d39b9ee9bd395def7025fb44b0e5c29d369dae220831e8f",
+  "workload_id": "installed-dashboard-snapshot-and-render",
+  "workload_kind": "serialization",
+  "workload_observation_sha256": "06c3318f9c8413618a62ec67b80fcbe14b74b300ccc90baf3d5e39325e279141"
+}

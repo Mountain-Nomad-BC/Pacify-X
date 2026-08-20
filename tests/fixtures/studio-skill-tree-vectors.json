@@ -1,0 +1,37 @@
+{
+  "schema_version": "px.skill-tree-vectors/1.0",
+  "vectors": [
+    {
+      "id": "core-unicode",
+      "files": [
+        {"path": "SKILL.md", "content_base64": "IyBDYWbDqSDigJQg5p2x5LqsIPCfmoAK"},
+        {"path": "capability.json", "content_base64": "e30K"},
+        {"path": "resources/é.txt", "content_base64": "csOpc3Vtw6kK"},
+        {"path": "skill.yaml", "content_base64": "aWQ6IGRlbW8K"}
+      ],
+      "expected_sha256": "2d1a8d1683f077162b5e036b823a03bf5a93529fd08ee82745de405f0085f322"
+    },
+    {
+      "id": "delimiter-left",
+      "files": [
+        {"path": "SKILL.md", "content_base64": "IyBTa2lsbAo="},
+        {"path": "a", "content_base64": "eA=="},
+        {"path": "b", "content_base64": "eQBiYgB6"},
+        {"path": "capability.json", "content_base64": "e30K"},
+        {"path": "skill.yaml", "content_base64": "aWQ6IGRlbW8K"}
+      ],
+      "expected_sha256": "8b82340a92a8a639c1dca7306203adb279be32722bc866ee3c986636a99d635e"
+    },
+    {
+      "id": "delimiter-right",
+      "files": [
+        {"path": "SKILL.md", "content_base64": "IyBTa2lsbAo="},
+        {"path": "a", "content_base64": "eABiAHk="},
+        {"path": "bb", "content_base64": "eg=="},
+        {"path": "capability.json", "content_base64": "e30K"},
+        {"path": "skill.yaml", "content_base64": "aWQ6IGRlbW8K"}
+      ],
+      "expected_sha256": "1f5ff94bb8fb9731f3c9380a711e3d32524afe0f5de3fe755cb7adf5e40a430b"
+    }
+  ]
+}

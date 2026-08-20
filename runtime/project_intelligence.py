@@ -19,6 +19,7 @@ import math
 import os
 from pathlib import Path
 import re
+import subprocess
 import tomllib
 from typing import Any, Iterable, Mapping, Sequence
 from urllib.parse import urlparse
@@ -28,7 +29,7 @@ from .bounded_walk import FilesystemWalkError, WalkLimits, bounded_walk
 
 
 SCHEMA_VERSION = "1.1"
-MAPPER_VERSION = "0.3.0"
+MAPPER_VERSION = "0.4.0"
 ADAPTER_VERSION = "2026-08-06.1"
 
 DEFAULT_EXCLUDES = {
@@ -46,8 +47,19 @@ DEFAULT_EXCLUDES = {
     ".mypy_cache",
     ".pytest_cache",
     ".ruff_cache",
+    ".tmp",
+    ".cache",
+    ".parcel-cache",
+    ".turbo",
+    ".vite",
+    "coverage",
+    "htmlcov",
+    "evidence",
     ".tox",
     ".idea",
+    # A common Windows Python distribution/virtual-environment root.  The
+    # directory is dependency payload, not repository-owned source.
+    "python",
 }
 
 SENSITIVE_FILE_NAMES = {
@@ -340,6 +352,13 @@ def _exclusion_category(relative: str) -> str | None:
     """Classify a path before inventory, hashing, parsing, or indexing."""
     path = Path(relative)
     parts = tuple(part.casefold() for part in path.parts)
+    if any(
+        part in {".venv", "venv"}
+        or part.startswith(".venv-")
+        or part.startswith("venv-")
+        for part in parts
+    ):
+        return "virtual_environment"
     if any(part in DEFAULT_EXCLUDES for part in parts):
         return "default"
     name = path.name.casefold()
@@ -354,6 +373,72 @@ def _exclusion_category(relative: str) -> str | None:
 
 def _excluded_source(relative: str) -> bool:
     return _exclusion_category(relative) is not None
+
+
+def _normalize_exclude_prefixes(prefixes: Iterable[str]) -> tuple[str, ...]:
+    normalized: set[str] = set()
+    for raw in prefixes:
+        value = str(raw).strip().replace("\\", "/").strip("/")
+        if not value or value in {".", ".."} or value.startswith("../"):
+            raise ValueError(f"invalid source exclusion prefix: {raw!r}")
+        normalized.add(value)
+    return tuple(sorted(normalized))
+
+
+def _matches_exclude_prefix(relative: str, prefixes: Iterable[str]) -> bool:
+    candidate = relative.replace("\\", "/").strip("/")
+    return any(candidate == prefix or candidate.startswith(f"{prefix}/") for prefix in prefixes)
+
+
+def _git_visible_paths(root: Path, *, max_files: int) -> tuple[set[str] | None, dict[str, object]]:
+    """Return Git's tracked + untracked, non-ignored source set when available.
+
+    ``git ls-files --exclude-standard`` is the canonical interpreter for root
+    and nested gitignore files.  The mapper never approximates wildmatch
+    semantics itself.  A bounded failure falls back to the explicit PX default
+    exclusions and is recorded in the map manifest.
+    """
+    command = [
+        "git", "-C", str(root), "-c", "core.quotepath=false", "ls-files",
+        "-z", "--cached", "--others", "--exclude-standard",
+    ]
+    try:
+        result = subprocess.run(
+            command,
+            check=True,
+            capture_output=True,
+            timeout=30,
+        )
+        # Keep the discovery stage bounded before decoding attacker-controlled
+        # path data.  The file-count limit remains the authoritative walk bound.
+        output_limit = min(128 * 1024 * 1024, max(1024 * 1024, max_files * 4096))
+        if len(result.stdout) > output_limit:
+            raise ValueError("git visible-source inventory exceeded its byte bound")
+        records = {
+            value.decode("utf-8", errors="surrogateescape").replace("\\", "/").strip("/")
+            for value in result.stdout.split(b"\0")
+            if value
+        }
+        if len(records) > max_files:
+            raise ValueError("git visible-source inventory exceeded max_files")
+        directories = {
+            parent.as_posix()
+            for record in records
+            for parent in Path(record).parents
+            if parent.as_posix() != "."
+        }
+        return records | directories, {
+            "mode": "git-exclude-standard",
+            "available": True,
+            "record_count": len(records),
+            "command": "git ls-files --cached --others --exclude-standard",
+        }
+    except (OSError, subprocess.SubprocessError, ValueError) as error:
+        return None, {
+            "mode": "px-default-excludes-only",
+            "available": False,
+            "reason": f"{type(error).__name__}: {error}",
+        }
 
 
 def _role(relative: str, language: str) -> str:
@@ -488,12 +573,13 @@ def _literal_string(node: AST | None) -> str | None:
 def _safe_url_domain(raw: str) -> str | None:
     try:
         parsed = urlparse(raw.rstrip(".,);]"))
+        if parsed.scheme not in {"http", "https"} or not parsed.hostname:
+            return None
+        host = parsed.hostname.casefold()
+        parsed_port = parsed.port
     except ValueError:
         return None
-    if parsed.scheme not in {"http", "https"} or not parsed.hostname:
-        return None
-    host = parsed.hostname.casefold()
-    port = f":{parsed.port}" if parsed.port else ""
+    port = f":{parsed_port}" if parsed_port else ""
     return f"{parsed.scheme}://{host}{port}"
 
 
@@ -655,6 +741,11 @@ class _PythonScanner(ast.NodeVisitor):
                     if isinstance(decorator, ast.Call) and decorator.args
                     else None
                 )
+                # HTTP route decorators require an explicit absolute path.  A
+                # name-only match is insufficient: unittest.mock.patch and
+                # similar decorators otherwise become false HTTP PATCH routes.
+                if route_path is None or not route_path.startswith("/"):
+                    continue
                 methods = [method.upper()] if method != "api_route" else []
                 if isinstance(decorator, ast.Call):
                     for keyword in decorator.keywords:
@@ -1381,7 +1472,9 @@ def _scan_known_config(text: str, relative: str, language: str) -> dict[str, obj
                         "sensitive": bool(SENSITIVE_KEY.search(key)),
                     }
                 )
-            if any(term in name for term in ("openapi", "swagger")):
+            if isinstance(data, Mapping) and any(
+                term in name for term in ("openapi", "swagger")
+            ):
                 for route, methods in (data.get("paths") or {}).items():
                     for method in methods:
                         if method.casefold() in ROUTE_METHODS:
@@ -1958,6 +2051,7 @@ def _call_graph(
 
 def _runtime_topology(facts: Sequence[Mapping[str, object]]) -> dict[str, object]:
     services = [dict(service) for fact in facts for service in fact.get("services", ())]  # type: ignore[union-attr]
+    routes = [dict(route) for fact in facts for route in fact.get("routes", ())]  # type: ignore[union-attr]
     entrypoints = [dict(item) for fact in facts for item in fact.get("entrypoints", ())]  # type: ignore[union-attr]
     pipelines = [dict(item) for fact in facts for item in fact.get("ci", ())]  # type: ignore[union-attr]
     runtime_markers: Counter[str] = Counter()
@@ -1985,6 +2079,7 @@ def _runtime_topology(facts: Sequence[Mapping[str, object]]) -> dict[str, object
     return {
         "schema_version": SCHEMA_VERSION,
         "services": sorted(services, key=lambda item: str(item.get("id"))),
+        "routes": sorted(routes, key=lambda item: str(item.get("id"))),
         "entrypoints": sorted(
             entrypoints,
             key=lambda item: (str(item.get("source")), str(item.get("name"))),
@@ -2269,6 +2364,9 @@ def _test_coverage_map(
             and edge.get("kind") == "imports"
         ):
             links.add((source, target, "test_import"))
+    sources_by_stem: dict[str, list[str]] = defaultdict(list)
+    for source in source_files:
+        sources_by_stem[Path(source).stem.casefold()].append(source)
     for test in test_files:
         stem = (
             Path(test)
@@ -2280,9 +2378,25 @@ def _test_coverage_map(
         )
         if len(stem) < 3:
             continue
-        for source in source_files:
-            if stem == Path(source).stem.casefold() or stem in source.casefold():
-                links.add((test, source, "name_proximity"))
+        candidates = sources_by_stem.get(stem, [])
+        if len(candidates) == 1:
+            links.add((test, candidates[0], "exact_basename"))
+            continue
+        test_parts = Path(test).parent.parts
+        scored: list[tuple[int, str]] = []
+        for source in candidates:
+            source_parts = Path(source).parent.parts
+            common = 0
+            for left, right in zip(test_parts, source_parts):
+                if left.casefold() != right.casefold():
+                    break
+                common += 1
+            scored.append((common, source))
+        best = max((score for score, _source in scored), default=0)
+        if best > 0:
+            for _score, source in scored:
+                if _score == best:
+                    links.add((test, source, "exact_basename_directory_affinity"))
     linked_sources = {source for _, source, _ in links}
     linked_tests = {test for test, _, _ in links}
     return {
@@ -2306,11 +2420,17 @@ def _architecture_graph(
     contract_map: Mapping[str, object],
     integration_map: Mapping[str, object],
     routes: Sequence[Mapping[str, object]],
+    ownership: Mapping[str, object],
 ) -> dict[str, object]:
     nodes: dict[str, dict[str, object]] = {
         "project": {"id": "project", "kind": "project", "name": "project"}
     }
     edges: list[dict[str, object]] = []
+    owners_by_path = {
+        str(item.get("path")): [str(owner) for owner in item.get("owners", ())]
+        for item in ownership.get("assignments", ())
+        if isinstance(item, Mapping)
+    }
     for fact in facts:
         node_id = f"file:{fact['path']}"
         nodes[node_id] = {
@@ -2319,6 +2439,15 @@ def _architecture_graph(
             "path": fact["path"],
             "language": fact["language"],
             "role": fact["role"],
+            "sha256": fact.get("sha256"),
+            "owner": owners_by_path.get(str(fact["path"]), []),
+            "provenance": {
+                "class": "DERIVED",
+                "source": "project-map/file-facts.jsonl",
+                "source_path": fact["path"],
+                "source_sha256": fact.get("sha256"),
+                "owner_basis": "codeowners" if str(fact["path"]) in owners_by_path else "unassigned",
+            },
         }
         edges.append({"from": "project", "to": node_id, "kind": "contains"})
     for edge in dependency_graph.get("edges", ()):
@@ -2856,7 +2985,7 @@ def _map_dir(path: Path) -> Path:
     raise ValueError(f"project intelligence map not found under {resolved}")
 
 
-def build_project_map(
+def _build_project_map_direct(
     project: Path,
     *,
     output_dir: Path | None = None,
@@ -2866,6 +2995,7 @@ def build_project_map(
     max_text_bytes: int = 2 * 1024 * 1024,
     incremental: bool = True,
     archive_previous: bool = True,
+    exclude_prefixes: Iterable[str] = (),
 ) -> dict[str, object]:
     """Build and atomically promote a complete static project intelligence map."""
     root = project.resolve()
@@ -2873,6 +3003,7 @@ def build_project_map(
         raise ValueError("project must be a directory")
     if min(max_files, max_depth, max_bytes, max_text_bytes) < 1:
         raise ValueError("mapping limits must be positive")
+    caller_exclude_prefixes = _normalize_exclude_prefixes(exclude_prefixes)
     output = (output_dir or (root / ".engineering-bootstrap" / "project-map")).resolve()
     if (
         output == root
@@ -2901,11 +3032,20 @@ def build_project_map(
     stage_root = control / f".{output.name}.staging" / run_id
     try:
         exclusion_counts: Counter[str] = Counter()
+        git_visible_paths, gitignore_policy = _git_visible_paths(
+            root, max_files=max_files
+        )
 
         def exclude_source(relative: str) -> bool:
             category = _exclusion_category(relative)
             if category is not None:
                 exclusion_counts[category] += 1
+                return True
+            if _matches_exclude_prefix(relative, caller_exclude_prefixes):
+                exclusion_counts["caller_declared"] += 1
+                return True
+            if git_visible_paths is not None and relative not in git_visible_paths:
+                exclusion_counts["gitignore"] += 1
                 return True
             return False
 
@@ -2966,7 +3106,7 @@ def build_project_map(
         contracts = _contract_map(facts)
         tests = _test_coverage_map(facts, dependency)
         architecture = _architecture_graph(
-            facts, dependency, runtime, contracts, integration, routes
+            facts, dependency, runtime, contracts, integration, routes, ownership
         )
         traceability = _traceability_map(facts, routes, contracts, tests, dependency)
         risks = _risk_gap_map(facts, dependency, ownership, tests, configuration)
@@ -3014,6 +3154,8 @@ def build_project_map(
                 "default_parts": sorted(DEFAULT_EXCLUDES),
                 "sensitive_names": sorted(SENSITIVE_FILE_NAMES),
                 "sensitive_suffixes": sorted(SENSITIVE_FILE_SUFFIXES),
+                "caller_exclude_prefixes": list(caller_exclude_prefixes),
+                "gitignore": gitignore_policy,
             },
         }
         map_revision = _stable_hash(revision_payload)
@@ -3035,12 +3177,14 @@ def build_project_map(
             "incremental": incremental,
             "build_stats": build_stats,
             "source_excludes": sorted(DEFAULT_EXCLUDES),
+            "caller_exclude_prefixes": list(caller_exclude_prefixes),
             "sensitive_source_excludes": {
                 "names": sorted(SENSITIVE_FILE_NAMES),
                 "suffixes": sorted(SENSITIVE_FILE_SUFFIXES),
                 "directory_names": [".credentials", ".secrets"],
             },
             "exclusion_counts": dict(sorted(exclusion_counts.items())),
+            "gitignore_policy": gitignore_policy,
             "map_files": [
                 name for name in REQUIRED_MAP_FILES if name != "map-receipt.json"
             ],
@@ -3093,6 +3237,7 @@ def build_project_map(
             "run_id": run_id,
             "promotion": "prepared",
             "exclusion_counts": dict(sorted(exclusion_counts.items())),
+            "caller_exclude_prefixes": list(caller_exclude_prefixes),
         }
         receipt_payload["receipt_payload_sha256"] = _stable_hash(receipt_payload)
         _write_json(stage_root / "map-receipt.json", receipt_payload)
@@ -3158,6 +3303,57 @@ def build_project_map(
                 pass
 
 
+def build_project_map(
+    project: Path,
+    *,
+    output_dir: Path | None = None,
+    max_files: int = 100_000,
+    max_depth: int = 96,
+    max_bytes: int = 2 * 1024 * 1024 * 1024,
+    max_text_bytes: int = 2 * 1024 * 1024,
+    incremental: bool = True,
+    archive_previous: bool = True,
+    exclude_prefixes: Iterable[str] = (),
+) -> dict[str, object]:
+    """Admit the expensive mapper through the canonical Python work plane."""
+    from .work_admission import RuntimeWorkPlane
+
+    root = project.resolve()
+    parameters = {
+        "project": root.as_posix(),
+        "output_dir": output_dir.resolve().as_posix() if output_dir else None,
+        "max_files": max_files,
+        "max_depth": max_depth,
+        "max_bytes": max_bytes,
+        "max_text_bytes": max_text_bytes,
+        "incremental": incremental,
+        "archive_previous": archive_previous,
+        "exclude_prefixes": sorted(set(map(str, exclude_prefixes))),
+    }
+    work = RuntimeWorkPlane(root).execute(
+        "project-map.build",
+        lambda: _build_project_map_direct(
+            project,
+            output_dir=output_dir,
+            max_files=max_files,
+            max_depth=max_depth,
+            max_bytes=max_bytes,
+            max_text_bytes=max_text_bytes,
+            incremental=incremental,
+            archive_previous=archive_previous,
+            exclude_prefixes=exclude_prefixes,
+        ),
+        reason="explicit or onboarding project-map request",
+        input_fingerprint=parameters,
+        domains=("repository", "knowledge"),
+        lane="heavy",
+        cache_seconds=0,
+        timeout_seconds=3600,
+        authoritative=True,
+    )
+    return {**work["result"], "work_admission": work["admission"]}
+
+
 def validate_project_map(
     project_or_map: Path, *, check_freshness: bool = False
 ) -> dict[str, object]:
@@ -3210,6 +3406,16 @@ def validate_project_map(
     if fact_paths != inventory_paths:
         errors.append("file facts and inventory path sets differ")
     forbidden_inventory = sorted(path for path in inventory_paths if _excluded_source(path))
+    caller_exclude_prefixes = _normalize_exclude_prefixes(
+        manifest.get("caller_exclude_prefixes", ())
+    )
+    forbidden_inventory.extend(
+        sorted(
+            path
+            for path in inventory_paths
+            if _matches_exclude_prefix(path, caller_exclude_prefixes)
+        )
+    )
     if forbidden_inventory:
         errors.append(
             "sensitive/excluded source paths entered inventory: "
@@ -3225,7 +3431,13 @@ def validate_project_map(
         {
             str(item.get("path"))
             for item in documents
-            if item.get("path") and _excluded_source(str(item.get("path")))
+            if item.get("path")
+            and (
+                _excluded_source(str(item.get("path")))
+                or _matches_exclude_prefix(
+                    str(item.get("path")), caller_exclude_prefixes
+                )
+            )
         }
     )
     if forbidden_documents:
@@ -3266,6 +3478,25 @@ def validate_project_map(
             )
         else:
             try:
+                git_policy = manifest.get("gitignore_policy", {})
+                git_visible_paths = None
+                if isinstance(git_policy, Mapping) and git_policy.get("mode") == "git-exclude-standard":
+                    git_visible_paths, current_git_policy = _git_visible_paths(
+                        project_root, max_files=int(manifest["limits"]["max_files"])
+                    )
+                    if git_visible_paths is None:
+                        raise ValueError(
+                            "freshness cannot reproduce recorded gitignore policy: "
+                            + str(current_git_policy.get("reason") or "unavailable")
+                        )
+
+                def exclude_current_source(relative: str) -> bool:
+                    return (
+                        _excluded_source(relative)
+                        or _matches_exclude_prefix(relative, caller_exclude_prefixes)
+                        or (git_visible_paths is not None and relative not in git_visible_paths)
+                    )
+
                 walk = bounded_walk(
                     project_root,
                     limits=WalkLimits(
@@ -3274,7 +3505,7 @@ def validate_project_map(
                         max_bytes=int(manifest["limits"]["max_bytes"]),
                     ),
                     symlink_policy="reject",
-                    exclude=_excluded_source,
+                    exclude=exclude_current_source,
                 )
                 current = [
                     {
@@ -3302,7 +3533,9 @@ def validate_project_map(
     }
 
 
-def project_map_status(project: Path) -> dict[str, object]:
+def project_map_status(
+    project: Path, *, verify_integrity: bool = True
+) -> dict[str, object]:
     try:
         map_dir = _map_dir(project)
     except ValueError as error:
@@ -3312,10 +3545,44 @@ def project_map_status(project: Path) -> dict[str, object]:
             "stale": None,
             "errors": [str(error)],
         }
-    validation = validate_project_map(map_dir, check_freshness=False)
-    manifest = (
-        _load_json(map_dir / "project-manifest.json") if validation["valid"] else {}
-    )
+    if verify_integrity:
+        validation = validate_project_map(map_dir, check_freshness=False)
+        manifest = (
+            _load_json(map_dir / "project-manifest.json")
+            if validation["valid"]
+            else {}
+        )
+        validation_scope = "full-byte-integrity"
+    else:
+        errors: list[str] = []
+        try:
+            manifest = _load_json(map_dir / "project-manifest.json")
+            receipt = _load_json(map_dir / "map-receipt.json")
+            expected_receipt_hash = receipt.get("receipt_sha256")
+            receipt_payload = dict(receipt)
+            receipt_payload.pop("receipt_sha256", None)
+            if expected_receipt_hash != _stable_hash(receipt_payload):
+                errors.append("map receipt hash mismatch")
+            if receipt.get("map_revision") != manifest.get("map_revision"):
+                errors.append("receipt map revision does not match manifest")
+            if receipt.get("source_inventory_sha256") != manifest.get(
+                "source_inventory_sha256"
+            ):
+                errors.append("receipt source inventory does not match manifest")
+            recorded_files = receipt.get("file_sha256", {})
+            if not isinstance(recorded_files, dict):
+                errors.append("map receipt file inventory is invalid")
+                recorded_files = {}
+            for name in REQUIRED_MAP_FILES:
+                if not (map_dir / name).is_file():
+                    errors.append(f"missing map file: {name}")
+                elif name != "map-receipt.json" and name not in recorded_files:
+                    errors.append(f"map file is absent from receipt: {name}")
+        except (OSError, ValueError, json.JSONDecodeError) as error:
+            manifest = {}
+            errors.append(f"map projection parse failure: {error}")
+        validation = {"valid": not errors, "errors": errors}
+        validation_scope = "sealed-projection-metadata"
     return {
         "valid": validation["valid"],
         "available": True,
@@ -3325,6 +3592,8 @@ def project_map_status(project: Path) -> dict[str, object]:
         "counts": manifest.get("counts", {}),
         "errors": validation.get("errors", []),
         "freshness": "not_checked",
+        "validation_scope": validation_scope,
+        "content_hashes_verified": verify_integrity,
     }
 
 

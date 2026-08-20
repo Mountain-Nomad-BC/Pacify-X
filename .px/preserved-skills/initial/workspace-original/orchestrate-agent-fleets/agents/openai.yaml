@@ -1,0 +1,4 @@
+interface:
+  display_name: "Orchestrate Agent Fleets"
+  short_description: "Check fleet readiness and isolated inbox bounds"
+  default_prompt: "Use $orchestrate-agent-fleets to validate this project-scoped agent fleet, its costs, heartbeats, permissions, owners, and inbox."

@@ -100,7 +100,7 @@ class DropInBootstrapTests(unittest.TestCase):
             commission(project, "new", apply=True, source_root=ROOT)
             startup = bounded_startup(ROOT, project)
             self.assertEqual(startup.hydrated_skill_bodies, ())
-            self.assertFalse((project / ".agents/skills").exists())
+            self.assertFalse((project / ".px/skills").exists())
             self.assertEqual(
                 main(["--root", str(ROOT), "hydrate", "--skill", "verify-outcome"]), 0
             )

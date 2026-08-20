@@ -1,0 +1,67 @@
+{
+  "dependencies": [
+    "audit-source-capabilities",
+    "duplication-supersession-resolver"
+  ],
+  "domain": "release-hygiene",
+  "failure_modes": [
+    "shipping caches",
+    "overwriting stronger target code",
+    "help-only smoke tests",
+    "certificate by file count"
+  ],
+  "formula_refs": [
+    "capability-similarity",
+    "coverage-dominance",
+    "merge-value-score"
+  ],
+  "id": "integration-conflict-mapper",
+  "inputs": [
+    "staged release tree",
+    "target registry/tree",
+    "certification and merge policy"
+  ],
+  "invariants": [
+    "Destructive integration is never the default.",
+    "Confirmed secrets fail release.",
+    "Unexecuted controls are not certified as passes."
+  ],
+  "outputs": [
+    "cleanliness/conflict report",
+    "non-destructive integration plan",
+    "revocable certificate and hashes"
+  ],
+  "procedure": [
+    "Freeze and hash the staged source and target.",
+    "Scan transients, local paths, likely secrets, duplicates, and overlaps.",
+    "Produce dry-run dispositions that protect stronger artifacts.",
+    "Run syntax, schema, functional, failure, rollback, and archive tests.",
+    "Publish deterministic archive, manifest, limitations, and revocation triggers."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Find exact, partial, semantic, runtime, schema, test, and ownership overlap and emit dry-run reuse, extend, compose, merge, alias, migrate, quarantine, or reject dispositions.",
+  "title": "Integration Conflict Mapper",
+  "version": "1.0.0",
+  "when_to_use": "Use before applying the pack to an existing bootstrap."
+}

@@ -2,14 +2,26 @@
   "id": "long-horizon-progress-ledger",
   "version": "1.0.0",
   "status": "active",
-  "body": ".agents/skills/long-horizon-progress-ledger/SKILL.md",
+  "body": ".px/skills/long-horizon-progress-ledger/SKILL.md",
   "body_sha256": "7e3aa3e6cd7b2bdc6ba6881a117a3c112d680d8ecbc78e488131dd9612323877",
   "references": [],
-  "capability_tags": ["acceptance", "durable-goals", "long-horizon", "progress", "state-machine"],
-  "effects": ["read_local"],
+  "capability_tags": [
+    "acceptance",
+    "durable-goals",
+    "long-horizon",
+    "progress",
+    "state-machine"
+  ],
+  "effects": [
+    "read_local"
+  ],
   "provenance": {
     "type": "clean_room_reference_requirement_implementation",
-    "basis": ["runtime/durable_state.py", "contracts/project_stream/durable-goal-state.schema.json", "tests/test_clean_room_capabilities.py"],
+    "basis": [
+      "runtime/durable_state.py",
+      "contracts/project_stream/durable-goal-state.schema.json",
+      "tests/test_clean_room_capabilities.py"
+    ],
     "canonical_owner": "runtime/durable_state.py"
   },
   "clean_room": true,

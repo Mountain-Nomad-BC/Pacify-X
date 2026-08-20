@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-938",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004981",
+  "effect": "write",
+  "scope": ["extension/media/dashboard/48-graph-surface.js", "extension/tests/dashboard-e2e.test.js"],
+  "authority": "The registered Knowledge Graph interaction gap authorizes bounded query-state preservation repair.",
+  "expected_effect": "The exact submitted graph query and caret remain visible across pending and result renders without persisting it across reload or changing backend authority.",
+  "rollback": "Single render-source change with existing browser assertion; revert explicitly if request/result association regresses.",
+  "evidence": [{"claim": "Immediate graph-search repair checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004981"}]
+}

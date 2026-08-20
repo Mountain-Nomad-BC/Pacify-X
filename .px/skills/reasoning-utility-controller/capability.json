@@ -1,0 +1,38 @@
+{
+  "admission_record": "reasoning-utility-controller",
+  "body_sha256": "d6bb472f7fc9013efd4076cc8d506b76a9fd032a6e4396bfbff04d49e9feaf02",
+  "contract": {
+    "available": true,
+    "sha256": "b4bc6d85bd5173a3583bd3cf02af79dbd7403608690bb11f0958707ae3dc509f",
+    "source": "registry/skill_packages/reasoning-utility-controller.json"
+  },
+  "description": "Decide whether another reasoning, retrieval, verification, or tool step has enough expected value. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "reasoning-utility-controller",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/reasoning-utility-controller"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "controller",
+    "evaluation",
+    "reasoning",
+    "utility"
+  ],
+  "version": "0.1.0"
+}

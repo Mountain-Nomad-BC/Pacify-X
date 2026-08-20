@@ -1,0 +1,40 @@
+{
+  "admission_record": "build-n8n-ai-workflows",
+  "body_sha256": "da60dadc796cd2d23129a3d6d9a1bc91e2ff7b9007146025d3dfc522eb602aab",
+  "contract": {
+    "available": true,
+    "sha256": "46c600d8bf9181175dc96696353f82c94eb6197b274316ceaeee50e02b7a36d4",
+    "source": "registry/skill_packages/build-n8n-ai-workflows.json"
+  },
+  "description": "Build n8n AI workflows with bounded model/tool authority, structured outputs, retrieval evidence, evaluation, and escalation.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "build-n8n-ai-workflows",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/build-n8n-ai-workflows"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "agents",
+    "evaluation",
+    "llm",
+    "n8n",
+    "structured-output",
+    "tools"
+  ],
+  "version": "1.0.0"
+}

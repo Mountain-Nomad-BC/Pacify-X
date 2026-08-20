@@ -1,0 +1,10 @@
+{
+  "active_gap_id": "PX-OS-095",
+  "learned": "The derived index regenerated from current source with 188 test files and 490 tracked Python files; 4 changed files parsed and 486 current entries reused. The membership and index changes now require exactly one testing-governance section receipt.",
+  "next_action": "Run only python -m runtime.cli test-section run testing-governance and retain its owned receipts.",
+  "unresolved_branch_gap_ids": ["PX-OS-095"],
+  "evidence": [
+    {"claim": "Current deterministic index published under admissions 5016 and 5017.", "reference": "registry/test_group_index.json"},
+    {"claim": "Builder reported 188 tests, 490 tracked Python files, 4 parsed, 486 reused.", "reference": "python scripts/build_test_group_index.py"}
+  ]
+}

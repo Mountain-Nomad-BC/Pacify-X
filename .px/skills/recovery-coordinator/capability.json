@@ -1,0 +1,37 @@
+{
+  "admission_record": "recovery-coordinator",
+  "body_sha256": "ae7271b82e2f6297b1d010b75248eaa6b7c3e7b693a694a4aef79ae7d3b0522f",
+  "contract": {
+    "available": true,
+    "sha256": "01b154a3c6fa945c035bc5cef3b2077dac45d0da366718a1f71f61187c1f84d1",
+    "source": "registry/skill_packages/recovery-coordinator.json"
+  },
+  "description": "Classify failures and choose retry, alternate path, rollback, escalation, or stop. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "recovery-coordinator",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/recovery-coordinator"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "coordinator",
+    "orchestration",
+    "recovery"
+  ],
+  "version": "0.1.0"
+}

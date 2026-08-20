@@ -1,5 +1,5 @@
 {
-  "body": ".agents/skills/operate-memory-retrieval-observability/SKILL.md",
+  "body": ".px/skills/operate-memory-retrieval-observability/SKILL.md",
   "body_sha256": "3e41f74c9ef68980603481113754b8aa667e06ddd6fe67aafd106eb7688706b7",
   "capability_tags": [
     "authoritative",
@@ -27,8 +27,8 @@
     "unsafe_body_policy": "shell execution and hard deletion bodies rejected in favor of tested bounded replacements"
   },
   "references": [
-    ".agents/skills/operate-memory-retrieval-observability/references/capabilities-index.json",
-    ".agents/skills/operate-memory-retrieval-observability/references/scripts-index.json"
+    ".px/skills/operate-memory-retrieval-observability/references/capabilities-index.json",
+    ".px/skills/operate-memory-retrieval-observability/references/scripts-index.json"
   ],
   "status": "active",
   "tests": "tests/test_rel008_assimilation.py",

@@ -2,14 +2,14 @@
   "id": "map-project-intelligence",
   "version": "1.0.0",
   "status": "active",
-  "body": ".agents/skills/map-project-intelligence/SKILL.md",
+  "body": ".px/skills/map-project-intelligence/SKILL.md",
   "body_sha256": "be4d0fdd32ead5ac6917a465045f44359ee63b518b5ce3f3960352e1c3b0e06a",
   "references": [
-    ".agents/skills/map-project-intelligence/references/project-map-contract.md"
+    ".px/skills/map-project-intelligence/references/project-map-contract.md"
   ],
   "resources": [
-    ".agents/skills/map-project-intelligence/scripts/build_project_map.py",
-    ".agents/skills/map-project-intelligence/scripts/validate_project_map.py"
+    ".px/skills/map-project-intelligence/scripts/build_project_map.py",
+    ".px/skills/map-project-intelligence/scripts/validate_project_map.py"
   ],
   "capability_tags": ["architecture", "inventory", "project-map", "repository", "retrieval"],
   "effects": ["read_local", "write_workspace"],

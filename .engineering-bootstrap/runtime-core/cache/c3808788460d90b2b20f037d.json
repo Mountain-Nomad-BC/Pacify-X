@@ -1,0 +1,98 @@
+{
+  "created_at": "2026-08-16T15:07:52.639362+00:00",
+  "created_epoch": 1786892872.6393611,
+  "input_sha256": "4344f8156c6b1783e426ad4a8317e5f4f02f49db4acad0271373dbf65067ea8b",
+  "operation": "hardware.cli.report",
+  "operation_id": "c3808788460d90b2b20f037d-9322312f60864b218ca4a2ea07e51fe9",
+  "result": {
+    "core_scan_device": "cpu",
+    "external_data_transmission": false,
+    "gpu_optional": true,
+    "hardware": {
+      "available_execution_backends": [],
+      "cpu_logical_cores": 28,
+      "cpu_physical_cores": null,
+      "cuda_available": false,
+      "cuda_device_count": 0,
+      "cuda_executor_available": false,
+      "cuda_runtime": null,
+      "driver_version": null,
+      "environment": "windows",
+      "free_vram_bytes": 0,
+      "gpu_name": null,
+      "gpu_parallelism_reason": "GPU hardware may be visible, but no compatible CUDA executor is active",
+      "gpu_process_parallelism": 0,
+      "onnx_providers": [],
+      "optional_accelerators": [],
+      "probe_duration_seconds": 0.049004,
+      "probe_errors": [],
+      "selected_cuda_device_index": null,
+      "system_ram_bytes": 68233236480,
+      "torch_cuda_available": false,
+      "total_vram_bytes": 0
+    },
+    "hardware_fingerprint": "8c3fef81267c057f0d9f92093b5688335e1b7ee7c4c9c645b8cfce1e3d37ea26",
+    "probe_duration_seconds": 0.05659,
+    "probe_process_policy": {
+      "discovery_parallelism": "independent read-only probes only",
+      "gpu_execution_processes": 0,
+      "maximum_concurrent_children": 3,
+      "per_child_timeout_seconds": 2.0,
+      "shell": false,
+      "timeout_terminates_and_waits_for_child": true,
+      "visible_window": false
+    },
+    "routing_capabilities": {
+      "automatic_gpu_requires_current_benchmark": true,
+      "conditional_gpu_workloads": [
+        "compression",
+        "dataframe",
+        "hashing",
+        "sorting",
+        "text_analysis"
+      ],
+      "cpu_authoritative_workloads": [
+        "database",
+        "filesystem_io",
+        "serialization"
+      ],
+      "cuda_device_visible": false,
+      "cuda_executor_ready": false,
+      "deterministic_cpu_fallback": true,
+      "directml_discovered": false,
+      "directml_routing": "unsupported until an admitted DirectML executor passes compatibility and benchmark gates; Intel/integrated GPU is never selected implicitly",
+      "gpu_eligible_workloads": [
+        "embedding",
+        "image_inference",
+        "model_inference",
+        "numerical",
+        "vector_search"
+      ],
+      "parallelism_reason": "GPU hardware may be visible, but no compatible CUDA executor is active",
+      "process_parallelism": 0
+    },
+    "telemetry": {
+      "available_count": 0,
+      "external_data_transmission": false,
+      "providers": [
+        {
+          "available": false,
+          "error": "temperature API unavailable on this host",
+          "id": "psutil"
+        },
+        {
+          "available": false,
+          "error": "external probes disabled",
+          "id": "nvidia-smi"
+        }
+      ],
+      "sampled_at": "2026-08-16T15:07:52.631780+00:00",
+      "schema_version": "1.0",
+      "sensors": [],
+      "temperature_count": 0
+    },
+    "valid": true
+  },
+  "result_sha256": "a4f6667f5f2b9f3a64d3498214aa57fccef877287e0186008f30abe6a56c03b5",
+  "schema_version": "px.runtime-work-result/1.0"
+}

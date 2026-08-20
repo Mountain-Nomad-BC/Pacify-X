@@ -1,15 +1,11 @@
 orchestration_id: agent_create_validate
-title: Create, sandbox, test, and register an agent
+title: Validate and record a supplied agent specification
 version: 0.1.0
 status: design-ready
 trigger: explicit-or-policy-scheduled
 project_binding: required unless workspace bootstrap
 skills:
-- agent-factory
-- agent-template-catalog
 - agent-identity-permissions
-- agent-registry-lifecycle
-- agent-performance-health
 required_context:
 - workspace_id
 - agent_id
@@ -22,6 +18,6 @@ preflight:
 - scope_resolved
 - side_effect_budget_set
 outcomes:
-- agent_active_or_rejected
+- validated_agent_candidate
 failure_policy: checkpoint-and-fail-closed-on-boundary-or-integrity-violation
 audit: true

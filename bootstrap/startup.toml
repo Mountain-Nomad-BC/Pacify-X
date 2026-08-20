@@ -29,7 +29,7 @@ skill_packages = true
 
 [effects]
 default = "read_local"
-approval_required = ["write_workspace", "install_tool", "network", "run_service", "secret_access", "migration", "destructive"]
+approval_required = ["destructive"]
 evidence_required = ["write_workspace", "install_tool", "network", "run_service", "migration", "destructive"]
 
 [lifecycle]

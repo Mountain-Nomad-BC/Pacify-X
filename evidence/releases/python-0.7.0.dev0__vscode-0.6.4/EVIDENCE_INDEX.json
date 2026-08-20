@@ -1,0 +1,257 @@
+{
+  "artifact_count": 1,
+  "authority": "Exact byte identities plus live semantic receipt currentness; historical evidence is never current by presence alone.",
+  "current_required_receipt_count": 16,
+  "generated_utc": "2026-08-14T06:46:11.490116Z",
+  "identity": {
+    "extension_version": "0.6.4",
+    "python_version": "0.7.0.dev0"
+  },
+  "limitations": [],
+  "namespace": "python-0.7.0.dev0__vscode-0.6.4",
+  "record_count": 17,
+  "records": [
+    {
+      "bytes": 580,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+      "receipt_state": {
+        "current": true,
+        "dependencies_current": true,
+        "expected_input_sha256": "f08e5f46f57991cb047d4455066579cd9120de62e9f06fc48caf423a09cec908",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "dashboard-extension",
+        "receipt_scope": "section"
+      },
+      "sha256": "0570cf8f29cbb20bf80427f7574325fc2035b9d0ea8bd7acfa8f01df0381252d"
+    },
+    {
+      "bytes": 669,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/execution-placement.json",
+      "receipt_state": {
+        "current": true,
+        "dependencies_current": true,
+        "expected_input_sha256": "4e92a1289c2e36b0d6d31503e711a1b23d25ea0fbe7bdb6b738cb8e4d5c239ed",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "execution-placement",
+        "receipt_scope": "section"
+      },
+      "sha256": "0f3f19254571936afa2a38773f234fbee98612dcd8d0f44d22516b914e40732b"
+    },
+    {
+      "bytes": 547,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/hardware-routing.json",
+      "receipt_state": {
+        "current": true,
+        "dependencies_current": true,
+        "expected_input_sha256": "ea263a6bd0cd30941c239bf5d8323499ea1837a50e04a282e5c1d2d54dea1a69",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "hardware-routing",
+        "receipt_scope": "section"
+      },
+      "sha256": "16b71a96cbe4fa06c5fa6e4da4750b5199b27cb2946ec9bb9cac0f1607ee6af6"
+    },
+    {
+      "bytes": 604,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/learning-promotion.json",
+      "receipt_state": {
+        "current": true,
+        "dependencies_current": true,
+        "expected_input_sha256": "6fb3613b18fee41512e3e936ea867b365b23e8bb653d58ffbe738288eabbc237",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "learning-promotion",
+        "receipt_scope": "section"
+      },
+      "sha256": "1aed797ab9579ef1615177cb6f6914b5f369af4080f37950d1997535030f4cb8"
+    },
+    {
+      "bytes": 891,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
+      "receipt_state": {
+        "current": true,
+        "dependencies_current": true,
+        "expected_input_sha256": "b8937cdd1744d8a4f51ce8bb2e6ad0637b5643b77c1954db531ec825db30fc4d",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "studio-memory-graph",
+        "receipt_scope": "section"
+      },
+      "sha256": "b1ee3c1c4bdb87a3bda8a4ae3de11940e2ec35f85a2f26db33f77ad51ba83638"
+    },
+    {
+      "bytes": 782,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "receipt_state": {
+        "current": true,
+        "dependencies_current": true,
+        "expected_input_sha256": "833bd675b7b551dca98177be54b56aa71ed5cedc02877ae835f68e90356de05f",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "testing-governance",
+        "receipt_scope": "section"
+      },
+      "sha256": "b0a178e9f28e9225f73a41529d703955c28d8d597fde0222b42ff80754cc7a97"
+    },
+    {
+      "bytes": 373,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/core-a-f.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "6541bc031bd0fff399004153f6535bc35b513512543c477d85607085dbac3eb2",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "core-a-f",
+        "receipt_scope": "group"
+      },
+      "sha256": "77582aefd7f1dccbad4189d867b5e5d1d446bc226de6711d08b25e59267b53cd"
+    },
+    {
+      "bytes": 372,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/core-g-m.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "242113fdd53a1c5a5f7b8b9f9a83c1ff543a978b766ed889f2864097548b88aa",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "core-g-m",
+        "receipt_scope": "group"
+      },
+      "sha256": "53e7d1d99002677de3cbb0966fa5c930159859ff085c9adabb4f9d3fe4afa122"
+    },
+    {
+      "bytes": 372,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/core-n-s.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "ae32e253c9a5542a5a44c869496e2513e1006ede599b2e59fdc288f049158e11",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "core-n-s",
+        "receipt_scope": "group"
+      },
+      "sha256": "3cae5b05fb59282b0f2a3af1183676e02b65a0e7e8bf917c3e9e2221d9d617cc"
+    },
+    {
+      "bytes": 372,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/core-t-z.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "d2b60fd4cbde947db447f8aabf658d11e88b86e27786aad7ab102c177485639d",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "core-t-z",
+        "receipt_scope": "group"
+      },
+      "sha256": "0201e43f5fdb2de34bea1193e5d83c21cd53800e1d1db8ee63a2a1a8161405e1"
+    },
+    {
+      "bytes": 381,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/derived-integrity.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "4bdb8e25fa168f466428d8e6685f331639ce4986dd2b30f8c5f6fed7d4bc837e",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "derived-integrity",
+        "receipt_scope": "group"
+      },
+      "sha256": "81e8dd9dabbc9e465bc7d5c47dc5367e8f12ad49b593ed896b2cf14c133428f6"
+    },
+    {
+      "bytes": 380,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/exact-installed.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "3dd3ff1dd9b18344c851cb65134679ecb98b9c249a9766ae4af66015c36fbc0d",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "exact-installed",
+        "receipt_scope": "group"
+      },
+      "sha256": "12c55ab9376adb010f6ecd24fc811bbf0661b583c11572cac6f75d344f953260"
+    },
+    {
+      "bytes": 381,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/process-recovery.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "4b4eecb36b35a9481df5328f80d069f1943e9137b8b73e2351a0ef57cb2321f4",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "process-recovery",
+        "receipt_scope": "group"
+      },
+      "sha256": "2a7691ae485575510f501e48e63f753ee106385949a2ee8080461da400560043"
+    },
+    {
+      "bytes": 378,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/release-audit.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "f0cc7c9a13771ae0f1525c1875e83f5c093cc93b7df9d3420d6ee2ac1cd90e60",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "release-audit",
+        "receipt_scope": "group"
+      },
+      "sha256": "a6516e5dd458302dd50b59fa417d7f18706b7b007a02543e2147a0f57c2bb56b"
+    },
+    {
+      "bytes": 378,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/release-build.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "6c4edf3f6072788fef02a6867f0e158f0c5e795e594623007d684a4ad10b8f99",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "release-build",
+        "receipt_scope": "group"
+      },
+      "sha256": "2e47935adaf7d76ea1beccb462f585135f68a958e9a3f205eeee71c3c9d9b4fc"
+    },
+    {
+      "bytes": 387,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/groups/structural-adversarial.json",
+      "receipt_state": {
+        "current": true,
+        "expected_input_sha256": "3cd02df9d173eca7fd6f7006dd67c513cd163d1122dc9a076a2762d78b519a41",
+        "fresh": true,
+        "passed": true,
+        "receipt_id": "structural-adversarial",
+        "receipt_scope": "group"
+      },
+      "sha256": "c75aa4ccbd47d9fbf6c02b5b38aa9f0fb5e6adc897e025c1b0c61cc1df2ead83"
+    },
+    {
+      "artifact_version": "0.6.4",
+      "bytes": 3979404,
+      "kind": "vsix",
+      "locator_kind": "caller-supplied-file",
+      "path": "pacify-x-vscode-0.6.4.vsix",
+      "sha256": "c0d82091786fe6596c2ff1fbebeffa19afa6d79fc69a5cbe3192db8a5d2a0157",
+      "version_current": true
+    }
+  ],
+  "required_receipt_count": 16,
+  "schema_version": "px.current-evidence-index/1.1",
+  "valid": true
+}

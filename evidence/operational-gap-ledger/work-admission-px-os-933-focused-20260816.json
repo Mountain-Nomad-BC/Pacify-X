@@ -1,0 +1,22 @@
+{
+  "gap_id": "PX-OS-933",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004953",
+  "authority": "The CSP/layout repair requires exact source and browser behavior verification before the owned dashboard section.",
+  "effect": "execute",
+  "scope": [
+    "node --check extension/src/extension.js",
+    "node --check extension/src/sidebarView.js",
+    "node --check extension/media/dashboard/90-controller.js",
+    "node --check extension/media/dashboard/48-graph-surface.js",
+    "node --check extension/media/dashboard/45-system-surfaces.js",
+    "node --test extension/tests/extension-contract.test.js extension/tests/dashboard-e2e.test.js"
+  ],
+  "expected_effect": "Verify nonce/local-source CSP, no inline style surface, bounded CSSOM layout projection, and actual browser layout behavior across rerenders and adversarial numeric inputs.",
+  "rollback": "Read-only focused execution; retain exact failures and do not run the dashboard section until repaired.",
+  "evidence": [
+    {
+      "claim": "Immediate CSP implementation checkpoint.",
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004953"
+    }
+  ]
+}

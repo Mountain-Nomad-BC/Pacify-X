@@ -2,11 +2,11 @@
   "id": "orchestrate-security-validation",
   "version": "0.1.0",
   "status": "active",
-  "body": ".agents/skills/orchestrate-security-validation/SKILL.md",
+  "body": ".px/skills/orchestrate-security-validation/SKILL.md",
   "body_sha256": "226c50f4689dbe0e46f5948b94b8318e6b23af9e1bf4f3181c2670fe0b08a34d",
   "references": [],
   "resources": [
-    ".agents/skills/orchestrate-security-validation/scripts/aggregate_security_findings.py"
+    ".px/skills/orchestrate-security-validation/scripts/aggregate_security_findings.py"
   ],
   "capability_tags": [
     "security",

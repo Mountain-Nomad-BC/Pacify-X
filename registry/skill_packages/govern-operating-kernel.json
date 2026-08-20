@@ -1,5 +1,5 @@
 {
-  "body": ".agents/skills/govern-operating-kernel/SKILL.md",
+  "body": ".px/skills/govern-operating-kernel/SKILL.md",
   "body_sha256": "ad1bf0a4f9807a40e43a6226a2aff663fc04987418805d37815f1904b70a7eb6",
   "capability_tags": [
     "authoritative",
@@ -26,8 +26,8 @@
     "unsafe_body_policy": "shell execution and hard deletion bodies rejected in favor of tested bounded replacements"
   },
   "references": [
-    ".agents/skills/govern-operating-kernel/references/capabilities-index.json",
-    ".agents/skills/govern-operating-kernel/references/scripts-index.json"
+    ".px/skills/govern-operating-kernel/references/capabilities-index.json",
+    ".px/skills/govern-operating-kernel/references/scripts-index.json"
   ],
   "status": "active",
   "tests": "tests/test_rel008_assimilation.py",

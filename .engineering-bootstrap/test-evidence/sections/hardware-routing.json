@@ -1,0 +1,22 @@
+{
+  "chunks": [],
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_hardware_routing.py"
+  ],
+  "cwd": ".",
+  "dependencies": [],
+  "duration_seconds": 1.774748,
+  "exit_code": 0,
+  "input_sha256": "ea263a6bd0cd30941c239bf5d8323499ea1837a50e04a282e5c1d2d54dea1a69",
+  "passed": true,
+  "receipt_sha256": "8df24d2bb5d9e3b7166ef81d9326498a5ef5b64ea57284cf695be994d2814ee0",
+  "schema_version": "px.test-section-receipt/1.0",
+  "section": "hardware-routing",
+  "timed_out": false
+}

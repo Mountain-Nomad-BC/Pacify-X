@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-940",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004991",
+  "effect": "write",
+  "scope": ["extension/media/dashboard/49-studio-editors.js", "extension/tests/ui-scaffold.test.js", "extension/tests/dashboard-e2e.test.js"],
+  "authority": "The registered Workflow Builder initialization gap authorizes internally consistent omitted-field defaults and focused regressions.",
+  "expected_effect": "New normalized workflows start as valid bounded drafts, while explicit invalid authority, ports, adapters, or identifiers continue to fail closed.",
+  "rollback": "Normalization-only changes with exact validator coverage; revert explicitly if explicit-field preservation regresses.",
+  "evidence": [{"claim": "Immediate Workflow Builder default-contract checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004991"}]
+}

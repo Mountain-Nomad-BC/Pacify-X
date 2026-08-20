@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from functools import lru_cache
 import json
 from pathlib import Path
 import re
@@ -37,6 +38,20 @@ STOP_WORDS = {
     "which",
     "with",
 }
+
+
+@lru_cache(maxsize=4)
+def _load_json_cached(
+    path_text: str, modified_ns: int, size_bytes: int
+) -> dict[str, Any]:
+    """Load immutable promoted-map JSON once per observed file revision."""
+    del modified_ns, size_bytes
+    return json.loads(Path(path_text).read_text(encoding="utf-8"))
+
+
+def _load_map_json(path: Path) -> dict[str, Any]:
+    stat = path.stat()
+    return _load_json_cached(path.as_posix(), stat.st_mtime_ns, stat.st_size)
 
 
 def _tokens(value: str) -> list[str]:
@@ -96,10 +111,8 @@ def query_project_map(
     if relation_depth < 0 or relation_depth > 3:
         raise ValueError("relation_depth must be between 0 and 3")
     map_dir = _map_dir(project_or_map)
-    index = json.loads((map_dir / "retrieval-index.json").read_text(encoding="utf-8"))
-    manifest = json.loads(
-        (map_dir / "project-manifest.json").read_text(encoding="utf-8")
-    )
+    index = _load_map_json(map_dir / "retrieval-index.json")
+    manifest = _load_map_json(map_dir / "project-manifest.json")
     docs: list[dict[str, Any]] = index.get("documents", [])
     lengths: list[int] = index.get("document_lengths", [])
     avgdl = float(index.get("average_document_length") or 1.0)

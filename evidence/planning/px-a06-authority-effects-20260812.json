@@ -1,0 +1,53 @@
+{
+  "schema_version": "px.repair-evidence/1.0",
+  "card": "A06",
+  "status": "accepted",
+  "authority_chain": ["PX governance", "Codex Host authority", "Repository / Environment effects"],
+  "boundary": {
+    "px": ["governance", "scope", "policy", "contracts", "validation requirements", "observation", "evidence"],
+    "codex_host": ["native execution authority", "native approval and security", "PX-governed execution inside PX scope"],
+    "extension": ["presentation", "observation", "context handoff"],
+    "repository_claim": "concurrency coordination only",
+    "invariants": [
+      "PX does not assume Codex host authority",
+      "observation never authorizes an effect",
+      "claims never replace user approval",
+      "one executor owns an operation scope",
+      "PX-owned execution requires explicit delegation and cannot nest beneath an active Codex host"
+    ]
+  },
+  "codex_environment": {
+    "project_trust_entry_present": true,
+    "repository_agents_contract_loaded": true,
+    "config_sha256": "fbedd6b0092547a90c60e663b856c3159ada3ea503d3994ee0b3e8900c63025a",
+    "config_modified": false,
+    "reason": "the documented repository instruction mechanism already supplies the PX-scoped constraints"
+  },
+  "repairs": [
+    "removed the extension-owned CodexRunManager and nested codex exec process",
+    "changed Continue with Codex to an in-memory host context handoff",
+    "made cancel explicitly report that PX owns no Codex process",
+    "composed signed PX policy, current host approval, idempotency, and repository claims without impersonation",
+    "added Python and JavaScript negative authority matrices",
+    "corrected the A05 TOML projection to one canonical generator with parse-before-write and duplicate-key regression coverage"
+  ],
+  "validation": {
+    "python_authority_tests": {"passed": 8, "failed": 0},
+    "orchestrator_tests": {"passed": 8, "failed": 0},
+    "policy_and_grant_tests": {"passed": 13, "failed": 0},
+    "extension_authority_and_contract_tests": {"passed": 26, "failed": 0},
+    "packaging_projection_tests": {"passed": 4, "failed": 0},
+    "toml_parse": {"valid": true, "unique_data_file_destinations": 1077},
+    "ruff": "passed"
+  },
+  "files": {
+    "runtime/operation_authority.py": "dc2123b1095fdbb29ba400b7ba5b29c502febfa4109cd9760e825f1111a6637e",
+    "runtime/execution_contract.py": "05f3d4d520a931c0d4585b0b6cb6d155fe4e333ed534336c962d2b8c9050a863",
+    "runtime/orchestrator.py": "2220cd06d09506866d402bde72704e875beda8c1d6952c6c9b4157133e19563f",
+    "extension/src/operationAuthority.js": "cdd8eccb426300d7bf2072b0c8259eb39f2443fc9f0bf6ae7922688b675013c3",
+    "extension/src/extension.js": "1b99a1bac44bcdfe8de0303a3748e7077462a3671197267b97d2312038eb6ecb",
+    "extension/src/contextBridge.js": "627d630116133e13f78100b92f221841abffe0f7670a34ecdb14fd6e1dc1b854",
+    "policies/operation-authority-boundary.json": "3da879187a9b53795db42c059b82700522905a85451429d77a3bbde2de499389"
+  },
+  "full_tree_note": "The first post-A06 full run executed 480 tests; its migration and packaging failures were retained and repaired. Final uninterrupted current-tree acceptance remains exclusively A08."
+}

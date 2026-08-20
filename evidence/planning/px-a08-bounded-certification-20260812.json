@@ -1,0 +1,36 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "A08",
+  "status": "accepted",
+  "test_module_count": 167,
+  "required_section_count": 5,
+  "required_group_count": 10,
+  "parallel_safe_group_count": 4,
+  "maximum_parallel_workers": 2,
+  "certification": {
+    "command": "python -m runtime.cli test-profile run full",
+    "mode": "current_group_receipts_plus_cross_group",
+    "passed": true,
+    "cross_group_tests_passed": 24,
+    "duration_seconds": 30.981287
+  },
+  "validation": {
+    "command": "python -m runtime.cli validate",
+    "valid": true,
+    "active_capability_count": 6,
+    "errors": []
+  },
+  "resource_closure": {
+    "active_resources": 0,
+    "active_processes": 0
+  },
+  "receipts": {
+    "sections": ".engineering-bootstrap/test-evidence/sections",
+    "groups": ".engineering-bootstrap/test-evidence/groups"
+  },
+  "notes": [
+    "All 167 test modules are assigned exactly once across the ten required groups.",
+    "Only four read-mostly groups may run concurrently; stateful groups remain serial.",
+    "Certification startup caches are moved to recoverable PX quarantine and are never hard-deleted."
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "gap_id": "PX-OS-935",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004962",
+  "authority": "The metric interaction and current source-contract repairs require the same exact focused browser/source verification that discovered them.",
+  "effect": "execute",
+  "scope": [
+    "node --check extension/media/dashboard/30-components.js",
+    "node --check extension/media/dashboard/90-controller.js",
+    "node --test extension/tests/extension-contract.test.js extension/tests/dashboard-e2e.test.js"
+  ],
+  "expected_effect": "All source and browser interactions pass, including metric human/machine inspection and CSP-safe layout at forced colors/reflow.",
+  "rollback": "Read-only focused execution; retain exact failures and do not run the owned dashboard section until clean.",
+  "evidence": [
+    {"claim": "Immediate post-metric repair checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004962"}
+  ]
+}

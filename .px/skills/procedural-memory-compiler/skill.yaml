@@ -1,0 +1,37 @@
+{
+  "admission_record": "procedural-memory-compiler",
+  "body_sha256": "b200a36457b8cb20ab13c641ecf91551650109a609fc1b965311f3b94394ce2d",
+  "contract": {
+    "available": true,
+    "sha256": "5388997c087fd3cc6d171d2709c27ceb25f715a36b4971637f73d627523ff8d1",
+    "source": "registry/skill_packages/procedural-memory-compiler.json"
+  },
+  "description": "Compile repeated successful patterns into candidate procedures with activation, execution, and termination. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "procedural-memory-compiler",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/procedural-memory-compiler"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "compiler",
+    "memory",
+    "procedural"
+  ],
+  "version": "0.1.0"
+}

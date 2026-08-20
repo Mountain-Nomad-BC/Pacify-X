@@ -1,0 +1,13 @@
+{
+  "id": "data-sort-dry-run-selection",
+  "version": "1.0.0",
+  "steps": [
+    {"id": "classify-size", "skill": "data-sort-dry-run-picker", "depends_on": []},
+    {"id": "sample", "skill": "data-sort-dry-run-picker", "depends_on": ["classify-size"]},
+    {"id": "pilot", "skill": "data-sort-dry-run-picker", "depends_on": ["sample"]},
+    {"id": "benchmark-top-three", "skill": "data-sort-dry-run-picker", "depends_on": ["pilot"]},
+    {"id": "verify-select-receipt", "skill": "validate-engineering-outcomes", "depends_on": ["benchmark-top-three"]}
+  ],
+  "writes_sorted_data": false,
+  "failure_policy": "No selection on unreadable input, invalid keys, unbounded sample, fingerprint gap, correctness/stability mismatch, or no passing candidate."
+}

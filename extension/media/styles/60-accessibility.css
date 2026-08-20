@@ -1,0 +1,38 @@
+@layer px.accessibility {
+  .px-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  .px-focusable:focus-visible { outline: 2px solid var(--px-color-accent-bright); outline-offset: 2px; }
+  .skip-link {
+    position: fixed; left: -10000px; top: 8px; z-index: 1000; padding: 9px 12px;
+    border: 2px solid var(--cyan); border-radius: 5px; color: #fff; background: #07111b;
+    transform: none; transition: transform 160ms ease-out;
+  }
+  .skip-link:focus { left: 12px; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    .px-motion { animation: none !important; transition-duration: .01ms !important; }
+    .graph-progress span { animation: none; border-color: var(--cyan); }
+    .graph-scene, .graph-node.actual, .graph-edge-group, .graph-commandbar button { transition: none !important; scroll-behavior: auto !important; }
+  }
+
+  @media (forced-colors: active) {
+    .px-component-panel, .px-component-control { border-color: CanvasText; }
+    .readiness-row, .readiness-note { border: 1px solid CanvasText; forced-color-adjust: auto; }
+    .readiness-meter i { background: Highlight; }
+    .sensor-row, .plugin-row { border: 1px solid CanvasText; forced-color-adjust: auto; }
+    .graph-commandbar, .graph-segmented, .graph-zoom-controls, .graph-canvas, .graph-selection-card, .graph-minimap, .relationship-inspector, .relationship-row, .graph-community-index, .graph-accessible-map { border: 1px solid CanvasText; forced-color-adjust: auto; }
+    .graph-edge-group path, .graph-community-hull rect { stroke: CanvasText; }
+    .graph-node.actual.selected, .graph-segmented button[aria-pressed="true"] { border: 2px solid Highlight; }
+  }
+}
+
+.demo-data-banner {
+  position: fixed;
+  z-index: 10000;
+  inset: 0 0 auto 0;
+  padding: 6px 12px;
+  background: #6b3f00;
+  color: #fff;
+  font: 700 12px/1.4 ui-monospace, monospace;
+  letter-spacing: .08em;
+  text-align: center;
+}

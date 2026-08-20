@@ -1,0 +1,849 @@
+{
+  "completion_rule": "A complete static map may still contain explicit unknowns; unknowns must not be silently converted into facts.",
+  "finding_count": 5,
+  "findings": [
+    {
+      "evidence": [
+        {
+          "language": "python",
+          "line": 36,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/calibrate_grader.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 36,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/calibrate_grader.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 25,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/calibrate_grader.py",
+          "specifier": "random"
+        },
+        {
+          "language": "python",
+          "line": 33,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/calibrate_grader.py",
+          "specifier": "time"
+        },
+        {
+          "language": "python",
+          "line": 28,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/check_training.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 28,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/check_training.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 17,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/check_training.py",
+          "specifier": "csv"
+        },
+        {
+          "language": "python",
+          "line": 18,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/check_training.py",
+          "specifier": "io"
+        },
+        {
+          "language": "python",
+          "line": 35,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/cleanup.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 35,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/cleanup.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 143,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/common.py",
+          "specifier": "azure.ai.projects"
+        },
+        {
+          "language": "python",
+          "line": 74,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/common.py",
+          "specifier": "azure.identity"
+        },
+        {
+          "language": "python",
+          "line": 144,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/common.py",
+          "specifier": "azure.identity"
+        },
+        {
+          "language": "python",
+          "line": 115,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/common.py",
+          "specifier": "httpx"
+        },
+        {
+          "language": "python",
+          "line": 109,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/common.py",
+          "specifier": "openai"
+        },
+        {
+          "language": "python",
+          "line": 157,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/common.py",
+          "specifier": "openai"
+        },
+        {
+          "language": "python",
+          "line": 36,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/convert_dataset.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 36,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/convert_dataset.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 42,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/convert_dataset.py",
+          "specifier": "pandas"
+        },
+        {
+          "language": "python",
+          "line": 34,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/convert_dataset.py",
+          "specifier": "time"
+        },
+        {
+          "language": "python",
+          "line": 31,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/deploy_model.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 33,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/deploy_model.py",
+          "specifier": "requests"
+        },
+        {
+          "language": "python",
+          "line": 29,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/deploy_model.py",
+          "specifier": "time"
+        },
+        {
+          "language": "python",
+          "line": 50,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/evaluate_model.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 50,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/evaluate_model.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 50,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/evaluate_model.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 48,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/evaluate_model.py",
+          "specifier": "concurrent.futures"
+        },
+        {
+          "language": "python",
+          "line": 48,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/evaluate_model.py",
+          "specifier": "concurrent.futures"
+        },
+        {
+          "language": "python",
+          "line": 47,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/evaluate_model.py",
+          "specifier": "time"
+        },
+        {
+          "language": "python",
+          "line": 46,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 46,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 46,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 48,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+          "specifier": "openai"
+        },
+        {
+          "language": "python",
+          "line": 35,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+          "specifier": "random"
+        },
+        {
+          "language": "python",
+          "line": 44,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+          "specifier": "time"
+        },
+        {
+          "language": "python",
+          "line": 32,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/monitor_training.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 32,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/monitor_training.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 29,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/monitor_training.py",
+          "specifier": "time"
+        },
+        {
+          "language": "python",
+          "line": 38,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/score_dataset.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 38,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/score_dataset.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 38,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/score_dataset.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 36,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/score_dataset.py",
+          "specifier": "concurrent.futures"
+        },
+        {
+          "language": "python",
+          "line": 36,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/score_dataset.py",
+          "specifier": "concurrent.futures"
+        },
+        {
+          "language": "python",
+          "line": 35,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/score_dataset.py",
+          "specifier": "time"
+        },
+        {
+          "language": "python",
+          "line": 40,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/submit_training.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 40,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/submit_training.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 40,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/submit_training.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 42,
+          "source": ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/submit_training.py",
+          "specifier": "requests"
+        },
+        {
+          "language": "python",
+          "line": 36,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/calibrate_grader.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 36,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/calibrate_grader.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 25,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/calibrate_grader.py",
+          "specifier": "random"
+        },
+        {
+          "language": "python",
+          "line": 33,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/calibrate_grader.py",
+          "specifier": "time"
+        },
+        {
+          "language": "python",
+          "line": 28,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/check_training.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 28,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/check_training.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 17,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/check_training.py",
+          "specifier": "csv"
+        },
+        {
+          "language": "python",
+          "line": 18,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/check_training.py",
+          "specifier": "io"
+        },
+        {
+          "language": "python",
+          "line": 35,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/cleanup.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 35,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/cleanup.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 143,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/common.py",
+          "specifier": "azure.ai.projects"
+        },
+        {
+          "language": "python",
+          "line": 74,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/common.py",
+          "specifier": "azure.identity"
+        },
+        {
+          "language": "python",
+          "line": 144,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/common.py",
+          "specifier": "azure.identity"
+        },
+        {
+          "language": "python",
+          "line": 115,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/common.py",
+          "specifier": "httpx"
+        },
+        {
+          "language": "python",
+          "line": 109,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/common.py",
+          "specifier": "openai"
+        },
+        {
+          "language": "python",
+          "line": 157,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/common.py",
+          "specifier": "openai"
+        },
+        {
+          "language": "python",
+          "line": 36,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/convert_dataset.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 36,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/convert_dataset.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 42,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/convert_dataset.py",
+          "specifier": "pandas"
+        },
+        {
+          "language": "python",
+          "line": 34,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/convert_dataset.py",
+          "specifier": "time"
+        },
+        {
+          "language": "python",
+          "line": 31,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/deploy_model.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 33,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/deploy_model.py",
+          "specifier": "requests"
+        },
+        {
+          "language": "python",
+          "line": 29,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/deploy_model.py",
+          "specifier": "time"
+        },
+        {
+          "language": "python",
+          "line": 50,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/evaluate_model.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 50,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/evaluate_model.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 50,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/evaluate_model.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 48,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/evaluate_model.py",
+          "specifier": "concurrent.futures"
+        },
+        {
+          "language": "python",
+          "line": 48,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/evaluate_model.py",
+          "specifier": "concurrent.futures"
+        },
+        {
+          "language": "python",
+          "line": 47,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/evaluate_model.py",
+          "specifier": "time"
+        },
+        {
+          "language": "python",
+          "line": 46,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 46,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 46,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 48,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+          "specifier": "openai"
+        },
+        {
+          "language": "python",
+          "line": 35,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+          "specifier": "random"
+        },
+        {
+          "language": "python",
+          "line": 44,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+          "specifier": "time"
+        },
+        {
+          "language": "python",
+          "line": 32,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/monitor_training.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 32,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/monitor_training.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 29,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/monitor_training.py",
+          "specifier": "time"
+        },
+        {
+          "language": "python",
+          "line": 38,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/score_dataset.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 38,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/score_dataset.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 38,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/score_dataset.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 36,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/score_dataset.py",
+          "specifier": "concurrent.futures"
+        },
+        {
+          "language": "python",
+          "line": 36,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/score_dataset.py",
+          "specifier": "concurrent.futures"
+        },
+        {
+          "language": "python",
+          "line": 35,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/score_dataset.py",
+          "specifier": "time"
+        },
+        {
+          "language": "python",
+          "line": 40,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/submit_training.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 40,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/submit_training.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 40,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/submit_training.py",
+          "specifier": "common"
+        },
+        {
+          "language": "python",
+          "line": 42,
+          "source": ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/submit_training.py",
+          "specifier": "requests"
+        },
+        {
+          "language": "python",
+          "line": 2,
+          "source": ".px/preserved-skills/initial/workspace-original/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
+          "specifier": "__future__"
+        },
+        {
+          "language": "python",
+          "line": 2,
+          "source": ".px/preserved-skills/initial/workspace-original/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
+          "specifier": "__future__"
+        },
+        {
+          "language": "python",
+          "line": 2,
+          "source": ".px/preserved-skills/initial/workspace-original/analyze-repository-intelligence/scripts/authoritative_config_trace.py",
+          "specifier": "__future__"
+        },
+        {
+          "language": "python",
+          "line": 2,
+          "source": ".px/preserved-skills/initial/workspace-original/analyze-repository-intelligence/scripts/authoritative_patch_scope_guard.py",
+          "specifier": "__future__"
+        }
+      ],
+      "id": "unresolved-imports",
+      "severity": "medium",
+      "summary": "1312 imports or service dependencies could not be resolved statically"
+    },
+    {
+      "evidence": [
+        ".VSCodeCounter/2026-08-16_10-23-23/results.txt",
+        "registry/security_capabilities/capabilities.jsonl"
+      ],
+      "id": "truncated-text-scans",
+      "severity": "low",
+      "summary": "2 files exceeded the per-file text scan ceiling"
+    },
+    {
+      "evidence": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/calibrate_grader.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/check_training.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/cleanup.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/common.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/convert_dataset.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/deploy_model.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/evaluate_model.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/monitor_training.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/score_dataset.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/submit_training.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/validate/data_stats.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/validate/validate_dpo.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/validate/validate_rft.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/validate/validate_sft.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/calibrate_grader.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/check_training.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/cleanup.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/common.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/convert_dataset.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/deploy_model.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/evaluate_model.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/monitor_training.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/score_dataset.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/submit_training.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/validate/data_stats.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/validate/validate_dpo.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/validate/validate_rft.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/validate/validate_sft.py",
+        ".px/preserved-skills/initial/workspace-original/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
+        ".px/preserved-skills/initial/workspace-original/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
+        ".px/preserved-skills/initial/workspace-original/analyze-repository-intelligence/scripts/authoritative_config_trace.py",
+        ".px/preserved-skills/initial/workspace-original/analyze-repository-intelligence/scripts/authoritative_patch_scope_guard.py",
+        ".px/preserved-skills/initial/workspace-original/analyze-repository-intelligence/scripts/authoritative_repo_mapper.py",
+        ".px/preserved-skills/initial/workspace-original/analyze-repository-intelligence/scripts/authoritative_reproduction_scaffold.py",
+        ".px/preserved-skills/initial/workspace-original/analyze-repository-intelligence/scripts/authoritative_runtime_path.py",
+        ".px/preserved-skills/initial/workspace-original/analyze-repository-intelligence/scripts/domain_tool.py",
+        ".px/preserved-skills/initial/workspace-original/audit-incomplete-implementations/scripts/audit_incomplete.py",
+        ".px/preserved-skills/initial/workspace-original/audit-incomplete-implementations/scripts/reconcile_incomplete_findings.py",
+        ".px/preserved-skills/initial/workspace-original/audit-source-capabilities/scripts/audit_source_capabilities.py",
+        ".px/preserved-skills/initial/workspace-original/audit-source-capabilities/scripts/reconcile_classified_assets.py",
+        ".px/preserved-skills/initial/workspace-original/audit-source-capabilities/scripts/reconcile_mechanism_records.py",
+        ".px/preserved-skills/initial/workspace-original/audit-source-capabilities/scripts/reconcile_skill_identities.py",
+        ".px/preserved-skills/initial/workspace-original/audit-source-capabilities/scripts/reconcile_source_inventory.py",
+        ".px/preserved-skills/initial/workspace-original/audit-source-capabilities/scripts/reconcile_staged_capabilities.py",
+        ".px/preserved-skills/initial/workspace-original/audit-source-capabilities/scripts/validate_planning_card_coverage.py",
+        ".px/preserved-skills/initial/workspace-original/dynamic-service-discovery/scripts/audit_service_discovery.py",
+        ".px/preserved-skills/initial/workspace-original/enforce-source-import-boundaries/scripts/audit_import_boundaries.py",
+        ".px/preserved-skills/initial/workspace-original/engineer-verification-lab/scripts/authoritative_benchmark_contamination_scan.py",
+        ".px/preserved-skills/initial/workspace-original/engineer-verification-lab/scripts/authoritative_differential_tester.py",
+        ".px/preserved-skills/initial/workspace-original/engineer-verification-lab/scripts/authoritative_formula_property_tests.py",
+        ".px/preserved-skills/initial/workspace-original/engineer-verification-lab/scripts/authoritative_judge_calibrator.py",
+        ".px/preserved-skills/initial/workspace-original/engineer-verification-lab/scripts/authoritative_mutation_operator.py",
+        ".px/preserved-skills/initial/workspace-original/engineer-verification-lab/scripts/authoritative_trajectory_scorer.py",
+        ".px/preserved-skills/initial/workspace-original/engineer-verification-lab/scripts/domain_tool.py",
+        ".px/preserved-skills/initial/workspace-original/govern-operating-kernel/scripts/authoritative_capability_router.py",
+        ".px/preserved-skills/initial/workspace-original/govern-operating-kernel/scripts/authoritative_claim_ledger.py",
+        ".px/preserved-skills/initial/workspace-original/govern-operating-kernel/scripts/authoritative_durable_state.py",
+        ".px/preserved-skills/initial/workspace-original/govern-operating-kernel/scripts/authoritative_evidence_bundle.py",
+        ".px/preserved-skills/initial/workspace-original/govern-operating-kernel/scripts/authoritative_failure_normalizer.py",
+        ".px/preserved-skills/initial/workspace-original/govern-operating-kernel/scripts/authoritative_permission_guard.py",
+        ".px/preserved-skills/initial/workspace-original/govern-operating-kernel/scripts/domain_tool.py",
+        ".px/preserved-skills/initial/workspace-original/govern-runtime-protocol-deployment/scripts/authoritative_approval_request.py",
+        ".px/preserved-skills/initial/workspace-original/govern-runtime-protocol-deployment/scripts/authoritative_backend_probe.py",
+        ".px/preserved-skills/initial/workspace-original/govern-runtime-protocol-deployment/scripts/authoritative_canary_compare.py",
+        ".px/preserved-skills/initial/workspace-original/govern-runtime-protocol-deployment/scripts/authoritative_capacity_planner.py",
+        ".px/preserved-skills/initial/workspace-original/govern-runtime-protocol-deployment/scripts/authoritative_hardware_probe.py",
+        ".px/preserved-skills/initial/workspace-original/govern-runtime-protocol-deployment/scripts/authoritative_model_router.py",
+        ".px/preserved-skills/initial/workspace-original/govern-runtime-protocol-deployment/scripts/authoritative_openapi_tool_importer.py",
+        ".px/preserved-skills/initial/workspace-original/govern-runtime-protocol-deployment/scripts/authoritative_protocol_validator.py",
+        ".px/preserved-skills/initial/workspace-original/govern-runtime-protocol-deployment/scripts/domain_tool.py",
+        ".px/preserved-skills/initial/workspace-original/inspect-llm-architecture/scripts/inspect_llm_architecture.py",
+        ".px/preserved-skills/initial/workspace-original/manage-revocable-certification/scripts/authoritative_archive_verifier.py",
+        ".px/preserved-skills/initial/workspace-original/manage-revocable-certification/scripts/authoritative_certification_aggregator.py",
+        ".px/preserved-skills/initial/workspace-original/manage-revocable-certification/scripts/authoritative_collision_merge_planner.py",
+        ".px/preserved-skills/initial/workspace-original/manage-revocable-certification/scripts/authoritative_completion_cutline.py",
+        ".px/preserved-skills/initial/workspace-original/manage-revocable-certification/scripts/authoritative_duplicate_detector.py",
+        ".px/preserved-skills/initial/workspace-original/manage-revocable-certification/scripts/authoritative_manifest_reconciler.py",
+        ".px/preserved-skills/initial/workspace-original/manage-revocable-certification/scripts/authoritative_recertification_impact.py",
+        ".px/preserved-skills/initial/workspace-original/manage-revocable-certification/scripts/domain_tool.py",
+        ".px/preserved-skills/initial/workspace-original/map-project-intelligence/scripts/build_project_map.py",
+        ".px/preserved-skills/initial/workspace-original/map-project-intelligence/scripts/validate_project_map.py",
+        ".px/preserved-skills/initial/workspace-original/operate-memory-retrieval-observability/scripts/authoritative_drift_monitor.py",
+        ".px/preserved-skills/initial/workspace-original/operate-memory-retrieval-observability/scripts/authoritative_hybrid_retrieval.py",
+        ".px/preserved-skills/initial/workspace-original/operate-memory-retrieval-observability/scripts/authoritative_ingestion_validator.py",
+        ".px/preserved-skills/initial/workspace-original/operate-memory-retrieval-observability/scripts/authoritative_memory_write_gate.py",
+        ".px/preserved-skills/initial/workspace-original/operate-memory-retrieval-observability/scripts/authoritative_replay_bundle.py",
+        ".px/preserved-skills/initial/workspace-original/operate-memory-retrieval-observability/scripts/authoritative_retrieval_evaluator.py",
+        ".px/preserved-skills/initial/workspace-original/operate-memory-retrieval-observability/scripts/authoritative_scoped_memory.py",
+        ".px/preserved-skills/initial/workspace-original/operate-memory-retrieval-observability/scripts/authoritative_trace_recorder.py",
+        ".px/preserved-skills/initial/workspace-original/operate-memory-retrieval-observability/scripts/domain_tool.py",
+        ".px/preserved-skills/initial/workspace-original/plan-local-model-deployment/scripts/plan_local_model_deployment.py",
+        ".px/preserved-skills/initial/workspace-original/query-project-map/scripts/query_project_map.py",
+        ".px/preserved-skills/initial/workspace-original/repair-corrupted-text/scripts/repair_text.py",
+        ".px/preserved-skills/initial/workspace-original/route-specialist-agents/scripts/route_specialist_agents.py",
+        ".px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/scripts/authoritative_ai_bom.py",
+        ".px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/scripts/authoritative_deterministic_archive.py",
+        ".px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/scripts/authoritative_prompt_injection_scanner.py",
+        ".px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/scripts/authoritative_provenance_generator.py"
+      ],
+      "id": "untested-source-candidates",
+      "severity": "medium",
+      "summary": "305 source files have no static test link"
+    },
+    {
+      "evidence": [
+        "AZURE_OPENAI_API_KEY",
+        "OPENAI_API_KEY",
+        "POSTGRES_PASSWORD_FILE",
+        "adapters.credential_mode",
+        "authoritative_contract.permissions.secrets",
+        "budget.tokens",
+        "contracts.authoritative_contract.permissions.secrets",
+        "contributes.configuration.properties.pacifyX.contextInjectionCapTokens",
+        "contributes.configuration.properties.pacifyX.contextInjectionCapTokens.default",
+        "contributes.configuration.properties.pacifyX.contextInjectionCapTokens.description",
+        "contributes.configuration.properties.pacifyX.contextInjectionCapTokens.maximum",
+        "contributes.configuration.properties.pacifyX.contextInjectionCapTokens.minimum",
+        "contributes.configuration.properties.pacifyX.contextInjectionCapTokens.type",
+        "contributes.configuration.properties.pacifyX.guardrails.tokenBudget",
+        "contributes.configuration.properties.pacifyX.guardrails.tokenBudget.default",
+        "contributes.configuration.properties.pacifyX.guardrails.tokenBudget.description",
+        "contributes.configuration.properties.pacifyX.guardrails.tokenBudget.maximum",
+        "contributes.configuration.properties.pacifyX.guardrails.tokenBudget.minimum",
+        "contributes.configuration.properties.pacifyX.guardrails.tokenBudget.type",
+        "credential_storage",
+        "d3fend_techniques.Decoy User Credential",
+        "d3fend_techniques.Password Authentication",
+        "d3fend_techniques.Reissue Credential",
+        "d3fend_techniques.Strong Password Policy",
+        "d3fend_techniques.Token Binding",
+        "defaults.credential_reads",
+        "defaults.credential_reads_on_load",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-user-entra-token.md",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-user-entra-token.md.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-user-entra-token.md.code",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-user-entra-token.md.comment",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-user-entra-token.md.language",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/adapt-human-learning-loop/references/govern-reinforcement-token-economy.json",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/adapt-human-learning-loop/references/govern-reinforcement-token-economy.json.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/adapt-human-learning-loop/references/govern-reinforcement-token-economy.json.code",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/adapt-human-learning-loop/references/govern-reinforcement-token-economy.json.comment",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/adapt-human-learning-loop/references/govern-reinforcement-token-economy.json.language",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/manage-n8n-credentials/SKILL.md",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/manage-n8n-credentials/SKILL.md.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/manage-n8n-credentials/SKILL.md.code",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/manage-n8n-credentials/SKILL.md.comment",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/manage-n8n-credentials/SKILL.md.language",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/manage-n8n-credentials/agents/openai.yaml",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/manage-n8n-credentials/agents/openai.yaml.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/manage-n8n-credentials/agents/openai.yaml.code",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/manage-n8n-credentials/agents/openai.yaml.comment",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/manage-n8n-credentials/agents/openai.yaml.language",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/orchestrate-capability-scheduling/references/capabilities/cost-token-budget-scheduler.json",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/orchestrate-capability-scheduling/references/capabilities/cost-token-budget-scheduler.json.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/orchestrate-capability-scheduling/references/capabilities/cost-token-budget-scheduler.json.code",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/orchestrate-capability-scheduling/references/capabilities/cost-token-budget-scheduler.json.comment",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/orchestrate-capability-scheduling/references/capabilities/cost-token-budget-scheduler.json.language",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/references/capabilities/secret-handling.json",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/references/capabilities/secret-handling.json.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/references/capabilities/secret-handling.json.code",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/references/capabilities/secret-handling.json.comment",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/references/capabilities/secret-handling.json.language",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/references/scripts/secret-scanner.json",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/references/scripts/secret-scanner.json.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/references/scripts/secret-scanner.json.code",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/references/scripts/secret-scanner.json.comment",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/references/scripts/secret-scanner.json.language",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py.code",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py.comment",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py.language",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/adapt-human-learning-loop/references/govern-reinforcement-token-economy.json",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/adapt-human-learning-loop/references/govern-reinforcement-token-economy.json.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/adapt-human-learning-loop/references/govern-reinforcement-token-economy.json.code",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/adapt-human-learning-loop/references/govern-reinforcement-token-economy.json.comment",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/adapt-human-learning-loop/references/govern-reinforcement-token-economy.json.language",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/manage-n8n-credentials/SKILL.md",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/manage-n8n-credentials/SKILL.md.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/manage-n8n-credentials/SKILL.md.code",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/manage-n8n-credentials/SKILL.md.comment",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/manage-n8n-credentials/SKILL.md.language",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/manage-n8n-credentials/agents/openai.yaml",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/manage-n8n-credentials/agents/openai.yaml.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/manage-n8n-credentials/agents/openai.yaml.code",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/manage-n8n-credentials/agents/openai.yaml.comment",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/manage-n8n-credentials/agents/openai.yaml.language",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/orchestrate-capability-scheduling/references/capabilities/cost-token-budget-scheduler.json",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/orchestrate-capability-scheduling/references/capabilities/cost-token-budget-scheduler.json.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/orchestrate-capability-scheduling/references/capabilities/cost-token-budget-scheduler.json.code",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/orchestrate-capability-scheduling/references/capabilities/cost-token-budget-scheduler.json.comment",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/orchestrate-capability-scheduling/references/capabilities/cost-token-budget-scheduler.json.language",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/references/capabilities/secret-handling.json",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/references/capabilities/secret-handling.json.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/references/capabilities/secret-handling.json.code",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/references/capabilities/secret-handling.json.comment",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/references/capabilities/secret-handling.json.language",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/references/scripts/secret-scanner.json",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/references/scripts/secret-scanner.json.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/references/scripts/secret-scanner.json.code",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/references/scripts/secret-scanner.json.comment",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/references/scripts/secret-scanner.json.language",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py.blank",
+        "file:///c%3A/Users/Ben/Downloads/bootstrap_project/Pacify-X/.px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py.code"
+      ],
+      "id": "sensitive-config-keys",
+      "severity": "informational",
+      "summary": "261 sensitive-looking configuration keys are referenced; values were not captured"
+    },
+    {
+      "evidence": [
+        "runtime/engineering_intelligence.py",
+        "templates/generated/domain_tool.py"
+      ],
+      "id": "generated-surfaces",
+      "severity": "informational",
+      "summary": "2 generated or vendor-like files were mapped"
+    }
+  ],
+  "schema_version": "1.1",
+  "unknowns": [
+    "Dynamic runtime paths, reflection, plugin loading, external consumers, deployed configuration values, and production traffic are not proven by static mapping."
+  ]
+}

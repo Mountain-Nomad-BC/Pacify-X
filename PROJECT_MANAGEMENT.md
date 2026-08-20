@@ -9,14 +9,16 @@ Deliver a model-agnostic, drop-in bootstrap that lets an LLM safely commission e
 ## Current state
 
 Mode: `existing`  
-Phase: `post-closure validation complete`
-Status: `development tree validated; source and repair intakes closed`
-Active card: none
-Next action: preserve the validated development tree; issue a new signed release only through the exact-artifact finalizer when explicitly authorized.
+Phase: `remaining punch-card implementation`
+Status: `authorized local repair wave in progress; A08 current-tree convergence passed; prior release evidence retained as historical`
+Active card: `U02 - renderer surface migration batches`
+Next action: finish `U02` and `U05`, then remove the legacy renderer owner in `U03`; proceed through the sidebar, governed-maintenance, accelerator, visual, and exact-release frontier in the dependency order recorded in `docs/PX_UNIVERSAL_VISIBILITY_PUNCH_CARDS.md`.
+
+The user authorized non-destructive local repository writes, local execution, validation, and necessary local dependency work for this repair wave. That authority is session-scoped and does not authorize deployment, credential use, billable provider calls, destructive cleanup, or rewriting historical release evidence.
 
 Release 0.6.3 is the current signed, self-certified release. The annotated tag, exact public distribution files, trusted publisher signature, complete evidence set, checksums, SBOM, provenance, and fresh installed-wheel verification agree. Canonical evidence is under `evidence/releases/0.6.3/`; the public release is at [GitHub v0.6.3](https://github.com/Mountain-Nomad-BC/Pacify-X/releases/tag/v0.6.3).
 
-The current development tree adds the REL-012 trust-boundary repairs, the REL-013 full-capability integration, and the REL-014 distribution-integrity repairs. The integrated product passed 813 source tests plus 585 subtests in one uninterrupted run, 424 independent `unittest` discovery tests, exact installed-wheel checks from an unrelated working directory, deterministic source export, all eight independently receipted assurance gates, all 24 strict release-audit checks, all 21 structural maturity checks, and zero-hit sanitation across 2,495 files. These bytes do not rewrite or expand the immutable v0.6.3 certificate. A future signed release must bind them before they are described as release-certified.
+The prior development checkpoint added the REL-012 trust-boundary repairs, the REL-013 full-capability integration, and the REL-014 distribution-integrity repairs and recorded the validations below. The 2026-08-11 adversarial audit reopened current-tree acceptance because source/evidence drift, a doctor read-only violation, extension startup failures, split authority, and unbounded skill discovery invalidate current completion claims. Those historical results remain evidence of their exact earlier bytes; they are not acceptance evidence for the active tree. A future signed release must bind the repaired bytes before they are described as release-certified.
 
 Release 0.6.2 is historical and revoked for deployment. Its validation proved internal consistency under the included profile, but did not authenticate one immutable chain from Git commit through the exact tested and publicly distributed package bytes. Revocation evidence is retained at `evidence/release-revocation-0.6.2.json`; the original certificate remains unchanged as historical evidence.
 

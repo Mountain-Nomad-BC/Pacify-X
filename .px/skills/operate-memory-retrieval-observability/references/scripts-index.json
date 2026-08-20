@@ -1,0 +1,60 @@
+{
+  "count": 9,
+  "records": [
+    {
+      "id": "context-budget",
+      "path": ".px/skills/operate-memory-retrieval-observability/references/scripts/context-budget.json",
+      "sha256": "b3972068fd7965f67f45f2667adc05ce16b0b1fa756897c6295f888bc2ac1f94",
+      "trigger": "Use when the requested outcome is context budget or when that outcome is a required dependency."
+    },
+    {
+      "id": "drift-monitor",
+      "path": ".px/skills/operate-memory-retrieval-observability/references/scripts/drift-monitor.json",
+      "sha256": "d1f23d7c7912c021a1a2f804d1f8257622bad3d29be9c559df42c9aea6948c09",
+      "trigger": "Use when the requested outcome is drift monitor or when that outcome is a required dependency."
+    },
+    {
+      "id": "hybrid-retrieval",
+      "path": ".px/skills/operate-memory-retrieval-observability/references/scripts/hybrid-retrieval.json",
+      "sha256": "b78e682249a2ad3273c3630b6764712df699ce76f3b2a80002a3f13e8823b101",
+      "trigger": "Use when the requested outcome is hybrid retrieval or when that outcome is a required dependency."
+    },
+    {
+      "id": "ingestion-validator",
+      "path": ".px/skills/operate-memory-retrieval-observability/references/scripts/ingestion-validator.json",
+      "sha256": "207287fcdb75207612d029329f97b74ff10fcbe99042e8cd9cb6709ca085c439",
+      "trigger": "Use when the requested outcome is ingestion validator or when that outcome is a required dependency."
+    },
+    {
+      "id": "memory-write-gate",
+      "path": ".px/skills/operate-memory-retrieval-observability/references/scripts/memory-write-gate.json",
+      "sha256": "51ad692270ec01349cd899afc8659634f2e31f9c129c849d7ea64c545f7af24d",
+      "trigger": "Use when the requested outcome is memory write gate or when that outcome is a required dependency."
+    },
+    {
+      "id": "replay-bundle",
+      "path": ".px/skills/operate-memory-retrieval-observability/references/scripts/replay-bundle.json",
+      "sha256": "6cf9752758dd95846b460da33e74d60dc409d0c4b83bc1fa7cf6e9542bdc983e",
+      "trigger": "Use when the requested outcome is replay bundle or when that outcome is a required dependency."
+    },
+    {
+      "id": "retrieval-evaluator",
+      "path": ".px/skills/operate-memory-retrieval-observability/references/scripts/retrieval-evaluator.json",
+      "sha256": "bc92411003b23a2315003d4acacfa62cfd3ffeae7bdb0e848bf1cd1594081eb5",
+      "trigger": "Use when the requested outcome is retrieval evaluator or when that outcome is a required dependency."
+    },
+    {
+      "id": "scoped-memory",
+      "path": ".px/skills/operate-memory-retrieval-observability/references/scripts/scoped-memory.json",
+      "sha256": "3149cc434f1521f4da8484148e7a4515731261c735264fce635b33eb0997c21a",
+      "trigger": "Use when the requested outcome is scoped memory or when that outcome is a required dependency."
+    },
+    {
+      "id": "trace-recorder",
+      "path": ".px/skills/operate-memory-retrieval-observability/references/scripts/trace-recorder.json",
+      "sha256": "2d2733787ec8c0090b89f9fa0f9d12e2db5bdb92e86b9d5e448082982ca00833",
+      "trigger": "Use when the requested outcome is trace recorder or when that outcome is a required dependency."
+    }
+  ],
+  "schema_version": "1.0"
+}

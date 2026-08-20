@@ -1,0 +1,38 @@
+{
+  "admission_record": "route-n8n-capabilities",
+  "body_sha256": "e2809c14bb2d98c2e70a7de4b1362631f5b9dac47141ab72c146f60f1a72c706",
+  "contract": {
+    "available": true,
+    "sha256": "98b8cee9c9dbca0fa02e37f635164f411ecd60d583015fb7b670a774a49036ef",
+    "source": "registry/skill_packages/route-n8n-capabilities.json"
+  },
+  "description": "Route n8n requests to the smallest relevant PACIFY-X capability set.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "route-n8n-capabilities",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/route-n8n-capabilities"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "capability-selection",
+    "n8n",
+    "routing",
+    "workflow-automation"
+  ],
+  "version": "1.0.0"
+}

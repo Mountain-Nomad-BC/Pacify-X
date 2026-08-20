@@ -14,6 +14,9 @@ import sys
 import tomllib
 from typing import Any
 
+from .bounded_walk import WalkLimits, bounded_walk
+from .repository_scope import is_external_environment_relative, is_project_source
+
 from .version import VERSION
 
 
@@ -47,7 +50,7 @@ DUPLICATE_CLASSIFICATIONS = {
         "equivalence_rule": "byte-for-byte",
     },
     "portable-skill-hash-helpers": {
-        "owner": ".agents/skills",
+        "owner": ".px/skills",
         "rationale": "portable skill-local helpers",
         "authoritative_source": "shared behavioral contract",
         "regeneration_command": None,
@@ -67,11 +70,53 @@ DUPLICATE_CLASSIFICATIONS = {
         "regeneration_command": None,
         "equivalence_rule": "behavioral parity",
     },
+    "json-atomic-write": {
+        "owner": "runtime",
+        "rationale": "bounded JSON write helpers share identical write-through and failure semantics",
+        "authoritative_source": "runtime workflow state ownership",
+        "regeneration_command": None,
+        "equivalence_rule": "behavioral parity",
+    },
+    "bounded-progress-envelope": {
+        "owner": "runtime",
+        "rationale": "bounded operational progress formatting and truncation logic is intentionally duplicated",
+        "authoritative_source": "runtime operational progress contract",
+        "regeneration_command": None,
+        "equivalence_rule": "behavioral parity",
+    },
     "ledger-authority-head-anchor": {
         "owner": "runtime/event_ledger.py",
         "rationale": "the current authority head is an exact recoverable projection of its immutable sequence anchor",
         "authoritative_source": ".engineering-bootstrap/commissioning-events",
         "regeneration_command": "append chained event",
+        "equivalence_rule": "byte-for-byte",
+    },
+    "studio-operation-projections": {
+        "owner": "registry/studio_operations.json",
+        "rationale": "runtime and extension consume exact projections of the canonical Studio operation contract",
+        "authoritative_source": "registry/studio_operations.json",
+        "regeneration_command": "python scripts/reconcile_studio_operation_projections.py",
+        "equivalence_rule": "byte-for-byte",
+    },
+    "native-skill-manifest-aliases": {
+        "owner": "runtime/native_skills.py",
+        "rationale": "capability.json and skill.yaml are equivalent machine-readable views of one PX-native manifest",
+        "authoritative_source": "runtime/native_skills.py",
+        "regeneration_command": "python scripts/migrate_px_skills.py --apply",
+        "equivalence_rule": "byte-for-byte canonical JSON, which is valid YAML",
+    },
+    "native-skill-surface-scaffolds": {
+        "owner": "runtime/native_skills.py",
+        "rationale": "empty native contracts, tests, and resources use explicit standardized descriptors",
+        "authoritative_source": "runtime/native_skills.py",
+        "regeneration_command": "python scripts/migrate_px_skills.py --apply",
+        "equivalence_rule": "byte-for-byte by surface kind",
+    },
+    "native-skill-policy-projections": {
+        "owner": "root policy registry",
+        "rationale": "portable PX-native skill packages retain byte-identical local policy resources",
+        "authoritative_source": "policies",
+        "regeneration_command": "python scripts/migration/sync_skill_packaging.py",
         "equivalence_rule": "byte-for-byte",
     },
 }
@@ -83,6 +128,62 @@ def _json(path: Path) -> dict[str, Any]:
 
 def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _is_inactive_derived_path(path: Path, root: Path) -> bool:
+    """Exclude retained custody and versioned map projections from source audits."""
+    if not is_project_source(path, root):
+        return True
+    parts = path.relative_to(root).parts
+    if (
+        parts
+        and parts[0] == ".engineering-bootstrap"
+        and any(
+            parts[index : index + 2] == ("wal", "committed")
+            for index in range(1, len(parts) - 1)
+        )
+    ):
+        return True
+    return len(parts) >= 2 and parts[0] == ".engineering-bootstrap" and parts[1] in {
+        "environment",
+        "diagnostics",
+        "project-map",
+        "project-map-history",
+        "project-map-lock-history",
+        "quarantine",
+    }
+
+
+def _exclude_structural_path(relative: str) -> bool:
+    if is_external_environment_relative(relative):
+        return True
+    parts = Path(relative).parts
+    if not parts:
+        return False
+    if parts[0] == "evidence" or "__pycache__" in parts:
+        return True
+    if (
+        parts[0] == ".engineering-bootstrap"
+        and any(
+            parts[index : index + 2] == ("wal", "committed")
+            for index in range(1, len(parts) - 1)
+        )
+    ):
+        return True
+    return len(parts) >= 2 and parts[0] == ".engineering-bootstrap" and parts[1] in {
+        "environment", "diagnostics", "project-map", "project-map-history",
+        "project-map-lock-history", "quarantine",
+    }
+
+
+def _structural_files(root: Path) -> tuple[Path, ...]:
+    walk = bounded_walk(
+        root,
+        limits=WalkLimits(max_files=100_000, max_depth=128, max_bytes=2 * 1024**3),
+        symlink_policy="skip",
+        exclude=_exclude_structural_path,
+    )
+    return tuple(entry.path for entry in walk.files)
 
 
 def _cycles(edges: dict[str, set[str]]) -> list[list[str]]:
@@ -150,6 +251,35 @@ def _import_cycles(root: Path) -> list[list[str]]:
 
 def _classify_exact_group(paths: list[str]) -> str | None:
     path_set = set(paths)
+    if (
+        len(paths) == 2
+        and all(path.startswith(".px/skills/") for path in paths)
+        and {Path(path).name for path in paths} == {"capability.json", "skill.yaml"}
+        and len({Path(path).parent for path in paths}) == 1
+    ):
+        return "native-skill-manifest-aliases"
+    native_scaffold_suffixes = {
+        "/contracts/manifest.json",
+        "/resources/index.json",
+        "/tests/validation.json",
+    }
+    if all(
+        path.startswith(".px/skills/")
+        and any(path.endswith(suffix) for suffix in native_scaffold_suffixes)
+        for path in paths
+    ):
+        return "native-skill-surface-scaffolds"
+    if (
+        len(paths) == 2
+        and sum(path.startswith("policies/") for path in paths) == 1
+        and sum(
+            path.startswith(".px/skills/") and "/policies/" in path
+            for path in paths
+        )
+        == 1
+        and len({Path(path).name for path in paths}) == 1
+    ):
+        return "native-skill-policy-projections"
     if all(path.endswith("/__init__.py") for path in paths):
         return "empty-package-markers"
     if "templates/generated/domain_tool.py" in path_set and all(
@@ -169,6 +299,12 @@ def _classify_exact_group(paths: list[str]) -> str | None:
         and any(path.startswith(".engineering-bootstrap/profiles/") for path in paths)
     ):
         return "generated-profile-projections"
+    if path_set == {
+        "extension/resources/studio-operations.json",
+        "registry/studio_operations.json",
+        "runtime/studio_operations.json",
+    }:
+        return "studio-operation-projections"
     if (
         len(paths) == 2
         and all(
@@ -179,16 +315,22 @@ def _classify_exact_group(paths: list[str]) -> str | None:
         and any("/anchors/" in path for path in paths)
     ):
         return "ledger-authority-head-anchor"
+    if len(paths) == 2 and set(Path(path).name for path in paths) == {
+        "_write_json",
+        "_atomic_json",
+    }:
+        return "json-atomic-write"
     return None
 
 
-def _duplicate_files(root: Path) -> tuple[list[dict[str, Any]], list[list[str]]]:
+def _duplicate_files(root: Path, files: tuple[Path, ...] | None = None) -> tuple[list[dict[str, Any]], list[list[str]]]:
     groups: dict[str, list[str]] = {}
     extensions = {".py", ".json", ".yaml", ".yml", ".toml", ".md"}
-    for path in root.rglob("*"):
+    for path in files if files is not None else _structural_files(root):
         if (
             not path.is_file()
             or path.suffix.casefold() not in extensions
+            or _is_inactive_derived_path(path, root)
             or any(part in {"evidence", "__pycache__"} for part in path.parts)
         ):
             continue
@@ -212,10 +354,30 @@ def _duplicate_files(root: Path) -> tuple[list[dict[str, Any]], list[list[str]]]
     return reviewed, unreviewed
 
 
-def _logic_duplicates(root: Path) -> tuple[list[dict[str, Any]], list[list[str]]]:
+def _stable_ast(value: object, *, function_root: bool = False) -> object:
+    """Serialize semantic AST fields without interpreter-added metadata."""
+    if isinstance(value, ast.AST):
+        fields = []
+        for name, child in ast.iter_fields(value):
+            if name in {"type_comment", "type_params"}:
+                continue
+            if function_root and name == "name":
+                child = "_"
+            elif function_root and name == "decorator_list":
+                child = []
+            fields.append((name, _stable_ast(child)))
+        return (type(value).__name__, tuple(fields))
+    if isinstance(value, list):
+        return tuple(_stable_ast(item) for item in value)
+    return value
+
+
+def _logic_duplicates(root: Path, files: tuple[Path, ...] | None = None) -> tuple[list[dict[str, Any]], list[list[str]]]:
     groups: dict[str, list[str]] = {}
-    for path in root.rglob("*.py"):
-        if "__pycache__" in path.parts:
+    for path in files if files is not None else _structural_files(root):
+        if path.suffix.casefold() != ".py":
+            continue
+        if "__pycache__" in path.parts or _is_inactive_derived_path(path, root):
             continue
         try:
             tree = ast.parse(path.read_text(encoding="utf-8-sig"))
@@ -227,17 +389,8 @@ def _logic_duplicates(root: Path) -> tuple[list[dict[str, Any]], list[list[str]]
                 or len(node.body) < 3
             ):
                 continue
-            normalized = ast.FunctionDef(
-                name="_",
-                args=node.args,
-                body=node.body,
-                decorator_list=[],
-                returns=node.returns,
-                type_comment=None,
-                type_params=getattr(node, "type_params", []),
-            )
             digest = hashlib.sha256(
-                ast.dump(normalized, include_attributes=False).encode()
+                repr(_stable_ast(node, function_root=True)).encode()
             ).hexdigest()
             groups.setdefault(digest, []).append(
                 f"{path.relative_to(root).as_posix()}:{node.lineno}:{node.name}"
@@ -250,17 +403,27 @@ def _logic_duplicates(root: Path) -> tuple[list[dict[str, Any]], list[list[str]]
         paths = [item.split(":", 1)[0] for item in locations]
         names = {item.rsplit(":", 1)[-1] for item in locations}
         if all(
-            "/.agents/skills/" in "/" + path and "/scripts/" in path for path in paths
+            "/.px/skills/" in "/" + path and "/scripts/" in path for path in paths
         ) and names <= {"hash_file", "sha256_file", "_sha256"}:
             classification = "portable-skill-hash-helpers"
         elif names == {"main"} and all(path.startswith("scripts/") for path in paths):
             classification = "bounded-cli-boilerplate"
+        elif names == {"_write_json", "_atomic_json"} and all(
+            path in {"runtime/work_admission.py", "runtime/global_skill_isolation.py"}
+            for path in paths
+        ):
+            classification = "json-atomic-write"
+        elif names == {"_bounded_operational_progress", "_bounded_progress"} and all(
+            path.startswith("runtime/") for path in paths
+        ):
+            classification = "bounded-progress-envelope"
         elif names <= {
             "_sha",
             "_sha_file",
             "_digest",
             "file_hash",
             "hash_file",
+            "_file_sha256",
             "_sha256",
             "sha256_file",
         }:
@@ -363,7 +526,7 @@ def _skill_errors(root: Path) -> list[str]:
     )
     catalog_ids = {str(item["id"]) for item in catalog["skills"]}
     directory_ids = {
-        path.name for path in (root / ".agents/skills").iterdir() if path.is_dir()
+        path.name for path in (root / ".px/skills").iterdir() if path.is_dir()
     }
     semantic_ids = {
         str(item["id"])
@@ -482,7 +645,7 @@ def _document_errors(root: Path, release_open: bool) -> list[str]:
     if readme.is_file():
         readme_text = readme.read_text(encoding="utf-8", errors="replace")
         framework_scripts = len(tuple((root / "scripts").glob("*.py")))
-        skill_scripts = len(tuple((root / ".agents/skills").glob("*/scripts/*.py")))
+        skill_scripts = len(tuple((root / ".px/skills").glob("*/scripts/*.py")))
         denominators = {
             "Runtime modules": len(tuple((root / "runtime").rglob("*.py"))),
             "Contracts": len(tuple((root / "contracts").rglob("*.json"))),
@@ -589,7 +752,7 @@ def _example_errors(root: Path) -> list[str]:
 def _marker_result(root: Path) -> dict[str, Any]:
     path = (
         root
-        / ".agents/skills/audit-incomplete-implementations/scripts/audit_incomplete.py"
+        / ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py"
     )
     spec = importlib.util.spec_from_file_location("_pacify_incomplete_audit", path)
     if spec is None or spec.loader is None:
@@ -610,8 +773,9 @@ def audit_structural_integrity(root: Path) -> dict[str, Any]:
     root = root.resolve()
     state = _json(root / ".engineering-bootstrap/project-management/state.json")
     release_open = state.get("lifecycle", {}).get("status") != "complete"
-    exact_groups, exact_unreviewed = _duplicate_files(root)
-    logic_groups, logic_unreviewed = _logic_duplicates(root)
+    structural_files = _structural_files(root)
+    exact_groups, exact_unreviewed = _duplicate_files(root, structural_files)
+    logic_groups, logic_unreviewed = _logic_duplicates(root, structural_files)
     reachability_expected = _json(root / "registry/artifact_reachability.json")
     from .artifact_reachability import build_artifact_reachability
 

@@ -22,7 +22,7 @@ def test_catalog_contains_46_active_lazy_skills_with_current_hashes() -> None:
     assert catalog["record_count"] == 46
     assert catalog["hydrated_bodies"] == 0
     for record in catalog["records"]:
-        body = ROOT / ".agents/skills" / record["id"] / "SKILL.md"
+        body = ROOT / ".px/skills" / record["id"] / "SKILL.md"
         assert hashlib.sha256(body.read_bytes()).hexdigest() == record["body_sha256"]
 
 
@@ -68,17 +68,17 @@ def test_service_workflows_are_ordered_resolved_and_preview_first() -> None:
 
 
 def test_product_specific_safety_invariants_are_preserved() -> None:
-    monorepo = (ROOT / ".agents/skills/develop-n8n-monorepo/SKILL.md").read_text(
+    monorepo = (ROOT / ".px/skills/develop-n8n-monorepo/SKILL.md").read_text(
         encoding="utf-8"
     )
-    install = (ROOT / ".agents/skills/acquire-install-supabase/SKILL.md").read_text(
+    install = (ROOT / ".px/skills/acquire-install-supabase/SKILL.md").read_text(
         encoding="utf-8"
     )
     boundary = (
-        ROOT / ".agents/skills/design-n8n-supabase-security-boundaries/SKILL.md"
+        ROOT / ".px/skills/design-n8n-supabase-security-boundaries/SKILL.md"
     ).read_text(encoding="utf-8")
     workflow_test = (
-        ROOT / ".agents/skills/test-validate-n8n-workflows/SKILL.md"
+        ROOT / ".px/skills/test-validate-n8n-workflows/SKILL.md"
     ).read_text(encoding="utf-8")
     assert "pnpm agent:setup" in monorepo and "package-local AGENTS.md" in monorepo
     assert (

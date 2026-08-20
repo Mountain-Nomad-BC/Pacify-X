@@ -110,7 +110,7 @@ def test_module_depth_audit_rejects_external_paths_and_invalid_python(
 def test_all_reasoning_skills_are_lazy_discoverable_active_packages() -> None:
     catalog_text = (ROOT / "registry/skill_catalog.toml").read_text(encoding="utf-8")
     for identifier in SKILLS:
-        skill = ROOT / ".agents/skills" / identifier
+        skill = ROOT / ".px/skills" / identifier
         manifest = json.loads(
             (ROOT / "registry/skill_packages" / f"{identifier}.json").read_text(
                 encoding="utf-8"
@@ -119,7 +119,7 @@ def test_all_reasoning_skills_are_lazy_discoverable_active_packages() -> None:
         assert (skill / "SKILL.md").is_file()
         assert (skill / "agents/openai.yaml").is_file()
         assert manifest["status"] == "active"
-        assert manifest["body"] == f".agents/skills/{identifier}/SKILL.md"
+        assert manifest["body"] == f".px/skills/{identifier}/SKILL.md"
         assert f'id = "{identifier}"' in catalog_text
 
 

@@ -1,0 +1,469 @@
+{
+  "schema_version": "px.isolated-current-source-operational-walk/1.1",
+  "observed_utc": "2026-08-17T03:42:01.141Z",
+  "status": "failed",
+  "status_truth": {
+    "schema_version": "px.operational-ui-launcher-status/1.0",
+    "terminal_state": "failed",
+    "operationally_complete": false,
+    "walk_terminal_state": "failed",
+    "summary": {
+      "issue_count": 8,
+      "occurrence_count": 47,
+      "blocking_issue_count": 7,
+      "by_source": {
+        "coverage": 5,
+        "extension_host": 40,
+        "process": 2
+      },
+      "by_severity": {
+        "incomplete": 5,
+        "warning": 40,
+        "error": 2
+      }
+    },
+    "issues": [
+      {
+        "source": "coverage",
+        "code": "agent-builder-incomplete",
+        "severity": "incomplete",
+        "blocking": true,
+        "message": "The agent builder terminal disposition is failed.",
+        "context": "agent-builder",
+        "details": {
+          "terminal_disposition": "failed"
+        },
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "coverage",
+        "code": "control-chains-incomplete",
+        "severity": "incomplete",
+        "blocking": true,
+        "message": "0 of 899 controls have complete interaction chains.",
+        "context": null,
+        "details": {
+          "control_count": 899,
+          "complete_interaction_chains": 0
+        },
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "coverage",
+        "code": "controls-unattempted",
+        "severity": "incomplete",
+        "blocking": true,
+        "message": "884 of 899 controls were not attempted.",
+        "context": null,
+        "details": {
+          "control_count": 899,
+          "attempted_control_count": 15
+        },
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "coverage",
+        "code": "surfaces-not-observed",
+        "severity": "incomplete",
+        "blocking": true,
+        "message": "6 inventory surfaces lack a completed live observation.",
+        "context": null,
+        "details": {
+          "missing_surface_ids": [
+            "agent-studio",
+            "knowledge-core",
+            "runtime-core",
+            "skill-studio",
+            "studio-lifecycle",
+            "workflow-studio"
+          ]
+        },
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "coverage",
+        "code": "workflow-builder-incomplete",
+        "severity": "incomplete",
+        "blocking": true,
+        "message": "The workflow builder terminal disposition is failed.",
+        "context": "workflow-builder",
+        "details": {
+          "terminal_disposition": "failed"
+        },
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "extension_host",
+        "code": "github-token-unavailable",
+        "severity": "warning",
+        "blocking": false,
+        "message": "[AgentHost] No token resolved for resource: https://api.github.com",
+        "context": "captured-host-output",
+        "details": null,
+        "occurrences": 40,
+        "recovered": null
+      },
+      {
+        "source": "process",
+        "code": "walker-error",
+        "severity": "error",
+        "blocking": true,
+        "message": "locator.evaluate: Error: pxui.agent-studio.action.agentSelectSection.model: rendered control is missing\n    at eval (eval at evaluate (:311:30), <anonymous>:6:32)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "context": "agent-builder",
+        "details": null,
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "process",
+        "code": "walker-error",
+        "severity": "error",
+        "blocking": true,
+        "message": "locator.evaluate: Error: pxui.workflow-studio.action.workflowZoom.in: rendered control is missing\n    at eval (eval at evaluate (:311:30), <anonymous>:6:32)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "context": "workflow-builder",
+        "details": null,
+        "occurrences": 1,
+        "recovered": null
+      }
+    ]
+  },
+  "authority": "Codex host retained execution authority; PX governed scope, evidence, isolation, and cleanup.",
+  "effects": {
+    "created": [
+      "PACIFY-X-owned temporary workspace",
+      "PACIFY-X-owned user-data profile",
+      "PACIFY-X-owned empty extensions directory",
+      "PACIFY-X-owned shared-data directory",
+      "repository evidence"
+    ],
+    "spawned": [
+      "pinned VS Code development host",
+      "existing operational UI walker"
+    ],
+    "user_main_vscode_profile_touched": false,
+    "isolation_boundary_verified": true,
+    "product_ui_modified": false,
+    "broad_tests_run": false
+  },
+  "source": {
+    "mode": "installed-exact-vsix",
+    "extension_version": "0.6.21",
+    "extension_entry_sha256": "acda102a3a46da669e6eea098576c43f0fc6419eff198eeed2a9ad47ec7c9776",
+    "artifact": {
+      "name": "pacify-x-vscode-0.6.21.vsix",
+      "sha256": "e63c70bc24013c9f7eba3fc59c918639efc76f79af9812eca6d70d01ddb09bfe"
+    },
+    "walker_sha256": "f41236599e3ec65a50a3a7e81535b953918535caeced3af02d8074408895218d",
+    "bootstrap_sha256": "7a68e54eb1fe079ea2615b3d6f0449389cb8284a9e2a0c13752060b12c55631a",
+    "vscode_version": "1.132.1"
+  },
+  "isolation": {
+    "workspace": "PACIFY-X-owned ephemeral",
+    "user_data": "PACIFY-X-owned ephemeral; not the user profile",
+    "extensions": "PACIFY-X-owned empty directory",
+    "shared_data_requested": "PACIFY-X-owned ephemeral; explicitly supplied through --shared-data-dir",
+    "shared_data_observed_mode": "in-memory",
+    "cdp": {
+      "endpoint": "http://127.0.0.1:62355",
+      "address": "127.0.0.1",
+      "port": 62355,
+      "ready_after_ms": 291
+    },
+    "extension_loading": "exact VSIX installed into owned empty extensions directory"
+  },
+  "walk": {
+    "path": "evidence/operational-ui-walk-installed-0.6.21-r2/receipt.json",
+    "sha256": "b5a0b8f4b4c7b4eab37c42aa345bc2ff1cd4c8e9665b889fd478b217b02350c7",
+    "terminal_state": "failed",
+    "operationally_complete": false
+  },
+  "child_lifecycle": {
+    "schema_version": "px.isolated-current-source-host-child/1.0",
+    "started_utc": "2026-08-17T03:41:35.231Z",
+    "source_mode": "installed-exact-vsix",
+    "vscode_pid": 12720,
+    "walker_pid": 33768,
+    "cdp": {
+      "endpoint": "http://127.0.0.1:62355",
+      "address": "127.0.0.1",
+      "port": 62355,
+      "ready_after_ms": 291
+    },
+    "vscode_termination_verified": true,
+    "walker_termination_verified": true,
+    "status": "walk-failed",
+    "installed_artifact": {
+      "path": "pacify-x-vscode-0.6.21.vsix",
+      "sha256": "e63c70bc24013c9f7eba3fc59c918639efc76f79af9812eca6d70d01ddb09bfe",
+      "unchanged_after_install": true
+    },
+    "executable": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-vscode-test-cache\\vscode-win32-x64-archive-1.132.1\\Code.exe",
+    "launch_arguments": [
+      "[owned-workspace]",
+      "--new-window",
+      "--no-sandbox",
+      "--disable-gpu-sandbox",
+      "--disable-updates",
+      "--disable-workspace-trust",
+      "--skip-welcome",
+      "--skip-release-notes",
+      "--no-cached-data",
+      "--user-data-dir=[owned-user-data]",
+      "--extensions-dir=[owned-empty-extensions]",
+      "--shared-data-dir=[owned-shared-data]",
+      "--extensionDevelopmentPath=[installed-artifact-harness]",
+      "--extensionTestsPath=[owned-bootstrap]",
+      "--remote-debugging-address=127.0.0.1",
+      "--remote-debugging-port=62355"
+    ],
+    "bootstrap": {
+      "schema_version": "px.operational-walk-bootstrap/1.0",
+      "observed_utc": "2026-08-17T03:41:37.771Z",
+      "extension_id": "mountain-nomad-bc.pacify-x-vscode",
+      "command_id": "pacifyX.openDashboard",
+      "status": "ready",
+      "extension_found": true,
+      "activation_completed": true,
+      "command_registered": true,
+      "command_executed": true,
+      "ready_utc": "2026-08-17T03:41:40.845Z"
+    },
+    "walker_exit": {
+      "code": 1,
+      "signal": null
+    },
+    "finished_utc": "2026-08-17T03:42:00.374Z",
+    "storage_boundary": {
+      "expected_shared_data": "[owned-shared-data]",
+      "in_memory_observed": true,
+      "owned_shared_data_observed": false,
+      "user_scoped_shared_data_observed": false,
+      "observed_database_paths": [
+        ":memory:"
+      ],
+      "mode": "in-memory",
+      "verified": true
+    },
+    "operational_status": {
+      "schema_version": "px.operational-ui-walk-status/1.0",
+      "terminal_state": "failed",
+      "operationally_complete": false,
+      "source_identity": {
+        "state": "verified",
+        "method": "dashboard-runtime-identity-contract"
+      },
+      "coverage": {
+        "control_count": 899,
+        "attempted_control_count": 15,
+        "complete_interaction_chains": 0,
+        "expected_surface_ids": [
+          "activity",
+          "agent-studio",
+          "agents",
+          "assurance",
+          "dashboard",
+          "dashboard-control-plane",
+          "diagnostics",
+          "knowledge-core",
+          "knowledge-graph",
+          "memory",
+          "plugins",
+          "projects",
+          "runtime-core",
+          "settings",
+          "sidebar",
+          "skill-studio",
+          "skills-tools",
+          "studio-lifecycle",
+          "workflow-studio",
+          "workflows"
+        ],
+        "observed_surface_ids": [
+          "activity",
+          "agents",
+          "assurance",
+          "dashboard",
+          "dashboard-control-plane",
+          "diagnostics",
+          "knowledge-graph",
+          "memory",
+          "plugins",
+          "projects",
+          "settings",
+          "sidebar",
+          "skills-tools",
+          "workflows"
+        ],
+        "missing_surface_ids": [
+          "agent-studio",
+          "knowledge-core",
+          "runtime-core",
+          "skill-studio",
+          "studio-lifecycle",
+          "workflow-studio"
+        ]
+      },
+      "summary": {
+        "issue_count": 8,
+        "occurrence_count": 47,
+        "blocking_issue_count": 7,
+        "by_source": {
+          "coverage": 5,
+          "extension_host": 40,
+          "process": 2
+        },
+        "by_severity": {
+          "incomplete": 5,
+          "warning": 40,
+          "error": 2
+        }
+      },
+      "issues": [
+        {
+          "source": "coverage",
+          "code": "agent-builder-incomplete",
+          "severity": "incomplete",
+          "blocking": true,
+          "message": "The agent builder terminal disposition is failed.",
+          "context": "agent-builder",
+          "details": {
+            "terminal_disposition": "failed"
+          },
+          "occurrences": 1,
+          "recovered": null
+        },
+        {
+          "source": "coverage",
+          "code": "control-chains-incomplete",
+          "severity": "incomplete",
+          "blocking": true,
+          "message": "0 of 899 controls have complete interaction chains.",
+          "context": null,
+          "details": {
+            "control_count": 899,
+            "complete_interaction_chains": 0
+          },
+          "occurrences": 1,
+          "recovered": null
+        },
+        {
+          "source": "coverage",
+          "code": "controls-unattempted",
+          "severity": "incomplete",
+          "blocking": true,
+          "message": "884 of 899 controls were not attempted.",
+          "context": null,
+          "details": {
+            "control_count": 899,
+            "attempted_control_count": 15
+          },
+          "occurrences": 1,
+          "recovered": null
+        },
+        {
+          "source": "coverage",
+          "code": "surfaces-not-observed",
+          "severity": "incomplete",
+          "blocking": true,
+          "message": "6 inventory surfaces lack a completed live observation.",
+          "context": null,
+          "details": {
+            "missing_surface_ids": [
+              "agent-studio",
+              "knowledge-core",
+              "runtime-core",
+              "skill-studio",
+              "studio-lifecycle",
+              "workflow-studio"
+            ]
+          },
+          "occurrences": 1,
+          "recovered": null
+        },
+        {
+          "source": "coverage",
+          "code": "workflow-builder-incomplete",
+          "severity": "incomplete",
+          "blocking": true,
+          "message": "The workflow builder terminal disposition is failed.",
+          "context": "workflow-builder",
+          "details": {
+            "terminal_disposition": "failed"
+          },
+          "occurrences": 1,
+          "recovered": null
+        },
+        {
+          "source": "extension_host",
+          "code": "github-token-unavailable",
+          "severity": "warning",
+          "blocking": false,
+          "message": "[AgentHost] No token resolved for resource: https://api.github.com",
+          "context": "captured-host-output",
+          "details": null,
+          "occurrences": 40,
+          "recovered": null
+        },
+        {
+          "source": "process",
+          "code": "walker-error",
+          "severity": "error",
+          "blocking": true,
+          "message": "locator.evaluate: Error: pxui.agent-studio.action.agentSelectSection.model: rendered control is missing\n    at eval (eval at evaluate (:311:30), <anonymous>:6:32)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+          "context": "agent-builder",
+          "details": null,
+          "occurrences": 1,
+          "recovered": null
+        },
+        {
+          "source": "process",
+          "code": "walker-error",
+          "severity": "error",
+          "blocking": true,
+          "message": "locator.evaluate: Error: pxui.workflow-studio.action.workflowZoom.in: rendered control is missing\n    at eval (eval at evaluate (:311:30), <anonymous>:6:32)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+          "context": "workflow-builder",
+          "details": null,
+          "occurrences": 1,
+          "recovered": null
+        }
+      ]
+    },
+    "stdout_tail": "\r\n[main 2026-08-17T03:41:36.192Z] StorageMainService: creating application shared storage\n[main 2026-08-17T03:41:36.245Z] [shared storage] Creating shared storage database at ':memory:' (wasCreated: true)\n[main 2026-08-17T03:41:36.247Z] [shared storage] Initializing fallback application storage (path: in-memory)\n[main 2026-08-17T03:41:36.263Z] [shared storage] Fallback application storage initialized with 3 items\n[main 2026-08-17T03:41:36.264Z] update#setState disabled\n[main 2026-08-17T03:41:36.264Z] update#ctor - updates are disabled by the environment\n[AgentHost:renderer] Acquiring MessagePort to agent host...\n[main 2026-08-17T03:41:36.786Z] AgentHostProcessManager: agent host started\n[AgentHost:renderer] MessagePort acquired, creating client...\nStarted local extension host with pid 30424.\n[AgentHost:renderer] Protocol connection established; clientId=c36ae978-9053-430d-9883-40dd05ecec87\n[AccountPolicyGate] apply: state=inactive, reason=undefined, isRestricted=false\nLoading development extension at c:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\tests\\installed-harness\nSettings Sync: Account status changed from uninitialized to unavailable\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AccountPolicyGate] apply: state=inactive, reason=undefined, isRestricted=false\n{\n  \"outputRoot\": \"C:\\\\Users\\\\Ben\\\\Downloads\\\\bootstrap_project\\\\Pacify-X\\\\evidence\\\\operational-ui-walk-installed-0.6.21-r2\",\n  \"status\": \"failed\",\n  \"operationallyComplete\": false,\n  \"statusSummary\": {\n    \"issue_count\": 7,\n    \"occurrence_count\": 7,\n    \"blocking_issue_count\": 7,\n    \"by_source\": {\n      \"coverage\": 5,\n      \"process\": 2\n    },\n    \"by_severity\": {\n      \"incomplete\": 5,\n      \"error\": 2\n    }\n  },\n  \"surfaces\": 14,\n  \"sidebar\": true,\n  \"hostSourceMismatch\": false,\n  \"controlChains\": {\n    \"control_count\": 899,\n    \"unique_control_ids\": 899,\n    \"terminal_dispositions\": {\n      \"skipped_requires_authority\": 450,\n      \"observed_only\": 76,\n      \"not_rendered\": 373\n    },\n    \"potentially_mutating\": 451,\n    \"complete_interaction_chains\": 0,\n    \"attempted_control_count\": 15\n  },\n  \"providerMissing\": false,\n  \"invalidUnion\": false,\n  \"graph\": {\n    \"canvas\": {\n      \"width\": 447,\n      \"height\": 480\n    },\n    \"scene_transform\": \"\",\n    \"node_count\": 180,\n    \"edge_count\": 85,\n    \"visible_node_count\": 6,\n    \"selected_visible\": true,\n    \"sample_visible_nodes\": [\n      {\n        \"key\": \"agent:agency.academic.statistician\",\n        \"selected\": true,\n        \"left\": 287,\n        \"top\": 2159,\n        \"width\": 118,\n        \"height\": 49\n      },\n      {\n        \"key\": \"agent:agency.academic.geographer\",\n        \"selected\": false,\n        \"left\": 210,\n        \"top\": 2216,\n        \"width\": 98,\n        \"height\": 39\n      },\n      {\n        \"key\": \"agent:agency.academic.psychologist\",\n        \"selected\": false,\n        \"left\": 276,\n        \"top\": 2067,\n        \"width\": 98,\n        \"height\": 39\n      },\n      {\n        \"key\": \"agent:agency.academic.anthropologist\",\n        \"selected\": false,\n        \"left\": 336,\n        \"top\": 2253,\n        \"width\": 98,\n        \"height\": 39\n      },\n      {\n        \"key\": \"agent:agency.academic.historian\",\n        \"selected\": false,\n        \"left\": 144,\n        \"top\": 2142,\n        \"width\": 98,\n        \"height\": 39\n      },\n      {\n        \"key\": \"agent:agency.academic.narratologist\",\n        \"selected\": false,\n        \"left\": 382,\n        \"top\": 2091,\n        \"width\": 98,\n        \"height\": 39\n      }\n    ]\n  },\n  \"builders\": {\n    \"agent\": {\n      \"terminal_disposition\": \"failed\",\n      \"reason\": \"locator.evaluate: Error: pxui.agent-studio.action.agentSelectSection.model: rendered control is missing\\n    at eval (eval at evaluate (:311:30), <anonymous>:6:32)\\n    at UtilityScript.evaluate (<anonymous>:313:16)\\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\",\n      \"observations\": [],\n      \"attempted_control_ids\": []\n    },\n    \"workflow\": {\n      \"terminal_disposition\": \"failed\",\n      \"reason\": \"locator.evaluate: Error: pxui.workflow-studio.action.workflowZoom.in: rendered control is missing\\n    at eval (eval at evaluate (:311:30), <anonymous>:6:32)\\n    at UtilityScript.evaluate (<anonymous>:313:16)\\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\",\n      \"observations\": [],\n      \"attempted_control_ids\": []\n    }\n  },\n  \"hostErrors\": 2\n}\n",
+    "stderr_tail": "\r\nDevTools listening on ws://127.0.0.1:62355/devtools/browser/b6b1bc9b-b7b0-4268-92e0-bdb35d9ac039\r\nWarning: 'cached-data' is not in the list of known options, but still passed to Electron/Chromium.\nWarning: 'remote-debugging-address' is not in the list of known options, but still passed to Electron/Chromium.\nWarning: 'remote-debugging-port' is not in the list of known options, but still passed to Electron/Chromium.\n[vscode.mermaid-markdown-features]: Extension 'vscode.mermaid-markdown-features' CANNOT use 'legacyToolReferenceFullNames' without the 'chatParticipantPrivate' API proposal enabled\n[main 2026-08-17T03:41:37.844Z] [AgentHost:stderr] (node:28300) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.\n(Use `Code --trace-deprecation ...` to show where the warning was created)\n\nUnknown channel: agentHostClientProxy\n",
+    "walk_receipt": {
+      "path": "evidence/operational-ui-walk-installed-0.6.21-r2/receipt.json",
+      "sha256": "b5a0b8f4b4c7b4eab37c42aa345bc2ff1cd4c8e9665b889fd478b217b02350c7",
+      "terminal_state": "failed",
+      "operationally_complete": false
+    }
+  },
+  "owner_lifecycle": {
+    "schema_version": "px.owned-host-run/1.0",
+    "run_id": "84aad576-65c4-458e-b25a-2a199be393a0",
+    "owner_pid": 32472,
+    "worker_pid": 27520,
+    "status": "completed",
+    "started_utc": "2026-08-17T03:41:35.165Z",
+    "timeout_ms": 300000,
+    "termination_requested": false,
+    "worker_exit_verified": true,
+    "exit_code": 0,
+    "signal": null,
+    "residual_owned_pids_before": [],
+    "reconciled_owned_pids": [],
+    "residual_owned_pids_after": [],
+    "process_tree_closed_verified": true,
+    "finished_utc": "2026-08-17T03:42:01.134Z",
+    "duration_ms": 25969
+  },
+  "error": null,
+  "cleanup": {
+    "reclaimed": true,
+    "reason": "verified-process-tree-closure"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "px.audit-reproduction/1.0",
+  "generated_utc": "2026-08-14T14:46:40.3002885Z",
+  "source_report": {
+    "name": "ADVERSARIAL_AUDIT_REPORT.md",
+    "sha256": "8bbaab888cb217f9e63038078c7f850250dbf440011d7aa273d5b76adf6c4634",
+    "bytes": 25026
+  },
+  "reproduction": {
+    "run_id": "pxa2-reproduction-20260814",
+    "resource_id": "path-0ea8bc70e2094cfc961ee2f191511044",
+    "classification": "ephemeral",
+    "purpose": "Fresh extraction of the delivered audit bundle used to reproduce the auditor's final-byte and replay findings.",
+    "result": "reproduced",
+    "observations": [
+      "The delivered tree did not preserve the same final bytes and generated authority state that had been certified before export.",
+      "Canonical validation and receipt-currentness therefore disagreed with the embedded green preflight.",
+      "The remediation ledger retains every reported finding; the disposable extracted tree is not authoritative evidence."
+    ]
+  },
+  "retained_evidence": [
+    "registry/adversarial_reaudit_20260814.json"
+  ],
+  "cleanup_disposition": {
+    "eligible": true,
+    "reason": "The exact source report hash, full finding denominator, repair dispositions, and reproduction conclusion are retained outside the disposable extraction.",
+    "required_mechanism": "runtime.resource_lifecycle.ResourceManager.reclaim"
+  }
+}

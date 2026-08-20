@@ -1,0 +1,39 @@
+{
+  "admission_record": "query-project-map",
+  "body_sha256": "8086bdba63af752d58ab14ae65d9fafe546d88dd912aeae021c37c738a343eca",
+  "contract": {
+    "available": true,
+    "sha256": "ad0a79cedaae72d5f1a22cd096fe7f33f666ddaa73b4718121bc93208e6a765c",
+    "source": "registry/skill_packages/query-project-map.json"
+  },
+  "description": "Search a PACIFY-X project intelligence map, produce a minimal source hydration plan, and calculate bounded upstream/downstream symbol impact. Use before exploring an unfamiliar project, locating implementation ownership, tracing behavior, planning or editing symbols, debugging, replacing GitNexus-style blast-radius checks, or answering architecture questions.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "query-project-map",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/query-project-map"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "project-map",
+    "retrieval",
+    "repository",
+    "evidence",
+    "hydration"
+  ],
+  "version": "1.0.0"
+}

@@ -1,0 +1,39 @@
+{
+  "admission_record": "audit-ai-runtime-assurance",
+  "body_sha256": "d18841059bd959631f0ec4bd1b5d19b941aee0f1400d23dd092cf35e21fc6313",
+  "contract": {
+    "available": true,
+    "sha256": "e6a0389ee6e9f0f8cc3422c744a19b26c449b713489e6c2eab3d3ef689ee7fed",
+    "source": "registry/skill_packages/audit-ai-runtime-assurance.json"
+  },
+  "description": "Produce an opt-in, privacy-bounded cognitive assurance result and runtime passport from redacted identity, memory, knowledge, reasoning, correction, evidence, health, certification, drift, version, and benchmark signals. Use when an AI runtime, memory retrieval, persona, or model integration needs trust, poison, drift, health, or golden-benchmark certification.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "audit-ai-runtime-assurance",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/audit-ai-runtime-assurance"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "ai",
+    "assurance",
+    "drift",
+    "privacy",
+    "benchmark"
+  ],
+  "version": "0.1.0"
+}

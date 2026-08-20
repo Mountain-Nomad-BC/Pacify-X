@@ -1,0 +1,30 @@
+{
+  "cleanup_id": "cleanup-8abff95fbacb40ae856d032a5ce88e9c",
+  "project_id": "Pacify-X",
+  "run_id": "clean-export-b1b098922a61472ca8af199f54739c4f",
+  "lane_id": "archive",
+  "start_time": "2026-08-15T23:04:23.596556+00:00",
+  "end_time": "2026-08-15T23:04:23.630495+00:00",
+  "reason": "clean export staging lifecycle closed",
+  "validated_roots": [
+    "C:\\Users\\Ben\\Documents"
+  ],
+  "workers": 1,
+  "priority_mode": "conservative_sequential",
+  "resources_considered": 1,
+  "resources_reclaimed": 1,
+  "resources_skipped": 0,
+  "resources_failed": 0,
+  "files_removed": 0,
+  "directories_removed": 0,
+  "bytes_reclaimed": 0,
+  "retained_artifacts": [],
+  "promoted_artifacts": [
+    "C:\\Users\\Ben\\Documents\\PACIFY_X_FINAL_OPERATIONAL_CERTIFIED_AUDIT_20260815_R1.zip"
+  ],
+  "links_encountered": 0,
+  "orphan_processes_reaped": 0,
+  "errors": [],
+  "remaining_owned_ephemeral_resources": 0,
+  "dry_run": false
+}

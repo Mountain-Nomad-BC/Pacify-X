@@ -1,0 +1,36 @@
+{
+  "schema_version": "px.operation-authority-boundary/1.0",
+  "decision_rule": "strictest-denial-wins",
+  "executor_cardinality": 1,
+  "execution_chain": [
+    {
+      "layer": "PX",
+      "responsibilities": ["define-governance", "define-allowed-scope", "define-policy-and-contracts", "define-validation-requirements", "observe-and-record-evidence"],
+      "prohibition": "must-not-assume-codex-host-authority"
+    },
+    {
+      "layer": "Codex Host",
+      "responsibilities": ["retain-native-execution-and-tool-authority", "retain-native-approval-and-security-mechanisms", "apply-px-governance-inside-px-controlled-scope", "execute-with-codex-host-authority"]
+    },
+    {
+      "layer": "Repository / Environment",
+      "responsibilities": ["receive-only-the-effects-authorized-by-the-codex-host-and-constrained-by-px-governance"]
+    }
+  ],
+  "roles": {
+    "codex-host": ["execute", "present-user-approval"],
+    "px-control-plane": ["admit-capability", "decide-policy", "issue-effect-grant", "record-receipt"],
+    "repository-claim": ["coordinate-concurrency"],
+    "extension": ["present", "observe", "prepare-host-handoff"],
+    "px-owned-executor": ["execute-only-after-explicit-delegation"]
+  },
+  "invariants": [
+    "Observation never grants or proves authority.",
+    "A repository claim coordinates concurrent work and never substitutes for user approval.",
+    "PX policy never substitutes for host user approval.",
+    "Non-read effects require current user approval, PX policy approval, an idempotency key, and any applicable signed effect grant.",
+    "Workspace mutation also requires an active repository claim.",
+    "The extension does not spawn Codex or another PX executor.",
+    "A PX-owned executor requires explicit delegation and cannot overlap the Codex host on the same operation scope."
+  ]
+}

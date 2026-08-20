@@ -21,6 +21,7 @@ def record(
         "registry/contract_ownership.json": "scripts/build_contract_ownership_registry.py",
         "registry/cognitive_map_index.json": "scripts/build_cognitive_index.py",
         "registry/corrective_release_ledger.json": "runtime/corrective_release.py",
+        "registry/current_evidence_index.json": "scripts/build_current_evidence_index.py",
         "registry/effect_surface_ownership.json": "scripts/build_effect_surface_ownership.py",
         "registry/external_candidate_graph.json": "scripts/build_external_candidate_registry.py",
         "registry/external_capability_catalog.json": "scripts/build_external_candidate_registry.py",
@@ -62,6 +63,32 @@ def build_inventory() -> dict[str, object]:
         record("registry/cognitive_map_index.json", "edge_count", "edges"),
         record("registry/cognitive_map_index.json", "record_count", "records"),
         record("registry/corrective_release_ledger.json", "card_count", "cards"),
+        record(
+            "registry/current_evidence_index.json",
+            "artifact_count",
+            "records",
+            "filtered",
+            field="kind",
+            equals="vsix",
+        ),
+        record(
+            "registry/current_evidence_index.json",
+            "required_receipt_count",
+            "records",
+            "filtered",
+            field="kind",
+            equals="test-receipt",
+        ),
+        record(
+            "registry/current_evidence_index.json",
+            "current_required_receipt_count",
+            "records",
+            "nested_object_filtered",
+            nested="receipt_state",
+            field="current",
+            equals=True,
+        ),
+        record("registry/current_evidence_index.json", "record_count", "records"),
         record(
             "registry/corrective_release_ledger.json",
             "child_finding_count",
@@ -140,6 +167,22 @@ def build_inventory() -> dict[str, object]:
         ),
         record(
             "registry/project_stream_orchestrations.json", "count", "orchestrations"
+        ),
+        record(
+            "registry/provider_route_scan.json",
+            "rescanned_file_count",
+            "records",
+            "filtered",
+            field="scan_state",
+            equals="rescanned",
+        ),
+        record(
+            "registry/provider_route_scan.json",
+            "reused_file_count",
+            "records",
+            "filtered",
+            field="scan_state",
+            equals="reused",
         ),
         record(
             "registry/python_surface_ownership.json",
@@ -232,6 +275,34 @@ def build_inventory() -> dict[str, object]:
             "registry/service_capability_workflows.json", "workflow_count", "workflows"
         ),
         record("registry/skill_orchestrations.json", "count", "workflows"),
+        record(
+            "registry/test_group_index.json",
+            "parsed_file_count",
+            "files",
+            "filtered_values",
+            field="index_state",
+            equals="parsed",
+        ),
+        record(
+            "registry/test_group_index.json",
+            "reused_file_count",
+            "files",
+            "filtered_values",
+            field="index_state",
+            equals="reused",
+        ),
+        record(
+            "registry/test_group_index.json",
+            "test_file_count",
+            "groups",
+            "nested_length",
+            nested="members",
+        ),
+        record(
+            "registry/test_group_index.json",
+            "tracked_python_file_count",
+            "files",
+        ),
         record(
             "registry/source_specialty_admission.json", "source_record_count", "records"
         ),

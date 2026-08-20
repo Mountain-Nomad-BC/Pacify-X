@@ -1,5 +1,5 @@
 {
-  "body": ".agents/skills/orchestrate-capability-scheduling/SKILL.md",
+  "body": ".px/skills/orchestrate-capability-scheduling/SKILL.md",
   "body_sha256": "6a698cfe38d3578b6e7ed0cd7110b1f903416e9b4f0a4df96d459d7acb2d0990",
   "capability_tags": [
     "scheduling",
@@ -23,8 +23,8 @@
     "type": "sanitized_authoritative_assimilation"
   },
   "references": [
-    ".agents/skills/orchestrate-capability-scheduling/references/capability-index.json",
-    ".agents/skills/orchestrate-capability-scheduling/references/workflow-index.json"
+    ".px/skills/orchestrate-capability-scheduling/references/capability-index.json",
+    ".px/skills/orchestrate-capability-scheduling/references/workflow-index.json"
   ],
   "status": "active",
   "tests": "tests/test_capability_scheduler.py",

@@ -1,0 +1,316 @@
+{
+  "id": "ms-edgedevtools.vscode-edge-devtools",
+  "name": "Microsoft Edge Tools for VS Code",
+  "version": "2.1.10",
+  "publisher": "ms-edgedevtools",
+  "active": true,
+  "builtin": false,
+  "extension_kind": [
+    "ui"
+  ],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "debuggers",
+    "menus",
+    "submenus",
+    "views",
+    "viewsContainers",
+    "viewsWelcome"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-edgedevtools.vscode-edge-devtools",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-edgedevtools.vscode-edge-devtools",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:debuggers",
+      "kind": "debuggers",
+      "provider": "ms-edgedevtools.vscode-edge-devtools",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-edgedevtools.vscode-edge-devtools",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "ms-edgedevtools.vscode-edge-devtools",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "ms-edgedevtools.vscode-edge-devtools",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "ms-edgedevtools.vscode-edge-devtools",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "ms-edgedevtools.vscode-edge-devtools",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "vscode-edge-devtools-view.attach",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools-view.attach', ...args)",
+      "title": "Attach and open Microsoft Edge Tools",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "viewItem != cdpTargetClosing"
+    },
+    {
+      "id": "vscode-edge-devtools-view.close-instance",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools-view.close-instance', ...args)",
+      "title": "Close instance",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "viewItem != cdpTargetClosing"
+    },
+    {
+      "id": "vscode-edge-devtools-view.configureLaunchJson",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools-view.configureLaunchJson', ...args)",
+      "title": "Configure launch.json file",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "titleCommandsRegistered && isWorkspaceTrusted"
+    },
+    {
+      "id": "vscode-edge-devtools-view.copyItem",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools-view.copyItem', ...args)",
+      "title": "Copy Value",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-edge-devtools-view.cssMirrorContent",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools-view.cssMirrorContent', ...args)",
+      "title": "Toggle CSS mirror editing on/off",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "titleCommandsRegistered"
+    },
+    {
+      "id": "vscode-edge-devtools-view.launch",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools-view.launch', ...args)",
+      "title": "Open a new tab",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "titleCommandsRegistered"
+    },
+    {
+      "id": "vscode-edge-devtools-view.launchHtml",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools-view.launchHtml', ...args)",
+      "title": "Open Browser with DevTools",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-edge-devtools-view.launchProject",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools-view.launchProject', ...args)",
+      "title": "Launch project",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "titleCommandsRegistered && isWorkspaceTrusted"
+    },
+    {
+      "id": "vscode-edge-devtools-view.launchScreencast",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools-view.launchScreencast', ...args)",
+      "title": "Open Browser",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-edge-devtools-view.openSettings",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools-view.openSettings', ...args)",
+      "title": "Open Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-edge-devtools-view.refresh",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools-view.refresh', ...args)",
+      "title": "Refresh Targets",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "titleCommandsRegistered"
+    },
+    {
+      "id": "vscode-edge-devtools-view.toggleScreencast",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools-view.toggleScreencast', ...args)",
+      "title": "Toggle browser",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "viewItem != cdpTargetClosing"
+    },
+    {
+      "id": "vscode-edge-devtools-view.viewChangelog",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools-view.viewChangelog', ...args)",
+      "title": "View Changelog",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-edge-devtools-view.viewDocumentation",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools-view.viewDocumentation', ...args)",
+      "title": "View Documentation",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-edge-devtools.attach",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools.attach', ...args)",
+      "title": "Attach to a target",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-edge-devtools.launch",
+      "invocation": "vscode.commands.executeCommand('vscode-edge-devtools.launch', ...args)",
+      "title": "Launch Edge and then attach to a target",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onLanguage:css",
+    "onLanguage:html",
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:json",
+    "onLanguage:jsonc",
+    "onLanguage:less",
+    "onLanguage:sass",
+    "onLanguage:scss",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact",
+    "onStartupFinished"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "ui"
+    ],
+    "workspace_trust": {
+      "supported": "limited",
+      "description": "Workspace trust is needed to configure and debug projects"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-edgedevtools.vscode-edge-devtools",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:debuggers",
+      "contribution:menus",
+      "contribution:submenus",
+      "contribution:views",
+      "contribution:viewsContainers",
+      "contribution:viewsWelcome"
+    ],
+    "interface": [
+      "vscode-edge-devtools-view.attach",
+      "vscode-edge-devtools-view.close-instance",
+      "vscode-edge-devtools-view.configureLaunchJson",
+      "vscode-edge-devtools-view.copyItem",
+      "vscode-edge-devtools-view.cssMirrorContent",
+      "vscode-edge-devtools-view.launch",
+      "vscode-edge-devtools-view.launchHtml",
+      "vscode-edge-devtools-view.launchProject",
+      "vscode-edge-devtools-view.launchScreencast",
+      "vscode-edge-devtools-view.openSettings",
+      "vscode-edge-devtools-view.refresh",
+      "vscode-edge-devtools-view.toggleScreencast",
+      "vscode-edge-devtools-view.viewChangelog",
+      "vscode-edge-devtools-view.viewDocumentation",
+      "vscode-edge-devtools.attach",
+      "vscode-edge-devtools.launch"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "ui"
+      ],
+      "workspace_trust": {
+        "supported": "limited",
+        "description": "Workspace trust is needed to configure and debug projects"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

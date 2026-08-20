@@ -1,0 +1,6 @@
+interface:
+  display_name: "Operate Engineering Research Engine"
+  short_description: "Mine evidence-backed mechanisms from research"
+  default_prompt: "Use $operate-engineering-research-engine to compare these sources at mechanism level and propose governed capability deltas."
+policy:
+  allow_implicit_invocation: true

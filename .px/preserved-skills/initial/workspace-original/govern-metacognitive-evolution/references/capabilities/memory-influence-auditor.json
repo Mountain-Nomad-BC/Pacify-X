@@ -1,0 +1,66 @@
+{
+  "dependencies": [
+    "memory-applicability-critic",
+    "memory-injection-firewall"
+  ],
+  "domain": "introspection",
+  "failure_modes": [
+    "post-hoc story presented as fact",
+    "secret leakage",
+    "timestamp-only causality",
+    "retrieved memory treated as used memory"
+  ],
+  "formula_refs": [
+    "memory-influence-score",
+    "counterfactual-delta"
+  ],
+  "id": "memory-influence-auditor",
+  "inputs": [
+    "structured workflow events",
+    "policy/contract snapshots",
+    "evidence and memory references"
+  ],
+  "invariants": [
+    "No private hidden reasoning is requested or stored.",
+    "Every explanation distinguishes recorded fact from reconstruction.",
+    "Trace data is minimized and scope-bound."
+  ],
+  "outputs": [
+    "sanitized operational trace",
+    "decision reconstruction",
+    "compact and forensic report"
+  ],
+  "procedure": [
+    "Capture structured operational events without private chain-of-thought.",
+    "Redact secrets and sensitive data.",
+    "Link decisions, evidence, tools, policies, alternatives, and state transitions.",
+    "Reconstruct gaps as labeled inference, never recorded fact.",
+    "Emit reproducible reports and machine-readable graphs."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Identify which memory records affected a decision, test applicability and provenance, and compare safe counterfactual replays with suspect memory removed or substituted.",
+  "title": "Memory Influence Auditor",
+  "version": "1.0.0",
+  "when_to_use": "Use when stale, poisoned, cross-project, or overgeneralized memory may have influenced behavior."
+}

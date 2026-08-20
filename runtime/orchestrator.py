@@ -25,6 +25,7 @@ from .lifecycle import (
     make_checkpoint,
 )
 from .outcome_verifier import VerificationDecision, verify
+from .operation_authority import AuthorityRequest, decide as decide_authority
 from .registry import load_json, navigation_index, validate_registry
 from .skill_navigator import CapabilitySummary, navigate
 
@@ -40,6 +41,12 @@ class TaskRequest:
     max_tool_calls: int = 0
     idempotency_key: str | None = None
     attempt: int = 1
+    executor: str = "codex-host"
+    px_policy_decision_id: str | None = None
+    claim_id: str | None = None
+    claim_status: str | None = None
+    explicit_delegation: bool = False
+    active_executors: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -194,6 +201,23 @@ class Orchestrator:
             if item["id"] == selected.capability_id
         )
         manifest = load_json(self.root / capability_item["contract"])
+        authority = decide_authority(
+            AuthorityRequest(
+                executor=request.executor,
+                effects=request.requested_effects,
+                user_approval_id=policy.approval_id,
+                px_policy_decision_id=request.px_policy_decision_id,
+                claim_id=request.claim_id,
+                claim_status=request.claim_status,
+                idempotency_key=request.idempotency_key,
+                explicit_delegation=request.explicit_delegation,
+                active_executors=request.active_executors,
+            )
+        )
+        if not authority.allowed:
+            mark("authority", "failed")
+            return finish("blocked", authority.reasons)
+        mark("authority")
         contract = enforce(
             ExecutionRequest(
                 selected.capability_id,

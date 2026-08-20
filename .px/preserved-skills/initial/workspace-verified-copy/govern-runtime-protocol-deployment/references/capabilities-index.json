@@ -1,0 +1,138 @@
+{
+  "count": 22,
+  "records": [
+    {
+      "id": "a2a-agent-adapter",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/a2a-agent-adapter.json",
+      "sha256": "55faa2ee005d8be17564a1bbf2926816dc0cfa238183594785633db3e23b7dda",
+      "trigger": "Use when the requested outcome is a2a agent adapter or when that outcome is a required dependency."
+    },
+    {
+      "id": "backend-capability-prober",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/backend-capability-prober.json",
+      "sha256": "c54c4a0ea0fd0991667aefdc74c523e6e2ab792851c81d3e8299e6feeef03a6a",
+      "trigger": "Use when the requested outcome is backend capability prober or when that outcome is a required dependency."
+    },
+    {
+      "id": "batching-policy-selector",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/batching-policy-selector.json",
+      "sha256": "01b265a0b3e2092fea27f5a5ad46c7001767948885075621f06b62915f35e06f",
+      "trigger": "Use when the requested outcome is batching policy selector or when that outcome is a required dependency."
+    },
+    {
+      "id": "cache-policy-selector",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/cache-policy-selector.json",
+      "sha256": "801bb87c0393ff509f89f5bd2b7bcc2a070ccfa3926a9e3f43067906a1c777e4",
+      "trigger": "Use when the requested outcome is cache policy selector or when that outcome is a required dependency."
+    },
+    {
+      "id": "capability-discovery-negotiation",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/capability-discovery-negotiation.json",
+      "sha256": "94f385e753690570ebbe40e8dd2ac95145b2eb5be317774335875612c18160be",
+      "trigger": "Use when the requested outcome is capability discovery negotiation or when that outcome is a required dependency."
+    },
+    {
+      "id": "capacity-planner",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/capacity-planner.json",
+      "sha256": "6128fce09ad371b8cb41ae17407fa4c1a816f023f4c36dafb1f14432b5f4fddf",
+      "trigger": "Use when the requested outcome is capacity planner or when that outcome is a required dependency."
+    },
+    {
+      "id": "cost-resource-budget-manager",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/cost-resource-budget-manager.json",
+      "sha256": "6234f39639c8d4428a92163e2a28de080ea828e66002fe36c5d688a894c05531",
+      "trigger": "Use when the requested outcome is cost resource budget manager or when that outcome is a required dependency."
+    },
+    {
+      "id": "deployment-canary-manager",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/deployment-canary-manager.json",
+      "sha256": "54c79a5e1658dd7ec561aad44fa3051c7e49295dd02515c4becccfc9a8cfe654",
+      "trigger": "Use when the requested outcome is deployment canary manager or when that outcome is a required dependency."
+    },
+    {
+      "id": "fallback-and-degradation",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/fallback-and-degradation.json",
+      "sha256": "6ee55a302d9390f7a9f389de67cfe345d707b83921e62b3431ec0e1ea9caa1c9",
+      "trigger": "Use when the requested outcome is fallback and degradation or when that outcome is a required dependency."
+    },
+    {
+      "id": "handoff-package-author",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/handoff-package-author.json",
+      "sha256": "b822af996ff4476233fe9ce0910f5dfb46df6b176aae17da8517897de1f90820",
+      "trigger": "Use when the requested outcome is handoff package author or when that outcome is a required dependency."
+    },
+    {
+      "id": "hardware-topology-inspector",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/hardware-topology-inspector.json",
+      "sha256": "831142b16b3a030192d80c481bd62eabdaf8225455073f9e737276d6d901ff1b",
+      "trigger": "Use when the requested outcome is hardware topology inspector or when that outcome is a required dependency."
+    },
+    {
+      "id": "human-approval-ux",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/human-approval-ux.json",
+      "sha256": "0b73ccd8eab5b1a7b6e9596ba11584fcdc5cef7cb47df47f789a16cf3f0945ae",
+      "trigger": "Use when the requested outcome is human approval ux or when that outcome is a required dependency."
+    },
+    {
+      "id": "json-schema-tool-validator",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/json-schema-tool-validator.json",
+      "sha256": "f51466f982334662315e11691c776c9cdaeedd4f4899da9739cd942fb7f192b0",
+      "trigger": "Use when the requested outcome is json schema tool validator or when that outcome is a required dependency."
+    },
+    {
+      "id": "mcp-client-server-adapter",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/mcp-client-server-adapter.json",
+      "sha256": "71e29e53a8eabbd04035feca1c8176602a82191a18051238f134e25eccf8b425",
+      "trigger": "Use when the requested outcome is mcp client server adapter or when that outcome is a required dependency."
+    },
+    {
+      "id": "model-compatibility-prober",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/model-compatibility-prober.json",
+      "sha256": "a1e7444655f0e09ec2aa3d6798e018bf60d7decb9de7e2bd5dfc6ae0fa7126e3",
+      "trigger": "Use when the requested outcome is model compatibility prober or when that outcome is a required dependency."
+    },
+    {
+      "id": "model-router",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/model-router.json",
+      "sha256": "721527051084268a12e0e7982d6d2db68b18debcb163ce3225276d459fa1f5d5",
+      "trigger": "Use when the requested outcome is model router or when that outcome is a required dependency."
+    },
+    {
+      "id": "openapi-tool-importer",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/openapi-tool-importer.json",
+      "sha256": "46041906111ee077a2c25d1ab384c2ec017170fb084eb45e0e3a87247e0bd588",
+      "trigger": "Use when the requested outcome is openapi tool importer or when that outcome is a required dependency."
+    },
+    {
+      "id": "quantization-quality-evaluator",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/quantization-quality-evaluator.json",
+      "sha256": "73cf288b4d9a29208ebd6afbf5feaa94fee6b1a6250dea76f8a39adb1d377f65",
+      "trigger": "Use when the requested outcome is quantization quality evaluator or when that outcome is a required dependency."
+    },
+    {
+      "id": "runtime-regression-tester",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/runtime-regression-tester.json",
+      "sha256": "0dd1c995e62ad1e60497ba8d0dcec27ff307296d01bfc8f3847a3edca6768cb8",
+      "trigger": "Use when the requested outcome is runtime regression tester or when that outcome is a required dependency."
+    },
+    {
+      "id": "serving-backend-selector",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/serving-backend-selector.json",
+      "sha256": "a03226d3dd5b13626870ce71253acc2cd83faf6c3b8055068d7ab1a5aed63bc1",
+      "trigger": "Use when the requested outcome is serving backend selector or when that outcome is a required dependency."
+    },
+    {
+      "id": "throughput-latency-benchmarker",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/throughput-latency-benchmarker.json",
+      "sha256": "a97d0cc866018b1e45d0e920107f87c0d795c13c00156500e4374a780aafacc4",
+      "trigger": "Use when the requested outcome is throughput latency benchmarker or when that outcome is a required dependency."
+    },
+    {
+      "id": "tool-output-sanitizer",
+      "path": ".agents/skills/govern-runtime-protocol-deployment/references/capabilities/tool-output-sanitizer.json",
+      "sha256": "b83d1714d7db8682aad68d554d9ddd8708059f8bd43a74f58d1f8ac2441ad7f4",
+      "trigger": "Use when the requested outcome is tool output sanitizer or when that outcome is a required dependency."
+    }
+  ],
+  "schema_version": "1.0"
+}

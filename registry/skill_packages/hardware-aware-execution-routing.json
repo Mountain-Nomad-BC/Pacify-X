@@ -1,5 +1,5 @@
 {
-  "body": ".agents/skills/hardware-aware-execution-routing/SKILL.md",
+  "body": ".px/skills/hardware-aware-execution-routing/SKILL.md",
   "body_sha256": "ec2782183f3bd8973410a2f04b77d9d382e0d3007111a71a57a08d0c4e5ee64c",
   "capability_tags": [
     "benchmark",
@@ -27,7 +27,7 @@
     "type": "clean_room_user_specification_implementation"
   },
   "references": [
-    ".agents/skills/hardware-aware-execution-routing/references/routing-policy.md"
+    ".px/skills/hardware-aware-execution-routing/references/routing-policy.md"
   ],
   "status": "active",
   "tests": "tests/test_hardware_routing.py",

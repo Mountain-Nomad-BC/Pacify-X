@@ -1,0 +1,9 @@
+{
+  "active_gap_id": "PX-OS-936",
+  "learned": "Only two assertions are superseded: the release identifier and the advanced-surface visibility default. All functional source assertions remain applicable.",
+  "next_action": "Update those two expected values to current intentional package state.",
+  "unresolved_branch_gap_ids": ["PX-OS-936"],
+  "evidence": [
+    {"claim": "Stale source contract is registered before repair.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004956"}
+  ]
+}

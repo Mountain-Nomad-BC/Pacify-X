@@ -1,0 +1,54 @@
+{
+  "count": 8,
+  "records": [
+    {
+      "id": "archive-hygiene",
+      "path": ".px/skills/manage-revocable-certification/references/scripts/archive-hygiene.json",
+      "sha256": "77318cbfd52eca168119ff2965be972e8a1df0b3e838b4693058efe2e8468687",
+      "trigger": "Use when the requested outcome is archive hygiene or when that outcome is a required dependency."
+    },
+    {
+      "id": "archive-verifier",
+      "path": ".px/skills/manage-revocable-certification/references/scripts/archive-verifier.json",
+      "sha256": "23e439f1d88f8c25dc323a78f87d11c4569fe22b53eeb9aed1f6a8be7edc518f",
+      "trigger": "Use when the requested outcome is archive verifier or when that outcome is a required dependency."
+    },
+    {
+      "id": "certification-aggregator",
+      "path": ".px/skills/manage-revocable-certification/references/scripts/certification-aggregator.json",
+      "sha256": "0cac4a287faa88cda15b59fd1fdd204e8c28f7d0f84e1b361b0efca291e20c01",
+      "trigger": "Use when the requested outcome is certification aggregator or when that outcome is a required dependency."
+    },
+    {
+      "id": "collision-merge-planner",
+      "path": ".px/skills/manage-revocable-certification/references/scripts/collision-merge-planner.json",
+      "sha256": "9c9c94e8c73c2ed50fa5fbc90ef644958ba73072b3923294dfbb49187b445cfc",
+      "trigger": "Use when the requested outcome is collision merge planner or when that outcome is a required dependency."
+    },
+    {
+      "id": "completion-cutline",
+      "path": ".px/skills/manage-revocable-certification/references/scripts/completion-cutline.json",
+      "sha256": "d18dd119eb0400e5f74c27d2b9652578b6763e6a6eac1442f2a0e21cd16bc383",
+      "trigger": "Use when the requested outcome is completion cutline or when that outcome is a required dependency."
+    },
+    {
+      "id": "duplicate-detector",
+      "path": ".px/skills/manage-revocable-certification/references/scripts/duplicate-detector.json",
+      "sha256": "05b47548ea2eeffe11d391a98dde599140b1204e77923244e749f006e12b69aa",
+      "trigger": "Use when the requested outcome is duplicate detector or when that outcome is a required dependency."
+    },
+    {
+      "id": "manifest-reconciler",
+      "path": ".px/skills/manage-revocable-certification/references/scripts/manifest-reconciler.json",
+      "sha256": "309a2486e460b55b447f11d79c359025f31c580c56107dea5cb3074bd645fb0a",
+      "trigger": "Use when the requested outcome is manifest reconciler or when that outcome is a required dependency."
+    },
+    {
+      "id": "recertification-impact",
+      "path": ".px/skills/manage-revocable-certification/references/scripts/recertification-impact.json",
+      "sha256": "37bf529662ac0890063cc6cc14ab3761817fe7f0793402352e50129f1ef3dfd6",
+      "trigger": "Use when the requested outcome is recertification impact or when that outcome is a required dependency."
+    }
+  ],
+  "schema_version": "1.0"
+}

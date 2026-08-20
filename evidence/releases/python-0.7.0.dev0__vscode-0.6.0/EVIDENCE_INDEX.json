@@ -1,0 +1,58 @@
+{
+  "artifact_count": 1,
+  "authority": "content identities for this exact version namespace; historical evidence is not current",
+  "generated_utc": "2026-08-13T14:10:40.329740Z",
+  "identity": {
+    "extension_version": "0.6.0",
+    "python_version": "0.7.0.dev0"
+  },
+  "limitations": [],
+  "namespace": "python-0.7.0.dev0__vscode-0.6.0",
+  "record_count": 7,
+  "records": [
+    {
+      "bytes": 636,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+      "sha256": "afbf01f784527e0855b8f1a069ef28b83b3f18acb9d65632977a8428bc7d38f6"
+    },
+    {
+      "bytes": 722,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/execution-placement.json",
+      "sha256": "e5e06a513442043a750649dcf2f06f40a5a30218048f457718b184230e1dc743"
+    },
+    {
+      "bytes": 600,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/hardware-routing.json",
+      "sha256": "afa0d7d6929ed1da145cf20448f52ef90b06b520fd757c8b5f61fe4f3f8ef27a"
+    },
+    {
+      "bytes": 604,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/learning-promotion.json",
+      "sha256": "fbece2ff643759d4bec0159c8e7c1ff93b2d81b27eb01a5dc6a710e9b347aad2"
+    },
+    {
+      "bytes": 854,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
+      "sha256": "03f1a9efa55be11b7dc9fc6593e0f53c650fdf005632db539009599d28f1a6ff"
+    },
+    {
+      "bytes": 755,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "sha256": "d381cbfd69c36f7819293e678b443674515ca6c6845dd08bf53bd82e6b359aa5"
+    },
+    {
+      "bytes": 3953738,
+      "kind": "vsix",
+      "path": "extension/dist/pacify-x-vscode-0.6.0.vsix",
+      "sha256": "f767ac93e1823858737d0c134e8fa65b4a88a2faba58abe09b15a1a1dc16fd01"
+    }
+  ],
+  "schema_version": "px.current-evidence-index/1.0",
+  "valid": true
+}

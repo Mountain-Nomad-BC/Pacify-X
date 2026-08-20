@@ -1,0 +1,38 @@
+{
+  "admission_record": "orchestrate-security-validation",
+  "body_sha256": "226c50f4689dbe0e46f5948b94b8318e6b23af9e1bf4f3181c2670fe0b08a34d",
+  "contract": {
+    "available": true,
+    "sha256": "c9d76d66a0654a2e0a70c6bbfcef516194ee200ca7963c2fe519e74d48928cae",
+    "source": "registry/skill_packages/orchestrate-security-validation.json"
+  },
+  "description": "Plan and run dependency-aware security validation across secret, source, infrastructure, supply-chain, dynamic, accessibility, fuzz, and load scanners, then aggregate payload-minimized findings. Use when a security campaign involves multiple tools, prerequisites, execution barriers, partial scanner failures, or a unified evidence report.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "orchestrate-security-validation",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/orchestrate-security-validation"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "security",
+    "validation",
+    "aggregation",
+    "pipeline"
+  ],
+  "version": "0.1.0"
+}

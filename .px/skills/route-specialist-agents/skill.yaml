@@ -1,0 +1,39 @@
+{
+  "admission_record": "route-specialist-agents",
+  "body_sha256": "44126f3f611b82304114c8e21a0a5820471648223f4084b99de50f4c52657a20",
+  "contract": {
+    "available": true,
+    "sha256": "7968d4c60bf0810c86e7669df1fa466a06a40e42c801d847deafb8360fd9ceb9",
+    "source": "registry/skill_packages/route-specialist-agents.json"
+  },
+  "description": "Select and compile a bounded panel from PACIFY-X's local specialist-agent provider. Use when a task materially benefits from a domain specialist or independent reviewer and the agent corpus must remain metadata-first, project-scoped, evidence-governed, and authority-neutral.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "route-specialist-agents",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/route-specialist-agents"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "agents",
+    "specialists",
+    "routing",
+    "governance",
+    "lazy-loading"
+  ],
+  "version": "1.0.0"
+}

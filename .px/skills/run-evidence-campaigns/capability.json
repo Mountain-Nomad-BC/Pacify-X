@@ -1,0 +1,38 @@
+{
+  "admission_record": "run-evidence-campaigns",
+  "body_sha256": "24ded8f3900b2029b624a5c22d28a239bfa92bf671ae802cc742fe796b7c0e1c",
+  "contract": {
+    "available": true,
+    "sha256": "9a1f7c48c3ec53a758a00462e0cc1582a79396cd89349d68afed1c6bd83d9a87",
+    "source": "registry/skill_packages/run-evidence-campaigns.json"
+  },
+  "description": "Plan, execute, resume, score, and report bounded validation campaigns across source, API, browser, data, accessibility, security, performance, and recovery surfaces. Use when shallow smoke tests are insufficient or when a release claim needs transparent pass/fail/blocked/skipped/uncertain evidence and exact coverage denominators.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "run-evidence-campaigns",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/run-evidence-campaigns"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "evidence",
+    "campaign",
+    "validation",
+    "coverage"
+  ],
+  "version": "0.1.0"
+}

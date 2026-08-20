@@ -1,0 +1,39 @@
+{
+  "admission_record": "acquire-install-supabase",
+  "body_sha256": "536bcecab1eb8a9e3884f5ef258ca766a16205c04ec971ee9dc99faa9c51ab87",
+  "contract": {
+    "available": true,
+    "sha256": "7d6e7024b42fcb1a0eef2b563058bedf779a49822125583d44d5860c6544c799",
+    "source": "registry/skill_packages/acquire-install-supabase.json"
+  },
+  "description": "Acquire and install the Supabase CLI and official agent resources using supported, pinned channels.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "acquire-install-supabase",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/acquire-install-supabase"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "agent-skills",
+    "local-stack",
+    "project-dependency",
+    "supabase",
+    "supabase-cli"
+  ],
+  "version": "1.0.0"
+}

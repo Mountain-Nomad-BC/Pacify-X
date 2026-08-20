@@ -1,0 +1,38 @@
+{
+  "admission_record": "guided-procedure-wizard",
+  "body_sha256": "42fe1e69b7ce78d824d351a3220b912d0b6a802eee3ee6885bba047be831c137",
+  "contract": {
+    "available": true,
+    "sha256": "f6017919b5845f798d5938cfca07d1eeea1dae8b31a79aac1c7af05f09ad05c4",
+    "source": "registry/skill_packages/guided-procedure-wizard.json"
+  },
+  "description": "Generate a resumable human-guided procedure for setup, migration, or other manual state transitions.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "guided-procedure-wizard",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/guided-procedure-wizard"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "engineering-reasoning",
+    "guided",
+    "procedure",
+    "wizard"
+  ],
+  "version": "1.0.0"
+}

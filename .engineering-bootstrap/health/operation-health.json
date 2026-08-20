@@ -1,0 +1,41 @@
+{
+  "schema_version": "px.operation-coverage-health/1.0",
+  "route_states": [
+    {
+      "route_id": "extension.vscode-listener",
+      "kind": "observer",
+      "health": "healthy",
+      "observed_at": "2026-08-15T02:56:49.531379+00:00",
+      "receipt_path": "extension/evidence/installed-vsix-smoke.json",
+      "receipt_sha256": "870436afd33ba081d6fc35c7f2df0e0cbb7d1f7c0d159cf88867e2315bd33260",
+      "limitation": null
+    },
+    {
+      "route_id": "provider.remote-model",
+      "kind": "mediator",
+      "health": "healthy",
+      "observed_at": "2026-08-15T02:56:49.531379+00:00",
+      "receipt_path": "evidence/punch-cards/O08-provider-invocation-gateway.json",
+      "receipt_sha256": "8e9ab3b886cffeaa803fb110e120bdd9506229be7e56f0a6b6ba8bd0dca3d71f",
+      "limitation": null
+    },
+    {
+      "route_id": "provider.local-model",
+      "kind": "mediator",
+      "health": "healthy",
+      "observed_at": "2026-08-15T02:56:49.531379+00:00",
+      "receipt_path": "evidence/punch-cards/O08-provider-invocation-gateway.json",
+      "receipt_sha256": "8e9ab3b886cffeaa803fb110e120bdd9506229be7e56f0a6b6ba8bd0dca3d71f",
+      "limitation": null
+    },
+    {
+      "route_id": "runtime.package-environment",
+      "kind": "observer",
+      "health": "healthy",
+      "observed_at": "2026-08-15T02:56:49.531379+00:00",
+      "receipt_path": "evidence/punch-cards/O12-system-tool-inventory.json",
+      "receipt_sha256": "b79e323a8114abea402668c42348a309b1f50c8139ba8dee41990292f9603895",
+      "limitation": null
+    }
+  ]
+}

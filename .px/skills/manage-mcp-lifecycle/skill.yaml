@@ -1,0 +1,38 @@
+{
+  "admission_record": "manage-mcp-lifecycle",
+  "body_sha256": "416f2d4353bad6355206665f955b9eec00bab95df5756ea1e3ffd3a10e8986af",
+  "contract": {
+    "available": true,
+    "sha256": "4b78e49cb7938a55f994fff5886e361134d1b25362b3e87e2860124fb8073b30",
+    "source": "registry/skill_packages/manage-mcp-lifecycle.json"
+  },
+  "description": "Discover, register, prioritize, probe, certify, disable, and recover Model Context Protocol servers without loading all tools at startup. Use when bootstrapping MCP configuration, verifying stdio servers, reconciling registered servers, pruning stale entries, or preventing tool catalogs from exhausting context or startup resources.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "manage-mcp-lifecycle",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/manage-mcp-lifecycle"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "mcp",
+    "tooling",
+    "lifecycle",
+    "lazy-loading"
+  ],
+  "version": "0.1.0"
+}

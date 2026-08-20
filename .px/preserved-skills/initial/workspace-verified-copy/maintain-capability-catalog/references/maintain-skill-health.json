@@ -1,0 +1,59 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "similarity never authorizes deletion",
+    "health score is advisory until evidence is reviewed",
+    "preserve provenance and versions"
+  ],
+  "bundle": "maintain-capability-catalog",
+  "category": "skill-governance",
+  "dependencies": [
+    "skill-admission-controller",
+    "synchronize-derived-architecture",
+    "provenance-signature-verifier"
+  ],
+  "id": "maintain-skill-health",
+  "keywords": [
+    "skill stocktake",
+    "skill health",
+    "validate skills",
+    "placement policy",
+    "catalog audit"
+  ],
+  "mechanisms": [
+    "quick scan vs full stocktake",
+    "schema validation",
+    "placement policy",
+    "staleness and duplication checks",
+    "quality rubric",
+    "health report"
+  ],
+  "owner": "skill-admission-controller",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "skills/skill-stocktake/SKILL.md",
+      "scripts/skills-health.js",
+      "scripts/ci/validate-skills.js",
+      "docs/SKILL-DEVELOPMENT-GUIDE.md",
+      "docs/SKILL-PLACEMENT-POLICY.md"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "skills/skill-stocktake/SKILL.md",
+    "scripts/skills-health.js",
+    "scripts/ci/validate-skills.js",
+    "docs/SKILL-DEVELOPMENT-GUIDE.md",
+    "docs/SKILL-PLACEMENT-POLICY.md"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Inventory skills, validate structure and placement, detect duplication or staleness, measure instruction usefulness, and queue targeted repairs instead of blindly accumulating files.",
+  "title": "Maintain Skill Health",
+  "use_when": [
+    "skill count grows faster than maintainability",
+    "candidate skills need admission evidence",
+    "runtime cannot tell which guidance is stale"
+  ]
+}

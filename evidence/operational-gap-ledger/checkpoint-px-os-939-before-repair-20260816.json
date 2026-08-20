@@ -1,0 +1,7 @@
+{
+  "active_gap_id": "PX-OS-939",
+  "learned": "Strict validation is correct; only the unspecified-provider fallback is wrong. Explicit vscode-lm and pacify-local selections must remain exact and fail closed, while an unspecified draft can safely use the existing deterministic PX tuple.",
+  "next_action": "Change the unspecified provider fallback to deterministic without relaxing explicit host-model validation.",
+  "unresolved_branch_gap_ids": ["PX-OS-939"],
+  "evidence": [{"claim": "The invalid default route is registered.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004980"}]
+}

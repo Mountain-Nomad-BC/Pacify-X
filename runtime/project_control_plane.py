@@ -179,10 +179,10 @@ def record_project_transition(
     }
 
 
-def register_agent(
+def validate_agent_specification(
     ledger: Path, specification: Mapping[str, object]
 ) -> dict[str, object]:
-    tests = specification.get("tests")
+    tests = specification.get("required_tests", specification.get("tests"))
     reasons = []
     for field in ("agent_id", "template_id", "project_id"):
         if not str(specification.get(field, "")).strip():
@@ -195,22 +195,30 @@ def register_agent(
     if (
         not isinstance(tests, Mapping)
         or not tests
-        or not all(value is True for value in tests.values())
     ):
-        reasons.append("agent_tests_not_passed")
-    if specification.get("sandbox_validated") is not True:
-        reasons.append("sandbox_not_validated")
-    if not specification.get("evidence"):
-        reasons.append("agent_evidence_missing")
-    decision = "rejected" if reasons else "active"
+        reasons.append("required_tests_missing")
+    decision = "rejected" if reasons else "validated_candidate"
     event = append_event(
         ledger,
-        f"agent-{decision}",
-        {"specification": dict(specification), "reasons": reasons},
+        "agent-specification-rejected" if reasons else "agent-specification-validated-candidate",
+        {
+            "specification": dict(specification),
+            "reasons": reasons,
+            "caller_test_assertions_trusted": False,
+            "caller_sandbox_assertion_trusted": False,
+        },
     )
     return {
+        "operation": "agent.specification.validate_and_record",
         "decision": decision,
         "reasons": reasons,
+        "validation_state": "invalid" if reasons else "valid",
+        "admission_state": "unadmitted",
+        "runtime_state": "stopped",
+        "authority_state": "none",
+        "created": False,
+        "assertions_trusted": False,
+        "evidence_state": "unverified_references" if specification.get("evidence") else "none",
         "event": event.as_posix(),
         "fingerprint": _stable(specification),
     }

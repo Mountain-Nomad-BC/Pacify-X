@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-858",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000003136",
+  "effect": "write",
+  "scope": [
+    "scripts/build_typed_operational_surface_inventory.py",
+    "registry/operational_surface_inventory.json",
+    "extension/scripts/operational-ui-control-records.js",
+    "extension/scripts/run-operational-ui-walk.js"
+  ],
+  "authority": "Codex retains native host execution authority and applies PX inventory governance within the user-authorized repository.",
+  "expected_effect": "Add exact stable IDs for all native pacifyX.* VS Code commands and keep walker coverage bound to the revised denominator.",
+  "rollback": "If manifest/inventory equality fails, retain PX-OS-858, stop the walk, and preserve the prior predecessor-bound inventory revision.",
+  "evidence": [{"reference":"extension/package.json","claim":"The extension manifest is authoritative for contributed native command IDs."}]
+}

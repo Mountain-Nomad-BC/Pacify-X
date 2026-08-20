@@ -1,0 +1,38 @@
+{
+  "admission_record": "route-n8n-supabase-stack",
+  "body_sha256": "a139acaabd598b87f1a6ca8861940452ae4cc04329711d84c8918d5e12960a6c",
+  "contract": {
+    "available": true,
+    "sha256": "6682e16f515a0e6929be8de3b39d6e4cd1f8814255686b945e6c7686d86bf82e",
+    "source": "registry/skill_packages/route-n8n-supabase-stack.json"
+  },
+  "description": "Route combined n8n and Supabase work across integration, automation, RAG, security, reliability, testing, and operations.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "route-n8n-supabase-stack",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/route-n8n-supabase-stack"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "combined-stack",
+    "cross",
+    "routing",
+    "trust-boundaries"
+  ],
+  "version": "1.0.0"
+}

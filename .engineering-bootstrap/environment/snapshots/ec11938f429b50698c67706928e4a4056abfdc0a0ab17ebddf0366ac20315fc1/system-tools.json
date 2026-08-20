@@ -1,0 +1,185 @@
+[
+  {
+    "id": "python",
+    "command": "python",
+    "available": true,
+    "version": "Python 3.14.5",
+    "probe": "--version",
+    "resource_contract": {
+      "resource": "python",
+      "capabilities": [
+        "version-probed",
+        "callable-after-separate-policy-gate"
+      ],
+      "interface": "python --version",
+      "requirements": [
+        "local process execution"
+      ],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped",
+      "state": "available"
+    }
+  },
+  {
+    "id": "node",
+    "command": "node",
+    "available": true,
+    "version": "v24.16.0",
+    "probe": "--version",
+    "resource_contract": {
+      "resource": "node",
+      "capabilities": [
+        "version-probed",
+        "callable-after-separate-policy-gate"
+      ],
+      "interface": "node --version",
+      "requirements": [
+        "local process execution"
+      ],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped",
+      "state": "available"
+    }
+  },
+  {
+    "id": "npm",
+    "command": "npm",
+    "available": false,
+    "version": "spawn npm ENOENT",
+    "probe": "--version",
+    "resource_contract": {
+      "resource": "npm",
+      "capabilities": [],
+      "interface": "npm --version",
+      "requirements": [
+        "local process execution"
+      ],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped",
+      "state": "absent"
+    }
+  },
+  {
+    "id": "git",
+    "command": "git",
+    "available": true,
+    "version": "git version 2.54.0.windows.1",
+    "probe": "--version",
+    "resource_contract": {
+      "resource": "git",
+      "capabilities": [
+        "version-probed",
+        "callable-after-separate-policy-gate"
+      ],
+      "interface": "git --version",
+      "requirements": [
+        "local process execution"
+      ],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped",
+      "state": "available"
+    }
+  },
+  {
+    "id": "docker",
+    "command": "docker",
+    "available": true,
+    "version": "Docker version 29.4.2, build 055a478",
+    "probe": "--version",
+    "resource_contract": {
+      "resource": "docker",
+      "capabilities": [
+        "version-probed",
+        "callable-after-separate-policy-gate"
+      ],
+      "interface": "docker --version",
+      "requirements": [
+        "local process execution"
+      ],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped",
+      "state": "available"
+    }
+  },
+  {
+    "id": "ollama",
+    "command": "ollama",
+    "available": true,
+    "version": "Warning: could not connect to a running Ollama instance Warning: client version is 0.32.5",
+    "probe": "--version",
+    "resource_contract": {
+      "resource": "ollama",
+      "capabilities": [
+        "version-probed",
+        "callable-after-separate-policy-gate"
+      ],
+      "interface": "ollama --version",
+      "requirements": [
+        "local process execution"
+      ],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped",
+      "state": "available"
+    }
+  },
+  {
+    "id": "uv",
+    "command": "uv",
+    "available": false,
+    "version": "spawn uv ENOENT",
+    "probe": "--version",
+    "resource_contract": {
+      "resource": "uv",
+      "capabilities": [],
+      "interface": "uv --version",
+      "requirements": [
+        "local process execution"
+      ],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped",
+      "state": "absent"
+    }
+  },
+  {
+    "id": "code",
+    "command": "code",
+    "available": false,
+    "version": "spawn code ENOENT",
+    "probe": "--version",
+    "resource_contract": {
+      "resource": "code",
+      "capabilities": [],
+      "interface": "code --version",
+      "requirements": [
+        "local process execution"
+      ],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped",
+      "state": "absent"
+    }
+  }
+]

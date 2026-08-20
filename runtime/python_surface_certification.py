@@ -12,6 +12,22 @@ import json
 from pathlib import Path
 from typing import Any
 
+from .repository_scope import is_project_source
+
+def _source_python_candidate(path: Path, root: Path) -> bool:
+    """Return true only for project-owned Python source.
+
+    Repository-local interpreters and virtual environments are dependency
+    installations. They are inventoried by environment discovery and must not
+    inflate the application ownership/certification surface.
+    """
+    relative = path.relative_to(root)
+    if "__pycache__" in relative.parts:
+        return False
+    if relative.parts[:2] == (".px", "preserved-skills"):
+        return False
+    return is_project_source(path, root)
+
 
 def _digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -33,6 +49,8 @@ def _installed_record_hashes() -> dict[Path, str]:
 
 def _role(relative: str) -> tuple[str, str, bool]:
     parts = relative.split("/")
+    if relative == "sitecustomize.py":
+        return "source-build-control", "project-release-control", False
     if parts[0] == "tests":
         return "release-test", "release-verification", True
     if parts[0] == "runtime":
@@ -42,9 +60,8 @@ def _role(relative: str) -> tuple[str, str, bool]:
     if parts[0] == "templates" and len(parts) >= 2 and parts[1] == "generated":
         return "installed-generator-template", "generated-artifact-reconciliation", True
     if (
-        parts[0] == ".agents"
+        parts[:2] == [".px", "skills"]
         and len(parts) >= 5
-        and parts[1] == "skills"
         and "scripts" in parts
     ):
         return "installed-skill-tool", parts[2], True
@@ -234,7 +251,7 @@ def certify_python_surfaces(
     records: list[dict[str, Any]] = []
     errors: list[str] = []
     for path in sorted(root.rglob("*.py"), key=lambda item: item.as_posix().casefold()):
-        if "__pycache__" in path.parts:
+        if not _source_python_candidate(path, root):
             continue
         relative = path.relative_to(root).as_posix()
         role, owner, packaged = _role(relative)

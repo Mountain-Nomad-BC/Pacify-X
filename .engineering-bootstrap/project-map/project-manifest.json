@@ -1,0 +1,125 @@
+{
+  "adapter_version": "2026-08-06.1",
+  "build_stats": {
+    "rescanned_file_facts": 291,
+    "reused_file_facts": 5475
+  },
+  "caller_exclude_prefixes": [],
+  "counts": {
+    "architecture_edges": 13392,
+    "architecture_nodes": 6145,
+    "call_edges": 12980,
+    "configuration_keys": 43429,
+    "contracts": 201,
+    "data_flows": 3724,
+    "dependency_edges": 7382,
+    "files": 5766,
+    "integrations": 22,
+    "retrieval_documents": 57673,
+    "risks": 5,
+    "routes": 9,
+    "services": 0,
+    "symbols": 8241,
+    "test_links": 1196
+  },
+  "exclusion_counts": {
+    "default": 40,
+    "gitignore": 2,
+    "sensitive_file": 1,
+    "virtual_environment": 1
+  },
+  "gitignore_policy": {
+    "available": true,
+    "command": "git ls-files --cached --others --exclude-standard",
+    "mode": "git-exclude-standard",
+    "record_count": 7240
+  },
+  "incremental": true,
+  "limits": {
+    "max_bytes": 2147483648,
+    "max_depth": 96,
+    "max_files": 100000,
+    "max_text_bytes": 2097152
+  },
+  "map_files": [
+    "project-manifest.json",
+    "file-inventory.jsonl",
+    "file-facts.jsonl",
+    "symbol-index.jsonl",
+    "dependency-graph.json",
+    "call-graph.json",
+    "architecture-graph.json",
+    "runtime-topology.json",
+    "data-flow-map.json",
+    "integration-map.json",
+    "configuration-map.json",
+    "ownership-map.json",
+    "contract-map.json",
+    "test-coverage-map.json",
+    "traceability-map.json",
+    "risk-and-gap-map.json",
+    "retrieval-index.json",
+    "map-summary.md"
+  ],
+  "map_revision": "9b9bcefc6882b1bd80548b86e1bc121ae863a21b8401fce485ec669afb3c46f7",
+  "mapper_version": "0.4.0",
+  "project_name": "Pacify-X",
+  "project_root": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X",
+  "schema_version": "1.1",
+  "sensitive_source_excludes": {
+    "directory_names": [
+      ".credentials",
+      ".secrets"
+    ],
+    "names": [
+      ".env",
+      ".git-credentials",
+      ".netrc",
+      ".npmrc",
+      ".pypirc",
+      "credentials.json",
+      "id_dsa",
+      "id_ecdsa",
+      "id_ed25519",
+      "id_rsa",
+      "service-account.json",
+      "service_account.json"
+    ],
+    "suffixes": [
+      ".jks",
+      ".key",
+      ".keystore",
+      ".p12",
+      ".pem",
+      ".pfx"
+    ]
+  },
+  "source_excludes": [
+    ".cache",
+    ".engineering-bootstrap",
+    ".git",
+    ".hg",
+    ".idea",
+    ".mypy_cache",
+    ".parcel-cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".svn",
+    ".tmp",
+    ".tox",
+    ".turbo",
+    ".venv",
+    ".vite",
+    "__pycache__",
+    "build",
+    "coverage",
+    "dist",
+    "evidence",
+    "htmlcov",
+    "node_modules",
+    "python",
+    "quarantine",
+    "venv"
+  ],
+  "source_inventory_sha256": "70b52e0d3610a29d1977326903c27f298fc97bcc26d549799182424d7a4ea10b"
+}

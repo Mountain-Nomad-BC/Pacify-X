@@ -2,14 +2,25 @@
   "id": "context-compactor",
   "version": "1.0.0",
   "status": "active",
-  "body": ".agents/skills/context-compactor/SKILL.md",
+  "body": ".px/skills/context-compactor/SKILL.md",
   "body_sha256": "2c5ecea8627ebfd6bf4b2024ad1c96b8a6e5a69c0b61e89a0b4fc947fbad843b",
   "references": [],
-  "capability_tags": ["communication-budget", "context", "evidence-preservation", "orchestration"],
-  "effects": ["read_local"],
+  "capability_tags": [
+    "communication-budget",
+    "context",
+    "evidence-preservation",
+    "orchestration"
+  ],
+  "effects": [
+    "read_local"
+  ],
   "provenance": {
     "type": "clean_room_reference_requirement_implementation",
-    "basis": ["runtime/reasoning_controls.py", "contracts/reasoning/communication-budget.schema.json", "tests/test_clean_room_capabilities.py"],
+    "basis": [
+      "runtime/reasoning_controls.py",
+      "contracts/reasoning/communication-budget.schema.json",
+      "tests/test_clean_room_capabilities.py"
+    ],
     "canonical_owner": "runtime/reasoning_controls.py"
   },
   "clean_room": true,

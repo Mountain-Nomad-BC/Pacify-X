@@ -1,0 +1,8 @@
+{
+  "id": "skeptical-certification",
+  "version": "1.0.0",
+  "status": "active",
+  "summary": "Certification must survive approved invalidation attempts and account for the current discovery denominator.",
+  "applies_to": ["completion_claims", "release_certification", "assumption_ledgers"],
+  "enforcement": "Block certification when evidence is stale, coverage is denominator-incomplete, unknowns are unclassified, or contradictions remain unresolved."
+}

@@ -1,0 +1,14 @@
+{
+  "active_gap_id": "PX-OS-988",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005689",
+  "unresolved_branch_gap_ids": ["PX-OS-079", "PX-OS-962", "PX-OS-963", "PX-OS-976", "PX-OS-978", "PX-OS-979", "PX-OS-981", "PX-OS-983", "PX-OS-984", "PX-OS-985", "PX-OS-986", "PX-OS-987", "PX-OS-988"],
+  "newly_discovered_gap_ids": [],
+  "learned": "Promotion layers legitimately have different hashes because they commit different semantic objects. The repair must validate typed role relationships and recomputed commitments, never global hash equality.",
+  "next_action": "Implement one bounded typed learning-state parser that independently validates and recomputes each promotion-layer hash role, accepts legitimate unequal hashes, rejects swaps/misbinding, and is used by normal reads and recovery before admission or reuse.",
+  "evidence": [
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005687",
+      "claim": "Exact parser defect and required role semantics"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "admission_record": "research-to-operation-translator",
+  "body_sha256": "eb10bf6f136275a0c9d8d55b314fce65d6d41d4a282b65a82383124a9b0e5528",
+  "contract": {
+    "available": true,
+    "sha256": "176d1c1a62a566c22d7d539f93ee3547869ef5b852c6c226a89a27e37a3d27bb",
+    "source": "registry/skill_packages/research-to-operation-translator.json"
+  },
+  "description": "Convert a validated research mechanism into a bounded skill, service, workflow, or evaluation. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "research-to-operation-translator",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/research-to-operation-translator"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "operation",
+    "research",
+    "research-ops",
+    "to",
+    "translator"
+  ],
+  "version": "0.1.0"
+}

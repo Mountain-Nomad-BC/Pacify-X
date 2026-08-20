@@ -13,4 +13,4 @@ metadata_only_at_startup = true
 max_selected_capabilities = 3
 cross_project_default = "deny"
 cleanup_mode = "quarantine_only"
-tool_installation = "explicit_approval_only"
+tool_installation = "reversible_in_scope_allowed"

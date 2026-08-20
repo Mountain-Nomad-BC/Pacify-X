@@ -1,0 +1,24 @@
+{
+  "schema_version": "px.provider-adapter-registry/1.0",
+  "policy": "Model invocations are denied unless the exact adapter is admitted here and invoked through runtime/provider_gateway.py. Registration never grants credentials, network, process, model, or spending authority.",
+  "adapters": [
+    {
+      "adapter_id": "ollama-http",
+      "provider_id": "ollama",
+      "mode": "local",
+      "implementation": "runtime/provider_gateway.py",
+      "admitted": false,
+      "status": "unconfigured",
+      "billing_state": "local_non_billable"
+    },
+    {
+      "adapter_id": "openai-responses",
+      "provider_id": "openai",
+      "mode": "remote",
+      "implementation": "runtime/provider_gateway.py",
+      "admitted": false,
+      "status": "unconfigured",
+      "billing_state": "actual"
+    }
+  ]
+}

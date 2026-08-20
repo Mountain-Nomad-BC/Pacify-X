@@ -1,0 +1,94 @@
+{
+  "schema_version": "px.owned-test-ephemeral-cleanup/1.0",
+  "created_utc": "2026-08-13T18:35:49.0276208Z",
+  "authority": "explicit_user_request_2026-08-13",
+  "hard_delete": true,
+  "protected_data_touched": false,
+  "records": [
+    {
+      "path": "${USER_TEMP}\\pacify-x-vscode-test-cache",
+      "classification": "ephemeral",
+      "owner": "PACIFY-X test tooling",
+      "file_count": 4282,
+      "logical_bytes": 2105571136,
+      "reparse_points_removed": 0,
+      "disposition": "permanently_reclaimed_by_explicit_user_authority"
+    },
+    {
+      "path": "${USER_TEMP}\\pacify-x-installed-vsix-0so2UE",
+      "classification": "ephemeral",
+      "owner": "PACIFY-X test tooling",
+      "file_count": 582,
+      "logical_bytes": 21878393,
+      "reparse_points_removed": 0,
+      "disposition": "permanently_reclaimed_by_explicit_user_authority"
+    },
+    {
+      "path": "${USER_TEMP}\\pacify-x-installed-vsix-69q0pq",
+      "classification": "ephemeral",
+      "owner": "PACIFY-X test tooling",
+      "file_count": 258,
+      "logical_bytes": 17643119,
+      "reparse_points_removed": 0,
+      "disposition": "permanently_reclaimed_by_explicit_user_authority"
+    },
+    {
+      "path": "${USER_TEMP}\\pacify-x-installed-vsix-sYDY6F",
+      "classification": "ephemeral",
+      "owner": "PACIFY-X test tooling",
+      "file_count": 259,
+      "logical_bytes": 17569237,
+      "reparse_points_removed": 0,
+      "disposition": "permanently_reclaimed_by_explicit_user_authority"
+    },
+    {
+      "path": "${USER_TEMP}\\pacify-x-independent-ui-audit-20260811",
+      "classification": "ephemeral",
+      "owner": "PACIFY-X test tooling",
+      "file_count": 8,
+      "logical_bytes": 2793276,
+      "reparse_points_removed": 0,
+      "disposition": "permanently_reclaimed_by_explicit_user_authority"
+    },
+    {
+      "path": "${USER_TEMP}\\pacify-x-o04-vscode-FukJKj",
+      "classification": "ephemeral",
+      "owner": "PACIFY-X test tooling",
+      "file_count": 1,
+      "logical_bytes": 8,
+      "reparse_points_removed": 0,
+      "disposition": "permanently_reclaimed_by_explicit_user_authority"
+    },
+    {
+      "path": "${PROJECT_ROOT}\\extension\\.vscode-test",
+      "classification": "ephemeral",
+      "owner": "PACIFY-X test tooling",
+      "file_count": 1855,
+      "logical_bytes": 1054721033,
+      "reparse_points_removed": 0,
+      "disposition": "permanently_reclaimed_by_explicit_user_authority"
+    }
+  ],
+  "target_count": 7,
+  "logical_bytes_reclaimed": 3220176202,
+  "free_bytes_before": 0,
+  "free_bytes_after": 3216826368,
+  "free_bytes_gained": 3216826368,
+  "all_targets_absent": true,
+  "locator_redaction": {
+    "schema_version": "px.host-locator-redaction/1.0",
+    "host_paths_removed": true,
+    "portable_tokens": [
+      "${PROJECT_ROOT}",
+      "${USER_HOME}",
+      "${USER_TEMP}"
+    ],
+    "semantic_fields_preserved": true
+  },
+  "evidence_classification": {
+    "class": "historical_forensic_cleanup_record",
+    "current_release_authority": false,
+    "accounting_independently_validated": false,
+    "limitation": "Retained/remaining objects and filesystem logical-byte accounting prevent this historical receipt from proving a clean current release tree."
+  }
+}

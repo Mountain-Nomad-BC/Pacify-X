@@ -1,0 +1,3542 @@
+{
+  "schema_version": "pacify-x.ui-action-inventory.v1",
+  "authority": "generated from rendered data-action controls; effects remain host-authoritative",
+  "navigation_controls": {
+    "selector": "[data-surface]",
+    "mode": "ui-only",
+    "effect": "none-outside-webview",
+    "acknowledgement": "active surface and focus update"
+  },
+  "action_count": 199,
+  "actions": [
+    {
+      "action": "acceptStudioVersionSuggestion",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "draft-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "apply the request-bound host allocation suggestion to the unsaved candidate without saving it",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "activityPause",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "setActivityPaused",
+        "fields": [
+          "requestId",
+          "paused"
+        ]
+      },
+      "authority": "VS Code workspace configuration",
+      "effect": "configuration-write",
+      "state_transition": "configuration change and refreshed snapshot",
+      "acknowledgement": "configuration change and refreshed snapshot",
+      "receipt": "configuration + activity observation",
+      "rendered_in": [
+        "media/dashboard/46-observability-surfaces.js"
+      ]
+    },
+    {
+      "action": "activityRefresh",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "activityQuery",
+        "fields": [
+          "requestId",
+          "query",
+          "category",
+          "status",
+          "limit"
+        ]
+      },
+      "authority": "activity ledger reader",
+      "effect": "read",
+      "state_transition": "activityResult",
+      "acknowledgement": "activityResult",
+      "receipt": "bounded response",
+      "rendered_in": [
+        "media/dashboard/46-observability-surfaces.js"
+      ]
+    },
+    {
+      "action": "agentAddBinding",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "add a px-standard capability binding declaration to the agent candidate",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "agentAddGrant",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "add a bounded effect-grant declaration to the agent candidate",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "agentAddTopologyNode",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "draft-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "add one optional typed AgentSpec node to the unsaved visual candidate",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "agentAutoLayout",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "apply deterministic bounded coordinates to every AgentSpec graph node",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "agentCancelConnection",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "cancel the pending AgentSpec connection without changing the unsaved working graph",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "agentFit",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "view-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "fit the complete AgentSpec graph into the current canvas",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "agentPortConnect",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "start or complete one admitted typed AgentSpec connection in the unsaved working graph",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "agentRemoveBinding",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "remove a capability binding declaration and its agent reference",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "agentRemoveEdge",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "remove one typed AgentSpec connection from the unsaved working graph",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "agentRemoveGrant",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "remove an effect-grant declaration and linked candidate references",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "agentRemoveTopologyNode",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "draft-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "remove one optional typed AgentSpec node from the unsaved visual candidate",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "agentSelectNode",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "select one closed AgentSpec graph node and open its field-linked inspector",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "agentSelectSection",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "select and focus one legacy agent topology section",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "agentZoom",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "view-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "change the bounded Agent Studio canvas scale without changing the candidate",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "buildRepositoryGraph",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "buildRepositoryGraph",
+        "fields": []
+      },
+      "authority": "runtime.project_intelligence",
+      "effect": "workspace-write",
+      "state_transition": "graphBuildResult or operationError",
+      "acknowledgement": "graphBuildResult or operationError",
+      "receipt": "current project-map build receipt",
+      "rendered_in": [
+        "media/dashboard/42-core-surfaces.js",
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "cancelCodex",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "cancelCodex",
+        "fields": [
+          "requestId"
+        ]
+      },
+      "authority": "current Codex host",
+      "effect": "host-ui",
+      "state_transition": "host-operation result message with boundary detail",
+      "acknowledgement": "host-operation result message with boundary detail",
+      "receipt": "non-execution acknowledgement",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "capabilityTab",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "view-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "select capability catalog",
+      "rendered_in": [
+        "media/dashboard/43-catalog-surfaces.js"
+      ]
+    },
+    {
+      "action": "captureMemory",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open proposed-memory form",
+      "rendered_in": [
+        "media/dashboard/46-observability-surfaces.js"
+      ]
+    },
+    {
+      "action": "catalogNext",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "catalogQuery",
+        "fields": [
+          "requestId",
+          "kind",
+          "query",
+          "status",
+          "offset",
+          "limit",
+          "sort"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "catalogResult",
+      "acknowledgement": "catalogResult",
+      "receipt": "paged response",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "catalogPrevious",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "catalogQuery",
+        "fields": [
+          "requestId",
+          "kind",
+          "query",
+          "status",
+          "offset",
+          "limit",
+          "sort"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "catalogResult",
+      "acknowledgement": "catalogResult",
+      "receipt": "paged response",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "catalogRetry",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "catalogQuery",
+        "fields": [
+          "requestId",
+          "kind",
+          "query",
+          "status",
+          "offset",
+          "limit",
+          "sort"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "catalogResult or operationError",
+      "acknowledgement": "catalogResult or operationError",
+      "receipt": "bounded retry response",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "claimTask",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open claim form",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "cleanupManager",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "scanCleanup",
+        "fields": []
+      },
+      "authority": "cleanup controller",
+      "effect": "read",
+      "state_transition": "cleanupCandidates or cleanupError",
+      "acknowledgement": "cleanupCandidates or cleanupError",
+      "receipt": "classified inventory",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "cleanupPermanent",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "executeCleanup",
+        "fields": [
+          "ids",
+          "disposition"
+        ]
+      },
+      "authority": "cleanup controller + explicit modal approval",
+      "effect": "destructive-filesystem",
+      "state_transition": "cleanupResult or cleanupError",
+      "acknowledgement": "cleanupResult or cleanupError",
+      "receipt": "verified cleanup receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "cleanupRecycle",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "executeCleanup",
+        "fields": [
+          "ids",
+          "disposition"
+        ]
+      },
+      "authority": "cleanup controller",
+      "effect": "filesystem-write",
+      "state_transition": "cleanupResult or cleanupError",
+      "acknowledgement": "cleanupResult or cleanupError",
+      "receipt": "verified cleanup receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "cleanupSelectAll",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "selection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "select or clear admitted cleanup candidates",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "closeModal",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "close dialog and restore focus",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "commandCenter",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open command center",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "compareSkillOriginal",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "compare one verified PX-native package tree and metadata record to its immutable preserved original",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "completeTask",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open completion receipt form",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "configureCanonicalMemory",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "configureCanonicalMemory",
+        "fields": [
+          "requestId"
+        ]
+      },
+      "authority": "workspace manager + VS Code configuration",
+      "effect": "configuration-write",
+      "state_transition": "folder selection, explicit initialization approval, and refreshed snapshot",
+      "acknowledgement": "folder selection, explicit initialization approval, and refreshed snapshot",
+      "receipt": "workspace initialization receipt when created",
+      "rendered_in": [
+        "media/dashboard/46-observability-surfaces.js"
+      ]
+    },
+    {
+      "action": "contextSnapshot",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "createContextSnapshot",
+        "fields": [
+          "requestId"
+        ]
+      },
+      "authority": "context bridge",
+      "effect": "host-ui",
+      "state_transition": "JSON document or operationError",
+      "acknowledgement": "JSON document or operationError",
+      "receipt": "host acknowledgement",
+      "rendered_in": [
+        "media/dashboard/46-observability-surfaces.js",
+        "media/dashboard/47-advanced-surfaces.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "continueCodex",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "continueCodex",
+        "fields": [
+          "requestId"
+        ]
+      },
+      "authority": "current Codex host + PX context broker",
+      "effect": "host-ui",
+      "state_transition": "JSON context package receipt and explicit authority-boundary message or operationError",
+      "acknowledgement": "JSON context package receipt and explicit authority-boundary message or operationError",
+      "receipt": "host handoff acknowledgement and non-execution boundary disposition",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "copyModal",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "copyText",
+        "fields": [
+          "requestId",
+          "text"
+        ]
+      },
+      "authority": "VS Code clipboard authority",
+      "effect": "clipboard-write",
+      "state_transition": "information message or operationError",
+      "acknowledgement": "information message or operationError",
+      "receipt": "host acknowledgement",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "copyTaskHandoff",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "copyTaskHandoff",
+        "fields": [
+          "requestId",
+          "taskId"
+        ]
+      },
+      "authority": "VS Code clipboard authority",
+      "effect": "clipboard-write",
+      "state_transition": "information message or operationError",
+      "acknowledgement": "information message or operationError",
+      "receipt": "host acknowledgement",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "discardWorkingStudioDraft",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "draft-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "explicitly discard one retained webview-local unsaved draft and open a clean editor",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "enterpriseDoctor",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "enterpriseDoctor",
+        "fields": []
+      },
+      "authority": "enterprise state controller",
+      "effect": "read",
+      "state_transition": "enterpriseResult",
+      "acknowledgement": "enterpriseResult",
+      "receipt": "doctor report",
+      "rendered_in": [
+        "media/dashboard/44-operational-surfaces.js",
+        "media/dashboard/45-system-surfaces.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "enterprisePackToggle",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "enterprisePackToggle",
+        "fields": [
+          "packId",
+          "enabled"
+        ]
+      },
+      "authority": "enterprise state controller",
+      "effect": "workspace-write",
+      "state_transition": "enterpriseResult",
+      "acknowledgement": "enterpriseResult",
+      "receipt": "enterprise event receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "enterpriseTargetConfigure",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "enterpriseTargetConfigure",
+        "fields": [
+          "packId"
+        ]
+      },
+      "authority": "enterprise state controller",
+      "effect": "host-ui",
+      "state_transition": "enterpriseResult",
+      "acknowledgement": "enterpriseResult",
+      "receipt": "configuration handoff",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "environmentExtensionDetail",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "environmentExtensionDetail",
+        "fields": [
+          "extensionId"
+        ]
+      },
+      "authority": "environment discovery reader",
+      "effect": "read",
+      "state_transition": "environmentExtensionDetail or operationError",
+      "acknowledgement": "environmentExtensionDetail or operationError",
+      "receipt": "bounded response",
+      "rendered_in": [
+        "media/dashboard/44-operational-surfaces.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "environmentScope",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "view-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "select environment inventory scope",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "executeEnvironmentLifecycle",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "environmentLifecycleExecute",
+        "fields": [
+          "token",
+          "exactTarget",
+          "consumerImpactAcknowledged"
+        ]
+      },
+      "authority": "environment lifecycle controller",
+      "effect": "filesystem-write",
+      "state_transition": "environmentLifecycleResult or operationError",
+      "acknowledgement": "environmentLifecycleResult or operationError",
+      "receipt": "reversible disposition receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "executeExtensionConflictResolution",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "extensionConflictResolutionExecute",
+        "fields": [
+          "requestId",
+          "token",
+          "exactTarget"
+        ]
+      },
+      "authority": "explicit native modal + governed lifecycle router; downstream mutations retain separate approval",
+      "effect": "host-ui-or-routed-preview",
+      "state_transition": "extensionConflictResolutionResult or operationError",
+      "acknowledgement": "extensionConflictResolutionResult or operationError",
+      "receipt": "route acknowledgement without false resolved-state claim",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "executeExtensionEnablement",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "extensionEnablementExecute",
+        "fields": [
+          "requestId",
+          "token",
+          "exactTarget",
+          "extensionId",
+          "desiredAction",
+          "scope"
+        ]
+      },
+      "authority": "explicit native modal + VS Code extension manager authority",
+      "effect": "host-ui",
+      "state_transition": "extensionEnablementResult or operationError",
+      "acknowledgement": "extensionEnablementResult or operationError",
+      "receipt": "exact native-record handoff receipt without false mutation claim",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "executeExtensionInstall",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "extensionLifecycleExecute",
+        "fields": [
+          "requestId",
+          "token",
+          "exactTarget"
+        ]
+      },
+      "authority": "explicit native modal + VS Code extension command authority",
+      "effect": "host-extension-write",
+      "state_transition": "extensionLifecycleResult or operationError",
+      "acknowledgement": "extensionLifecycleResult or operationError",
+      "receipt": "exact installed-identity reconciliation receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "executeExtensionRollback",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "extensionRollbackExecute",
+        "fields": [
+          "requestId",
+          "token",
+          "exactTarget",
+          "extensionId"
+        ]
+      },
+      "authority": "explicit native modal + VS Code extension command authority",
+      "effect": "host-extension-write",
+      "state_transition": "extensionRollbackResult or operationError",
+      "acknowledgement": "extensionRollbackResult or operationError",
+      "receipt": "exact restored-version receipt before custody consumption",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "executeExtensionUninstall",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "extensionUninstallExecute",
+        "fields": [
+          "requestId",
+          "token",
+          "exactTarget",
+          "extensionId",
+          "consumerImpactAcknowledged"
+        ]
+      },
+      "authority": "explicit native modal + VS Code extension command authority",
+      "effect": "host-extension-write",
+      "state_transition": "extensionUninstallResult or operationError",
+      "acknowledgement": "extensionUninstallResult or operationError",
+      "receipt": "absence reconciliation receipt with durable rollback custody",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "executeExtensionUpdate",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "extensionUpdateExecute",
+        "fields": [
+          "requestId",
+          "token",
+          "exactTarget"
+        ]
+      },
+      "authority": "explicit native modal + VS Code extension command authority",
+      "effect": "host-extension-write",
+      "state_transition": "extensionUpdateResult or operationError",
+      "acknowledgement": "extensionUpdateResult or operationError",
+      "receipt": "exact observed-version reconciliation receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "exportRecordJson",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "exportRecordJson",
+        "fields": [
+          "requestId",
+          "record",
+          "fileName",
+          "title"
+        ]
+      },
+      "authority": "VS Code save-dialog authority",
+      "effect": "workspace-write",
+      "state_transition": "host save dialog or operationError",
+      "acknowledgement": "host save dialog or operationError",
+      "receipt": "filesystem write completion",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "filterActivityCorrelation",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "activityQuery",
+        "fields": [
+          "requestId",
+          "query",
+          "category",
+          "status",
+          "limit"
+        ]
+      },
+      "authority": "activity ledger reader",
+      "effect": "read",
+      "state_transition": "activityResult",
+      "acknowledgement": "activityResult",
+      "receipt": "bounded response",
+      "rendered_in": [
+        "media/dashboard/46-observability-surfaces.js"
+      ]
+    },
+    {
+      "action": "focusGraphNode",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "graphQuery",
+        "fields": [
+          "requestId",
+          "view",
+          "mode",
+          "cluster",
+          "node",
+          "target",
+          "query",
+          "relation",
+          "direction",
+          "kind",
+          "status",
+          "offset",
+          "edgeOffset",
+          "depth",
+          "maxNodes",
+          "maxEdges"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "graphResult",
+      "acknowledgement": "graphResult",
+      "receipt": "bounded graph response",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "forkStudioCandidate",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "draft-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "copy predecessor content into an independent unbound 1.0.0 candidate with no inherited allocation or authority",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "graphApplySavedView",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "view-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "apply a saved graph query, filter, depth, and layout",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphBack",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "graph-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "restore prior selected graph node",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphClearCommunity",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "graphQuery",
+        "fields": [
+          "requestId",
+          "view",
+          "mode",
+          "cluster",
+          "node",
+          "target",
+          "query",
+          "relation",
+          "direction",
+          "kind",
+          "status",
+          "offset",
+          "edgeOffset",
+          "depth",
+          "maxNodes",
+          "maxEdges"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "graphResult",
+      "acknowledgement": "graphResult",
+      "receipt": "unfiltered progressive record page",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphCommunity",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "graphQuery",
+        "fields": [
+          "requestId",
+          "view",
+          "mode",
+          "cluster",
+          "node",
+          "target",
+          "query",
+          "relation",
+          "direction",
+          "kind",
+          "status",
+          "offset",
+          "edgeOffset",
+          "depth",
+          "maxNodes",
+          "maxEdges"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "graphResult",
+      "acknowledgement": "graphResult",
+      "receipt": "server-filtered community record page",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphDeleteSavedView",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "view-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "remove one local saved graph view",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphDepth",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "graph-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "expand or contract the bounded graph neighborhood",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphFit",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "graph-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "fit graph to visible viewport",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphFocus",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "graph-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "enter or leave full-screen graph focus",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "graphLayout",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "graph-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "select deterministic community, flow, or orbit layout",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphLoadMore",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "graphQuery",
+        "fields": [
+          "requestId",
+          "view",
+          "mode",
+          "cluster",
+          "node",
+          "target",
+          "query",
+          "relation",
+          "direction",
+          "kind",
+          "status",
+          "offset",
+          "edgeOffset",
+          "depth",
+          "maxNodes",
+          "maxEdges"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "graphResult",
+      "acknowledgement": "graphResult",
+      "receipt": "next bounded record and relationship pages with explicit coverage",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphOpenNeighborhood",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "graphQuery",
+        "fields": [
+          "requestId",
+          "view",
+          "mode",
+          "cluster",
+          "node",
+          "target",
+          "query",
+          "relation",
+          "direction",
+          "kind",
+          "status",
+          "offset",
+          "edgeOffset",
+          "depth",
+          "maxNodes",
+          "maxEdges"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "graphResult",
+      "acknowledgement": "graphResult",
+      "receipt": "bounded selected-record relationship neighborhood",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphOverview",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "graphQuery",
+        "fields": [
+          "requestId",
+          "view",
+          "mode",
+          "cluster",
+          "node",
+          "target",
+          "query",
+          "relation",
+          "direction",
+          "kind",
+          "status",
+          "offset",
+          "edgeOffset",
+          "depth",
+          "maxNodes",
+          "maxEdges"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "graphResult",
+      "acknowledgement": "graphResult",
+      "receipt": "first bounded full-map record page with explicit source and eligible denominators",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphReset",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "graph-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "reset graph transform",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphSaveView",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open the local graph-view preset form",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphToggleInspector",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "graph-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "toggle relationship inspector",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphView",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "graphQuery",
+        "fields": [
+          "requestId",
+          "view",
+          "mode",
+          "cluster",
+          "node",
+          "target",
+          "query",
+          "relation",
+          "direction",
+          "kind",
+          "status",
+          "offset",
+          "edgeOffset",
+          "depth",
+          "maxNodes",
+          "maxEdges"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "graphResult",
+      "acknowledgement": "graphResult",
+      "receipt": "bounded graph response",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphZoomIn",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "graph-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "increase bounded graph scale",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphZoomOut",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "graph-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "decrease bounded graph scale",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "hydrateSkillCandidate",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "skillHydrate",
+        "fields": [
+          "skill",
+          "domain"
+        ]
+      },
+      "authority": "PX-native exact-ID skill hydrator",
+      "effect": "read",
+      "state_transition": "skillHydrateResult or operationError",
+      "acknowledgement": "skillHydrateResult or operationError",
+      "receipt": "exactly one selected admitted skill body",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "informationTab",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "view-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "select human or machine record view",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "inspectActivityEvent",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open metadata-only activity record",
+      "rendered_in": [
+        "media/dashboard/46-observability-surfaces.js"
+      ]
+    },
+    {
+      "action": "inspectCatalogItem",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open human and machine-readable catalog record",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "inspectDiagnosticRecord",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open one current cause, owner, evidence, and post-repair verification trace",
+      "rendered_in": [
+        "media/dashboard/45-system-surfaces.js"
+      ]
+    },
+    {
+      "action": "inspectEnvironmentRecord",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open environment record and governed lifecycle options",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "inspectGraphRecord",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open source identity and provenance from the current bounded graph page",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "inspectLearningPipeline",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open the signed learning pipeline and gate evidence",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "inspectMachineManifest",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open AI capability manifest",
+      "rendered_in": [
+        "media/dashboard/44-operational-surfaces.js"
+      ]
+    },
+    {
+      "action": "inspectMemoryRecord",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open canonical memory record",
+      "rendered_in": [
+        "media/dashboard/46-observability-surfaces.js"
+      ]
+    },
+    {
+      "action": "inspectMetric",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open the exact metric label, value, detail, and active-surface context",
+      "rendered_in": [
+        "media/dashboard/30-components.js"
+      ]
+    },
+    {
+      "action": "inspectOperationalInventory",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "operationalInventoryQuery",
+        "fields": [
+          "requestId",
+          "surfaceId"
+        ]
+      },
+      "authority": "append-only operational gap ledger",
+      "effect": "read",
+      "state_transition": "operationalInventoryResult or operationError",
+      "acknowledgement": "operationalInventoryResult or operationError",
+      "receipt": "surface/control disposition inventory",
+      "rendered_in": [
+        "media/dashboard/45-system-surfaces.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "inspectProjectMapRecord",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open one bounded record from the current sealed project-map projection",
+      "rendered_in": [
+        "media/dashboard/42-core-surfaces.js"
+      ]
+    },
+    {
+      "action": "inspectPunchCard",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "operationalCardQuery",
+        "fields": [
+          "requestId",
+          "gapId"
+        ]
+      },
+      "authority": "append-only operational gap ledger",
+      "effect": "read",
+      "state_transition": "operationalCardResult or operationError",
+      "acknowledgement": "operationalCardResult or operationError",
+      "receipt": "exact canonical card and complete history",
+      "rendered_in": [
+        "media/dashboard/45-system-surfaces.js"
+      ]
+    },
+    {
+      "action": "inspectReadiness",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open readiness dimension evidence",
+      "rendered_in": [
+        "media/dashboard/45-system-surfaces.js"
+      ]
+    },
+    {
+      "action": "inspectReadinessReport",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open human and machine-readable readiness report",
+      "rendered_in": [
+        "media/dashboard/45-system-surfaces.js"
+      ]
+    },
+    {
+      "action": "inspectRuntimeRecord",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open one bounded runtime work, placement, producer, or provider record",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "inspectSensor",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "inspection",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open current sensor evidence",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "knowledgePropose",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open a source- and evidence-bound knowledge proposal form",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "knowledgeRecover",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X knowledge controller + retained host authority",
+      "effect": "workspace-write",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "signed knowledge and learning projection recovery receipt",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "knowledgeRefresh",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X knowledge controller",
+      "effect": "read",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "bounded knowledge controller snapshot",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "knowledgeReject",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open an evidence-backed knowledge rejection form",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "knowledgeRollback",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open an evidence-bound knowledge rollback form without mutating state",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "knowledgeTransition",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X knowledge controller + retained host approval",
+      "effect": "workspace-write",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "verified, approved, or promoted lifecycle receipt",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "learningAdmit",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X learning and knowledge controllers + retained host authority",
+      "effect": "workspace-write",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "linked non-canonical knowledge proposal receipt",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "learningAppendEvidence",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "append evidence within the pipeline source boundary",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "learningFinalValidation",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open final evidence and partial-unit validation inputs",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "learningHypothesis",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open immutable incumbent/challenger revision inputs",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "learningObserve",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open immutable operation-evidence capture",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "learningPattern",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open hashless aggregation and pattern extraction inputs",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "learningResearch",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open independent research and optional tier-three inputs",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "learningReuse",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open cumulative measured-reuse inputs",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "learningTrial",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open one evidence-bound A/B trial input",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "loadSkillPackageEditor",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "loadSkillPackageEditor",
+        "fields": [
+          "requestId",
+          "catalogKind",
+          "recordId"
+        ]
+      },
+      "authority": "PX canonical/preserved skill roots with no-follow boundary",
+      "effect": "read",
+      "state_transition": "skillPackageEditorResult or operationError",
+      "acknowledgement": "skillPackageEditorResult or operationError",
+      "receipt": "bounded tree digest and file count",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "memoryNext",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "memoryQuery",
+        "fields": [
+          "requestId",
+          "query",
+          "offset",
+          "limit",
+          "status",
+          "projectId",
+          "source"
+        ]
+      },
+      "authority": "canonical workspace memory vault",
+      "effect": "read",
+      "state_transition": "memoryResult",
+      "acknowledgement": "memoryResult",
+      "receipt": "next bounded page",
+      "rendered_in": [
+        "media/dashboard/46-observability-surfaces.js"
+      ]
+    },
+    {
+      "action": "memoryPrevious",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "memoryQuery",
+        "fields": [
+          "requestId",
+          "query",
+          "offset",
+          "limit",
+          "status",
+          "projectId",
+          "source"
+        ]
+      },
+      "authority": "canonical workspace memory vault",
+      "effect": "read",
+      "state_transition": "memoryResult",
+      "acknowledgement": "memoryResult",
+      "receipt": "previous bounded page",
+      "rendered_in": [
+        "media/dashboard/46-observability-surfaces.js"
+      ]
+    },
+    {
+      "action": "memoryRefresh",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "memoryQuery",
+        "fields": [
+          "requestId",
+          "query",
+          "offset",
+          "limit",
+          "status",
+          "projectId",
+          "source"
+        ]
+      },
+      "authority": "canonical workspace memory vault",
+      "effect": "read",
+      "state_transition": "memoryResult",
+      "acknowledgement": "memoryResult",
+      "receipt": "lease-bound integrity-checked bounded response",
+      "rendered_in": [
+        "media/dashboard/46-observability-surfaces.js"
+      ]
+    },
+    {
+      "action": "newParallelPlan",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open validated parallel-plan form",
+      "rendered_in": [
+        "media/dashboard/44-operational-surfaces.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "openCoordinationHandoff",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "openCoordinationHandoff",
+        "fields": [
+          "requestId"
+        ]
+      },
+      "authority": "coordination controller + VS Code document",
+      "effect": "host-ui",
+      "state_transition": "document or operationError",
+      "acknowledgement": "document or operationError",
+      "receipt": "host acknowledgement",
+      "rendered_in": [
+        "media/dashboard/42-core-surfaces.js",
+        "media/dashboard/44-operational-surfaces.js",
+        "media/dashboard/46-observability-surfaces.js",
+        "media/dashboard/47-advanced-surfaces.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "openEngineRoot",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "openFile",
+        "fields": [
+          "requestId",
+          "path"
+        ]
+      },
+      "authority": "VS Code document authority",
+      "effect": "host-ui",
+      "state_transition": "document, warning, or operationError",
+      "acknowledgement": "document, warning, or operationError",
+      "receipt": "path-boundary acknowledgement",
+      "rendered_in": [
+        "media/dashboard/42-core-surfaces.js"
+      ]
+    },
+    {
+      "action": "openExtensionsView",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "openExtensionsView",
+        "fields": [
+          "requestId"
+        ]
+      },
+      "authority": "VS Code command authority",
+      "effect": "host-ui",
+      "state_transition": "host view opens or operationError",
+      "acknowledgement": "host view opens or operationError",
+      "receipt": "host acknowledgement",
+      "rendered_in": [
+        "media/dashboard/44-operational-surfaces.js"
+      ]
+    },
+    {
+      "action": "openKnowledgeSource",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "openFile",
+        "fields": [
+          "requestId",
+          "path"
+        ]
+      },
+      "authority": "VS Code document authority",
+      "effect": "host-ui",
+      "state_transition": "document or operationError",
+      "acknowledgement": "document or operationError",
+      "receipt": "path-boundary acknowledgement",
+      "rendered_in": [
+        "media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "action": "openMemorySource",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "openFile",
+        "fields": [
+          "requestId",
+          "path"
+        ]
+      },
+      "authority": "VS Code document authority + workspace boundary",
+      "effect": "host-ui",
+      "state_transition": "document or operationError",
+      "acknowledgement": "document or operationError",
+      "receipt": "path-boundary acknowledgement",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "openProjectModuleMap",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "view-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open the bounded repository explorer with exact file-node and import-edge filters",
+      "rendered_in": [
+        "media/dashboard/42-core-surfaces.js"
+      ]
+    },
+    {
+      "action": "openPunchSource",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "openFile",
+        "fields": [
+          "requestId",
+          "path"
+        ]
+      },
+      "authority": "VS Code document authority + engine-root boundary",
+      "effect": "host-ui",
+      "state_transition": "document or operationError",
+      "acknowledgement": "document or operationError",
+      "receipt": "path-boundary acknowledgement",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "openRepositoryGraph",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "graphQuery",
+        "fields": [
+          "requestId",
+          "view",
+          "mode",
+          "cluster",
+          "node",
+          "target",
+          "query",
+          "relation",
+          "direction",
+          "kind",
+          "status",
+          "offset",
+          "edgeOffset",
+          "depth",
+          "maxNodes",
+          "maxEdges"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "graphResult",
+      "acknowledgement": "graphResult",
+      "receipt": "first bounded repository record page with progressive full-map coverage",
+      "rendered_in": [
+        "media/dashboard/42-core-surfaces.js"
+      ]
+    },
+    {
+      "action": "openSettings",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "openSettings",
+        "fields": [
+          "requestId"
+        ]
+      },
+      "authority": "VS Code command authority",
+      "effect": "host-ui",
+      "state_transition": "host settings UI or operationError",
+      "acknowledgement": "host settings UI or operationError",
+      "receipt": "host acknowledgement",
+      "rendered_in": [
+        "media/dashboard/45-system-surfaces.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "openStudioDraft",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open a structured versioned studio draft editor",
+      "rendered_in": [
+        "media/dashboard/43-catalog-surfaces.js",
+        "media/dashboard/44-operational-surfaces.js"
+      ]
+    },
+    {
+      "action": "openStudioFromCatalog",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open a supported existing agent or workflow record as a new immutable Studio revision",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "openStudioRuns",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated durable Studio run controller",
+      "effect": "read",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "authenticated durable run heads",
+      "rendered_in": [
+        "media/dashboard/43-catalog-surfaces.js",
+        "media/dashboard/44-operational-surfaces.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "operateStudioRevision",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "load one exact authenticated admitted Studio revision for preview or execution without changing its version",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "operationalCardsNext",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "operationalCardsQuery",
+        "fields": [
+          "requestId",
+          "query",
+          "state",
+          "severity",
+          "surface",
+          "owner",
+          "evidenceGap",
+          "offset",
+          "limit"
+        ]
+      },
+      "authority": "append-only operational gap ledger",
+      "effect": "read",
+      "state_transition": "operationalCardsResult or operationError",
+      "acknowledgement": "operationalCardsResult or operationError",
+      "receipt": "next bounded card page",
+      "rendered_in": [
+        "media/dashboard/45-system-surfaces.js"
+      ]
+    },
+    {
+      "action": "operationalCardsPrevious",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "operationalCardsQuery",
+        "fields": [
+          "requestId",
+          "query",
+          "state",
+          "severity",
+          "surface",
+          "owner",
+          "evidenceGap",
+          "offset",
+          "limit"
+        ]
+      },
+      "authority": "append-only operational gap ledger",
+      "effect": "read",
+      "state_transition": "operationalCardsResult or operationError",
+      "acknowledgement": "operationalCardsResult or operationError",
+      "receipt": "previous bounded card page",
+      "rendered_in": [
+        "media/dashboard/45-system-surfaces.js"
+      ]
+    },
+    {
+      "action": "previewEnvironmentLifecycle",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "environmentLifecyclePreview",
+        "fields": [
+          "subject",
+          "recordId",
+          "action"
+        ]
+      },
+      "authority": "environment lifecycle controller",
+      "effect": "read",
+      "state_transition": "environmentLifecyclePreview or operationError",
+      "acknowledgement": "environmentLifecyclePreview or operationError",
+      "receipt": "two-snapshot preview token",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "previewExtensionConflictResolution",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "extensionConflictResolutionPreview",
+        "fields": [
+          "requestId",
+          "extensionId",
+          "signalId",
+          "targetExtensionId",
+          "resolution"
+        ]
+      },
+      "authority": "conflict analyzer + governed lifecycle router",
+      "effect": "read",
+      "state_transition": "extensionConflictResolutionPreview or operationError",
+      "acknowledgement": "extensionConflictResolutionPreview or operationError",
+      "receipt": "stale-revalidated exact signal/target/route token",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "previewExtensionEnablement",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "extensionEnablementPreview",
+        "fields": [
+          "requestId",
+          "extensionId",
+          "desiredAction",
+          "scope"
+        ]
+      },
+      "authority": "exact extension lifecycle controller + current VS Code inventory",
+      "effect": "read",
+      "state_transition": "extensionEnablementPreview or operationError",
+      "acknowledgement": "extensionEnablementPreview or operationError",
+      "receipt": "request-bound scoped native handoff preview",
+      "rendered_in": [
+        "media/dashboard/44-operational-surfaces.js"
+      ]
+    },
+    {
+      "action": "previewExtensionInstall",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "extensionLifecyclePreview",
+        "fields": [
+          "requestId",
+          "extensionId",
+          "version"
+        ]
+      },
+      "authority": "exact extension lifecycle controller + current VS Code inventory",
+      "effect": "read",
+      "state_transition": "extensionLifecyclePreview or operationError",
+      "acknowledgement": "extensionLifecyclePreview or operationError",
+      "receipt": "request-bound exact install preview token",
+      "rendered_in": [
+        "media/dashboard/44-operational-surfaces.js"
+      ]
+    },
+    {
+      "action": "previewExtensionRollback",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "extensionRollbackPreview",
+        "fields": [
+          "requestId",
+          "extensionId"
+        ]
+      },
+      "authority": "durable rollback-identity custody + current VS Code inventory",
+      "effect": "read",
+      "state_transition": "extensionRollbackPreview or operationError",
+      "acknowledgement": "extensionRollbackPreview or operationError",
+      "receipt": "request-bound exact retained-version preview",
+      "rendered_in": [
+        "media/dashboard/44-operational-surfaces.js"
+      ]
+    },
+    {
+      "action": "previewExtensionUninstall",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "extensionUninstallPreview",
+        "fields": [
+          "requestId",
+          "extensionId"
+        ]
+      },
+      "authority": "exact extension lifecycle controller + dependency analyzer",
+      "effect": "read",
+      "state_transition": "extensionUninstallPreview or operationError",
+      "acknowledgement": "extensionUninstallPreview or operationError",
+      "receipt": "request-bound consumer-impact preview with retained rollback identity",
+      "rendered_in": [
+        "media/dashboard/44-operational-surfaces.js"
+      ]
+    },
+    {
+      "action": "previewExtensionUpdate",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "extensionUpdatePreview",
+        "fields": [
+          "requestId",
+          "extensionId",
+          "version"
+        ]
+      },
+      "authority": "exact extension lifecycle controller + current VS Code inventory",
+      "effect": "read",
+      "state_transition": "extensionUpdatePreview or operationError",
+      "acknowledgement": "extensionUpdatePreview or operationError",
+      "receipt": "request-bound update preview with retained prior identity",
+      "rendered_in": [
+        "media/dashboard/44-operational-surfaces.js"
+      ]
+    },
+    {
+      "action": "queryExtensionConflicts",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "extensionConflictQuery",
+        "fields": [
+          "requestId",
+          "extensionId"
+        ]
+      },
+      "authority": "bounded live extension-manifest conflict analyzer",
+      "effect": "read",
+      "state_transition": "extensionConflictResult or operationError",
+      "acknowledgement": "extensionConflictResult or operationError",
+      "receipt": "typed stable conflict signals with exact participants",
+      "rendered_in": [
+        "media/dashboard/44-operational-surfaces.js"
+      ]
+    },
+    {
+      "action": "queryOperationalCards",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "operationalCardsQuery",
+        "fields": [
+          "requestId",
+          "query",
+          "state",
+          "severity",
+          "surface",
+          "owner",
+          "evidenceGap",
+          "offset",
+          "limit"
+        ]
+      },
+      "authority": "append-only operational gap ledger",
+      "effect": "read",
+      "state_transition": "operationalCardsResult or operationError",
+      "acknowledgement": "operationalCardsResult or operationError",
+      "receipt": "bounded filtered page with full-ledger denominators",
+      "rendered_in": [
+        "media/dashboard/45-system-surfaces.js"
+      ]
+    },
+    {
+      "action": "reconcileStaleActivity",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "reconcileStaleActivity",
+        "fields": [
+          "requestId"
+        ]
+      },
+      "authority": "activity ledger controller + explicit host-modal approval",
+      "effect": "workspace-write",
+      "state_transition": "activityReconciliationResult, hostActionResult, or operationError",
+      "acknowledgement": "activityReconciliationResult, hostActionResult, or operationError",
+      "receipt": "request-bound cancellation/no-op or append-only sealed terminal reconciliation receipt",
+      "rendered_in": [
+        "media/dashboard/46-observability-surfaces.js"
+      ]
+    },
+    {
+      "action": "reconcileTask",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open reconciliation form",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "refresh",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "refresh",
+        "fields": []
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "snapshot or operationError",
+      "acknowledgement": "snapshot or operationError",
+      "receipt": "versioned snapshot",
+      "rendered_in": [
+        "media/dashboard/42-core-surfaces.js",
+        "media/dashboard/47-advanced-surfaces.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "refreshCleanup",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "scanCleanup",
+        "fields": []
+      },
+      "authority": "cleanup controller",
+      "effect": "read",
+      "state_transition": "cleanupCandidates or cleanupError",
+      "acknowledgement": "cleanupCandidates or cleanupError",
+      "receipt": "classified inventory",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "refreshEnvironment",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "refreshEnvironment",
+        "fields": []
+      },
+      "authority": "environment discovery controller",
+      "effect": "read",
+      "state_transition": "environmentInventory or operationError",
+      "acknowledgement": "environmentInventory or operationError",
+      "receipt": "generation + content hash",
+      "rendered_in": [
+        "media/dashboard/44-operational-surfaces.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "refreshHostModels",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "listHostModels",
+        "fields": []
+      },
+      "authority": "VS Code Language Model API metadata",
+      "effect": "read",
+      "state_transition": "hostModelCatalog or operationError",
+      "acknowledgement": "hostModelCatalog or operationError",
+      "receipt": "current host-visible model metadata",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "releaseTask",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open task-bound release confirmation and reason form",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "renewClaim",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "renewCoordinationClaim",
+        "fields": [
+          "taskId",
+          "claimId",
+          "ttlMinutes"
+        ]
+      },
+      "authority": "coordination controller",
+      "effect": "workspace-write",
+      "state_transition": "coordinationResult",
+      "acknowledgement": "coordinationResult",
+      "receipt": "lease renewal receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "resumeWorkingStudioDraft",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "draft-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "resume one bounded webview-local unsaved draft without host authority or persistence outside VS Code view state",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "runGraphSearch",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "graphQuery",
+        "fields": [
+          "requestId",
+          "view",
+          "mode",
+          "cluster",
+          "node",
+          "target",
+          "query",
+          "relation",
+          "direction",
+          "kind",
+          "status",
+          "offset",
+          "edgeOffset",
+          "depth",
+          "maxNodes",
+          "maxEdges"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "graphResult",
+      "acknowledgement": "graphResult",
+      "receipt": "bounded graph response",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "selectGraphNode",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "graph-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "select one already-loaded record without issuing another host query",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "setupStudio",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "setupStudio",
+        "fields": [
+          "requestId"
+        ]
+      },
+      "authority": "authenticated Pacify-X Studio controller + one explicit host confirmation",
+      "effect": "workspace-write-and-owned-process",
+      "state_transition": "studioSetupResult or operationError",
+      "acknowledgement": "studioSetupResult or operationError",
+      "receipt": "admitted starter agent/workflow revisions plus bounded successful run receipts",
+      "rendered_in": [
+        "media/dashboard/43-catalog-surfaces.js",
+        "media/dashboard/44-operational-surfaces.js"
+      ]
+    },
+    {
+      "action": "skillAddFile",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "add a bounded contract, test, or resource file",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "skillRemoveFile",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "remove a non-required skill package draft file",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "skillSelectFile",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "select a skill package file for text editing",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "skillSemanticQuery",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open the domain-separated semantic skill query",
+      "rendered_in": [
+        "media/dashboard/43-catalog-surfaces.js"
+      ]
+    },
+    {
+      "action": "studioApplyJson",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "validate and apply canonical JSON to the typed agent or workflow editor",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "studioEditorTab",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "view-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "switch synchronized visual and canonical Studio views",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "studioLifecycle",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X studio lifecycle controller + retained host authority",
+      "effect": "workspace-write-or-owned-process",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "signed lifecycle or run receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "studioRunAction",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated durable Studio run controller + retained host approval",
+      "effect": "owned-process-control",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "signed lifecycle transition or status",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitClaimTask",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "claimCoordinationTask",
+        "fields": [
+          "taskId",
+          "claimTargets",
+          "ttlMinutes",
+          "mode",
+          "authority"
+        ]
+      },
+      "authority": "coordination controller",
+      "effect": "workspace-write",
+      "state_transition": "coordinationResult",
+      "acknowledgement": "coordinationResult",
+      "receipt": "lease receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitGraphSavedView",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "view-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "save bounded graph query and layout metadata locally",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitKnowledgeProposal",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X knowledge controller + retained host authority",
+      "effect": "workspace-write",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "immutable candidate revision receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitKnowledgeReject",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X knowledge controller + retained host authority",
+      "effect": "workspace-write",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "terminal rejection receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitKnowledgeRollback",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X knowledge controller + retained host authority",
+      "effect": "workspace-write",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "signed immutable rollback receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitLearningFinalValidation",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X learning controller + retained host authority",
+      "effect": "workspace-write",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "dependency-current final promotion decision",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitLearningHypothesis",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X learning controller + retained host authority",
+      "effect": "workspace-write",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "tier-one/tier-two immutable revision receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitLearningObservation",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X learning controller + retained host authority",
+      "effect": "workspace-write",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "signed operation-evidence pipeline revision",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitLearningPattern",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X learning controller + retained host authority",
+      "effect": "workspace-write",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "hashless aggregation plus hashed pattern revision",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitLearningResearch",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X learning controller + retained host authority",
+      "effect": "workspace-write",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "independent research or tier-three revision receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitLearningReuse",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X learning controller + retained host authority",
+      "effect": "workspace-write",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "measured reuse and non-destructive decay decision",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitLearningTrial",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X learning controller + retained host authority",
+      "effect": "workspace-write",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "evidence-bound A/B comparison and confidence receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitMemory",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "captureCoordinationMemory",
+        "fields": [
+          "layer",
+          "kind",
+          "content",
+          "confidence",
+          "sourceArtifact",
+          "sourceHash"
+        ]
+      },
+      "authority": "coordination controller",
+      "effect": "workspace-write",
+      "state_transition": "coordinationResult",
+      "acknowledgement": "coordinationResult",
+      "receipt": "sealed non-canonical memory receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitParallelPlan",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "createParallelPlan",
+        "fields": [
+          "plan"
+        ]
+      },
+      "authority": "coordination controller",
+      "effect": "workspace-write",
+      "state_transition": "coordinationResult",
+      "acknowledgement": "coordinationResult",
+      "receipt": "hash-linked coordination receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitReconcile",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "reconcileCoordinationTask",
+        "fields": [
+          "taskId",
+          "summary",
+          "conflictsResolved"
+        ]
+      },
+      "authority": "coordination controller",
+      "effect": "workspace-write",
+      "state_transition": "coordinationResult",
+      "acknowledgement": "coordinationResult",
+      "receipt": "reconciliation receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitReleaseTask",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "releaseCoordinationTask",
+        "fields": [
+          "requestId",
+          "taskId",
+          "reason",
+          "acknowledgement"
+        ]
+      },
+      "authority": "explicit dashboard confirmation + coordination controller",
+      "effect": "workspace-write",
+      "state_transition": "request-bound coordinationResult or operationError",
+      "acknowledgement": "request-bound coordinationResult or operationError",
+      "receipt": "reason-hash-bound release authorization and durable receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitSkillQuery",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "skillQuery",
+        "fields": [
+          "goal",
+          "domain"
+        ]
+      },
+      "authority": "PX-native bounded skill broker",
+      "effect": "read",
+      "state_transition": "skillQueryResult or operationError",
+      "acknowledgement": "skillQueryResult or operationError",
+      "receipt": "at most three eligible metadata candidates with selection rationale",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitStudioAgentRun",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X studio lifecycle controller + retained host authority",
+      "effect": "owned-process",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "objective-bound run receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitStudioDraft",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "createStudioDraft",
+        "fields": [
+          "requestId",
+          "kind",
+          "payload"
+        ]
+      },
+      "authority": "versioned Pacify-X studio controller",
+      "effect": "workspace-write",
+      "state_transition": "studioDraftResult or operationError",
+      "acknowledgement": "studioDraftResult or operationError",
+      "receipt": "immutable candidate revision receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitStudioWorkflowRun",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "studioOperation",
+        "fields": [
+          "requestId",
+          "kind",
+          "operation",
+          "payload"
+        ]
+      },
+      "authority": "authenticated Pacify-X studio lifecycle controller + retained host authority",
+      "effect": "owned-process",
+      "state_transition": "studioOperationResult or operationError",
+      "acknowledgement": "studioOperationResult or operationError",
+      "receipt": "ephemeral-input-bound workflow run receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "submitTaskProgress",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "recordTaskProgress",
+        "fields": [
+          "taskId",
+          "status",
+          "summary",
+          "usage",
+          "nextAction",
+          "evidence"
+        ]
+      },
+      "authority": "coordination controller",
+      "effect": "workspace-write",
+      "state_transition": "coordinationResult",
+      "acknowledgement": "coordinationResult",
+      "receipt": "progress receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "surfaceScope",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "view-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "select surface scope and persist view state",
+      "rendered_in": [
+        "media/dashboard/43-catalog-surfaces.js",
+        "media/dashboard/44-operational-surfaces.js"
+      ]
+    },
+    {
+      "action": "taskProgress",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "modal",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "open progress receipt form",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "teamPackPreview",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "teamPackPreview",
+        "fields": []
+      },
+      "authority": "team fabric controller",
+      "effect": "workspace-write",
+      "state_transition": "teamPackResult",
+      "acknowledgement": "teamPackResult",
+      "receipt": "preview/staging receipt",
+      "rendered_in": [
+        "media/dashboard/43-catalog-surfaces.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "toggleAdvanced",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "view-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "toggle admitted advanced surfaces",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "toggleBillablePolicy",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "toggleBillablePolicy",
+        "fields": [
+          "enabled"
+        ]
+      },
+      "authority": "enterprise policy controller",
+      "effect": "configuration-write",
+      "state_transition": "enterpriseResult",
+      "acknowledgement": "enterpriseResult",
+      "receipt": "policy event receipt",
+      "rendered_in": [
+        "media/dashboard/45-system-surfaces.js"
+      ]
+    },
+    {
+      "action": "validate",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "validate",
+        "fields": []
+      },
+      "authority": "Pacify-X validation CLI",
+      "effect": "process",
+      "state_transition": "validation or operationError",
+      "acknowledgement": "validation or operationError",
+      "receipt": "validation result",
+      "rendered_in": [
+        "media/dashboard/45-system-surfaces.js",
+        "media/dashboard/47-advanced-surfaces.js",
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowAddBinding",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "add a workflow capability binding to the in-memory draft",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowAddGrant",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "add a bounded workflow effect grant to the in-memory draft",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowAddNode",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "add a typed node by palette activation or drag and drop",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowAddPort",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "add a typed input or output port to the selected node",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowAutoLayout",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "apply deterministic dependency-layer layout to the draft graph",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowCancelConnection",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "cancel the pending direct port connection",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowConnectNodes",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "add a typed draft edge between selected nodes",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowFit",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "view-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "fit the workflow draft graph to the visible canvas",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowMoveNode",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "reorder the selected workflow node with keyboard-equivalent controls",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowPortConnect",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "start or complete a type-checked direct port connection",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowRemoveBinding",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "remove a workflow binding and its draft references",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowRemoveEdge",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "remove one selected draft edge",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowRemoveGrant",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "remove a workflow grant and its draft references",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowRemoveNode",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "remove a node and its connected draft edges",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowRemovePort",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "remove a typed port and any connected draft edges",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowSelectNode",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "editor-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "select a workflow node for guided editing",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "workflowZoom",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "view-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "change bounded workflow canvas scale",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": "px.health-registry/1.0",
+  "canonical_owner": "runtime/health_model.py",
+  "policy": "Health is derived from separately reported lifecycle facts and freshness. Presentation surfaces may project this record but may not strengthen its state or authority.",
+  "state_precedence": ["blocked", "stale", "degraded", "unknown", "healthy"],
+  "lifecycle_dimensions": ["configured", "detected", "connected", "authoritative", "ready"],
+  "domains": ["runtime", "extension", "providers", "observers", "sensors", "coordination", "memory"],
+  "surfaces": [
+    {
+      "surface_id": "runtime.control-plane",
+      "domain": "runtime",
+      "authority": {"owner": "runtime/startup.py", "kind": "authoritative", "source": "runtime startup and validation probes"},
+      "ttl_seconds": 300,
+      "remediation": {"summary": "Run runtime validation and inspect failed gates.", "deep_link": "px://health/runtime"},
+      "projection_consumers": ["runtime_cli", "vscode_extension", "dashboard"]
+    },
+    {
+      "surface_id": "extension.activity-projection",
+      "domain": "extension",
+      "authority": {"owner": "extension activity listener inventory", "kind": "observer", "source": "VS Code extension-host listener health projection"},
+      "ttl_seconds": 120,
+      "remediation": {"summary": "Open listener health and verify extension-host subscriptions.", "deep_link": "px://health/extension"},
+      "projection_consumers": ["runtime_cli", "vscode_extension", "dashboard"]
+    },
+    {
+      "surface_id": "providers.invocation-gateway",
+      "domain": "providers",
+      "authority": {"owner": "runtime/provider_gateway.py", "kind": "authoritative", "source": "provider adapter registry and invocation gateway"},
+      "ttl_seconds": 300,
+      "remediation": {"summary": "Inspect adapter admission, connectivity, credentials, and budget gate.", "deep_link": "px://health/providers"},
+      "projection_consumers": ["runtime_cli", "vscode_extension", "dashboard"]
+    },
+    {
+      "surface_id": "observers.operational",
+      "domain": "observers",
+      "authority": {"owner": "runtime/operational_observers.py", "kind": "observer", "source": "platform observer probes and capture receipts"},
+      "ttl_seconds": 60,
+      "remediation": {"summary": "Inspect platform support, consent, privilege, dropped events, and observer configuration.", "deep_link": "px://health/observers"},
+      "projection_consumers": ["runtime_cli", "vscode_extension", "dashboard"]
+    },
+    {
+      "surface_id": "sensors.hardware",
+      "domain": "sensors",
+      "authority": {"owner": "runtime/hardware_routing.py", "kind": "observer", "source": "bounded CPU, GPU, memory, and temperature probes"},
+      "ttl_seconds": 30,
+      "remediation": {"summary": "Refresh hardware probes and inspect unsupported or permission-limited sensors.", "deep_link": "px://health/sensors"},
+      "projection_consumers": ["runtime_cli", "vscode_extension", "dashboard"]
+    },
+    {
+      "surface_id": "coordination.agent-sessions",
+      "domain": "coordination",
+      "authority": {"owner": "runtime/agent_fleet_controls.py", "kind": "authoritative", "source": "agent session state and event ancestry"},
+      "ttl_seconds": 60,
+      "remediation": {"summary": "Inspect session ancestry, liveness, ownership, and cost reservations.", "deep_link": "px://health/coordination"},
+      "projection_consumers": ["runtime_cli", "vscode_extension", "dashboard"]
+    },
+    {
+      "surface_id": "memory.fabric",
+      "domain": "memory",
+      "authority": {"owner": "runtime/memory_fabric.py", "kind": "authoritative", "source": "project-scoped memory stores and promotion controls"},
+      "ttl_seconds": 300,
+      "remediation": {"summary": "Inspect memory scope, provenance, promotion, retention, and retrieval health.", "deep_link": "px://health/memory"},
+      "projection_consumers": ["runtime_cli", "vscode_extension", "dashboard"]
+    }
+  ]
+}

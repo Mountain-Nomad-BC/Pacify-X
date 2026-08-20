@@ -1,0 +1,19 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "H06",
+  "status": "accepted",
+  "recorded_at": "2026-08-12T06:53:13.267319+00:00",
+  "claim": "Configured, detected, connected, authoritative, and ready have one explicit monotonic evidence contract across source and browser surfaces; a connected source is never promoted to ready without validation and policy evidence.",
+  "artifacts": [
+    {
+      "path": "evidence/extension-verification/H05-H06-control-and-health-truth.json",
+      "sha256": "13c8a58a20bbcaa1b456b87e560c35c1fd33da4ac9357039633e2e73bb70b54e"
+    }
+  ],
+  "verification": [
+    {
+      "command": "focused health/action source and browser tests",
+      "result": "false promotions rejected and status-bar readiness fixed"
+    }
+  ]
+}

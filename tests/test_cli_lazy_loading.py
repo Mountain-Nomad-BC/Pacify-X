@@ -39,7 +39,7 @@ def guarded(name, *args, **kwargs):
     return real_import(name, *args, **kwargs)
 builtins.__import__ = guarded
 from runtime.cli import main
-raise SystemExit(main(["--root", ".", "doctor"]))
+raise SystemExit(main(["--root", ".", "doctor", "--require", "syntax"]))
 """
     process = _run(script)
     assert process.returncode == 0, process.stderr + process.stdout

@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:operations:operation-event",
+  "title": "PACIFY-X canonical operational event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "correlation_id", "parent_correlation_id", "actor", "work", "source", "operation", "effects", "provider", "time", "integrity", "capture"],
+  "properties": {
+    "schema_version": {"const": "px.operation-event/1"},
+    "event_id": {"type": "string", "minLength": 1},
+    "correlation_id": {"type": "string", "minLength": 1},
+    "parent_correlation_id": {"type": ["string", "null"]},
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_id", "actor_kind", "session_id", "harness", "accountable_owner"],
+      "properties": {
+        "actor_id": {"type": "string", "minLength": 1},
+        "actor_kind": {"enum": ["human", "agent", "runtime", "extension", "provider", "operating_system", "unknown"]},
+        "session_id": {"type": ["string", "null"]},
+        "harness": {"type": ["string", "null"]},
+        "accountable_owner": {"type": "string", "minLength": 1}
+      }
+    },
+    "work": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["project_id", "task_id", "claim_id", "orchestration_id"],
+      "properties": {
+        "project_id": {"type": "string", "minLength": 1},
+        "task_id": {"type": ["string", "null"]},
+        "claim_id": {"type": ["string", "null"]},
+        "orchestration_id": {"type": ["string", "null"]}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["route_id", "component", "host_id", "coverage_tier"],
+      "properties": {
+        "route_id": {"type": "string", "minLength": 1},
+        "component": {"type": "string", "minLength": 1},
+        "host_id": {"type": ["string", "null"]},
+        "coverage_tier": {"enum": ["A", "B", "C", "D"]}
+      }
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "lifecycle", "result"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "lifecycle": {"enum": ["admitted", "started", "progress", "waiting", "completed", "failed", "cancelled", "denied", "unknown"]},
+        "result": {"enum": ["pending", "success", "failure", "cancelled", "denied", "unknown"]}
+      }
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["declared", "observed", "scope_refs"],
+      "properties": {
+        "declared": {"type": "array", "items": {"enum": ["read", "write", "network", "process", "model", "ui", "approval", "destructive"]}, "uniqueItems": true},
+        "observed": {"type": "array", "items": {"enum": ["read", "write", "network", "process", "model", "ui", "approval", "destructive", "unknown"]}, "uniqueItems": true},
+        "scope_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    },
+    "provider": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["provider_id", "request_id", "budget_id", "billing_state"],
+      "properties": {
+        "provider_id": {"type": "string", "minLength": 1},
+        "request_id": {"type": ["string", "null"]},
+        "budget_id": {"type": ["string", "null"]},
+        "billing_state": {"enum": ["actual", "estimated", "local_non_billable", "unknown"]}
+      }
+    },
+    "time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observed_at", "started_at", "duration_ms", "freshness"],
+      "properties": {
+        "observed_at": {"type": "string", "format": "date-time"},
+        "started_at": {"type": ["string", "null"], "format": "date-time"},
+        "duration_ms": {"type": ["integer", "null"], "minimum": 0},
+        "freshness": {"enum": ["live", "recent", "stale", "unknown"]}
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input_sha256", "output_sha256", "previous_event_sha256"],
+      "properties": {
+        "input_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "output_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "previous_event_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "capture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "payload_included"],
+      "properties": {
+        "classification": {"enum": ["metadata_only", "content_authorized", "redacted", "unknown"]},
+        "payload_included": {"type": "boolean"}
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-933",
+  "learned": "Both webview CSPs now remove unsafe-inline. Workflow coordinates/scale, graph coordinates/scene transform, readiness score, and opacity are projected from finite escaped data attributes through one bounded constructable stylesheet applicator capped at 2,048 elements, with explicit numeric clamps and rerender reapplication.",
+  "next_action": "Run syntax checks, the actual-source extension contract, and the dashboard Playwright walk only.",
+  "unresolved_branch_gap_ids": ["PX-OS-933", "PX-OS-891", "PX-OS-880"],
+  "evidence": [
+    {
+      "claim": "No shipped dashboard/sidebar CSP contains unsafe-inline and generated sources contain no inline style attributes.",
+      "reference": "extension/src/extension.js; extension/src/sidebarView.js; extension/media/dashboard/90-controller.js"
+    },
+    {
+      "claim": "Source and Playwright assertions cover zero style attributes, computed layout, rerenders, zoom/pan, and nonfinite fallbacks.",
+      "reference": "extension/tests/extension-contract.test.js; extension/tests/dashboard-e2e.test.js"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "px.build-claims/1.0",
+  "version": "0.7.0.dev0",
+  "counts": {
+    "runtime_modules": 211,
+    "contracts": 165,
+    "registry_artifacts": 361,
+    "tool_and_support_scripts": 155,
+    "skills": 177,
+    "agents": 270,
+    "workflow_definitions": 38,
+    "orchestrations": 34,
+    "test_modules": 190,
+    "graph_records": 984,
+    "graph_edges": 1917,
+    "effect_surfaces": 851
+  },
+  "sources": {
+    "version": "pyproject.toml:project.version",
+    "runtime_modules": "runtime/**/*.py",
+    "contracts": "contracts/**/*.json",
+    "registry_artifacts": "registry/**/* files",
+    "tool_and_support_scripts": "scripts/*.py + .px/skills/*/scripts/*.py",
+    "skills": "registry/skill_catalog.toml:skills",
+    "agents": "registry/agency_agent_registry.json:agents",
+    "workflow_definitions": "orchestration/workflows/**/*.yaml",
+    "orchestrations": "registry/skill_orchestrations.json:workflows",
+    "test_modules": "tests/test_*.py",
+    "graph_records": "registry/cognitive_map_index.json:records",
+    "graph_edges": "registry/cognitive_map_index.json:edges",
+    "effect_surfaces": "registry/effect_surface_ownership.json:records"
+  }
+}

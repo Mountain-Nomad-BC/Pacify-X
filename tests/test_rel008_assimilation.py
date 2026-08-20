@@ -35,7 +35,7 @@ class Rel008AssimilationTests(unittest.TestCase):
         ]
         total = 0
         for owner in owners:
-            base = ROOT / ".agents" / "skills" / owner / "references"
+            base = ROOT / ".px" / "skills" / owner / "references"
             for name in ("capability-contracts.json", "script-contracts.json"):
                 contracts = load(base / name)["contracts"]
                 total += len(contracts)
@@ -83,7 +83,7 @@ class Rel008AssimilationTests(unittest.TestCase):
         ]
         split_total = 0
         for owner in owners:
-            references = ROOT / ".agents" / "skills" / owner / "references"
+            references = ROOT / ".px" / "skills" / owner / "references"
             for name in ("capabilities-index.json", "scripts-index.json"):
                 index = load(references / name)
                 split_total += index["count"]
@@ -92,7 +92,7 @@ class Rel008AssimilationTests(unittest.TestCase):
         self.assertEqual(split_total, 195)
         meta = load(
             ROOT
-            / ".agents"
+            / ".px"
             / "skills"
             / "govern-metacognitive-evolution"
             / "references"

@@ -1,0 +1,39 @@
+{
+  "admission_record": "manage-supabase-environments",
+  "body_sha256": "b399b51164a755801e010b7bcabc3831840fea52db9cd9d38b7b4f9a4364bf8f",
+  "contract": {
+    "available": true,
+    "sha256": "4c3ae86007351f7329f1e9f29cc343211cbc1447b197b6c09517b946a68f00bb",
+    "source": "registry/skill_packages/manage-supabase-environments.json"
+  },
+  "description": "Isolate local, preview, staging, and production Supabase projects, credentials, links, secrets, and promotion paths.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "manage-supabase-environments",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/manage-supabase-environments"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "environment-isolation",
+    "preview",
+    "project-ref",
+    "staging",
+    "supabase"
+  ],
+  "version": "1.0.0"
+}

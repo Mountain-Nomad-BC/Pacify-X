@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.1",
+  "event_id": "pxe-27fa146a-6fcd-4ef0-9e06-28a7bd371510",
+  "timestamp": "2026-08-11T03:03:12.951Z",
+  "operation": "session-heartbeat",
+  "project_id": "pacify-x",
+  "actor": {
+    "actor_id": "ide-571e4671b58b5c07",
+    "harness": "Visual Studio Code",
+    "session_id": "session-48967eac-8857-4ef9-890b-da20999e39fb",
+    "accountable_owner": "local-user"
+  },
+  "before_hash": "83add89f38ed24e0ceb236111b1a43c7e16561e7fbc3cb1d2eaf16c390a6ca52",
+  "after_hash": "822a1b277a1af2cada0e85a02cc4033fb25e230f911a1db0febeaf991b8756f4",
+  "authority": "local",
+  "previous_event_sha256": "dfa9f527f1ad3570d359f4ba958bf08030a7e447eb76c17ef1d75954cdb135ba",
+  "payload_sha256": "af64a472f4a2ea78934812357d9b1c51f989a2ea28b41e9361da690b65569900",
+  "result": {
+    "session_id": "session-48967eac-8857-4ef9-890b-da20999e39fb",
+    "project_id": "pacify-x"
+  },
+  "event_sha256": "ea835015b946d67b0c20c083bac05c72799a2299e8962496591e48dbd732eea8"
+}

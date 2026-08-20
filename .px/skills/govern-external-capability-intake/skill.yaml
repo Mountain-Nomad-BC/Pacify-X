@@ -1,0 +1,40 @@
+{
+  "admission_record": "govern-external-capability-intake",
+  "body_sha256": "c58e5a9c6e10485d5463caaad9446cc6665f25c28d2feda0a6cacf7fe021370e",
+  "contract": {
+    "available": true,
+    "sha256": "dab3ae737188b390d57c9683a970cee05d04ddb6e588a6db4611eff937592a8c",
+    "source": "registry/skill_packages/govern-external-capability-intake.json"
+  },
+  "description": "Search and assess non-canonical external capability metadata, create bounded project-local staging plans, govern hook re-entrancy, normalize cross-harness session snapshots, and evaluate routing economics without executing imported source or granting authority. Use when reviewing, staging, comparing, or revoking external capability candidates.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-external-capability-intake",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-external-capability-intake"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "admission",
+    "external-candidates",
+    "hooks",
+    "routing",
+    "session-fabric",
+    "staging"
+  ],
+  "version": "1.0.0"
+}

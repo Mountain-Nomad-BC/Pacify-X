@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deploy N8N Docker"
+  short_description: "Deploy a durable single-main n8n instance with Docker or Compose, TLS boundaries"
+  default_prompt: "Use $deploy-n8n-docker to deploy a durable single-main n8n instance with Docker or Compose, TLS boundaries, health checks, and backup hooks."

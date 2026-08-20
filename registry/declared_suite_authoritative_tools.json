@@ -4,337 +4,337 @@
       "id": "capability-router",
       "pack": "01",
       "source_sha256": "3baacb060c4d1d5e2bc7447468b8b7193f0d9148a53c67484eaf2e82756089a5",
-      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_capability_router.py"
+      "target": ".px/skills/govern-operating-kernel/scripts/authoritative_capability_router.py"
     },
     {
       "id": "claim-ledger",
       "pack": "01",
       "source_sha256": "c1023b8382ec65c331d79ff690e1762ac205891960b75173a4b22fa91f963265",
-      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_claim_ledger.py"
+      "target": ".px/skills/govern-operating-kernel/scripts/authoritative_claim_ledger.py"
     },
     {
       "id": "durable-state",
       "pack": "01",
       "source_sha256": "d2b4283d7821531bb3270313abac16dae5819dc026a3a8e9132fd25596c3ac76",
-      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_durable_state.py"
+      "target": ".px/skills/govern-operating-kernel/scripts/authoritative_durable_state.py"
     },
     {
       "id": "evidence-bundle",
       "pack": "01",
       "source_sha256": "a15acdf1092fdf3c901a3fb8b66b73eceed28a5e57ab4462a2c700abd17b2a5e",
-      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_evidence_bundle.py"
+      "target": ".px/skills/govern-operating-kernel/scripts/authoritative_evidence_bundle.py"
     },
     {
       "id": "failure-normalizer",
       "pack": "01",
       "source_sha256": "298829f4f28ce68303612318a8f35fc4fe8423716c6ba9334105dcd40abf9b48",
-      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_failure_normalizer.py"
+      "target": ".px/skills/govern-operating-kernel/scripts/authoritative_failure_normalizer.py"
     },
     {
       "id": "permission-guard",
       "pack": "01",
       "source_sha256": "a855b5215cc194b8b66f67485a922037630be5f49336d4441deb10365e68286e",
-      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_permission_guard.py"
+      "target": ".px/skills/govern-operating-kernel/scripts/authoritative_permission_guard.py"
     },
     {
       "id": "skill-compiler",
       "pack": "01",
       "source_sha256": "66e8af6d038e760683edc55248cbd4abc7e54390b635ac253da7bc2d75db9118",
-      "target": ".agents/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py"
+      "target": ".px/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py"
     },
     {
       "id": "agents-md-generator",
       "pack": "02",
       "source_sha256": "4886ec4ce2422808598b2dda816814c120edd2a8ed9a35e819d1bec2dfe02624",
-      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py"
+      "target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py"
     },
     {
       "id": "change-impact",
       "pack": "02",
       "source_sha256": "e787b5f94b424df49dae1e87c0bae8738fe833f0f1c5a9f9cc7eb1b797151630",
-      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py"
+      "target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py"
     },
     {
       "id": "config-trace",
       "pack": "02",
       "source_sha256": "f9b2f62e14788a5de6248e679453d9d6dd943d2557e7f5bb12979c9ddbcdb121",
-      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_config_trace.py"
+      "target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_config_trace.py"
     },
     {
       "id": "patch-scope-guard",
       "pack": "02",
       "source_sha256": "59e94c1713d8a8b8ac292887dd136c885f3c4ee1f942d20b2256b8b19b68362e",
-      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_patch_scope_guard.py"
+      "target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_patch_scope_guard.py"
     },
     {
       "id": "repo-mapper",
       "pack": "02",
       "source_sha256": "b632cc5ff026314da7a44af842bbeb7901b3fa4eeb36e74692e48c1a7d41590c",
-      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_repo_mapper.py"
+      "target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_repo_mapper.py"
     },
     {
       "id": "reproduction-scaffold",
       "pack": "02",
       "source_sha256": "8a6b3da2e5e32c6433af76afc8c7d994086c33d3a88751561d1d322465731b07",
-      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_reproduction_scaffold.py"
+      "target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_reproduction_scaffold.py"
     },
     {
       "id": "runtime-path",
       "pack": "02",
       "source_sha256": "88ffc414342ecfe205fbd8e305806758ff49aac5655b18a5ae17806d53c1c8a4",
-      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_runtime_path.py"
+      "target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_runtime_path.py"
     },
     {
       "id": "symbol-index",
       "pack": "02",
       "source_sha256": "746e7d5b1e681f0b0f0dfbac4f68ed0c70100b95c90c93ea450a6f804896b525",
-      "target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_symbol_index.py"
+      "target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_symbol_index.py"
     },
     {
       "id": "benchmark-contamination-scan",
       "pack": "03",
       "source_sha256": "96b59d313a3198dc49518812a329bfdbfba0d3baaf2bd83fd00351a671275301",
-      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_benchmark_contamination_scan.py"
+      "target": ".px/skills/engineer-verification-lab/scripts/authoritative_benchmark_contamination_scan.py"
     },
     {
       "id": "differential-tester",
       "pack": "03",
       "source_sha256": "9f226adb38e0470cfdbafe769a8789866032ffbab6d7492ae636db8170433f06",
-      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_differential_tester.py"
+      "target": ".px/skills/engineer-verification-lab/scripts/authoritative_differential_tester.py"
     },
     {
       "id": "formula-property-tests",
       "pack": "03",
       "source_sha256": "b56563bd6c790995c51dae38e1c245cfa4de30b9ca67bd98f46ed14952eb2d97",
-      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_formula_property_tests.py"
+      "target": ".px/skills/engineer-verification-lab/scripts/authoritative_formula_property_tests.py"
     },
     {
       "id": "fuzz-json-runner",
       "pack": "03",
       "source_sha256": "3a4bfe77cb23789dcf3fbb1a685e7240fde6f207993bb0c82d8ee4cf507c1d87",
-      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_fuzz_json_runner.py"
+      "target": ".px/skills/engineer-verification-lab/scripts/authoritative_fuzz_json_runner.py"
     },
     {
       "id": "judge-calibrator",
       "pack": "03",
       "source_sha256": "15d6c6edfe24f91294a39936d9d5922a8984af90ff6c4898bd4fa0a41f7d046e",
-      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_judge_calibrator.py"
+      "target": ".px/skills/engineer-verification-lab/scripts/authoritative_judge_calibrator.py"
     },
     {
       "id": "metamorphic-runner",
       "pack": "03",
       "source_sha256": "04a3d9452c65405bfd07a13dbc046dab6bf0f4faa72dcab994e8ac0e20142123",
-      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_metamorphic_runner.py"
+      "target": ".px/skills/engineer-verification-lab/scripts/authoritative_metamorphic_runner.py"
     },
     {
       "id": "mutation-operator",
       "pack": "03",
       "source_sha256": "5723233514a82fa336f4c0edafbe8ea5407649a859423a620023ec39c2b63bdf",
-      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_mutation_operator.py"
+      "target": ".px/skills/engineer-verification-lab/scripts/authoritative_mutation_operator.py"
     },
     {
       "id": "trajectory-scorer",
       "pack": "03",
       "source_sha256": "a21a78ec187ff68faa2958e7fa738c62232c62aa1ffd1703416a039ba56d9748",
-      "target": ".agents/skills/engineer-verification-lab/scripts/authoritative_trajectory_scorer.py"
+      "target": ".px/skills/engineer-verification-lab/scripts/authoritative_trajectory_scorer.py"
     },
     {
       "id": "context-budget",
       "pack": "04",
       "source_sha256": "7913f13a6040e48614c110c055dd90ce3425d61312949131d714c4b887086a66",
-      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_context_budget.py"
+      "target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_context_budget.py"
     },
     {
       "id": "drift-monitor",
       "pack": "04",
       "source_sha256": "b2ffc889088604aa6e6301c1b60bdf79ebbafd0a106088a0668297fe88e093dd",
-      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_drift_monitor.py"
+      "target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_drift_monitor.py"
     },
     {
       "id": "hybrid-retrieval",
       "pack": "04",
       "source_sha256": "8803bd9c7c6b36a1611a6ba2633d2c6c7ece992c543b6a42804a016a7d76760d",
-      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_hybrid_retrieval.py"
+      "target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_hybrid_retrieval.py"
     },
     {
       "id": "ingestion-validator",
       "pack": "04",
       "source_sha256": "7a4427ab1f5d8470b303c5809a80c588f738e444d337cd0f03000bbbd589c1d5",
-      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_ingestion_validator.py"
+      "target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_ingestion_validator.py"
     },
     {
       "id": "memory-write-gate",
       "pack": "04",
       "source_sha256": "0d645fe9a737acf35a9cce6f2ea8ca958aa7ab5c277a474599e1181f76bdbbee",
-      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_memory_write_gate.py"
+      "target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_memory_write_gate.py"
     },
     {
       "id": "replay-bundle",
       "pack": "04",
       "source_sha256": "e0205ab47fa71037cddd13bf6792be9ad33be5fcd3fcdf1458e64673f1d15485",
-      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_replay_bundle.py"
+      "target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_replay_bundle.py"
     },
     {
       "id": "retrieval-evaluator",
       "pack": "04",
       "source_sha256": "9cba017ce1b757c7433d9ae2c4a646fb20d883177c16a27a9e6d9f77b01d7c48",
-      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_retrieval_evaluator.py"
+      "target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_retrieval_evaluator.py"
     },
     {
       "id": "scoped-memory",
       "pack": "04",
       "source_sha256": "abb1b29bcf7f58971474d1cf8ffad982ed84cc9ed4decd511716ad8ff2a0afab",
-      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_scoped_memory.py"
+      "target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_scoped_memory.py"
     },
     {
       "id": "trace-recorder",
       "pack": "04",
       "source_sha256": "9c16d4ebfd1ddec0a20e3cc5909abec58b68364ff9c26b7143dfe742246a04f0",
-      "target": ".agents/skills/operate-memory-retrieval-observability/scripts/authoritative_trace_recorder.py"
+      "target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_trace_recorder.py"
     },
     {
       "id": "ai-bom",
       "pack": "05",
       "source_sha256": "5ffa673f0d3de176f98519b4e2a42ce109811eba27d2bb3eb967c66400f5f70e",
-      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_ai_bom.py"
+      "target": ".px/skills/secure-agent-supply-chain/scripts/authoritative_ai_bom.py"
     },
     {
       "id": "deterministic-archive",
       "pack": "05",
       "source_sha256": "3cbf6a278a0f419d57b62b93b92359d516caedfc79b82fdd4b377886416050a1",
-      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_deterministic_archive.py"
+      "target": ".px/skills/secure-agent-supply-chain/scripts/authoritative_deterministic_archive.py"
     },
     {
       "id": "prompt-injection-scanner",
       "pack": "05",
       "source_sha256": "65d30e4e4cf8ce71b8c551967d081f2d1cb6f92cdac0b995182044e57b5003bc",
-      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_prompt_injection_scanner.py"
+      "target": ".px/skills/secure-agent-supply-chain/scripts/authoritative_prompt_injection_scanner.py"
     },
     {
       "id": "provenance-generator",
       "pack": "05",
       "source_sha256": "00344fd741182a287eaeadb0a6596eb64bfe0dfe425b952dd407e00770c28587",
-      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_provenance_generator.py"
+      "target": ".px/skills/secure-agent-supply-chain/scripts/authoritative_provenance_generator.py"
     },
     {
       "id": "sandbox-profile",
       "pack": "05",
       "source_sha256": "1369dead1fda555e5ba2006c26520d8b1c6970478d7e84662a90416e27fe4977",
-      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_sandbox_profile.py"
+      "target": ".px/skills/secure-agent-supply-chain/scripts/authoritative_sandbox_profile.py"
     },
     {
       "id": "sbom-lite",
       "pack": "05",
       "source_sha256": "107bab1cec222224a0c88a3502504da8d9de859486713bfaec1347ce1b4b7432",
-      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_sbom_lite.py"
+      "target": ".px/skills/secure-agent-supply-chain/scripts/authoritative_sbom_lite.py"
     },
     {
       "id": "secret-scanner",
       "pack": "05",
       "source_sha256": "0066ba3c2137ad929c61be4374f0491694fc788b2b25a6894d627672884f781e",
-      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py"
+      "target": ".px/skills/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py"
     },
     {
       "id": "threat-model",
       "pack": "05",
       "source_sha256": "a9870693a90b886ec79019cbcfbafce67d44aadbc3543946786c7fc899f17eee",
-      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_threat_model.py"
+      "target": ".px/skills/secure-agent-supply-chain/scripts/authoritative_threat_model.py"
     },
     {
       "id": "tool-policy-enforcer",
       "pack": "05",
       "source_sha256": "81e20ab7e3eb9a8227e3f4aec25a9fb5085241d07253f0a973ee8e04dcc2717e",
-      "target": ".agents/skills/secure-agent-supply-chain/scripts/authoritative_tool_policy_enforcer.py"
+      "target": ".px/skills/secure-agent-supply-chain/scripts/authoritative_tool_policy_enforcer.py"
     },
     {
       "id": "approval-request",
       "pack": "06",
       "source_sha256": "e514aff436c989c9fac805443e97d2d6251d0d33e2a9502c9bf0712fd859c19b",
-      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_approval_request.py"
+      "target": ".px/skills/govern-runtime-protocol-deployment/scripts/authoritative_approval_request.py"
     },
     {
       "id": "backend-probe",
       "pack": "06",
       "source_sha256": "19498451d92756d805ca65c92e743910f6e3b954ee97eadbe06156b10fb9f5d1",
-      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_backend_probe.py"
+      "target": ".px/skills/govern-runtime-protocol-deployment/scripts/authoritative_backend_probe.py"
     },
     {
       "id": "canary-compare",
       "pack": "06",
       "source_sha256": "6d86aff9ffc3ab3f3abcbe5f3b145fc09241cdc32ba09a9b5f7172a5c37e0a32",
-      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_canary_compare.py"
+      "target": ".px/skills/govern-runtime-protocol-deployment/scripts/authoritative_canary_compare.py"
     },
     {
       "id": "capacity-planner",
       "pack": "06",
       "source_sha256": "207c20091c2a886fbcdfe3b037df0208f84913b67be5b56ccc7a35382f142c5a",
-      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_capacity_planner.py"
+      "target": ".px/skills/govern-runtime-protocol-deployment/scripts/authoritative_capacity_planner.py"
     },
     {
       "id": "hardware-probe",
       "pack": "06",
       "source_sha256": "0c820658e98dafa23b62423c769b6a9ddcad1f2dc9e6c642ec0e2c4b4a8abf75",
-      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_hardware_probe.py"
+      "target": ".px/skills/govern-runtime-protocol-deployment/scripts/authoritative_hardware_probe.py"
     },
     {
       "id": "model-router",
       "pack": "06",
       "source_sha256": "8165a0ee60eb8a4e8ee3a458a9943ce03f6b3bb8e6db15c061f420ca8697957e",
-      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_model_router.py"
+      "target": ".px/skills/govern-runtime-protocol-deployment/scripts/authoritative_model_router.py"
     },
     {
       "id": "openapi-tool-importer",
       "pack": "06",
       "source_sha256": "d7f2e9dbf793c8f224811ceb3a4395af6e0898a5d6c30c186cba1b9771a70c81",
-      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_openapi_tool_importer.py"
+      "target": ".px/skills/govern-runtime-protocol-deployment/scripts/authoritative_openapi_tool_importer.py"
     },
     {
       "id": "protocol-validator",
       "pack": "06",
       "source_sha256": "dd0c5b25720727600c35c834c61910529289da9db2a1de09c0cd4ec847775051",
-      "target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_protocol_validator.py"
+      "target": ".px/skills/govern-runtime-protocol-deployment/scripts/authoritative_protocol_validator.py"
     },
     {
       "id": "archive-verifier",
       "pack": "07",
       "source_sha256": "9ec94426e556bc6f434ad7620f1bf0ef761ef89353fa4efaf31b3f33f7d70e39",
-      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_archive_verifier.py"
+      "target": ".px/skills/manage-revocable-certification/scripts/authoritative_archive_verifier.py"
     },
     {
       "id": "certification-aggregator",
       "pack": "07",
       "source_sha256": "8e40567f7b058f51d63c93d714b3066d6180996c2a9ef62a2bc8b74a05fd7698",
-      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_certification_aggregator.py"
+      "target": ".px/skills/manage-revocable-certification/scripts/authoritative_certification_aggregator.py"
     },
     {
       "id": "collision-merge-planner",
       "pack": "07",
       "source_sha256": "ff20550f0d408ae43892efe8ed9b7b6460c862dc27335c977dd5312ca2988d8a",
-      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_collision_merge_planner.py"
+      "target": ".px/skills/manage-revocable-certification/scripts/authoritative_collision_merge_planner.py"
     },
     {
       "id": "completion-cutline",
       "pack": "07",
       "source_sha256": "db69b657f183ee2288e9faee6e9cc2da9aad85f8c5a3d0692433aed64d2b7d14",
-      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_completion_cutline.py"
+      "target": ".px/skills/manage-revocable-certification/scripts/authoritative_completion_cutline.py"
     },
     {
       "id": "duplicate-detector",
       "pack": "07",
       "source_sha256": "8abb6c4d4ffd8fab279dbe245e59255fac8c69ff5d7a732389de2c1063171c5a",
-      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_duplicate_detector.py"
+      "target": ".px/skills/manage-revocable-certification/scripts/authoritative_duplicate_detector.py"
     },
     {
       "id": "manifest-reconciler",
       "pack": "07",
       "source_sha256": "1ec0a56f0fea77f4125807563fe31cdcc865259bb6e2ff9f0381a5b1e2f9e2f4",
-      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_manifest_reconciler.py"
+      "target": ".px/skills/manage-revocable-certification/scripts/authoritative_manifest_reconciler.py"
     },
     {
       "id": "recertification-impact",
       "pack": "07",
       "source_sha256": "9c305c37493a096ac7dd734cfef403efbbb601a31b63e8b8201f91874691fc72",
-      "target": ".agents/skills/manage-revocable-certification/scripts/authoritative_recertification_impact.py"
+      "target": ".px/skills/manage-revocable-certification/scripts/authoritative_recertification_impact.py"
     }
   ],
   "rejected": [

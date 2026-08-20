@@ -1,0 +1,140 @@
+{
+  "id": "ritwickdey.LiveServer",
+  "name": "Live Server",
+  "version": "5.7.10",
+  "publisher": "ritwickdey",
+  "active": true,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "keybindings",
+    "menus"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ritwickdey.LiveServer",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ritwickdey.LiveServer",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "ritwickdey.LiveServer",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ritwickdey.LiveServer",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "extension.liveServer.changeWorkspace",
+      "invocation": "vscode.commands.executeCommand('extension.liveServer.changeWorkspace', ...args)",
+      "title": "Change Live Server workspace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.liveServer.goOffline",
+      "invocation": "vscode.commands.executeCommand('extension.liveServer.goOffline', ...args)",
+      "title": "Stop Live Server",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.liveServer.goOnline",
+      "invocation": "vscode.commands.executeCommand('extension.liveServer.goOnline', ...args)",
+      "title": "Open with Live Server",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onStartupFinished"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ritwickdey.LiveServer",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:keybindings",
+      "contribution:menus"
+    ],
+    "interface": [
+      "extension.liveServer.changeWorkspace",
+      "extension.liveServer.goOffline",
+      "extension.liveServer.goOnline"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

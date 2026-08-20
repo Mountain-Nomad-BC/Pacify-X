@@ -1,0 +1,30 @@
+{
+  "cleanup_id": "cleanup-27b58ba271e44d1d86a6ece38bc13dee",
+  "project_id": "Pacify-X",
+  "run_id": "clean-export-22b0c87e0c1d447895a263be2447350f",
+  "lane_id": "archive",
+  "start_time": "2026-08-14T17:46:02.036589+00:00",
+  "end_time": "2026-08-14T17:46:02.073480+00:00",
+  "reason": "clean export staging lifecycle closed",
+  "validated_roots": [
+    "C:\\Users\\Ben\\Documents"
+  ],
+  "workers": 1,
+  "priority_mode": "conservative_sequential",
+  "resources_considered": 1,
+  "resources_reclaimed": 1,
+  "resources_skipped": 0,
+  "resources_failed": 0,
+  "files_removed": 0,
+  "directories_removed": 0,
+  "bytes_reclaimed": 0,
+  "retained_artifacts": [],
+  "promoted_artifacts": [
+    "C:\\Users\\Ben\\Documents\\PACIFY_X_R2_REPAIRS_UNCERTIFIED_AUDIT_20260814_R3.zip"
+  ],
+  "links_encountered": 0,
+  "orphan_processes_reaped": 0,
+  "errors": [],
+  "remaining_owned_ephemeral_resources": 0,
+  "dry_run": false
+}

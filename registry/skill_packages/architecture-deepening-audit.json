@@ -2,7 +2,7 @@
   "id": "architecture-deepening-audit",
   "version": "1.0.0",
   "status": "active",
-  "body": ".agents/skills/architecture-deepening-audit/SKILL.md",
+  "body": ".px/skills/architecture-deepening-audit/SKILL.md",
   "body_sha256": "4b3249edacd5f8e4a4d1b56a1895f2ac36a5a71eb30e8c7e3cdb5db543c9eea7",
   "references": [],
   "capability_tags": [
@@ -20,7 +20,7 @@
       "evidence/integration/pxi-20260804/candidate_disposition_ledger.json",
       "LICENSES/mattpocock-skills-MIT.txt"
     ],
-    "canonical_owner": ".agents/skills/architecture-deepening-audit/SKILL.md"
+    "canonical_owner": ".px/skills/architecture-deepening-audit/SKILL.md"
   },
   "clean_room": false,
   "tests": "tests/test_project_reasoning.py",

@@ -1,0 +1,35 @@
+{
+  "schema_version": "px.external-extension-verification/1.0",
+  "card_id": "O04",
+  "extension_root": "portable-sources/Pacify-X_Extension",
+  "verified_at": "2026-08-11T21:50:38Z",
+  "artifacts": {
+    "src/activityObservability.js": "273fb0b852538842a04e81df2b2c6096144ab577adca7eadf80dd7c254e16faa",
+    "src/canonicalEventPublisher.js": "ea4c188078a97d1021a6bcd4c63fcdc7c3c0744a328ccdd25276bc378902ff8d",
+    "tests/activity-observability.test.js": "bca2d7b313bd46420c4bb19f593a6fbcfac7b2ad65110e9e57b2e50e65fd7486",
+    "tests/canonical-event-publisher.test.js": "655d8ef87debcea760a7669ec5fa5fd1c90903dd1160e31a89c804a996b8eba3",
+    "scripts/run-vscode-host-smoke.js": "261145bb404eecd967ccfded7b7aba25ed7a16a1297e4c027a8c333f6666a4da",
+    "tests/vscode-host/index.js": "a85b7195d6333777228b9f18337ca6a75b0ab27d35567c873e462546efa47f1e",
+    "evidence/vscode-host-listener-smoke.json": "6b6256dfb8ce16e0ae05ae20c00ee73c7c0ce697204827b081b06b0dd5140c21",
+    "runtime/operational_event_bus.py": "17dbf988808d3cfdc71ffbda7c0f3811947cce27a6a610c9e203e6dd34fd7488",
+    "runtime/cli.py": "c37e343a1f5c5e6ac560ad346d3231f25a0d76b532a0e9bd639c79faeed1ffaf",
+    "tests/test_operational_event_bus.py": "d764da5f422b8b4c8c9ae973abc29d337467e62bda5257483a638bcfca11c7a6"
+  },
+  "installed_host": {
+    "vscode": "1.132.1",
+    "listener_dropped_events": 0,
+    "canonical_bus_connected": true,
+    "canonical_bus_published_events": 29,
+    "canonical_bus_retained_events": 38,
+    "canonical_bus_revision": 38,
+    "activity_integrity_valid": true,
+    "activity_events_checked": 50,
+    "test_result_api": "unsupported in stable host and explicitly reported",
+    "extension_mutation": "not performed; injected API matrix passed"
+  },
+  "verification": [
+    "npm run build: 134 passed, zero failures/skips/todo.",
+    "Installed VS Code 1.132.1 host completed editor, filesystem, watcher, terminal, shell, task, debug, configuration, and SCM live paths.",
+    "Runtime canonical ingress tests: 6 passed; fixed non-shell 4 MiB/1000-event bounds and current-head linking."
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "punch-card-D01-authoritative-json-boundary-20260811",
+  "created_utc": "2026-08-12T06:53:13.252665+00:00",
+  "card": "D01",
+  "accepted": true,
+  "artifacts": {
+    "registry/state_artifact_classes.json": "cbbb78181936304ad59168ee41356753603a8934fb3148434868175e02f5a4a6",
+    "runtime/authoritative_json.py": "e6f3f2c903f19fa9c388770c00f3e8f1bff5d639d22d9018618e1c0c134272d8",
+    "tests/test_authoritative_json.py": "5ce351df85d8ed8a033e297d5cf6b50a7c3fc7f45e63e42282a798581de04040"
+  },
+  "verification": {
+    "pytest": "5 passed",
+    "ruff": "passed",
+    "fixtures": [
+      "valid authoritative object",
+      "corrupt authoritative bytes preserved in bounded quarantine with receipt",
+      "derived corruption reported as rebuild_required",
+      "unclassified state refused",
+      "snapshot race refused without moving source"
+    ]
+  },
+  "safety": "The acceptance tests use temporary roots only. No live project state was quarantined or changed."
+}

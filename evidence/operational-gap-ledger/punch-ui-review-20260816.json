@@ -1,0 +1,17 @@
+{
+  "schema_version": "px.agent-audit-report/1.0",
+  "report_id": "punch-ui-review-20260816",
+  "agent": "punch_ui_review",
+  "mode": "read-only",
+  "findings": [
+    {"finding_id":"PUR-001","priority":"P0","summary":"Card drill-down clips history and is not the canonical card.","source":"runtime/dashboard_api.py:935","gap_ids":["PX-OS-100"]},
+    {"finding_id":"PUR-002","priority":"P0","summary":"The dashboard labels total gaps as discovered and hides most state counts.","source":"extension/media/dashboard/45-system-surfaces.js:53","gap_ids":["PX-OS-101"]},
+    {"finding_id":"PUR-003","priority":"P0","summary":"Partial surface coverage can falsely mark a surface examined.","source":"runtime/operational_gap_ledger.py:240","gap_ids":["PX-OS-097","PX-OS-102"]},
+    {"finding_id":"PUR-004","priority":"P0","summary":"Cards lack referential integrity to registered surfaces and controls.","source":"runtime/operational_gap_ledger.py:144","gap_ids":["PX-OS-103"]},
+    {"finding_id":"PUR-005","priority":"P1","summary":"Surface and control inventory evidence has no dashboard drill-down.","source":"runtime/dashboard_api.py:954","gap_ids":["PX-OS-104"]},
+    {"finding_id":"PUR-006","priority":"P1","summary":"Card filtering, paging, truncation, and full-ledger counts are absent or incorrect.","source":"runtime/dashboard_api.py:930","gap_ids":["PX-OS-105"]},
+    {"finding_id":"PUR-007","priority":"P1","summary":"Required evidence and source fields are omitted and inaccessible.","source":"runtime/dashboard_api.py:935","gap_ids":["PX-OS-108"]},
+    {"finding_id":"PUR-008","priority":"P0","summary":"An invalid ledger can render as an empty healthy-looking view.","source":"runtime/dashboard_api.py:916","gap_ids":["PX-OS-106"]},
+    {"finding_id":"PUR-009","priority":"P0","summary":"No independent expected-inventory denominator exists.","source":"runtime/operational_gap_ledger.py:329","gap_ids":["PX-OS-107"]}
+  ]
+}

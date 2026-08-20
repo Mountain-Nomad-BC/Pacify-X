@@ -1,0 +1,38 @@
+{
+  "admission_record": "evaluate-supabase-fit",
+  "body_sha256": "ad4e5cbccead50dd7be7250b4f6885e287791e1de680c66c5bc57148c6e0084b",
+  "contract": {
+    "available": true,
+    "sha256": "cbcc27ccbfc3aa6ee8d68890fedf745c9b4ade2c075330fe9bc4429cf7504cb1",
+    "source": "registry/skill_packages/evaluate-supabase-fit.json"
+  },
+  "description": "Evaluate Supabase against direct Postgres, another backend platform, or custom services.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "evaluate-supabase-fit",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/evaluate-supabase-fit"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "architecture-fit",
+    "postgres-platform",
+    "supabase",
+    "tradeoffs"
+  ],
+  "version": "1.0.0"
+}

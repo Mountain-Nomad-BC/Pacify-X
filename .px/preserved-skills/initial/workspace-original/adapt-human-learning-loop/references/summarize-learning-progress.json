@@ -1,0 +1,50 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "no diagnosis, prognosis, or protected-trait inference",
+    "show sample size and uncertainty",
+    "do not hide negative or contradictory observations"
+  ],
+  "bundle": "adapt-human-learning-loop",
+  "category": "learning-evaluation",
+  "dependencies": [
+    "maintain-behavior-event-ledger",
+    "evaluate-cue-recall-and-recognition",
+    "govern-reinforcement-token-economy"
+  ],
+  "id": "summarize-learning-progress",
+  "keywords": [
+    "learning progress",
+    "activity history",
+    "trend summary",
+    "observer notes"
+  ],
+  "mechanisms": [
+    "time-window aggregation",
+    "exercise-level metrics",
+    "observer-note separation",
+    "trend uncertainty",
+    "missing-data disclosure"
+  ],
+  "owner": "long-horizon-progress-ledger",
+  "provenance": {
+    "derivation": "clean-room mechanism abstraction",
+    "source": "hyperlearning-clean-room",
+    "source_refs": [
+      "Manual de usuario e instalación.pdf sections 2.4-2.8",
+      "src/Historial.java"
+    ]
+  },
+  "source": "hyperlearning-clean-room",
+  "source_refs": [
+    "Manual de usuario e instalación.pdf sections 2.4-2.8",
+    "src/Historial.java"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Summarize activity completion, performance trends, observer notes, reward transactions, and data gaps over a defined time range without converting correlation into diagnosis.",
+  "title": "Summarize Learning Progress",
+  "use_when": [
+    "a learner or supervisor needs a progress view",
+    "several activity types must be compared over time"
+  ]
+}

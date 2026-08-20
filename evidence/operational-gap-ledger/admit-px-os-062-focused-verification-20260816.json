@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-062",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005011",
+  "effect": "execute",
+  "scope": [
+    "node extension/scripts/deduplicate-legacy-css.js",
+    "node extension/scripts/audit-dashboard-css.js --check",
+    "node --test --test-name-pattern scaffold-selectors extension/tests/ui-scaffold.test.js",
+    "node --test extension/tests/dashboard-e2e.test.js"
+  ],
+  "authority": "The registered CSS ownership gap requires exact audit and browser-layout verification after selector canonicalization.",
+  "expected_effect": "Canonicalization is idempotent; cross-file duplicate counts are zero; baseline, stateful interactions, mobile containment, forced colors, and 200-percent-equivalent reflow all pass.",
+  "rollback": "Read-only verification; if any style or behavior regresses, retain exact evidence and repair without weakening the audit baseline.",
+  "evidence": [{"claim": "Immediate post-canonicalization checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005011"}]
+}

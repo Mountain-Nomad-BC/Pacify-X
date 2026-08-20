@@ -1,0 +1,39 @@
+{
+  "admission_record": "intent-preserving-merge-resolution",
+  "body_sha256": "62e581370fb71200d8279fec5facd505c978507a23a94b375256c583e0555045",
+  "contract": {
+    "available": true,
+    "sha256": "33aab09f23f5bbc82d3c65685a893ea4b960ccfd22a6683688163743f6f71a68",
+    "source": "registry/skill_packages/intent-preserving-merge-resolution.json"
+  },
+  "description": "Resolve merge and rebase conflicts by reconstructing each side\u2019s intent and preserving both valid outcomes.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "intent-preserving-merge-resolution",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/intent-preserving-merge-resolution"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "engineering-reasoning",
+    "intent",
+    "merge",
+    "preserving",
+    "resolution"
+  ],
+  "version": "1.0.0"
+}

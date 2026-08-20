@@ -1,0 +1,38 @@
+{
+  "admission_record": "inspect-live-contracts",
+  "body_sha256": "8cd04d2feb62521d9313d044f9277a9cb8383717183ab7b1b02fd3ae43443626",
+  "contract": {
+    "available": true,
+    "sha256": "05346722b5f4d9883729eb27bd8600f5fe50ff0a7ab337eb9cce44b7c08b2cf6",
+    "source": "registry/skill_packages/inspect-live-contracts.json"
+  },
+  "description": "Inspect authorized running services to derive effective API, schema, route, and access contracts, then compare them with declared owners and consumers. Use when dynamic registration, runtime configuration, ORM metadata, redirects, or role enforcement makes static contract analysis insufficient.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "inspect-live-contracts",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/inspect-live-contracts"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "contract",
+    "runtime",
+    "dependency",
+    "introspection"
+  ],
+  "version": "0.1.0"
+}

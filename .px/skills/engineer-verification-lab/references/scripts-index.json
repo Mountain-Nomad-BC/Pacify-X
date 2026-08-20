@@ -1,0 +1,60 @@
+{
+  "count": 9,
+  "records": [
+    {
+      "id": "benchmark-contamination-scan",
+      "path": ".px/skills/engineer-verification-lab/references/scripts/benchmark-contamination-scan.json",
+      "sha256": "c42614b0a61f393d764bec4608cf55ffcee68ee76fa05ea9109347d3a1debcf1",
+      "trigger": "Use when the requested outcome is benchmark contamination scan or when that outcome is a required dependency."
+    },
+    {
+      "id": "differential-tester",
+      "path": ".px/skills/engineer-verification-lab/references/scripts/differential-tester.json",
+      "sha256": "2d0c30858445ea2afb4ad385f674111a41e33d057d71c6faadd2efef42c9a944",
+      "trigger": "Use when the requested outcome is differential tester or when that outcome is a required dependency."
+    },
+    {
+      "id": "formula-property-tests",
+      "path": ".px/skills/engineer-verification-lab/references/scripts/formula-property-tests.json",
+      "sha256": "517e249587855aab4d3b586c3ed83fba0d3fbb0f11f4da3ed3f9dabcf86f0c48",
+      "trigger": "Use when the requested outcome is formula property tests or when that outcome is a required dependency."
+    },
+    {
+      "id": "fuzz-json-runner",
+      "path": ".px/skills/engineer-verification-lab/references/scripts/fuzz-json-runner.json",
+      "sha256": "3563977599bb866cf72de583add76e975cfd935107b82fab78a5efacf1e8562a",
+      "trigger": "Use when the requested outcome is fuzz json runner or when that outcome is a required dependency."
+    },
+    {
+      "id": "judge-calibrator",
+      "path": ".px/skills/engineer-verification-lab/references/scripts/judge-calibrator.json",
+      "sha256": "445241e285f2db5271fceb476c77945168c7cfd54c63e2cd8c710cec501d8343",
+      "trigger": "Use when the requested outcome is judge calibrator or when that outcome is a required dependency."
+    },
+    {
+      "id": "metamorphic-runner",
+      "path": ".px/skills/engineer-verification-lab/references/scripts/metamorphic-runner.json",
+      "sha256": "93e63dfe801036f399d558bdbd49ee4335c3cd451965ba3cfb0abf0ba7ce5f9f",
+      "trigger": "Use when the requested outcome is metamorphic runner or when that outcome is a required dependency."
+    },
+    {
+      "id": "mutation-operator",
+      "path": ".px/skills/engineer-verification-lab/references/scripts/mutation-operator.json",
+      "sha256": "56b118f88ab0c85ace96d46857bd95cbd5b73e39422f18526ea3f5861f16de93",
+      "trigger": "Use when the requested outcome is mutation operator or when that outcome is a required dependency."
+    },
+    {
+      "id": "scenario-runner",
+      "path": ".px/skills/engineer-verification-lab/references/scripts/scenario-runner.json",
+      "sha256": "08af3494260c9f3020d0180a0f99ddd30b43efa8dd2f90d7a76ef6f8e5f8295a",
+      "trigger": "Use when the requested outcome is scenario runner or when that outcome is a required dependency."
+    },
+    {
+      "id": "trajectory-scorer",
+      "path": ".px/skills/engineer-verification-lab/references/scripts/trajectory-scorer.json",
+      "sha256": "7137b2e8612edb878524b88f2efa9bc80be4711e79175a278ce6d475257686e2",
+      "trigger": "Use when the requested outcome is trajectory scorer or when that outcome is a required dependency."
+    }
+  ],
+  "schema_version": "1.0"
+}

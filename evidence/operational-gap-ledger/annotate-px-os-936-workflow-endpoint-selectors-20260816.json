@@ -1,0 +1,9 @@
+{
+  "gap_id": "PX-OS-936",
+  "note": "The browser walk reached the Workflow Builder edge editor and used removed node-only selectors data-edge-source/data-edge-target. The current operational contract uses typed endpoint selectors whose values include both node and port.",
+  "evidence": [
+    {"claim": "The stale selector waited 30 seconds and timed out in the focused run.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004996; extension/tests/dashboard-e2e.test.js:296-298"},
+    {"claim": "The current editor exposes data-edge-source-endpoint and data-edge-target-endpoint and dispatch parses node|port pairs.", "reference": "extension/media/dashboard/90-controller.js:494,1324-1327"}
+  ],
+  "patch": {"next_action": "Update the browser interaction to select exact typed node|port endpoints; do not reintroduce node-only controls."}
+}

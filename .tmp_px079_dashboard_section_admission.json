@@ -1,0 +1,30 @@
+{
+  "gap_id": "PX-OS-079",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005672",
+  "effect": "execute",
+  "scope": [
+    "test-section:dashboard-extension",
+    "test-section:studio-memory-graph"
+  ],
+  "authority": "Repository engineering contract requires the governed section owner after a control-plane fixture repair; the user directed operational completion without a full certification pass.",
+  "expected_effect": "Rerun only dashboard-extension, then run studio-memory-graph only if the dashboard section passes, producing current bounded section receipts.",
+  "rollback": "Stop at the first failed section, retain its receipt, classify the exact failing behavior, and do not run the dependent section or full profile.",
+  "evidence": [
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005671",
+      "claim": "The prior dashboard section isolated three fixture failures"
+    },
+    {
+      "reference": "extension/tests/preview.html",
+      "claim": "Preview allocation proof is request-unique"
+    },
+    {
+      "reference": "extension/tests/studio-package.test.js",
+      "claim": "Digest framing test bypasses only the editor normalization boundary"
+    },
+    {
+      "reference": "extension/tests/ui-scaffold.test.js",
+      "claim": "Raw noncanonical version fixture is rejected"
+    }
+  ]
+}

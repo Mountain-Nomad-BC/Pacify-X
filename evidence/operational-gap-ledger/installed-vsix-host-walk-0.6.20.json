@@ -1,0 +1,414 @@
+{
+  "schema_version": "px.isolated-current-source-operational-walk/1.1",
+  "observed_utc": "2026-08-17T03:26:24.312Z",
+  "status": "failed",
+  "status_truth": {
+    "schema_version": "px.operational-ui-launcher-status/1.0",
+    "terminal_state": "failed",
+    "operationally_complete": false,
+    "walk_terminal_state": "failed",
+    "summary": {
+      "issue_count": 10,
+      "occurrence_count": 49,
+      "blocking_issue_count": 9,
+      "by_source": {
+        "coverage": 2,
+        "extension_host": 40,
+        "process": 6,
+        "source_identity": 1
+      },
+      "by_severity": {
+        "incomplete": 3,
+        "warning": 40,
+        "error": 6
+      }
+    },
+    "issues": [
+      {
+        "source": "coverage",
+        "code": "agent-builder-incomplete",
+        "severity": "incomplete",
+        "blocking": true,
+        "message": "The agent builder terminal disposition is missing.",
+        "context": "agent-builder",
+        "details": {
+          "terminal_disposition": "missing"
+        },
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "coverage",
+        "code": "workflow-builder-incomplete",
+        "severity": "incomplete",
+        "blocking": true,
+        "message": "The workflow builder terminal disposition is missing.",
+        "context": "workflow-builder",
+        "details": {
+          "terminal_disposition": "missing"
+        },
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "extension_host",
+        "code": "github-token-unavailable",
+        "severity": "warning",
+        "blocking": false,
+        "message": "[AgentHost] No token resolved for resource: https://api.github.com",
+        "context": "captured-host-output",
+        "details": null,
+        "occurrences": 40,
+        "recovered": null
+      },
+      {
+        "source": "process",
+        "code": "control-chain-receipt-invalid",
+        "severity": "error",
+        "blocking": true,
+        "message": "The control-chain receipt is missing or inconsistent (0 records / 0 declared).",
+        "context": "receipt-contract",
+        "details": null,
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "process",
+        "code": "launcher-error",
+        "severity": "error",
+        "blocking": true,
+        "message": "Error: owned-host-worker-exit-1\n    at runOwnedHostWorker (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\owned-host-runner.js:141:29)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async main (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\run-isolated-current-source-walk.js:402:11)",
+        "context": null,
+        "details": null,
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "process",
+        "code": "owned-worker-exit-unverified",
+        "severity": "error",
+        "blocking": true,
+        "message": "The owned worker exit was not verified.",
+        "context": null,
+        "details": null,
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "process",
+        "code": "process-error",
+        "severity": "error",
+        "blocking": true,
+        "message": "AssertionError [ERR_ASSERTION]: operational-walker-receipt-missing\n    at childMain (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\run-isolated-current-source-walk.js:283:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+        "context": "owned-host-process",
+        "details": null,
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "process",
+        "code": "stderr-error",
+        "severity": "error",
+        "blocking": true,
+        "message": "Error: ui-action-inventory-mismatch missing=agentRemoveTopologyNode,agentAddTopologyNode,acceptStudioVersionSuggestion stale=none",
+        "context": "stderr",
+        "details": null,
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "process",
+        "code": "walker-process-exit-failed",
+        "severity": "error",
+        "blocking": true,
+        "message": "The walker exited with code 1 (expected 0) and signal none.",
+        "context": "walker-process",
+        "details": null,
+        "occurrences": 1,
+        "recovered": null
+      },
+      {
+        "source": "source_identity",
+        "code": "host-source-identity-unknown",
+        "severity": "incomplete",
+        "blocking": true,
+        "message": "The walk receipt does not state whether loaded host assets match the source authority.",
+        "context": null,
+        "details": null,
+        "occurrences": 1,
+        "recovered": null
+      }
+    ]
+  },
+  "authority": "Codex host retained execution authority; PX governed scope, evidence, isolation, and cleanup.",
+  "effects": {
+    "created": [
+      "PACIFY-X-owned temporary workspace",
+      "PACIFY-X-owned user-data profile",
+      "PACIFY-X-owned empty extensions directory",
+      "PACIFY-X-owned shared-data directory",
+      "repository evidence"
+    ],
+    "spawned": [
+      "pinned VS Code development host",
+      "existing operational UI walker"
+    ],
+    "user_main_vscode_profile_touched": false,
+    "isolation_boundary_verified": true,
+    "product_ui_modified": false,
+    "broad_tests_run": false
+  },
+  "source": {
+    "mode": "installed-exact-vsix",
+    "extension_version": "0.6.20",
+    "extension_entry_sha256": "acda102a3a46da669e6eea098576c43f0fc6419eff198eeed2a9ad47ec7c9776",
+    "artifact": {
+      "name": "pacify-x-vscode-0.6.20.vsix",
+      "sha256": "9edb1a61472cf8ec552fe860b27a56c2d8bce86f5761f5bd171c4d036deef3fe"
+    },
+    "walker_sha256": "b589299721e53a89edc790505dc39baf2a9fcf617321fc737473ce8c2d4b743e",
+    "bootstrap_sha256": "7a68e54eb1fe079ea2615b3d6f0449389cb8284a9e2a0c13752060b12c55631a",
+    "vscode_version": "1.132.1"
+  },
+  "isolation": {
+    "workspace": "PACIFY-X-owned ephemeral",
+    "user_data": "PACIFY-X-owned ephemeral; not the user profile",
+    "extensions": "PACIFY-X-owned empty directory",
+    "shared_data_requested": "PACIFY-X-owned ephemeral; explicitly supplied through --shared-data-dir",
+    "shared_data_observed_mode": "in-memory",
+    "cdp": {
+      "endpoint": "http://127.0.0.1:58030",
+      "address": "127.0.0.1",
+      "port": 58030,
+      "ready_after_ms": 292
+    },
+    "extension_loading": "exact VSIX installed into owned empty extensions directory"
+  },
+  "walk": {
+    "path": "evidence/operational-ui-walk-installed-0.6.20/receipt.json",
+    "present": false
+  },
+  "child_lifecycle": {
+    "schema_version": "px.isolated-current-source-host-child/1.0",
+    "started_utc": "2026-08-17T03:26:17.252Z",
+    "source_mode": "installed-exact-vsix",
+    "vscode_pid": 17344,
+    "walker_pid": 14376,
+    "cdp": {
+      "endpoint": "http://127.0.0.1:58030",
+      "address": "127.0.0.1",
+      "port": 58030,
+      "ready_after_ms": 292
+    },
+    "vscode_termination_verified": true,
+    "walker_termination_verified": true,
+    "status": "failed",
+    "installed_artifact": {
+      "path": "pacify-x-vscode-0.6.20.vsix",
+      "sha256": "9edb1a61472cf8ec552fe860b27a56c2d8bce86f5761f5bd171c4d036deef3fe",
+      "unchanged_after_install": true
+    },
+    "executable": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-vscode-test-cache\\vscode-win32-x64-archive-1.132.1\\Code.exe",
+    "launch_arguments": [
+      "[owned-workspace]",
+      "--new-window",
+      "--no-sandbox",
+      "--disable-gpu-sandbox",
+      "--disable-updates",
+      "--disable-workspace-trust",
+      "--skip-welcome",
+      "--skip-release-notes",
+      "--no-cached-data",
+      "--user-data-dir=[owned-user-data]",
+      "--extensions-dir=[owned-empty-extensions]",
+      "--shared-data-dir=[owned-shared-data]",
+      "--extensionDevelopmentPath=[installed-artifact-harness]",
+      "--extensionTestsPath=[owned-bootstrap]",
+      "--remote-debugging-address=127.0.0.1",
+      "--remote-debugging-port=58030"
+    ],
+    "bootstrap": {
+      "schema_version": "px.operational-walk-bootstrap/1.0",
+      "observed_utc": "2026-08-17T03:26:19.885Z",
+      "extension_id": "mountain-nomad-bc.pacify-x-vscode",
+      "command_id": "pacifyX.openDashboard",
+      "status": "ready",
+      "extension_found": true,
+      "activation_completed": true,
+      "command_registered": true,
+      "command_executed": true,
+      "ready_utc": "2026-08-17T03:26:23.155Z"
+    },
+    "walker_exit": {
+      "code": 1,
+      "signal": null
+    },
+    "error": "AssertionError [ERR_ASSERTION]: operational-walker-receipt-missing\n    at childMain (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\run-isolated-current-source-walk.js:283:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+    "finished_utc": "2026-08-17T03:26:23.496Z",
+    "storage_boundary": {
+      "expected_shared_data": "[owned-shared-data]",
+      "in_memory_observed": true,
+      "owned_shared_data_observed": false,
+      "user_scoped_shared_data_observed": false,
+      "observed_database_paths": [
+        ":memory:"
+      ],
+      "mode": "in-memory",
+      "verified": true
+    },
+    "operational_status": {
+      "schema_version": "px.operational-ui-walk-status/1.0",
+      "terminal_state": "failed",
+      "operationally_complete": false,
+      "source_identity": {
+        "state": "unknown",
+        "method": null
+      },
+      "coverage": {
+        "control_count": 0,
+        "attempted_control_count": 0,
+        "complete_interaction_chains": 0,
+        "expected_surface_ids": [],
+        "observed_surface_ids": [],
+        "missing_surface_ids": []
+      },
+      "summary": {
+        "issue_count": 8,
+        "occurrence_count": 47,
+        "blocking_issue_count": 7,
+        "by_source": {
+          "coverage": 2,
+          "extension_host": 40,
+          "process": 4,
+          "source_identity": 1
+        },
+        "by_severity": {
+          "incomplete": 3,
+          "warning": 40,
+          "error": 4
+        }
+      },
+      "issues": [
+        {
+          "source": "coverage",
+          "code": "agent-builder-incomplete",
+          "severity": "incomplete",
+          "blocking": true,
+          "message": "The agent builder terminal disposition is missing.",
+          "context": "agent-builder",
+          "details": {
+            "terminal_disposition": "missing"
+          },
+          "occurrences": 1,
+          "recovered": null
+        },
+        {
+          "source": "coverage",
+          "code": "workflow-builder-incomplete",
+          "severity": "incomplete",
+          "blocking": true,
+          "message": "The workflow builder terminal disposition is missing.",
+          "context": "workflow-builder",
+          "details": {
+            "terminal_disposition": "missing"
+          },
+          "occurrences": 1,
+          "recovered": null
+        },
+        {
+          "source": "extension_host",
+          "code": "github-token-unavailable",
+          "severity": "warning",
+          "blocking": false,
+          "message": "[AgentHost] No token resolved for resource: https://api.github.com",
+          "context": "captured-host-output",
+          "details": null,
+          "occurrences": 40,
+          "recovered": null
+        },
+        {
+          "source": "process",
+          "code": "control-chain-receipt-invalid",
+          "severity": "error",
+          "blocking": true,
+          "message": "The control-chain receipt is missing or inconsistent (0 records / 0 declared).",
+          "context": "receipt-contract",
+          "details": null,
+          "occurrences": 1,
+          "recovered": null
+        },
+        {
+          "source": "process",
+          "code": "process-error",
+          "severity": "error",
+          "blocking": true,
+          "message": "AssertionError [ERR_ASSERTION]: operational-walker-receipt-missing\n    at childMain (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\run-isolated-current-source-walk.js:283:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+          "context": "owned-host-process",
+          "details": null,
+          "occurrences": 1,
+          "recovered": null
+        },
+        {
+          "source": "process",
+          "code": "stderr-error",
+          "severity": "error",
+          "blocking": true,
+          "message": "Error: ui-action-inventory-mismatch missing=agentRemoveTopologyNode,agentAddTopologyNode,acceptStudioVersionSuggestion stale=none",
+          "context": "stderr",
+          "details": null,
+          "occurrences": 1,
+          "recovered": null
+        },
+        {
+          "source": "process",
+          "code": "walker-process-exit-failed",
+          "severity": "error",
+          "blocking": true,
+          "message": "The walker exited with code 1 (expected 0) and signal none.",
+          "context": "walker-process",
+          "details": null,
+          "occurrences": 1,
+          "recovered": null
+        },
+        {
+          "source": "source_identity",
+          "code": "host-source-identity-unknown",
+          "severity": "incomplete",
+          "blocking": true,
+          "message": "The walk receipt does not state whether loaded host assets match the source authority.",
+          "context": null,
+          "details": null,
+          "occurrences": 1,
+          "recovered": null
+        }
+      ]
+    },
+    "stdout_tail": "\r\n[main 2026-08-17T03:26:18.214Z] StorageMainService: creating application shared storage\n[main 2026-08-17T03:26:18.261Z] [shared storage] Creating shared storage database at ':memory:' (wasCreated: true)\n[main 2026-08-17T03:26:18.263Z] [shared storage] Initializing fallback application storage (path: in-memory)\n[main 2026-08-17T03:26:18.279Z] [shared storage] Fallback application storage initialized with 3 items\n[main 2026-08-17T03:26:18.280Z] update#setState disabled\n[main 2026-08-17T03:26:18.280Z] update#ctor - updates are disabled by the environment\n[AgentHost:renderer] Acquiring MessagePort to agent host...\n[main 2026-08-17T03:26:18.849Z] AgentHostProcessManager: agent host started\n[AgentHost:renderer] MessagePort acquired, creating client...\nStarted local extension host with pid 29648.\n[AgentHost:renderer] Protocol connection established; clientId=bf98b436-c203-4c2e-85f2-844cd5968956\nLoading development extension at c:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\tests\\installed-harness\n[AccountPolicyGate] apply: state=inactive, reason=undefined, isRestricted=false\nSettings Sync: Account status changed from uninitialized to unavailable\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n[AgentHost] No token resolved for resource: https://api.github.com/repos\n",
+    "stderr_tail": "\r\nDevTools listening on ws://127.0.0.1:58030/devtools/browser/8da19f2d-86ec-4ed2-8c16-afe819999606\r\nWarning: 'cached-data' is not in the list of known options, but still passed to Electron/Chromium.\nWarning: 'remote-debugging-address' is not in the list of known options, but still passed to Electron/Chromium.\nWarning: 'remote-debugging-port' is not in the list of known options, but still passed to Electron/Chromium.\n[vscode.mermaid-markdown-features]: Extension 'vscode.mermaid-markdown-features' CANNOT use 'legacyToolReferenceFullNames' without the 'chatParticipantPrivate' API proposal enabled\n[main 2026-08-17T03:26:20.230Z] [AgentHost:stderr] (node:13876) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.\n(Use `Code --trace-deprecation ...` to show where the warning was created)\n\nUnknown channel: agentHostClientProxy\nError: ui-action-inventory-mismatch missing=agentRemoveTopologyNode,agentAddTopologyNode,acceptStudioVersionSuggestion stale=none\n    at build (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\build-ui-action-inventory.js:29:45)\n    at buildCurrentSourceControlManifest (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\operational-ui-control-records.js:107:26)\n    at loadOperationalSurfaceInventory (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\operational-ui-control-records.js:190:20)\n    at main (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\run-operational-ui-walk.js:264:21)\n    at Object.<anonymous> (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\run-operational-ui-walk.js:412:1)\n    at Module._compile (node:internal/modules/cjs/loader:1854:14)\n    at Object..js (node:internal/modules/cjs/loader:1985:10)\n    at Module.load (node:internal/modules/cjs/loader:1577:32)\n    at Module._load (node:internal/modules/cjs/loader:1379:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\n"
+  },
+  "owner_lifecycle": {
+    "schema_version": "px.owned-host-run/1.0",
+    "run_id": "325b2810-851d-4c4c-a975-d34c8582a723",
+    "owner_pid": 9776,
+    "worker_pid": 19820,
+    "status": "failed",
+    "started_utc": "2026-08-17T03:26:17.190Z",
+    "timeout_ms": 300000,
+    "termination_requested": false,
+    "worker_exit_verified": true,
+    "exit_code": 1,
+    "signal": null,
+    "residual_owned_pids_before": [],
+    "reconciled_owned_pids": [],
+    "residual_owned_pids_after": [],
+    "process_tree_closed_verified": true,
+    "error": "owned-host-worker-exit-1",
+    "finished_utc": "2026-08-17T03:26:24.304Z",
+    "duration_ms": 7114
+  },
+  "error": "Error: owned-host-worker-exit-1\n    at runOwnedHostWorker (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\owned-host-runner.js:141:29)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async main (C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\extension\\scripts\\run-isolated-current-source-walk.js:402:11)",
+  "cleanup": {
+    "reclaimed": true,
+    "reason": "verified-process-tree-closure"
+  }
+}

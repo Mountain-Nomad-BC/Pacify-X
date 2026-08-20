@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backup Deploy Recover Supabase"
+  short_description: "Deploy and recover Supabase schema, data, functions, config, storage, and secret"
+  default_prompt: "Use $backup-deploy-recover-supabase to deploy and recover Supabase schema, data, functions, config, storage, and secrets with tested backups and rollback evidence."

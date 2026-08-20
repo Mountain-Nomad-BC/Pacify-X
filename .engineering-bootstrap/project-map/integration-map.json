@@ -1,0 +1,1817 @@
+{
+  "network_origins": [
+    {
+      "origin": "http://127.0.0.1:11434",
+      "sources": [
+        ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json",
+        ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/src/extension.js",
+        "extension/package.json",
+        "extension/src/extension.js",
+        "extension/tests/context-bridge.test.js"
+      ]
+    },
+    {
+      "origin": "http://127.0.0.1:9333",
+      "sources": [
+        "extension/scripts/run-operational-ui-walk.js"
+      ]
+    },
+    {
+      "origin": "http://example.com:11434",
+      "sources": [
+        "extension/tests/context-bridge.test.js"
+      ]
+    },
+    {
+      "origin": "http://json-schema.org",
+      "sources": [
+        ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/server/index.js",
+        "extension/server/index.js"
+      ]
+    },
+    {
+      "origin": "http://localhost",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/local-run.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/local-run.md"
+      ]
+    },
+    {
+      "origin": "http://localhost:18060",
+      "sources": [
+        "providers/agency_agents/agents/marketing/marketing-multi-platform-publisher.md"
+      ]
+    },
+    {
+      "origin": "http://localhost:3000",
+      "sources": [
+        "providers/agency_agents/agents/testing/testing-performance-benchmarker.md"
+      ]
+    },
+    {
+      "origin": "http://localhost:8000",
+      "sources": [
+        "providers/agency_agents/agents/project-management/project-manager-senior.md",
+        "providers/agency_agents/agents/testing/testing-accessibility-auditor.md",
+        "providers/agency_agents/agents/testing/testing-evidence-collector.md",
+        "providers/agency_agents/agents/testing/testing-reality-checker.md"
+      ]
+    },
+    {
+      "origin": "http://localhost:8088",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/skills/skill-attach.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/skills/skill-attach.md"
+      ]
+    },
+    {
+      "origin": "http://schemas.microsoft.com",
+      "sources": [
+        ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/.vsixmanifest",
+        "extension/scripts/package-vsix.js"
+      ]
+    },
+    {
+      "origin": "http://schemas.openxmlformats.org",
+      "sources": [
+        "extension/scripts/package-vsix.js"
+      ]
+    },
+    {
+      "origin": "http://timestamp.digicert.com",
+      "sources": [
+        "providers/agency_agents/agents/engineering/engineering-desktop-app-engineer.md"
+      ]
+    },
+    {
+      "origin": "http://www.apache.org",
+      "sources": [
+        ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/LICENSE",
+        "LICENSE",
+        "extension/LICENSE"
+      ]
+    },
+    {
+      "origin": "http://www.w3.org",
+      "sources": [
+        ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/media/px-activity.svg",
+        "extension/media/dashboard/90-controller.js",
+        "extension/media/px-activity.svg"
+      ]
+    },
+    {
+      "origin": "https://$func.azurewebsites.net",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth-azure-starter.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth-azure-starter.md"
+      ]
+    },
+    {
+      "origin": "https://$svc.search.windows.net",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-azure-ai-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-azure-ai-search.md"
+      ]
+    },
+    {
+      "origin": "https://${{",
+      "sources": [
+        "providers/agency_agents/agents/security/security-threat-detection-engineer.md"
+      ]
+    },
+    {
+      "origin": "https://127.0.0.1:11434",
+      "sources": [
+        "extension/tests/context-bridge.test.js"
+      ]
+    },
+    {
+      "origin": "https://account.box.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md"
+      ]
+    },
+    {
+      "origin": "https://accounts.google.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md"
+      ]
+    },
+    {
+      "origin": "https://ai.azure.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/workflows/quickstart.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/azd-guidance/references/azd-ai-cli.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/create-hosted.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/quick-start-hosted.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/enable-incoming-a2a.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-manage.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/skills/skill-attach.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/skills/skill-toolbox-attach.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-file-search.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/use-toolbox-in-hosted-agent.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/deploy/deploy.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/invocations-ws/invocations-ws.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/invocations-ws/references/invocations-ws-protocol.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/mcp-protocol.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/test-endpoint.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-a2a.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-azure-ai-search.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-code-interpreter.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-file-search.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-openapi.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-work-iq.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/toolbox-azd.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/toolbox.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/trace/references/tracing-insights-api.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/models/deploy-model/scripts/generate_deployment_url.ps1",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/models/deploy-model/scripts/generate_deployment_url.sh",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/project/connections.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/project/create/create-foundry-project.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/workflows/quickstart.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/azd-guidance/references/azd-ai-cli.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/create-hosted.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/quick-start-hosted.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/enable-incoming-a2a.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-manage.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/skills/skill-attach.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/skills/skill-toolbox-attach.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-file-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/use-toolbox-in-hosted-agent.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/deploy/deploy.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/invocations-ws/invocations-ws.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/invocations-ws/references/invocations-ws-protocol.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/mcp-protocol.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/test-endpoint.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-a2a.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-azure-ai-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-code-interpreter.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-file-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-openapi.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-work-iq.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/toolbox-azd.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/toolbox.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/trace/references/tracing-insights-api.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/models/deploy-model/scripts/generate_deployment_url.ps1",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/models/deploy-model/scripts/generate_deployment_url.sh",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/project/connections.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/project/create/create-foundry-project.md"
+      ]
+    },
+    {
+      "origin": "https://ai.azure.com`",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-file-search.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/invocations-ws/invocations-ws.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/invocations-ws/references/invocations-ws-protocol.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/trace/references/tracing-insights-api.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/resource/private-network/references/intake.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-file-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/invocations-ws/invocations-ws.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/invocations-ws/references/invocations-ws-protocol.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/trace/references/tracing-insights-api.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/resource/private-network/references/intake.md"
+      ]
+    },
+    {
+      "origin": "https://aistudio.google.com",
+      "sources": [
+        "providers/agency_agents/agents/marketing/marketing-carousel-growth-engine.md"
+      ]
+    },
+    {
+      "origin": "https://aka.ms",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-web-search.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/scripts/verify-environment.ps1",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/scripts/verify-environment.sh",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/routine/routine.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/project/create/create-foundry-project.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/resource/private-network/references/vpn-dns-setup.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-web-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/scripts/verify-environment.ps1",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/scripts/verify-environment.sh",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/routine/routine.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/project/create/create-foundry-project.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/resource/private-network/references/vpn-dns-setup.md"
+      ]
+    },
+    {
+      "origin": "https://api.box.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md"
+      ]
+    },
+    {
+      "origin": "https://api.example.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-openapi.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-openapi.md",
+        "providers/agency_agents/agents/engineering/engineering-wechat-mini-program-developer.md"
+      ]
+    },
+    {
+      "origin": "https://api.github.com",
+      "sources": [
+        "providers/agency_agents/agents/specialized/specialized-mcp-builder.md"
+      ]
+    },
+    {
+      "origin": "https://api.githubcopilot.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-mcp.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-key-auth.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-managed-oauth.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/scripts/get-catalog-inputs.ps1",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/scripts/get-catalog-inputs.sh",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-mcp.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-key-auth.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-managed-oauth.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/scripts/get-catalog-inputs.ps1",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/scripts/get-catalog-inputs.sh"
+      ]
+    },
+    {
+      "origin": "https://api.upload-post.com`",
+      "sources": [
+        "providers/agency_agents/agents/marketing/marketing-carousel-growth-engine.md"
+      ]
+    },
+    {
+      "origin": "https://app-xx",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md"
+      ]
+    },
+    {
+      "origin": "https://app.example.com",
+      "sources": [
+        "providers/agency_agents/agents/engineering/engineering-identity-access-engineer.md",
+        "providers/agency_agents/agents/engineering/engineering-technical-writer.md"
+      ]
+    },
+    {
+      "origin": "https://arxiv.org",
+      "sources": [
+        ".px/preserved-skills/initial/workspace-original/behavior-to-code-mapper/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/benchmark-domain-adapter/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/bounded-workflow-topology-selector/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/candidate-memory-promoter/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/corpus-to-skill-tree-compiler/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/cross-paper-mechanism-fuser/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/dependency-impact-tracer/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/dynamic-skill-detonator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/evaluation-budget-allocator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/evidence-assembler/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/execution-contract-enforcer/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/experience-reconstructor/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/human-handoff-state-transfer/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/memory-applicability-critic/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/memory-injection-firewall/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/outcome-verifier/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/paper-mechanism-extractor/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/permission-diff-auditor/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/procedural-memory-compiler/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/productization-gap-analyzer/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/provenance-signature-verifier/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/read-only-speculation-controller/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/reasoning-utility-controller/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/recovery-coordinator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/research-to-operation-translator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/skill-admission-controller/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/skill-bundle-resolver/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/skill-coexecution-graph-builder/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/skill-navigator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/tool-loop-circuit-breaker/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/trace-to-skill-compiler/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/trajectory-failure-sentinel/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/behavior-to-code-mapper/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/benchmark-domain-adapter/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/bounded-workflow-topology-selector/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/candidate-memory-promoter/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/corpus-to-skill-tree-compiler/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/cross-paper-mechanism-fuser/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/dependency-impact-tracer/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/dynamic-skill-detonator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/evaluation-budget-allocator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/evidence-assembler/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/execution-contract-enforcer/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/experience-reconstructor/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/human-handoff-state-transfer/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/memory-applicability-critic/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/memory-injection-firewall/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/outcome-verifier/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/paper-mechanism-extractor/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/permission-diff-auditor/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/procedural-memory-compiler/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/productization-gap-analyzer/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/provenance-signature-verifier/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/read-only-speculation-controller/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/reasoning-utility-controller/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/recovery-coordinator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/research-to-operation-translator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/skill-admission-controller/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/skill-bundle-resolver/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/skill-coexecution-graph-builder/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/skill-navigator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/tool-loop-circuit-breaker/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/trace-to-skill-compiler/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/trajectory-failure-sentinel/SKILL.md",
+        ".px/skills/behavior-to-code-mapper/SKILL.md",
+        ".px/skills/benchmark-domain-adapter/SKILL.md",
+        ".px/skills/bounded-workflow-topology-selector/SKILL.md",
+        ".px/skills/candidate-memory-promoter/SKILL.md",
+        ".px/skills/corpus-to-skill-tree-compiler/SKILL.md",
+        ".px/skills/cross-paper-mechanism-fuser/SKILL.md",
+        ".px/skills/dependency-impact-tracer/SKILL.md",
+        ".px/skills/dynamic-skill-detonator/SKILL.md",
+        ".px/skills/evaluation-budget-allocator/SKILL.md",
+        ".px/skills/evidence-assembler/SKILL.md",
+        ".px/skills/execution-contract-enforcer/SKILL.md",
+        ".px/skills/experience-reconstructor/SKILL.md",
+        ".px/skills/human-handoff-state-transfer/SKILL.md",
+        ".px/skills/memory-applicability-critic/SKILL.md",
+        ".px/skills/memory-injection-firewall/SKILL.md",
+        ".px/skills/outcome-verifier/SKILL.md",
+        ".px/skills/paper-mechanism-extractor/SKILL.md",
+        ".px/skills/permission-diff-auditor/SKILL.md",
+        ".px/skills/procedural-memory-compiler/SKILL.md",
+        ".px/skills/productization-gap-analyzer/SKILL.md",
+        ".px/skills/provenance-signature-verifier/SKILL.md",
+        ".px/skills/read-only-speculation-controller/SKILL.md",
+        ".px/skills/reasoning-utility-controller/SKILL.md",
+        ".px/skills/recovery-coordinator/SKILL.md",
+        ".px/skills/research-to-operation-translator/SKILL.md",
+        ".px/skills/skill-admission-controller/SKILL.md",
+        ".px/skills/skill-bundle-resolver/SKILL.md",
+        ".px/skills/skill-coexecution-graph-builder/SKILL.md",
+        ".px/skills/skill-navigator/SKILL.md",
+        ".px/skills/tool-loop-circuit-breaker/SKILL.md",
+        ".px/skills/trace-to-skill-compiler/SKILL.md",
+        ".px/skills/trajectory-failure-sentinel/SKILL.md"
+      ]
+    },
+    {
+      "origin": "https://attack.mitre.org",
+      "sources": [
+        "providers/agency_agents/agents/security/security-threat-detection-engineer.md",
+        "providers/agency_agents/agents/security/security-threat-intelligence-analyst.md"
+      ]
+    },
+    {
+      "origin": "https://azure.microsoft.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-code-interpreter.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/project/create/create-foundry-project.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/quota/quota.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/quota/references/capacity-planning.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/resource/create/create-foundry-resource.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/resource/create/references/troubleshooting.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-code-interpreter.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/project/create/create-foundry-project.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/quota/quota.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/quota/references/capacity-planning.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/resource/create/create-foundry-resource.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/resource/create/references/troubleshooting.md"
+      ]
+    },
+    {
+      "origin": "https://badge.fury.io",
+      "sources": [
+        "providers/agency_agents/agents/engineering/engineering-technical-writer.md"
+      ]
+    },
+    {
+      "origin": "https://catfact.ninja",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-openapi.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-openapi.md"
+      ]
+    },
+    {
+      "origin": "https://code.visualstudio.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/create-hosted.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/use-toolbox-in-hosted-agent.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/toolbox-azd.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/toolbox.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/create-hosted.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/use-toolbox-in-hosted-agent.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/toolbox-azd.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/toolbox.md"
+      ]
+    },
+    {
+      "origin": "https://cognitiveservices.azure.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/common.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-agent-identity.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/common.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-agent-identity.md"
+      ]
+    },
+    {
+      "origin": "https://cognitiveservices.azure.com`",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md"
+      ]
+    },
+    {
+      "origin": "https://creator.xiaohongshu.com",
+      "sources": [
+        "providers/agency_agents/agents/marketing/marketing-multi-platform-publisher.md"
+      ]
+    },
+    {
+      "origin": "https://db-mcp.internal",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-tool-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-tool-search.md"
+      ]
+    },
+    {
+      "origin": "https://deepmind.google",
+      "sources": [
+        ".px/preserved-skills/initial/workspace-original/active-evaluation-selector/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/benchmark-domain-adapter/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/cross-paper-mechanism-fuser/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/evaluation-budget-allocator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/reasoning-utility-controller/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/research-to-operation-translator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/scenario-audit-generator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/tool-loop-circuit-breaker/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/active-evaluation-selector/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/benchmark-domain-adapter/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/cross-paper-mechanism-fuser/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/evaluation-budget-allocator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/reasoning-utility-controller/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/research-to-operation-translator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/scenario-audit-generator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/tool-loop-circuit-breaker/SKILL.md",
+        ".px/skills/active-evaluation-selector/SKILL.md",
+        ".px/skills/benchmark-domain-adapter/SKILL.md",
+        ".px/skills/cross-paper-mechanism-fuser/SKILL.md",
+        ".px/skills/evaluation-budget-allocator/SKILL.md",
+        ".px/skills/reasoning-utility-controller/SKILL.md",
+        ".px/skills/research-to-operation-translator/SKILL.md",
+        ".px/skills/scenario-audit-generator/SKILL.md",
+        ".px/skills/tool-loop-circuit-breaker/SKILL.md"
+      ]
+    },
+    {
+      "origin": "https://developer.apple.com",
+      "sources": [
+        "providers/agency_agents/agents/spatial-computing/terminal-integration-specialist.md",
+        "providers/agency_agents/agents/spatial-computing/visionos-spatial-engineer.md"
+      ]
+    },
+    {
+      "origin": "https://developer.spotify.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md"
+      ]
+    },
+    {
+      "origin": "https://docs.example.com",
+      "sources": [
+        "providers/agency_agents/agents/engineering/engineering-technical-writer.md"
+      ]
+    },
+    {
+      "origin": "https://docs.n8n.io",
+      "sources": [
+        ".px/preserved-skills/initial/workspace-original/acquire-install-n8n/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/automate-supabase-with-n8n/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/backup-upgrade-restore-n8n/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/build-n8n-ai-workflows/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/build-n8n-custom-nodes/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/configure-n8n/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/deploy-n8n-docker/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/design-build-n8n-workflows/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/design-n8n-supabase-reliability/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/design-n8n-supabase-security-boundaries/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/evaluate-n8n-fit/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/govern-n8n-community-nodes/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/handle-debug-n8n-executions/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/integrate-n8n-webhooks-and-apis/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/manage-n8n-credentials/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/observe-operate-n8n/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/operate-n8n-supabase-production/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/route-n8n-capabilities/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/route-n8n-supabase-stack/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/scale-n8n-queue-mode/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/secure-n8n/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/test-n8n-supabase-integrations/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/test-validate-n8n-workflows/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/use-n8n-expressions-and-data/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/use-n8n-mcp/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/acquire-install-n8n/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/automate-supabase-with-n8n/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/backup-upgrade-restore-n8n/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/build-n8n-ai-workflows/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/build-n8n-custom-nodes/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/configure-n8n/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/deploy-n8n-docker/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/design-build-n8n-workflows/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/design-n8n-supabase-reliability/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/design-n8n-supabase-security-boundaries/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/evaluate-n8n-fit/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/govern-n8n-community-nodes/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/handle-debug-n8n-executions/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/integrate-n8n-webhooks-and-apis/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/manage-n8n-credentials/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/observe-operate-n8n/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/operate-n8n-supabase-production/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/route-n8n-capabilities/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/route-n8n-supabase-stack/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/scale-n8n-queue-mode/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/secure-n8n/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/test-n8n-supabase-integrations/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/test-validate-n8n-workflows/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/use-n8n-expressions-and-data/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/use-n8n-mcp/SKILL.md",
+        ".px/skills/acquire-install-n8n/SKILL.md",
+        ".px/skills/automate-supabase-with-n8n/SKILL.md",
+        ".px/skills/backup-upgrade-restore-n8n/SKILL.md",
+        ".px/skills/build-n8n-ai-workflows/SKILL.md",
+        ".px/skills/build-n8n-custom-nodes/SKILL.md",
+        ".px/skills/configure-n8n/SKILL.md",
+        ".px/skills/deploy-n8n-docker/SKILL.md",
+        ".px/skills/design-build-n8n-workflows/SKILL.md",
+        ".px/skills/design-n8n-supabase-reliability/SKILL.md",
+        ".px/skills/design-n8n-supabase-security-boundaries/SKILL.md",
+        ".px/skills/evaluate-n8n-fit/SKILL.md",
+        ".px/skills/govern-n8n-community-nodes/SKILL.md",
+        ".px/skills/handle-debug-n8n-executions/SKILL.md",
+        ".px/skills/integrate-n8n-webhooks-and-apis/SKILL.md",
+        ".px/skills/manage-n8n-credentials/SKILL.md",
+        ".px/skills/observe-operate-n8n/SKILL.md",
+        ".px/skills/operate-n8n-supabase-production/SKILL.md",
+        ".px/skills/route-n8n-capabilities/SKILL.md",
+        ".px/skills/route-n8n-supabase-stack/SKILL.md",
+        ".px/skills/scale-n8n-queue-mode/SKILL.md",
+        ".px/skills/secure-n8n/SKILL.md",
+        ".px/skills/test-n8n-supabase-integrations/SKILL.md",
+        ".px/skills/test-validate-n8n-workflows/SKILL.md",
+        ".px/skills/use-n8n-expressions-and-data/SKILL.md",
+        ".px/skills/use-n8n-mcp/SKILL.md"
+      ]
+    },
+    {
+      "origin": "https://docs.upload-post.com",
+      "sources": [
+        "providers/agency_agents/agents/marketing/marketing-carousel-growth-engine.md"
+      ]
+    },
+    {
+      "origin": "https://docs.yourproject.com",
+      "sources": [
+        "providers/agency_agents/agents/engineering/engineering-technical-writer.md"
+      ]
+    },
+    {
+      "origin": "https://eastus.api.azureml.ms",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/scripts/get-catalog-inputs.ps1",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/scripts/get-catalog-inputs.sh",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/scripts/get-catalog-inputs.ps1",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/scripts/get-catalog-inputs.sh"
+      ]
+    },
+    {
+      "origin": "https://en.wikipedia.org",
+      "sources": [
+        "providers/agency_agents/agents/spatial-computing/terminal-integration-specialist.md"
+      ]
+    },
+    {
+      "origin": "https://example.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/references/vision-fine-tuning.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/references/vision-fine-tuning.md",
+        "tests/test_contract_runtime.py"
+      ]
+    },
+    {
+      "origin": "https://example.invalid",
+      "sources": [
+        "templates/service_capabilities/supabase/functions/example/index.ts",
+        "tests/test_release_environment.py",
+        "tests/test_release_supply_chain_evidence.py",
+        "tests/test_skill_studio.py"
+      ]
+    },
+    {
+      "origin": "https://example.test",
+      "sources": [
+        "tests/test_evidence_custody.py",
+        "tests/test_evidence_portability.py"
+      ]
+    },
+    {
+      "origin": "https://fluxui.dev",
+      "sources": [
+        "providers/agency_agents/agents/engineering/engineering-senior-developer.md"
+      ]
+    },
+    {
+      "origin": "https://gist.github.com",
+      "sources": [
+        ".px/preserved-skills/initial/workspace-original/candidate-memory-promoter/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/corpus-to-skill-tree-compiler/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/evidence-assembler/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/candidate-memory-promoter/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/corpus-to-skill-tree-compiler/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/evidence-assembler/SKILL.md",
+        ".px/skills/candidate-memory-promoter/SKILL.md",
+        ".px/skills/corpus-to-skill-tree-compiler/SKILL.md",
+        ".px/skills/evidence-assembler/SKILL.md"
+      ]
+    },
+    {
+      "origin": "https://github.com",
+      "sources": [
+        ".github/workflows/release.yml",
+        ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/server/index.js",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/references/evaluation.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/create-hosted.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/quick-start-hosted.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-attach.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/re-host.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/skills/skill-attach.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/skills/skill-manage.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/agent-tools.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-mcp.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-memory.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/use-toolbox-in-hosted-agent.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/invocations-ws/invocations-ws.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/invoke/invoke.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-key-auth.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/troubleshoot/troubleshoot.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/project/create/create-foundry-project.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/references/standard-agent-setup.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/resource/private-network/references/template-index.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/references/evaluation.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/create-hosted.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-attach.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/skills/skill-attach.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/skills/skill-manage.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/agent-tools.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-mcp.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-memory.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/use-toolbox-in-hosted-agent.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/invocations-ws/invocations-ws.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/invoke/invoke.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-key-auth.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/troubleshoot/troubleshoot.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/project/create/create-foundry-project.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/references/standard-agent-setup.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/resource/private-network/references/template-index.md",
+        ".px/preserved-skills/initial/workspace-original/paper-mechanism-extractor/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/paper-mechanism-extractor/SKILL.md",
+        ".px/skills/paper-mechanism-extractor/SKILL.md",
+        "PROJECT_MANAGEMENT.md",
+        "README.md",
+        "docs/release-process.md",
+        "extension/package-lock.json",
+        "extension/server/index.js",
+        "providers/agency_agents/agents/engineering/engineering-technical-writer.md",
+        "providers/agency_agents/agents/marketing/marketing-multi-platform-publisher.md",
+        "providers/agency_agents/agents/project-management/project-management-jira-workflow-steward.md",
+        "providers/agency_agents/agents/security/security-secrets-credential-engineer.md",
+        "providers/agency_agents/agents/spatial-computing/terminal-integration-specialist.md",
+        "providers/agency_agents/agents/specialized/zk-steward.md",
+        "pyproject.toml",
+        "registry/adversarial_reaudit_20260813.json",
+        "runtime/licensing.py",
+        "runtime/release_certification.py"
+      ]
+    },
+    {
+      "origin": "https://gitmoji.dev",
+      "sources": [
+        "providers/agency_agents/agents/project-management/project-management-jira-workflow-steward.md"
+      ]
+    },
+    {
+      "origin": "https://global-test.consent.azure-apim.net",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md"
+      ]
+    },
+    {
+      "origin": "https://global.consent.azure-apim.net",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth.md"
+      ]
+    },
+    {
+      "origin": "https://go.microsoft.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-web-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-web-search.md"
+      ]
+    },
+    {
+      "origin": "https://idp.example.com",
+      "sources": [
+        "providers/agency_agents/agents/engineering/engineering-identity-access-engineer.md"
+      ]
+    },
+    {
+      "origin": "https://iii.dev",
+      "sources": [
+        ".px/preserved-skills/initial/workspace-original/execution-contract-enforcer/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/productization-gap-analyzer/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/recovery-coordinator/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/execution-contract-enforcer/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/productization-gap-analyzer/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/recovery-coordinator/SKILL.md",
+        ".px/skills/execution-contract-enforcer/SKILL.md",
+        ".px/skills/productization-gap-analyzer/SKILL.md",
+        ".px/skills/recovery-coordinator/SKILL.md"
+      ]
+    },
+    {
+      "origin": "https://img.shields.io",
+      "sources": [
+        "providers/agency_agents/agents/engineering/engineering-technical-writer.md"
+      ]
+    },
+    {
+      "origin": "https://in-toto.io",
+      "sources": [
+        ".px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/scripts/authoritative_provenance_generator.py",
+        ".px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/scripts/authoritative_provenance_generator.py",
+        ".px/skills/secure-agent-supply-chain/scripts/authoritative_provenance_generator.py",
+        "runtime/release_certification.py"
+      ]
+    },
+    {
+      "origin": "https://int.ai.azure.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md"
+      ]
+    },
+    {
+      "origin": "https://json-schema.org",
+      "sources": [
+        ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/server/index.js",
+        ".px/skills/certify-skeptical-engineering/contracts/skeptical-certification.schema.json",
+        ".px/skills/execution-placement-decision/contracts/placement-decision.schema.json",
+        ".px/skills/execution-placement-decision/contracts/promotion-gate.schema.json",
+        ".px/skills/quarantine-external-tools/contracts/external-tool-intake.schema.json",
+        "builders/declared_suite_support_builder.py",
+        "builders/last_round_assimilation_builder.py",
+        "contracts/agents/agency-agent-manifest.schema.json",
+        "contracts/agents/agent-evidence-receipt.schema.json",
+        "contracts/agents/agent-handoff.schema.json",
+        "contracts/agents/agent-result.schema.json",
+        "contracts/agents/agent-route-plan.schema.json",
+        "contracts/agents/agent-task-envelope.schema.json",
+        "contracts/agents/fleet-readiness.schema.json",
+        "contracts/agents/terminal-session-adapter.schema.json",
+        "contracts/ai-bom.schema.json",
+        "contracts/approval.schema.json",
+        "contracts/assumption.schema.json",
+        "contracts/assurance-probe.schema.json",
+        "contracts/authoritative-skill-contract.schema.json",
+        "contracts/authorization-request.schema.json",
+        "contracts/benchmark-custody.schema.json",
+        "contracts/benchmark-execution-profile.schema.json",
+        "contracts/benchmark-failure.schema.json",
+        "contracts/builder-contract.schema.json",
+        "contracts/candidate-admission-request.schema.json",
+        "contracts/capability-contract.schema.json",
+        "contracts/certification-readiness.schema.json",
+        "contracts/claim.schema.json",
+        "contracts/cognitive/behavioral-delta-certificate.schema.json",
+        "contracts/cognitive/brain-capability.schema.json",
+        "contracts/cognitive/cognitive-index.schema.json",
+        "contracts/cognitive/formula-definition.schema.json",
+        "contracts/cognitive/reasoning-request.schema.json",
+        "contracts/cognitive/shadow-behavior-comparison.schema.json",
+        "contracts/commissioning-questionnaire.schema.json",
+        "contracts/compatibility-record.schema.json",
+        "contracts/completion/control-receipt.schema.json",
+        "contracts/containment-action.schema.json",
+        "contracts/coverage-frontier-event.schema.json",
+        "contracts/decision-record.schema.json",
+        "contracts/engineering-process-record.schema.json",
+        "contracts/evaluation-case.schema.json",
+        "contracts/evaluation-lineage.schema.json",
+        "contracts/evaluation-result.schema.json",
+        "contracts/evidence-record.schema.json",
+        "contracts/evidence-reference.schema.json",
+        "contracts/execution-package.schema.json",
+        "contracts/external-tool-intake.schema.json",
+        "contracts/external_capabilities/backend-service-capability.schema.json",
+        "contracts/external_capabilities/external-capability-candidate.schema.json",
+        "contracts/external_capabilities/hook-decision.schema.json",
+        "contracts/external_capabilities/routing-economics.schema.json",
+        "contracts/external_capabilities/selective-stage-plan.schema.json",
+        "contracts/external_capabilities/session-snapshot.schema.json",
+        "contracts/failure-attribution.schema.json",
+        "contracts/failure.schema.json",
+        "contracts/hardware-equivalence.schema.json",
+        "contracts/improvement-candidate.schema.json",
+        "contracts/incident.schema.json",
+        "contracts/integration-contract.schema.json",
+        "contracts/knowledge-source.schema.json",
+        "contracts/knowledge_refinery/graph-audit.schema.json",
+        "contracts/knowledge_refinery/merge-plan.schema.json",
+        "contracts/knowledge_refinery/novelty-report.schema.json",
+        "contracts/knowledge_refinery/portable-inventory.schema.json",
+        "contracts/memory-record.schema.json",
+        "contracts/memory/memory-evaluation-fixture.schema.json",
+        "contracts/memory/memory-event.schema.json",
+        "contracts/memory/memory-loadout.schema.json",
+        "contracts/memory/memory-offload-pointer.schema.json",
+        "contracts/memory/memory-promotion-decision.schema.json",
+        "contracts/memory/memory-recall-package.schema.json",
+        "contracts/memory/memory-remediation-plan.schema.json",
+        "contracts/metacognitive/agent-cognitive-profile.schema.json",
+        "contracts/metacognitive/assumption-lineage.schema.json",
+        "contracts/metacognitive/capability-genome.schema.json",
+        "contracts/metacognitive/certification.schema.json",
+        "contracts/metacognitive/engineering-dna-profile.schema.json",
+        "contracts/metacognitive/epistemic-state.schema.json",
+        "contracts/metacognitive/evidence-weight.schema.json",
+        "contracts/metacognitive/hypothesis-portfolio.schema.json",
+        "contracts/metacognitive/integration-disposition.schema.json",
+        "contracts/metacognitive/knowledge-physics-state.schema.json",
+        "contracts/metacognitive/meta-capability-proposal.schema.json",
+        "contracts/metacognitive/optimization-experiment.schema.json",
+        "contracts/metacognitive/reasoning-trace.schema.json",
+        "contracts/metacognitive/semantic-effect-contract.schema.json",
+        "contracts/model-contract.schema.json",
+        "contracts/operations/health-model-registry.schema.json",
+        "contracts/operations/health-report.schema.json",
+        "contracts/operations/operation-event.schema.json",
+        "contracts/operations/os-observer-registry.schema.json",
+        "contracts/operations/provider-adapter-registry.schema.json",
+        "contracts/operations/provider-budget-policy.schema.json",
+        "contracts/operations/route-observer-registry.schema.json",
+        "contracts/orchestration-contract.schema.json",
+        "contracts/outcome-verification-request.schema.json",
+        "contracts/policy-contract.schema.json",
+        "contracts/project-impact.schema.json",
+        "contracts/project-management.schema.json",
+        "contracts/project-map.schema.json",
+        "contracts/project_stream/active-session.schema.json",
+        "contracts/project_stream/agent-memory-provider-certificate.schema.json",
+        "contracts/project_stream/agent_record.schema.json",
+        "contracts/project_stream/capability_record.schema.json",
+        "contracts/project_stream/decision_record.schema.json",
+        "contracts/project_stream/durable-goal-state.schema.json",
+        "contracts/project_stream/lock_record.schema.json",
+        "contracts/project_stream/memory_note.schema.json",
+        "contracts/project_stream/orchestration_record.schema.json",
+        "contracts/project_stream/project-scope-envelope.schema.json",
+        "contracts/project_stream/project_record.schema.json",
+        "contracts/project_stream/quarantine_record.schema.json",
+        "contracts/project_stream/repository_record.schema.json",
+        "contracts/project_stream/transfer_package.schema.json",
+        "contracts/project_stream/workflow-request.schema.json",
+        "contracts/project_stream/workspace-binding.schema.json",
+        "contracts/project_stream/workspace-registry.schema.json",
+        "contracts/project_stream/workspace_config.schema.json",
+        "contracts/project_stream/workstream.schema.json",
+        "contracts/reasoning/communication-budget.schema.json",
+        "contracts/reasoning/decision-frontier.schema.json",
+        "contracts/reasoning/glossary-audit.schema.json",
+        "contracts/reasoning/independent-hypothesis-panel.schema.json",
+        "contracts/reasoning/module-depth-audit.schema.json",
+        "contracts/reasoning/specification-lifecycle.schema.json",
+        "contracts/recovery-plan.schema.json",
+        "contracts/research_ops/bootstrap-status.schema.json",
+        "contracts/research_ops/experiment-card.schema.json",
+        "contracts/research_ops/operationalization-record.schema.json",
+        "contracts/research_ops/research-record.schema.json",
+        "contracts/research_ops/skill-manifest.schema.json",
+        "contracts/retry-budget.schema.json",
+        "contracts/runtime-assurance.schema.json",
+        "contracts/scheduling/budget.schema.json",
+        "contracts/scheduling/capability_advertisement.schema.json",
+        "contracts/scheduling/lease.schema.json",
+        "contracts/scheduling/queue_snapshot.schema.json",
+        "contracts/scheduling/recovery_policy.schema.json",
+        "contracts/scheduling/resource_request.schema.json",
+        "contracts/scheduling/scheduling_decision.schema.json",
+        "contracts/scheduling/task.schema.json",
+        "contracts/security_capabilities/authorized-security-scope.schema.json",
+        "contracts/security_capabilities/cybersecurity_capability.schema.json",
+        "contracts/security_capabilities/external-provider-integrity.schema.json",
+        "contracts/security_capabilities/incident-response-emergency-authority.schema.json",
+        "contracts/security_capabilities/safe-security-execution.schema.json",
+        "contracts/security_capabilities/security-change-control.schema.json",
+        "contracts/security_capabilities/security-cleanup-and-rollback.schema.json",
+        "contracts/security_capabilities/security-evidence-chain.schema.json",
+        "contracts/security_capabilities/security-finding-result.schema.json",
+        "contracts/security_capabilities/security-tool-invocation.schema.json",
+        "contracts/security_capabilities/security_engagement.schema.json",
+        "contracts/security_capabilities/security_evidence_receipt.schema.json",
+        "contracts/security_capabilities/security_execution_decision.schema.json",
+        "contracts/security_capabilities/security_finding.schema.json",
+        "contracts/skeptical-certification.schema.json",
+        "contracts/skill-package.schema.json",
+        "contracts/source-capability-audit.schema.json",
+        "contracts/source-intake-event.schema.json",
+        "contracts/task-envelope.schema.json",
+        "contracts/task-state.schema.json",
+        "contracts/tool-contract.schema.json",
+        "contracts/trace-link.schema.json",
+        "contracts/transcripts/transcript-ontology.schema.json",
+        "contracts/transcripts/transcript-profile.schema.json",
+        "contracts/transcripts/transcript-record.schema.json",
+        "contracts/transcripts/transcript-source.schema.json",
+        "contracts/trusted-evidence-record.schema.json",
+        "contracts/ui-context.schema.json",
+        "contracts/validation-contract.schema.json",
+        "extension/media/dashboard/49-studio-editors.js",
+        "extension/server/index.js",
+        "registry/declared_suite_schema_contracts.json",
+        "runtime/contracts.py",
+        "runtime/knowledge_foundry.py",
+        "scripts/build_cybersecurity_provider_registry.py",
+        "tests/test_graphs_and_orchestrations.py"
+      ]
+    },
+    {
+      "origin": "https://learn.microsoft.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/SKILL.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/references/evaluation.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/references/vision-fine-tuning.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/cicd/cicd.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/create-hosted.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/quick-start-hosted.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-api-create.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-attach.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/sdk-operations.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/agent-tools.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-a2a.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-azure-ai-search.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-bing-grounding.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-code-interpreter.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-fabric-iq.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-file-search.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-function-calling.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-mcp.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-memory.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-openapi.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-web-search.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-work-iq.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/use-toolbox-in-hosted-agent.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/invocations-ws/invocations-ws.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/invocations-ws/references/invocations-ws-protocol.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/invoke/invoke.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/observe/references/cicd-monitoring.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/observe/references/evaluate-step.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-a2a.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-azure-ai-search.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-browser-automation.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-code-interpreter.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-fabric-iq.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-file-search.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-agent-identity.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth-azure-starter.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-key-auth.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-managed-oauth.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-noauth.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-user-entra-token.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-openapi.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-tool-search.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-web-search.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-work-iq.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/toolbox-azd.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/toolbox.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/troubleshoot/troubleshoot.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/project/create/create-foundry-project.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/quota/quota.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/quota/references/capacity-planning.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/quota/references/optimization.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/quota/references/ptu-guide.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/quota/references/troubleshooting.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/rbac/rbac.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/references/auth-best-practices.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/references/standard-agent-setup.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/resource/create/create-foundry-resource.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/resource/create/references/troubleshooting.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/resource/private-network/private-network.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/resource/private-network/references/intake.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/scripts/check-and-setup-dependencies.ps1",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/scripts/check-and-setup-dependencies.sh",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/SKILL.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/references/evaluation.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/references/vision-fine-tuning.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/cicd/cicd.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/create-hosted.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/quick-start-hosted.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-api-create.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-attach.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/sdk-operations.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/agent-tools.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-a2a.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-azure-ai-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-bing-grounding.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-code-interpreter.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-fabric-iq.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-file-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-function-calling.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-mcp.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-memory.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-openapi.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-web-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-work-iq.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/use-toolbox-in-hosted-agent.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/invocations-ws/invocations-ws.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/invocations-ws/references/invocations-ws-protocol.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/invoke/invoke.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/observe/references/cicd-monitoring.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/observe/references/evaluate-step.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-a2a.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-azure-ai-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-browser-automation.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-code-interpreter.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-fabric-iq.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-file-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-agent-identity.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth-azure-starter.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-key-auth.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-managed-oauth.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-noauth.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-user-entra-token.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-openapi.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-tool-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-web-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-work-iq.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/toolbox-azd.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/toolbox.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/troubleshoot/troubleshoot.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/project/create/create-foundry-project.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/quota/quota.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/quota/references/capacity-planning.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/quota/references/optimization.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/quota/references/ptu-guide.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/quota/references/troubleshooting.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/rbac/rbac.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/references/auth-best-practices.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/references/standard-agent-setup.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/resource/create/create-foundry-resource.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/resource/create/references/troubleshooting.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/resource/private-network/private-network.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/resource/private-network/references/intake.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/scripts/check-and-setup-dependencies.ps1",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/scripts/check-and-setup-dependencies.sh",
+        "registry/adversarial_reaudit_20260813.json"
+      ]
+    },
+    {
+      "origin": "https://link",
+      "sources": [
+        "providers/agency_agents/agents/engineering/engineering-technical-writer.md"
+      ]
+    },
+    {
+      "origin": "https://llms-txt.cloud",
+      "sources": [
+        "providers/agency_agents/agents/marketing/marketing-aeo-foundations.md"
+      ]
+    },
+    {
+      "origin": "https://logic-apis-",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/use-toolbox-in-hosted-agent.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/test-endpoint.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/use-toolbox-in-hosted-agent.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/test-endpoint.md"
+      ]
+    },
+    {
+      "origin": "https://logic-apis-eastus.azure-apim.net",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md"
+      ]
+    },
+    {
+      "origin": "https://logic-apis-eastus.consent.azure-apim.net",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md"
+      ]
+    },
+    {
+      "origin": "https://login.microsoftonline.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-agent-identity.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth-azure-starter.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-work-iq.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/resource/private-network/references/vpn-dns-setup.bicep",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-agent-identity.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth-azure-starter.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-work-iq.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/resource/private-network/references/vpn-dns-setup.bicep"
+      ]
+    },
+    {
+      "origin": "https://management.azure.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/references/deployment.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/deploy_model.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-api-create.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-attach.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/scripts/get-catalog-inputs.ps1",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/scripts/get-catalog-inputs.sh",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/models/deploy-model/capacity/scripts/discover_and_rank.ps1",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/models/deploy-model/capacity/scripts/discover_and_rank.sh",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/models/deploy-model/capacity/scripts/query_capacity.ps1",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/models/deploy-model/capacity/scripts/query_capacity.sh",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/models/deploy-model/customize/references/customize-workflow.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/models/deploy-model/preset/references/preset-workflow.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/models/deploy-model/preset/references/workflow.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/quota/quota.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/quota/references/error-resolution.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/quota/references/optimization.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/quota/references/ptu-guide.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/quota/references/troubleshooting.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/quota/references/workflows.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/resource/private-network/references/post-deployment-validation.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/references/deployment.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/deploy_model.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-api-create.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-attach.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/scripts/get-catalog-inputs.ps1",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/scripts/get-catalog-inputs.sh",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/models/deploy-model/capacity/scripts/discover_and_rank.ps1",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/models/deploy-model/capacity/scripts/discover_and_rank.sh",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/models/deploy-model/capacity/scripts/query_capacity.ps1",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/models/deploy-model/capacity/scripts/query_capacity.sh",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/models/deploy-model/customize/references/customize-workflow.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/models/deploy-model/preset/references/preset-workflow.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/models/deploy-model/preset/references/workflow.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/quota/quota.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/quota/references/error-resolution.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/quota/references/optimization.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/quota/references/ptu-guide.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/quota/references/troubleshooting.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/quota/references/workflows.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/resource/private-network/references/post-deployment-validation.md"
+      ]
+    },
+    {
+      "origin": "https://management.azure.com$arm",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-work-iq.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-work-iq.md"
+      ]
+    },
+    {
+      "origin": "https://migueldeicaza.github.io",
+      "sources": [
+        "providers/agency_agents/agents/spatial-computing/terminal-integration-specialist.md"
+      ]
+    },
+    {
+      "origin": "https://mp.csdn.net",
+      "sources": [
+        "providers/agency_agents/agents/marketing/marketing-multi-platform-publisher.md"
+      ]
+    },
+    {
+      "origin": "https://my-account.services.ai.azure.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/scripts/resolve-project-id.ps1",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/scripts/resolve-project-id.sh",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/scripts/resolve-project-id.ps1",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/scripts/resolve-project-id.sh"
+      ]
+    },
+    {
+      "origin": "https://not-canonical.invalid",
+      "sources": [
+        "tests/test_px_doctor.py"
+      ]
+    },
+    {
+      "origin": "https://oauth2.googleapis.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md"
+      ]
+    },
+    {
+      "origin": "https://open.feishu.cn",
+      "sources": [
+        "providers/agency_agents/agents/engineering/engineering-feishu-integration-developer.md"
+      ]
+    },
+    {
+      "origin": "https://opentelemetry.io",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/trace/references/kql-templates.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/trace/trace.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/trace/references/kql-templates.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/trace/trace.md"
+      ]
+    },
+    {
+      "origin": "https://picsum.photos",
+      "sources": [
+        "providers/agency_agents/agents/project-management/project-manager-senior.md"
+      ]
+    },
+    {
+      "origin": "https://placeholder",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md"
+      ]
+    },
+    {
+      "origin": "https://portal.azure.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-bing-grounding.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/quota/quota.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-bing-grounding.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/quota/quota.md"
+      ]
+    },
+    {
+      "origin": "https://raw.githubusercontent.com",
+      "sources": [
+        ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/server/index.js",
+        "extension/server/index.js"
+      ]
+    },
+    {
+      "origin": "https://registry.npmjs.org",
+      "sources": [
+        "extension/package-lock.json"
+      ]
+    },
+    {
+      "origin": "https://schema.org",
+      "sources": [
+        "providers/agency_agents/agents/engineering/engineering-cms-developer.md"
+      ]
+    },
+    {
+      "origin": "https://schemas.wp.org",
+      "sources": [
+        "providers/agency_agents/agents/engineering/engineering-cms-developer.md"
+      ]
+    },
+    {
+      "origin": "https://site.com",
+      "sources": [
+        "providers/agency_agents/agents/marketing/marketing-seo-specialist.md"
+      ]
+    },
+    {
+      "origin": "https://slsa.dev",
+      "sources": [
+        ".px/preserved-skills/initial/workspace-original/secure-agent-supply-chain/scripts/authoritative_provenance_generator.py",
+        ".px/preserved-skills/initial/workspace-verified-copy/secure-agent-supply-chain/scripts/authoritative_provenance_generator.py",
+        ".px/skills/secure-agent-supply-chain/scripts/authoritative_provenance_generator.py",
+        "runtime/release_certification.py"
+      ]
+    },
+    {
+      "origin": "https://sts.windows.net",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/resource/private-network/references/vpn-dns-setup.bicep",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/resource/private-network/references/vpn-dns-setup.bicep"
+      ]
+    },
+    {
+      "origin": "https://supabase.com",
+      "sources": [
+        ".px/preserved-skills/initial/workspace-original/acquire-install-supabase/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/automate-supabase-with-n8n/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/backup-deploy-recover-supabase/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/build-n8n-supabase-rag/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/build-supabase-edge-functions/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/connect-n8n-to-supabase/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/design-n8n-supabase-reliability/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/design-n8n-supabase-security-boundaries/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/design-supabase-postgres/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/develop-supabase-locally/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/evaluate-supabase-fit/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/implement-supabase-auth/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/integrate-supabase-data-api-and-clients/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/manage-supabase-environments/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/manage-supabase-migrations/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/observe-debug-supabase/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/operate-n8n-supabase-production/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/operate-supabase-vector-search/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/route-n8n-supabase-stack/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/route-supabase-capabilities/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/secure-supabase-rls/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/self-host-supabase/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/test-n8n-supabase-integrations/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/use-supabase-mcp-and-agent-skills/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/use-supabase-realtime/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/use-supabase-storage/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/acquire-install-supabase/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/automate-supabase-with-n8n/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/backup-deploy-recover-supabase/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/build-n8n-supabase-rag/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/build-supabase-edge-functions/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/connect-n8n-to-supabase/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/design-n8n-supabase-reliability/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/design-n8n-supabase-security-boundaries/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/design-supabase-postgres/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/develop-supabase-locally/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/evaluate-supabase-fit/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/implement-supabase-auth/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/integrate-supabase-data-api-and-clients/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/manage-supabase-environments/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/manage-supabase-migrations/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/observe-debug-supabase/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/operate-n8n-supabase-production/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/operate-supabase-vector-search/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/route-n8n-supabase-stack/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/route-supabase-capabilities/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/secure-supabase-rls/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/self-host-supabase/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/test-n8n-supabase-integrations/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/use-supabase-mcp-and-agent-skills/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/use-supabase-realtime/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/use-supabase-storage/SKILL.md",
+        ".px/skills/acquire-install-supabase/SKILL.md",
+        ".px/skills/automate-supabase-with-n8n/SKILL.md",
+        ".px/skills/backup-deploy-recover-supabase/SKILL.md",
+        ".px/skills/build-n8n-supabase-rag/SKILL.md",
+        ".px/skills/build-supabase-edge-functions/SKILL.md",
+        ".px/skills/connect-n8n-to-supabase/SKILL.md",
+        ".px/skills/design-n8n-supabase-reliability/SKILL.md",
+        ".px/skills/design-n8n-supabase-security-boundaries/SKILL.md",
+        ".px/skills/design-supabase-postgres/SKILL.md",
+        ".px/skills/develop-supabase-locally/SKILL.md",
+        ".px/skills/evaluate-supabase-fit/SKILL.md",
+        ".px/skills/implement-supabase-auth/SKILL.md",
+        ".px/skills/integrate-supabase-data-api-and-clients/SKILL.md",
+        ".px/skills/manage-supabase-environments/SKILL.md",
+        ".px/skills/manage-supabase-migrations/SKILL.md",
+        ".px/skills/observe-debug-supabase/SKILL.md",
+        ".px/skills/operate-n8n-supabase-production/SKILL.md",
+        ".px/skills/operate-supabase-vector-search/SKILL.md",
+        ".px/skills/route-n8n-supabase-stack/SKILL.md",
+        ".px/skills/route-supabase-capabilities/SKILL.md",
+        ".px/skills/secure-supabase-rls/SKILL.md",
+        ".px/skills/self-host-supabase/SKILL.md",
+        ".px/skills/test-n8n-supabase-integrations/SKILL.md",
+        ".px/skills/use-supabase-mcp-and-agent-skills/SKILL.md",
+        ".px/skills/use-supabase-realtime/SKILL.md",
+        ".px/skills/use-supabase-storage/SKILL.md"
+      ]
+    },
+    {
+      "origin": "https://support.huaweicloud.com",
+      "sources": [
+        "providers/agency_agents/agents/engineering/engineering-gaussdb-expert.md"
+      ]
+    },
+    {
+      "origin": "https://target.example.com",
+      "sources": [
+        "providers/agency_agents/agents/security/security-penetration-tester.md"
+      ]
+    },
+    {
+      "origin": "https://uizze.com",
+      "sources": [
+        "providers/agency_agents/agents/design/design-ui-finish-gate-reviewer.md"
+      ]
+    },
+    {
+      "origin": "https://upload-post.com",
+      "sources": [
+        "providers/agency_agents/agents/marketing/marketing-carousel-growth-engine.md"
+      ]
+    },
+    {
+      "origin": "https://vt100.net",
+      "sources": [
+        "providers/agency_agents/agents/spatial-computing/terminal-integration-specialist.md"
+      ]
+    },
+    {
+      "origin": "https://workiq.svc.cloud.microsoft",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-work-iq.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/toolbox/references/tool-work-iq.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-work-iq.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/toolbox/references/tool-work-iq.md"
+      ]
+    },
+    {
+      "origin": "https://www.answer.ai",
+      "sources": [
+        "providers/agency_agents/agents/marketing/marketing-aeo-foundations.md"
+      ]
+    },
+    {
+      "origin": "https://www.microsoft.com",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-bing-grounding.md",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-web-search.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-bing-grounding.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-web-search.md"
+      ]
+    },
+    {
+      "origin": "https://www.nice.com",
+      "sources": [
+        ".px/preserved-skills/initial/workspace-original/human-handoff-state-transfer/SKILL.md",
+        ".px/preserved-skills/initial/workspace-original/outcome-verifier/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/human-handoff-state-transfer/SKILL.md",
+        ".px/preserved-skills/initial/workspace-verified-copy/outcome-verifier/SKILL.md",
+        ".px/skills/human-handoff-state-transfer/SKILL.md",
+        ".px/skills/outcome-verifier/SKILL.md"
+      ]
+    },
+    {
+      "origin": "https://www.w3.org",
+      "sources": [
+        "registry/adversarial_reaudit_20260813.json"
+      ]
+    },
+    {
+      "origin": "https://xquik.com",
+      "sources": [
+        "providers/agency_agents/agents/marketing/marketing-x-twitter-intelligence-analyst.md"
+      ]
+    },
+    {
+      "origin": "https://your-domain.com",
+      "sources": [
+        "providers/agency_agents/agents/engineering/engineering-feishu-integration-developer.md"
+      ]
+    },
+    {
+      "origin": "https://your-function-app.azurewebsites.net",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/references/agentic-rft.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/references/agentic-rft.md"
+      ]
+    },
+    {
+      "origin": "https://yourdomain.com",
+      "sources": [
+        "providers/agency_agents/agents/marketing/marketing-agentic-search-optimizer.md"
+      ]
+    },
+    {
+      "origin": "https://zhuanlan.zhihu.com",
+      "sources": [
+        "providers/agency_agents/agents/marketing/marketing-multi-platform-publisher.md"
+      ]
+    },
+    {
+      "origin": "https://{host}",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-fabric-iq.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-fabric-iq.md"
+      ]
+    },
+    {
+      "origin": "https://{region}.api.azureml.ms",
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/trace/references/tracing-insights-api.md",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/trace/references/tracing-insights-api.md"
+      ]
+    }
+  ],
+  "packages": [
+    {
+      "category": "external_package",
+      "ecosystem": "npm",
+      "name": "@modelcontextprotocol/server",
+      "scopes": [
+        "runtime"
+      ],
+      "sources": [
+        ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json",
+        "extension/package.json"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "npm",
+      "name": "@vscode/test-electron",
+      "scopes": [
+        "development"
+      ],
+      "sources": [
+        "extension/package.json"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "npm",
+      "name": "esbuild",
+      "scopes": [
+        "development"
+      ],
+      "sources": [
+        ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json",
+        "extension/package.json"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "npm",
+      "name": "playwright-core",
+      "scopes": [
+        "development"
+      ],
+      "sources": [
+        ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json",
+        "extension/package.json"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "npm",
+      "name": "zod",
+      "scopes": [
+        "runtime"
+      ],
+      "sources": [
+        ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json",
+        "extension/package.json"
+      ]
+    },
+    {
+      "category": "azure",
+      "ecosystem": "python",
+      "name": "azure",
+      "scopes": [],
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/common.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/common.py"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "python",
+      "name": "build",
+      "scopes": [
+        "optional:build",
+        "optional:release"
+      ],
+      "sources": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "python",
+      "name": "colorama",
+      "scopes": [
+        "optional:release"
+      ],
+      "sources": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "python",
+      "name": "coverage",
+      "scopes": [
+        "optional:release"
+      ],
+      "sources": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "category": "http_client",
+      "ecosystem": "python",
+      "name": "httpx",
+      "scopes": [],
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/common.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/common.py"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "python",
+      "name": "iniconfig",
+      "scopes": [
+        "optional:release"
+      ],
+      "sources": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "category": "ai_provider",
+      "ecosystem": "python",
+      "name": "openai",
+      "scopes": [],
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/common.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/common.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/generate_distillation_data.py"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "python",
+      "name": "packaging",
+      "scopes": [
+        "optional:release"
+      ],
+      "sources": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "python",
+      "name": "pluggy",
+      "scopes": [
+        "optional:release"
+      ],
+      "sources": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "python",
+      "name": "pygments",
+      "scopes": [
+        "optional:release"
+      ],
+      "sources": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "python",
+      "name": "pyproject-hooks",
+      "scopes": [
+        "optional:release"
+      ],
+      "sources": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "python",
+      "name": "pytest",
+      "scopes": [
+        "optional:release",
+        "optional:test"
+      ],
+      "sources": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "python",
+      "name": "pyyaml",
+      "scopes": [
+        "optional:release",
+        "optional:test"
+      ],
+      "sources": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "category": "http_client",
+      "ecosystem": "python",
+      "name": "requests",
+      "scopes": [],
+      "sources": [
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/deploy_model.py",
+        ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/finetuning/scripts/submit_training.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/deploy_model.py",
+        ".px/preserved-skills/initial/user-original/microsoft-foundry/finetuning/scripts/submit_training.py"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "python",
+      "name": "ruff",
+      "scopes": [
+        "optional:lint",
+        "optional:release"
+      ],
+      "sources": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "python",
+      "name": "setuptools",
+      "scopes": [
+        "optional:build",
+        "optional:release"
+      ],
+      "sources": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "category": "external_package",
+      "ecosystem": "python",
+      "name": "wheel",
+      "scopes": [
+        "optional:build",
+        "optional:release"
+      ],
+      "sources": [
+        "pyproject.toml"
+      ]
+    }
+  ],
+  "redaction_policy": "Only package names, origin-level URLs, configuration key names, and structural evidence are stored; values, credentials, query strings, and request bodies are excluded.",
+  "schema_version": "1.1"
+}

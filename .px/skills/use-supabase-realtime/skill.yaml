@@ -1,0 +1,39 @@
+{
+  "admission_record": "use-supabase-realtime",
+  "body_sha256": "6a98e3baa4ca3c8ac91dc51b1baaa8c0ba3046e61edc6b8f964efad8fd1a28d3",
+  "contract": {
+    "available": true,
+    "sha256": "a75a52ea85fc730a9baccd791d8ec95c50e6f83c175079abf8c045a42cefe2aa",
+    "source": "registry/skill_packages/use-supabase-realtime.json"
+  },
+  "description": "Use Supabase Realtime for database changes, broadcast, and presence with authorization and convergence.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "use-supabase-realtime",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/use-supabase-realtime"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "broadcast",
+    "presence",
+    "realtime",
+    "supabase",
+    "websockets"
+  ],
+  "version": "1.0.0"
+}

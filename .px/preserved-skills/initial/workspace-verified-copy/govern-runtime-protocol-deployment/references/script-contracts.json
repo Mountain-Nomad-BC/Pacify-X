@@ -1,0 +1,312 @@
+{
+  "contracts": [
+    {
+      "authoritative_source_sha256": "c589451189be9615e2dcbed5d64b9e59e095d0360698883f50f766de9ee21efa",
+      "authority_and_safety": "Do not trust cached network identity or stale capability claims; require live discovery, bounded canaries, explicit fallback, and human approval for material release effects.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "approval-request",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_approval_request.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "probe-live-capabilities",
+        "validate-contract-and-compatibility",
+        "model-capacity-cost-and-quality",
+        "stage-canary-with-fallback",
+        "observe-decide-and-handoff"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/scripts/approval_request.py"
+      ],
+      "trigger": "Use when the requested outcome is approval request or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "e5eceaeda4a42c876561fbf5ed4a3ada61408097c55e09135a6dc2155a532ee4",
+      "authority_and_safety": "Do not trust cached network identity or stale capability claims; require live discovery, bounded canaries, explicit fallback, and human approval for material release effects.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "backend-probe",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_backend_probe.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "probe-live-capabilities",
+        "validate-contract-and-compatibility",
+        "model-capacity-cost-and-quality",
+        "stage-canary-with-fallback",
+        "observe-decide-and-handoff"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/scripts/backend_probe.py"
+      ],
+      "trigger": "Use when the requested outcome is backend probe or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "9f05c01de9f9976e307ff7b69f4af5f54c69bf5e9f171d093874f01b39c2dbec",
+      "authority_and_safety": "Do not trust cached network identity or stale capability claims; require live discovery, bounded canaries, explicit fallback, and human approval for material release effects.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "benchmark-harness",
+      "implementation_disposition": "safe_replacement",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "probe-live-capabilities",
+        "validate-contract-and-compatibility",
+        "model-capacity-cost-and-quality",
+        "stage-canary-with-fallback",
+        "observe-decide-and-handoff"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "rejection_reason": "uses shell=True; retained bounded benchmark-plan replacement",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/scripts/benchmark_harness.py"
+      ],
+      "trigger": "Use when the requested outcome is benchmark harness or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "72fad372e79cee8bb426d3caf21a6d15a2c4876c9afb77f314f79e5d60b83e4d",
+      "authority_and_safety": "Do not trust cached network identity or stale capability claims; require live discovery, bounded canaries, explicit fallback, and human approval for material release effects.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "canary-compare",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_canary_compare.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "probe-live-capabilities",
+        "validate-contract-and-compatibility",
+        "model-capacity-cost-and-quality",
+        "stage-canary-with-fallback",
+        "observe-decide-and-handoff"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/scripts/canary_compare.py"
+      ],
+      "trigger": "Use when the requested outcome is canary compare or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "6dbd9d3257fba880c304913ecc9739934c8c93d1a5dfe6d57e6fd349d3066435",
+      "authority_and_safety": "Do not trust cached network identity or stale capability claims; require live discovery, bounded canaries, explicit fallback, and human approval for material release effects.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "capacity-planner",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_capacity_planner.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "probe-live-capabilities",
+        "validate-contract-and-compatibility",
+        "model-capacity-cost-and-quality",
+        "stage-canary-with-fallback",
+        "observe-decide-and-handoff"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/scripts/capacity_planner.py"
+      ],
+      "trigger": "Use when the requested outcome is capacity planner or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "e9c40093033f518459ae71c2b9ebe9855898de800e02cee092a72eb1d0cd9c1e",
+      "authority_and_safety": "Do not trust cached network identity or stale capability claims; require live discovery, bounded canaries, explicit fallback, and human approval for material release effects.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "hardware-probe",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_hardware_probe.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "probe-live-capabilities",
+        "validate-contract-and-compatibility",
+        "model-capacity-cost-and-quality",
+        "stage-canary-with-fallback",
+        "observe-decide-and-handoff"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/scripts/hardware_probe.py"
+      ],
+      "trigger": "Use when the requested outcome is hardware probe or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "0b430f29f8c9b0cdc4ad3d1c1773e997e5550a964819916ff4456c541731c0ee",
+      "authority_and_safety": "Do not trust cached network identity or stale capability claims; require live discovery, bounded canaries, explicit fallback, and human approval for material release effects.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "model-router",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_model_router.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "probe-live-capabilities",
+        "validate-contract-and-compatibility",
+        "model-capacity-cost-and-quality",
+        "stage-canary-with-fallback",
+        "observe-decide-and-handoff"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/scripts/model_router.py"
+      ],
+      "trigger": "Use when the requested outcome is model router or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "6eb31babeeecd56967a1d964b8b015c88fc445d375a2cc10bd793108a61fe6bd",
+      "authority_and_safety": "Do not trust cached network identity or stale capability claims; require live discovery, bounded canaries, explicit fallback, and human approval for material release effects.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "openapi-tool-importer",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_openapi_tool_importer.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "probe-live-capabilities",
+        "validate-contract-and-compatibility",
+        "model-capacity-cost-and-quality",
+        "stage-canary-with-fallback",
+        "observe-decide-and-handoff"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/scripts/openapi_tool_importer.py"
+      ],
+      "trigger": "Use when the requested outcome is openapi tool importer or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "2b4d4b60e61cc8a0afd6ad03a48e1b174a1d51d55700434598bf706337ae5889",
+      "authority_and_safety": "Do not trust cached network identity or stale capability claims; require live discovery, bounded canaries, explicit fallback, and human approval for material release effects.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "protocol-validator",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_protocol_validator.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "probe-live-capabilities",
+        "validate-contract-and-compatibility",
+        "model-capacity-cost-and-quality",
+        "stage-canary-with-fallback",
+        "observe-decide-and-handoff"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/06-runtime-protocols-deployment_v1.0.0/scripts/protocol_validator.py"
+      ],
+      "trigger": "Use when the requested outcome is protocol validator or when that outcome is a required dependency."
+    }
+  ],
+  "owner": "govern-runtime-protocol-deployment",
+  "schema_version": "1.0"
+}

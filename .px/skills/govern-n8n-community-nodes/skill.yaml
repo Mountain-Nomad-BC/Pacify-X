@@ -1,0 +1,39 @@
+{
+  "admission_record": "govern-n8n-community-nodes",
+  "body_sha256": "620259d7a7ec1b16d9579778c13716a83e44413ecd1414f50ff7ba92be5d6ddb",
+  "contract": {
+    "available": true,
+    "sha256": "ea0e7d085edda0af0ebeb0ea71de255bd5cbf1560051730e17aded3c1e0055d3",
+    "source": "registry/skill_packages/govern-n8n-community-nodes.json"
+  },
+  "description": "Assess, admit, isolate, pin, update, and retire n8n community nodes as executable supply-chain components.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-n8n-community-nodes",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-n8n-community-nodes"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "allowlist",
+    "community-nodes",
+    "n8n",
+    "npm",
+    "supply-chain"
+  ],
+  "version": "1.0.0"
+}

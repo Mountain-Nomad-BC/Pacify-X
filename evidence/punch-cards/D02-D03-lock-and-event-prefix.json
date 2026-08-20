@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "punch-cards-D02-D03-lock-and-event-prefix-20260811",
+  "created_utc": "2026-08-14T01:09:20.365014+00:00",
+  "cards": [
+    "D02",
+    "D03"
+  ],
+  "accepted": true,
+  "artifacts": {
+    "runtime/file_lock.py": "f37b43194647dcd8446fe9b582445fd2b94539df2b240ea132a43f57a4cd7572",
+    "tests/test_file_lock_contention.py": "b579377c3334175f299f4a7a7341631eca7af6b7a06fa062a72d0ced29ed3142",
+    "runtime/event_ledger.py": "afb9203b956b0265235f1aeee3ec7511daf9b27030a70904ad3c0aff6a266156",
+    "tests/test_event_ledger_integrity.py": "c3752778af007540ae5cbbf20dd5e8638f7cc8ee46a1ca45b8c4e062e024821b"
+  },
+  "verification": {
+    "combined_pytest": "41 passed, 326 contract subtests passed",
+    "ruff": "passed",
+    "runtime_validate": "valid; 6 active capabilities; zero errors",
+    "lock_fixtures": [
+      "31-second-equivalent heartbeat",
+      "live owner refuses theft",
+      "dead owner recovery with hashed receipt"
+    ],
+    "event_fixtures": [
+      "valid prefix retained",
+      "malformed/truncated suffix degraded",
+      "bounded tail",
+      "protected head mismatch degraded"
+    ]
+  },
+  "truth_note": "A degraded event ancestry blocks append and remains degraded; the reader never resets the chain or fabricates an empty healthy ledger. The retained hashes include the Windows dead-PID liveness repair discovered by the D04 process-kill campaign."
+}

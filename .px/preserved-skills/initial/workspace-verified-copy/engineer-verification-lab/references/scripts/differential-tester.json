@@ -1,0 +1,34 @@
+{
+  "authoritative_source_sha256": "9f226adb38e0470cfdbafe769a8789866032ffbab6d7492ae636db8170433f06",
+  "authority_and_safety": "Keep evaluation data, scoring rules, and implementation under test independently reviewable; do not certify from a self-authored happy path alone.",
+  "evidence": [
+    "normalized inputs",
+    "owner and dependency resolution",
+    "structured result",
+    "negative-case result",
+    "content hashes",
+    "verification receipt"
+  ],
+  "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+  "id": "differential-tester",
+  "implementation_disposition": "namespaced_exact_body",
+  "implementation_target": ".agents/skills/engineer-verification-lab/scripts/authoritative_differential_tester.py",
+  "inputs": {
+    "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+    "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+    "target": "Explicit file, repository, service, record set, or artifact scope."
+  },
+  "kind": "script",
+  "procedure": [
+    "define-observable-claim",
+    "select-independent-oracle",
+    "generate-positive-and-adversarial-cases",
+    "run-and-minimize",
+    "score-and-promote-regressions"
+  ],
+  "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+  "source_paths": [
+    "packs/03-verification-evaluation-lab_v1.0.0/scripts/differential_tester.py"
+  ],
+  "trigger": "Use when the requested outcome is differential tester or when that outcome is a required dependency."
+}

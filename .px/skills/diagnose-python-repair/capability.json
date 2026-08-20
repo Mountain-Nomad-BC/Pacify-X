@@ -1,0 +1,37 @@
+{
+  "admission_record": "diagnose-python-repair",
+  "body_sha256": "ea007c2ecce3c4f3b00cba4d4d0856b1584d6c53853f258104ba6cc4d2ef10f9",
+  "contract": {
+    "available": true,
+    "sha256": "5a175e4b548247668a3df1c9a3133d45b298a1b1f798b84c8f87b92b33ba2b3c",
+    "source": "registry/skill_packages/diagnose-python-repair.json"
+  },
+  "description": "Diagnose and repair Python service, async, authorization, schema, retry, transaction, logging, subprocess, path, test-isolation, container-readiness, and evidence failures. Use when a Python defect needs a root-cause explanation, focused patch, negative tests, rollback, and sanitized proof.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "diagnose-python-repair",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/diagnose-python-repair"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "python",
+    "repair",
+    "diagnosis"
+  ],
+  "version": "0.1.0"
+}

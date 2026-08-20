@@ -7,7 +7,7 @@
       "status": "mapped_deferred",
       "family": "evaluation",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/active-evaluation-selector/SKILL.md",
+      "skill_body": ".px/skills/active-evaluation-selector/SKILL.md",
       "package": "registry/skill_packages/active-evaluation-selector.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_e49891c7.md",
@@ -26,7 +26,7 @@
       "status": "mapped_deferred",
       "family": "impact",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/behavior-to-code-mapper/SKILL.md",
+      "skill_body": ".px/skills/behavior-to-code-mapper/SKILL.md",
       "package": "registry/skill_packages/behavior-to-code-mapper.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_e16f1578.md",
@@ -45,7 +45,7 @@
       "status": "mapped_deferred",
       "family": "research",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/benchmark-domain-adapter/SKILL.md",
+      "skill_body": ".px/skills/benchmark-domain-adapter/SKILL.md",
       "package": "registry/skill_packages/benchmark-domain-adapter.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_a0f656c0.md",
@@ -64,7 +64,7 @@
       "status": "mapped_deferred",
       "family": "topology",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/bounded-workflow-topology-selector/SKILL.md",
+      "skill_body": ".px/skills/bounded-workflow-topology-selector/SKILL.md",
       "package": "registry/skill_packages/bounded-workflow-topology-selector.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL.md",
@@ -83,7 +83,7 @@
       "status": "mapped_deferred",
       "family": "memory",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/candidate-memory-promoter/SKILL.md",
+      "skill_body": ".px/skills/candidate-memory-promoter/SKILL.md",
       "package": "registry/skill_packages/candidate-memory-promoter.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_461a56bc.md",
@@ -99,10 +99,10 @@
     },
     {
       "id": "context-compactor",
-      "status": "mapped_deferred",
+      "status": "active",
       "family": "delegated",
       "handler": "runtime/startup.py",
-      "skill_body": ".agents/skills/context-compactor/SKILL.md",
+      "skill_body": ".px/skills/context-compactor/SKILL.md",
       "package": "registry/skill_packages/context-compactor.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_8bf6da91.md",
@@ -121,7 +121,7 @@
       "status": "mapped_deferred",
       "family": "compile",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/corpus-to-skill-tree-compiler/SKILL.md",
+      "skill_body": ".px/skills/corpus-to-skill-tree-compiler/SKILL.md",
       "package": "registry/skill_packages/corpus-to-skill-tree-compiler.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_e0a6569e.md",
@@ -140,7 +140,7 @@
       "status": "mapped_deferred",
       "family": "research",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/cross-paper-mechanism-fuser/SKILL.md",
+      "skill_body": ".px/skills/cross-paper-mechanism-fuser/SKILL.md",
       "package": "registry/skill_packages/cross-paper-mechanism-fuser.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_3247dec4.md",
@@ -159,7 +159,7 @@
       "status": "mapped_deferred",
       "family": "impact",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/dependency-impact-tracer/SKILL.md",
+      "skill_body": ".px/skills/dependency-impact-tracer/SKILL.md",
       "package": "registry/skill_packages/dependency-impact-tracer.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_a5d034b4.md",
@@ -178,7 +178,7 @@
       "status": "mapped_deferred",
       "family": "supply_chain",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/dynamic-skill-detonator/SKILL.md",
+      "skill_body": ".px/skills/dynamic-skill-detonator/SKILL.md",
       "package": "registry/skill_packages/dynamic-skill-detonator.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_d2514976.md",
@@ -197,7 +197,7 @@
       "status": "mapped_deferred",
       "family": "evaluation",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/evaluation-budget-allocator/SKILL.md",
+      "skill_body": ".px/skills/evaluation-budget-allocator/SKILL.md",
       "package": "registry/skill_packages/evaluation-budget-allocator.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_9b2aeda9.md",
@@ -216,7 +216,7 @@
       "status": "active",
       "family": "delegated",
       "handler": "runtime/evidence_assembler.py",
-      "skill_body": ".agents/skills/evidence-assembler/SKILL.md",
+      "skill_body": ".px/skills/evidence-assembler/SKILL.md",
       "package": "registry/skill_packages/evidence-assembler.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_c71b0bd0.md",
@@ -235,7 +235,7 @@
       "status": "active",
       "family": "delegated",
       "handler": "runtime/execution_contract.py",
-      "skill_body": ".agents/skills/execution-contract-enforcer/SKILL.md",
+      "skill_body": ".px/skills/execution-contract-enforcer/SKILL.md",
       "package": "registry/skill_packages/execution-contract-enforcer.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_68ac1367.md",
@@ -254,7 +254,7 @@
       "status": "mapped_deferred",
       "family": "memory",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/experience-reconstructor/SKILL.md",
+      "skill_body": ".px/skills/experience-reconstructor/SKILL.md",
       "package": "registry/skill_packages/experience-reconstructor.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_bd8b7e6f.md",
@@ -273,7 +273,7 @@
       "status": "mapped_deferred",
       "family": "progress",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/human-handoff-state-transfer/SKILL.md",
+      "skill_body": ".px/skills/human-handoff-state-transfer/SKILL.md",
       "package": "registry/skill_packages/human-handoff-state-transfer.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_076e92c4.md",
@@ -289,10 +289,10 @@
     },
     {
       "id": "long-horizon-progress-ledger",
-      "status": "mapped_deferred",
+      "status": "active",
       "family": "progress",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/long-horizon-progress-ledger/SKILL.md",
+      "skill_body": ".px/skills/long-horizon-progress-ledger/SKILL.md",
       "package": "registry/skill_packages/long-horizon-progress-ledger.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_b93a03e3.md",
@@ -311,7 +311,7 @@
       "status": "mapped_deferred",
       "family": "memory",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/memory-applicability-critic/SKILL.md",
+      "skill_body": ".px/skills/memory-applicability-critic/SKILL.md",
       "package": "registry/skill_packages/memory-applicability-critic.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_01bd61a8.md",
@@ -330,7 +330,7 @@
       "status": "mapped_deferred",
       "family": "memory",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/memory-injection-firewall/SKILL.md",
+      "skill_body": ".px/skills/memory-injection-firewall/SKILL.md",
       "package": "registry/skill_packages/memory-injection-firewall.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_d57e9699.md",
@@ -349,7 +349,7 @@
       "status": "active",
       "family": "delegated",
       "handler": "runtime/outcome_verifier.py",
-      "skill_body": ".agents/skills/outcome-verifier/SKILL.md",
+      "skill_body": ".px/skills/outcome-verifier/SKILL.md",
       "package": "registry/skill_packages/outcome-verifier.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_b709f4a9.md",
@@ -368,7 +368,7 @@
       "status": "mapped_deferred",
       "family": "research",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/paper-mechanism-extractor/SKILL.md",
+      "skill_body": ".px/skills/paper-mechanism-extractor/SKILL.md",
       "package": "registry/skill_packages/paper-mechanism-extractor.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_9c1515bc.md",
@@ -387,7 +387,7 @@
       "status": "mapped_deferred",
       "family": "supply_chain",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/permission-diff-auditor/SKILL.md",
+      "skill_body": ".px/skills/permission-diff-auditor/SKILL.md",
       "package": "registry/skill_packages/permission-diff-auditor.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_b1a7c72d.md",
@@ -406,7 +406,7 @@
       "status": "mapped_deferred",
       "family": "compile",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/procedural-memory-compiler/SKILL.md",
+      "skill_body": ".px/skills/procedural-memory-compiler/SKILL.md",
       "package": "registry/skill_packages/procedural-memory-compiler.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_c86c58b8.md",
@@ -425,7 +425,7 @@
       "status": "mapped_deferred",
       "family": "research",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/productization-gap-analyzer/SKILL.md",
+      "skill_body": ".px/skills/productization-gap-analyzer/SKILL.md",
       "package": "registry/skill_packages/productization-gap-analyzer.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_421af3e6.md",
@@ -444,7 +444,7 @@
       "status": "mapped_deferred",
       "family": "supply_chain",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/provenance-signature-verifier/SKILL.md",
+      "skill_body": ".px/skills/provenance-signature-verifier/SKILL.md",
       "package": "registry/skill_packages/provenance-signature-verifier.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_b3154710.md",
@@ -463,7 +463,7 @@
       "status": "mapped_deferred",
       "family": "topology",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/read-only-speculation-controller/SKILL.md",
+      "skill_body": ".px/skills/read-only-speculation-controller/SKILL.md",
       "package": "registry/skill_packages/read-only-speculation-controller.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_171d9e8d.md",
@@ -482,7 +482,7 @@
       "status": "mapped_deferred",
       "family": "loop",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/reasoning-utility-controller/SKILL.md",
+      "skill_body": ".px/skills/reasoning-utility-controller/SKILL.md",
       "package": "registry/skill_packages/reasoning-utility-controller.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_b6226585.md",
@@ -501,7 +501,7 @@
       "status": "mapped_deferred",
       "family": "delegated",
       "handler": "runtime/recovery.py",
-      "skill_body": ".agents/skills/recovery-coordinator/SKILL.md",
+      "skill_body": ".px/skills/recovery-coordinator/SKILL.md",
       "package": "registry/skill_packages/recovery-coordinator.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_91fb6ed6.md",
@@ -520,7 +520,7 @@
       "status": "mapped_deferred",
       "family": "research",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/research-to-operation-translator/SKILL.md",
+      "skill_body": ".px/skills/research-to-operation-translator/SKILL.md",
       "package": "registry/skill_packages/research-to-operation-translator.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_dd7ced01.md",
@@ -539,7 +539,7 @@
       "status": "mapped_deferred",
       "family": "evaluation",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/scenario-audit-generator/SKILL.md",
+      "skill_body": ".px/skills/scenario-audit-generator/SKILL.md",
       "package": "registry/skill_packages/scenario-audit-generator.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_701e6de8.md",
@@ -558,7 +558,7 @@
       "status": "active",
       "family": "delegated",
       "handler": "runtime/admission_controller.py",
-      "skill_body": ".agents/skills/skill-admission-controller/SKILL.md",
+      "skill_body": ".px/skills/skill-admission-controller/SKILL.md",
       "package": "registry/skill_packages/skill-admission-controller.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_aaf7393a.md",
@@ -574,10 +574,10 @@
     },
     {
       "id": "skill-bundle-resolver",
-      "status": "mapped_deferred",
+      "status": "active",
       "family": "bundle",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/skill-bundle-resolver/SKILL.md",
+      "skill_body": ".px/skills/skill-bundle-resolver/SKILL.md",
       "package": "registry/skill_packages/skill-bundle-resolver.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_dd257f1c.md",
@@ -596,7 +596,7 @@
       "status": "mapped_deferred",
       "family": "impact",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/skill-coexecution-graph-builder/SKILL.md",
+      "skill_body": ".px/skills/skill-coexecution-graph-builder/SKILL.md",
       "package": "registry/skill_packages/skill-coexecution-graph-builder.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_c0638280.md",
@@ -615,7 +615,7 @@
       "status": "active",
       "family": "delegated",
       "handler": "runtime/skill_navigator.py",
-      "skill_body": ".agents/skills/skill-navigator/SKILL.md",
+      "skill_body": ".px/skills/skill-navigator/SKILL.md",
       "package": "registry/skill_packages/skill-navigator.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_a325fa3f.md",
@@ -634,7 +634,7 @@
       "status": "mapped_deferred",
       "family": "loop",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/tool-loop-circuit-breaker/SKILL.md",
+      "skill_body": ".px/skills/tool-loop-circuit-breaker/SKILL.md",
       "package": "registry/skill_packages/tool-loop-circuit-breaker.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_47b68265.md",
@@ -653,7 +653,7 @@
       "status": "active",
       "family": "compile",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/trace-to-skill-compiler/SKILL.md",
+      "skill_body": ".px/skills/trace-to-skill-compiler/SKILL.md",
       "package": "registry/skill_packages/trace-to-skill-compiler.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_bc463d0d.md",
@@ -672,7 +672,7 @@
       "status": "mapped_deferred",
       "family": "loop",
       "handler": "runtime.operational_controls.run_control",
-      "skill_body": ".agents/skills/trajectory-failure-sentinel/SKILL.md",
+      "skill_body": ".px/skills/trajectory-failure-sentinel/SKILL.md",
       "package": "registry/skill_packages/trajectory-failure-sentinel.json",
       "source_skill": {
         "path": "LLM_hybrid_rag/SKILL_e3c01da6.md",
@@ -691,7 +691,7 @@
       "status": "active",
       "family": "delegated",
       "handler": "runtime/project_stream_controls.py",
-      "skill_body": ".agents/skills/isolate-project-streams/SKILL.md",
+      "skill_body": ".px/skills/isolate-project-streams/SKILL.md",
       "package": "registry/skill_packages/isolate-project-streams.json",
       "source_skill": {
         "path": "staged_design_pack/project-stream-isolation",
@@ -710,7 +710,7 @@
       "status": "active",
       "family": "delegated",
       "handler": "runtime/memory_fabric.py",
-      "skill_body": ".agents/skills/govern-memory-fabric/SKILL.md",
+      "skill_body": ".px/skills/govern-memory-fabric/SKILL.md",
       "package": "registry/skill_packages/govern-memory-fabric.json",
       "source_skill": {
         "path": "staged_design_pack/memory-fabric",
@@ -729,7 +729,7 @@
       "status": "active",
       "family": "delegated",
       "handler": "runtime/knowledge_foundry.py",
-      "skill_body": ".agents/skills/forge-skills-from-knowledge/SKILL.md",
+      "skill_body": ".px/skills/forge-skills-from-knowledge/SKILL.md",
       "package": "registry/skill_packages/forge-skills-from-knowledge.json",
       "source_skill": {
         "path": "agent_memory_issues_to_explore/Skill Foundry.txt",
@@ -748,7 +748,7 @@
       "status": "active",
       "family": "delegated",
       "handler": "runtime/engineering_intelligence.py",
-      "skill_body": ".agents/skills/analyze-engineering-intelligence/SKILL.md",
+      "skill_body": ".px/skills/analyze-engineering-intelligence/SKILL.md",
       "package": "registry/skill_packages/analyze-engineering-intelligence.json",
       "source_skill": {
         "path": "agent_memory_issues_to_explore/\ud83d\udce6 Pack 8 AI Runtime & Cognitive As.txt",
@@ -767,7 +767,7 @@
       "status": "active",
       "family": "assurance",
       "handler": "runtime.foundation_assurance.compare_contract_surfaces",
-      "skill_body": ".agents/skills/validate-contract-boundaries/SKILL.md",
+      "skill_body": ".px/skills/validate-contract-boundaries/SKILL.md",
       "package": "registry/skill_packages/validate-contract-boundaries.json",
       "source_skill": {
         "path": "source-12:automation/api-contract-validator/SKILL.md",
@@ -786,7 +786,7 @@
       "status": "active",
       "family": "evaluation",
       "handler": "runtime.foundation_assurance.evaluate_retrieval_readiness",
-      "skill_body": ".agents/skills/evaluate-retrieval-readiness/SKILL.md",
+      "skill_body": ".px/skills/evaluate-retrieval-readiness/SKILL.md",
       "package": "registry/skill_packages/evaluate-retrieval-readiness.json",
       "source_skill": {
         "path": "source-12:rag/retrieval-quality-tester/SKILL.md",
@@ -805,7 +805,7 @@
       "status": "active",
       "family": "admission",
       "handler": "runtime.foundation_assurance.gate_model_dataset",
-      "skill_body": ".agents/skills/gate-model-data-lifecycle/SKILL.md",
+      "skill_body": ".px/skills/gate-model-data-lifecycle/SKILL.md",
       "package": "registry/skill_packages/gate-model-data-lifecycle.json",
       "source_skill": {
         "path": "source-13:validation/data-gates",

@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 IMPLEMENTED_TITLES = {
-    "agent_create_validate": "Validate and register a supplied agent specification",
+    "agent_create_validate": "Validate and record a supplied agent specification candidate",
     "chaos_resilience_cycle": "Evaluate supplied bounded resilience experiment records",
     "continuous_improvement": "Compile supplied sources into a candidate-only improvement backlog",
     "cross_project_transfer": "Validate and import an approved cross-project transfer package",

@@ -1,0 +1,17 @@
+{
+  "gap_id": "PX-OS-937",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004971",
+  "effect": "write",
+  "scope": [
+    "extension/media/dashboard/49-studio-editors.js",
+    "extension/media/dashboard/90-controller.js",
+    "extension/tests/ui-scaffold.test.js",
+    "extension/tests/dashboard-e2e.test.js"
+  ],
+  "authority": "The registered high-severity Skill Studio operational gap authorizes repair of candidate identity preparation and its focused regressions.",
+  "expected_effect": "Fresh and loaded skill candidates open with all valid identity-bearing files synchronized to the new immutable revision; malformed packages remain visibly editable and fail closed rather than crashing.",
+  "rollback": "The helper and one call-site are isolated; revert through an explicit patch if candidate preservation or preflight behavior regresses.",
+  "evidence": [
+    {"claim": "Immediate pre-repair checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004971"}
+  ]
+}

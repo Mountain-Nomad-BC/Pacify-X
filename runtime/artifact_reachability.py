@@ -53,6 +53,32 @@ def build_artifact_reachability(root: Path) -> dict:
         if (
             not path.is_file()
             or path.name == "artifact_reachability.json"
+            # This operational index hashes artifact_reachability as a test
+            # input. Including it here would create an unsatisfiable digest
+            # cycle. Its topology and content are governed independently by
+            # runtime.test_profiles and registry-envelope validation.
+            or path.name == "test_group_index.json"
+            # This live projection hashes the test receipts whose input hashes
+            # include artifact_reachability. Indexing it here would create a
+            # second unsatisfiable digest cycle. The evidence index remains
+            # governed by its own builder and registry-envelope invariants.
+            or path.name == "current_evidence_index.json"
+            # Completion status is likewise a live projection over current
+            # section/group receipts. Hashing it into the static artifact graph
+            # would make advancing a receipt invalidate the graph it summarizes.
+            or path.name == "completion_status.json"
+            # The operational gap ledger head and snapshot are live projections
+            # advanced by every mandatory work admission. Hashing either into
+            # the static graph would make the admission for a verification run
+            # invalidate that graph immediately before the run starts.
+            or path.name
+            in {
+                "operational_gap_ledger.head.json",
+                "operational_gap_ledger.snapshot.json",
+            }
+            # The exact engine manifest hashes artifact_reachability. Including
+            # the manifest here would create a two-document digest cycle.
+            or path.name == "engine_identity.json"
             or path.suffix.casefold() not in {".json", ".toml", ".yaml", ".yml"}
         ):
             continue
@@ -132,11 +158,11 @@ def build_artifact_reachability(root: Path) -> dict:
         relative = path.relative_to(root).as_posix()
         if relative in recorded_paths:
             continue
-        if relative.startswith(".agents/skills/") and relative.endswith(
+        if relative.startswith(".px/skills/") and relative.endswith(
             "/agents/openai.yaml"
         ):
             skill_id = relative.split("/")[2]
-            owner = f".agents/skills/{skill_id}/SKILL.md"
+            owner = f".px/skills/{skill_id}/SKILL.md"
             reachability = "lazy_skill_interface"
         elif (
             relative

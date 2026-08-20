@@ -1,0 +1,39 @@
+{
+  "admission_record": "orchestrate-capability-scheduling",
+  "body_sha256": "6a698cfe38d3578b6e7ed0cd7110b1f903416e9b4f0a4df96d459d7acb2d0990",
+  "contract": {
+    "available": true,
+    "sha256": "e31b095fe46310832969a7bbd2fd68e5f2d9b23e003647b257ad0946bd768f8b",
+    "source": "registry/skill_packages/orchestrate-capability-scheduling.json"
+  },
+  "description": "Plan, prioritize, place, arbitrate, simulate, observe, and recover bounded engineering or agent work across dependencies, approvals, budgets, deadlines, resources, privacy boundaries, retries, and fallbacks. Use when multiple ready tasks or implementations compete for finite capacity and the scheduling decision must be explainable, replayable, acceptance-preserving, and isolated by project.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "orchestrate-capability-scheduling",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/orchestrate-capability-scheduling"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "scheduling",
+    "orchestration",
+    "resources",
+    "budgets",
+    "recovery"
+  ],
+  "version": "1.0.0"
+}

@@ -1,0 +1,38 @@
+{
+  "admission_record": "quarantine-external-tools",
+  "body_sha256": "d6dfe57ca49e8131f93c8d9b7cb28967f343939d85c627928a249c5db2818d41",
+  "contract": {
+    "available": true,
+    "sha256": "57ad467ed62138eac664ff3ac502c5a58da0eba5d66d689f98b797a2fb913c10",
+    "source": "registry/skill_packages/quarantine-external-tools.json"
+  },
+  "description": "Quarantine and assess packages, extensions, MCPs, binaries, containers, dependencies, and third-party integrations before execution. Use when proposing installation, connection, upgrade, or adoption of external tooling.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "quarantine-external-tools",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/quarantine-external-tools"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "supply-chain",
+    "quarantine",
+    "tools",
+    "security"
+  ],
+  "version": "0.1.0"
+}

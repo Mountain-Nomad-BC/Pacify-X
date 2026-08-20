@@ -12,6 +12,7 @@ from typing import Callable, Iterable, Mapping
 from .config import BootstrapConfig, load_startup_config
 from .registry import load_json, load_skill_catalog, navigation_index
 from .skill_navigator import CapabilitySummary
+from .state_invariants import assert_coordination_startup
 from .tooling import startup_candidates
 
 
@@ -47,6 +48,7 @@ def bounded_startup(
     if max_probe_workers < 1 or max_probe_workers > 8:
         raise ValueError("max_probe_workers must be between 1 and 8")
     config = load_startup_config(root / "bootstrap" / "startup.toml")
+    assert_coordination_startup(project_root)
     capabilities = tuple(navigation_index(root))
     if len(capabilities) > config.budget.max_initial_registry_records:
         raise ValueError("capability metadata exceeds startup budget")

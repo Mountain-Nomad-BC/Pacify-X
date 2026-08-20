@@ -1,0 +1,4 @@
+interface:
+  display_name: "Transcript Analysis"
+  short_description: "Extract source-traceable conversation evidence"
+  default_prompt: "Use $transcript-analysis to ingest transcripts immutably and produce queue-scoped, evidence-state-aware canonical records and summaries."

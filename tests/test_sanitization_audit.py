@@ -15,7 +15,8 @@ class SanitizationAuditTests(unittest.TestCase):
                 "governed retrieval system with deterministic rails", encoding="utf-8"
             )
             result = audit(root)
-            self.assertTrue(result["valid"])
+            self.assertTrue(result["scoped_valid"])
+            self.assertFalse(result["valid"])
 
     def test_private_token_and_zip_fail(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -63,7 +64,7 @@ class SanitizationAuditTests(unittest.TestCase):
             prefix = "x" * (1024 * 1024 - len(legacy))
             (root / "boundary.txt").write_text(prefix + canonical, encoding="utf-8")
             result = audit(root)
-            self.assertTrue(result["valid"])
+            self.assertTrue(result["scoped_valid"])
             self.assertEqual(result["legacy_placeholder_hit_count"], 0)
 
     def test_sanitation_summary_preserves_individual_gate_status(self) -> None:
@@ -83,6 +84,15 @@ class SanitizationAuditTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             result = audit(Path(directory), excluded_names=frozenset({"ignored"}))
             self.assertIn("ignored", result["gates"]["archive_detection"]["exclusions"])
+
+    def test_binary_payload_bytes_do_not_drive_identifier_results(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            token = ("re" + "my").encode()
+            (root / "compressed.png").write_bytes(b"\x89PNG\r\n\x1a\n" + token)
+            result = audit(root)
+            self.assertEqual(result["identifier_hit_count"], 0)
+            self.assertTrue(result["scoped_valid"])
 
 
 if __name__ == "__main__":

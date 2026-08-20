@@ -1,0 +1,38 @@
+{
+  "admission_record": "engineer-hybrid-retrieval",
+  "body_sha256": "a4b0eb434dc9fd552d9c54838bd9e0a70e0424f1aa1b9f04654ab97bd3892ad8",
+  "contract": {
+    "available": true,
+    "sha256": "db90950335177aea020b222c0378cf1d90a840508249a59fdd977632f9de950e",
+    "source": "registry/skill_packages/engineer-hybrid-retrieval.json"
+  },
+  "description": "Design or improve retrieval pipelines that combine dense and lexical retrieval, bounded routing, rank fusion, reranking, active-record hydration, metadata intersection, context assembly, and measurable quality gates. Use when building RAG/search systems or diagnosing corpus, chunking, embedding, ranking, filtering, or citation failures.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "engineer-hybrid-retrieval",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/engineer-hybrid-retrieval"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "retrieval",
+    "ranking",
+    "graph",
+    "governance"
+  ],
+  "version": "0.1.0"
+}

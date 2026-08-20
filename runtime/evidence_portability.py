@@ -20,6 +20,13 @@ STRUCTURED_ROOTS = (
     "models",
     "orchestration",
     "policies",
+    "extension/evidence",
+)
+EXCLUDED_PATH_PREFIXES = (
+    "evidence/operational-ui-walk-",
+    "evidence/operational-gap-ledger/",
+    "registry/operational_gap_ledger",
+    "registry/instruction_reconciliation_",
 )
 TEXT_SUFFIXES = {".json", ".jsonl", ".md", ".txt", ".log", ".toml", ".yaml", ".yml"}
 PATH_KEYS = {
@@ -67,42 +74,45 @@ def portability_findings(
 def discover_historical_references(root: Path) -> list[dict[str, Any]]:
     root = root.resolve()
     records = []
-    paths = (
-        path
-        for directory in STRUCTURED_ROOTS
-        for path in (root / directory).rglob("*")
-        if path.is_file()
-        and path.suffix.casefold() in TEXT_SUFFIXES
-        and path != root / "registry/historical_external_references.json"
-    )
-    for path in sorted(paths, key=lambda item: item.as_posix().casefold()):
-        text = path.read_text(encoding="utf-8", errors="replace")
-        relative = path.relative_to(root).as_posix()
-        for line_no, line in enumerate(text.splitlines(), 1):
-            for locator in portability_findings(line):
-                locator = locator.rstrip("`)]}>,.")
-                if locator.startswith("../"):
-                    candidate = (path.parent / locator).resolve()
-                    try:
-                        candidate.relative_to(root)
-                        if candidate.exists():
-                            continue
-                    except ValueError:
-                        pass
-                identifier = hashlib.sha256(
-                    f"{relative}:{locator}".encode()
-                ).hexdigest()[:20]
-                records.append(
-                    {
-                        "id": identifier,
-                        "evidence_path": relative,
-                        "line": line_no,
-                        "external_locator": locator,
-                        "classification": "historical_non_authoritative",
-                        "runtime_required": False,
-                        "disposition": "Preserved as historical provenance only; current release gates use bundled content-addressed evidence and never resolve this locator.",
-                    }
-                )
+    for directory in STRUCTURED_ROOTS:
+        for path in sorted((root / directory).rglob("*"), key=lambda item: item.as_posix().casefold()):
+            if not path.is_file():
+                continue
+            if path.suffix.casefold() not in TEXT_SUFFIXES:
+                continue
+            if "historical" in path.relative_to(root / directory).parts:
+                continue
+            if path == root / "registry/historical_external_references.json":
+                continue
+            relative = path.relative_to(root).as_posix()
+            if any(relative.startswith(prefix) for prefix in EXCLUDED_PATH_PREFIXES):
+                continue
+            text = path.read_text(encoding="utf-8", errors="replace")
+            for line_no, line in enumerate(text.splitlines(), 1):
+                for locator in portability_findings(line):
+                    locator = locator.rstrip("`)]}>,.")
+                    if locator.startswith("../"):
+                        candidate = (path.parent / locator).resolve()
+                        try:
+                            candidate.relative_to(root)
+                            if candidate.exists():
+                                continue
+                        except ValueError:
+                            pass
+                    identifier = hashlib.sha256(
+                        f"{relative}:{locator}".encode()
+                    ).hexdigest()[:20]
+                    records.append(
+                        {
+                            "id": identifier,
+                            "evidence_path": relative,
+                            "line": line_no,
+                            "external_locator": locator,
+                            "classification": "historical_non_authoritative",
+                            "runtime_required": False,
+                            "disposition": "Preserved as historical provenance only; current release gates use bundled content-addressed evidence and never resolve this locator.",
+                        }
+                    )
     return records
 
 

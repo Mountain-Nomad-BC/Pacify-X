@@ -1,0 +1,4 @@
+interface:
+  display_name: "Validate Contract Boundaries"
+  short_description: "Compare API, schema, event, data, and permission boundaries"
+  default_prompt: "Use -contract-boundaries to compare canonical providers and consumers, identify contract drift, and define focused compatibility and denial tests."

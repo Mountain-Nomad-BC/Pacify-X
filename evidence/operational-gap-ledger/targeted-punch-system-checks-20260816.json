@@ -1,0 +1,21 @@
+{
+  "schema_version": "px.targeted-check-receipt/1.0",
+  "scope": "operational gap ledger and its dashboard query/presentation boundary only",
+  "authority": "targeted development evidence; not full validation, certification, release, or installed-host proof",
+  "commands": [
+    {"command":"python -m pytest -q -p no:cacheprovider tests/test_operational_gap_ledger.py","exit_code":0,"result":"16 passed in 5.28s"},
+    {"command":"node --test extension/tests/ui-action-inventory.test.js extension/tests/system-surfaces.test.js extension/tests/hardening-boundaries.test.js","exit_code":0,"result":"22 passed, 0 failed"},
+    {"command":"node --test --test-name-pattern=operational ledger bridge queries are bounded and exact extension/tests/px-bridge-cache.test.js","exit_code":0,"result":"1 passed, 0 failed"}
+  ],
+  "source_sha256": {
+    "runtime/operational_gap_ledger.py":"8ec4df98500d32ead8040a27aba175ef9d6152be505fe10f7a8957d06bc69168",
+    "runtime/dashboard_api.py":"f22e3bb670194db435db38754d63861cc47671d7eb2abd791abd3add3603dcd1",
+    "extension/src/pxBridge.js":"76b713901499dffc94364e4296c0d6d25a1b4887389853b721af721f2ec71383",
+    "extension/src/webviewMessages.js":"1649bc19ccd5f31698b559d8ca645a3627b6ddb828917bc15b4700a8dfc7ead6",
+    "extension/src/uiActionInventory.js":"58264bcdefd25377fb55b564adb65a4ee0092ab3fcb45c3db6a7023b0a5b32be",
+    "extension/media/dashboard/45-system-surfaces.js":"203f92347645aa1bb0c2f098d87378939de7ac780f6e434bcf85b84fb652183f",
+    "extension/media/dashboard/90-controller.js":"6a2c67fca34053b06836cf5939f6de5ec22fc57c53d1ee293a74e2be14ec52af",
+    "extension/resources/ui/action-inventory.json":"55ce726b0bddce8f6fbd319d2885d07d45201527a2a8698f1d0431ae67604b36",
+    "registry/operational_surface_inventory.json":"f147c501b2ff4eeb0907a9c370cca5f46ab3ad94b972cea9932659d839de3ce9"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "admission_record": "commission-evidence-first-project",
+  "body_sha256": "b8d815891db4740a8d5a28c420f13cedf857418a904093ea987ad5f8e1bee73d",
+  "contract": {
+    "available": true,
+    "sha256": "3de7b2d0b2b7f518cfb71df66250d441c26e9790953a4111ee543a558911d934",
+    "source": "registry/skill_packages/commission-evidence-first-project.json"
+  },
+  "description": "Commission a new or existing project from structured facts, assumptions, unknowns, accessibility, security, integration, operations, and acceptance inputs. Use before implementation when project intent or risk boundaries need an evidence-backed brief.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "commission-evidence-first-project",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/commission-evidence-first-project"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "commissioning",
+    "assumptions",
+    "accessibility",
+    "risk"
+  ],
+  "version": "0.1.0"
+}

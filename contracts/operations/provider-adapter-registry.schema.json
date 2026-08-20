@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:operations:provider-adapter-registry",
+  "title": "PACIFY-X provider invocation adapter registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "policy", "adapters"],
+  "properties": {
+    "schema_version": {"const": "px.provider-adapter-registry/1.0"},
+    "policy": {"type": "string", "minLength": 1},
+    "adapters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["adapter_id", "provider_id", "mode", "implementation", "admitted", "status", "billing_state"],
+        "properties": {
+          "adapter_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+          "provider_id": {"type": "string", "minLength": 1},
+          "mode": {"enum": ["remote", "local"]},
+          "implementation": {"type": "string", "minLength": 1},
+          "admitted": {"type": "boolean"},
+          "status": {"enum": ["ready", "unconfigured", "disabled", "unsupported"]},
+          "billing_state": {"enum": ["actual", "estimated", "local_non_billable", "unknown"]}
+        }
+      }
+    }
+  }
+}

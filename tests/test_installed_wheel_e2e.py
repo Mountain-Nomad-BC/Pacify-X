@@ -49,6 +49,7 @@ class InstalledWheelEndToEndTests(unittest.TestCase):
                 source.mkdir()
                 for name in (
                     ".agents",
+                    ".px",
                     ".ai",
                     ".cursor",
                     ".github",
@@ -67,7 +68,18 @@ class InstalledWheelEndToEndTests(unittest.TestCase):
                     "templates",
                     "tests",
                 ):
-                    shutil.copytree(ROOT / name, source / name)
+                    shutil.copytree(
+                        ROOT / name,
+                        source / name,
+                        ignore=(
+                            shutil.ignore_patterns(
+                                "preserved-skills",
+                                "preserved-extension-installations",
+                            )
+                            if name == ".px"
+                            else None
+                        ),
+                    )
                 for name in (
                     "AGENTS.md",
                     "AI_ASSISTANT.md",
@@ -109,7 +121,11 @@ class InstalledWheelEndToEndTests(unittest.TestCase):
             self.assertTrue(
                 self._json([str(executable), "validate"], cwd=temp)["valid"]
             )
-            self.assertTrue(self._json([str(executable), "doctor"], cwd=temp)["valid"])
+            self.assertTrue(
+                self._json(
+                    [str(executable), "doctor", "--require", "syntax"], cwd=temp
+                )["valid"]
+            )
             self.assertTrue(
                 self._json([str(executable), "profiles"], cwd=temp)["valid"]
             )

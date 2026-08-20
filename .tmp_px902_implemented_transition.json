@@ -1,0 +1,13 @@
+{
+  "gap_id":"PX-OS-902","from_state":"implementing","to_state":"implemented",
+  "reason":"Exact installed denominator and optional target are bound through native approval and documented update dispatch; prior version is retained as rollback identity and approved refreshes now escalate a joined memory-only discovery to persistent current shards.",
+  "implementation_evidence":[
+    {"reference":"extension/src/extensionLifecycleHost.js","artifact_sha256":"82de010910e29161064fcbfd6e26a2fa66587634b2e38f20d2ede7ad3ab008b9","artifact_size":7671,"claim":"Update controller binds current/target identity, compatibility authority, rollback target, denominator recheck, dispatch, and receipt."},
+    {"reference":"extension/src/extension.js","artifact_sha256":"327ae97ef1e802903367cb4d563f300455bc4d2836b6e67a4ac89bb2c6f8d254","artifact_size":121393,"claim":"Native update modal, persistent reconciliation, and memory-only discovery persistence escalation are wired."},
+    {"reference":"extension/tests/extension-lifecycle-host.test.js","artifact_sha256":"bd21aaeb468a55da9accb6e920990e3913da89d47ecf98a46d539b40c028b06d","artifact_size":4787,"claim":"Five focused lifecycle cases pass, including exact update and refusal paths."}
+  ],
+  "evidence":[
+    {"reference":"extension/src/extensionLifecycleHost.js","artifact_sha256":"82de010910e29161064fcbfd6e26a2fa66587634b2e38f20d2ede7ad3ab008b9","artifact_size":7671,"claim":"Update controller retains rollback identity and refuses stale denominators."},
+    {"reference":"extension/media/dashboard/90-controller.js","artifact_sha256":"de7846af0cda63a02eb8b6b307f8ccd9cc03dc68091f240d4b6fbc4d00d61a60","artifact_size":381297,"claim":"Update preview/result correlation and user-visible outcomes are implemented."}
+  ]
+}

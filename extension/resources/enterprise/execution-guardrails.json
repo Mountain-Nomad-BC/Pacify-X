@@ -1,0 +1,28 @@
+{
+  "schema_version": "px.enterprise-execution-guardrails/1.0",
+  "namespace": "ms-enterprise/",
+  "default_posture": "deny",
+  "credential_storage": "external-only",
+  "master_enabled": false,
+  "gates": [
+    "max_cost_per_task_usd",
+    "max_cost_per_session_usd",
+    "max_cost_per_day_usd",
+    "token_budget",
+    "local_first",
+    "provider_allowlist",
+    "gpu_memory_ceiling_mb",
+    "cpu_core_ceiling",
+    "ram_ceiling_mb",
+    "escalation_confidence_threshold",
+    "cache_reuse_aggressiveness",
+    "require_approval_before_billable_execution"
+  ],
+  "invariants": {
+    "master_switch_creates_credentials": false,
+    "master_switch_connects_provider": false,
+    "master_switch_authorizes_execution": false,
+    "every_billable_execution_is_evaluated": true,
+    "billable_execution_available_in_this_release": false
+  }
+}

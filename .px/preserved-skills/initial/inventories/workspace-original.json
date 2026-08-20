@@ -1,0 +1,4258 @@
+{
+  "file_count": 850,
+  "files": [
+    {
+      "path": "acquire-install-n8n/agents/openai.yaml",
+      "sha256": "476b44d5da852d740a5b28450ae2840d4fdd383b370d914cf67174d1d4a688fa",
+      "size_bytes": 266
+    },
+    {
+      "path": "acquire-install-n8n/SKILL.md",
+      "sha256": "30b739e07091695f59d196f840527c2d8ddca3e80165d50e35c0294dc20db974",
+      "size_bytes": 2822
+    },
+    {
+      "path": "acquire-install-supabase/agents/openai.yaml",
+      "sha256": "93f0d804c694d1463308bbbe75348f875efcb7d1a53d9b7da440978763686f99",
+      "size_bytes": 311
+    },
+    {
+      "path": "acquire-install-supabase/SKILL.md",
+      "sha256": "536bcecab1eb8a9e3884f5ef258ca766a16205c04ec971ee9dc99faa9c51ab87",
+      "size_bytes": 3091
+    },
+    {
+      "path": "active-evaluation-selector/agents/openai.yaml",
+      "sha256": "7f99fd685a66d593ef9d3b9760b46e60eed6d3a505e574f3ee1d74f474c8fdae",
+      "size_bytes": 221
+    },
+    {
+      "path": "active-evaluation-selector/SKILL.md",
+      "sha256": "4ae28d38833be838da409fd01ea4c45cdeb6b47e21ca20d469fe45fd5a34faa4",
+      "size_bytes": 2563
+    },
+    {
+      "path": "adapt-human-learning-loop/agents/openai.yaml",
+      "sha256": "4f6b26928bbbc30368fe37dd67372dd9a9d0e3b5a5995e8e132c0b061fbbe362",
+      "size_bytes": 275
+    },
+    {
+      "path": "adapt-human-learning-loop/references/capture-human-observer-assessment.json",
+      "sha256": "cc8824a74c60bf08423eaf8ae908cfcc454c97c65246c9760c2f4fb0e8756daa",
+      "size_bytes": 1611
+    },
+    {
+      "path": "adapt-human-learning-loop/references/design-replayable-exercise-state-machine.json",
+      "sha256": "b9aa400d6d6334cefdf5338304a30cf329ee14f9b935d2e3a74596c483b01ca3",
+      "size_bytes": 1683
+    },
+    {
+      "path": "adapt-human-learning-loop/references/evaluate-cue-recall-and-recognition.json",
+      "sha256": "88c7711190bd9317951231b8daddf879d5fcbae09f2a16e65f2453e7091ccf87",
+      "size_bytes": 1698
+    },
+    {
+      "path": "adapt-human-learning-loop/references/govern-reinforcement-token-economy.json",
+      "sha256": "3dfb35fab087bd6fa585b9d7a59a7c351c4241742848fc83bc3993be7c35b7b1",
+      "size_bytes": 1680
+    },
+    {
+      "path": "adapt-human-learning-loop/references/maintain-behavior-event-ledger.json",
+      "sha256": "ce3bed254aaa99c9080c290df38bdea5bb08d607a175e851d741a7f14246079c",
+      "size_bytes": 1649
+    },
+    {
+      "path": "adapt-human-learning-loop/references/maintain-learner-profile-boundary.json",
+      "sha256": "a45a6cdb5862e9c597da6859262ad1fc81e60cc062458536e4dc9e5efc7aee53",
+      "size_bytes": 1593
+    },
+    {
+      "path": "adapt-human-learning-loop/references/safeguard-human-learning-systems.json",
+      "sha256": "ffbaf8147f1e6c72cc3bc7202bf481c0d963946cee928b0a6f3f6f2f0630f886",
+      "size_bytes": 1591
+    },
+    {
+      "path": "adapt-human-learning-loop/references/separate-supervisor-and-learner-roles.json",
+      "sha256": "604953498c0be77ce137e910efd50c23b2a84590c7489f04e5a4f3046ca91cbb",
+      "size_bytes": 1576
+    },
+    {
+      "path": "adapt-human-learning-loop/references/sequence-adaptive-learning-exercises.json",
+      "sha256": "4caa87092c7c6a3b8050df83a1f2536170e407c432fc826a9f73a09c842e6ad0",
+      "size_bytes": 1653
+    },
+    {
+      "path": "adapt-human-learning-loop/references/summarize-learning-progress.json",
+      "sha256": "c1595c92376a9488c939a4d563df2b53bff7da5a51efb48849ce4c0a4852fe88",
+      "size_bytes": 1588
+    },
+    {
+      "path": "adapt-human-learning-loop/SKILL.md",
+      "sha256": "61e3cdb546982669ad0fd5aafceac1ecb36836bfed11ee5baa55a6ad18841f76",
+      "size_bytes": 8197
+    },
+    {
+      "path": "admit-capability/agents/openai.yaml",
+      "sha256": "528bbac1e5a9fac41743bd5fa0943461e5a3ec2c48197dd8e2049ba3adf56c0d",
+      "size_bytes": 211
+    },
+    {
+      "path": "admit-capability/references/admission-contract.md",
+      "sha256": "eb5e583922fa515270a96815746fa4d5fd6d15ea1dac89737b4b120295530781",
+      "size_bytes": 985
+    },
+    {
+      "path": "admit-capability/SKILL.md",
+      "sha256": "12d9f91601589f440f246a0a5d003f341cd16b3845a99cbe8fe54d957baf3a7f",
+      "size_bytes": 1253
+    },
+    {
+      "path": "analyze-engineering-intelligence/agents/openai.yaml",
+      "sha256": "c0d77d036be084ac826fb08ef4cd483c361aab527b9ef8af77e7798b35efb60f",
+      "size_bytes": 332
+    },
+    {
+      "path": "analyze-engineering-intelligence/references/analysis-contract.md",
+      "sha256": "9827f8d90094b0888359d34d22e721956313da58682fd2dc4b3a4d95196c2291",
+      "size_bytes": 1104
+    },
+    {
+      "path": "analyze-engineering-intelligence/SKILL.md",
+      "sha256": "17746bfc6c684ee185521a91353dd8999e7d0636c86fe89dd5675050cea40981",
+      "size_bytes": 1217
+    },
+    {
+      "path": "analyze-repository-intelligence/agents/openai.yaml",
+      "sha256": "bafbe76cbd479436f83e8989833d4c6526d6ffdfa86f3e54292fbbc89def10c3",
+      "size_bytes": 238
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/agent-computer-interface-designer.json",
+      "sha256": "ca7fbc14cd37dafb80a9451a0170da45ec5dc6254acb86f27e4f52ea15a148ed",
+      "size_bytes": 9432
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/call-graph-builder.json",
+      "sha256": "78dd8c2932734d4eaab9ae8e987df4728bfc2d6d8aef811cf722ae6e64a0fec1",
+      "size_bytes": 9212
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/change-reviewer.json",
+      "sha256": "47e08be5faf945f839a973c97fb7df24b5dde8be7d014fde4d7ea4f1c6a7b17f",
+      "size_bytes": 9167
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/configuration-resolution-tracer.json",
+      "sha256": "e2de25f4b12ab545725716bf24bb5d50a46931aba98aff6f25ab2b0d40049447",
+      "size_bytes": 9370
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/data-flow-tracer.json",
+      "sha256": "92a563ce518990ca759b2acc25fc26d6c899ee9dc6889bc0d13b8c18b87b039a",
+      "size_bytes": 9200
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/dependency-impact-analyzer.json",
+      "sha256": "583d08bf9f51a1e04b6d5fbb3bee5db32257a9c624212f5b58549da362997054",
+      "size_bytes": 9318
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/issue-to-reproduction.json",
+      "sha256": "a3af85f7450fe2f6d37704f8ab6650f38c1d8a0ab9e6b99d139c7e9ed2ae370f",
+      "size_bytes": 9236
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/migration-planner.json",
+      "sha256": "36836d710c466099d6b09e07758d1eeed47d67fb95f43bd816cf0edcfe0f10bc",
+      "size_bytes": 9188
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/ownership-history-mapper.json",
+      "sha256": "77374a335979378ce28899927469203686bdc1bbc8ff4adca0a4f0c059ecf66e",
+      "size_bytes": 9283
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/patch-scope-guardian.json",
+      "sha256": "4a7082c43afde2e5618f5c253ddedc7d10b9fc77f8903b4cf35e3973d27da60d",
+      "size_bytes": 9206
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/patch-to-test-plan.json",
+      "sha256": "2343b9bfd9339b05b0f7919686bc3e9d45e5c76ceb8e1e026b15a07c4433b5a1",
+      "size_bytes": 9221
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/repository-cartographer.json",
+      "sha256": "729687d444a88c36b0467cb29c311c1fce9804daf23e9122757b84dd00e53abc",
+      "size_bytes": 9310
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/reproduction-minimizer.json",
+      "sha256": "7f2ba04ecfebc545350ff3e4a0cdfbf3ba8b51d942774e6ec3c9856ac3a2fb48",
+      "size_bytes": 9258
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/root-cause-hypothesis-manager.json",
+      "sha256": "622437aee94fe11722f1d758c635683b0628a5bb166050037060ba3bf9a3be8e",
+      "size_bytes": 9350
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/runtime-path-tracer.json",
+      "sha256": "48dfa6196942a49785b7cf0c6260c48199af7dd5766ac0dd0c9dd740b7a9846c",
+      "size_bytes": 9221
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/security-boundary-mapper.json",
+      "sha256": "2c4a3a430daec80513363f3533eb3f608d67fe2997cddb3aeebd7da84761e6fd",
+      "size_bytes": 9321
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/symbol-reference-navigator.json",
+      "sha256": "21bfd9b019e7471f2b9459e1a661102540f45ad1a5795adf11d7135f31510e61",
+      "size_bytes": 9355
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities/test-coverage-mapper.json",
+      "sha256": "a2650e071db00a811e6c2d05209c2098908c08f5dce4d762cb2d479159b441d8",
+      "size_bytes": 9267
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capabilities-index.json",
+      "sha256": "686a5dc67a02154925b3fae6a9f2be3869d6deb5d88734becf0b5396175f45b5",
+      "size_bytes": 6814
+    },
+    {
+      "path": "analyze-repository-intelligence/references/capability-contracts.json",
+      "sha256": "8369844a2557b5302e6b00f0b12edda6a218b904c81258747c43530bf9e6e850",
+      "size_bytes": 180930
+    },
+    {
+      "path": "analyze-repository-intelligence/references/script-contracts.json",
+      "sha256": "90f887ed5e3f214ecef4735e141fc6a4ec815028e5722a634c95839bf1e13c34",
+      "size_bytes": 14581
+    },
+    {
+      "path": "analyze-repository-intelligence/references/scripts/agents-md-generator.json",
+      "sha256": "db0b68ecf76a5d4b709d3d167817ae005984e149d80c00b2aacb8bd01493386b",
+      "size_bytes": 1691
+    },
+    {
+      "path": "analyze-repository-intelligence/references/scripts/change-impact.json",
+      "sha256": "44df79b89bba83cdd5883801445b214e3fffac9b5b0f13b4e33df742c8a04445",
+      "size_bytes": 1667
+    },
+    {
+      "path": "analyze-repository-intelligence/references/scripts/config-trace.json",
+      "sha256": "9ebfdad0bf316339296af88d57e32f2c677d820b7c4ffa5e594391aeb9de7265",
+      "size_bytes": 1663
+    },
+    {
+      "path": "analyze-repository-intelligence/references/scripts/patch-scope-guard.json",
+      "sha256": "09c15e6e5b6f448918f90b88b58cfccf72ec8355b63786ab6ee42e1bd989c8f0",
+      "size_bytes": 1683
+    },
+    {
+      "path": "analyze-repository-intelligence/references/scripts/repo-mapper.json",
+      "sha256": "88d6ea9199555561ffd40e2b738d82d5cebe4c22e76f4f3b0250df83492e4cc8",
+      "size_bytes": 1659
+    },
+    {
+      "path": "analyze-repository-intelligence/references/scripts/reproduction-scaffold.json",
+      "sha256": "fa3f50e261ba96e4447c56c688cb6323b98d8e6438994acee1cf96656bce5ccd",
+      "size_bytes": 1699
+    },
+    {
+      "path": "analyze-repository-intelligence/references/scripts/runtime-path.json",
+      "sha256": "6a02ea5ff658b94197938e1352816ae0f930ee517b1bef400b68fcaaa364ac0b",
+      "size_bytes": 1663
+    },
+    {
+      "path": "analyze-repository-intelligence/references/scripts/symbol-index.json",
+      "sha256": "55aee144b42a1ad654f6423536ad9536cf7d7480c43bfa280d4237d448eb54f4",
+      "size_bytes": 1663
+    },
+    {
+      "path": "analyze-repository-intelligence/references/scripts-index.json",
+      "sha256": "69e9dcd309ed8460a48d289b6f0a6fa4a07bdbf41171bf405223d03f04835828",
+      "size_bytes": 2838
+    },
+    {
+      "path": "analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
+      "sha256": "4886ec4ce2422808598b2dda816814c120edd2a8ed9a35e819d1bec2dfe02624",
+      "size_bytes": 1275
+    },
+    {
+      "path": "analyze-repository-intelligence/scripts/authoritative_change_impact.py",
+      "sha256": "e787b5f94b424df49dae1e87c0bae8738fe833f0f1c5a9f9cc7eb1b797151630",
+      "size_bytes": 1504
+    },
+    {
+      "path": "analyze-repository-intelligence/scripts/authoritative_config_trace.py",
+      "sha256": "f9b2f62e14788a5de6248e679453d9d6dd943d2557e7f5bb12979c9ddbcdb121",
+      "size_bytes": 1281
+    },
+    {
+      "path": "analyze-repository-intelligence/scripts/authoritative_patch_scope_guard.py",
+      "sha256": "59e94c1713d8a8b8ac292887dd136c885f3c4ee1f942d20b2256b8b19b68362e",
+      "size_bytes": 1342
+    },
+    {
+      "path": "analyze-repository-intelligence/scripts/authoritative_repo_mapper.py",
+      "sha256": "b632cc5ff026314da7a44af842bbeb7901b3fa4eeb36e74692e48c1a7d41590c",
+      "size_bytes": 2509
+    },
+    {
+      "path": "analyze-repository-intelligence/scripts/authoritative_reproduction_scaffold.py",
+      "sha256": "8a6b3da2e5e32c6433af76afc8c7d994086c33d3a88751561d1d322465731b07",
+      "size_bytes": 1403
+    },
+    {
+      "path": "analyze-repository-intelligence/scripts/authoritative_runtime_path.py",
+      "sha256": "88ffc414342ecfe205fbd8e305806758ff49aac5655b18a5ae17806d53c1c8a4",
+      "size_bytes": 886
+    },
+    {
+      "path": "analyze-repository-intelligence/scripts/authoritative_symbol_index.py",
+      "sha256": "746e7d5b1e681f0b0f0dfbac4f68ed0c70100b95c90c93ea450a6f804896b525",
+      "size_bytes": 1132
+    },
+    {
+      "path": "analyze-repository-intelligence/scripts/domain_tool.py",
+      "sha256": "19d78dbf1fac448e681d620105a0c05927479d7be905aa3c2ce0ae3669665413",
+      "size_bytes": 834
+    },
+    {
+      "path": "analyze-repository-intelligence/SKILL.md",
+      "sha256": "abee2ceeb4486f5fea39402fb7cd1f3223c2d09260c98bcecfc46384de282341",
+      "size_bytes": 1624
+    },
+    {
+      "path": "architecture-deepening-audit/agents/openai.yaml",
+      "sha256": "0e4859c664e0c88f42c2d943d23b67663ed1d18525817e3d459d0341cbdfcea8",
+      "size_bytes": 324
+    },
+    {
+      "path": "architecture-deepening-audit/SKILL.md",
+      "sha256": "4b3249edacd5f8e4a4d1b56a1895f2ac36a5a71eb30e8c7e3cdb5db543c9eea7",
+      "size_bytes": 764
+    },
+    {
+      "path": "audit-ai-runtime-assurance/agents/openai.yaml",
+      "sha256": "b333f231c4c09232fcb1c35f3a4e40f3f79f89e5a77b4e08290a9ea715513c55",
+      "size_bytes": 260
+    },
+    {
+      "path": "audit-ai-runtime-assurance/SKILL.md",
+      "sha256": "d18841059bd959631f0ec4bd1b5d19b941aee0f1400d23dd092cf35e21fc6313",
+      "size_bytes": 1542
+    },
+    {
+      "path": "audit-incomplete-implementations/agents/openai.yaml",
+      "sha256": "8638496f9ac263b3b68f09945193f6c7323daab55e16e12fe80eda92f290825e",
+      "size_bytes": 258
+    },
+    {
+      "path": "audit-incomplete-implementations/scripts/__pycache__/audit_incomplete.cpython-314.pyc",
+      "sha256": "c7ab16798622243c13fb7a8a7d23dcc272f6f122d3a79d66ad03010008df6382",
+      "size_bytes": 13049
+    },
+    {
+      "path": "audit-incomplete-implementations/scripts/__pycache__/reconcile_incomplete_findings.cpython-314.pyc",
+      "sha256": "a9d8d0cd87d0c714da60cfc0e52f2026833fe709f1f5a4ed16e89cca2b9490a7",
+      "size_bytes": 6248
+    },
+    {
+      "path": "audit-incomplete-implementations/scripts/audit_incomplete.py",
+      "sha256": "5a9df7ff74d8167fd06462cafee504c83421a0274eab9af75d56b5c48449ec46",
+      "size_bytes": 8341
+    },
+    {
+      "path": "audit-incomplete-implementations/scripts/reconcile_incomplete_findings.py",
+      "sha256": "c3e7f40cea1461e0e2a85a61f12ebcc51dce03045d3e0b3e51831ef4aaf295e9",
+      "size_bytes": 3442
+    },
+    {
+      "path": "audit-incomplete-implementations/SKILL.md",
+      "sha256": "220e3e23f737071eff9060e5b1fe9866c77759088791586e86d72b4c3b4693c7",
+      "size_bytes": 1801
+    },
+    {
+      "path": "audit-interactive-systems/agents/openai.yaml",
+      "sha256": "4fedfdb3bd6f5723863ec77ac7631082ade534714c81b15082d1c5d833c8539a",
+      "size_bytes": 257
+    },
+    {
+      "path": "audit-interactive-systems/references/audit-interactive-action-paths.json",
+      "sha256": "bf8819cca79639a162b71538d3c71e649b2b72436dbb4c5fc15283bdf3b926b1",
+      "size_bytes": 1756
+    },
+    {
+      "path": "audit-interactive-systems/SKILL.md",
+      "sha256": "a339d2f10640afcea386c95d61753221efbfce30e68be37004752c87ffaebec3",
+      "size_bytes": 1947
+    },
+    {
+      "path": "audit-source-capabilities/agents/openai.yaml",
+      "sha256": "3e93aa26ab9c306fbac92bc2f26ab7d404f2705fd0a6debdd665288b3a0768a8",
+      "size_bytes": 262
+    },
+    {
+      "path": "audit-source-capabilities/scripts/__pycache__/audit_source_capabilities.cpython-314.pyc",
+      "sha256": "860981092817788f5cdb8c9c71311ceb86a1ea16a88477563c1227e15f2bb741",
+      "size_bytes": 33270
+    },
+    {
+      "path": "audit-source-capabilities/scripts/__pycache__/build_manifest_recovery_ledger.cpython-314.pyc",
+      "sha256": "aea2f7251d5a0912eb613e6757702711300dc6031578a16f462fc422ccf42a54",
+      "size_bytes": 9777
+    },
+    {
+      "path": "audit-source-capabilities/scripts/__pycache__/certify_declared_suite_reconstruction.cpython-314.pyc",
+      "sha256": "72460a13bf83afdf7516bc0304cb5604aabbdb3066ab65b958a314a52d302ace",
+      "size_bytes": 14303
+    },
+    {
+      "path": "audit-source-capabilities/scripts/__pycache__/reconcile_classified_assets.cpython-314.pyc",
+      "sha256": "41de0e6dc61a3b3286ca74e20aae991b74c384ac190c5238a4d37062fe9f4591",
+      "size_bytes": 12158
+    },
+    {
+      "path": "audit-source-capabilities/scripts/__pycache__/reconcile_mechanism_records.cpython-314.pyc",
+      "sha256": "ddef1a2b9cbf6dddadce1f21992b88311a591351f4fd5dacf2f1d71933003810",
+      "size_bytes": 6077
+    },
+    {
+      "path": "audit-source-capabilities/scripts/__pycache__/reconcile_skill_identities.cpython-314.pyc",
+      "sha256": "3d9dcd8f79b72bd8edc07751597aa9f7ae8e717f7c692241700910e7caf0370d",
+      "size_bytes": 11394
+    },
+    {
+      "path": "audit-source-capabilities/scripts/__pycache__/reconcile_source_inventory.cpython-314.pyc",
+      "sha256": "d9eb7a59168c33f0c63c8c0cc261adbfd06b98fc08447f99fa8c428c32e7d1bc",
+      "size_bytes": 11993
+    },
+    {
+      "path": "audit-source-capabilities/scripts/__pycache__/reconcile_staged_capabilities.cpython-314.pyc",
+      "sha256": "611fbb447e55ea47edc40d2c12ea37794c831856a0e8b1c9f1558fb4286dd660",
+      "size_bytes": 11070
+    },
+    {
+      "path": "audit-source-capabilities/scripts/__pycache__/validate_planning_card_coverage.cpython-314.pyc",
+      "sha256": "117bc39955b174472d5d8a20ba50d5f31418628e8046307a9fd5c532eb08e9e6",
+      "size_bytes": 5634
+    },
+    {
+      "path": "audit-source-capabilities/scripts/audit_source_capabilities.py",
+      "sha256": "fabb7fa7e15534a65eea348652718b763f91c9f74b1b3cbbbf0a9236bf6dc073",
+      "size_bytes": 25334
+    },
+    {
+      "path": "audit-source-capabilities/scripts/build_declared_suite_reconstruction.py",
+      "sha256": "dfdd3095537b3676003c485042c0512a2f89d6181c7cf5d361567dc3a54e3474",
+      "size_bytes": 16658
+    },
+    {
+      "path": "audit-source-capabilities/scripts/build_manifest_recovery_ledger.py",
+      "sha256": "ccf61fac8839b9336aa9cb4b5708df62bba18fdefded9b05c5699a43eb8dc1ab",
+      "size_bytes": 7348
+    },
+    {
+      "path": "audit-source-capabilities/scripts/certify_declared_suite_reconstruction.py",
+      "sha256": "de930c046a3f4682cda5e10eb3f79a58500a58d04eeec02ef4888b2593ac7528",
+      "size_bytes": 10586
+    },
+    {
+      "path": "audit-source-capabilities/scripts/reconcile_classified_assets.py",
+      "sha256": "ec5890bab006433fd8fef44005ca0bd323d68e9ace70fb5405454bf2a82e3bf0",
+      "size_bytes": 7605
+    },
+    {
+      "path": "audit-source-capabilities/scripts/reconcile_mechanism_records.py",
+      "sha256": "b7f105c9c0662fafb619da185b10e12e66f97572a3fdcfc59f80e34c4fba894f",
+      "size_bytes": 3433
+    },
+    {
+      "path": "audit-source-capabilities/scripts/reconcile_skill_identities.py",
+      "sha256": "9732f74fe65c5519d690708421dc7c1c2ed577cb774ac58b5a18a9bc284a7dea",
+      "size_bytes": 6418
+    },
+    {
+      "path": "audit-source-capabilities/scripts/reconcile_source_inventory.py",
+      "sha256": "33d4eba261e46a64f0b9114e5c0b6296721ba54910ad8d2b03e14a9f2c4e99a8",
+      "size_bytes": 7727
+    },
+    {
+      "path": "audit-source-capabilities/scripts/reconcile_staged_capabilities.py",
+      "sha256": "6477235ee7c24ae736a8b819f5eb76a94fe31fda4e931cf9f4d9a099229b982d",
+      "size_bytes": 6615
+    },
+    {
+      "path": "audit-source-capabilities/scripts/validate_planning_card_coverage.py",
+      "sha256": "4a4b675a7a062fad71ea48f033ffdc8b5e1516ea1f26bb359a2602c1bc3c834b",
+      "size_bytes": 3120
+    },
+    {
+      "path": "audit-source-capabilities/SKILL.md",
+      "sha256": "1c97d9ecc6b2c657609c5f1df7d8510b885332073d72ad6e21b1f82f70dba286",
+      "size_bytes": 5208
+    },
+    {
+      "path": "automate-supabase-with-n8n/agents/openai.yaml",
+      "sha256": "203449e2276b0c2d19087dd33cb2a2cf89c5891cd944f5caba1b404b9cc7cc25",
+      "size_bytes": 344
+    },
+    {
+      "path": "automate-supabase-with-n8n/SKILL.md",
+      "sha256": "27eb888ff5fab8bdc992ee02b47f50306117f7ea0adc5519c3588b76717931ee",
+      "size_bytes": 2986
+    },
+    {
+      "path": "backup-deploy-recover-supabase/agents/openai.yaml",
+      "sha256": "77b7e53c7a4dd823c8654e0d372130e055c0137ec3b47def6c26751320c604e2",
+      "size_bytes": 348
+    },
+    {
+      "path": "backup-deploy-recover-supabase/SKILL.md",
+      "sha256": "ba63e7073a36ff2924097c0bd5073250975d5ced01f0e105cdab67dd6748fd17",
+      "size_bytes": 2932
+    },
+    {
+      "path": "backup-upgrade-restore-n8n/agents/openai.yaml",
+      "sha256": "9465e313853220f05c794c28284303bbca692bf1ff6249197152f63299c9cd69",
+      "size_bytes": 316
+    },
+    {
+      "path": "backup-upgrade-restore-n8n/SKILL.md",
+      "sha256": "8e3ebcf27c0aeb717b4ebf8e2791cb90a789128e63fd2484759e44a3b7c622e3",
+      "size_bytes": 2817
+    },
+    {
+      "path": "behavior-to-code-mapper/agents/openai.yaml",
+      "sha256": "cb0be51f96bf0811af65ec1d54a51e099c46b295a94a5a32767b75beabce1a4e",
+      "size_bytes": 212
+    },
+    {
+      "path": "behavior-to-code-mapper/SKILL.md",
+      "sha256": "5accb85afc143ea3e5f0ad732ac4c93cc39e37d49a5523669f04d9586f2554f5",
+      "size_bytes": 2298
+    },
+    {
+      "path": "benchmark-and-route-agents/agents/openai.yaml",
+      "sha256": "4c67a4e90a0099b3989ddbbc80be81bdc38d66067064b8ca857e9ce21e6f8819",
+      "size_bytes": 268
+    },
+    {
+      "path": "benchmark-and-route-agents/references/benchmark-agent-regressions.json",
+      "sha256": "a94c85319cab45f0a1ecb34afd9839f922ba2a63cafc885985d60e5249a9ad6d",
+      "size_bytes": 1716
+    },
+    {
+      "path": "benchmark-and-route-agents/references/govern-model-routing-economics.json",
+      "sha256": "5b80d39acfdd14d87ca5ba598e72636854b31ce6843405c9f727041026adb826",
+      "size_bytes": 1646
+    },
+    {
+      "path": "benchmark-and-route-agents/SKILL.md",
+      "sha256": "2b92b657c421e1cd56ddde71013151c7751d7f9ec662c98ee325837d913ef79e",
+      "size_bytes": 2615
+    },
+    {
+      "path": "benchmark-domain-adapter/agents/openai.yaml",
+      "sha256": "36a36d222616d9e6961ca95f68a87ee92ad64ebc7bb6f1b4dd6a2fe979df4a98",
+      "size_bytes": 215
+    },
+    {
+      "path": "benchmark-domain-adapter/SKILL.md",
+      "sha256": "d09d5a78d6505caa56f1c412e38af37228e7c7e1940e79ebe092a638e985db1a",
+      "size_bytes": 2338
+    },
+    {
+      "path": "bounded-workflow-topology-selector/agents/openai.yaml",
+      "sha256": "479c5e11fe6bf18ca027dc609af7a30c875100f3fcf7e00be53d9951445a0de0",
+      "size_bytes": 245
+    },
+    {
+      "path": "bounded-workflow-topology-selector/SKILL.md",
+      "sha256": "4481a54785bcb1af84202092e177ca4db29575e85c759e6a481798e3283570a4",
+      "size_bytes": 2154
+    },
+    {
+      "path": "build-n8n-ai-workflows/agents/openai.yaml",
+      "sha256": "2c878e882727f89da9fb228584d99b63a5314f5ce720a45f903ba74fe30bb995",
+      "size_bytes": 333
+    },
+    {
+      "path": "build-n8n-ai-workflows/SKILL.md",
+      "sha256": "da60dadc796cd2d23129a3d6d9a1bc91e2ff7b9007146025d3dfc522eb602aab",
+      "size_bytes": 2911
+    },
+    {
+      "path": "build-n8n-custom-nodes/agents/openai.yaml",
+      "sha256": "2daa2dd3a934b3df8d954420d9f94da97aaf7cd00f2f507147674f6c4ed965eb",
+      "size_bytes": 328
+    },
+    {
+      "path": "build-n8n-custom-nodes/SKILL.md",
+      "sha256": "f22ee7ccd43b49113ae2087b7212edebaff09e3a0d4ec01612e1a76ca05e3caa",
+      "size_bytes": 2838
+    },
+    {
+      "path": "build-n8n-supabase-rag/agents/openai.yaml",
+      "sha256": "3e7d98cc60bc2546823dda07781dea3db92558421cbd9aa73f224aaedae9e1b8",
+      "size_bytes": 276
+    },
+    {
+      "path": "build-n8n-supabase-rag/SKILL.md",
+      "sha256": "dbe7e95583579da5f3b7c7343dd2d8f82b96da75cfe6f9dddd63b96c687bd878",
+      "size_bytes": 2937
+    },
+    {
+      "path": "build-supabase-edge-functions/agents/openai.yaml",
+      "sha256": "87d423cb5d1dbe01529d1a631c6a793e94389da76dab75f9925288dc4a31ff53",
+      "size_bytes": 339
+    },
+    {
+      "path": "build-supabase-edge-functions/SKILL.md",
+      "sha256": "25ba3abf95f631f7f495bffd18eb989d10aace92dd6607d71ca3148f1a48ab04",
+      "size_bytes": 2917
+    },
+    {
+      "path": "candidate-memory-promoter/agents/openai.yaml",
+      "sha256": "31f19c4305fc1201f4371fb25b35b6c22ab8c0853a6450954279a91434a2e570",
+      "size_bytes": 218
+    },
+    {
+      "path": "candidate-memory-promoter/SKILL.md",
+      "sha256": "f5296d359fd40ef7f2b45a4e5d6cba92032e5bff91e8e28435b63e2d9caa0b05",
+      "size_bytes": 2469
+    },
+    {
+      "path": "certify-reversible-validation/agents/openai.yaml",
+      "sha256": "f2508c878be32e176d0a1f268125e1e961eedd203d00de5e24aaf81aab11ef19",
+      "size_bytes": 250
+    },
+    {
+      "path": "certify-reversible-validation/SKILL.md",
+      "sha256": "9503b0a9b26cad46ed756614d709eed63920f017e13d44f931a09637591509fb",
+      "size_bytes": 1288
+    },
+    {
+      "path": "certify-skeptical-engineering/agents/openai.yaml",
+      "sha256": "402fd5e04e59409dd2fba3b87eb31e4d5793851eb0e9dad579d240076ccba543",
+      "size_bytes": 286
+    },
+    {
+      "path": "certify-skeptical-engineering/SKILL.md",
+      "sha256": "4ed66c6cb86bd3b0d658420a8de323e9f1ea26f2c240bf53cd9b3ac536591451",
+      "size_bytes": 1479
+    },
+    {
+      "path": "commission-evidence-first-project/agents/openai.yaml",
+      "sha256": "9ef6fad1c7f0505484f81105f68b3ba9f1b94006ee1a355fcfef987f8c5f8f3c",
+      "size_bytes": 254
+    },
+    {
+      "path": "commission-evidence-first-project/SKILL.md",
+      "sha256": "b8d815891db4740a8d5a28c420f13cedf857418a904093ea987ad5f8e1bee73d",
+      "size_bytes": 1344
+    },
+    {
+      "path": "commission-project/agents/openai.yaml",
+      "sha256": "f521b1993c5d51e609ce7f53e4c2db72e5dbf9aaf5f9b0061119c3e0ceebc7b7",
+      "size_bytes": 222
+    },
+    {
+      "path": "commission-project/references/scaffold-contract.md",
+      "sha256": "1cd6e2f2a23346652de629b918accf9fb24e1ce884acaea84b28052b42f97e9f",
+      "size_bytes": 1826
+    },
+    {
+      "path": "commission-project/SKILL.md",
+      "sha256": "26cc3a21835c8e5fd52610ad3b85cf50467588ef0fc8cc4789972b38b79b1b53",
+      "size_bytes": 1937
+    },
+    {
+      "path": "configure-n8n/agents/openai.yaml",
+      "sha256": "ec1852d42447a5469bd6c3a6bf55cbc88f1a424a1a04d15f363ada3eaea86d67",
+      "size_bytes": 310
+    },
+    {
+      "path": "configure-n8n/SKILL.md",
+      "sha256": "88358555f9da1f345d96191ab50ada90b7e84f68fb244ba9080ea6b35fbb9cbe",
+      "size_bytes": 2843
+    },
+    {
+      "path": "connect-n8n-to-supabase/agents/openai.yaml",
+      "sha256": "6fcd3de47629b0d0d701a9f2db8e142baf1758168a2f43fc16162bb718fb7b48",
+      "size_bytes": 347
+    },
+    {
+      "path": "connect-n8n-to-supabase/SKILL.md",
+      "sha256": "870fdfa310dc54a8e43c7fc9322810f0c2581291df8cb06036624b0a3cce1d61",
+      "size_bytes": 3053
+    },
+    {
+      "path": "context-compactor/agents/openai.yaml",
+      "sha256": "f0872ae2a9e2e9d306406a892b86715aa8f57c244f8b730c8dcab0fa1f34d98b",
+      "size_bytes": 270
+    },
+    {
+      "path": "context-compactor/SKILL.md",
+      "sha256": "2c5ecea8627ebfd6bf4b2024ad1c96b8a6e5a69c0b61e89a0b4fc947fbad843b",
+      "size_bytes": 1109
+    },
+    {
+      "path": "context-handoff-package/agents/openai.yaml",
+      "sha256": "7731760a202c3629c24b528a4fe76aa989e0a4ce4bfb383a09279eea72ee9690",
+      "size_bytes": 328
+    },
+    {
+      "path": "context-handoff-package/SKILL.md",
+      "sha256": "9b33e508ea92d590b854f69134596e53febe87fe086e34a1a06f5650cb9658b4",
+      "size_bytes": 704
+    },
+    {
+      "path": "corpus-to-skill-tree-compiler/agents/openai.yaml",
+      "sha256": "c3f66ccfced692d0b5ec523753d770da810b6dfb5831cf761e659d32bac66f9a",
+      "size_bytes": 230
+    },
+    {
+      "path": "corpus-to-skill-tree-compiler/SKILL.md",
+      "sha256": "8dc0bedfb2dc97319ff2d5a8048a2cee8bd61ead2bb2baaa522a0fad5fd3d824",
+      "size_bytes": 2348
+    },
+    {
+      "path": "cross-paper-mechanism-fuser/agents/openai.yaml",
+      "sha256": "b149552a8bcfabbd38ff13c443b6fd5f22285d3d4c5b02217d210088f60fc6e9",
+      "size_bytes": 224
+    },
+    {
+      "path": "cross-paper-mechanism-fuser/SKILL.md",
+      "sha256": "2fa7268a2870e550c02103ab0bf38b583f945bec75c4b5a3c9a4a3a6cf3187b6",
+      "size_bytes": 2437
+    },
+    {
+      "path": "data-sort-dry-run-picker/agents/openai.yaml",
+      "sha256": "e4c42de9965bed2b6aee3dbb706a21464206ffdf5e8d7c01cef736240c627647",
+      "size_bytes": 227
+    },
+    {
+      "path": "data-sort-dry-run-picker/references/sorting-algorithms.md",
+      "sha256": "3df82f726e13e5eb7f30094a50fae6f338245f4983947ac777529bb23613a398",
+      "size_bytes": 4282
+    },
+    {
+      "path": "data-sort-dry-run-picker/scripts/__pycache__/sort_picker.cpython-314.pyc",
+      "sha256": "61549a031e472088640d08e43f6751876e9d56ff946b120514fd6f6720066a5f",
+      "size_bytes": 30299
+    },
+    {
+      "path": "data-sort-dry-run-picker/scripts/sort_picker.py",
+      "sha256": "85828460d8b5a08ba9fc7026249e1155f0896bee0a2b1d22b6ff30ac9c09ecd5",
+      "size_bytes": 16130
+    },
+    {
+      "path": "data-sort-dry-run-picker/SKILL.md",
+      "sha256": "5e5453117178f57ea88a4c51aea18349d9c3530c390ae953605d8e125a50ab41",
+      "size_bytes": 3015
+    },
+    {
+      "path": "decision-wayfinding/agents/openai.yaml",
+      "sha256": "fd469e1890c118c10b691a197b63c599c44826fb27ea147656e18c1fccb92ba4",
+      "size_bytes": 304
+    },
+    {
+      "path": "decision-wayfinding/SKILL.md",
+      "sha256": "fe397598cf59a97e5edffdffb72bfb87b085d819630d1f1275366a1c9b09b3ec",
+      "size_bytes": 1234
+    },
+    {
+      "path": "deep-module-design/agents/openai.yaml",
+      "sha256": "9b60ab5f4d921f4a139b71922a61038642dce4875f5cf2ebe5dca6e3c4bd768f",
+      "size_bytes": 286
+    },
+    {
+      "path": "deep-module-design/SKILL.md",
+      "sha256": "9464e69f622c924e2d08e4813439435d4e05f99a6dc06d8c2dd6409c5a573b32",
+      "size_bytes": 1145
+    },
+    {
+      "path": "dependency-impact-tracer/agents/openai.yaml",
+      "sha256": "dba32d3e142cba82d0e10550ca275a52f33e00f9e551f1a2dc5e6a1f642ba0ba",
+      "size_bytes": 215
+    },
+    {
+      "path": "dependency-impact-tracer/SKILL.md",
+      "sha256": "ed588fbe233a0d4efe300fd0403f4e706544326e55930864097aea480fa54a7a",
+      "size_bytes": 2574
+    },
+    {
+      "path": "deploy-isolated-model-worker/agents/openai.yaml",
+      "sha256": "92b7cf101009d63249043c2d5d2524ff768ce788074e8b3019ad00dd591dbefb",
+      "size_bytes": 249
+    },
+    {
+      "path": "deploy-isolated-model-worker/SKILL.md",
+      "sha256": "936a84618047127e17ce58c73ca1d6e00f4ea001254edd4051323401a0da8927",
+      "size_bytes": 1398
+    },
+    {
+      "path": "deploy-n8n-docker/agents/openai.yaml",
+      "sha256": "d3baa3e1b11469f0396e8195347aaa7a75156272d8c1d1d1b1dd7b6c1a5bf9c2",
+      "size_bytes": 312
+    },
+    {
+      "path": "deploy-n8n-docker/SKILL.md",
+      "sha256": "65d98e5a78333ba2c993c9f9047c5899ee2866579827ac1252c624bf1b2fa464",
+      "size_bytes": 2909
+    },
+    {
+      "path": "design-build-n8n-workflows/agents/openai.yaml",
+      "sha256": "6fb505b5fbc83241300006978aee40f042c87c4655d77837521a8b2e4e0f8f52",
+      "size_bytes": 330
+    },
+    {
+      "path": "design-build-n8n-workflows/SKILL.md",
+      "sha256": "7596197bc84e03c98e5455ddacca706462db180930b56c9198126f275b7b5399",
+      "size_bytes": 2885
+    },
+    {
+      "path": "design-it-twice/agents/openai.yaml",
+      "sha256": "d81deb189c2e2098d37e797a41250997a513cff94e266aabafcd49ea13185bc0",
+      "size_bytes": 286
+    },
+    {
+      "path": "design-it-twice/SKILL.md",
+      "sha256": "15fa7a60105052643706326f55f58ae325cf19850e92aff3cfaa8f5307a9f3ec",
+      "size_bytes": 833
+    },
+    {
+      "path": "design-n8n-supabase-reliability/agents/openai.yaml",
+      "sha256": "6a3d899cb14f741a9fe1697fddad75b2146dbba5797870f321f2b60ba3866e58",
+      "size_bytes": 350
+    },
+    {
+      "path": "design-n8n-supabase-reliability/SKILL.md",
+      "sha256": "3c91e7463bb18e4881b7ab92f95b40a9026d8248edf5194cd052e9725f8f05c4",
+      "size_bytes": 3009
+    },
+    {
+      "path": "design-n8n-supabase-security-boundaries/agents/openai.yaml",
+      "sha256": "9d7b5bb802f99c637c11f77a777867e01cc5ef509b66582f77f09481b0dd1f2f",
+      "size_bytes": 359
+    },
+    {
+      "path": "design-n8n-supabase-security-boundaries/SKILL.md",
+      "sha256": "f695d58b98e63c1ee9dc713073ea95494bcc03acb1a63caff9c5258f611127cd",
+      "size_bytes": 3051
+    },
+    {
+      "path": "design-supabase-postgres/agents/openai.yaml",
+      "sha256": "88f3c7d41c1d7ca3c0614b399b61b8ae2b50849978aeea9da5096e13c2776b8e",
+      "size_bytes": 315
+    },
+    {
+      "path": "design-supabase-postgres/SKILL.md",
+      "sha256": "0d081972a022382d9ae18d74eb87ed614574f5707528ab582af915988468d070",
+      "size_bytes": 2878
+    },
+    {
+      "path": "develop-n8n-monorepo/agents/openai.yaml",
+      "sha256": "0d3e55e0f2c360f888fcc511b88bcf51af8b4fd75f7dfe1f12313476feb942dd",
+      "size_bytes": 326
+    },
+    {
+      "path": "develop-n8n-monorepo/SKILL.md",
+      "sha256": "5a5de52f4427c3c40fe8c5cb6459933ec2e1a61af78156d753c66dcf33d85f3b",
+      "size_bytes": 2955
+    },
+    {
+      "path": "develop-supabase-locally/agents/openai.yaml",
+      "sha256": "367bb345c16c9dd0703a02f2f824bc050741cebb6ca978534562a138d5d4c3f3",
+      "size_bytes": 310
+    },
+    {
+      "path": "develop-supabase-locally/SKILL.md",
+      "sha256": "a39628d128198f8a104601e2df2b1be7035a400a7da13cba33debabe6e1bfdcd",
+      "size_bytes": 2813
+    },
+    {
+      "path": "diagnose-python-repair/agents/openai.yaml",
+      "sha256": "79f66a3c7287cbfad4d05dce196a03e2306aa6af6761a09cc865ea8a237e520a",
+      "size_bytes": 128
+    },
+    {
+      "path": "diagnose-python-repair/references/api-async-retries.md",
+      "sha256": "4d8f1ab176c1b9544356cd64d86c246f7ad263381322468f6e9f46ca59e095fc",
+      "size_bytes": 947
+    },
+    {
+      "path": "diagnose-python-repair/references/runtime-validation.md",
+      "sha256": "543f7174beb8672e77674cf7248a5797f6c8ad38a4cb5814fdf9d576b503bb30",
+      "size_bytes": 1123
+    },
+    {
+      "path": "diagnose-python-repair/references/security-data.md",
+      "sha256": "88684ff26e8b13ca192edeb6a42b48de55740aa93e861c75239586a89f20746f",
+      "size_bytes": 999
+    },
+    {
+      "path": "diagnose-python-repair/SKILL.md",
+      "sha256": "ea007c2ecce3c4f3b00cba4d4d0856b1584d6c53853f258104ba6cc4d2ef10f9",
+      "size_bytes": 1184
+    },
+    {
+      "path": "discover-environment-safely/agents/openai.yaml",
+      "sha256": "de4ee8b666ad3e4b437c098d7a9b5f2f1ed6b5456f278d8bf4ef4e87ff98241a",
+      "size_bytes": 240
+    },
+    {
+      "path": "discover-environment-safely/SKILL.md",
+      "sha256": "0b4895410f80dfddefdf8eed60ca3f1af72da0b68b162db951f952e819aeb503",
+      "size_bytes": 1213
+    },
+    {
+      "path": "domain-language-maintenance/agents/openai.yaml",
+      "sha256": "c6acdc8868421f073984f97b9f8215e77efb0bd840fc0400c28586557cf16451",
+      "size_bytes": 314
+    },
+    {
+      "path": "domain-language-maintenance/SKILL.md",
+      "sha256": "8b727330d295fb266b8fa1d1e389a14956e1ee126bd0edcb01800aff0d8163ba",
+      "size_bytes": 1109
+    },
+    {
+      "path": "dual-axis-code-review/agents/openai.yaml",
+      "sha256": "ce3c9c9d5bd09187f6f12044af714e2166e1f4e203236140682ec37d4f45f484",
+      "size_bytes": 312
+    },
+    {
+      "path": "dual-axis-code-review/SKILL.md",
+      "sha256": "b7c507bcf4008e3d1a4d3991d952a4d79ed095fc1e4474cc66e9491d936248c8",
+      "size_bytes": 712
+    },
+    {
+      "path": "dynamic-service-discovery/agents/openai.yaml",
+      "sha256": "aafe2bd94e9ec339d111f1ce83d05f6afc2ea288e806dcccc96fb61ef58286db",
+      "size_bytes": 237
+    },
+    {
+      "path": "dynamic-service-discovery/scripts/__pycache__/audit_service_discovery.cpython-314.pyc",
+      "sha256": "72d74e586193b9a59bf33a01d3e8b3e17d06cfbe016cb5f34a42211f280d0f46",
+      "size_bytes": 4621
+    },
+    {
+      "path": "dynamic-service-discovery/scripts/audit_service_discovery.py",
+      "sha256": "0cdd729e93b3140e8736c480aa57bf6354c399f552a84c11177e2d550b6aaf58",
+      "size_bytes": 2668
+    },
+    {
+      "path": "dynamic-service-discovery/SKILL.md",
+      "sha256": "d14b5999d4836c5c25d38f17e06c505539f74c230fb5ca2bf423612b77483487",
+      "size_bytes": 1981
+    },
+    {
+      "path": "dynamic-skill-detonator/agents/openai.yaml",
+      "sha256": "7d667a63e3431e6734fa2126668600e3effda7ab9fb9e5575ab98d2e92f5ac88",
+      "size_bytes": 212
+    },
+    {
+      "path": "dynamic-skill-detonator/SKILL.md",
+      "sha256": "a127f68bcfdc25065088b98a424b3384f142d4f59036f6d23278bda91c0e01e9",
+      "size_bytes": 2265
+    },
+    {
+      "path": "enforce-governance-controls/agents/openai.yaml",
+      "sha256": "5f80ca317a7153a39139cdd4c549e46c7e58afe26bac8f392ef6b4d63325dc47",
+      "size_bytes": 134
+    },
+    {
+      "path": "enforce-governance-controls/references/authorization-visibility.md",
+      "sha256": "84be4a202b37e6de6830e0ca4ba0136e0d08bcf0be92c460d354b21beacd70a5",
+      "size_bytes": 555
+    },
+    {
+      "path": "enforce-governance-controls/references/containment-cleanup.md",
+      "sha256": "79750ad21a67b4b98e7cbbda36398950f3d134267f7f500db72ed4bf9c367949",
+      "size_bytes": 678
+    },
+    {
+      "path": "enforce-governance-controls/references/lifecycle-evidence.md",
+      "sha256": "7ad5ab05454668728181ffc8afd8164a9b672d9cf31a75f9b276ec62df79c710",
+      "size_bytes": 603
+    },
+    {
+      "path": "enforce-governance-controls/SKILL.md",
+      "sha256": "bd4deaf4923623c8b1411995a824c4073f6be5825a6a1a687aa82121eeb02784",
+      "size_bytes": 1130
+    },
+    {
+      "path": "enforce-source-import-boundaries/agents/openai.yaml",
+      "sha256": "0d065f3f6682676091290aca6f33656acd4b118f7fd544516461a745b7a2efac",
+      "size_bytes": 259
+    },
+    {
+      "path": "enforce-source-import-boundaries/scripts/__pycache__/audit_import_boundaries.cpython-314.pyc",
+      "sha256": "e775383bc5220c230df89a0d12d15c23e08f6d56c7e464eaf13d9d6c3846ae00",
+      "size_bytes": 8534
+    },
+    {
+      "path": "enforce-source-import-boundaries/scripts/audit_import_boundaries.py",
+      "sha256": "8a4c66fe6baee5a038eaca720f0e4131d5223a4961b4ea3d3e5fa896319fc49a",
+      "size_bytes": 4732
+    },
+    {
+      "path": "enforce-source-import-boundaries/SKILL.md",
+      "sha256": "70a2ffba4a09e0266f32752de47cc20562021ff7c60118fb77e75ed5e9bd9169",
+      "size_bytes": 1270
+    },
+    {
+      "path": "engineer-hybrid-retrieval/agents/openai.yaml",
+      "sha256": "5590e8bbce1b2110ee01489c5254ef3c74eef88e52bb3868841a148b6d7a629f",
+      "size_bytes": 242
+    },
+    {
+      "path": "engineer-hybrid-retrieval/SKILL.md",
+      "sha256": "a4b0eb434dc9fd552d9c54838bd9e0a70e0424f1aa1b9f04654ab97bd3892ad8",
+      "size_bytes": 1484
+    },
+    {
+      "path": "engineer-verification-lab/agents/openai.yaml",
+      "sha256": "4b7146101ea254cf51897a0146b41e6d43f47598aba1a0f8af8380d69f76a368",
+      "size_bytes": 232
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/agent-trajectory-evaluator.json",
+      "sha256": "bf64309a082524e0382bb5ffe777a710cb235e1c59cfdefc33ee2ae51e050853",
+      "size_bytes": 9363
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/benchmark-contamination-auditor.json",
+      "sha256": "7e14e8822ec2dab19e387d218391386b6f161ef1d4f2298d0acb8d8ad8524746",
+      "size_bytes": 9378
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/chaos-scenario-designer.json",
+      "sha256": "d61d1cde012bdbec70d54fa1947b27348d9000442eb90105e68293590b26ba0d",
+      "size_bytes": 9295
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/contract-test-designer.json",
+      "sha256": "a3be70ea42faa9c9d47480b67e8c221c888a7bd9a84e9c8af90fa2b027d63579",
+      "size_bytes": 9323
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/differential-test-designer.json",
+      "sha256": "27a51b96b390991cb34c4b8f9fe77f2e526839a64ec3d6303686043a11389a7a",
+      "size_bytes": 9381
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/evaluation-design.json",
+      "sha256": "2a92504419c37ed2f20576be317c3974c4994ecc3da2de87bf8f710cc07aa943",
+      "size_bytes": 9256
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/fault-injection-operator.json",
+      "sha256": "b3362dc2b430575ebeb236e7d5e9cfd875907d583dbc200359c7cabb5ed0ed15",
+      "size_bytes": 9302
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/flaky-test-diagnoser.json",
+      "sha256": "3d76d2ba0120adbdfcbc74ce9b07b40dd3ac5a1fd67f17919cdfec7af4048ae2",
+      "size_bytes": 9323
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/fuzz-test-operator.json",
+      "sha256": "ef077acce7ebbb068d8505fb0ba1d6b87cd74cce9ca1d53821f3e5e91a9a0398",
+      "size_bytes": 9388
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/golden-master-manager.json",
+      "sha256": "ddc50c981cd6f78ef062f8d79effad6a30bd3c7031aa092326c705b079c0fdf4",
+      "size_bytes": 9279
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/hidden-test-manager.json",
+      "sha256": "44b5e5ae0bf16bef1a3f6ca2c406a7d8a8be51edf2ebf5cfad88625e25679314",
+      "size_bytes": 9316
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/integration-test-designer.json",
+      "sha256": "105ee2e577814a6e21ca345d7ab74b83fd7584ce17be10fdeb476cf2fe91b5f8",
+      "size_bytes": 9377
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/llm-judge-calibrator.json",
+      "sha256": "616de82dc307418ffc0ab55061afd79c3206fc16f402024c8462e09f3636debc",
+      "size_bytes": 9288
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/metamorphic-test-designer.json",
+      "sha256": "884b7728e86257f217e543b953c339dfc5eac766dc66b6c02a1559aef61fc17c",
+      "size_bytes": 9380
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/mutation-test-operator.json",
+      "sha256": "fe348700bfbfab5ff98aa5efc4e7bad4fe095ec7fc125ad7e0f24018654cad38",
+      "size_bytes": 9357
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/performance-regression-tester.json",
+      "sha256": "9027f51f71e0be376f82a1f739e2ef2876538e7af0acd89a006ac317d4e026a5",
+      "size_bytes": 9381
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/property-based-test-designer.json",
+      "sha256": "b86c390a944424cc79c0427c9bfbbf6fd03839344ddd94cf4366081988849394",
+      "size_bytes": 9333
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/regression-suite-curator.json",
+      "sha256": "108082bbc63c3f21ed51f2a9681b8c78b2baeffc7286e7670156c84dba273c58",
+      "size_bytes": 9289
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/test-quality-auditor.json",
+      "sha256": "c4c71fa2146c5e0ef3a812a7940f8aa16e96d1c9af1d984f117f5b666f9b9bec",
+      "size_bytes": 9335
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities/unit-test-designer.json",
+      "sha256": "6bc24b9dbddf930739c0978e643c413e7160f496cada8b504585b68e91c0de86",
+      "size_bytes": 9259
+    },
+    {
+      "path": "engineer-verification-lab/references/capabilities-index.json",
+      "sha256": "d714cc9f3bc7b577a18815af2e00438f48ea82bc64df3a75d185ddd596cfcac2",
+      "size_bytes": 7478
+    },
+    {
+      "path": "engineer-verification-lab/references/capability-contracts.json",
+      "sha256": "a0ab70100ccfae6074dedd950bed580e8282cf5ddc65fa3100f75d74f4bd588b",
+      "size_bytes": 202206
+    },
+    {
+      "path": "engineer-verification-lab/references/script-contracts.json",
+      "sha256": "5ec547a231bc6fe2f0a3f4fec96c9f3ff8f56017ba8473224bec8be2ae5eb05b",
+      "size_bytes": 16975
+    },
+    {
+      "path": "engineer-verification-lab/references/scripts/benchmark-contamination-scan.json",
+      "sha256": "37f54d20b42cabd648633e72613b003dc14cca66e7b23c33e34e4b6d5abe4bb9",
+      "size_bytes": 1780
+    },
+    {
+      "path": "engineer-verification-lab/references/scripts/differential-tester.json",
+      "sha256": "175b18ced3f4806672e48a925771101eb99de01e1863b490eb4d73907a4a4efc",
+      "size_bytes": 1744
+    },
+    {
+      "path": "engineer-verification-lab/references/scripts/formula-property-tests.json",
+      "sha256": "973d9b179ed27e5079afa9b5e878d3fa90a71b20f6ff25e824584be9c761e41c",
+      "size_bytes": 1756
+    },
+    {
+      "path": "engineer-verification-lab/references/scripts/fuzz-json-runner.json",
+      "sha256": "76a288d54c8c27a38f5cb168baf2fe15812eecc2f3dd398ffb8a9e869a4fcf5d",
+      "size_bytes": 1732
+    },
+    {
+      "path": "engineer-verification-lab/references/scripts/judge-calibrator.json",
+      "sha256": "6af7b474fd8282a3c7296928d0c72d4a63533095ecb41eae5e839efcd4f7c4da",
+      "size_bytes": 1732
+    },
+    {
+      "path": "engineer-verification-lab/references/scripts/metamorphic-runner.json",
+      "sha256": "627b9ce6f28db9788b468d78f0a6421a6fea7f9fbe0ac3b4334cd4288603fbdf",
+      "size_bytes": 1740
+    },
+    {
+      "path": "engineer-verification-lab/references/scripts/mutation-operator.json",
+      "sha256": "f595cd481f658abad3b44f2b099c9426b5e71be69b0e0a4bdf54b9bb23aadb46",
+      "size_bytes": 1736
+    },
+    {
+      "path": "engineer-verification-lab/references/scripts/scenario-runner.json",
+      "sha256": "08af3494260c9f3020d0180a0f99ddd30b43efa8dd2f90d7a76ef6f8e5f8295a",
+      "size_bytes": 1695
+    },
+    {
+      "path": "engineer-verification-lab/references/scripts/trajectory-scorer.json",
+      "sha256": "2adf332210199799b8d9d462dcd69c5cd5cfea77bc53a3bc71a1ef3ebbff846f",
+      "size_bytes": 1736
+    },
+    {
+      "path": "engineer-verification-lab/references/scripts-index.json",
+      "sha256": "d424ee4640475c1adcfd710178a7b6f65745c4c6db34886d335c0db9b297bbde",
+      "size_bytes": 3240
+    },
+    {
+      "path": "engineer-verification-lab/scripts/authoritative_benchmark_contamination_scan.py",
+      "sha256": "96b59d313a3198dc49518812a329bfdbfba0d3baaf2bd83fd00351a671275301",
+      "size_bytes": 1202
+    },
+    {
+      "path": "engineer-verification-lab/scripts/authoritative_differential_tester.py",
+      "sha256": "9f226adb38e0470cfdbafe769a8789866032ffbab6d7492ae636db8170433f06",
+      "size_bytes": 1099
+    },
+    {
+      "path": "engineer-verification-lab/scripts/authoritative_formula_property_tests.py",
+      "sha256": "b56563bd6c790995c51dae38e1c245cfa4de30b9ca67bd98f46ed14952eb2d97",
+      "size_bytes": 1429
+    },
+    {
+      "path": "engineer-verification-lab/scripts/authoritative_fuzz_json_runner.py",
+      "sha256": "3a4bfe77cb23789dcf3fbb1a685e7240fde6f207993bb0c82d8ee4cf507c1d87",
+      "size_bytes": 1312
+    },
+    {
+      "path": "engineer-verification-lab/scripts/authoritative_judge_calibrator.py",
+      "sha256": "15d6c6edfe24f91294a39936d9d5922a8984af90ff6c4898bd4fa0a41f7d046e",
+      "size_bytes": 1153
+    },
+    {
+      "path": "engineer-verification-lab/scripts/authoritative_metamorphic_runner.py",
+      "sha256": "04a3d9452c65405bfd07a13dbc046dab6bf0f4faa72dcab994e8ac0e20142123",
+      "size_bytes": 1064
+    },
+    {
+      "path": "engineer-verification-lab/scripts/authoritative_mutation_operator.py",
+      "sha256": "5723233514a82fa336f4c0edafbe8ea5407649a859423a620023ec39c2b63bdf",
+      "size_bytes": 1274
+    },
+    {
+      "path": "engineer-verification-lab/scripts/authoritative_trajectory_scorer.py",
+      "sha256": "a21a78ec187ff68faa2958e7fa738c62232c62aa1ffd1703416a039ba56d9748",
+      "size_bytes": 1150
+    },
+    {
+      "path": "engineer-verification-lab/scripts/domain_tool.py",
+      "sha256": "19d78dbf1fac448e681d620105a0c05927479d7be905aa3c2ce0ae3669665413",
+      "size_bytes": 834
+    },
+    {
+      "path": "engineer-verification-lab/SKILL.md",
+      "sha256": "dfa4d00acfe7f08912ee652eda9bc06f4befa5b43d4a5bc92cb1392d47be4b79",
+      "size_bytes": 2427
+    },
+    {
+      "path": "evaluate-n8n-fit/agents/openai.yaml",
+      "sha256": "b56465d799e7f919d23eda4f2d78c0ed9cacc8cb75d977215ddaa35313a576be",
+      "size_bytes": 300
+    },
+    {
+      "path": "evaluate-n8n-fit/SKILL.md",
+      "sha256": "681a27938f1bf8413bd8d17585aea577a206259794856ba312e90ccca69c1825",
+      "size_bytes": 2845
+    },
+    {
+      "path": "evaluate-retrieval-readiness/agents/openai.yaml",
+      "sha256": "12aafe30263194fe4c6e60903a4821bf492c1c2a24b7ca578c2f1a3081478b24",
+      "size_bytes": 267
+    },
+    {
+      "path": "evaluate-retrieval-readiness/references/compressed-index-evaluation.md",
+      "sha256": "a1f46244887aafdc4a368c265659d22daeb3b44cc35e34a6f8fadbe2625f464c",
+      "size_bytes": 1161
+    },
+    {
+      "path": "evaluate-retrieval-readiness/references/retrieval-evaluation-contract.md",
+      "sha256": "d6187861a032e73d111294e4881c11199edfe8c7872330cec250a550e9b69d95",
+      "size_bytes": 792
+    },
+    {
+      "path": "evaluate-retrieval-readiness/scripts/__pycache__/evaluate_retrieval_strategy.cpython-314.pyc",
+      "sha256": "2574326b53a4c120b715b78c8fa5159f34c720a9d6953472b835c253b3354030",
+      "size_bytes": 5485
+    },
+    {
+      "path": "evaluate-retrieval-readiness/scripts/evaluate_retrieval_strategy.py",
+      "sha256": "3fa94adf83b50f7aefe4f6d3568c3e3c708f3be6536aaed832ee707750fd3b68",
+      "size_bytes": 3238
+    },
+    {
+      "path": "evaluate-retrieval-readiness/SKILL.md",
+      "sha256": "6a252addc62a76f46d9518eda00d1f4a60bc61cba829e3d593b245b4f06428d9",
+      "size_bytes": 2301
+    },
+    {
+      "path": "evaluate-supabase-fit/agents/openai.yaml",
+      "sha256": "8df950906fa908a3f0b96ef3c67bc7c311df9637971043d13e283b2f826d25a9",
+      "size_bytes": 294
+    },
+    {
+      "path": "evaluate-supabase-fit/SKILL.md",
+      "sha256": "ad4e5cbccead50dd7be7250b4f6885e287791e1de680c66c5bc57148c6e0084b",
+      "size_bytes": 2863
+    },
+    {
+      "path": "evaluation-budget-allocator/agents/openai.yaml",
+      "sha256": "f98242192f9f31b8436a4d482de1c851bb9514f2fcaaee1102bc3c7461de3d4a",
+      "size_bytes": 224
+    },
+    {
+      "path": "evaluation-budget-allocator/SKILL.md",
+      "sha256": "1c808edce803d1cdc944a94fb6071511370f650b52357403baf966e241266208",
+      "size_bytes": 2310
+    },
+    {
+      "path": "evidence-assembler/agents/openai.yaml",
+      "sha256": "e88e738566b023ebb1e0ee7a359aebd1f3a8a5337834eaa0e8186dda7c6fb74f",
+      "size_bytes": 197
+    },
+    {
+      "path": "evidence-assembler/SKILL.md",
+      "sha256": "199a3fc7747232bef216b05961d7ac994dd97098c98b1fdb6d0fcc04c4dd24e1",
+      "size_bytes": 2804
+    },
+    {
+      "path": "evolve-session-learning/agents/openai.yaml",
+      "sha256": "56127a75c8428cc288de3357c7b2912c6a9f67839a76cd885bd1f26a901f8c39",
+      "size_bytes": 251
+    },
+    {
+      "path": "evolve-session-learning/references/evolve-instincts-into-capabilities.json",
+      "sha256": "3379e5332fb263826eca58987f7ff7b918f335f3308c3cf5f8253295dfe479d9",
+      "size_bytes": 1763
+    },
+    {
+      "path": "evolve-session-learning/references/observe-project-scoped-instincts.json",
+      "sha256": "c816487396c97475c8f100a200147b34c6853c8662f2a19525c51269b3847fb2",
+      "size_bytes": 1817
+    },
+    {
+      "path": "evolve-session-learning/SKILL.md",
+      "sha256": "52350a4275af861a888aa055a7d84916a687d05b1dd4ed1fdb26c74a88f11be3",
+      "size_bytes": 2734
+    },
+    {
+      "path": "execution-contract-enforcer/agents/openai.yaml",
+      "sha256": "eda7423e07368445385fd5781155964c7440551d63bb9a490b22a6bd47909537",
+      "size_bytes": 224
+    },
+    {
+      "path": "execution-contract-enforcer/SKILL.md",
+      "sha256": "8cf2f0511b2c1a4362448deb12945f79c6d38618b02a89751b77869b1ea86214",
+      "size_bytes": 2625
+    },
+    {
+      "path": "experience-reconstructor/agents/openai.yaml",
+      "sha256": "755b9889111667b38a0d34bc967af363cbabdb5396eac9572654c414b8866aa0",
+      "size_bytes": 215
+    },
+    {
+      "path": "experience-reconstructor/SKILL.md",
+      "sha256": "fd78e2e52f43263d492bae39e59e67db29a9fe73a5d284b6cd0fdeffd4f1cf20",
+      "size_bytes": 2281
+    },
+    {
+      "path": "forge-skills-from-knowledge/agents/openai.yaml",
+      "sha256": "9cf0ce10937dc9a8963d71413f212f762fd9f6d82e30ba0a60cafb50d04e4e55",
+      "size_bytes": 232
+    },
+    {
+      "path": "forge-skills-from-knowledge/references/foundry-contract.md",
+      "sha256": "6fc9ebd847c72761db986fccf262b85bc933a463e4343dd5f7ec9aaa99478cb9",
+      "size_bytes": 1354
+    },
+    {
+      "path": "forge-skills-from-knowledge/SKILL.md",
+      "sha256": "41f54564e2e956a31637525f3b9111538f7f83308ec4c4b16c1164487fdc561e",
+      "size_bytes": 2345
+    },
+    {
+      "path": "frontier-questioning/agents/openai.yaml",
+      "sha256": "9fe916115bbceaf63413e0972e9c46cd221e87896bb13b1e351f5137453e9997",
+      "size_bytes": 305
+    },
+    {
+      "path": "frontier-questioning/SKILL.md",
+      "sha256": "76b0d8dd66a6bf68a3c67e3a41bc27e2b1dbcfd5f5db695ccae5c900810e1002",
+      "size_bytes": 1392
+    },
+    {
+      "path": "gate-model-data-lifecycle/agents/openai.yaml",
+      "sha256": "8e82bbff713daf8a6cbc65e8b7aa7cfc8ab716cec148ba5eee1d14fc680b4972",
+      "size_bytes": 281
+    },
+    {
+      "path": "gate-model-data-lifecycle/references/model-data-gate.md",
+      "sha256": "0cdbc905d769f68e494c6c7446a4a24b62a752ed0841571efa0730b5c7d9ac6d",
+      "size_bytes": 866
+    },
+    {
+      "path": "gate-model-data-lifecycle/SKILL.md",
+      "sha256": "c09424ce8a07145ec061fa6c2e82ad365d1ea8b6d9c02d39f7e0ae70422371f4",
+      "size_bytes": 1543
+    },
+    {
+      "path": "govern-candidate-resolution-pipeline/agents/openai.yaml",
+      "sha256": "17ddae36d3224309778e38ea14ca16e072cc6b2810e946d0039e252bde0d8918",
+      "size_bytes": 323
+    },
+    {
+      "path": "govern-candidate-resolution-pipeline/SKILL.md",
+      "sha256": "90d88f7ac9eade7852881f51c57c230462e36d942e32ba141c9d450014eff37f",
+      "size_bytes": 2543
+    },
+    {
+      "path": "govern-cross-harness-runtime/agents/openai.yaml",
+      "sha256": "d1ebf581379b4ab1cea6fe7cc2be8b409712d525d6fca1e19b11c2809deea8ec",
+      "size_bytes": 256
+    },
+    {
+      "path": "govern-cross-harness-runtime/references/design-mcp-server-capability.json",
+      "sha256": "818e79af47699f21bfc07f01bea89faa785afdff856d69b3746feff961fcc942",
+      "size_bytes": 1573
+    },
+    {
+      "path": "govern-cross-harness-runtime/references/govern-cross-harness-parity.json",
+      "sha256": "6e84ab98aa52fef42a3a0fa45aa71e761ec5556b406c9166243abe4b9b8fd2ec",
+      "size_bytes": 1800
+    },
+    {
+      "path": "govern-cross-harness-runtime/SKILL.md",
+      "sha256": "0b775822f61cb2c04273a38b9e360705ff2be0d96e6c0905331fa7dd60cc5030",
+      "size_bytes": 2691
+    },
+    {
+      "path": "govern-cybersecurity-capabilities/agents/openai.yaml",
+      "sha256": "e4533b643d13924ed55e5ff9b0a716c11ed42ec8d371ede087e750fd2f463a51",
+      "size_bytes": 320
+    },
+    {
+      "path": "govern-cybersecurity-capabilities/references/authority-and-execution.md",
+      "sha256": "15fad0dcde34523cce832a1cf87898c002603f0da86b57ded96d8dcc8fc58b2a",
+      "size_bytes": 1500
+    },
+    {
+      "path": "govern-cybersecurity-capabilities/references/domain-operations.md",
+      "sha256": "a710c8c23d04f5fd30f1d92aeb8a8ddf8796e3af23973c3f402cc7f2dcf7e0ce",
+      "size_bytes": 3306
+    },
+    {
+      "path": "govern-cybersecurity-capabilities/SKILL.md",
+      "sha256": "150f0a33f1e5cf88753831e5cd38dea7c30fbcb27d4b3f1a86c068e2c01cb421",
+      "size_bytes": 3464
+    },
+    {
+      "path": "govern-deployment-safety/agents/openai.yaml",
+      "sha256": "d17d8ed319b4a7e1a838cf084baa224efd8a216746e0247b249e459f618e962a",
+      "size_bytes": 241
+    },
+    {
+      "path": "govern-deployment-safety/SKILL.md",
+      "sha256": "9d7f59ed09ed21233a8a0c1cae4eb51a1c4548c23420876863e078b72f5f2dc3",
+      "size_bytes": 1814
+    },
+    {
+      "path": "govern-distributed-work-runtime/agents/openai.yaml",
+      "sha256": "59e90040b66de392926135bcde38afb7f46aa0a8f92111b29fe9d3d345c16979",
+      "size_bytes": 318
+    },
+    {
+      "path": "govern-distributed-work-runtime/SKILL.md",
+      "sha256": "517e85cf43256df8065156efd124f6a5a0aa4bcd2a7f5768b56a259e796c2293",
+      "size_bytes": 2103
+    },
+    {
+      "path": "govern-epistemic-skill-evolution/agents/openai.yaml",
+      "sha256": "17fc64e8b45ce21fdd3c8c7bcb9b6fa3bc883a2ef2b4db12bbc7c2633fa934c9",
+      "size_bytes": 308
+    },
+    {
+      "path": "govern-epistemic-skill-evolution/SKILL.md",
+      "sha256": "2338c3d42f54448994985d16cd6ecfeb0921d9d5519baacf8c605938b17191c7",
+      "size_bytes": 2021
+    },
+    {
+      "path": "govern-external-capability-intake/agents/openai.yaml",
+      "sha256": "aeea75bd359faf80ae363ad05332026bc31891a6a09e1b996e3999bb93cc9ad9",
+      "size_bytes": 289
+    },
+    {
+      "path": "govern-external-capability-intake/references/runtime-contract.md",
+      "sha256": "1467c5dc5dce6b73e5b261caa689fba529222ca1e8f88ea97f5f6e6483ad7b02",
+      "size_bytes": 1480
+    },
+    {
+      "path": "govern-external-capability-intake/SKILL.md",
+      "sha256": "c58e5a9c6e10485d5463caaad9446cc6665f25c28d2feda0a6cacf7fe021370e",
+      "size_bytes": 2535
+    },
+    {
+      "path": "govern-hooked-execution/agents/openai.yaml",
+      "sha256": "649a0e64490203e54d0e35bc4b6945abb1789a200760aefbca9ba161880705df",
+      "size_bytes": 250
+    },
+    {
+      "path": "govern-hooked-execution/references/enforce-agent-config-supply-chain.json",
+      "sha256": "eea9bb9cbb7eb379660ba816bb824bddb71481ff1646536584711d8e0b5ee750",
+      "size_bytes": 1799
+    },
+    {
+      "path": "govern-hooked-execution/references/govern-agent-hook-lifecycle.json",
+      "sha256": "59d415014fe9d56c80b20c52e0a1b1767751c3837e118ddb4614e2d2f57afb52",
+      "size_bytes": 1775
+    },
+    {
+      "path": "govern-hooked-execution/SKILL.md",
+      "sha256": "24d1cb75bb598eb9da03a37b96ff390a738647056befb07f54a2e1754b114a66",
+      "size_bytes": 2652
+    },
+    {
+      "path": "govern-knowledge-refinery/agents/openai.yaml",
+      "sha256": "364a0a11753f348468aa32fa4df01b67963128c5cea72fac3983b60ffe8828b6",
+      "size_bytes": 287
+    },
+    {
+      "path": "govern-knowledge-refinery/references/runtime-contract.md",
+      "sha256": "76d4d6dc159d88de7dd38a521119bd8b66ec47294cb7594fb39bfd139ccbd3d0",
+      "size_bytes": 597
+    },
+    {
+      "path": "govern-knowledge-refinery/SKILL.md",
+      "sha256": "0ec8432bc2dc73a44254aac390f6ce24f91410dad0a457b0f2b402f00b806e3c",
+      "size_bytes": 2199
+    },
+    {
+      "path": "govern-memory-fabric/agents/openai.yaml",
+      "sha256": "74129e456cd41486747971e98bf66cc22318d358e71f6ae03fb0b61cb328804a",
+      "size_bytes": 245
+    },
+    {
+      "path": "govern-memory-fabric/references/layered-memory-lifecycle.md",
+      "sha256": "cee912ca676b9db325e4fcca5be6e6423f08ce733a835cb58225aac8a7dd3752",
+      "size_bytes": 2470
+    },
+    {
+      "path": "govern-memory-fabric/references/memory-contract.md",
+      "sha256": "aa3ab03821750d2c725e74c666912743fb997124ddac8a61cb5747ef66102de0",
+      "size_bytes": 1916
+    },
+    {
+      "path": "govern-memory-fabric/references/provider-certification.md",
+      "sha256": "47f9afe7996b2f08627b05b01d8f574f81f5ead7347c9d8c4295dbdded112b07",
+      "size_bytes": 1009
+    },
+    {
+      "path": "govern-memory-fabric/SKILL.md",
+      "sha256": "5e1015a29fda6bc4ec90d5500e5346eb32900babe5f04c32bdbcbe4b2ead126b",
+      "size_bytes": 5435
+    },
+    {
+      "path": "govern-metacognitive-evolution/agents/openai.yaml",
+      "sha256": "b9ea3b8c8d617c798f35ce89e9968cd8cd6171bb776c850d536bdf0c2abc2e35",
+      "size_bytes": 128
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/agent-cognitive-profile-designer.json",
+      "sha256": "cd69bbb2ab64e7dd38b169cdce5a0fcbd4f5c7e2975b28aea33e00ab5b71008a",
+      "size_bytes": 2212
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/agent-failure-mode-calibrator.json",
+      "sha256": "4a181553a5b851cc67b953c3d65cc8cef513a1daa5e0e97eb19c050c0d666adc",
+      "size_bytes": 2184
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/agent-profile-router.json",
+      "sha256": "0d89d3af1e21aec38eadd3e6d32182af9f1520ef9a8542a7470c6cbaacaa7371",
+      "size_bytes": 2141
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/agent-risk-budgeter.json",
+      "sha256": "cc4a29042b2ef00bb89590e817bdf11dfd6cb76e84f584a96206d3ae9d129745",
+      "size_bytes": 2115
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/alternative-path-analyzer.json",
+      "sha256": "eb15453201317df2562dba9b245f222af58c81b60300f3698bba99e97d6e7a53",
+      "size_bytes": 2203
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/anti-pattern-lineage-tracer.json",
+      "sha256": "e68f3cd87a3408eccded46ee8ff68d5c06010e4b03dadbd6e440cffeaaa0825f",
+      "size_bytes": 2205
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/architecture-habit-detector.json",
+      "sha256": "f7d6286f2a03b27a4ad7bd0f003b05f0ce9a727e234e9b6a0b0450fe4d33941b",
+      "size_bytes": 2239
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/assumption-lineage-ledger.json",
+      "sha256": "bfc149f645c148e9e3bfaa127005205deae529fac9540c238dc12530b81c777e",
+      "size_bytes": 2197
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/cache-transient-release-cleaner.json",
+      "sha256": "044ae50f23d9f62fa2c181cf1294453275e5e9aecacae3d889d0c06b2d350d23",
+      "size_bytes": 2151
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/capability-attractor-detector.json",
+      "sha256": "627592b9e023606559fb44208ee4a0d2afbe5c4a2e8d7f3330e5c96dfeaa9aeb",
+      "size_bytes": 2287
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/capability-dependency-health.json",
+      "sha256": "f68954018e21db6fbbf3f2fef0535df20e34c3cfc0da81b897d3feda9d040706",
+      "size_bytes": 2223
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/capability-entropy-monitor.json",
+      "sha256": "49b756a50a8531d0e241a0eef91f34c8c40d5d04bdc30cae7de0460859b76c6d",
+      "size_bytes": 2281
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/capability-gap-mutation-planner.json",
+      "sha256": "3a34d25425a4b67f9676688363a85df2f9aef5060cc01a003698a0e4c84413b7",
+      "size_bytes": 2224
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/capability-genome-builder.json",
+      "sha256": "0658fad9a496f710cebfe31267faf2517e521ac305275f0b1ae2cd1d45562b0d",
+      "size_bytes": 2311
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/capability-relation-inferencer.json",
+      "sha256": "8e34d7ee52002d4e8b750a2d69fb0b8197a0745aa6c49082ac6bc706de66241d",
+      "size_bytes": 2224
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/causal-reasoning-planner.json",
+      "sha256": "4d355fb436a9727e8868c27c409d7c03d48e025eef7b5026a41bd542ad57ac4c",
+      "size_bytes": 2164
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/closed-loop-system-optimizer.json",
+      "sha256": "29c252490b4e9316d0d592fbfef9f615045884708aab7d9761fec7296bf02f70",
+      "size_bytes": 2167
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/concept-cluster-inducer.json",
+      "sha256": "76f6738b2db47c65b9e45f17c8d388ee3ec226bcb8675b99be30aca87fd6f44d",
+      "size_bytes": 2191
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/contradiction-pressure-monitor.json",
+      "sha256": "3e9ad26cf537d58dd803ee199603907a170817772b72da40b4b768196c122856",
+      "size_bytes": 2251
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/contradiction-resolution-engine.json",
+      "sha256": "f4f704345129caed752e080111dac6564e2cccee2c74144d169462f2f694fb4c",
+      "size_bytes": 2227
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/decision-path-reconstructor.json",
+      "sha256": "bd5ece59cac324bbe9270e663fb5bb41e6b5341ce53b20e1cb54cbad00dd8be7",
+      "size_bytes": 2206
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/duplication-supersession-resolver.json",
+      "sha256": "7848f49744e5d4dd6cb1d2d0c87f8db99e662425783b7c9ae7fff4a68d3bb457",
+      "size_bytes": 2243
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/engineering-dna-profiler.json",
+      "sha256": "44d234196a910bb54f786172ef84271d801e48afb58047f7513645584a39b357",
+      "size_bytes": 2279
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/epistemic-state-manager.json",
+      "sha256": "ac26fb170e89ee4890928df8dd00fe51644171e7a22cf2baa19f548bcc398e11",
+      "size_bytes": 2173
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/evidence-weighting-engine.json",
+      "sha256": "420f4941cd2d08ad41824151e64f606d6ec78bd3f89a22360af4a3d90d695748",
+      "size_bytes": 2219
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/explanation-provenance-builder.json",
+      "sha256": "bf239c50f5d107fe08a28e0ced7c38712f906ea2e82fdc6110c12218559a8bd5",
+      "size_bytes": 2182
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/hypothesis-portfolio-manager.json",
+      "sha256": "e855293759a2508d14948a8775f3713d98c86f766e3638a4a88bc1c3547d58eb",
+      "size_bytes": 2185
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/integration-conflict-mapper.json",
+      "sha256": "1c7c2a81b304206d70f6ac6820cf094522fd4bf28aaedd351b679448b66f76f6",
+      "size_bytes": 2202
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/introspection-report-builder.json",
+      "sha256": "efd53ad57c340bd1459c5cb32c4542384ce62dbe888fc6c10c337136bb1fc2ba",
+      "size_bytes": 2215
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/knowledge-dynamics-modeler.json",
+      "sha256": "47b515d1ae5740c8a5af1dac4907370e75bca073fa31831978cc80447429c42d",
+      "size_bytes": 2327
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/knowledge-stability-simulator.json",
+      "sha256": "4688e5caa04fe68a4494337195156e29880a543b17d300d2c7026dc67a9c6ded",
+      "size_bytes": 2259
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/memory-influence-auditor.json",
+      "sha256": "d52f4808bcc030a26f67662b5d36326fd7cc5444557aeb048fdcd714af0e9418",
+      "size_bytes": 2222
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/meta-capability-proposer.json",
+      "sha256": "d85908bab58ca155f518b3ae26f928360ff59d7f0d322d0a9f8259ff2dad380f",
+      "size_bytes": 2188
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/metacognitive-certification.json",
+      "sha256": "95b4c43644bf7a9908ef0f95aab4d45f94edaec5b3e3a4c9dab85d95568e999f",
+      "size_bytes": 2205
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/multi-agent-composition-planner.json",
+      "sha256": "8f1e6822fbbab9fa905c6d01c9a5b8163f6d3f751e1e3b1131363c0c98749ae2",
+      "size_bytes": 2214
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/optimization-experiment-manager.json",
+      "sha256": "f4629e475c3650163d69aca75dca7e8e4ff27afd2354c59a6b10ba083068fb92",
+      "size_bytes": 2206
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/pareto-improvement-selector.json",
+      "sha256": "b3ad4710eb8492ef46c15a0c6bbb290017a4aaa3669427f27fb5b2f30ae82757",
+      "size_bytes": 2140
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/reasoning-trace-recorder.json",
+      "sha256": "9d7b742c9d50d58d6f18399c13bbdbfaffdd41d3ca9c662ea6805c1f59825653",
+      "size_bytes": 2240
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/regression-rollback-controller.json",
+      "sha256": "15cc44eba2d0fe93a265fa27887ce55834954873fd98dee00aed2aec92900ad4",
+      "size_bytes": 2165
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/revalidation-scheduler.json",
+      "sha256": "0bfa9519098397d2bc9d1515e4bd5d29af3a98eea861780360f4202437cc8cf6",
+      "size_bytes": 2282
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/semantic-contract-linter.json",
+      "sha256": "57a61df4c547d4b72d7b7a4f8ede884a8fb2d77ff610a1f3e0f5e57c32f07286",
+      "size_bytes": 2131
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/semantic-effect-contract-designer.json",
+      "sha256": "3c97fc58f4c77ace0ecd634ce273d53b352d8e369668f9007a18a8871f16e227",
+      "size_bytes": 2233
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/shared-mechanism-extractor.json",
+      "sha256": "9118c7b087abd05f45e7ebbd6a038f8452b35de8f4d90eb95a950311541bc216",
+      "size_bytes": 2170
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/state-mutation-auditor.json",
+      "sha256": "cac43041c9653d3afb16f5f73a4b6f44a49560891fcbf1a98c8985780582c5d7",
+      "size_bytes": 2141
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/team-pattern-transfer-controller.json",
+      "sha256": "5d9b180f309b8f36943684e73f0b1062fb870daa41c6003823b7afa35293d3e1",
+      "size_bytes": 2226
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/theory-validation-gate.json",
+      "sha256": "bc71c100641a6f0e9da3969b6c45900b04bbb1f56bbafc7a6ddf178d6da73a75",
+      "size_bytes": 2141
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/trust-decay-controller.json",
+      "sha256": "23d5fc58961e69b801b72eced48ddc9bd652503cc0e899ea9d5831044b61dd1c",
+      "size_bytes": 2302
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/uncertainty-calibration-engine.json",
+      "sha256": "e267d501e7262be5c1452ccbc835b22ff30e2c242bcf80430e7802cb15ef7b3d",
+      "size_bytes": 2128
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/uncertainty-reduction-contract.json",
+      "sha256": "6fe5d03e6aaa7d7e23e79a0af01dbaac7c2ba7d53206e1c9b24abf20a179ee67",
+      "size_bytes": 2186
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capabilities/workflow-autotuning-advisor.json",
+      "sha256": "5c643fc9d6584f7f47a1b8ef750cae8879c6e7fc5f4bdd3976e4c72b4d15c5aa",
+      "size_bytes": 2188
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capability-contracts.json",
+      "sha256": "af26987ca515437e2d94aa94723c240405072f370fc6c24cbbe0cdfff49d0f6a",
+      "size_bytes": 123803
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/capability-index.json",
+      "sha256": "6f914db728927cc90d5fc38f3cd3fcc8e89d2b7c1822e3adf124f77ff9c8954e",
+      "size_bytes": 19890
+    },
+    {
+      "path": "govern-metacognitive-evolution/references/orchestration-index.json",
+      "sha256": "d3a51ebc7a3b781e4edc297e9da08390835fcc2eff23158a6ac8ed9df47abb7a",
+      "size_bytes": 9942
+    },
+    {
+      "path": "govern-metacognitive-evolution/SKILL.md",
+      "sha256": "fbf555b37234ecf0f84bbdf60982e08a4584ef5ecbc5de949c23dccc43af845d",
+      "size_bytes": 2679
+    },
+    {
+      "path": "govern-n8n-community-nodes/agents/openai.yaml",
+      "sha256": "15ec7c853161a6d857c8a1484f1e7fc27c67035be8a08e73d110d6be62f3b351",
+      "size_bytes": 322
+    },
+    {
+      "path": "govern-n8n-community-nodes/SKILL.md",
+      "sha256": "620259d7a7ec1b16d9579778c13716a83e44413ecd1414f50ff7ba92be5d6ddb",
+      "size_bytes": 2868
+    },
+    {
+      "path": "govern-operating-kernel/agents/openai.yaml",
+      "sha256": "5167a8658b9da10dabb949bb894ad71e83a3431718b162887b98275655cc8d7a",
+      "size_bytes": 230
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/abstention-and-escalation.json",
+      "sha256": "01d70409eea4bfa4a157303be8943f8aefddca2662194cd99b2c163a90698d16",
+      "size_bytes": 9193
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/assumption-register.json",
+      "sha256": "bb1a7271cba668e7f245c9bf944730422c863f1deb9c2bdd7adb1f368d1eecf7",
+      "size_bytes": 9129
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/capability-router.json",
+      "sha256": "1af035de797b1c8897770a95762bdf8324219f5f524b6c19a990cace6f58ee6e",
+      "size_bytes": 9151
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/claim-evidence-ledger.json",
+      "sha256": "a959e88a38f24e32d99db08398645ad4a810c1d7c26d832d2d4c821cf10c6b7d",
+      "size_bytes": 9239
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/confidence-calibrator.json",
+      "sha256": "bd7f044061a97f0f4ee00b799304980d7ff06625f636fbae1bd6259a51e68085",
+      "size_bytes": 9151
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/durable-task-state.json",
+      "sha256": "a32f0c4ea2fcb332e48750a6407ddf92d6dab28d1e7cf94b8e717904e6c02903",
+      "size_bytes": 9141
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/failure-taxonomy-normalizer.json",
+      "sha256": "68b7b38ffa2879a036949fd15774e4c05921e9901e0aeedc78c59641f10385ee",
+      "size_bytes": 9209
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/idempotency-and-compensation.json",
+      "sha256": "3815e7e3c145b605875011c620c2e6292ade2f322cd344a08cdab7fe21e78fe2",
+      "size_bytes": 9192
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/independent-verification-gate.json",
+      "sha256": "5259cfca4ce6485d61f291097b4584178998beeb404e584905187a458a46acc3",
+      "size_bytes": 9201
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/permission-scope-designer.json",
+      "sha256": "a05cb1839c03436db279504e8ef3093986ccf9d4c16e3eb012ebaf7bd4795025",
+      "size_bytes": 9172
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/skill-compiler.json",
+      "sha256": "8872ba54bc61ccebbb441713e306dd52e88cf25b9ca5de9b7212c847a7ef8e82",
+      "size_bytes": 9113
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/source-conflict-resolver.json",
+      "sha256": "8c767e3cef682405c1c04ece70347d0ea3ec8c92b3a5a11a5b40bffdf2e69f92",
+      "size_bytes": 9189
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/source-quality-assessor.json",
+      "sha256": "0861555e52152e7b6e552dbc81aa28de336128829854c4e86bfede57d92cb41d",
+      "size_bytes": 9139
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/typed-capability-contract.json",
+      "sha256": "11ac7668d748fe96e84cac6627c0460ff58a182885ddf6110aaa26288f5d37eb",
+      "size_bytes": 9266
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities/unknown-field-guardian.json",
+      "sha256": "1c6d980a41f733b679e86e2af1a1e3212c2cf1c629e35ebd06d293215b5a584b",
+      "size_bytes": 9141
+    },
+    {
+      "path": "govern-operating-kernel/references/capabilities-index.json",
+      "sha256": "30c0f3da0e2d712127ba3d9aa7e551cf8b45966b2444f98494fc61358a07048d",
+      "size_bytes": 5578
+    },
+    {
+      "path": "govern-operating-kernel/references/capability-contracts.json",
+      "sha256": "99684e4f3a21d856a76ec3a1f5bfce9b14c766c497ce09f263a49ede9cea649b",
+      "size_bytes": 149014
+    },
+    {
+      "path": "govern-operating-kernel/references/script-contracts.json",
+      "sha256": "0153624cb4367dbc3bb0540396727fb2e4aec671a364c5eaaacd6e0f71026101",
+      "size_bytes": 17208
+    },
+    {
+      "path": "govern-operating-kernel/references/scripts/capability-router.json",
+      "sha256": "c3542767583c695912975b539b6bcc64c8f682dda831029eccdde18c976adadb",
+      "size_bytes": 1684
+    },
+    {
+      "path": "govern-operating-kernel/references/scripts/claim-ledger.json",
+      "sha256": "097e64f7a82229a0dd5e12f95dbf6fd3b97210047fd50a8e67df9b579efb5fb1",
+      "size_bytes": 1664
+    },
+    {
+      "path": "govern-operating-kernel/references/scripts/durable-state.json",
+      "sha256": "4389c639d2a34616cf808cefd18b91c05baf5ff3a9ef78e4f163b495949a66f1",
+      "size_bytes": 1668
+    },
+    {
+      "path": "govern-operating-kernel/references/scripts/evidence-bundle.json",
+      "sha256": "fde59572b7ef7f509b835075c47f735b4ec9362aedac9c2f91cb05ad71bbfc78",
+      "size_bytes": 1676
+    },
+    {
+      "path": "govern-operating-kernel/references/scripts/failure-normalizer.json",
+      "sha256": "29b0f2e181833acf315beb3a979f245f3ced154b56fea23687fc60d8237ee5fc",
+      "size_bytes": 1688
+    },
+    {
+      "path": "govern-operating-kernel/references/scripts/permission-guard.json",
+      "sha256": "29848d3ceef3bd6aedaef160ed0e3fbdaed7f19b5ee358b86a2bb41f989aeedf",
+      "size_bytes": 1680
+    },
+    {
+      "path": "govern-operating-kernel/references/scripts/run-smoke-tests.json",
+      "sha256": "94771ee4114e4a530a5108bc5e2cdfa0ea6e975c3f4cd0a9ae0f98b1b2c1e68e",
+      "size_bytes": 2066
+    },
+    {
+      "path": "govern-operating-kernel/references/scripts/skill-compiler.json",
+      "sha256": "42c912e4d5c7edd5b62c0323fcd8ec1fc4968abcd0d60e1789254c667bf07129",
+      "size_bytes": 1672
+    },
+    {
+      "path": "govern-operating-kernel/references/scripts/validate-pack.json",
+      "sha256": "c7120180ad12cd679eb479f18d0474d3a6c3196731836599846c9589e977266b",
+      "size_bytes": 2048
+    },
+    {
+      "path": "govern-operating-kernel/references/scripts-index.json",
+      "sha256": "ce95425401443c03758e59dbf8221fb012a4f2a5286f1f79ddf69462a736719c",
+      "size_bytes": 3117
+    },
+    {
+      "path": "govern-operating-kernel/scripts/__pycache__/authoritative_skill_compiler.cpython-314.pyc",
+      "sha256": "f3ad358a357b00dcde6fc4e2d6c1a4e46dbc82113b18292380fb80bf27efea1c",
+      "size_bytes": 11537
+    },
+    {
+      "path": "govern-operating-kernel/scripts/authoritative_capability_router.py",
+      "sha256": "3baacb060c4d1d5e2bc7447468b8b7193f0d9148a53c67484eaf2e82756089a5",
+      "size_bytes": 1594
+    },
+    {
+      "path": "govern-operating-kernel/scripts/authoritative_claim_ledger.py",
+      "sha256": "c1023b8382ec65c331d79ff690e1762ac205891960b75173a4b22fa91f963265",
+      "size_bytes": 2190
+    },
+    {
+      "path": "govern-operating-kernel/scripts/authoritative_durable_state.py",
+      "sha256": "d2b4283d7821531bb3270313abac16dae5819dc026a3a8e9132fd25596c3ac76",
+      "size_bytes": 1449
+    },
+    {
+      "path": "govern-operating-kernel/scripts/authoritative_evidence_bundle.py",
+      "sha256": "a15acdf1092fdf3c901a3fb8b66b73eceed28a5e57ab4462a2c700abd17b2a5e",
+      "size_bytes": 831
+    },
+    {
+      "path": "govern-operating-kernel/scripts/authoritative_failure_normalizer.py",
+      "sha256": "298829f4f28ce68303612318a8f35fc4fe8423716c6ba9334105dcd40abf9b48",
+      "size_bytes": 1197
+    },
+    {
+      "path": "govern-operating-kernel/scripts/authoritative_permission_guard.py",
+      "sha256": "a855b5215cc194b8b66f67485a922037630be5f49336d4441deb10365e68286e",
+      "size_bytes": 1095
+    },
+    {
+      "path": "govern-operating-kernel/scripts/authoritative_skill_compiler.py",
+      "sha256": "66e8af6d038e760683edc55248cbd4abc7e54390b635ac253da7bc2d75db9118",
+      "size_bytes": 7172
+    },
+    {
+      "path": "govern-operating-kernel/scripts/domain_tool.py",
+      "sha256": "19d78dbf1fac448e681d620105a0c05927479d7be905aa3c2ce0ae3669665413",
+      "size_bytes": 834
+    },
+    {
+      "path": "govern-operating-kernel/SKILL.md",
+      "sha256": "ad1bf0a4f9807a40e43a6226a2aff663fc04987418805d37815f1904b70a7eb6",
+      "size_bytes": 1617
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/agents/openai.yaml",
+      "sha256": "b651562214ee06700b839366d2ef7b4c355f5fec24d405e1e2880fc61240eb0c",
+      "size_bytes": 241
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/a2a-agent-adapter.json",
+      "sha256": "55faa2ee005d8be17564a1bbf2926816dc0cfa238183594785633db3e23b7dda",
+      "size_bytes": 9281
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/backend-capability-prober.json",
+      "sha256": "c54c4a0ea0fd0991667aefdc74c523e6e2ab792851c81d3e8299e6feeef03a6a",
+      "size_bytes": 9438
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/batching-policy-selector.json",
+      "sha256": "01b265a0b3e2092fea27f5a5ad46c7001767948885075621f06b62915f35e06f",
+      "size_bytes": 9339
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/cache-policy-selector.json",
+      "sha256": "801bb87c0393ff509f89f5bd2b7bcc2a070ccfa3926a9e3f43067906a1c777e4",
+      "size_bytes": 9341
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/capability-discovery-negotiation.json",
+      "sha256": "94f385e753690570ebbe40e8dd2ac95145b2eb5be317774335875612c18160be",
+      "size_bytes": 9451
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/capacity-planner.json",
+      "sha256": "6128fce09ad371b8cb41ae17407fa4c1a816f023f4c36dafb1f14432b5f4fddf",
+      "size_bytes": 9289
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/cost-resource-budget-manager.json",
+      "sha256": "6234f39639c8d4428a92163e2a28de080ea828e66002fe36c5d688a894c05531",
+      "size_bytes": 9390
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/deployment-canary-manager.json",
+      "sha256": "54c79a5e1658dd7ec561aad44fa3051c7e49295dd02515c4becccfc9a8cfe654",
+      "size_bytes": 9362
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/fallback-and-degradation.json",
+      "sha256": "6ee55a302d9390f7a9f389de67cfe345d707b83921e62b3431ec0e1ea9caa1c9",
+      "size_bytes": 9342
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/handoff-package-author.json",
+      "sha256": "b822af996ff4476233fe9ce0910f5dfb46df6b176aae17da8517897de1f90820",
+      "size_bytes": 9363
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/hardware-topology-inspector.json",
+      "sha256": "831142b16b3a030192d80c481bd62eabdaf8225455073f9e737276d6d901ff1b",
+      "size_bytes": 9443
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/human-approval-ux.json",
+      "sha256": "0b73ccd8eab5b1a7b6e9596ba11584fcdc5cef7cb47df47f789a16cf3f0945ae",
+      "size_bytes": 9256
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/json-schema-tool-validator.json",
+      "sha256": "f51466f982334662315e11691c776c9cdaeedd4f4899da9739cd942fb7f192b0",
+      "size_bytes": 9399
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/mcp-client-server-adapter.json",
+      "sha256": "71e29e53a8eabbd04035feca1c8176602a82191a18051238f134e25eccf8b425",
+      "size_bytes": 9375
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/model-compatibility-prober.json",
+      "sha256": "a1e7444655f0e09ec2aa3d6798e018bf60d7decb9de7e2bd5dfc6ae0fa7126e3",
+      "size_bytes": 9431
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/model-router.json",
+      "sha256": "721527051084268a12e0e7982d6d2db68b18debcb163ce3225276d459fa1f5d5",
+      "size_bytes": 9229
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/openapi-tool-importer.json",
+      "sha256": "46041906111ee077a2c25d1ab384c2ec017170fb084eb45e0e3a87247e0bd588",
+      "size_bytes": 9348
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/quantization-quality-evaluator.json",
+      "sha256": "73cf288b4d9a29208ebd6afbf5feaa94fee6b1a6250dea76f8a39adb1d377f65",
+      "size_bytes": 9416
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/runtime-regression-tester.json",
+      "sha256": "0dd1c995e62ad1e60497ba8d0dcec27ff307296d01bfc8f3847a3edca6768cb8",
+      "size_bytes": 9373
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/serving-backend-selector.json",
+      "sha256": "a03226d3dd5b13626870ce71253acc2cd83faf6c3b8055068d7ab1a5aed63bc1",
+      "size_bytes": 9380
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/throughput-latency-benchmarker.json",
+      "sha256": "a97d0cc866018b1e45d0e920107f87c0d795c13c00156500e4374a780aafacc4",
+      "size_bytes": 9487
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities/tool-output-sanitizer.json",
+      "sha256": "b83d1714d7db8682aad68d554d9ddd8708059f8bd43a74f58d1f8ac2441ad7f4",
+      "size_bytes": 9359
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capabilities-index.json",
+      "sha256": "896d1ee51cbaebf77c709b4075e968b02b9099afd46d256ef45bf451d5d0d414",
+      "size_bytes": 8460
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/capability-contracts.json",
+      "sha256": "58bf9c4cf168b09bd4c3158a34463825d7fa63302d8e7598238c0ab96bde217f",
+      "size_bytes": 223198
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/script-contracts.json",
+      "sha256": "65e673ada4a27d80ea6d382905bcbf2015f687fab3e82e0872396a5ef04024c2",
+      "size_bytes": 17290
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/scripts/approval-request.json",
+      "sha256": "47a877198ba0c6697157b2593dce08b008172478136baa1f9c52f32fc3063924",
+      "size_bytes": 1779
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/scripts/backend-probe.json",
+      "sha256": "afae794452c83892ccff2f106a97148f6f30daf3286b1ce75494d7e861ea2449",
+      "size_bytes": 1767
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/scripts/benchmark-harness.json",
+      "sha256": "f9fbde058a0ea5b609af3b2ae1fe765f90caeb1b4db5f685ec92a781a1fa786e",
+      "size_bytes": 1741
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/scripts/canary-compare.json",
+      "sha256": "585fc0a59ea7ec54239c35f99cc0f61fb1fb5d363bcd7c2a8c26b1852c19e8d7",
+      "size_bytes": 1771
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/scripts/capacity-planner.json",
+      "sha256": "ec502e351858fb3dee160f144ec810da2ed3f64161ce5892811942cce5faea96",
+      "size_bytes": 1779
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/scripts/hardware-probe.json",
+      "sha256": "20fa82dda4c4b0823abf346186e6e953bf2ed81276cef161a0f4b4c05d625186",
+      "size_bytes": 1771
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/scripts/model-router.json",
+      "sha256": "f8583f17b4b276db21f82613b307748458c65a38b0500d704546e9e1acbee6a5",
+      "size_bytes": 1763
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/scripts/openapi-tool-importer.json",
+      "sha256": "fccdab2cad515caf8d230859a2468afa8003ade62090f6e0419c41cda58a5a29",
+      "size_bytes": 1799
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/scripts/protocol-validator.json",
+      "sha256": "de2a7a32bcbbce6489794c56451bf7fe5d54c8d3a26d7d75df18f341e98ba63f",
+      "size_bytes": 1787
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/references/scripts-index.json",
+      "sha256": "91ae7eb36f9effb23d9d48c83cddc8853532755a31c7ed80e1f19b13314a9239",
+      "size_bytes": 3240
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/scripts/authoritative_approval_request.py",
+      "sha256": "e514aff436c989c9fac805443e97d2d6251d0d33e2a9502c9bf0712fd859c19b",
+      "size_bytes": 1380
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/scripts/authoritative_backend_probe.py",
+      "sha256": "19498451d92756d805ca65c92e743910f6e3b954ee97eadbe06156b10fb9f5d1",
+      "size_bytes": 981
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/scripts/authoritative_canary_compare.py",
+      "sha256": "6d86aff9ffc3ab3f3abcbe5f3b145fc09241cdc32ba09a9b5f7172a5c37e0a32",
+      "size_bytes": 1070
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/scripts/authoritative_capacity_planner.py",
+      "sha256": "207c20091c2a886fbcdfe3b037df0208f84913b67be5b56ccc7a35382f142c5a",
+      "size_bytes": 1214
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/scripts/authoritative_hardware_probe.py",
+      "sha256": "0c820658e98dafa23b62423c769b6a9ddcad1f2dc9e6c642ec0e2c4b4a8abf75",
+      "size_bytes": 2295
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/scripts/authoritative_model_router.py",
+      "sha256": "8165a0ee60eb8a4e8ee3a458a9943ce03f6b3bb8e6db15c061f420ca8697957e",
+      "size_bytes": 1432
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/scripts/authoritative_openapi_tool_importer.py",
+      "sha256": "d7f2e9dbf793c8f224811ceb3a4395af6e0898a5d6c30c186cba1b9771a70c81",
+      "size_bytes": 1879
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/scripts/authoritative_protocol_validator.py",
+      "sha256": "dd0c5b25720727600c35c834c61910529289da9db2a1de09c0cd4ec847775051",
+      "size_bytes": 1088
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/scripts/domain_tool.py",
+      "sha256": "19d78dbf1fac448e681d620105a0c05927479d7be905aa3c2ce0ae3669665413",
+      "size_bytes": 834
+    },
+    {
+      "path": "govern-runtime-protocol-deployment/SKILL.md",
+      "sha256": "5718a6c60791ca0ffe47d9794abb9abe6b09a00628aee877fdc9ef9111a98484",
+      "size_bytes": 1770
+    },
+    {
+      "path": "govern-visual-runtime-accessibility/agents/openai.yaml",
+      "sha256": "9c9d9f0c71e037a97bce1f009577e5f43063a59dd434f5ccc319617e0a26d639",
+      "size_bytes": 260
+    },
+    {
+      "path": "govern-visual-runtime-accessibility/SKILL.md",
+      "sha256": "ad3cd975cd7b6cbb7a42b2e1950620d707ef44c28009e8912738e45f4b713605",
+      "size_bytes": 1200
+    },
+    {
+      "path": "guided-procedure-wizard/agents/openai.yaml",
+      "sha256": "7a0f7d4b62f4ed398e29461862caa7b8692462b584dacb52756d16f2d3ac2861",
+      "size_bytes": 310
+    },
+    {
+      "path": "guided-procedure-wizard/SKILL.md",
+      "sha256": "42fe1e69b7ce78d824d351a3220b912d0b6a802eee3ee6885bba047be831c137",
+      "size_bytes": 674
+    },
+    {
+      "path": "handle-debug-n8n-executions/agents/openai.yaml",
+      "sha256": "a3e7404feb8fd94fa7df5416fe6b35705abd5184e43a54bb35b90808879e0d00",
+      "size_bytes": 308
+    },
+    {
+      "path": "handle-debug-n8n-executions/SKILL.md",
+      "sha256": "b74f7925b5ab1c9a21bb0494a07f99719deed863470c6156d88bdfdb362aca00",
+      "size_bytes": 2778
+    },
+    {
+      "path": "harden-container-boundaries/agents/openai.yaml",
+      "sha256": "2daffb7f67c1e44e86c7eb6796a0a421e2b3599c8081c97616ef36b34860e7e7",
+      "size_bytes": 245
+    },
+    {
+      "path": "harden-container-boundaries/SKILL.md",
+      "sha256": "f5814185400bb02296f582e49521cf67ca14f59b3e9fac94b58cec1c3799e0ed",
+      "size_bytes": 1298
+    },
+    {
+      "path": "hardware-aware-execution-routing/agents/openai.yaml",
+      "sha256": "b359a646dc4220cce24af3b1b94ae6cb7714225fd5a66e55e689a0951aba8554",
+      "size_bytes": 257
+    },
+    {
+      "path": "hardware-aware-execution-routing/references/routing-policy.md",
+      "sha256": "6791aa79b40bb852354507df13453a1c035d1126ce74c3050c052a2730921b2f",
+      "size_bytes": 1980
+    },
+    {
+      "path": "hardware-aware-execution-routing/SKILL.md",
+      "sha256": "ec2782183f3bd8973410a2f04b77d9d382e0d3007111a71a57a08d0c4e5ee64c",
+      "size_bytes": 2441
+    },
+    {
+      "path": "human-handoff-state-transfer/agents/openai.yaml",
+      "sha256": "bc66278ee9454333cc2ef2af509dd71f189fb9505173755f5a5bb0ba75c7a85a",
+      "size_bytes": 227
+    },
+    {
+      "path": "human-handoff-state-transfer/SKILL.md",
+      "sha256": "d547f50aa5bcd149fda972330aee1278b58eaa9dd7a22c4619cf09f676269300",
+      "size_bytes": 2368
+    },
+    {
+      "path": "implement-supabase-auth/agents/openai.yaml",
+      "sha256": "77401435ad2372090071155a2cb2abdcaa0697188edc3cc231fcd9f615e6dd41",
+      "size_bytes": 333
+    },
+    {
+      "path": "implement-supabase-auth/SKILL.md",
+      "sha256": "56b9e42676cee3e94a423bc720ee63ea24362fcc045bee9e67e3126cd3d2c95d",
+      "size_bytes": 2957
+    },
+    {
+      "path": "inspect-live-contracts/agents/openai.yaml",
+      "sha256": "74b223d4d4ae5e824f3e23a629f0b826d84e3dababa7bef6bc366585b6954937",
+      "size_bytes": 233
+    },
+    {
+      "path": "inspect-live-contracts/SKILL.md",
+      "sha256": "8cd04d2feb62521d9313d044f9277a9cb8383717183ab7b1b02fd3ae43443626",
+      "size_bytes": 1257
+    },
+    {
+      "path": "inspect-llm-architecture/agents/openai.yaml",
+      "sha256": "ca7dd782e04d58a61ba5543e3aee3128f5ebe216351cf70a0a1e2da035e62103",
+      "size_bytes": 276
+    },
+    {
+      "path": "inspect-llm-architecture/references/architecture-inspection-contract.md",
+      "sha256": "71a07fe4c33437ef0397ebff1be62e5903a31eb44d32a6e0f7079c94e2bd0221",
+      "size_bytes": 1557
+    },
+    {
+      "path": "inspect-llm-architecture/scripts/__pycache__/inspect_llm_architecture.cpython-314.pyc",
+      "sha256": "6ce5a1e2920a5df736757e77a9fe36723fc480f0d39209804d40f490d4ca06fc",
+      "size_bytes": 11572
+    },
+    {
+      "path": "inspect-llm-architecture/scripts/inspect_llm_architecture.py",
+      "sha256": "c1e21ebdc617132eb085b73bebde716b221a6d79605b176fa108b33985739c43",
+      "size_bytes": 8781
+    },
+    {
+      "path": "inspect-llm-architecture/SKILL.md",
+      "sha256": "594294286c2e9f5031e41c87fafdc97a69445e9731f3368a62f03ab996ea859b",
+      "size_bytes": 1698
+    },
+    {
+      "path": "install-capabilities-selectively/agents/openai.yaml",
+      "sha256": "56396922ae37a58d5bde8fa3999d541c854a843f740fe86976c6083fdf16a1cd",
+      "size_bytes": 284
+    },
+    {
+      "path": "install-capabilities-selectively/references/plan-selective-capability-installation.json",
+      "sha256": "30a62ee19f5e227369476249cbee0b8d12cf570572bc971a4ab4370edee9c3e4",
+      "size_bytes": 1810
+    },
+    {
+      "path": "install-capabilities-selectively/SKILL.md",
+      "sha256": "74dcdad77386f29e83686e5d49d1f2e0e9ff40bb7bbdcebf5b71d34a42e6cb98",
+      "size_bytes": 1962
+    },
+    {
+      "path": "integrate-n8n-webhooks-and-apis/agents/openai.yaml",
+      "sha256": "f741453676a349546d950efd331d874f357250bef5484e0e9ec62e10310858c3",
+      "size_bytes": 352
+    },
+    {
+      "path": "integrate-n8n-webhooks-and-apis/SKILL.md",
+      "sha256": "ed7c587a6341acf4b6bf7b0f0dd914d60df5e189bfd24cbc38d10b12fce28245",
+      "size_bytes": 2998
+    },
+    {
+      "path": "integrate-supabase-data-api-and-clients/agents/openai.yaml",
+      "sha256": "025fedfbd4b80b9c064c8840ab147311759b528351b016b59654a4facf1393ab",
+      "size_bytes": 367
+    },
+    {
+      "path": "integrate-supabase-data-api-and-clients/SKILL.md",
+      "sha256": "f70bf975c1a035974d27e65a5461e8dfa4af71913a6f1dad3d75c4c785c24020",
+      "size_bytes": 3023
+    },
+    {
+      "path": "intent-preserving-merge-resolution/agents/openai.yaml",
+      "sha256": "b0f4f81419c9ce84e01617def4cf6d23adbd91a360fccb61d3a27d128bd61d8c",
+      "size_bytes": 349
+    },
+    {
+      "path": "intent-preserving-merge-resolution/SKILL.md",
+      "sha256": "62e581370fb71200d8279fec5facd505c978507a23a94b375256c583e0555045",
+      "size_bytes": 860
+    },
+    {
+      "path": "isolate-project-streams/agents/openai.yaml",
+      "sha256": "4d745f3a2aff61cf19afc782c21ad2606ea0b8db79d9d6d0fa9ed61237843cbd",
+      "size_bytes": 261
+    },
+    {
+      "path": "isolate-project-streams/references/scope-contract.md",
+      "sha256": "94209252784e570949bafc29669b9ff846f25242b2be910c245da3ea4ed76d9a",
+      "size_bytes": 1782
+    },
+    {
+      "path": "isolate-project-streams/SKILL.md",
+      "sha256": "f9e9b72e34dccf638d7fe7022a987f23a92cea4f1e76686f1ce08bf353b998cc",
+      "size_bytes": 2664
+    },
+    {
+      "path": "long-horizon-progress-ledger/agents/openai.yaml",
+      "sha256": "130dfa135927562a3c6fce6e1e16ee50e9b6d04dd3e7e0c4dd3c9eaf401e50a0",
+      "size_bytes": 262
+    },
+    {
+      "path": "long-horizon-progress-ledger/SKILL.md",
+      "sha256": "7e3aa3e6cd7b2bdc6ba6881a117a3c112d680d8ecbc78e488131dd9612323877",
+      "size_bytes": 1192
+    },
+    {
+      "path": "maintain-capability-catalog/agents/openai.yaml",
+      "sha256": "3002fd767641fc396361a77db8f3bffbbced6bae11d613c2dae4a8c1ecf42506",
+      "size_bytes": 278
+    },
+    {
+      "path": "maintain-capability-catalog/references/capture-architecture-decisions.json",
+      "sha256": "6eb4c798b1e41aafacbca8629d61892c8782efc5fe029844493752e4f2c3148b",
+      "size_bytes": 1657
+    },
+    {
+      "path": "maintain-capability-catalog/references/detect-workspace-capability-needs.json",
+      "sha256": "dbd2960cfdad9aa472458db06a498281c9de9aeecb0fd39acf422e792e9ddb7f",
+      "size_bytes": 1678
+    },
+    {
+      "path": "maintain-capability-catalog/references/distill-operational-rules.json",
+      "sha256": "458e3595d97d7ab104466aa951d64cc5598ceb3e45f325d4842ba7d1cd5efbd5",
+      "size_bytes": 1595
+    },
+    {
+      "path": "maintain-capability-catalog/references/maintain-skill-health.json",
+      "sha256": "cd0b4724463eaf16633f933ea3ed3bbdb4c6896f06977314d54adc2ad512dce7",
+      "size_bytes": 1813
+    },
+    {
+      "path": "maintain-capability-catalog/SKILL.md",
+      "sha256": "61fb5dbc2972f902f7c0a4c8dba0158a3701bf0f74b35e1685ced2972eb32a72",
+      "size_bytes": 4078
+    },
+    {
+      "path": "manage-agent-session-fabric/agents/openai.yaml",
+      "sha256": "abfda3029466311f73e6cac2499414b86b09f3bb688766ea85b138827b2b900c",
+      "size_bytes": 270
+    },
+    {
+      "path": "manage-agent-session-fabric/SKILL.md",
+      "sha256": "1ee9fb15339afb2e8353de1aa598dd8fbc9fcedcccd571510468452bfb40af7a",
+      "size_bytes": 1214
+    },
+    {
+      "path": "manage-mcp-lifecycle/agents/openai.yaml",
+      "sha256": "e897a2f042e369b69e1c9230f4a8e2739147530d4980167e7752d6ab077d5236",
+      "size_bytes": 236
+    },
+    {
+      "path": "manage-mcp-lifecycle/SKILL.md",
+      "sha256": "416f2d4353bad6355206665f955b9eec00bab95df5756ea1e3ffd3a10e8986af",
+      "size_bytes": 1390
+    },
+    {
+      "path": "manage-n8n-credentials/agents/openai.yaml",
+      "sha256": "4869c2201934164196ccda56e0b8d49dea52a06e5887dfea36d4d23e32cf191c",
+      "size_bytes": 317
+    },
+    {
+      "path": "manage-n8n-credentials/SKILL.md",
+      "sha256": "3e3abadf736bdbf5ba62fcf45f8a146ec9dd45c9c9ba4b666f292688b5a20687",
+      "size_bytes": 2842
+    },
+    {
+      "path": "manage-resource-lifecycle/agents/openai.yaml",
+      "sha256": "226033a987e3f01d8be734c671165400b1ba0460cea618b8c6238f11d14abad9",
+      "size_bytes": 256
+    },
+    {
+      "path": "manage-resource-lifecycle/references/lifecycle-policy.md",
+      "sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "size_bytes": 2295
+    },
+    {
+      "path": "manage-resource-lifecycle/SKILL.md",
+      "sha256": "418f87a6f2b21746e7202c297405d0d08761fd7325b0cbc5774f30737a5e6755",
+      "size_bytes": 2464
+    },
+    {
+      "path": "manage-revocable-certification/agents/openai.yaml",
+      "sha256": "8e4c8a296ba34f68cc1fdd04669ef309779c9de6f2fa82b74d706603edca526d",
+      "size_bytes": 237
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/adversarial-robustness-certifier.json",
+      "sha256": "9c74f8144cf988cb394c57aa2af99d5abee4be4f2511bf4dbc027b881856b8be",
+      "size_bytes": 9483
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/archive-hygiene.json",
+      "sha256": "b00f58db3941d059855ad18976ba616457007d83388b576fce0de80e3a0596cf",
+      "size_bytes": 9303
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/behavioral-competence-certifier.json",
+      "sha256": "6e6a5fa762587345ac8bde121798c8f4ae0749b26b5451aaa44e933c36a65b1b",
+      "size_bytes": 9453
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/collision-and-merge-planner.json",
+      "sha256": "4ccd12eb5fdd581f378d0e06a76d29d1d402a32d00f2209a8ad1fd74a02c72ee",
+      "size_bytes": 9480
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/completion-cutline-enforcer.json",
+      "sha256": "d0217c5379c8b8c67be015313df5165e4700468a837ff9f227ff496fdf23ae76",
+      "size_bytes": 9404
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/deterministic-correctness-certifier.json",
+      "sha256": "3685c8aa968d53303f58505939781b1c1e91506f3aca3397a9d197458c4cce5f",
+      "size_bytes": 9485
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/duplicate-capability-detector.json",
+      "sha256": "b23b37e3109ec229fd07d1537c7076e258f938cbccce86665d78680ef5923412",
+      "size_bytes": 9399
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/field-validation-monitor.json",
+      "sha256": "70037bf1a7c952f3a752d6363ee1f5ee79edf1073e6f626e9344c8fd4fb60c8b",
+      "size_bytes": 9345
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/long-horizon-reliability-certifier.json",
+      "sha256": "5d540e7047242317740f12069b79448c269a01ad71defc069d251fd88709e77c",
+      "size_bytes": 9483
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/manifest-reconciler.json",
+      "sha256": "4eb0689df26dd27ca41b287ea386d3df20b6a75d5ead308cb45793d1a252973a",
+      "size_bytes": 9284
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/operational-resilience-certifier.json",
+      "sha256": "e3ef5a93ed0703a8c74c949d2a7650cd7e757fe5fa5fd2a48e22be31e8e077af",
+      "size_bytes": 9441
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/package-integrity-validator.json",
+      "sha256": "1ccb1ac106277992f956ee97fd6a0503236b780350dbde7b31061a7a9643e4e9",
+      "size_bytes": 9431
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/recertification-impact-analyzer.json",
+      "sha256": "b7da283c29fd6b0cc8de6950660e9d92aa97abeeaad93df37516f088a8e283e9",
+      "size_bytes": 9439
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/release-trust-certifier.json",
+      "sha256": "3bf5d9157e9de71d11e25323e76ac704aa7980f791ac006cab0d4ee2a4ec0d88",
+      "size_bytes": 9349
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities/revocable-certification-manager.json",
+      "sha256": "dde503278ace06b81765b64a4f3fe37cbbf4bfe70699eb2ca95d63f5f82f4fa0",
+      "size_bytes": 9496
+    },
+    {
+      "path": "manage-revocable-certification/references/capabilities-index.json",
+      "sha256": "7a8663b89f6c7fb2257d9400aebe5cc2fd1ff787dd35b1c37004d28a4259c60d",
+      "size_bytes": 5920
+    },
+    {
+      "path": "manage-revocable-certification/references/capability-contracts.json",
+      "sha256": "c7e05cdc20d93575ddfaed1849ebc5491bd68137e5b7f06629e73869cbb34c4b",
+      "size_bytes": 152854
+    },
+    {
+      "path": "manage-revocable-certification/references/script-contracts.json",
+      "sha256": "51d6a0b169d36db1a776806a26763acd538aca344d71a04f26fb15ec3c56a134",
+      "size_bytes": 15374
+    },
+    {
+      "path": "manage-revocable-certification/references/scripts/archive-hygiene.json",
+      "sha256": "77318cbfd52eca168119ff2965be972e8a1df0b3e838b4693058efe2e8468687",
+      "size_bytes": 1736
+    },
+    {
+      "path": "manage-revocable-certification/references/scripts/archive-verifier.json",
+      "sha256": "10ba0d5b42a791c8a2a9d9aa3607af8a5f7a8737c80b4cbfc3e95dbd66ba159c",
+      "size_bytes": 1762
+    },
+    {
+      "path": "manage-revocable-certification/references/scripts/certification-aggregator.json",
+      "sha256": "1c762df8bb5ab09880677433460712464280aa902f9e15239a646b401175afaf",
+      "size_bytes": 1794
+    },
+    {
+      "path": "manage-revocable-certification/references/scripts/collision-merge-planner.json",
+      "sha256": "f202edb2500a57f592137e7925e5db9ad778bc5c5548a713c2d7edf6274af334",
+      "size_bytes": 1790
+    },
+    {
+      "path": "manage-revocable-certification/references/scripts/completion-cutline.json",
+      "sha256": "f21fcca7b104726142a834d6766ea042a50fd5ddc6975ca8cbf763747b5c9800",
+      "size_bytes": 1770
+    },
+    {
+      "path": "manage-revocable-certification/references/scripts/duplicate-detector.json",
+      "sha256": "421c484aa8dffb9f77b1ae0e66eb8ded41b79fa764573b3f3f03e4152b949db0",
+      "size_bytes": 1770
+    },
+    {
+      "path": "manage-revocable-certification/references/scripts/manifest-reconciler.json",
+      "sha256": "8469423dfacf758efe25455f26bdce3d1e9e1d8a984dfa129f62be98f49fd13e",
+      "size_bytes": 1774
+    },
+    {
+      "path": "manage-revocable-certification/references/scripts/recertification-impact.json",
+      "sha256": "bc386ff7dfa29ae520d9db4258390dede9dc710eda2b500e9279a8e795bf457d",
+      "size_bytes": 1786
+    },
+    {
+      "path": "manage-revocable-certification/references/scripts-index.json",
+      "sha256": "8b326eafbda58b2b76061203300e8aee2f1c445a8b37701268f446bf78bf8d83",
+      "size_bytes": 2944
+    },
+    {
+      "path": "manage-revocable-certification/scripts/authoritative_archive_verifier.py",
+      "sha256": "9ec94426e556bc6f434ad7620f1bf0ef761ef89353fa4efaf31b3f33f7d70e39",
+      "size_bytes": 1015
+    },
+    {
+      "path": "manage-revocable-certification/scripts/authoritative_certification_aggregator.py",
+      "sha256": "8e40567f7b058f51d63c93d714b3066d6180996c2a9ef62a2bc8b74a05fd7698",
+      "size_bytes": 909
+    },
+    {
+      "path": "manage-revocable-certification/scripts/authoritative_collision_merge_planner.py",
+      "sha256": "ff20550f0d408ae43892efe8ed9b7b6460c862dc27335c977dd5312ca2988d8a",
+      "size_bytes": 1231
+    },
+    {
+      "path": "manage-revocable-certification/scripts/authoritative_completion_cutline.py",
+      "sha256": "db69b657f183ee2288e9faee6e9cc2da9aad85f8c5a3d0692433aed64d2b7d14",
+      "size_bytes": 1066
+    },
+    {
+      "path": "manage-revocable-certification/scripts/authoritative_duplicate_detector.py",
+      "sha256": "8abb6c4d4ffd8fab279dbe245e59255fac8c69ff5d7a732389de2c1063171c5a",
+      "size_bytes": 2375
+    },
+    {
+      "path": "manage-revocable-certification/scripts/authoritative_manifest_reconciler.py",
+      "sha256": "1ec0a56f0fea77f4125807563fe31cdcc865259bb6e2ff9f0381a5b1e2f9e2f4",
+      "size_bytes": 1083
+    },
+    {
+      "path": "manage-revocable-certification/scripts/authoritative_recertification_impact.py",
+      "sha256": "9c305c37493a096ac7dd734cfef403efbbb601a31b63e8b8201f91874691fc72",
+      "size_bytes": 1452
+    },
+    {
+      "path": "manage-revocable-certification/scripts/domain_tool.py",
+      "sha256": "19d78dbf1fac448e681d620105a0c05927479d7be905aa3c2ce0ae3669665413",
+      "size_bytes": 834
+    },
+    {
+      "path": "manage-revocable-certification/SKILL.md",
+      "sha256": "b86848859c54e7d5faf23859414317daec93af33f1c9ea163c8ecdc9c1eae6f7",
+      "size_bytes": 1736
+    },
+    {
+      "path": "manage-supabase-environments/agents/openai.yaml",
+      "sha256": "1f50560e1c4b568e87a7ac19b2d968423ce608cea9b4062d4afdb5a3a1178ba4",
+      "size_bytes": 336
+    },
+    {
+      "path": "manage-supabase-environments/SKILL.md",
+      "sha256": "b399b51164a755801e010b7bcabc3831840fea52db9cd9d38b7b4f9a4364bf8f",
+      "size_bytes": 2832
+    },
+    {
+      "path": "manage-supabase-migrations/agents/openai.yaml",
+      "sha256": "2c2e5c3aa099f18e148889eb035f2e8851c54e0a50f4b345eb8798c19db67fcf",
+      "size_bytes": 315
+    },
+    {
+      "path": "manage-supabase-migrations/SKILL.md",
+      "sha256": "532eef79602b517be9a097573045a293d55e754082345ce018a4045fed1ea30c",
+      "size_bytes": 2896
+    },
+    {
+      "path": "map-project-intelligence/agents/openai.yaml",
+      "sha256": "3ca373aba4b58547efb1165a11eee03dc3c9a73115e2de017188bafef5de0af3",
+      "size_bytes": 283
+    },
+    {
+      "path": "map-project-intelligence/references/project-map-contract.md",
+      "sha256": "7ac2cf224d148f9bdc23871a0b54a0ca54d02475f9900d92f5693e38b341b1f5",
+      "size_bytes": 743
+    },
+    {
+      "path": "map-project-intelligence/scripts/build_project_map.py",
+      "sha256": "afc5a1e275c1877d45697f4adf719c7fb9dbdcda2996d2ff29244a9a58032cb0",
+      "size_bytes": 1557
+    },
+    {
+      "path": "map-project-intelligence/scripts/validate_project_map.py",
+      "sha256": "39347a91f720a647ad6a9bf592e3a7f90f8ba99a2dcfbd24822370835dfc9f3b",
+      "size_bytes": 680
+    },
+    {
+      "path": "map-project-intelligence/SKILL.md",
+      "sha256": "be4d0fdd32ead5ac6917a465045f44359ee63b518b5ce3f3960352e1c3b0e06a",
+      "size_bytes": 1834
+    },
+    {
+      "path": "memory-applicability-critic/agents/openai.yaml",
+      "sha256": "ca63292cfd0889801a8e8fea674aa0ad41dde4ffed33c175d10f4884815fb4d7",
+      "size_bytes": 224
+    },
+    {
+      "path": "memory-applicability-critic/SKILL.md",
+      "sha256": "3cccbe70c81d6e174e8e835e3af2d0f6df7e20c0cd609f2f96fa8d16891968bb",
+      "size_bytes": 2293
+    },
+    {
+      "path": "memory-injection-firewall/agents/openai.yaml",
+      "sha256": "545987c15a191d6d6a56defd109672c1e3f6637960745fd5496983fa7697022f",
+      "size_bytes": 218
+    },
+    {
+      "path": "memory-injection-firewall/SKILL.md",
+      "sha256": "753137baa8d89328c072dfc417b081c03f5bbf1b9131da90980971f8092e512d",
+      "size_bytes": 2833
+    },
+    {
+      "path": "observe-debug-supabase/agents/openai.yaml",
+      "sha256": "407dac02da2f9fbfa1967d329b22b45e33379d13ab082e5fb9f0cb94c719076e",
+      "size_bytes": 326
+    },
+    {
+      "path": "observe-debug-supabase/SKILL.md",
+      "sha256": "c810d89c49b7d5eedd1c0c1fe8652f9ac1083b440ca033c81e99a09bd77153ec",
+      "size_bytes": 2929
+    },
+    {
+      "path": "observe-operate-n8n/agents/openai.yaml",
+      "sha256": "e412976eb027888b337c273a04de65a818bf236c958a690eeb290913dabe9d80",
+      "size_bytes": 314
+    },
+    {
+      "path": "observe-operate-n8n/SKILL.md",
+      "sha256": "798ba11bdea5e396739126f1f1ec9cc1b5f81b4343e9ad3e8c31d5bba521350d",
+      "size_bytes": 2754
+    },
+    {
+      "path": "operate-engineering-research-engine/agents/openai.yaml",
+      "sha256": "f16c63ec2b7f82adf73f23a4ece0f781a2e59eaf9cbc098056eae04d1a9832cb",
+      "size_bytes": 321
+    },
+    {
+      "path": "operate-engineering-research-engine/SKILL.md",
+      "sha256": "8118164b966b1df64e16c10181ba445dac250aa831089e8ddd8d2d3178ffe77b",
+      "size_bytes": 1900
+    },
+    {
+      "path": "operate-memory-retrieval-observability/agents/openai.yaml",
+      "sha256": "0079be089bf876e7f50a0d4caf25dc9245d9520c4ed3b06ab109898be1d093fb",
+      "size_bytes": 245
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/context-budget-manager.json",
+      "sha256": "7139fbe3f7d76b6ef347b01c175690d554d39f16b0f4296eebc62e65ede1f300",
+      "size_bytes": 9244
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/context-injection-defender.json",
+      "sha256": "a2625c7b0e00f5fc80953a145408f36baf32fcfbaf76fbd40ecf633bc552ec38",
+      "size_bytes": 9369
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/document-ingestion-validator.json",
+      "sha256": "88d8d40373a67b34fceb9ad17072cbd2b70de7a015cac2ab68780db36189c3d7",
+      "size_bytes": 9377
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/episodic-memory-manager.json",
+      "sha256": "5383dc405fcd6bb578ce60ca3bafe75087eae4569c6fff0ec634929488e9a21e",
+      "size_bytes": 9328
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/genai-telemetry-instrumentation.json",
+      "sha256": "f6af22c8dfa8d55ed1803cc7bd23efd9f0255ec00ba246caca4c177cd4a2d70d",
+      "size_bytes": 9407
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/graph-retrieval.json",
+      "sha256": "6036f6b07052b11843a10e58f4d216779949bacff0b67d160a902ec40f80420b",
+      "size_bytes": 9268
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/hybrid-retrieval.json",
+      "sha256": "0b44c82d72fc3f3614e80649b1a175928048cf68ff618ce4823234258861d167",
+      "size_bytes": 9226
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/memory-compaction.json",
+      "sha256": "da939732581aa64c56a888480441a9e549b0cde3bddd540ba0702f52ce1f93d8",
+      "size_bytes": 9271
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/memory-conflict-resolution.json",
+      "sha256": "2a87937d4c480a20cded7f9e689f9e5f624e6b69aae51887346bbe5d832bd237",
+      "size_bytes": 9322
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/memory-isolation.json",
+      "sha256": "33d8425f421e1f9d126579e075dd3317b8c4afd5679b69086799228427290e9b",
+      "size_bytes": 9254
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/memory-provenance.json",
+      "sha256": "8653271fbdbd806de9af8d0f948a0bf74bb1b06fe9d86eeb4f45fb9de18b6755",
+      "size_bytes": 9266
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/memory-retention-deletion.json",
+      "sha256": "506caa630931624fb889f9718c872063c229552d60f068ff59853b4f106ee28f",
+      "size_bytes": 9310
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/memory-retrieval-planner.json",
+      "sha256": "f14503d9a5bae88461d333b6807cb6619a9257d72b1cdbcb79b84e7241cc9ecf",
+      "size_bytes": 9400
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/memory-write-gate.json",
+      "sha256": "8ca420c8580017f0de55cd452167938a133efe6a9e062f1c142975d66e729c5f",
+      "size_bytes": 9254
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/procedural-memory-manager.json",
+      "sha256": "a5bca2a56e6d5474afa44e99b1ff02da8eb8f92b4081873e14c614f6cc40c0ed",
+      "size_bytes": 9350
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/quality-drift-monitor.json",
+      "sha256": "d411a47090328713ebea705e89d0ce43ab5f5fe1cd263f61ceddeebba097c12b",
+      "size_bytes": 9257
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/replay-and-forensics.json",
+      "sha256": "1bea66dee020152eb0a2f11e8776c902b04cce0654de885d4a53e10d79f361f0",
+      "size_bytes": 9253
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/reranking.json",
+      "sha256": "75c99d3253929da50c4e67337de0c13857871aa092fb88d11a09ee09b8a905a2",
+      "size_bytes": 9113
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/retrieval-evaluator.json",
+      "sha256": "c48958908e4dda93342d4daae8da8a30cd69dc24611a1f55aa30ee062e36dea9",
+      "size_bytes": 9273
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/semantic-memory-manager.json",
+      "sha256": "04385b4bf2f3eeac9e1af82ba9ca3ef85eac23322011254eec4dd7bbcab83380",
+      "size_bytes": 9320
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/trace-correlation.json",
+      "sha256": "f6dcfb21bc433fb1420ba993622260a96c4a9dd2d1b666cab348673648646519",
+      "size_bytes": 9260
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities/working-memory-manager.json",
+      "sha256": "caceaca0bb83ad170cea28de4b9d40d6b79e298ae4a75090921621b08fc6c724",
+      "size_bytes": 9342
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capabilities-index.json",
+      "sha256": "d2aec4c490d845a88081df23cea7846421de284aef2ad3bf03cca9c68fb8c806",
+      "size_bytes": 8371
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/capability-contracts.json",
+      "sha256": "eeab65b10625f811fce731c538a984bc0f841c2a406df3feeac5dfc75ec17ef6",
+      "size_bytes": 221550
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/script-contracts.json",
+      "sha256": "4547c56c0a1ab266fec489567db5e4863a5bfd3d6fb51da0dab0ab196904a959",
+      "size_bytes": 17009
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/scripts/context-budget.json",
+      "sha256": "0163ca3bd11ea4f2e294b904946e9db3566c457f4ed7e0f5143f5f380e52c5e6",
+      "size_bytes": 1736
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/scripts/drift-monitor.json",
+      "sha256": "461f4acea268282b4ce9db8ab9c691d3107c77b7f1d293c3e84c2a0b31242c68",
+      "size_bytes": 1732
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/scripts/hybrid-retrieval.json",
+      "sha256": "71bb82ea20cce56313113399d30d1820638d31a014bb815c8cba318a7d01c378",
+      "size_bytes": 1744
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/scripts/ingestion-validator.json",
+      "sha256": "c55d6cb0c47695dd0455b6409539e9196c43691e7b7ac2fa16022fe300b31169",
+      "size_bytes": 1756
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/scripts/memory-write-gate.json",
+      "sha256": "f65bd3de3706d8ac09463ed8c461e3804c7a5ff1fcf211602101718f25228367",
+      "size_bytes": 1748
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/scripts/replay-bundle.json",
+      "sha256": "4551c17092446122dd71c002c2915cd322ec2ca74cb1c1ca444f36194eb169ea",
+      "size_bytes": 1732
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/scripts/retrieval-evaluator.json",
+      "sha256": "484242474265eaab7758b01e4d3e68289b61c2bb2e6ef2dad4dc5d2fb8341444",
+      "size_bytes": 1756
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/scripts/scoped-memory.json",
+      "sha256": "6a9cf89d43d1549e8e52a0a35b01718dae051047eb7da0e75b3b46532672457c",
+      "size_bytes": 1732
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/scripts/trace-recorder.json",
+      "sha256": "fd17cc84b3d3bd404074ee3e10b82d7e54539b6c7b45909bd4c2b655a5ecb879",
+      "size_bytes": 1736
+    },
+    {
+      "path": "operate-memory-retrieval-observability/references/scripts-index.json",
+      "sha256": "d0243d1866545048eede0cfc2ddb14b805715aaf18d3f495a2d77ed210322143",
+      "size_bytes": 3267
+    },
+    {
+      "path": "operate-memory-retrieval-observability/scripts/authoritative_context_budget.py",
+      "sha256": "7913f13a6040e48614c110c055dd90ce3425d61312949131d714c4b887086a66",
+      "size_bytes": 952
+    },
+    {
+      "path": "operate-memory-retrieval-observability/scripts/authoritative_drift_monitor.py",
+      "sha256": "b2ffc889088604aa6e6301c1b60bdf79ebbafd0a106088a0668297fe88e093dd",
+      "size_bytes": 972
+    },
+    {
+      "path": "operate-memory-retrieval-observability/scripts/authoritative_hybrid_retrieval.py",
+      "sha256": "8803bd9c7c6b36a1611a6ba2633d2c6c7ece992c543b6a42804a016a7d76760d",
+      "size_bytes": 1498
+    },
+    {
+      "path": "operate-memory-retrieval-observability/scripts/authoritative_ingestion_validator.py",
+      "sha256": "7a4427ab1f5d8470b303c5809a80c588f738e444d337cd0f03000bbbd589c1d5",
+      "size_bytes": 897
+    },
+    {
+      "path": "operate-memory-retrieval-observability/scripts/authoritative_memory_write_gate.py",
+      "sha256": "0d645fe9a737acf35a9cce6f2ea8ca958aa7ab5c277a474599e1181f76bdbbee",
+      "size_bytes": 938
+    },
+    {
+      "path": "operate-memory-retrieval-observability/scripts/authoritative_replay_bundle.py",
+      "sha256": "e0205ab47fa71037cddd13bf6792be9ad33be5fcd3fcdf1458e64673f1d15485",
+      "size_bytes": 849
+    },
+    {
+      "path": "operate-memory-retrieval-observability/scripts/authoritative_retrieval_evaluator.py",
+      "sha256": "9cba017ce1b757c7433d9ae2c4a646fb20d883177c16a27a9e6d9f77b01d7c48",
+      "size_bytes": 1035
+    },
+    {
+      "path": "operate-memory-retrieval-observability/scripts/authoritative_scoped_memory.py",
+      "sha256": "abb1b29bcf7f58971474d1cf8ffad982ed84cc9ed4decd511716ad8ff2a0afab",
+      "size_bytes": 2571
+    },
+    {
+      "path": "operate-memory-retrieval-observability/scripts/authoritative_trace_recorder.py",
+      "sha256": "9c16d4ebfd1ddec0a20e3cc5909abec58b68364ff9c26b7143dfe742246a04f0",
+      "size_bytes": 1127
+    },
+    {
+      "path": "operate-memory-retrieval-observability/scripts/domain_tool.py",
+      "sha256": "19d78dbf1fac448e681d620105a0c05927479d7be905aa3c2ce0ae3669665413",
+      "size_bytes": 834
+    },
+    {
+      "path": "operate-memory-retrieval-observability/SKILL.md",
+      "sha256": "3e41f74c9ef68980603481113754b8aa667e06ddd6fe67aafd106eb7688706b7",
+      "size_bytes": 1696
+    },
+    {
+      "path": "operate-n8n-supabase-production/agents/openai.yaml",
+      "sha256": "5bf77644d86ba7d1dbe82712e55f429c6ebad554001e4a0ad9a964846536896e",
+      "size_bytes": 350
+    },
+    {
+      "path": "operate-n8n-supabase-production/SKILL.md",
+      "sha256": "668d58661f13269d37df5465da7ef91c5c8a55b17cf1f633bb11a1d709e7764e",
+      "size_bytes": 3002
+    },
+    {
+      "path": "operate-supabase-vector-search/agents/openai.yaml",
+      "sha256": "5c9d82e4919673c9901d81d812e52bfbb8c932ffda63a0155eda60b163bc1399",
+      "size_bytes": 340
+    },
+    {
+      "path": "operate-supabase-vector-search/SKILL.md",
+      "sha256": "e133b865f97203834cdcb019ffe1ac5f6323b139f6ae5d6fb5b93d5968025842",
+      "size_bytes": 3086
+    },
+    {
+      "path": "optimize-agent-harness/agents/openai.yaml",
+      "sha256": "e7c18ddd0d37de9ca0112a2bec36498c17e2488490d743534f77e2219ee82d18",
+      "size_bytes": 251
+    },
+    {
+      "path": "optimize-agent-harness/references/audit-agent-harness-performance.json",
+      "sha256": "9534113ada3fe5981aa4361d45593ebd9abe528df0f5c9aedfea5aeba21d8e73",
+      "size_bytes": 1668
+    },
+    {
+      "path": "optimize-agent-harness/references/manage-harness-context-budget.json",
+      "sha256": "ca20b182fbae23bd7aa25d34758745a9d524823a695c83181444c8977598b560",
+      "size_bytes": 1505
+    },
+    {
+      "path": "optimize-agent-harness/SKILL.md",
+      "sha256": "b1f3e0c26401ee7be543cd7a554de2cea1876fe37198d7c66c642705eac1f8b2",
+      "size_bytes": 2559
+    },
+    {
+      "path": "orchestrate-agent-fleets/agents/openai.yaml",
+      "sha256": "afd05ac6dff1101daa259da421e431f4d23f7af10b5f6fc9aec0607007d3cce7",
+      "size_bytes": 275
+    },
+    {
+      "path": "orchestrate-agent-fleets/SKILL.md",
+      "sha256": "3be96b8ba0fb58853f564451dfad02ad302d7aff1b5dca975b70ba1421479a96",
+      "size_bytes": 1317
+    },
+    {
+      "path": "orchestrate-capability-scheduling/agents/openai.yaml",
+      "sha256": "314152565493a7ea5aec3ee751ad09f8a662a84b3a003112cc6ba520625e13ff",
+      "size_bytes": 128
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/adaptive-performance-router.json",
+      "sha256": "2cc0f4eeccbcdbc5ddf13f1145564981633ca41a4d61fb00f3871bc74b9b71c6",
+      "size_bytes": 3150
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/blackboard-work-coordinator.json",
+      "sha256": "370728e9989d66a437274d227b04d70091cacb1f99928443edf63d5935439a37",
+      "size_bytes": 3180
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/capability-marketplace-broker.json",
+      "sha256": "ded5d350a2d62191beecff0842b0eb65a793bb881c134f07fb6a80ba2536d498",
+      "size_bytes": 3116
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/concurrency-rate-limit-governor.json",
+      "sha256": "fc48269aee8f111d9042520f3db99155cdeef02cf4bcdd4899cee6118e735b6d",
+      "size_bytes": 3142
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/confidence-aware-scheduler.json",
+      "sha256": "ac20cc621510ff5ebb81ac1ae3660301f6a2c9e3e151269c19b6e4b80cad834a",
+      "size_bytes": 3167
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/cost-token-budget-scheduler.json",
+      "sha256": "d47ca3874ff9a0f77271c19650155ee6fd331d0f5436ea10634bf85ec361c637",
+      "size_bytes": 3138
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/critical-path-optimizer.json",
+      "sha256": "ffd97bc7635c2bc29f3d9062ccf07ea3e08905d48bd2a45fa31c2a8808be0a5e",
+      "size_bytes": 3158
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/deadline-sla-scheduler.json",
+      "sha256": "8f49d4726659430b62fc2f5bfdaed625152dd15caabebb592800d0dac4b10d71",
+      "size_bytes": 3112
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/dependency-dag-scheduler.json",
+      "sha256": "a430b86f64cf6133844ed6b37446dace16e825201ee65cccd31e98152a5e3da0",
+      "size_bytes": 3201
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/distributed-lease-lock-manager.json",
+      "sha256": "ea233551b860a4370ffa4ff8dec20e8a6c334163b7669630f5b18384d4397ec7",
+      "size_bytes": 3201
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/evidence-completion-scheduler.json",
+      "sha256": "4018996353dc57581518a13c31c9c97a4a9dea8ec87219f5d258180ee18a5af6",
+      "size_bytes": 3149
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/failure-recovery-scheduler.json",
+      "sha256": "caca96e6fe2dfcc8e718b2b3ad17e4352c60e5d39b473bbb14f5ff91c4e94a64",
+      "size_bytes": 3164
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/heterogeneous-compute-router.json",
+      "sha256": "5f751af875811af88505b3a41d8fd255b413a2f7388d9f0023055dc574de0a8a",
+      "size_bytes": 3106
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/human-approval-gate-scheduler.json",
+      "sha256": "80b1be2e1cf069843e8a51fa4c8c5808f6b94ee1243c304b351c9f633a40187c",
+      "size_bytes": 3131
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/latency-aware-scheduler.json",
+      "sha256": "bb19bde77056f9c8357ce142974986a0668ef1247eef0e5d877b2faec6a090b9",
+      "size_bytes": 3068
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/local-cloud-execution-router.json",
+      "sha256": "9e44c7b4f612e8cef8629b4fdf48f76171dc1e456d3a6e11bf6d9666433c1734",
+      "size_bytes": 3181
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/maintenance-idle-work-scheduler.json",
+      "sha256": "acd7dd6873e9fbb239edf14bebbec996cadf878cfff908a508f9018395e378c9",
+      "size_bytes": 3163
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/opportunistic-backfill-scheduler.json",
+      "sha256": "307049b9978fa938cab25bada6198648a3d4a448c4736bc2ffb857b799849474",
+      "size_bytes": 3080
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/parallelism-opportunity-detector.json",
+      "sha256": "437322f68383e18907570c68c0c937882a354517b6cb023226167942bd89e8fc",
+      "size_bytes": 3152
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/preemption-checkpoint-manager.json",
+      "sha256": "f9f9f7668618c68b3dc09b839dc0e1a3030df9efe7485c4a87bc7f7937338548",
+      "size_bytes": 3134
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/priority-queue-scheduler.json",
+      "sha256": "ebbb5cc2fe0a75ba9b4457a594cef8c98751421c63124175d064b4b604aad025",
+      "size_bytes": 3186
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/queue-starvation-fairness-guard.json",
+      "sha256": "f7e8c658e12bbf54c77c37827a38abfdcb3c29eb0441f4db645b3535793e2334",
+      "size_bytes": 3175
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/resource-aware-scheduler.json",
+      "sha256": "0f1254394c3282e0dbbcfb216c4cba30c75c36bc0ce705544ab34c9e7146cfcf",
+      "size_bytes": 3057
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/risk-aware-scheduler.json",
+      "sha256": "6b5b556f5be93264916bce10e915f6908d31e37b12e2062115f94cce83fa8cc7",
+      "size_bytes": 3131
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/schedule-observability-auditor.json",
+      "sha256": "75924458d840578f46b014c880eec2d72cd5a5dd0f0e174d2aab496f25c92b60",
+      "size_bytes": 3183
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/schedule-simulation-planner.json",
+      "sha256": "4724a00c7d17a72d0c369d5af0db1f96287b3c22092b7fa0959f71e03d0c7a6a",
+      "size_bytes": 3105
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/scheduler-certification-manager.json",
+      "sha256": "99184e42c79bcbf41acb6ae6cdee4744e1cd69882d9a5b545eef32ab8230a319",
+      "size_bytes": 3145
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/scheduler-chaos-resilience-tester.json",
+      "sha256": "cea45a88c2d1c6ad862d0c6ec0e51dc047e8d0c5a35f4d17d3a96ea35e6f8992",
+      "size_bytes": 3174
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/scheduler-policy-validator.json",
+      "sha256": "468f2d4a73618f888ee6dac4441d998e91c6425302843fbb27f0e3b77485ce35",
+      "size_bytes": 3188
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capabilities/skill-arbitration-engine.json",
+      "sha256": "c129ea836859cc24403629f79cb62e7c6348053cbdd76dcee6ba5a0fe727ed93",
+      "size_bytes": 3162
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/capability-index.json",
+      "sha256": "182b0ad8212368c452d2056837af3585514a587969d9aa26b4242cf68a6c907e",
+      "size_bytes": 11919
+    },
+    {
+      "path": "orchestrate-capability-scheduling/references/workflow-index.json",
+      "sha256": "ab6f4b3da7e2b8fd178447366480ef0443191b02b29fa2939bf6989264ae5bdb",
+      "size_bytes": 1136
+    },
+    {
+      "path": "orchestrate-capability-scheduling/SKILL.md",
+      "sha256": "6a698cfe38d3578b6e7ed0cd7110b1f903416e9b4f0a4df96d459d7acb2d0990",
+      "size_bytes": 2347
+    },
+    {
+      "path": "orchestrate-engineering-loop/agents/openai.yaml",
+      "sha256": "897c7e74bde4ba5ec1659fe069e75544dcb8ef377591aae14465ebc7ba473226",
+      "size_bytes": 223
+    },
+    {
+      "path": "orchestrate-engineering-loop/references/runtime-contract.md",
+      "sha256": "ab758371e384caa2df5f81d354cf3d790661d87efef780b5578747b8b521f17a",
+      "size_bytes": 1010
+    },
+    {
+      "path": "orchestrate-engineering-loop/SKILL.md",
+      "sha256": "677b5d3a75054b902e701bb212c1b769a81f5a8425983eaf45ca8309e0b39003",
+      "size_bytes": 3300
+    },
+    {
+      "path": "orchestrate-security-validation/agents/openai.yaml",
+      "sha256": "3004d56c2e6bd88e3db432fd7a4ff281feee63f6679e82d1717493d06c10e61a",
+      "size_bytes": 255
+    },
+    {
+      "path": "orchestrate-security-validation/scripts/__pycache__/aggregate_security_findings.cpython-314.pyc",
+      "sha256": "fabaf7b3e5885b5e1bb009ffb43c8945118c029a3f56e7a37d09de5542c56a74",
+      "size_bytes": 5886
+    },
+    {
+      "path": "orchestrate-security-validation/scripts/aggregate_security_findings.py",
+      "sha256": "1f8612ea4c946a6474a83b66d8810d697c4b024ca98280ccab622957565b2276",
+      "size_bytes": 3292
+    },
+    {
+      "path": "orchestrate-security-validation/SKILL.md",
+      "sha256": "226c50f4689dbe0e46f5948b94b8318e6b23af9e1bf4f3181c2670fe0b08a34d",
+      "size_bytes": 1321
+    },
+    {
+      "path": "outcome-verifier/agents/openai.yaml",
+      "sha256": "ed184a8243c49011aab6f9206e9b81ed67f89c653014e03a7dcda82979101dc7",
+      "size_bytes": 191
+    },
+    {
+      "path": "outcome-verifier/SKILL.md",
+      "sha256": "620a17486ca59e450777afc31519179a05d2ee6f4efb4b07854bdf6b6a9a4252",
+      "size_bytes": 2815
+    },
+    {
+      "path": "paper-mechanism-extractor/agents/openai.yaml",
+      "sha256": "02844531ec776e8502ac68d558e501e2c6f2a726f026ffb69fe3b90e2dff33d4",
+      "size_bytes": 218
+    },
+    {
+      "path": "paper-mechanism-extractor/SKILL.md",
+      "sha256": "ac4463c1adf019ef167469f9ec90403011339d4be5791e597a2e9b25f577dc8e",
+      "size_bytes": 2207
+    },
+    {
+      "path": "permission-diff-auditor/agents/openai.yaml",
+      "sha256": "5c6620104f09c0f8f7e6bf0c7c2275f4c343922ea6591132b6eaa1664f2ada00",
+      "size_bytes": 212
+    },
+    {
+      "path": "permission-diff-auditor/SKILL.md",
+      "sha256": "cc82a82308a63a7323dd59e9e08c0326a3441116e741ce97409f0346eb2bfa39",
+      "size_bytes": 2102
+    },
+    {
+      "path": "plan-local-model-deployment/agents/openai.yaml",
+      "sha256": "816da970541dc7ebc91a4261d499221d9790fdec045ef8a4f7228a65ef12c342",
+      "size_bytes": 260
+    },
+    {
+      "path": "plan-local-model-deployment/references/local-model-planning-contract.md",
+      "sha256": "fe10e04e7ac0488b2101032872debfb3db058671a875910bcd20cf2e7cffe746",
+      "size_bytes": 1581
+    },
+    {
+      "path": "plan-local-model-deployment/scripts/__pycache__/plan_local_model_deployment.cpython-314.pyc",
+      "sha256": "2d52e6813777e25e801ff37e9758019cac694a1d4beb0ae6f0766d2ef79ba68b",
+      "size_bytes": 9845
+    },
+    {
+      "path": "plan-local-model-deployment/scripts/plan_local_model_deployment.py",
+      "sha256": "9490bf32ffbc9be28bf35bffead99671a835b072035bb6f49bcb693d46dc9c85",
+      "size_bytes": 8036
+    },
+    {
+      "path": "plan-local-model-deployment/SKILL.md",
+      "sha256": "ec6b4862e0633512a7d29328a1cfe4b1ff0cf28730b199aff770c6acc28f8792",
+      "size_bytes": 1822
+    },
+    {
+      "path": "procedural-memory-compiler/agents/openai.yaml",
+      "sha256": "46d37621c3eba6fa3a5f6688bc255b21c4ede5d9829c4b93abe488b0682c5718",
+      "size_bytes": 221
+    },
+    {
+      "path": "procedural-memory-compiler/SKILL.md",
+      "sha256": "b200a36457b8cb20ab13c641ecf91551650109a609fc1b965311f3b94394ce2d",
+      "size_bytes": 2850
+    },
+    {
+      "path": "productization-gap-analyzer/agents/openai.yaml",
+      "sha256": "b1a5fd8c6490a07d3abbf04350ca9c1f2e393ac0b1e38b155d201b5c718bf113",
+      "size_bytes": 224
+    },
+    {
+      "path": "productization-gap-analyzer/SKILL.md",
+      "sha256": "9e9c6ddcd6b2642ac527bee6b76e5637348146f1b817de9fa00755b10e4195e5",
+      "size_bytes": 2243
+    },
+    {
+      "path": "propose-change-intelligence/agents/openai.yaml",
+      "sha256": "c607154e987a01d8e6444c2950b7a5cddc018e59253376961e68462cc21497b0",
+      "size_bytes": 286
+    },
+    {
+      "path": "propose-change-intelligence/SKILL.md",
+      "sha256": "371219134666efd26b9b48f800bb97c7ba2d74fedd9e7748bc053f2c75bf2937",
+      "size_bytes": 994
+    },
+    {
+      "path": "provenance-signature-verifier/agents/openai.yaml",
+      "sha256": "c68788c9bfdb18af2242d4ecfc69ea3a86cd0f652d61465b1300a71ce884ff04",
+      "size_bytes": 230
+    },
+    {
+      "path": "provenance-signature-verifier/SKILL.md",
+      "sha256": "ceac102c75f849394636149588855b05acde19f806e1b8c5c1ba077cb7969125",
+      "size_bytes": 2458
+    },
+    {
+      "path": "px-lean-engineering/agents/openai.yaml",
+      "sha256": "afaacc1ef89038d847887de682d63975bceb6650b4740d529601581d707fae1a",
+      "size_bytes": 236
+    },
+    {
+      "path": "px-lean-engineering/SKILL.md",
+      "sha256": "0c42680c0cef12eaf65ba37eee1b4f864fc3e6a69348c07465571155f93458e7",
+      "size_bytes": 1721
+    },
+    {
+      "path": "px-work-stop-diagnostics/agents/openai.yaml",
+      "sha256": "21cc0aa6dbb0eeb54382318369e5790dd53a6969790ce9dbbca4ae56406e13fe",
+      "size_bytes": 235
+    },
+    {
+      "path": "px-work-stop-diagnostics/SKILL.md",
+      "sha256": "9c9f40e3d521fadaf63b59bc435e61febaf98403a927a9acf29afeeb6501000b",
+      "size_bytes": 1640
+    },
+    {
+      "path": "quarantine-external-tools/agents/openai.yaml",
+      "sha256": "dd59e95a7e97b9eb0904d77a42c358658e07cc707c042172fb34c47fc97e5792",
+      "size_bytes": 247
+    },
+    {
+      "path": "quarantine-external-tools/SKILL.md",
+      "sha256": "d6dfe57ca49e8131f93c8d9b7cb28967f343939d85c627928a249c5db2818d41",
+      "size_bytes": 1100
+    },
+    {
+      "path": "query-project-map/agents/openai.yaml",
+      "sha256": "b5a73ac847586894e35034e4792617052126b6abf4dbfd40e1662cfd4e82ccd0",
+      "size_bytes": 255
+    },
+    {
+      "path": "query-project-map/references/retrieval-policy.md",
+      "sha256": "26ba85eba0c6a380fe92e1537346fe89e70c7d0a087b841c22fe4cbe132ba025",
+      "size_bytes": 369
+    },
+    {
+      "path": "query-project-map/scripts/query_project_map.py",
+      "sha256": "bf0b5d9fdbf6dedf8735974126bddc64f1857a2eff7bb81cbbb6413c807978fa",
+      "size_bytes": 726
+    },
+    {
+      "path": "query-project-map/SKILL.md",
+      "sha256": "8086bdba63af752d58ab14ae65d9fafe546d88dd912aeae021c37c738a343eca",
+      "size_bytes": 1449
+    },
+    {
+      "path": "questionnaire-delegation/agents/openai.yaml",
+      "sha256": "ae73600c0f150ab99536ffb3f9345bd54e67507530a47a69532f85fae976fc4c",
+      "size_bytes": 333
+    },
+    {
+      "path": "questionnaire-delegation/SKILL.md",
+      "sha256": "1b7d57606b11b8cde821dfed00891623c9c0a90ddfa1c9435aba820099b8a9cd",
+      "size_bytes": 675
+    },
+    {
+      "path": "read-only-speculation-controller/agents/openai.yaml",
+      "sha256": "71fd22ab5a4fd2bdde7f4186fadf244982b3e87f0660fc649cfad8a7bdd7909c",
+      "size_bytes": 239
+    },
+    {
+      "path": "read-only-speculation-controller/SKILL.md",
+      "sha256": "9f80c8f11157a2fa0a97293ef0affaf01ae1eb5904a4d2352a661c97e714852e",
+      "size_bytes": 2173
+    },
+    {
+      "path": "reasoning-utility-controller/agents/openai.yaml",
+      "sha256": "3102d689a4a67babb186208b5a408df7a23cd74f04d5c996f6b7abad48876392",
+      "size_bytes": 227
+    },
+    {
+      "path": "reasoning-utility-controller/SKILL.md",
+      "sha256": "d6bb472f7fc9013efd4076cc8d506b76a9fd032a6e4396bfbff04d49e9feaf02",
+      "size_bytes": 2381
+    },
+    {
+      "path": "recovery-coordinator/agents/openai.yaml",
+      "sha256": "8936ca2d7f6079685e670c60b2402188003509620bf87c5e885ba3e0c33c7efb",
+      "size_bytes": 203
+    },
+    {
+      "path": "recovery-coordinator/SKILL.md",
+      "sha256": "ae7271b82e2f6297b1d010b75248eaa6b7c3e7b693a694a4aef79ae7d3b0522f",
+      "size_bytes": 2358
+    },
+    {
+      "path": "repair-corrupted-text/agents/openai.yaml",
+      "sha256": "b4446f55fd9dc2512cbbad274c0567eaf536aee0e76a06e09817d507328eda36",
+      "size_bytes": 232
+    },
+    {
+      "path": "repair-corrupted-text/scripts/__pycache__/repair_text.cpython-314.pyc",
+      "sha256": "7465ca8c979ddd67e5fffc1d7a10b5c62667781fb66586a154c2a19ace621db6",
+      "size_bytes": 6344
+    },
+    {
+      "path": "repair-corrupted-text/scripts/repair_text.py",
+      "sha256": "0c6014149f7e4a9ea627a77a74c26391f342a7ab512024bc73caa3ac9afc33d1",
+      "size_bytes": 2921
+    },
+    {
+      "path": "repair-corrupted-text/SKILL.md",
+      "sha256": "226ddc1e8bcb13403c99047cccd043e9c02ac1a2c5a95f54243564bc2771a9a0",
+      "size_bytes": 1228
+    },
+    {
+      "path": "research-first-capability-use/agents/openai.yaml",
+      "sha256": "1c5c8d00693ae9423fd66cab940fc6b57a4263d6277050b6f7078453be7f55e5",
+      "size_bytes": 277
+    },
+    {
+      "path": "research-first-capability-use/references/lookup-current-documentation.json",
+      "sha256": "9fa56b67b6264b752f736fb4343419cc3b411a908d96ee2262fafba084fd4ea6",
+      "size_bytes": 1779
+    },
+    {
+      "path": "research-first-capability-use/SKILL.md",
+      "sha256": "64681a0953a12c9d1b3e8219bf4adafda3289b7421733bd8d72d5ac1e95b6cd6",
+      "size_bytes": 1981
+    },
+    {
+      "path": "research-to-capability/agents/openai.yaml",
+      "sha256": "aa901abbe21b40c6dfcc0813d3d3be2221f1db2611359e252fa81538d9339443",
+      "size_bytes": 120
+    },
+    {
+      "path": "research-to-capability/references/candidate-contract.md",
+      "sha256": "0a5d66df67cbc1119d66b7c97d0b1ac0ac0befcd283d0df725f50ea5c6d568ec",
+      "size_bytes": 647
+    },
+    {
+      "path": "research-to-capability/SKILL.md",
+      "sha256": "ffd5fce65c1dfb58b7f7bac560c10e8cd24d2e4ad6009b72a60e8172217d234c",
+      "size_bytes": 1146
+    },
+    {
+      "path": "research-to-operation-translator/agents/openai.yaml",
+      "sha256": "37b1f1edc421cbf7f151566a7df3a4e3d1cc1bdd05f95c7a14fadcd84656eb8d",
+      "size_bytes": 239
+    },
+    {
+      "path": "research-to-operation-translator/SKILL.md",
+      "sha256": "eb10bf6f136275a0c9d8d55b314fce65d6d41d4a282b65a82383124a9b0e5528",
+      "size_bytes": 2327
+    },
+    {
+      "path": "route-n8n-capabilities/agents/openai.yaml",
+      "sha256": "dccb059764cf3fdda766c4206815beb1bfa9a1656dfc84b1fceab99271b6dd28",
+      "size_bytes": 264
+    },
+    {
+      "path": "route-n8n-capabilities/SKILL.md",
+      "sha256": "e2809c14bb2d98c2e70a7de4b1362631f5b9dac47141ab72c146f60f1a72c706",
+      "size_bytes": 2907
+    },
+    {
+      "path": "route-n8n-supabase-stack/agents/openai.yaml",
+      "sha256": "0d98cdc4b320648374a65d653a4d2d89563c633c2d352b86947e860f3f496a05",
+      "size_bytes": 333
+    },
+    {
+      "path": "route-n8n-supabase-stack/references/knowledge/cross-stack/00-architecture.md",
+      "sha256": "0e7436bfa43c1d2de3a10461be63f797ff192de056945c532467f9dd937d87fe",
+      "size_bytes": 832
+    },
+    {
+      "path": "route-n8n-supabase-stack/references/knowledge/cross-stack/01-suggestion-decision-matrix.md",
+      "sha256": "92743b094d9e9dbd1fe8ef284dbc362027716cc26e23313a12ac2a19269886c5",
+      "size_bytes": 1380
+    },
+    {
+      "path": "route-n8n-supabase-stack/references/knowledge/n8n/00-capability-map.md",
+      "sha256": "28f0885077d7b8444b8a86ffad7864c1ca15f570ed13709ceeed4a427bfc0a71",
+      "size_bytes": 1410
+    },
+    {
+      "path": "route-n8n-supabase-stack/references/knowledge/n8n/01-install-deploy-operate.md",
+      "sha256": "ef5644b4a1b08f7ec5068a5c71c443a6de47fad8b30c811d9bdc7907174082c1",
+      "size_bytes": 1246
+    },
+    {
+      "path": "route-n8n-supabase-stack/references/knowledge/n8n/02-workflow-engineering.md",
+      "sha256": "f806fb644557d21add1fe1baf3010d74182968683c45d12f8ccca7f550d6311d",
+      "size_bytes": 739
+    },
+    {
+      "path": "route-n8n-supabase-stack/references/knowledge/n8n/03-security-extensions-ai-mcp.md",
+      "sha256": "9d7a96e1365419ac8a32a4758d265111f69441df606f2bf87458d90b717b4eef",
+      "size_bytes": 950
+    },
+    {
+      "path": "route-n8n-supabase-stack/references/knowledge/n8n/04-native-source-findings.md",
+      "sha256": "53416cd7b36e41e3bbe182497e32a05cdcdff9e29f2baab662c4fd8fbc78c66c",
+      "size_bytes": 1436
+    },
+    {
+      "path": "route-n8n-supabase-stack/references/knowledge/supabase/00-capability-map.md",
+      "sha256": "248c377931d94e65264a4ad118b542b4100fc064bffe1796c43ca52c201d3d7a",
+      "size_bytes": 724
+    },
+    {
+      "path": "route-n8n-supabase-stack/references/knowledge/supabase/01-cli-local-environments.md",
+      "sha256": "511d71e35b72e6252adea7637191c1967559d4b0dfa949790f30ba40d8f1ad40",
+      "size_bytes": 880
+    },
+    {
+      "path": "route-n8n-supabase-stack/references/knowledge/supabase/02-postgres-rls-auth.md",
+      "sha256": "139d8c9a2ede14276a592d2d47e40bfc90a9e77621851d105999a29ef0aceab5",
+      "size_bytes": 900
+    },
+    {
+      "path": "route-n8n-supabase-stack/references/knowledge/supabase/03-storage-realtime-functions.md",
+      "sha256": "cbb3e08919dd80acb47fad205706f50ce84e61a8adb07aaca3ae47b6dcdefbf1",
+      "size_bytes": 829
+    },
+    {
+      "path": "route-n8n-supabase-stack/references/knowledge/supabase/04-vectors-ai-tools.md",
+      "sha256": "4d491c2719474b4d4977657404a80d7b093b13f5cd53c4b782759a0a60334579",
+      "size_bytes": 840
+    },
+    {
+      "path": "route-n8n-supabase-stack/SKILL.md",
+      "sha256": "a139acaabd598b87f1a6ca8861940452ae4cc04329711d84c8918d5e12960a6c",
+      "size_bytes": 2889
+    },
+    {
+      "path": "route-specialist-agents/agents/openai.yaml",
+      "sha256": "e6e5ae32a8bdeb4a20a6ed6d5179816a0962622104d945ee708374f91da78ae2",
+      "size_bytes": 239
+    },
+    {
+      "path": "route-specialist-agents/references/runtime-contract.md",
+      "sha256": "89a75ebf76f63b9a0100df1faa459512e8f4279edd1831ea9e1966576df6aaa4",
+      "size_bytes": 1008
+    },
+    {
+      "path": "route-specialist-agents/scripts/route_specialist_agents.py",
+      "sha256": "95376ca85e00c629324d50433ba85ce86f17d73dd01cf854fce4d2055ae332a3",
+      "size_bytes": 1132
+    },
+    {
+      "path": "route-specialist-agents/SKILL.md",
+      "sha256": "44126f3f611b82304114c8e21a0a5820471648223f4084b99de50f4c52657a20",
+      "size_bytes": 1350
+    },
+    {
+      "path": "route-supabase-capabilities/agents/openai.yaml",
+      "sha256": "983f6a810b7c54fe4a27ddcf28f232518b656ac16efc5df08db287f38aee8a54",
+      "size_bytes": 341
+    },
+    {
+      "path": "route-supabase-capabilities/SKILL.md",
+      "sha256": "fba482aa973ade3fbde099e47780e87c947c6773e5fbfd638059b30fa4f30497",
+      "size_bytes": 2865
+    },
+    {
+      "path": "run-evidence-campaigns/agents/openai.yaml",
+      "sha256": "7d65f6b80d7a4650f445a3d3734a8b7ec94ea985185c1b860f218130acf6f5de",
+      "size_bytes": 241
+    },
+    {
+      "path": "run-evidence-campaigns/SKILL.md",
+      "sha256": "24ded8f3900b2029b624a5c22d28a239bfa92bf671ae802cc742fe796b7c0e1c",
+      "size_bytes": 1338
+    },
+    {
+      "path": "run-resilience-drills/agents/openai.yaml",
+      "sha256": "6665ca0ccd7dd39f03c9d87304da8aaa59bddf7218aadeedf1b15b3dd521fbff",
+      "size_bytes": 236
+    },
+    {
+      "path": "run-resilience-drills/SKILL.md",
+      "sha256": "9c4112ba2a93de91ad6b89a7d43fca9070e6969b607330b6b9280ff7a8494a23",
+      "size_bytes": 1309
+    },
+    {
+      "path": "scale-n8n-queue-mode/agents/openai.yaml",
+      "sha256": "9173553dce6f157e90580e9f1021c9945237eb70c88a5d7c544625ed40f05b1e",
+      "size_bytes": 306
+    },
+    {
+      "path": "scale-n8n-queue-mode/SKILL.md",
+      "sha256": "981a60b9811004875c930fd471a9edfb0ca9c3e4f24f9be7110ad3620fc8d134",
+      "size_bytes": 2955
+    },
+    {
+      "path": "scenario-audit-generator/agents/openai.yaml",
+      "sha256": "759e7164492839d1a55f3cdf4cbfc33a7a1dfe9c65f5069dd9708cbcf65f1830",
+      "size_bytes": 215
+    },
+    {
+      "path": "scenario-audit-generator/SKILL.md",
+      "sha256": "dedda0940d634d43ade2f6c57296829c9fc3546475ef063c74e243c82b4978df",
+      "size_bytes": 2360
+    },
+    {
+      "path": "secure-agent-supply-chain/agents/openai.yaml",
+      "sha256": "a5142287944ed2e953091754f552e6138512ef771052e615754e4e78083e9645",
+      "size_bytes": 232
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/agent-identity-authentication.json",
+      "sha256": "35d4e08e0168c40bf70a364ef3d6d222ff395ff954f2710770d1355facbde322",
+      "size_bytes": 9412
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/agent-red-teaming.json",
+      "sha256": "34513784bcd6d23721e66e2553f688eb47077722e435b9acd72f4cd8ad2236a8",
+      "size_bytes": 9312
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/ai-bom-generator.json",
+      "sha256": "12d8c3303f3cb4ac55b91d117f057fdc66c7b8d45a7b5b4c8e3d52d3f8934003",
+      "size_bytes": 9306
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/ai-threat-modeling.json",
+      "sha256": "5b95d633cd8adef294383fd5b49dfbe7d37a214e8030af1ca774a060f0394406",
+      "size_bytes": 9351
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/artifact-signer-verifier.json",
+      "sha256": "63af75a065d75e0a9052d23b03305d057f2365f0470a8f937026242301b0e1e4",
+      "size_bytes": 9390
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/authorization-policy.json",
+      "sha256": "6cd2d779510b1a661a024150c22a66f09d470af71637b9c169cc1fb1f3bad4e0",
+      "size_bytes": 9265
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/control-mapping.json",
+      "sha256": "7ab84a9e61f42e2bccf033c67d7f5c9a62a12f037b658367219eb7904b6cc8f3",
+      "size_bytes": 9248
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/data-classification.json",
+      "sha256": "a96d27c58b56b0c19278ed25af7ac437570ce0d9029cf2191a393b1db96306c8",
+      "size_bytes": 9286
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/dependency-risk-scorer.json",
+      "sha256": "d2b31e7fcb31eba67dc0fdc705f67bba8335149e9306679cabcf3857584a4a85",
+      "size_bytes": 9346
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/egress-policy-enforcer.json",
+      "sha256": "3f93afc5731cfed614e2b2e8930a14560753bb2690eecfc3c90fd58773a9f69b",
+      "size_bytes": 9331
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/license-compliance.json",
+      "sha256": "62b81797ec4c0e998b8a51d6fd358faadd26ce94f29a5844d91035cc4ad8fc8b",
+      "size_bytes": 9310
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/memory-poisoning-defense.json",
+      "sha256": "b571408afadf1b0a6d52599055efa4445ef690a7f284a812195811110a1c2c52",
+      "size_bytes": 9332
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/output-sanitization.json",
+      "sha256": "6fe1671f19fa51f6dbb59f45cd05074a967a2f8d055119f4ffc112fc6168b5b8",
+      "size_bytes": 9326
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/privacy-impact-analysis.json",
+      "sha256": "824688a59fefc776eae0130932c6046210cac45a3a286549d4472d3b31962207",
+      "size_bytes": 9356
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/prompt-injection-defense.json",
+      "sha256": "dbff5e3ceb2bab1e805fc9bb44a6aa0494e955c37ad956f276384338cb7afd55",
+      "size_bytes": 9398
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/provenance-generator.json",
+      "sha256": "0fa0f847130df1cb9c76dcdaf1a3cf0e524335f6d9a706eb334c71ed38c65a03",
+      "size_bytes": 9318
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/reproducible-build-validator.json",
+      "sha256": "a08cac6801ff005f558d8332895f337044d5bcae739dcebf1354b198858dc043",
+      "size_bytes": 9404
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/sandbox-profile-designer.json",
+      "sha256": "184b18ee8b889e849a216db51014c25b7d4bca96af8940b579cf2f99ad05d0be",
+      "size_bytes": 9376
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/sbom-generator.json",
+      "sha256": "bf36ee5005fcc0d9bd12e43a6ac9d0d124808caed3eea70d1e6de746470ea8e0",
+      "size_bytes": 9302
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/secret-handling.json",
+      "sha256": "bfdbde0bd7f9549e8759666a601aeaacc5e0d9226ffafb779d52d158ea6d8509",
+      "size_bytes": 9260
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/security-incident-response.json",
+      "sha256": "0eedabbfeea2f3378ad770b5b8ffe72402423275416f955fe48fb827c8cc5372",
+      "size_bytes": 9396
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities/tool-abuse-defense.json",
+      "sha256": "fd10d3e79b725adb0482ac07dec13a2000f267c555efa2b89e83666e0c805160",
+      "size_bytes": 9320
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capabilities-index.json",
+      "sha256": "01d12ba9091651b1e379a2a4b76ce7a4d43cd4d18fe108a547109850d828c34f",
+      "size_bytes": 8073
+    },
+    {
+      "path": "secure-agent-supply-chain/references/capability-contracts.json",
+      "sha256": "d901ed07d405dbbc942a4e1b4bd8527d90ff0681585f559cdcbb92bc3f9ac9c7",
+      "size_bytes": 222454
+    },
+    {
+      "path": "secure-agent-supply-chain/references/script-contracts.json",
+      "sha256": "b8863d63893953959a96f8c02165a4b4a701908770d99fe079a914356f2b8d5a",
+      "size_bytes": 17143
+    },
+    {
+      "path": "secure-agent-supply-chain/references/scripts/ai-bom.json",
+      "sha256": "f68f89957fae955f30e00dfea17bef9f545626c9447efe2c3ba204321608db8c",
+      "size_bytes": 1719
+    },
+    {
+      "path": "secure-agent-supply-chain/references/scripts/deterministic-archive.json",
+      "sha256": "cb0c1312744c12fba7831fe6aedf99a7df9233afd1e102a7766ddcadb077d0a0",
+      "size_bytes": 1779
+    },
+    {
+      "path": "secure-agent-supply-chain/references/scripts/prompt-injection-scanner.json",
+      "sha256": "2ccd2a3dc84b622f96a1c25b8ffc9c9eab4e3534e7038653aa010b413330164f",
+      "size_bytes": 1791
+    },
+    {
+      "path": "secure-agent-supply-chain/references/scripts/provenance-generator.json",
+      "sha256": "d2fb83998e86ceb10312c6593e6bec62f2584e035d68557e4d6e9d433e26e46d",
+      "size_bytes": 1775
+    },
+    {
+      "path": "secure-agent-supply-chain/references/scripts/sandbox-profile.json",
+      "sha256": "564f4a8022def96143eff373eb6c7bff750454480b4ca473d95073b849f4e069",
+      "size_bytes": 1755
+    },
+    {
+      "path": "secure-agent-supply-chain/references/scripts/sbom-lite.json",
+      "sha256": "8884d8e9202c500cb80afa669a55d543eb4cc61aa070a62dc92df5d51fdfdb84",
+      "size_bytes": 1731
+    },
+    {
+      "path": "secure-agent-supply-chain/references/scripts/secret-scanner.json",
+      "sha256": "c17455ebed979dd546e6d413d15e9d7259f9653ac027f0adaddeb9aa2f9de2bc",
+      "size_bytes": 1751
+    },
+    {
+      "path": "secure-agent-supply-chain/references/scripts/threat-model.json",
+      "sha256": "f9af645584afe76dbf3e0c602605f47135bc8ca83bafee35b72295e127499c0b",
+      "size_bytes": 1743
+    },
+    {
+      "path": "secure-agent-supply-chain/references/scripts/tool-policy-enforcer.json",
+      "sha256": "cef56e52549ceb9c7bc63128a53f9695c09b82372f7a8cbb1a010bbc10acf75b",
+      "size_bytes": 1775
+    },
+    {
+      "path": "secure-agent-supply-chain/references/scripts-index.json",
+      "sha256": "eb12f8fd2e1ba7e451efdf7084d4182f43cf9c44a52436f520fe0122656d1105",
+      "size_bytes": 3159
+    },
+    {
+      "path": "secure-agent-supply-chain/scripts/__pycache__/authoritative_secret_scanner.cpython-314.pyc",
+      "sha256": "360550b4a1c184bf2294478d18b86535cd0fe505b2d957c386fc223caf4e5704",
+      "size_bytes": 2456
+    },
+    {
+      "path": "secure-agent-supply-chain/scripts/authoritative_ai_bom.py",
+      "sha256": "5ffa673f0d3de176f98519b4e2a42ce109811eba27d2bb3eb967c66400f5f70e",
+      "size_bytes": 1183
+    },
+    {
+      "path": "secure-agent-supply-chain/scripts/authoritative_deterministic_archive.py",
+      "sha256": "3cbf6a278a0f419d57b62b93b92359d516caedfc79b82fdd4b377886416050a1",
+      "size_bytes": 845
+    },
+    {
+      "path": "secure-agent-supply-chain/scripts/authoritative_prompt_injection_scanner.py",
+      "sha256": "65d30e4e4cf8ce71b8c551967d081f2d1cb6f92cdac0b995182044e57b5003bc",
+      "size_bytes": 1314
+    },
+    {
+      "path": "secure-agent-supply-chain/scripts/authoritative_provenance_generator.py",
+      "sha256": "00344fd741182a287eaeadb0a6596eb64bfe0dfe425b952dd407e00770c28587",
+      "size_bytes": 1791
+    },
+    {
+      "path": "secure-agent-supply-chain/scripts/authoritative_sandbox_profile.py",
+      "sha256": "1369dead1fda555e5ba2006c26520d8b1c6970478d7e84662a90416e27fe4977",
+      "size_bytes": 1177
+    },
+    {
+      "path": "secure-agent-supply-chain/scripts/authoritative_sbom_lite.py",
+      "sha256": "107bab1cec222224a0c88a3502504da8d9de859486713bfaec1347ce1b4b7432",
+      "size_bytes": 1224
+    },
+    {
+      "path": "secure-agent-supply-chain/scripts/authoritative_secret_scanner.py",
+      "sha256": "0066ba3c2137ad929c61be4374f0491694fc788b2b25a6894d627672884f781e",
+      "size_bytes": 1210
+    },
+    {
+      "path": "secure-agent-supply-chain/scripts/authoritative_threat_model.py",
+      "sha256": "a9870693a90b886ec79019cbcfbafce67d44aadbc3543946786c7fc899f17eee",
+      "size_bytes": 2147
+    },
+    {
+      "path": "secure-agent-supply-chain/scripts/authoritative_tool_policy_enforcer.py",
+      "sha256": "81e20ab7e3eb9a8227e3f4aec25a9fb5085241d07253f0a973ee8e04dcc2717e",
+      "size_bytes": 1198
+    },
+    {
+      "path": "secure-agent-supply-chain/scripts/domain_tool.py",
+      "sha256": "19d78dbf1fac448e681d620105a0c05927479d7be905aa3c2ce0ae3669665413",
+      "size_bytes": 834
+    },
+    {
+      "path": "secure-agent-supply-chain/SKILL.md",
+      "sha256": "d818a9df088f22044de0cc03707394b7b22a837dcb91cb397a265411d767b4d5",
+      "size_bytes": 1753
+    },
+    {
+      "path": "secure-n8n/agents/openai.yaml",
+      "sha256": "f9fcb21e78acf13cbdfe4899d6fab791309f7ee62e82c9b0ae3e1bc51e4032f4",
+      "size_bytes": 272
+    },
+    {
+      "path": "secure-n8n/SKILL.md",
+      "sha256": "65e6ddb296e3ef7ef75443afcf53fa863ce734cbb0d17370b68b6f7eb24a972c",
+      "size_bytes": 2879
+    },
+    {
+      "path": "secure-supabase-rls/agents/openai.yaml",
+      "sha256": "c0ceef122d555c46591ded5b2c546b4bee7850ae50f383caabe55707a7fa4441",
+      "size_bytes": 319
+    },
+    {
+      "path": "secure-supabase-rls/SKILL.md",
+      "sha256": "45f0d683b083a8757ecdb42cccb241d6b6404a9c62562084eeb824c3abe006cc",
+      "size_bytes": 2958
+    },
+    {
+      "path": "self-host-supabase/agents/openai.yaml",
+      "sha256": "26b9ef44306064cafe20195d631dfeac73cbef37fc7b60ff519e6892fcba5b41",
+      "size_bytes": 299
+    },
+    {
+      "path": "self-host-supabase/SKILL.md",
+      "sha256": "ea187f08817c7c84bda8b81ed49fb5148ad7d37fdf80e3a2e0cd71a08e594182",
+      "size_bytes": 2880
+    },
+    {
+      "path": "skill-admission-controller/agents/openai.yaml",
+      "sha256": "71894562be6a88349b6d01e590f859997b7933c314df5f8b5615af1fb3403270",
+      "size_bytes": 221
+    },
+    {
+      "path": "skill-admission-controller/SKILL.md",
+      "sha256": "b4e9f683f31f0906380b14eaad66a3ec08d6fa52f8f38f2972780a65f6228d30",
+      "size_bytes": 2843
+    },
+    {
+      "path": "skill-bundle-resolver/agents/openai.yaml",
+      "sha256": "83861a74eba83e8cbd9e9737d29537aa907ebbe86db3bcef12896c2211d298c6",
+      "size_bytes": 206
+    },
+    {
+      "path": "skill-bundle-resolver/SKILL.md",
+      "sha256": "f713ba80888d80b6db7a81468b0a0c34893f0629b7842a28cf8953691d6193aa",
+      "size_bytes": 2465
+    },
+    {
+      "path": "skill-coexecution-graph-builder/agents/openai.yaml",
+      "sha256": "1d5dbfd09bded684be6ae80ea1fea1dae7b19f52f4e7d56367a77e6612ca1f92",
+      "size_bytes": 236
+    },
+    {
+      "path": "skill-coexecution-graph-builder/SKILL.md",
+      "sha256": "1bd8885c4437a041084bfa8d088bb5f350ad188fa0837cb06d05001cd7a54973",
+      "size_bytes": 2159
+    },
+    {
+      "path": "skill-navigator/agents/openai.yaml",
+      "sha256": "243e113760cce4c15cdfa69e650d81b32aba54e2ecc2b9c9b7c4f34e7f9a6348",
+      "size_bytes": 188
+    },
+    {
+      "path": "skill-navigator/SKILL.md",
+      "sha256": "e0cf9587ff6a24c928f706417b505565f9c591503b128b935436c45a828beda8",
+      "size_bytes": 2455
+    },
+    {
+      "path": "supervise-contained-execution/agents/openai.yaml",
+      "sha256": "9ad32d7c31b8037f1cd476ffda916d73ab31e297100c784015d6cf48af00655d",
+      "size_bytes": 262
+    },
+    {
+      "path": "supervise-contained-execution/SKILL.md",
+      "sha256": "18ec489a204669e2eb2392caa73e00432813b88c665e5150688b94fc433eb91e",
+      "size_bytes": 1013
+    },
+    {
+      "path": "synchronize-derived-architecture/agents/openai.yaml",
+      "sha256": "b019df3c1ccf48eea5ec9bf5f0b083cb74c0a645f3388501e64832a9d85b25d6",
+      "size_bytes": 260
+    },
+    {
+      "path": "synchronize-derived-architecture/SKILL.md",
+      "sha256": "fef2e5475c6a8f2d0c434ecd5891b8fe2c2d20b99ba17496de9535a70a8f2a3d",
+      "size_bytes": 1290
+    },
+    {
+      "path": "test-n8n-supabase-integrations/agents/openai.yaml",
+      "sha256": "9272b6002d539fae9c7aaa162e80bf8960a8604196d33afae0db9d2a13566835",
+      "size_bytes": 351
+    },
+    {
+      "path": "test-n8n-supabase-integrations/SKILL.md",
+      "sha256": "23c0b549b22743d4347330cc62769c45263d7fd2a57ee4f5108cdd9f7c2a520b",
+      "size_bytes": 2970
+    },
+    {
+      "path": "test-validate-n8n-workflows/agents/openai.yaml",
+      "sha256": "425315808b4188fdd0088e06b67e0c0bdf1186fbc12d78a37f0ae12a91a3a059",
+      "size_bytes": 330
+    },
+    {
+      "path": "test-validate-n8n-workflows/SKILL.md",
+      "sha256": "35d51b1e75c68cc675a92bec34863892f7a79c3e654fded531e67757e091813a",
+      "size_bytes": 2764
+    },
+    {
+      "path": "tool-loop-circuit-breaker/agents/openai.yaml",
+      "sha256": "a39eda7bafb4cdc53fedb11e2349cd4b038d624200b8255c5c631a59ccc8744a",
+      "size_bytes": 218
+    },
+    {
+      "path": "tool-loop-circuit-breaker/SKILL.md",
+      "sha256": "4530197c21703b061c79d13b725f41cd187d26ebba7f88f08b3ea3a8df5adbae",
+      "size_bytes": 2265
+    },
+    {
+      "path": "trace-to-skill-compiler/agents/openai.yaml",
+      "sha256": "9b3a414df9f40628a7ae790c9fb889905e7108f44216d7a406de0137d2f8951a",
+      "size_bytes": 212
+    },
+    {
+      "path": "trace-to-skill-compiler/SKILL.md",
+      "sha256": "609452f65cb671be3d8efab56dd3c14843b438de5b731618aaa15495ea9605c1",
+      "size_bytes": 2749
+    },
+    {
+      "path": "tracer-bullet-planning/agents/openai.yaml",
+      "sha256": "c48b3b7963a096e3468da20e1dd092f013e4d83d08ebc7664f427c956e7e20f7",
+      "size_bytes": 295
+    },
+    {
+      "path": "tracer-bullet-planning/SKILL.md",
+      "sha256": "f118fb4a174410f7233c89dbce4abdd1cdb768e57dc27854347d8d52049f705b",
+      "size_bytes": 1048
+    },
+    {
+      "path": "trajectory-failure-sentinel/agents/openai.yaml",
+      "sha256": "960139cedcaa3afb18edd5449660acc244a40ff2c931b251118f3a835890f491",
+      "size_bytes": 224
+    },
+    {
+      "path": "trajectory-failure-sentinel/SKILL.md",
+      "sha256": "79da68a94e6db3d29028b22c6dc538d68c529db82d0252987630458f4c965cd8",
+      "size_bytes": 2211
+    },
+    {
+      "path": "transcript-analysis/agents/openai.yaml",
+      "sha256": "695c94af2eb77ae4eeb03081b3dcd50efa08eca8e8c759b18476a3c8eab0d770",
+      "size_bytes": 276
+    },
+    {
+      "path": "transcript-analysis/references/architecture.md",
+      "sha256": "2e9048c3786ed39f371d6420b5456009cc0b981f4c99c0c08beb6c347a7e7013",
+      "size_bytes": 779
+    },
+    {
+      "path": "transcript-analysis/references/runtime.md",
+      "sha256": "ec400dd95ba2870c6e2dbfef7d286fe6ded98ab95185789be705d290448d9618",
+      "size_bytes": 1027
+    },
+    {
+      "path": "transcript-analysis/scripts/export_transcript_summary.py",
+      "sha256": "9a3db761ec8abf61d15108f680a6c4ba55aeedf519fdc184baebe3758cbf639c",
+      "size_bytes": 1229
+    },
+    {
+      "path": "transcript-analysis/SKILL.md",
+      "sha256": "173fc8743679546fef3d133d8e86fb68832f723c79a291e04713258d7e33cfb8",
+      "size_bytes": 1654
+    },
+    {
+      "path": "triage-cross-surface-failures/agents/openai.yaml",
+      "sha256": "ff1a3e8454d90cf39bf8c1bd698326cb4eec23e565d62b9a2b5046ef4e0a1ae0",
+      "size_bytes": 251
+    },
+    {
+      "path": "triage-cross-surface-failures/SKILL.md",
+      "sha256": "474618a8b085690466a075b3b2812b9c5c3e5d701a9477c1745ae252092264ef",
+      "size_bytes": 1115
+    },
+    {
+      "path": "use-n8n-expressions-and-data/agents/openai.yaml",
+      "sha256": "faa855c629cf1f4f44dbb538be126868eb3d5516388509f89235431fa1611dfe",
+      "size_bytes": 330
+    },
+    {
+      "path": "use-n8n-expressions-and-data/SKILL.md",
+      "sha256": "9b89a33de357e24e1cd27d06ca9f98e608ff0dc3e07636014d3e4e73459bc5bc",
+      "size_bytes": 2808
+    },
+    {
+      "path": "use-n8n-mcp/agents/openai.yaml",
+      "sha256": "b9d8dee16bacddf3fa1973ad48ae4693612b16efa52a9573fdbb6715cc03f53a",
+      "size_bytes": 311
+    },
+    {
+      "path": "use-n8n-mcp/SKILL.md",
+      "sha256": "4614a6b1edd76c2b4094a63dbf013e5ac8758e34a175973f282c1fe4a97d7647",
+      "size_bytes": 2967
+    },
+    {
+      "path": "use-supabase-mcp-and-agent-skills/agents/openai.yaml",
+      "sha256": "ee4fc6a85ce76ada0de1c7de07ad0237055c018e9ca9735366b682433f6d071d",
+      "size_bytes": 356
+    },
+    {
+      "path": "use-supabase-mcp-and-agent-skills/SKILL.md",
+      "sha256": "3f3f6cf2c9395d27779bbcc6bf516a9d13f65c5ce1b623f009c4a50b6685dc71",
+      "size_bytes": 3098
+    },
+    {
+      "path": "use-supabase-realtime/agents/openai.yaml",
+      "sha256": "086510985b8eb02e029c5d4909fbb09b09c18bfe2ce40e7447caf89f56a36491",
+      "size_bytes": 309
+    },
+    {
+      "path": "use-supabase-realtime/SKILL.md",
+      "sha256": "6a98e3baa4ca3c8ac91dc51b1baaa8c0ba3046e61edc6b8f964efad8fd1a28d3",
+      "size_bytes": 2822
+    },
+    {
+      "path": "use-supabase-storage/agents/openai.yaml",
+      "sha256": "75d0bf82fbb01377e1d9002b4aea33e0818baa822ec4e77d7755f35a03da9b04",
+      "size_bytes": 302
+    },
+    {
+      "path": "use-supabase-storage/SKILL.md",
+      "sha256": "f6b2b4083f9d679ecb90d657242d2b37283d7b576fffe4c48ef0083d5f7ed571",
+      "size_bytes": 2832
+    },
+    {
+      "path": "validate-contract-boundaries/agents/openai.yaml",
+      "sha256": "08c938c345d16552a2d44f80e50f90378d43bad6c6bf7f8a19bbf85989239664",
+      "size_bytes": 308
+    },
+    {
+      "path": "validate-contract-boundaries/references/boundary-contract.md",
+      "sha256": "9d7450aceb480927c44773f74e64e5309ff7fa61bd2161ed2b1218a88ff1a7f0",
+      "size_bytes": 695
+    },
+    {
+      "path": "validate-contract-boundaries/SKILL.md",
+      "sha256": "12e41b4b444f396dd69d0f3a7c3a05b09b63ea01bbc49e79a9f2492cf1ac505c",
+      "size_bytes": 2400
+    },
+    {
+      "path": "validate-engineering-outcomes/agents/openai.yaml",
+      "sha256": "852509f3695f6211a26977a6b29703a67297fb88de3e2fce4d048f6d6de1b4f6",
+      "size_bytes": 130
+    },
+    {
+      "path": "validate-engineering-outcomes/references/calculation-evidence.md",
+      "sha256": "2d7fc279522908cc06551919abbd17a5518189959c86f8416642530cefab346b",
+      "size_bytes": 653
+    },
+    {
+      "path": "validate-engineering-outcomes/references/deployment-evidence.md",
+      "sha256": "8cfd81ce91c1364ad1954a910405c2973721263a37bd02e2402d3b5a00749c6f",
+      "size_bytes": 441
+    },
+    {
+      "path": "validate-engineering-outcomes/references/repository-contracts.md",
+      "sha256": "bc991093e95644b5b36adbabf50573e849eedc317a2d9b23360f556994672122",
+      "size_bytes": 415
+    },
+    {
+      "path": "validate-engineering-outcomes/references/result-aware-validation.md",
+      "sha256": "d9f342d627d01e64ae7ecfdc5b4f00bc6de6c0276a28f12b4467da53508123bb",
+      "size_bytes": 441
+    },
+    {
+      "path": "validate-engineering-outcomes/references/runtime-surface-evidence.md",
+      "sha256": "6f36749dab939d7060116a99dea5d0738f178214bec179cc7d20962736583a32",
+      "size_bytes": 641
+    },
+    {
+      "path": "validate-engineering-outcomes/scripts/__pycache__/audit_bootstrap.cpython-314.pyc",
+      "sha256": "9c5e6efdd2783b2a627c38270c2097e73886e77598ed092e385ff84b2c36882f",
+      "size_bytes": 2959
+    },
+    {
+      "path": "validate-engineering-outcomes/scripts/audit_bootstrap.py",
+      "sha256": "34f1fece3f8a051048a2edcb6064cef50918fe74bc3e17aa8cf20e5f30938b4f",
+      "size_bytes": 1528
+    },
+    {
+      "path": "validate-engineering-outcomes/SKILL.md",
+      "sha256": "f8f5202a618e921ffa1996b197278773449a7a754b77eb76527052e2c725dca1",
+      "size_bytes": 3214
+    },
+    {
+      "path": "validate-knowledge-relationships/agents/openai.yaml",
+      "sha256": "0f82e1ba182b54a09223fc8898885fb1859ac26c23fd98846170068a7d1cc6d8",
+      "size_bytes": 259
+    },
+    {
+      "path": "validate-knowledge-relationships/SKILL.md",
+      "sha256": "b287f2332cc74c0a1a57c316ca3ca8eb08259543e671aeca1f7045ae8d226126",
+      "size_bytes": 1154
+    },
+    {
+      "path": "validate-physical-media-deliverables/agents/openai.yaml",
+      "sha256": "193cd4c83e51d94beff12685b20b6f84fcc23a2d6ed503f52d2229916d447bdf",
+      "size_bytes": 312
+    },
+    {
+      "path": "validate-physical-media-deliverables/SKILL.md",
+      "sha256": "dcf56a29f3126e888db4f9cf8ffce890ce1a7a930193e5b6a34226ce5579333a",
+      "size_bytes": 1739
+    },
+    {
+      "path": "validate-production-containers/agents/openai.yaml",
+      "sha256": "08f8144a9b9bef864bc56a48f3cd3889a3cc11964aa76e73e4e406a4ed626ba3",
+      "size_bytes": 258
+    },
+    {
+      "path": "validate-production-containers/SKILL.md",
+      "sha256": "8ecc926bf157bf8e5c7ce32232e443cb2ffdad29fb6dca606f577782a7ad5b64",
+      "size_bytes": 1261
+    },
+    {
+      "path": "verify-outcome/agents/openai.yaml",
+      "sha256": "0f9caf6f7cfcfcc22c947fa389d73b67aa41b49f70f4e9e2d30106b19a27ab7c",
+      "size_bytes": 209
+    },
+    {
+      "path": "verify-outcome/references/evidence-contract.md",
+      "sha256": "309d28b1729c30f85adf82ce01842968ef759dd94e9d969e9a57f8a43e593847",
+      "size_bytes": 826
+    },
+    {
+      "path": "verify-outcome/SKILL.md",
+      "sha256": "59041723adc187c93ace1d9e5ec412bea3963b0fd94b6801c733af6a89f22538",
+      "size_bytes": 1270
+    }
+  ],
+  "schema_version": "px.skill-file-inventory/1.0",
+  "source_id": "workspace-original",
+  "tree_sha256": "151520cdc46c1ce21b009a812ed6324929a8a832bd77e42253324e19018825f0"
+}

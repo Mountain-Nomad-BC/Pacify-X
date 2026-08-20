@@ -1,0 +1,506 @@
+{
+  "schema_version": "px.adversarial-repair-status/1.1",
+  "source_report_sha256": "d56db68735efe7242b1f2f29d517a013626dd16fad0909a88622f51837a8884d",
+  "authoritative": true,
+  "status_semantics": "Accepted items have current owner paths and governed acceptance evidence; historical status remains preserved separately and never overrides current evidence.",
+  "records": [
+    {
+      "id": "PXA-094",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "runtime/project_control_plane.py",
+        "runtime/project_stream_orchestrator.py"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/project_control_plane.py",
+        "runtime/project_stream_orchestrator.py"
+      ]
+    },
+    {
+      "id": "PXA-095",
+      "historical_status": "partial",
+      "status": "accepted",
+      "owners": [
+        "runtime/agent_runtime.py",
+        "runtime/agent_harness_worker.py",
+        "extension/media/dashboard/43-catalog-surfaces.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "runtime/agent_harness_worker.py",
+        "extension/media/dashboard/43-catalog-surfaces.js"
+      ]
+    },
+    {
+      "id": "PXA-096",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "runtime/provider_gateway.py"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/provider_gateway.py"
+      ]
+    },
+    {
+      "id": "PXA-097",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "pyproject.toml",
+        "runtime/version.py",
+        "extension/package.json"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "pyproject.toml",
+        "runtime/version.py",
+        "extension/package.json"
+      ]
+    },
+    {
+      "id": "PXA-098",
+      "historical_status": "partial",
+      "status": "accepted",
+      "owners": [
+        "runtime/workflow_studio.py",
+        "runtime/studio_api.py",
+        "extension/media/dashboard/44-operational-surfaces.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/workflow_studio.py",
+        "runtime/studio_api.py",
+        "extension/media/dashboard/44-operational-surfaces.js"
+      ]
+    },
+    {
+      "id": "PXA-099",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "runtime/dashboard_api.py",
+        "extension/src/pxBridge.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/dashboard_api.py",
+        "extension/src/pxBridge.js"
+      ]
+    },
+    {
+      "id": "PXA-100",
+      "historical_status": "partial",
+      "status": "accepted",
+      "owners": [
+        "runtime/skill_studio.py",
+        "runtime/studio_api.py",
+        "extension/media/dashboard/43-catalog-surfaces.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/skill_studio.py",
+        "runtime/studio_api.py",
+        "extension/media/dashboard/43-catalog-surfaces.js"
+      ]
+    },
+    {
+      "id": "PXA-101",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "runtime/studio_models.py",
+        "extension/src/extension.js",
+        "extension/media/dashboard/44-operational-surfaces.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "extension/src/extension.js",
+        "extension/media/dashboard/44-operational-surfaces.js"
+      ]
+    },
+    {
+      "id": "PXA-102",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "runtime/workspace_manager.py",
+        "extension/src/extension.js",
+        "extension/media/dashboard/46-observability-surfaces.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/workspace_manager.py",
+        "extension/src/extension.js",
+        "extension/media/dashboard/46-observability-surfaces.js"
+      ]
+    },
+    {
+      "id": "PXA-103",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "runtime/memory_vault.py",
+        "runtime/dashboard_api.py",
+        "extension/media/dashboard/46-observability-surfaces.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/memory_vault.py",
+        "runtime/dashboard_api.py",
+        "extension/media/dashboard/46-observability-surfaces.js"
+      ]
+    },
+    {
+      "id": "PXA-104",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "extension/media/dashboard/47-advanced-surfaces.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/media/dashboard/47-advanced-surfaces.js"
+      ]
+    },
+    {
+      "id": "PXA-105",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "extension/src/activityManager.js",
+        "extension/src/activityObservability.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/src/activityManager.js",
+        "extension/src/activityObservability.js"
+      ]
+    },
+    {
+      "id": "PXA-106",
+      "historical_status": "partial",
+      "status": "accepted",
+      "owners": [
+        "runtime/dashboard_api.py",
+        "extension/media/dashboard/48-graph-surface.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/dashboard_api.py",
+        "extension/media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "id": "PXA-107",
+      "historical_status": "partial",
+      "status": "accepted",
+      "owners": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "evidence/visual",
+        "extension/tests"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "evidence/visual",
+        "extension/tests"
+      ]
+    },
+    {
+      "id": "PXA-108",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "extension/src/runtimeBridge.js",
+        "extension/src/extension.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/src/runtimeBridge.js",
+        "extension/src/extension.js"
+      ]
+    },
+    {
+      "id": "PXA-109",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "extension/src/environmentLifecycleManager.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/src/environmentLifecycleManager.js"
+      ]
+    },
+    {
+      "id": "PXA-110",
+      "historical_status": "partial",
+      "status": "accepted",
+      "owners": [
+        "scripts/build_completion_status.py",
+        "registry/completion_status.json"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "scripts/build_completion_status.py",
+        "registry/completion_status.json"
+      ]
+    },
+    {
+      "id": "PXA-111",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "runtime/evidence_index.py",
+        "registry/current_evidence_index.json",
+        "evidence/releases/python-0.7.0.dev0__vscode-0.6.1/EVIDENCE_INDEX.json"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/evidence_index.py",
+        "registry/current_evidence_index.json",
+        "evidence/releases/python-0.7.0.dev0__vscode-0.6.1/EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "PXA-112",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "scripts/clean_source_export.py",
+        "runtime/test_profiles.py",
+        ".engineering-bootstrap/test-evidence/sections"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "scripts/clean_source_export.py",
+        "runtime/test_profiles.py",
+        ".engineering-bootstrap/test-evidence/sections"
+      ]
+    },
+    {
+      "id": "PXA-113",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "extension/src/activityObservability.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/src/activityObservability.js"
+      ]
+    },
+    {
+      "id": "PXA-114",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "runtime/secret_scanning.py",
+        "registry/secret_finding_reviews.json"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/secret_scanning.py",
+        "registry/secret_finding_reviews.json"
+      ]
+    },
+    {
+      "id": "PXA-115",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "extension/media/dashboard/90-controller.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "id": "PXA-116",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "evidence/operation-health/final-coverage-20260812.json"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "evidence/operation-health/final-coverage-20260812.json"
+      ]
+    },
+    {
+      "id": "PXA-117",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "extension/src/discoveryManager.js"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/src/discoveryManager.js"
+      ]
+    },
+    {
+      "id": "PXA-118",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "docs",
+        "extension/tests/preview.html"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "docs",
+        "extension/tests/preview.html"
+      ]
+    },
+    {
+      "id": "PXA-119",
+      "historical_status": "accepted",
+      "status": "accepted",
+      "owners": [
+        "scripts/clean_source_export.py"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "scripts/clean_source_export.py"
+      ]
+    }
+  ]
+}

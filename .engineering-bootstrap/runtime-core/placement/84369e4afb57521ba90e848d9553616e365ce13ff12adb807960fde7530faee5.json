@@ -1,0 +1,73 @@
+{
+  "baseline_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "candidates": [
+    {
+      "boundary_costs": {
+        "transfer": 0.02
+      },
+      "boundary_penalty": 0.02,
+      "class": "compiled_worker",
+      "eligible": true,
+      "failed_gates": [],
+      "id": "worker",
+      "keep_current": false,
+      "scores": {
+        "correctness": 0.9,
+        "cost": 0.9,
+        "latency": 0.9,
+        "maintainability": 0.9,
+        "operability": 0.9,
+        "portability": 0.9,
+        "reversibility": 0.9,
+        "throughput": 0.9
+      },
+      "total_system_score": 0.88,
+      "weighted_benefit": 0.9
+    },
+    {
+      "boundary_costs": {
+        "transfer": 0.0
+      },
+      "boundary_penalty": 0.0,
+      "class": "host_language",
+      "eligible": true,
+      "failed_gates": [],
+      "id": "current",
+      "keep_current": true,
+      "scores": {
+        "correctness": 0.5,
+        "cost": 0.5,
+        "latency": 0.5,
+        "maintainability": 0.5,
+        "operability": 0.5,
+        "portability": 0.5,
+        "reversibility": 0.5,
+        "throughput": 0.5
+      },
+      "total_system_score": 0.5,
+      "weighted_benefit": 0.5
+    }
+  ],
+  "current_candidate": "current",
+  "decision_sha256": "84369e4afb57521ba90e848d9553616e365ce13ff12adb807960fde7530faee5",
+  "integration_status": "unobserved-advisory-only",
+  "migration_authorized": false,
+  "minimum_improvement": 0.05,
+  "mode": "language_runtime",
+  "promotion_tier": 1,
+  "provider_selected": false,
+  "recommendation": "bounded_prototype",
+  "requires_benchmark_before_promotion": true,
+  "schema_version": "px.execution-placement-decision/1.0",
+  "selected_candidate": "worker",
+  "weights": {
+    "correctness": 0.3,
+    "cost": 0.08,
+    "latency": 0.17,
+    "maintainability": 0.08,
+    "operability": 0.12,
+    "portability": 0.08,
+    "reversibility": 0.05,
+    "throughput": 0.12
+  }
+}

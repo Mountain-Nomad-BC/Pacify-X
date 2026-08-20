@@ -1,0 +1,66 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "S01",
+  "status": "accepted",
+  "recorded_at": "2026-08-18T14:11:01.058104+00:00",
+  "claim": "One strict health taxonomy validates and derives runtime, extension, provider, observer, sensor, coordination, and memory states without conflating configured, detected, connected, authoritative, or ready.",
+  "artifacts": [
+    {
+      "path": "runtime/health_model.py",
+      "sha256": "4d7be6420529ea447ecdc769dcfd5bea0257312d43d9e6724aece9e05287ae1c"
+    },
+    {
+      "path": "tests/test_health_model.py",
+      "sha256": "393f194a8c6330796ac9da252f97805be7ff666f4bc41f761af37c346c6d3be3"
+    },
+    {
+      "path": "contracts/operations/health-model-registry.schema.json",
+      "sha256": "537f58125bc08950fcb57bc0a65878d98f214c661fcf70879ad631930df4fd47"
+    },
+    {
+      "path": "contracts/operations/health-report.schema.json",
+      "sha256": "aa59d1b4faa42a937def8ec1fe5416d0c3f883c13281c4afafede224cbd1675e"
+    },
+    {
+      "path": "registry/health_taxonomy.json",
+      "sha256": "fd3302500076ce16ab531835de7e03e33d75d33144553e79e8e5a74373c2c4b1"
+    },
+    {
+      "path": "runtime/cli.py",
+      "sha256": "68c7c2fd467cf673635875e9c58010c0d43da44b5c119dacdc9ff40c1d6defbe"
+    },
+    {
+      "path": "registry/contract_ownership.json",
+      "sha256": "0d0a52eab03b85507e5971b8693c657fec5f175d6e2fa50285048e738c75cdfa"
+    }
+  ],
+  "verification": [
+    {
+      "command": "python -m pytest tests/test_health_model.py tests/test_contract_runtime.py -q",
+      "result": "39 passed and 336 contract subtests independently"
+    },
+    {
+      "command": "expanded S01 suites",
+      "result": "51 passed plus 345 contract subtests; 84 adjacent passed plus 9 subtests"
+    },
+    {
+      "command": "python -m runtime.cli validate",
+      "result": "valid=true"
+    },
+    {
+      "command": "static extension/dashboard contract comparison",
+      "result": "compatible with zero findings"
+    }
+  ],
+  "acceptance": {
+    "configured_detected_connected_authoritative_ready_separated": true,
+    "authority_and_freshness_required": true,
+    "failure_cause_blockers_remediation_and_deep_links": true,
+    "false_ready_and_spoofed_authority_rejected": true,
+    "extension_projection_read_only": true,
+    "live_results_invented": false
+  },
+  "limitations": [
+    "Live collectors remain responsible for source claims; the health model validates, derives, and projects rather than fabricating probe results."
+  ]
+}

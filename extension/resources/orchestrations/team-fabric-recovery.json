@@ -1,0 +1,12 @@
+{
+  "id": "px-team-fabric-recovery",
+  "version": "1.0.0",
+  "steps": [
+    {"id": "inspect-session", "skill": "manage-agent-session-fabric", "depends_on": []},
+    {"id": "diagnose-stop", "skill": "px-work-stop-diagnostics", "depends_on": ["inspect-session"]},
+    {"id": "coordinate", "skill": "govern-distributed-work-runtime", "depends_on": ["diagnose-stop"]},
+    {"id": "reconcile", "skill": "govern-distributed-work-runtime", "depends_on": ["coordinate"]},
+    {"id": "verify-resume", "skill": "validate-engineering-outcomes", "depends_on": ["reconcile"]}
+  ],
+  "failure_policy": "Remain stopped on stale fencing, ambiguous authority, dirty or unpushed work, unresolved dependencies, hard budget stop, invalid resume, or missing evidence."
+}

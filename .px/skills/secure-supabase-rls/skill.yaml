@@ -1,0 +1,39 @@
+{
+  "admission_record": "secure-supabase-rls",
+  "body_sha256": "45f0d683b083a8757ecdb42cccb241d6b6404a9c62562084eeb824c3abe006cc",
+  "contract": {
+    "available": true,
+    "sha256": "135e74318d79221c693925e0ea2873e8b785872371f4888e239f9ef5bed7d915",
+    "source": "registry/skill_packages/secure-supabase-rls.json"
+  },
+  "description": "Design and test Supabase Row Level Security for anonymous, authenticated, service, tenant, and administrative access.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "secure-supabase-rls",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/secure-supabase-rls"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "auth.uid",
+    "policies",
+    "rls",
+    "supabase",
+    "tenant-isolation"
+  ],
+  "version": "1.0.0"
+}

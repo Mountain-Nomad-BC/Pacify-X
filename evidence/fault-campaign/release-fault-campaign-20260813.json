@@ -1,0 +1,142 @@
+{
+  "schema_version": "px.release-fault-campaign-receipt/1.0",
+  "campaign_id": "pacify-x-release-fault-campaign",
+  "generated_utc": "2026-08-14T03:41:20.047375+00:00",
+  "required_dimensions": [
+    "restart",
+    "crash-window",
+    "corruption",
+    "concurrency",
+    "storage",
+    "runtime",
+    "provider",
+    "ui-boundary"
+  ],
+  "lanes": [
+    {
+      "id": "python-control-plane",
+      "dimensions": [
+        "restart",
+        "crash-window",
+        "corruption",
+        "concurrency",
+        "storage",
+        "runtime",
+        "provider"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_authoritative_json.py",
+        "tests/test_event_ledger_integrity.py",
+        "tests/test_file_lock_contention.py",
+        "tests/test_process_supervisor.py",
+        "tests/test_provider_gateway.py",
+        "tests/test_resource_lifecycle.py",
+        "tests/test_state_invariants.py",
+        "tests/test_studio_run_control.py",
+        "tests/test_workflow_studio.py"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "passed": true,
+      "duration_seconds": 27.919947,
+      "output_sha256": "4f66389560ab6e214da7130a40b5e57ee5c43905f5ea31359265c14349e4c29b"
+    },
+    {
+      "id": "extension-boundaries",
+      "dimensions": [
+        "corruption",
+        "concurrency",
+        "storage",
+        "runtime",
+        "provider",
+        "ui-boundary"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=4",
+        "tests/activity.test.js",
+        "tests/cleanup-manager.test.js",
+        "tests/hardening-boundaries.test.js",
+        "tests/sidebar-messages.test.js",
+        "tests/state-invariants.test.js",
+        "tests/work-governor.test.js"
+      ],
+      "cwd": "extension",
+      "exit_code": 0,
+      "passed": true,
+      "duration_seconds": 0.590277,
+      "output_sha256": "f4e5b520d109913c25a15e70bf26f8214c331b73dcbed79ab793867ccc6a878c"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "extension/tests/activity.test.js",
+      "sha256": "327c2fbceee69f8c6d3b89b9a3fef7ef0a2df5099349d2467cd2d33ef4fff54b"
+    },
+    {
+      "path": "extension/tests/cleanup-manager.test.js",
+      "sha256": "d96a72d3cf6f0a4106bcd6d20953e8c0515ad848d144bb2625cf53aa035c9a39"
+    },
+    {
+      "path": "extension/tests/hardening-boundaries.test.js",
+      "sha256": "e13beda80fd8dd5820d99968edf9f95a506fc3c8cabeff6a8f0085e313df6020"
+    },
+    {
+      "path": "extension/tests/sidebar-messages.test.js",
+      "sha256": "f5fd1b80b454908e137774012c13533c04b27e7622a245350f010f210d1def66"
+    },
+    {
+      "path": "extension/tests/state-invariants.test.js",
+      "sha256": "01d38f16bc64eaaac58ef44c7f54018bcc3ef0df5701ca4ad9bd88f602b3d82e"
+    },
+    {
+      "path": "extension/tests/work-governor.test.js",
+      "sha256": "8691ce11b305a40e1b4123b65ac55e950f5a9398dd9d84c1c4db8a5b9e95fa7b"
+    },
+    {
+      "path": "tests/test_authoritative_json.py",
+      "sha256": "5ce351df85d8ed8a033e297d5cf6b50a7c3fc7f45e63e42282a798581de04040"
+    },
+    {
+      "path": "tests/test_event_ledger_integrity.py",
+      "sha256": "c3752778af007540ae5cbbf20dd5e8638f7cc8ee46a1ca45b8c4e062e024821b"
+    },
+    {
+      "path": "tests/test_file_lock_contention.py",
+      "sha256": "b579377c3334175f299f4a7a7341631eca7af6b7a06fa062a72d0ced29ed3142"
+    },
+    {
+      "path": "tests/test_process_supervisor.py",
+      "sha256": "d1e2e730d8e060f1db6bacd3fda36d91c4ae45ff9916de64f5dac5762126f7ee"
+    },
+    {
+      "path": "tests/test_provider_gateway.py",
+      "sha256": "a65064f37540b35e0a44261d7b1d240e2353081ff364322ea43d64880d089373"
+    },
+    {
+      "path": "tests/test_resource_lifecycle.py",
+      "sha256": "b7c8047bb45bf992644f46ed7bd3b0a7cbc502caf15f71d434c8efde469c2a0e"
+    },
+    {
+      "path": "tests/test_state_invariants.py",
+      "sha256": "18920415a2f30df512fd80ed1f61e86a501d8330dbfb214d2c63b12ff9c0615f"
+    },
+    {
+      "path": "tests/test_studio_run_control.py",
+      "sha256": "f0f9b78dac71f00f4765af2a30c3c79ff897514e8ed560950d2f973f0b0b8dee"
+    },
+    {
+      "path": "tests/test_workflow_studio.py",
+      "sha256": "4957fc061e442ccebb78105062e6b0f979d3ff53677aff04cb4fb5715b128bb0"
+    }
+  ],
+  "passed": true,
+  "authority": "bounded non-shell test campaign; no production mutation authority"
+}

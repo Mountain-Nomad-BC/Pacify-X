@@ -1,0 +1,176 @@
+{
+  "id": "vscode.mermaid-markdown-features",
+  "name": "Mermaid Markdown Features",
+  "version": "10.0.0",
+  "publisher": "vscode",
+  "active": false,
+  "builtin": true,
+  "extension_kind": [],
+  "contribution_points": [
+    "chatOutputRenderers",
+    "commands",
+    "configuration",
+    "languageModelTools",
+    "markdown.markdownItPlugins",
+    "markdown.previewScripts",
+    "menus",
+    "notebookRenderer"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:chatOutputRenderers",
+      "kind": "chatOutputRenderers",
+      "provider": "vscode.mermaid-markdown-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "vscode.mermaid-markdown-features",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "vscode.mermaid-markdown-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languageModelTools",
+      "kind": "languageModelTools",
+      "provider": "vscode.mermaid-markdown-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:markdown.markdownItPlugins",
+      "kind": "markdown.markdownItPlugins",
+      "provider": "vscode.mermaid-markdown-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:markdown.previewScripts",
+      "kind": "markdown.previewScripts",
+      "provider": "vscode.mermaid-markdown-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "vscode.mermaid-markdown-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:notebookRenderer",
+      "kind": "notebookRenderer",
+      "provider": "vscode.mermaid-markdown-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "_mermaid-markdown.copySource",
+      "invocation": "vscode.commands.executeCommand('_mermaid-markdown.copySource', ...args)",
+      "title": "Copy Diagram Source",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "_mermaid-markdown.openInEditor",
+      "invocation": "vscode.commands.executeCommand('_mermaid-markdown.openInEditor', ...args)",
+      "title": "Open Diagram in Editor",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "_mermaid-markdown.resetPanZoom",
+      "invocation": "vscode.commands.executeCommand('_mermaid-markdown.resetPanZoom', ...args)",
+      "title": "Reset Pan and Zoom",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onWebviewPanel:vscode.mermaid-markdown-features.preview"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": true
+    },
+    "virtual_workspaces": true,
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "vscode.mermaid-markdown-features",
+    "capabilities": [
+      "contribution:chatOutputRenderers",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:languageModelTools",
+      "contribution:markdown.markdownItPlugins",
+      "contribution:markdown.previewScripts",
+      "contribution:menus",
+      "contribution:notebookRenderer"
+    ],
+    "interface": [
+      "_mermaid-markdown.copySource",
+      "_mermaid-markdown.openInEditor",
+      "_mermaid-markdown.resetPanZoom"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": true
+      },
+      "virtual_workspaces": true,
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

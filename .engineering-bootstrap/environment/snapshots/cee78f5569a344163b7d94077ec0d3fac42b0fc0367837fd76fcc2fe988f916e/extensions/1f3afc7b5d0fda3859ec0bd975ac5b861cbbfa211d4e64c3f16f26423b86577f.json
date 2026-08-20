@@ -1,0 +1,77 @@
+{
+  "id": "ms-vscode.js-debug-companion",
+  "name": "JavaScript Debugger Companion Extension",
+  "version": "1.1.3",
+  "publisher": "ms-vscode",
+  "active": false,
+  "builtin": true,
+  "extension_kind": [
+    "ui"
+  ],
+  "contribution_points": [],
+  "capabilities": [],
+  "commands": [],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:js-debug-companion.defaultBrowser",
+    "onCommand:js-debug-companion.kill",
+    "onCommand:js-debug-companion.launch",
+    "onCommand:js-debug-companion.launchAndAttach"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "ui"
+    ],
+    "workspace_trust": {
+      "supported": true
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-vscode.js-debug-companion",
+    "capabilities": [],
+    "interface": [],
+    "requirements": {
+      "extension_kind": [
+        "ui"
+      ],
+      "workspace_trust": {
+        "supported": true
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

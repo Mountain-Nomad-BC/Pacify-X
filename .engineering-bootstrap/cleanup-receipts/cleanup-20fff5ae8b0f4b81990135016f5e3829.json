@@ -1,0 +1,28 @@
+{
+  "cleanup_id": "cleanup-20fff5ae8b0f4b81990135016f5e3829",
+  "project_id": "Pacify-X",
+  "run_id": "clean-export-bd8471d267c5477d9473ca8302684493",
+  "lane_id": "final-candidate",
+  "start_time": "2026-08-15T14:49:21.663225+00:00",
+  "end_time": "2026-08-15T14:49:22.379870+00:00",
+  "reason": "clean export staging lifecycle closed",
+  "validated_roots": [
+    "C:\\tmp"
+  ],
+  "workers": 1,
+  "priority_mode": "conservative_sequential",
+  "resources_considered": 1,
+  "resources_reclaimed": 1,
+  "resources_skipped": 0,
+  "resources_failed": 0,
+  "files_removed": 3939,
+  "directories_removed": 1232,
+  "bytes_reclaimed": 108139810,
+  "retained_artifacts": [],
+  "promoted_artifacts": [],
+  "links_encountered": 0,
+  "orphan_processes_reaped": 0,
+  "errors": [],
+  "remaining_owned_ephemeral_resources": 1,
+  "dry_run": false
+}

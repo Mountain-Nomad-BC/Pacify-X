@@ -1,0 +1,10 @@
+{
+  "active_gap_id": "PX-OS-936",
+  "learned": "The browser walk now uses the current exact typed workflow endpoint controls. All four non-browser targeted checks passed under admission 4996; the walk alone must continue from beginning because it is one stateful interaction chain.",
+  "next_action": "Run only the stateful Playwright high-risk interaction walk once.",
+  "unresolved_branch_gap_ids": ["PX-OS-936", "PX-OS-941", "PX-OS-940", "PX-OS-938", "PX-OS-939", "PX-OS-937", "PX-OS-062"],
+  "evidence": [
+    {"claim": "Four targeted non-browser checks passed; browser reached the now-corrected workflow endpoint step.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004996"},
+    {"claim": "Endpoint interaction corrected under admission 4999.", "reference": "extension/tests/dashboard-e2e.test.js:296-298"}
+  ]
+}

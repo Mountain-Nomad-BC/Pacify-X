@@ -1,0 +1,18 @@
+{
+  "authoritative_contract": "# Blackboard Work Coordinator Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+  "authoritative_skill_body": "---\nname: blackboard-work-coordinator\ndescription: Coordinate loosely coupled agents through task publication, claims, leases, evidence returns, and next-wave generation.\nversion: 1.0.0\n---\n\n# Blackboard Work Coordinator\n\n## Purpose\nCoordinate loosely coupled agents through task publication, claims, leases, evidence returns, and next-wave generation.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+  "canonical_owner": "orchestrate-capability-scheduling",
+  "composed_with": [
+    "skill-navigator",
+    "execution-contract-enforcer",
+    "recovery-coordinator",
+    "outcome-verifier",
+    "isolate-project-streams"
+  ],
+  "description": "Coordinate loosely coupled agents through task publication, claims, leases, evidence returns, and next-wave generation.",
+  "id": "blackboard-work-coordinator",
+  "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+  "source_body_sha256": "5b687c882633d3d0cbe73f4ca4e1a674dbe1fa240751bd874cf20c7bdce03107",
+  "source_contract_sha256": "a93d784fd77681cfd052b47fbd81005ba041be60566894fb094da930735a00f4",
+  "version": "1.0.0"
+}

@@ -112,7 +112,7 @@ def disposition_for(relative: Path, suite: str) -> tuple[str, str]:
                 "quarantine_generated_transient_after_intake_close",
                 "parent temp quarantine",
             )
-        if "/.agents/skills/" in f"/{text}":
+        if "/.agents/skills/" in f"/{text}" or "/.px/skills/" in f"/{text}":
             return (
                 "consolidate_lazy_capability_contract",
                 "orchestrate-capability-scheduling",
@@ -148,6 +148,7 @@ def disposition_for(relative: Path, suite: str) -> tuple[str, str]:
         )
     if (
         "/.agents/skills/" in f"/{text}"
+        or "/.px/skills/" in f"/{text}"
         or "/skills/" in f"/{text}"
         or name == "skills.json"
     ):
@@ -702,8 +703,8 @@ def wire_product(root: Path) -> dict:
         package["tests"] = "tests/test_rel008_assimilation.py"
         package["evidence"] = "evidence/rel008-assimilation.json"
         package["references"] = [
-            f".agents/skills/{owner}/references/capabilities-index.json",
-            f".agents/skills/{owner}/references/scripts-index.json",
+            f".px/skills/{owner}/references/capabilities-index.json",
+            f".px/skills/{owner}/references/scripts-index.json",
         ]
         dump(package_path, package)
 
@@ -731,8 +732,8 @@ def wire_product(root: Path) -> dict:
         "body": skill_body.relative_to(root).as_posix(),
         "body_sha256": digest(skill_body),
         "references": [
-            ".agents/skills/govern-metacognitive-evolution/references/capability-index.json",
-            ".agents/skills/govern-metacognitive-evolution/references/orchestration-index.json",
+            ".px/skills/govern-metacognitive-evolution/references/capability-index.json",
+            ".px/skills/govern-metacognitive-evolution/references/orchestration-index.json",
         ],
         "capability_tags": [
             "metacognition",
@@ -769,8 +770,8 @@ def wire_product(root: Path) -> dict:
             "body": scheduling_body.relative_to(root).as_posix(),
             "body_sha256": digest(scheduling_body),
             "references": [
-                ".agents/skills/orchestrate-capability-scheduling/references/capability-index.json",
-                ".agents/skills/orchestrate-capability-scheduling/references/workflow-index.json",
+                ".px/skills/orchestrate-capability-scheduling/references/capability-index.json",
+                ".px/skills/orchestrate-capability-scheduling/references/workflow-index.json",
             ],
             "capability_tags": [
                 "scheduling",
@@ -798,7 +799,7 @@ def wire_product(root: Path) -> dict:
 id = "govern-metacognitive-evolution"
 version = "1.0.0"
 status = "active"
-body = ".agents/skills/govern-metacognitive-evolution/SKILL.md"
+body = ".px/skills/govern-metacognitive-evolution/SKILL.md"
 contract = "registry/skill_packages/govern-metacognitive-evolution.json"
 admission_record = "govern-metacognitive-evolution"
 tags = ["metacognition", "uncertainty", "introspection", "optimization", "knowledge-dynamics"]
@@ -816,7 +817,7 @@ tags = ["metacognition", "uncertainty", "introspection", "optimization", "knowle
 id = "orchestrate-capability-scheduling"
 version = "1.0.0"
 status = "active"
-body = ".agents/skills/orchestrate-capability-scheduling/SKILL.md"
+body = ".px/skills/orchestrate-capability-scheduling/SKILL.md"
 contract = "registry/skill_packages/orchestrate-capability-scheduling.json"
 admission_record = "orchestrate-capability-scheduling"
 tags = ["scheduling", "orchestration", "resources", "budgets", "recovery"]

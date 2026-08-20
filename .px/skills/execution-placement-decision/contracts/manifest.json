@@ -1,0 +1,9 @@
+{
+  "schema_version": "px.skill-contract-links/1.0",
+  "runtime": "runtime.execution_placement",
+  "decision_schema": "contracts/placement-decision.schema.json",
+  "promotion_schema": "contracts/promotion-gate.schema.json",
+  "effects": ["read_local", "isolated_compute"],
+  "mutation_authority": false
+}
+

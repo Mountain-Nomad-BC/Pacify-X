@@ -1,0 +1,11 @@
+{
+  "active_gap_id": "PX-OS-940",
+  "learned": "Workflow normalization now derives coherent omitted-field authority and adapter defaults, and graph projection now uses one effective response/request/state mode. An unadmitted read-only node --check diagnostic was inadvertently run after the edits; both files parsed, but this checkpoint does not treat that ordering as governed verification.",
+  "next_action": "Admit and run syntax plus only the repaired workflow/graph/browser interaction paths.",
+  "unresolved_branch_gap_ids": ["PX-OS-940", "PX-OS-941", "PX-OS-938", "PX-OS-939", "PX-OS-937", "PX-OS-936", "PX-OS-062"],
+  "evidence": [
+    {"claim": "Workflow default repair implemented under admission 4992.", "reference": "extension/media/dashboard/49-studio-editors.js; extension/tests/ui-scaffold.test.js"},
+    {"claim": "Graph effective-mode repair implemented under admission 4994.", "reference": "extension/media/dashboard/48-graph-surface.js; extension/tests/dashboard-e2e.test.js"},
+    {"claim": "Read-only syntax diagnostic passed but was run before this new admission and is not counted as governed completion evidence.", "reference": "node --check extension/media/dashboard/48-graph-surface.js; node --check extension/media/dashboard/49-studio-editors.js"}
+  ]
+}

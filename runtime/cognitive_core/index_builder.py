@@ -172,7 +172,7 @@ def _index_nested_assets(
     catalog_by_id: Mapping[str, Mapping[str, Any]],
 ) -> dict[str, str]:
     normalized_leaf: dict[str, str] = {}
-    references = root / ".agents" / "skills"
+    references = root / ".px" / "skills"
     for index_path in sorted(references.glob("*/references/*index*.json")):
         kind = _INDEX_KIND.get(index_path.name)
         if kind is None:

@@ -1,0 +1,38 @@
+{
+  "admission_record": "run-resilience-drills",
+  "body_sha256": "9c4112ba2a93de91ad6b89a7d43fca9070e6969b607330b6b9280ff7a8494a23",
+  "contract": {
+    "available": true,
+    "sha256": "9f80817e9bf6fb6e3c4445e29ed8930cc3215464577f43be68696fd21d1b979a",
+    "source": "registry/skill_packages/run-resilience-drills.json"
+  },
+  "description": "Plan and execute approval-gated fault, restart, dependency-loss, latency, load, and recovery experiments with before/during/after probes and recovery-time evidence. Use for chaos testing, resilience certification, soak recovery, restore drills, or validating degraded-mode and failover claims.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "run-resilience-drills",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/run-resilience-drills"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "resilience",
+    "chaos",
+    "recovery",
+    "fault"
+  ],
+  "version": "0.1.0"
+}

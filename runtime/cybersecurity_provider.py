@@ -213,8 +213,14 @@ def search_security_capabilities(
     *,
     limit: int = 10,
     provider_enabled: bool = True,
+    include_descriptions: bool = False,
 ) -> dict[str, object]:
-    """Search independent metadata paths and return candidate-only explanations."""
+    """Search independent metadata paths and return candidate-only explanations.
+
+    External descriptions participate in ranking but stay out of the default
+    result payload.  Callers must explicitly opt in before placing untrusted,
+    potentially security-sensitive prose in an interactive transcript.
+    """
     if not query.strip() or not 1 <= limit <= 100:
         raise ValueError("nonblank query and limit between 1 and 100 are required")
     if not provider_enabled:
@@ -284,11 +290,9 @@ def search_security_capabilities(
         score = sum(components.values())
         if score <= 0:
             continue
-        hits.append(
-            {
+        hit = {
                 "id": row["id"],
                 "name": row.get("name"),
-                "description": row.get("description"),
                 "source_subdomain": source_domain,
                 "canonical_domain": domain,
                 "risk_class": row.get("risk_class"),
@@ -303,7 +307,9 @@ def search_security_capabilities(
                 "authority_granted": False,
                 "admission_required": True,
             }
-        )
+        if include_descriptions:
+            hit["description"] = row.get("description")
+        hits.append(hit)
     hits.sort(key=lambda item: (-float(item["score"]), str(item["id"])))
     return {
         "valid": True,
@@ -311,6 +317,7 @@ def search_security_capabilities(
         "results": hits[:limit],
         "independent_paths": ["text", "domain", "alias", "framework"],
         "source_bodies_loaded": 0,
+        "descriptions_included": include_descriptions,
         "authority_granted": False,
     }
 

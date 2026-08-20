@@ -1,0 +1,13 @@
+{
+  "schema_version": "pacify-x.health-state.v1",
+  "authority": "Each dimension is independent evidence except for the monotonic prerequisite chain; a later state never follows from wording alone.",
+  "dimensions": [
+    { "id": "configured", "meaning": "A valid local configuration target is declared." },
+    { "id": "detected", "meaning": "The configured target was observed by a current bounded probe.", "requires": ["configured"] },
+    { "id": "connected", "meaning": "A live request/response exchange succeeded.", "requires": ["configured", "detected"] },
+    { "id": "authoritative", "meaning": "The connected source is the canonical owner for the displayed fact or effect.", "requires": ["configured", "detected", "connected"] },
+    { "id": "ready", "meaning": "Current validation and policy gates admit the intended operation.", "requires": ["configured", "detected", "connected", "authoritative"] }
+  ],
+  "unknown_rule": "Missing evidence is false/unknown and is never promoted to a stronger state.",
+  "display_order": ["configured", "detected", "connected", "authoritative", "ready"]
+}

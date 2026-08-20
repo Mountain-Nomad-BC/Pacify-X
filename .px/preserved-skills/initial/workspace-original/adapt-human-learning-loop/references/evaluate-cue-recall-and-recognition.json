@@ -1,0 +1,56 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "not a medical or cognitive diagnosis",
+    "normalize for accessibility and user-selected pacing",
+    "do not punish errors"
+  ],
+  "bundle": "adapt-human-learning-loop",
+  "category": "learning-evaluation",
+  "dependencies": [
+    "active-evaluation-selector",
+    "maintain-behavior-event-ledger"
+  ],
+  "id": "evaluate-cue-recall-and-recognition",
+  "keywords": [
+    "memory recall",
+    "recognition",
+    "missing object",
+    "cue association",
+    "attempts"
+  ],
+  "mechanisms": [
+    "timed cue presentation",
+    "recognition choices",
+    "recall attempts",
+    "duplicate-attempt handling",
+    "hint accounting",
+    "success criteria"
+  ],
+  "owner": "active-evaluation-selector",
+  "provenance": {
+    "derivation": "clean-room mechanism abstraction",
+    "source": "hyperlearning-clean-room",
+    "source_refs": [
+      "Manual de usuario e instalación.pdf sections 2.8.1-2.8.3",
+      "src/Ejercicio1.java",
+      "src/Ejercicio2.java",
+      "src/Ejercicio3.java"
+    ]
+  },
+  "source": "hyperlearning-clean-room",
+  "source_refs": [
+    "Manual de usuario e instalación.pdf sections 2.8.1-2.8.3",
+    "src/Ejercicio1.java",
+    "src/Ejercicio2.java",
+    "src/Ejercicio3.java"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Evaluate short cue exposure followed by recall, recognition, association, or missing-item selection while separating accuracy, repeated attempts, timing, and hint use.",
+  "title": "Evaluate Cue Recall and Recognition",
+  "use_when": [
+    "training memory or association",
+    "exercise performance needs structured metrics",
+    "hints and repeated attempts must be distinguished"
+  ]
+}

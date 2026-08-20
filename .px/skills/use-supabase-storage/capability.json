@@ -1,0 +1,39 @@
+{
+  "admission_record": "use-supabase-storage",
+  "body_sha256": "f6b2b4083f9d679ecb90d657242d2b37283d7b576fffe4c48ef0083d5f7ed571",
+  "contract": {
+    "available": true,
+    "sha256": "9655df0d17ee329d96485606d7a99a7e3ba75ee598f07ff80ab98f2ce522a76e",
+    "source": "registry/skill_packages/use-supabase-storage.json"
+  },
+  "description": "Design Supabase Storage buckets, paths, uploads, signed access, transformations, and RLS policies.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "use-supabase-storage",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/use-supabase-storage"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "buckets",
+    "object-storage",
+    "signed-urls",
+    "storage-rls",
+    "supabase"
+  ],
+  "version": "1.0.0"
+}

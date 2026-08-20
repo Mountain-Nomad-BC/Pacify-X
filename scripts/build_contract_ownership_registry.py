@@ -87,9 +87,9 @@ ROOT_OWNERS = {
         ["tests/test_trust_boundaries.py"],
     ),
     "authoritative-skill-contract.schema.json": (
-        ".agents/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py",
+        ".px/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py",
         [
-            ".agents/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py"
+            ".px/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py"
         ],
         "runtime_enforced",
         ["tests/test_authoritative_skill_compiler.py"],
@@ -211,7 +211,7 @@ ROOT_OWNERS = {
     "source-capability-audit.schema.json": (
         "runtime/capability_assimilation.py",
         [
-            ".agents/skills/audit-source-capabilities/scripts/audit_source_capabilities.py"
+            ".px/skills/audit-source-capabilities/scripts/audit_source_capabilities.py"
         ],
         "runtime_registry_boundary",
         [

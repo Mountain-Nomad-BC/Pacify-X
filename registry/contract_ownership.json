@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "policy": "Every shipped schema has one explicit owner and an honest enforcement classification.",
-  "contract_count": 157,
+  "contract_count": 165,
   "records": [
     {
       "path": "contracts/agents/agency-agent-manifest.schema.json",
@@ -246,9 +246,9 @@
       "contract_id": "urn:engineering-loop-bootstrap:contract:authoritative-skill-contract",
       "contract_version": "1.0.0",
       "title": "Authoritative Skill Contract",
-      "owner": ".agents/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py",
+      "owner": ".px/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py",
       "producers": [
-        ".agents/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py"
+        ".px/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py"
       ],
       "consumers": [
         "runtime/contracts.py"
@@ -392,6 +392,26 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_config_and_registry.py"
+      ]
+    },
+    {
+      "path": "contracts/certification-readiness.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:certification-readiness",
+      "contract_version": "1.0.0",
+      "title": "PACIFY-X certification environment readiness",
+      "owner": "runtime/certification_readiness.py",
+      "producers": [
+        "runtime/certification_readiness.py",
+        "scripts/bootstrap_certification.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_control_equivalent",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_certification_readiness.py"
       ]
     },
     {
@@ -1572,6 +1592,139 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_retrieval_and_models.py"
+      ]
+    },
+    {
+      "path": "contracts/operations/health-model-registry.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:operations:health-model-registry",
+      "contract_version": "1.0.0",
+      "title": "PACIFY-X canonical health taxonomy registry",
+      "owner": "runtime/health_model.py",
+      "producers": [
+        "registry/health_taxonomy.json"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_control_equivalent",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_health_model.py"
+      ]
+    },
+    {
+      "path": "contracts/operations/health-report.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:operations:health-report",
+      "contract_version": "1.0.0",
+      "title": "PACIFY-X canonical health report",
+      "owner": "runtime/health_model.py",
+      "producers": [
+        "runtime/health_model.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_control_equivalent",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_health_model.py"
+      ]
+    },
+    {
+      "path": "contracts/operations/operation-event.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:operations:operation-event",
+      "contract_version": "1.0.0",
+      "title": "PACIFY-X canonical operational event",
+      "owner": "runtime/operational_visibility.py",
+      "producers": [
+        "runtime/operational_visibility.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_control_equivalent",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_operational_visibility.py"
+      ]
+    },
+    {
+      "path": "contracts/operations/os-observer-registry.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:operations:os-observer-registry",
+      "contract_version": "1.0.0",
+      "title": "PACIFY-X operating-system observer adapter registry",
+      "owner": "runtime/operational_observers.py",
+      "producers": [
+        "registry/os_observer_registry.json"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_control_equivalent",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_operational_observers.py"
+      ]
+    },
+    {
+      "path": "contracts/operations/provider-adapter-registry.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:operations:provider-adapter-registry",
+      "contract_version": "1.0.0",
+      "title": "PACIFY-X provider invocation adapter registry",
+      "owner": "runtime/provider_gateway.py",
+      "producers": [
+        "registry/provider_adapters.json"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_control_equivalent",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_provider_gateway.py"
+      ]
+    },
+    {
+      "path": "contracts/operations/provider-budget-policy.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:operations:provider-budget-policy",
+      "contract_version": "1.0.0",
+      "title": "PACIFY-X provider budget policy registry",
+      "owner": "runtime/provider_budget.py",
+      "producers": [
+        "registry/provider_budget_policy.json"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_control_equivalent",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_provider_budget.py"
+      ]
+    },
+    {
+      "path": "contracts/operations/route-observer-registry.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:operations:route-observer-registry",
+      "contract_version": "1.0.0",
+      "title": "PACIFY-X route and observer registry",
+      "owner": "runtime/operational_visibility.py",
+      "producers": [
+        "registry/operation_route_registry.json"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_control_equivalent",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_operational_visibility.py"
       ]
     },
     {
@@ -2807,7 +2960,7 @@
       "title": "Bounded source capability audit receipt",
       "owner": "runtime/capability_assimilation.py",
       "producers": [
-        ".agents/skills/audit-source-capabilities/scripts/audit_source_capabilities.py"
+        ".px/skills/audit-source-capabilities/scripts/audit_source_capabilities.py"
       ],
       "consumers": [
         "runtime/contracts.py"

@@ -1,0 +1,17 @@
+{
+  "gap_id": "PX-OS-901",
+  "from_state": "implementing",
+  "to_state": "implemented",
+  "reason": "Exact install preview, native modal approval, documented VS Code install dispatch, immediate denominator recheck, typed receipt, request correlation, and post-dispatch inventory refresh are implemented; a real installed-host operation remains unclaimed.",
+  "implementation_evidence": [
+    {"reference":"extension/src/extensionLifecycleHost.js","artifact_sha256":"4f2d0b7be2d8e0597846667ab6888e22cbe3260fd104447849baa73196a7895c","artifact_size":4250,"claim":"Pure bounded controller binds exact identity/version, expiry, approval, denominator, host command, and reconciliation receipt."},
+    {"reference":"extension/src/extension.js","artifact_sha256":"6388a86fb89d586f8c6dc15b9586e7b87da332498073d5cfe18f23868e63f9ab","artifact_size":119486,"claim":"Extension host wires correlated preview/execute/result through a native modal and refreshes current environment evidence."},
+    {"reference":"extension/tests/extension-lifecycle-host.test.js","artifact_sha256":"653c5665306be23bd5744f8c020cbe85634f0d3d74c96e6d41aff2a7cbaff049","artifact_size":3009,"claim":"Three focused Node cases pass for dispatch/reconciliation and every bounded refusal path."}
+  ],
+  "evidence": [
+    {"reference":"extension/src/extensionLifecycleHost.js","artifact_sha256":"4f2d0b7be2d8e0597846667ab6888e22cbe3260fd104447849baa73196a7895c","artifact_size":4250,"claim":"Pure bounded controller binds exact identity/version, expiry, approval, denominator, host command, and reconciliation receipt."},
+    {"reference":"extension/src/extension.js","artifact_sha256":"6388a86fb89d586f8c6dc15b9586e7b87da332498073d5cfe18f23868e63f9ab","artifact_size":119486,"claim":"Extension host wires correlated preview/execute/result through a native modal and refreshes current environment evidence."},
+    {"reference":"extension/media/dashboard/90-controller.js","artifact_sha256":"200f11de092a1998c12d3152bb4d8eff5e37722e19b6b95f4612a6956a26aa51","artifact_size":377813,"claim":"Dashboard validates exact identity, correlates preview/result, and distinguishes cancel, reconciled, and pending outcomes."},
+    {"reference":"extension/tests/extension-lifecycle-host.test.js","artifact_sha256":"653c5665306be23bd5744f8c020cbe85634f0d3d74c96e6d41aff2a7cbaff049","artifact_size":3009,"claim":"Three focused Node cases pass for dispatch/reconciliation and every bounded refusal path."}
+  ]
+}

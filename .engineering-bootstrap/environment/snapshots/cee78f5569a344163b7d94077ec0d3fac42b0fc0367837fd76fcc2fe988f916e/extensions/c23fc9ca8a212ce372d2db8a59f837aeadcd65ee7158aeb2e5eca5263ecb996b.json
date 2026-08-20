@@ -1,0 +1,823 @@
+{
+  "id": "ms-vscode-remote.remote-containers",
+  "name": "Dev Containers",
+  "version": "0.466.0",
+  "publisher": "ms-vscode-remote",
+  "active": true,
+  "builtin": false,
+  "extension_kind": [
+    "ui"
+  ],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "continueEditSession",
+    "jsonValidation",
+    "languages",
+    "menus",
+    "remoteHelp",
+    "resourceLabelFormatters",
+    "views",
+    "viewsWelcome"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-vscode-remote.remote-containers",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-vscode-remote.remote-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:continueEditSession",
+      "kind": "continueEditSession",
+      "provider": "ms-vscode-remote.remote-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "ms-vscode-remote.remote-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languages",
+      "kind": "languages",
+      "provider": "ms-vscode-remote.remote-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-vscode-remote.remote-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:remoteHelp",
+      "kind": "remoteHelp",
+      "provider": "ms-vscode-remote.remote-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:resourceLabelFormatters",
+      "kind": "resourceLabelFormatters",
+      "provider": "ms-vscode-remote.remote-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "ms-vscode-remote.remote-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "ms-vscode-remote.remote-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "remote-containers.addExtensionToConfig",
+      "invocation": "vscode.commands.executeCommand('remote-containers.addExtensionToConfig', ...args)",
+      "title": "Add to devcontainer.json",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.attachToAppleContainer",
+      "invocation": "vscode.commands.executeCommand('remote-containers.attachToAppleContainer', ...args)",
+      "title": "Attach to Running Apple Container...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.attachToContainerInCurrentWindow",
+      "invocation": "vscode.commands.executeCommand('remote-containers.attachToContainerInCurrentWindow', ...args)",
+      "title": "Attach in Current Window",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.attachToContainerInNewWindow",
+      "invocation": "vscode.commands.executeCommand('remote-containers.attachToContainerInNewWindow', ...args)",
+      "title": "Attach in New Window",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.attachToK8sContainer",
+      "invocation": "vscode.commands.executeCommand('remote-containers.attachToK8sContainer', ...args)",
+      "title": "Attach to Running Kubernetes Container...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.attachToK8sContainerFromViewlet",
+      "invocation": "vscode.commands.executeCommand('remote-containers.attachToK8sContainerFromViewlet', ...args)",
+      "title": "Attach Visual Studio Code",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.attachToRunningContainer",
+      "invocation": "vscode.commands.executeCommand('remote-containers.attachToRunningContainer', ...args)",
+      "title": "Attach to Running Container...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.attachToRunningContainerFromViewlet",
+      "invocation": "vscode.commands.executeCommand('remote-containers.attachToRunningContainerFromViewlet', ...args)",
+      "title": "Attach Visual Studio Code",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.checkoutPRInVolume",
+      "invocation": "vscode.commands.executeCommand('remote-containers.checkoutPRInVolume', ...args)",
+      "title": "Checkout Pull Request in Dev Container",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.cleanUpDevContainers",
+      "invocation": "vscode.commands.executeCommand('remote-containers.cleanUpDevContainers', ...args)",
+      "title": "Clean Up Dev Containers...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.cloneInVolume",
+      "invocation": "vscode.commands.executeCommand('remote-containers.cloneInVolume', ...args)",
+      "title": "Clone Repository in Volume",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.cloneInVolumeFromViewlet",
+      "invocation": "vscode.commands.executeCommand('remote-containers.cloneInVolumeFromViewlet', ...args)",
+      "title": "Clone into existing Volume",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.configureContainerFeatures",
+      "invocation": "vscode.commands.executeCommand('remote-containers.configureContainerFeatures', ...args)",
+      "title": "Configure Container Features...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.createDevContainer",
+      "invocation": "vscode.commands.executeCommand('remote-containers.createDevContainer', ...args)",
+      "title": "New Dev Container...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.createDevContainerFile",
+      "invocation": "vscode.commands.executeCommand('remote-containers.createDevContainerFile', ...args)",
+      "title": "Add Dev Container Configuration Files...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.createDevContainerFileWithCopilot",
+      "invocation": "vscode.commands.executeCommand('remote-containers.createDevContainerFileWithCopilot', ...args)",
+      "title": "Add Dev Container Configuration Files using GitHub Copilot...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.explorerDetailsRefresh",
+      "invocation": "vscode.commands.executeCommand('remote-containers.explorerDetailsRefresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.explorerTargetsRefresh",
+      "invocation": "vscode.commands.executeCommand('remote-containers.explorerTargetsRefresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.explorerVolumesRefresh",
+      "invocation": "vscode.commands.executeCommand('remote-containers.explorerVolumesRefresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.getHelp",
+      "invocation": "vscode.commands.executeCommand('remote-containers.getHelp', ...args)",
+      "title": "Help",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.getStarted",
+      "invocation": "vscode.commands.executeCommand('remote-containers.getStarted', ...args)",
+      "title": "Get Started with Dev Containers",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.inspectDockerResource",
+      "invocation": "vscode.commands.executeCommand('remote-containers.inspectDockerResource', ...args)",
+      "title": "Inspect",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.inspectInBasicDevContainer",
+      "invocation": "vscode.commands.executeCommand('remote-containers.inspectInBasicDevContainer', ...args)",
+      "title": "Explore in Dev Container",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.inspectVolume",
+      "invocation": "vscode.commands.executeCommand('remote-containers.inspectVolume', ...args)",
+      "title": "Explore a Volume in a Dev Container...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.inspectVolumeFromViewlet",
+      "invocation": "vscode.commands.executeCommand('remote-containers.inspectVolumeFromViewlet', ...args)",
+      "title": "Explore in a Dev Container",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.installDocker",
+      "invocation": "vscode.commands.executeCommand('remote-containers.installDocker', ...args)",
+      "title": "Install Docker",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.installDockerInWSL",
+      "invocation": "vscode.commands.executeCommand('remote-containers.installDockerInWSL', ...args)",
+      "title": "Install Docker in WSL",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.installUserCLI",
+      "invocation": "vscode.commands.executeCommand('remote-containers.installUserCLI', ...args)",
+      "title": "Install devcontainer CLI",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.labelPortAndUpdateConfig",
+      "invocation": "vscode.commands.executeCommand('remote-containers.labelPortAndUpdateConfig', ...args)",
+      "title": "Set Label and Update devcontainer.json",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.newContainer",
+      "invocation": "vscode.commands.executeCommand('remote-containers.newContainer', ...args)",
+      "title": "New Dev Container",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openAttachConfigByNameFile",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openAttachConfigByNameFile', ...args)",
+      "title": "Open Named Container Configuration File",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openAttachDevContainerFile",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openAttachDevContainerFile', ...args)",
+      "title": "Open Attached Container Configuration File...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openDevContainerFile",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openDevContainerFile', ...args)",
+      "title": "Open Container Configuration File",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openFolder",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openFolder', ...args)",
+      "title": "Open Folder in Container...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openFolderInContainerInCurrentWindow",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openFolderInContainerInCurrentWindow', ...args)",
+      "title": "Open in Container in Current Window",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openFolderInContainerInNewWindow",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openFolderInContainerInNewWindow', ...args)",
+      "title": "Open in Container in New Window",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openInformationAboutMountPerformance",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openInformationAboutMountPerformance', ...args)",
+      "title": "Clone repository in Docker volume for better I/O performance.",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openLastLogFile",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openLastLogFile', ...args)",
+      "title": "Show Previous Log",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openLogFile",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openLogFile', ...args)",
+      "title": "Show All Logs...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openPullRequestInVolume",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openPullRequestInVolume', ...args)",
+      "title": "Clone GitHub Pull Request in Container Volume...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openRepositoryFromGitWithEditSession",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openRepositoryFromGitWithEditSession', ...args)",
+      "title": "Clone Repository in a Container Volume",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openRepositoryFromRemoteHubWithEditSession",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openRepositoryFromRemoteHubWithEditSession', ...args)",
+      "title": "Clone Repository in a Container Volume",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openRepositoryInUniqueVolume",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openRepositoryInUniqueVolume', ...args)",
+      "title": "Clone Repository in Container Volume...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openRepositoryInVolume",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openRepositoryInVolume', ...args)",
+      "title": "Clone Repository in Named Container Volume...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.openWorkspace",
+      "invocation": "vscode.commands.executeCommand('remote-containers.openWorkspace', ...args)",
+      "title": "Open Workspace in Container...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.provideFeedback",
+      "invocation": "vscode.commands.executeCommand('remote-containers.provideFeedback', ...args)",
+      "title": "Provide Feedback",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.pruneVolumes",
+      "invocation": "vscode.commands.executeCommand('remote-containers.pruneVolumes', ...args)",
+      "title": "Clean Up Dev Volumes...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.rebuildAndReopenInContainer",
+      "invocation": "vscode.commands.executeCommand('remote-containers.rebuildAndReopenInContainer', ...args)",
+      "title": "Rebuild and Reopen in Container",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.rebuildContainer",
+      "invocation": "vscode.commands.executeCommand('remote-containers.rebuildContainer', ...args)",
+      "title": "Rebuild Container",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.rebuildContainerNoCache",
+      "invocation": "vscode.commands.executeCommand('remote-containers.rebuildContainerNoCache', ...args)",
+      "title": "Rebuild Container Without Cache",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.rebuildNoCacheAndReopenInContainer",
+      "invocation": "vscode.commands.executeCommand('remote-containers.rebuildNoCacheAndReopenInContainer', ...args)",
+      "title": "Rebuild Without Cache and Reopen in Container",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.removeContainer",
+      "invocation": "vscode.commands.executeCommand('remote-containers.removeContainer', ...args)",
+      "title": "Remove Container",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.removeRecentFolder",
+      "invocation": "vscode.commands.executeCommand('remote-containers.removeRecentFolder', ...args)",
+      "title": "Remove Recent Folder",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.removeVolume",
+      "invocation": "vscode.commands.executeCommand('remote-containers.removeVolume', ...args)",
+      "title": "Remove",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.reopenInContainer",
+      "invocation": "vscode.commands.executeCommand('remote-containers.reopenInContainer', ...args)",
+      "title": "Reopen in Container",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.reopenInSSH",
+      "invocation": "vscode.commands.executeCommand('remote-containers.reopenInSSH', ...args)",
+      "title": "Reopen Folder in SSH",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.reopenInTunnel",
+      "invocation": "vscode.commands.executeCommand('remote-containers.reopenInTunnel', ...args)",
+      "title": "Reopen Folder in Tunnel",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.reopenInWSL",
+      "invocation": "vscode.commands.executeCommand('remote-containers.reopenInWSL', ...args)",
+      "title": "Reopen Folder in WSL",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.reopenLocally",
+      "invocation": "vscode.commands.executeCommand('remote-containers.reopenLocally', ...args)",
+      "title": "Reopen Folder Locally",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.reportIssue",
+      "invocation": "vscode.commands.executeCommand('remote-containers.reportIssue', ...args)",
+      "title": "Report Issue...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.revealLogTerminal",
+      "invocation": "vscode.commands.executeCommand('remote-containers.revealLogTerminal', ...args)",
+      "title": "Show Container Log",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.settings",
+      "invocation": "vscode.commands.executeCommand('remote-containers.settings', ...args)",
+      "title": "Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.showContainerLog",
+      "invocation": "vscode.commands.executeCommand('remote-containers.showContainerLog', ...args)",
+      "title": "Show Container Log",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.showDetails",
+      "invocation": "vscode.commands.executeCommand('remote-containers.showDetails', ...args)",
+      "title": "Show Details",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.showRecoveryContainerNotificationReset",
+      "invocation": "vscode.commands.executeCommand('remote-containers.showRecoveryContainerNotificationReset', ...args)",
+      "title": "Reset Don't Show Recovery Container Notification",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.showReopenInContainerNotificationReset",
+      "invocation": "vscode.commands.executeCommand('remote-containers.showReopenInContainerNotificationReset', ...args)",
+      "title": "Reset Don't Show Reopen Notification",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.startContainer",
+      "invocation": "vscode.commands.executeCommand('remote-containers.startContainer', ...args)",
+      "title": "Start Container",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.stopContainer",
+      "invocation": "vscode.commands.executeCommand('remote-containers.stopContainer', ...args)",
+      "title": "Stop Container",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.switchContainer",
+      "invocation": "vscode.commands.executeCommand('remote-containers.switchContainer', ...args)",
+      "title": "Switch Container",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.testConnection",
+      "invocation": "vscode.commands.executeCommand('remote-containers.testConnection', ...args)",
+      "title": "Test Connection",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-containers.trySample",
+      "invocation": "vscode.commands.executeCommand('remote-containers.trySample', ...args)",
+      "title": "Try a Dev Container Sample...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onDebugResolve:extensionHost",
+    "onResolveRemoteAuthority:apple-container",
+    "onResolveRemoteAuthority:attached-container",
+    "onResolveRemoteAuthority:dev-container",
+    "onResolveRemoteAuthority:k8s-container",
+    "onStartupFinished",
+    "workspaceContains:.devcontainer.json",
+    "workspaceContains:.devcontainer/devcontainer.json"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "ui"
+    ],
+    "workspace_trust": {
+      "supported": "limited",
+      "description": "Opening a folder in a container requires workspace trust."
+    },
+    "virtual_workspaces": true,
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-vscode-remote.remote-containers",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:continueEditSession",
+      "contribution:jsonValidation",
+      "contribution:languages",
+      "contribution:menus",
+      "contribution:remoteHelp",
+      "contribution:resourceLabelFormatters",
+      "contribution:views",
+      "contribution:viewsWelcome"
+    ],
+    "interface": [
+      "remote-containers.addExtensionToConfig",
+      "remote-containers.attachToAppleContainer",
+      "remote-containers.attachToContainerInCurrentWindow",
+      "remote-containers.attachToContainerInNewWindow",
+      "remote-containers.attachToK8sContainer",
+      "remote-containers.attachToK8sContainerFromViewlet",
+      "remote-containers.attachToRunningContainer",
+      "remote-containers.attachToRunningContainerFromViewlet",
+      "remote-containers.checkoutPRInVolume",
+      "remote-containers.cleanUpDevContainers",
+      "remote-containers.cloneInVolume",
+      "remote-containers.cloneInVolumeFromViewlet",
+      "remote-containers.configureContainerFeatures",
+      "remote-containers.createDevContainer",
+      "remote-containers.createDevContainerFile",
+      "remote-containers.createDevContainerFileWithCopilot",
+      "remote-containers.explorerDetailsRefresh",
+      "remote-containers.explorerTargetsRefresh",
+      "remote-containers.explorerVolumesRefresh",
+      "remote-containers.getHelp",
+      "remote-containers.getStarted",
+      "remote-containers.inspectDockerResource",
+      "remote-containers.inspectInBasicDevContainer",
+      "remote-containers.inspectVolume",
+      "remote-containers.inspectVolumeFromViewlet",
+      "remote-containers.installDocker",
+      "remote-containers.installDockerInWSL",
+      "remote-containers.installUserCLI",
+      "remote-containers.labelPortAndUpdateConfig",
+      "remote-containers.newContainer",
+      "remote-containers.openAttachConfigByNameFile",
+      "remote-containers.openAttachDevContainerFile",
+      "remote-containers.openDevContainerFile",
+      "remote-containers.openFolder",
+      "remote-containers.openFolderInContainerInCurrentWindow",
+      "remote-containers.openFolderInContainerInNewWindow",
+      "remote-containers.openInformationAboutMountPerformance",
+      "remote-containers.openLastLogFile",
+      "remote-containers.openLogFile",
+      "remote-containers.openPullRequestInVolume",
+      "remote-containers.openRepositoryFromGitWithEditSession",
+      "remote-containers.openRepositoryFromRemoteHubWithEditSession",
+      "remote-containers.openRepositoryInUniqueVolume",
+      "remote-containers.openRepositoryInVolume",
+      "remote-containers.openWorkspace",
+      "remote-containers.provideFeedback",
+      "remote-containers.pruneVolumes",
+      "remote-containers.rebuildAndReopenInContainer",
+      "remote-containers.rebuildContainer",
+      "remote-containers.rebuildContainerNoCache",
+      "remote-containers.rebuildNoCacheAndReopenInContainer",
+      "remote-containers.removeContainer",
+      "remote-containers.removeRecentFolder",
+      "remote-containers.removeVolume",
+      "remote-containers.reopenInContainer",
+      "remote-containers.reopenInSSH",
+      "remote-containers.reopenInTunnel",
+      "remote-containers.reopenInWSL",
+      "remote-containers.reopenLocally",
+      "remote-containers.reportIssue",
+      "remote-containers.revealLogTerminal",
+      "remote-containers.settings",
+      "remote-containers.showContainerLog",
+      "remote-containers.showDetails",
+      "remote-containers.showRecoveryContainerNotificationReset",
+      "remote-containers.showReopenInContainerNotificationReset",
+      "remote-containers.startContainer",
+      "remote-containers.stopContainer",
+      "remote-containers.switchContainer",
+      "remote-containers.testConnection",
+      "remote-containers.trySample"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "ui"
+      ],
+      "workspace_trust": {
+        "supported": "limited",
+        "description": "Opening a folder in a container requires workspace trust."
+      },
+      "virtual_workspaces": true,
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

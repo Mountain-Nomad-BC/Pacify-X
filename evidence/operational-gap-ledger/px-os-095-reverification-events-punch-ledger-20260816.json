@@ -1,0 +1,73 @@
+[
+  {
+    "event_type": "card_transition",
+    "actor": "codex-primary:testing-governance-reverification",
+    "payload": {
+      "gap_id": "PX-OS-095",
+      "from_state": "reopened",
+      "to_state": "reproduced",
+      "reason": "The stale scan inventory failure was reproduced and retained before regeneration.",
+      "evidence": [{"reference": "evidence/operational-gap-ledger/testing-governance-failed-punch-ledger-20260816.json", "claim": "The retained failure receipt identifies scan_inventory_current as the sole failed assertion."}]
+    }
+  },
+  {
+    "event_type": "card_transition",
+    "actor": "codex-primary:testing-governance-reverification",
+    "payload": {
+      "gap_id": "PX-OS-095",
+      "from_state": "reproduced",
+      "to_state": "scoped",
+      "reason": "The repair scope was limited to regenerating registry/test_group_index.json after the newly added Python scripts.",
+      "evidence": [{"reference": "registry/test_group_index.json", "claim": "The generated index is the exact structural scan inventory consumed by the failing assertion."}]
+    }
+  },
+  {
+    "event_type": "card_transition",
+    "actor": "codex-primary:testing-governance-reverification",
+    "payload": {
+      "gap_id": "PX-OS-095",
+      "from_state": "scoped",
+      "to_state": "approved",
+      "reason": "Repository governance requires regeneration of the derived index and exactly one rerun of the affected section.",
+      "evidence": [{"reference": "AGENTS.md", "claim": "The repository contract requires the governed section gate after a control-plane change."}]
+    }
+  },
+  {
+    "event_type": "card_transition",
+    "actor": "codex-primary:testing-governance-reverification",
+    "payload": {
+      "gap_id": "PX-OS-095",
+      "from_state": "approved",
+      "to_state": "implementing",
+      "reason": "The derived structural scan inventory was regenerated with the repository-owned builder.",
+      "evidence": [{"reference": "scripts/build_test_group_index.py", "claim": "The repository-owned builder performed the bounded derived-index regeneration."}]
+    }
+  },
+  {
+    "event_type": "card_transition",
+    "actor": "codex-primary:testing-governance-reverification",
+    "payload": {
+      "gap_id": "PX-OS-095",
+      "from_state": "implementing",
+      "to_state": "implemented",
+      "reason": "The regenerated test-group index includes the current Python source inventory.",
+      "implementation_evidence": [{"reference": "registry/test_group_index.json", "claim": "The regenerated derived index now reports the current structural scan inventory."}],
+      "evidence": [{"reference": "registry/test_group_index.json", "claim": "The derived test-group index was regenerated after the punch-ledger scripts were added."}]
+    }
+  },
+  {
+    "event_type": "card_transition",
+    "actor": "codex-primary:testing-governance-reverification",
+    "payload": {
+      "gap_id": "PX-OS-095",
+      "from_state": "implemented",
+      "to_state": "narrowly_verified",
+      "reason": "The same governed testing-governance section passed after the bounded index regeneration.",
+      "verification": {
+        "tests_run": ["python -m runtime.cli test-section run testing-governance"],
+        "results": [{"reference": "evidence/operational-gap-ledger/testing-governance-passed-punch-ledger-20260816.json", "claim": "The governed section passed 68 tests and 9 subtests with exit code zero."}]
+      },
+      "evidence": [{"reference": "evidence/operational-gap-ledger/testing-governance-passed-punch-ledger-20260816.json", "claim": "Passing receipt retained separately from the earlier failed receipt."}]
+    }
+  }
+]

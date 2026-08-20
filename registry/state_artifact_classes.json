@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "policy": "Authoritative corruption preserves exact bytes in bounded quarantine and fails closed; derived corruption requires rebuild; unclassified state is never guessed.",
+  "classes": [
+    {"artifact_kind": "workspace_registry", "classification": "authoritative", "owner": "runtime/workspace_manager.py", "corruption_disposition": "quarantine_fail_closed"},
+    {"artifact_kind": "project_record", "classification": "authoritative", "owner": "runtime/workspace_manager.py", "corruption_disposition": "quarantine_fail_closed"},
+    {"artifact_kind": "active_session", "classification": "authoritative", "owner": "runtime/workspace_manager.py", "corruption_disposition": "quarantine_fail_closed"},
+    {"artifact_kind": "event_ledger_event", "classification": "authoritative", "owner": "runtime/event_ledger.py", "corruption_disposition": "quarantine_fail_closed"},
+    {"artifact_kind": "event_ledger_head", "classification": "authoritative", "owner": "runtime/event_ledger.py", "corruption_disposition": "quarantine_fail_closed"},
+    {"artifact_kind": "claim_state", "classification": "authoritative", "owner": "runtime/project_control_plane.py", "corruption_disposition": "quarantine_fail_closed"},
+    {"artifact_kind": "memory_record", "classification": "authoritative", "owner": "runtime/workspace_manager.py", "corruption_disposition": "quarantine_fail_closed"},
+    {"artifact_kind": "sidebar_projection", "classification": "derived", "owner": "runtime/dashboard_api.py", "corruption_disposition": "rebuild"},
+    {"artifact_kind": "dashboard_snapshot", "classification": "derived", "owner": "runtime/dashboard_api.py", "corruption_disposition": "rebuild"},
+    {"artifact_kind": "catalog_index", "classification": "derived", "owner": "runtime/generated_artifacts.py", "corruption_disposition": "rebuild"}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-901",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000006279",
+  "effect": "read",
+  "scope": ["inspect:.agents/skills/px-audit/SKILL.md"],
+  "authority": "The queue worker must apply the PX audit routing contract before bounded ledger inspection.",
+  "expected_effect": "Read the compact PX audit entrypoint only; do not hydrate or execute another capability.",
+  "rollback": "Read-only compact skill instruction access; no rollback required.",
+  "evidence": [{
+    "reference": ".agents/skills/px-audit/SKILL.md",
+    "artifact_sha256": "33fd754fe19ab2d50e084369bbe796b1691a7818bc05c4377d7ae6c475651f97",
+    "artifact_size": 507,
+    "claim": "The compact PX audit entrypoint governs the requested read-only queue audit."
+  }]
+}

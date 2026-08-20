@@ -1,0 +1,39 @@
+{
+  "admission_record": "bounded-workflow-topology-selector",
+  "body_sha256": "4481a54785bcb1af84202092e177ca4db29575e85c759e6a481798e3283570a4",
+  "contract": {
+    "available": true,
+    "sha256": "1be0df24ae186be686bfda10dd725f65f33b3d4f1ef31032204ce080199a3013",
+    "source": "registry/skill_packages/bounded-workflow-topology-selector.json"
+  },
+  "description": "Select among approved workflow templates based on complexity, novelty, risk, and evidence conflict. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "bounded-workflow-topology-selector",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/bounded-workflow-topology-selector"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "advanced",
+    "bounded",
+    "selector",
+    "topology",
+    "workflow"
+  ],
+  "version": "0.1.0"
+}

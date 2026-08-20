@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "px.execution-placement-promotion/1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "decision_sha256", "selected_candidate", "gates", "evidence_sha256", "partial_units", "passed", "promotion_tier", "production_authorized", "rollback_candidate", "promotion_sha256"],
+  "properties": {
+    "schema_version": {"const": "px.execution-placement-promotion/1.0"},
+    "decision_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "selected_candidate": {"type": "string"},
+    "gates": {"type": "object", "additionalProperties": {"type": "boolean"}},
+    "evidence_sha256": {"type": "array", "minItems": 3, "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+    "partial_units": {"type": "array", "items": {"type": "string"}},
+    "passed": {"type": "boolean"},
+    "promotion_tier": {"type": "integer", "minimum": 0, "maximum": 5},
+    "production_authorized": {"const": false},
+    "rollback_candidate": {"type": "string"},
+    "promotion_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}
+

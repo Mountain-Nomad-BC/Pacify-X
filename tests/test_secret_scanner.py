@@ -8,7 +8,7 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 SCANNER_PATH = (
     ROOT
-    / ".agents/skills/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py"
+    / ".px/skills/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py"
 )
 SPEC = importlib.util.spec_from_file_location(
     "authoritative_secret_scanner", SCANNER_PATH

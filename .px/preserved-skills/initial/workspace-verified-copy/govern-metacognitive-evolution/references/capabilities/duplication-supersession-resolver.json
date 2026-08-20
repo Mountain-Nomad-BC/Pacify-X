@@ -1,0 +1,67 @@
+{
+  "dependencies": [
+    "canonical-owner",
+    "skill-admission-controller",
+    "revocable-certification"
+  ],
+  "domain": "capability-genome",
+  "failure_modes": [
+    "name-only deduplication",
+    "silent supersession",
+    "untyped graph edges",
+    "god-capability creation"
+  ],
+  "formula_refs": [
+    "coverage-dominance",
+    "merge-value-score"
+  ],
+  "id": "duplication-supersession-resolver",
+  "inputs": [
+    "skill and orchestration registries",
+    "contracts/tests/runtime paths",
+    "execution and evidence records"
+  ],
+  "invariants": [
+    "Similarity never authorizes deletion.",
+    "Inferred edges are labeled and reviewable.",
+    "Stronger tests, contracts, behavior, evidence, and aliases survive reconciliation."
+  ],
+  "outputs": [
+    "typed capability graph",
+    "overlap/dependency findings",
+    "reviewed evolution or merge plan"
+  ],
+  "procedure": [
+    "Normalize capability identity, aliases, versions, and owners.",
+    "Extract dependencies, semantic effects, tests, and runtime paths.",
+    "Infer typed relations with evidence and confidence.",
+    "Detect cycles, orphans, fragile hubs, duplication, and gaps.",
+    "Require review and recertification for destructive or superseding changes."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Resolve overlap by preserving the strongest contracts, runtime behavior, tests, evidence, documentation, aliases, and migration paths from all candidates.",
+  "title": "Duplication and Supersession Resolver",
+  "version": "1.0.0",
+  "when_to_use": "Use before integrating external packs or deleting apparently redundant capabilities."
+}

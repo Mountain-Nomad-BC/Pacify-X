@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-936",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005005",
+  "effect": "execute",
+  "scope": ["node --test --test-name-pattern Playwright-drives extension/tests/dashboard-e2e.test.js"],
+  "authority": "The registered dashboard interaction and contract gaps require one completion attempt of the corrected stateful browser walk.",
+  "expected_effect": "The browser walk completes all routes, builder interactions, graph controls, mobile containment, and console/layout checks; forced-colors remains excluded from this run.",
+  "rollback": "Read-only browser execution; log any next exact failure before repair.",
+  "evidence": [{"claim": "Immediate corrected Settings checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005005"}]
+}

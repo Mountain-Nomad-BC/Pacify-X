@@ -1,0 +1,2620 @@
+{
+  "contracts": [
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:builders/adapter_builder.py:AdapterRequest",
+      "kind": "python_model",
+      "line": 38,
+      "name": "AdapterRequest",
+      "path": "builders/adapter_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:builders/adapter_builder.py:FieldContract",
+      "kind": "python_model",
+      "line": 25,
+      "name": "FieldContract",
+      "path": "builders/adapter_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:builders/adapter_builder.py:TypeContract",
+      "kind": "python_model",
+      "line": 32,
+      "name": "TypeContract",
+      "path": "builders/adapter_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:builders/orchestration_builder.py:OrchestrationRequest",
+      "kind": "python_model",
+      "line": 40,
+      "name": "OrchestrationRequest",
+      "path": "builders/orchestration_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:builders/orchestration_builder.py:ResourceBudget",
+      "kind": "python_model",
+      "line": 32,
+      "name": "ResourceBudget",
+      "path": "builders/orchestration_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:builders/orchestration_builder.py:WorkflowStep",
+      "kind": "python_model",
+      "line": 23,
+      "name": "WorkflowStep",
+      "path": "builders/orchestration_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:builders/repair_pattern_builder.py:RepairPatternRequest",
+      "kind": "python_model",
+      "line": 32,
+      "name": "RepairPatternRequest",
+      "path": "builders/repair_pattern_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:builders/repair_pattern_builder.py:RepairVariant",
+      "kind": "python_model",
+      "line": 24,
+      "name": "RepairVariant",
+      "path": "builders/repair_pattern_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:builders/skill_builder.py:SkillRequest",
+      "kind": "python_model",
+      "line": 20,
+      "name": "SkillRequest",
+      "path": "builders/skill_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:builders/test_evidence_builder.py:TestCase",
+      "kind": "python_model",
+      "line": 22,
+      "name": "TestCase",
+      "path": "builders/test_evidence_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:builders/test_evidence_builder.py:TestEvidenceRequest",
+      "kind": "python_model",
+      "line": 34,
+      "name": "TestEvidenceRequest",
+      "path": "builders/test_evidence_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/admission_controller.py:AdmissionDecision",
+      "kind": "python_model",
+      "line": 34,
+      "name": "AdmissionDecision",
+      "path": "runtime/admission_controller.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/agent_provider.py:AgentCandidate",
+      "kind": "python_model",
+      "line": 271,
+      "name": "AgentCandidate",
+      "path": "runtime/agent_provider.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/assurance_controls.py:AssuranceResult",
+      "kind": "python_model",
+      "line": 13,
+      "name": "AssuranceResult",
+      "path": "runtime/assurance_controls.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/behavioral_assurance.py:Control",
+      "kind": "python_model",
+      "line": 19,
+      "name": "Control",
+      "path": "runtime/behavioral_assurance.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/behavioral_assurance.py:ControlResult",
+      "kind": "python_model",
+      "line": 27,
+      "name": "ControlResult",
+      "path": "runtime/behavioral_assurance.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/behavioral_assurance.py:FailureSignals",
+      "kind": "python_model",
+      "line": 125,
+      "name": "FailureSignals",
+      "path": "runtime/behavioral_assurance.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/behavioral_assurance.py:ProbeResult",
+      "kind": "python_model",
+      "line": 37,
+      "name": "ProbeResult",
+      "path": "runtime/behavioral_assurance.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "str",
+          "Enum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/benchmark_operations.py:BenchmarkFailureClass",
+      "kind": "python_model",
+      "line": 27,
+      "name": "BenchmarkFailureClass",
+      "path": "runtime/benchmark_operations.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "str",
+          "Enum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/benchmark_operations.py:BenchmarkLane",
+      "kind": "python_model",
+      "line": 18,
+      "name": "BenchmarkLane",
+      "path": "runtime/benchmark_operations.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/benchmark_operations.py:ContaminationDecision",
+      "kind": "python_model",
+      "line": 248,
+      "name": "ContaminationDecision",
+      "path": "runtime/benchmark_operations.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/benchmark_operations.py:PreflightDecision",
+      "kind": "python_model",
+      "line": 182,
+      "name": "PreflightDecision",
+      "path": "runtime/benchmark_operations.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/benchmark_operations.py:RetryDecision",
+      "kind": "python_model",
+      "line": 217,
+      "name": "RetryDecision",
+      "path": "runtime/benchmark_operations.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/bounded_walk.py:WalkEntry",
+      "kind": "python_model",
+      "line": 70,
+      "name": "WalkEntry",
+      "path": "runtime/bounded_walk.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/bounded_walk.py:WalkLimits",
+      "kind": "python_model",
+      "line": 20,
+      "name": "WalkLimits",
+      "path": "runtime/bounded_walk.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/bounded_walk.py:WalkResult",
+      "kind": "python_model",
+      "line": 80,
+      "name": "WalkResult",
+      "path": "runtime/bounded_walk.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/capability_routing.py:DiscoveryCandidate",
+      "kind": "python_model",
+      "line": 216,
+      "name": "DiscoveryCandidate",
+      "path": "runtime/capability_routing.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/capability_routing.py:ExecutionPackage",
+      "kind": "python_model",
+      "line": 244,
+      "name": "ExecutionPackage",
+      "path": "runtime/capability_routing.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/capability_routing.py:RankedCandidate",
+      "kind": "python_model",
+      "line": 231,
+      "name": "RankedCandidate",
+      "path": "runtime/capability_routing.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/capability_routing.py:RouteResult",
+      "kind": "python_model",
+      "line": 260,
+      "name": "RouteResult",
+      "path": "runtime/capability_routing.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/capability_routing.py:TaskEnvelope",
+      "kind": "python_model",
+      "line": 192,
+      "name": "TaskEnvelope",
+      "path": "runtime/capability_routing.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/capability_scheduler.py:Resources",
+      "kind": "python_model",
+      "line": 36,
+      "name": "Resources",
+      "path": "runtime/capability_scheduler.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/capability_scheduler.py:Task",
+      "kind": "python_model",
+      "line": 76,
+      "name": "Task",
+      "path": "runtime/capability_scheduler.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/classifier.py:ClassificationRecord",
+      "kind": "python_model",
+      "line": 49,
+      "name": "ClassificationRecord",
+      "path": "runtime/classifier.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cognitive_assurance.py:BenchmarkCase",
+      "kind": "python_model",
+      "line": 189,
+      "name": "BenchmarkCase",
+      "path": "runtime/cognitive_assurance.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cognitive_assurance.py:DriftReport",
+      "kind": "python_model",
+      "line": 156,
+      "name": "DriftReport",
+      "path": "runtime/cognitive_assurance.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cognitive_assurance.py:IdentityBaseline",
+      "kind": "python_model",
+      "line": 106,
+      "name": "IdentityBaseline",
+      "path": "runtime/cognitive_assurance.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cognitive_assurance.py:TrustDecision",
+      "kind": "python_model",
+      "line": 57,
+      "name": "TrustDecision",
+      "path": "runtime/cognitive_assurance.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cognitive_assurance.py:TrustEvidence",
+      "kind": "python_model",
+      "line": 43,
+      "name": "TrustEvidence",
+      "path": "runtime/cognitive_assurance.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cognitive_core/formula_engine.py:Dimension",
+      "kind": "python_model",
+      "line": 19,
+      "name": "Dimension",
+      "path": "runtime/cognitive_core/formula_engine.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cognitive_core/formula_engine.py:FormulaDefinition",
+      "kind": "python_model",
+      "line": 106,
+      "name": "FormulaDefinition",
+      "path": "runtime/cognitive_core/formula_engine.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cognitive_core/formula_engine.py:Variable",
+      "kind": "python_model",
+      "line": 86,
+      "name": "Variable",
+      "path": "runtime/cognitive_core/formula_engine.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cognitive_core/knowledge.py:Belief",
+      "kind": "python_model",
+      "line": 24,
+      "name": "Belief",
+      "path": "runtime/cognitive_core/knowledge.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cognitive_core/logic.py:Literal",
+      "kind": "python_model",
+      "line": 24,
+      "name": "Literal",
+      "path": "runtime/cognitive_core/logic.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cognitive_core/logic.py:Rule",
+      "kind": "python_model",
+      "line": 49,
+      "name": "Rule",
+      "path": "runtime/cognitive_core/logic.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "str",
+          "Enum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/cognitive_core/logic.py:TruthValue",
+      "kind": "python_model",
+      "line": 16,
+      "name": "TruthValue",
+      "path": "runtime/cognitive_core/logic.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cognitive_core/navigator.py:CognitiveHit",
+      "kind": "python_model",
+      "line": 23,
+      "name": "CognitiveHit",
+      "path": "runtime/cognitive_core/navigator.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cognitive_core/navigator.py:CognitiveSearchResult",
+      "kind": "python_model",
+      "line": 40,
+      "name": "CognitiveSearchResult",
+      "path": "runtime/cognitive_core/navigator.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cognitive_core/temporal.py:Interval",
+      "kind": "python_model",
+      "line": 22,
+      "name": "Interval",
+      "path": "runtime/cognitive_core/temporal.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/config.py:BootstrapConfig",
+      "kind": "python_model",
+      "line": 29,
+      "name": "BootstrapConfig",
+      "path": "runtime/config.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/config.py:LifecycleConfig",
+      "kind": "python_model",
+      "line": 21,
+      "name": "LifecycleConfig",
+      "path": "runtime/config.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/config.py:StartupBudget",
+      "kind": "python_model",
+      "line": 11,
+      "name": "StartupBudget",
+      "path": "runtime/config.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/cybersecurity_provider.py:SecurityDecision",
+      "kind": "python_model",
+      "line": 355,
+      "name": "SecurityDecision",
+      "path": "runtime/cybersecurity_provider.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/evidence_assembler.py:Claim",
+      "kind": "python_model",
+      "line": 55,
+      "name": "Claim",
+      "path": "runtime/evidence_assembler.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/evidence_assembler.py:ClaimEvidence",
+      "kind": "python_model",
+      "line": 116,
+      "name": "ClaimEvidence",
+      "path": "runtime/evidence_assembler.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/evidence_assembler.py:EvidenceAttachment",
+      "kind": "python_model",
+      "line": 101,
+      "name": "EvidenceAttachment",
+      "path": "runtime/evidence_assembler.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "StrEnum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/evidence_assembler.py:EvidenceKind",
+      "kind": "python_model",
+      "line": 15,
+      "name": "EvidenceKind",
+      "path": "runtime/evidence_assembler.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/evidence_assembler.py:EvidenceLink",
+      "kind": "python_model",
+      "line": 89,
+      "name": "EvidenceLink",
+      "path": "runtime/evidence_assembler.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/evidence_assembler.py:EvidencePackage",
+      "kind": "python_model",
+      "line": 124,
+      "name": "EvidencePackage",
+      "path": "runtime/evidence_assembler.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/evidence_assembler.py:EvidenceRecord",
+      "kind": "python_model",
+      "line": 65,
+      "name": "EvidenceRecord",
+      "path": "runtime/evidence_assembler.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "StrEnum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/evidence_assembler.py:EvidenceRelation",
+      "kind": "python_model",
+      "line": 37,
+      "name": "EvidenceRelation",
+      "path": "runtime/evidence_assembler.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "StrEnum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/evidence_assembler.py:EvidenceStatus",
+      "kind": "python_model",
+      "line": 31,
+      "name": "EvidenceStatus",
+      "path": "runtime/evidence_assembler.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/evidence_assembler.py:EvidenceWarning",
+      "kind": "python_model",
+      "line": 108,
+      "name": "EvidenceWarning",
+      "path": "runtime/evidence_assembler.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "StrEnum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/evidence_assembler.py:Sensitivity",
+      "kind": "python_model",
+      "line": 25,
+      "name": "Sensitivity",
+      "path": "runtime/evidence_assembler.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/exact_tool_certification.py:ToolCase",
+      "kind": "python_model",
+      "line": 22,
+      "name": "ToolCase",
+      "path": "runtime/exact_tool_certification.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/execution_contract.py:ContractDecision",
+      "kind": "python_model",
+      "line": 45,
+      "name": "ContractDecision",
+      "path": "runtime/execution_contract.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/execution_contract.py:ExecutionRequest",
+      "kind": "python_model",
+      "line": 29,
+      "name": "ExecutionRequest",
+      "path": "runtime/execution_contract.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/execution_contract.py:PolicyDecision",
+      "kind": "python_model",
+      "line": 38,
+      "name": "PolicyDecision",
+      "path": "runtime/execution_contract.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/external_capability_provider.py:HookDecision",
+      "kind": "python_model",
+      "line": 465,
+      "name": "HookDecision",
+      "path": "runtime/external_capability_provider.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/external_capability_provider.py:SelectiveStagePlan",
+      "kind": "python_model",
+      "line": 279,
+      "name": "SelectiveStagePlan",
+      "path": "runtime/external_capability_provider.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/foundation_assurance.py:ContractSurface",
+      "kind": "python_model",
+      "line": 43,
+      "name": "ContractSurface",
+      "path": "runtime/foundation_assurance.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/foundation_assurance.py:RetrievalCase",
+      "kind": "python_model",
+      "line": 159,
+      "name": "RetrievalCase",
+      "path": "runtime/foundation_assurance.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/foundation_assurance.py:TrainingRecord",
+      "kind": "python_model",
+      "line": 245,
+      "name": "TrainingRecord",
+      "path": "runtime/foundation_assurance.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/gate_runner.py:GateSpec",
+      "kind": "python_model",
+      "line": 15,
+      "name": "GateSpec",
+      "path": "runtime/gate_runner.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/graphs.py:GraphBundle",
+      "kind": "python_model",
+      "line": 37,
+      "name": "GraphBundle",
+      "path": "runtime/graphs.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/graphs.py:GraphEdge",
+      "kind": "python_model",
+      "line": 29,
+      "name": "GraphEdge",
+      "path": "runtime/graphs.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/graphs.py:RankedPath",
+      "kind": "python_model",
+      "line": 45,
+      "name": "RankedPath",
+      "path": "runtime/graphs.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/hardware_routing.py:BenchmarkEvidence",
+      "kind": "python_model",
+      "line": 139,
+      "name": "BenchmarkEvidence",
+      "path": "runtime/hardware_routing.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "str",
+          "Enum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/hardware_routing.py:Device",
+      "kind": "python_model",
+      "line": 21,
+      "name": "Device",
+      "path": "runtime/hardware_routing.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/hardware_routing.py:HardwareProfile",
+      "kind": "python_model",
+      "line": 94,
+      "name": "HardwareProfile",
+      "path": "runtime/hardware_routing.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/hardware_routing.py:RoutingDecision",
+      "kind": "python_model",
+      "line": 203,
+      "name": "RoutingDecision",
+      "path": "runtime/hardware_routing.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/hardware_routing.py:RoutingPolicy",
+      "kind": "python_model",
+      "line": 159,
+      "name": "RoutingPolicy",
+      "path": "runtime/hardware_routing.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "str",
+          "Enum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/hardware_routing.py:WorkloadKind",
+      "kind": "python_model",
+      "line": 26,
+      "name": "WorkloadKind",
+      "path": "runtime/hardware_routing.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/hardware_routing.py:WorkloadProfile",
+      "kind": "python_model",
+      "line": 64,
+      "name": "WorkloadProfile",
+      "path": "runtime/hardware_routing.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/knowledge_foundry.py:CalculationPackage",
+      "kind": "python_model",
+      "line": 273,
+      "name": "CalculationPackage",
+      "path": "runtime/knowledge_foundry.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/knowledge_foundry.py:CalculationSpec",
+      "kind": "python_model",
+      "line": 264,
+      "name": "CalculationSpec",
+      "path": "runtime/knowledge_foundry.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/knowledge_foundry.py:CandidateSkill",
+      "kind": "python_model",
+      "line": 222,
+      "name": "CandidateSkill",
+      "path": "runtime/knowledge_foundry.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/knowledge_foundry.py:FoundryBundle",
+      "kind": "python_model",
+      "line": 359,
+      "name": "FoundryBundle",
+      "path": "runtime/knowledge_foundry.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/knowledge_foundry.py:KnowledgeObject",
+      "kind": "python_model",
+      "line": 212,
+      "name": "KnowledgeObject",
+      "path": "runtime/knowledge_foundry.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/knowledge_foundry.py:SourceArtifact",
+      "kind": "python_model",
+      "line": 174,
+      "name": "SourceArtifact",
+      "path": "runtime/knowledge_foundry.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/lazy_loader.py:HydratedSkill",
+      "kind": "python_model",
+      "line": 23,
+      "name": "HydratedSkill",
+      "path": "runtime/lazy_loader.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/lazy_loader.py:SkillDescriptor",
+      "kind": "python_model",
+      "line": 14,
+      "name": "SkillDescriptor",
+      "path": "runtime/lazy_loader.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/lifecycle.py:Checkpoint",
+      "kind": "python_model",
+      "line": 12,
+      "name": "Checkpoint",
+      "path": "runtime/lifecycle.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/lifecycle.py:FailureRecord",
+      "kind": "python_model",
+      "line": 37,
+      "name": "FailureRecord",
+      "path": "runtime/lifecycle.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/lifecycle.py:RetryDecision",
+      "kind": "python_model",
+      "line": 47,
+      "name": "RetryDecision",
+      "path": "runtime/lifecycle.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_fabric.py:BackendResult",
+      "kind": "python_model",
+      "line": 451,
+      "name": "BackendResult",
+      "path": "runtime/memory_fabric.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_fabric.py:MaintenancePlan",
+      "kind": "python_model",
+      "line": 468,
+      "name": "MaintenancePlan",
+      "path": "runtime/memory_fabric.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_fabric.py:MemoryDecision",
+      "kind": "python_model",
+      "line": 248,
+      "name": "MemoryDecision",
+      "path": "runtime/memory_fabric.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_fabric.py:MemoryRecord",
+      "kind": "python_model",
+      "line": 144,
+      "name": "MemoryRecord",
+      "path": "runtime/memory_fabric.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_fabric.py:ProviderIsolationConfig",
+      "kind": "python_model",
+      "line": 399,
+      "name": "ProviderIsolationConfig",
+      "path": "runtime/memory_fabric.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_fabric.py:ProviderIsolationEvidence",
+      "kind": "python_model",
+      "line": 410,
+      "name": "ProviderIsolationEvidence",
+      "path": "runtime/memory_fabric.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_fabric.py:ShardAddress",
+      "kind": "python_model",
+      "line": 87,
+      "name": "ShardAddress",
+      "path": "runtime/memory_fabric.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_intelligence.py:CaptureResult",
+      "kind": "python_model",
+      "line": 86,
+      "name": "CaptureResult",
+      "path": "runtime/memory_intelligence.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_intelligence.py:ConflictDecision",
+      "kind": "python_model",
+      "line": 212,
+      "name": "ConflictDecision",
+      "path": "runtime/memory_intelligence.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_intelligence.py:ContextPackage",
+      "kind": "python_model",
+      "line": 577,
+      "name": "ContextPackage",
+      "path": "runtime/memory_intelligence.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_intelligence.py:LoadoutBinding",
+      "kind": "python_model",
+      "line": 366,
+      "name": "LoadoutBinding",
+      "path": "runtime/memory_intelligence.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_intelligence.py:MemoryCaller",
+      "kind": "python_model",
+      "line": 334,
+      "name": "MemoryCaller",
+      "path": "runtime/memory_intelligence.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_intelligence.py:OffloadPointer",
+      "kind": "python_model",
+      "line": 656,
+      "name": "OffloadPointer",
+      "path": "runtime/memory_intelligence.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_intelligence.py:PromotionDecision",
+      "kind": "python_model",
+      "line": 270,
+      "name": "PromotionDecision",
+      "path": "runtime/memory_intelligence.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_intelligence.py:RankedMemory",
+      "kind": "python_model",
+      "line": 423,
+      "name": "RankedMemory",
+      "path": "runtime/memory_intelligence.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_intelligence.py:RecallResult",
+      "kind": "python_model",
+      "line": 431,
+      "name": "RecallResult",
+      "path": "runtime/memory_intelligence.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_intelligence.py:Scene",
+      "kind": "python_model",
+      "line": 629,
+      "name": "Scene",
+      "path": "runtime/memory_intelligence.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_intelligence.py:WriteReceipt",
+      "kind": "python_model",
+      "line": 762,
+      "name": "WriteReceipt",
+      "path": "runtime/memory_intelligence.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_operations.py:CircuitBreaker",
+      "kind": "python_model",
+      "line": 224,
+      "name": "CircuitBreaker",
+      "path": "runtime/memory_operations.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_operations.py:ClusterResult",
+      "kind": "python_model",
+      "line": 152,
+      "name": "ClusterResult",
+      "path": "runtime/memory_operations.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_operations.py:GraphCluster",
+      "kind": "python_model",
+      "line": 143,
+      "name": "GraphCluster",
+      "path": "runtime/memory_operations.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_operations.py:GraphNode",
+      "kind": "python_model",
+      "line": 136,
+      "name": "GraphNode",
+      "path": "runtime/memory_operations.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_operations.py:OperationOutcome",
+      "kind": "python_model",
+      "line": 250,
+      "name": "OperationOutcome",
+      "path": "runtime/memory_operations.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_operations.py:SessionEvent",
+      "kind": "python_model",
+      "line": 30,
+      "name": "SessionEvent",
+      "path": "runtime/memory_operations.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_operations.py:SummaryCheckpoint",
+      "kind": "python_model",
+      "line": 38,
+      "name": "SummaryCheckpoint",
+      "path": "runtime/memory_operations.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_vault.py:IndexGeneration",
+      "kind": "python_model",
+      "line": 162,
+      "name": "IndexGeneration",
+      "path": "runtime/memory_vault.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_vault.py:LifecycleDecision",
+      "kind": "python_model",
+      "line": 153,
+      "name": "LifecycleDecision",
+      "path": "runtime/memory_vault.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_vault.py:VaultWrite",
+      "kind": "python_model",
+      "line": 142,
+      "name": "VaultWrite",
+      "path": "runtime/memory_vault.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/models.py:ModelCapability",
+      "kind": "python_model",
+      "line": 13,
+      "name": "ModelCapability",
+      "path": "runtime/models.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/models.py:ModelRoute",
+      "kind": "python_model",
+      "line": 29,
+      "name": "ModelRoute",
+      "path": "runtime/models.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/models.py:ModelRoutingPolicy",
+      "kind": "python_model",
+      "line": 37,
+      "name": "ModelRoutingPolicy",
+      "path": "runtime/models.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/operation_authority.py:AuthorityDecision",
+      "kind": "python_model",
+      "line": 49,
+      "name": "AuthorityDecision",
+      "path": "runtime/operation_authority.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/operation_authority.py:AuthorityRequest",
+      "kind": "python_model",
+      "line": 34,
+      "name": "AuthorityRequest",
+      "path": "runtime/operation_authority.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/operational_controls.py:ControlResult",
+      "kind": "python_model",
+      "line": 12,
+      "name": "ControlResult",
+      "path": "runtime/operational_controls.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/operational_observers.py:ObserverCommandPlan",
+      "kind": "python_model",
+      "line": 320,
+      "name": "ObserverCommandPlan",
+      "path": "runtime/operational_observers.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/operational_observers.py:ObserverConsent",
+      "kind": "python_model",
+      "line": 226,
+      "name": "ObserverConsent",
+      "path": "runtime/operational_observers.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/orchestrator.py:CapabilityResult",
+      "kind": "python_model",
+      "line": 59,
+      "name": "CapabilityResult",
+      "path": "runtime/orchestrator.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/orchestrator.py:OrchestrationResult",
+      "kind": "python_model",
+      "line": 75,
+      "name": "OrchestrationResult",
+      "path": "runtime/orchestrator.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/orchestrator.py:TaskContext",
+      "kind": "python_model",
+      "line": 53,
+      "name": "TaskContext",
+      "path": "runtime/orchestrator.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/orchestrator.py:TaskRequest",
+      "kind": "python_model",
+      "line": 34,
+      "name": "TaskRequest",
+      "path": "runtime/orchestrator.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/outcome_verifier.py:VerificationDecision",
+      "kind": "python_model",
+      "line": 14,
+      "name": "VerificationDecision",
+      "path": "runtime/outcome_verifier.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/planner.py:Requirement",
+      "kind": "python_model",
+      "line": 13,
+      "name": "Requirement",
+      "path": "runtime/planner.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/planner.py:WorkNode",
+      "kind": "python_model",
+      "line": 21,
+      "name": "WorkNode",
+      "path": "runtime/planner.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/planner.py:WorkPackage",
+      "kind": "python_model",
+      "line": 32,
+      "name": "WorkPackage",
+      "path": "runtime/planner.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/process_supervisor.py:CaptureResult",
+      "kind": "python_model",
+      "line": 106,
+      "name": "CaptureResult",
+      "path": "runtime/process_supervisor.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/process_supervisor.py:ProcessBudgets",
+      "kind": "python_model",
+      "line": 47,
+      "name": "ProcessBudgets",
+      "path": "runtime/process_supervisor.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/process_supervisor.py:ProcessResult",
+      "kind": "python_model",
+      "line": 116,
+      "name": "ProcessResult",
+      "path": "runtime/process_supervisor.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/project_stream_controls.py:BoundaryDecision",
+      "kind": "python_model",
+      "line": 63,
+      "name": "BoundaryDecision",
+      "path": "runtime/project_stream_controls.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/project_stream_controls.py:ContextObject",
+      "kind": "python_model",
+      "line": 52,
+      "name": "ContextObject",
+      "path": "runtime/project_stream_controls.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/project_stream_controls.py:LeaseDecision",
+      "kind": "python_model",
+      "line": 136,
+      "name": "LeaseDecision",
+      "path": "runtime/project_stream_controls.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/project_stream_controls.py:LeaseRequest",
+      "kind": "python_model",
+      "line": 126,
+      "name": "LeaseRequest",
+      "path": "runtime/project_stream_controls.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/project_stream_controls.py:ScopeEnvelope",
+      "kind": "python_model",
+      "line": 33,
+      "name": "ScopeEnvelope",
+      "path": "runtime/project_stream_controls.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/project_stream_controls.py:SwitchEvidence",
+      "kind": "python_model",
+      "line": 182,
+      "name": "SwitchEvidence",
+      "path": "runtime/project_stream_controls.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/project_stream_controls.py:TransferPackage",
+      "kind": "python_model",
+      "line": 217,
+      "name": "TransferPackage",
+      "path": "runtime/project_stream_controls.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/project_stream_orchestrator.py:ProjectStreamContext",
+      "kind": "python_model",
+      "line": 37,
+      "name": "ProjectStreamContext",
+      "path": "runtime/project_stream_orchestrator.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/project_stream_orchestrator.py:ProjectStreamResult",
+      "kind": "python_model",
+      "line": 54,
+      "name": "ProjectStreamResult",
+      "path": "runtime/project_stream_orchestrator.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/provider_budget.py:ProviderUsage",
+      "kind": "python_model",
+      "line": 41,
+      "name": "ProviderUsage",
+      "path": "runtime/provider_budget.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/provider_certification.py:ProbeResult",
+      "kind": "python_model",
+      "line": 34,
+      "name": "ProbeResult",
+      "path": "runtime/provider_certification.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/provider_certification.py:ProviderCertificate",
+      "kind": "python_model",
+      "line": 43,
+      "name": "ProviderCertificate",
+      "path": "runtime/provider_certification.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/provider_gateway.py:ProviderRequest",
+      "kind": "python_model",
+      "line": 66,
+      "name": "ProviderRequest",
+      "path": "runtime/provider_gateway.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/provider_gateway.py:ProviderResponse",
+      "kind": "python_model",
+      "line": 58,
+      "name": "ProviderResponse",
+      "path": "runtime/provider_gateway.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/recovery.py:DurableState",
+      "kind": "python_model",
+      "line": 47,
+      "name": "DurableState",
+      "path": "runtime/recovery.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/recovery.py:RecoveryConfiguration",
+      "kind": "python_model",
+      "line": 450,
+      "name": "RecoveryConfiguration",
+      "path": "runtime/recovery.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/recovery.py:RecoveryDecision",
+      "kind": "python_model",
+      "line": 328,
+      "name": "RecoveryDecision",
+      "path": "runtime/recovery.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/research_assimilation.py:ResearchMechanism",
+      "kind": "python_model",
+      "line": 48,
+      "name": "ResearchMechanism",
+      "path": "runtime/research_assimilation.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/resource_lifecycle.py:CleanupReceipt",
+      "kind": "python_model",
+      "line": 177,
+      "name": "CleanupReceipt",
+      "path": "runtime/resource_lifecycle.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "str",
+          "Enum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/resource_lifecycle.py:ResourceClassification",
+      "kind": "python_model",
+      "line": 71,
+      "name": "ResourceClassification",
+      "path": "runtime/resource_lifecycle.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/resource_lifecycle.py:ResourceRecord",
+      "kind": "python_model",
+      "line": 145,
+      "name": "ResourceRecord",
+      "path": "runtime/resource_lifecycle.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "str",
+          "Enum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/resource_lifecycle.py:ResourceStatus",
+      "kind": "python_model",
+      "line": 79,
+      "name": "ResourceStatus",
+      "path": "runtime/resource_lifecycle.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "str",
+          "Enum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/resource_lifecycle.py:RetentionClass",
+      "kind": "python_model",
+      "line": 103,
+      "name": "RetentionClass",
+      "path": "runtime/resource_lifecycle.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "str",
+          "Enum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/resource_lifecycle.py:RunState",
+      "kind": "python_model",
+      "line": 87,
+      "name": "RunState",
+      "path": "runtime/resource_lifecycle.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/resource_lifecycle.py:StorageBudget",
+      "kind": "python_model",
+      "line": 205,
+      "name": "StorageBudget",
+      "path": "runtime/resource_lifecycle.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "str",
+          "Enum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/resource_lifecycle.py:StoragePressure",
+      "kind": "python_model",
+      "line": 96,
+      "name": "StoragePressure",
+      "path": "runtime/resource_lifecycle.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/retrieval.py:RetrievalDecision",
+      "kind": "python_model",
+      "line": 35,
+      "name": "RetrievalDecision",
+      "path": "runtime/retrieval.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/retrieval.py:RetrievalHit",
+      "kind": "python_model",
+      "line": 25,
+      "name": "RetrievalHit",
+      "path": "runtime/retrieval.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/retrieval.py:RetrievalSource",
+      "kind": "python_model",
+      "line": 14,
+      "name": "RetrievalSource",
+      "path": "runtime/retrieval.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/scheduler.py:Admission",
+      "kind": "python_model",
+      "line": 23,
+      "name": "Admission",
+      "path": "runtime/scheduler.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/scheduler.py:ResourcePolicy",
+      "kind": "python_model",
+      "line": 11,
+      "name": "ResourcePolicy",
+      "path": "runtime/scheduler.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/skill_navigator.py:CapabilitySummary",
+      "kind": "python_model",
+      "line": 42,
+      "name": "CapabilitySummary",
+      "path": "runtime/skill_navigator.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/skill_navigator.py:NavigationCandidate",
+      "kind": "python_model",
+      "line": 79,
+      "name": "NavigationCandidate",
+      "path": "runtime/skill_navigator.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/skill_navigator.py:NavigationResult",
+      "kind": "python_model",
+      "line": 89,
+      "name": "NavigationResult",
+      "path": "runtime/skill_navigator.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/skill_navigator.py:SelectionReason",
+      "kind": "python_model",
+      "line": 99,
+      "name": "SelectionReason",
+      "path": "runtime/skill_navigator.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/skill_navigator.py:WorkingSet",
+      "kind": "python_model",
+      "line": 106,
+      "name": "WorkingSet",
+      "path": "runtime/skill_navigator.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/startup.py:StartupSnapshot",
+      "kind": "python_model",
+      "line": 20,
+      "name": "StartupSnapshot",
+      "path": "runtime/startup.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/state_invariants.py:InvariantViolation",
+      "kind": "python_model",
+      "line": 83,
+      "name": "InvariantViolation",
+      "path": "runtime/state_invariants.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/studio_models.py:AgentSpec",
+      "kind": "python_model",
+      "line": 254,
+      "name": "AgentSpec",
+      "path": "runtime/studio_models.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/studio_models.py:CapabilityBinding",
+      "kind": "python_model",
+      "line": 212,
+      "name": "CapabilityBinding",
+      "path": "runtime/studio_models.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/studio_models.py:EffectGrant",
+      "kind": "python_model",
+      "line": 173,
+      "name": "EffectGrant",
+      "path": "runtime/studio_models.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/studio_models.py:LifecycleDimensions",
+      "kind": "python_model",
+      "line": 128,
+      "name": "LifecycleDimensions",
+      "path": "runtime/studio_models.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/studio_models.py:SkillPackage",
+      "kind": "python_model",
+      "line": 536,
+      "name": "SkillPackage",
+      "path": "runtime/studio_models.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/studio_models.py:WorkflowDefinition",
+      "kind": "python_model",
+      "line": 480,
+      "name": "WorkflowDefinition",
+      "path": "runtime/studio_models.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/studio_models.py:WorkflowEdge",
+      "kind": "python_model",
+      "line": 463,
+      "name": "WorkflowEdge",
+      "path": "runtime/studio_models.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/studio_models.py:WorkflowNode",
+      "kind": "python_model",
+      "line": 358,
+      "name": "WorkflowNode",
+      "path": "runtime/studio_models.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/studio_models.py:WorkflowPort",
+      "kind": "python_model",
+      "line": 343,
+      "name": "WorkflowPort",
+      "path": "runtime/studio_models.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/system_graph.py:AssetEdge",
+      "kind": "python_model",
+      "line": 19,
+      "name": "AssetEdge",
+      "path": "runtime/system_graph.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/system_graph.py:AssetNode",
+      "kind": "python_model",
+      "line": 12,
+      "name": "AssetNode",
+      "path": "runtime/system_graph.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/system_graph.py:SystemGraph",
+      "kind": "python_model",
+      "line": 26,
+      "name": "SystemGraph",
+      "path": "runtime/system_graph.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/tooling.py:ToolProbe",
+      "kind": "python_model",
+      "line": 13,
+      "name": "ToolProbe",
+      "path": "runtime/tooling.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/trusted_evidence.py:EvidenceScope",
+      "kind": "python_model",
+      "line": 23,
+      "name": "EvidenceScope",
+      "path": "runtime/trusted_evidence.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/trusted_evidence.py:ResolvedEvidence",
+      "kind": "python_model",
+      "line": 33,
+      "name": "ResolvedEvidence",
+      "path": "runtime/trusted_evidence.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/wal_transaction.py:JsonArtifact",
+      "kind": "python_model",
+      "line": 40,
+      "name": "JsonArtifact",
+      "path": "runtime/wal_transaction.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/wal_transaction.py:JsonTransition",
+      "kind": "python_model",
+      "line": 52,
+      "name": "JsonTransition",
+      "path": "runtime/wal_transaction.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/workspace_manager.py:WorkspacePaths",
+      "kind": "python_model",
+      "line": 76,
+      "name": "WorkspacePaths",
+      "path": "runtime/workspace_manager.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:scripts/inventory/build_archive_inventory.py:BombThresholds",
+      "kind": "python_model",
+      "line": 53,
+      "name": "BombThresholds",
+      "path": "scripts/inventory/build_archive_inventory.py"
+    },
+    {
+      "id": "sql:templates/service_capabilities/cross-stack/n8n_supabase_vector_schema.sql:public.documents",
+      "kind": "database_table",
+      "line": 5,
+      "name": "public.documents",
+      "path": "templates/service_capabilities/cross-stack/n8n_supabase_vector_schema.sql"
+    },
+    {
+      "id": "sql:templates/service_capabilities/supabase/migrations/0001_secure_example.sql:public.work_items",
+      "kind": "database_table",
+      "line": 4,
+      "name": "public.work_items",
+      "path": "templates/service_capabilities/supabase/migrations/0001_secure_example.sql"
+    }
+  ],
+  "count": 201,
+  "limitations": [
+    "Schema compatibility and runtime conformance require language-specific validators or generated-client tests."
+  ],
+  "schema_version": "1.1"
+}

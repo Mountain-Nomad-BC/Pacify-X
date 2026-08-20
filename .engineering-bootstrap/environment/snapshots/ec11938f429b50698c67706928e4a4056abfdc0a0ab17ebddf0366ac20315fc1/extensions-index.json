@@ -1,0 +1,3636 @@
+[
+  {
+    "id": "42Crunch.vscode-openapi",
+    "name": "OpenAPI (Swagger) Editor",
+    "version": "5.6.0",
+    "publisher": "42Crunch",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 10,
+    "command_count": 72,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "icons",
+      "jsonValidation",
+      "keybindings",
+      "mcpServerDefinitionProviders",
+      "menus",
+      "views",
+      "viewsContainers",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/ae0caa237f037ae29f0d306f0ed5641453ed55c86e0e19ddf2373450d486775f.json",
+      "sha256": "030c820aa73f4ff14a21edea5633bc0ff5d9903b47f4d92dc7d44b27000a8cdc"
+    }
+  },
+  {
+    "id": "aaravb.chrome-extension-developer-tools",
+    "name": "Chrome Extension Developer Tools",
+    "version": "2.1.0",
+    "publisher": "aaravb",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 3,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/dfcab70b987c7493473108be795b7fcd9abf03afa830b22d5d0f4894b0415822.json",
+      "sha256": "9da315c081f03366fddf51e40968d1cf2f390e46d379a2dbefe6f3f5a1d0b84f"
+    }
+  },
+  {
+    "id": "adamraichu.docx-viewer",
+    "name": "Docx Renderer",
+    "version": "1.1.3",
+    "publisher": "adamraichu",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configuration",
+      "customEditors"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/33fe109ec38a5e45629fa8f19c7a0241fbaed73f34c73ac30702267c07a18f32.json",
+      "sha256": "396c1251d9b45699f5f47b762b1f3657e9d68823391a2036d5b1c5f983cd586e"
+    }
+  },
+  {
+    "id": "Anthropic.claude-code",
+    "name": "Claude Code for VS Code",
+    "version": "2.1.167",
+    "publisher": "Anthropic",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 8,
+    "command_count": 22,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "jsonValidation",
+      "keybindings",
+      "menus",
+      "views",
+      "viewsContainers",
+      "walkthroughs"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/37f7018bb2b9690ae46da09fb72411f705999b01e3f790f51e0ef12b50cfd58b.json",
+      "sha256": "3c249acf46b0b75613bb0187ef85ba3c28387eec1efc8140c3accd4d56ff6405"
+    }
+  },
+  {
+    "id": "charliermarsh.ruff",
+    "name": "Ruff",
+    "version": "2026.70.0",
+    "publisher": "charliermarsh",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 7,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/74c4ec4b269e6dd31e0cd2665a3162d43077d45b4794d193b69e1981b2b37128.json",
+      "sha256": "a573e3aa1eea7490faf4b31f9ba370250255a297b6bc7a025b3e51ef475014c1"
+    }
+  },
+  {
+    "id": "christian-kohler.npm-intellisense",
+    "name": "npm Intellisense",
+    "version": "1.4.5",
+    "publisher": "christian-kohler",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 1,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/d10c58e2d6fd408608d318af2af02ad02c0658c96213286bfbf48b8672f5f020.json",
+      "sha256": "c559433454768c29212ce8512d5b701538e78a94aa03b9337b883e51503eb62b"
+    }
+  },
+  {
+    "id": "codezombiech.gitignore",
+    "name": "gitignore",
+    "version": "0.10.0",
+    "publisher": "codezombiech",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 4,
+    "command_count": 1,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/d369f5e60a55607721fcdf15e771d83cdf01003c9cb6789103d13256a3e184c6.json",
+      "sha256": "d2addad5eaa6413a2a755fbf5a05603bd0ec59b1a93103748f235186625fa775"
+    }
+  },
+  {
+    "id": "DavidAnson.vscode-markdownlint",
+    "name": "markdownlint",
+    "version": "0.61.2",
+    "publisher": "DavidAnson",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 8,
+    "command_count": 4,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "jsonValidation",
+      "menus",
+      "problemMatchers",
+      "snippets",
+      "taskDefinitions",
+      "yamlValidation"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/666ba5a8c050ff2039af00ca8be0d2f21bb009e7c83454e15b7426462217406b.json",
+      "sha256": "e1909688315518c56979ff91d197425bcc3ea60c5f2a73e1d1ea58c59718e2fc"
+    }
+  },
+  {
+    "id": "donjayamanne.githistory",
+    "name": "Git History",
+    "version": "0.6.20",
+    "publisher": "donjayamanne",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 5,
+    "command_count": 24,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "keybindings",
+      "menus",
+      "views"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/c2597ccedbd42b353d5152528cf476a999e6d4268b4b003b15343118243c9b38.json",
+      "sha256": "9dd28fd4e5b091e08180aba11d18c40834cebe28ca7c4aac53c89e7ba2792d08"
+    }
+  },
+  {
+    "id": "eamodio.gitlens",
+    "name": "GitLens — Git supercharged",
+    "version": "17.12.2",
+    "publisher": "eamodio",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 15,
+    "command_count": 1017,
+    "conflict_count": 0,
+    "contribution_points": [
+      "colors",
+      "commands",
+      "configuration",
+      "configurationDefaults",
+      "customEditors",
+      "icons",
+      "keybindings",
+      "mcpServerDefinitionProviders",
+      "menus",
+      "resourceLabelFormatters",
+      "submenus",
+      "views",
+      "viewsContainers",
+      "viewsWelcome",
+      "walkthroughs"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/be2c2846cd4c912f4d9582199e706d717a4fcd15827e62cfa31e587a12949236.json",
+      "sha256": "bdcf2a32740381481c0c97c678ed82112dbf1fb7d2566ddde7e9a0c8f2f7f056"
+    }
+  },
+  {
+    "id": "gitguardian-secret-security.gitguardian",
+    "name": "GitGuardian - Secrets Security",
+    "version": "0.23.0",
+    "publisher": "gitguardian-secret-security",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 6,
+    "command_count": 11,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "menus",
+      "views",
+      "viewsContainers",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/9158fef8ff2e2cef68773eaea2895c01ce79c1463f4cf7b1a649372cbe498697.json",
+      "sha256": "f9f840a655b37d25613e9dcb8194f6ade6b1688bf41a73f0e9a568d213e7a370"
+    }
+  },
+  {
+    "id": "GitHub.codespaces",
+    "name": "GitHub Codespaces",
+    "version": "1.18.15",
+    "publisher": "GitHub",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 10,
+    "command_count": 34,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "continueEditSession",
+      "jsonValidation",
+      "languages",
+      "menus",
+      "remoteHelp",
+      "resourceLabelFormatters",
+      "views",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/8c8154da1ec2c21aea71160ab09dfba56f05d83f090b8cff2e25a8800aea55c5.json",
+      "sha256": "45625a762d52595f46d531f45fb24c187139ded4ac47f8e078ab927bed16e936"
+    }
+  },
+  {
+    "id": "GitHub.copilot-chat",
+    "name": "GitHub Copilot",
+    "version": "0.60.0",
+    "publisher": "GitHub",
+    "active": true,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 28,
+    "command_count": 140,
+    "conflict_count": 0,
+    "contribution_points": [
+      "chatAgents",
+      "chatParticipants",
+      "chatPromptFiles",
+      "chatSessions",
+      "chatSkills",
+      "chatViewsWelcome",
+      "commands",
+      "configuration",
+      "configurationDefaults",
+      "iconFonts",
+      "icons",
+      "interactiveSession",
+      "jsonValidation",
+      "keybindings",
+      "languageModelChatProviders",
+      "languageModelToolSets",
+      "languageModelTools",
+      "languages",
+      "mcpServerDefinitionProviders",
+      "menus",
+      "submenus",
+      "terminal",
+      "terminalQuickFixes",
+      "typescriptServerPlugins",
+      "views",
+      "viewsContainers",
+      "viewsWelcome",
+      "walkthroughs"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/7ed24533007c2d3450e8e20240436c61a0f5db726201842a9c23b19bcf191d1c.json",
+      "sha256": "c63cafe9721aecfd49efb4408e85736e69c7975edc21a15cd8689706edf7d476"
+    }
+  },
+  {
+    "id": "GitHub.remotehub",
+    "name": "GitHub Repositories",
+    "version": "0.64.0",
+    "publisher": "GitHub",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configuration",
+      "resourceLabelFormatters",
+      "virtualWorkspaces"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/cb280f9c08e69a0ddd77db9888b2724cfe4f6e9721185f7eb79e159f37e18211.json",
+      "sha256": "675c8d7ad33cadd76949db5b4c70a3b0cf1156f8d51a592ad6e5ac4397c4ac8c"
+    }
+  },
+  {
+    "id": "github.vscode-github-actions",
+    "name": "GitHub Actions",
+    "version": "0.32.1",
+    "publisher": "github",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 9,
+    "command_count": 24,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "debuggers",
+      "grammars",
+      "languages",
+      "menus",
+      "views",
+      "viewsContainers",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/df3bd5e0ed063bb0e3219e8ab15e2a041e6d4480669a673a7e4b966cddee9517.json",
+      "sha256": "ced94307c0a340a6329eaf46ea532efee496e7351d640730c7fe4aeeddf81c27"
+    }
+  },
+  {
+    "id": "HCLTechnologies.hclappscancodesweep",
+    "name": "HCL AppScan CodeSweep",
+    "version": "1.5.2",
+    "publisher": "HCLTechnologies",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 6,
+    "command_count": 15,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "languages",
+      "menus",
+      "views",
+      "viewsContainers"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/79b66a1fe1bfce80bfc26cb425650bb9345a3a29a053c4094a515a528711785e.json",
+      "sha256": "92ab66a95efdaf13f52f42ebbd6022108f5bb5ec00580a09dc20a2127cd9f394"
+    }
+  },
+  {
+    "id": "katalon-llc.katalium",
+    "name": "Katalium - Selenium and TestNG made easy",
+    "version": "1.0.7",
+    "publisher": "katalon-llc",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "views",
+      "viewsContainers"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/0df92516abbead50982016aa4363905c04fe702763e85f2df1582e8a01c64c44.json",
+      "sha256": "1f9d972a9c508ac03d81a097534597a8ee6183315c95bc97c54f050c917d4927"
+    }
+  },
+  {
+    "id": "mechatroner.rainbow-csv",
+    "name": "Rainbow CSV",
+    "version": "3.24.1",
+    "publisher": "mechatroner",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 9,
+    "command_count": 24,
+    "conflict_count": 0,
+    "contribution_points": [
+      "colors",
+      "commands",
+      "configuration",
+      "configurationDefaults",
+      "grammars",
+      "languages",
+      "menus",
+      "semanticTokenScopes",
+      "submenus"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/4a50cdb9e13c26d5353a3e8fbbf7e65dc83a0daf04ff8ed56ae1118dbd024862.json",
+      "sha256": "ee5bc207e629ddbe55bc7cf67e2a5f1649db68d5077910f27b8eb7a4680a7a93"
+    }
+  },
+  {
+    "id": "mhutchie.git-graph",
+    "name": "Git Graph",
+    "version": "1.30.0",
+    "publisher": "mhutchie",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 10,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "menus"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/33d4bb23a57fc318036489cbf94ae05cddc7a88936911b0e4ba70c174f95d510.json",
+      "sha256": "22388290ee741b2c979635a30c995892e880482146c1667929f291c4b55d7894"
+    }
+  },
+  {
+    "id": "mountain-nomad-bc.pacify-x-vscode",
+    "name": "Pacify-X Control Plane",
+    "version": "0.4.0",
+    "publisher": "mountain-nomad-bc",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 7,
+    "command_count": 11,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "languageModelChatProviders",
+      "mcpServerDefinitionProviders",
+      "menus",
+      "views",
+      "viewsContainers"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/2c1e5adb6dac77c6bb03cbd617ff317a2e02bb14bfbae3b536011ab523b1fbac.json",
+      "sha256": "76d84e710bde7e870fa3bb4427aab853be0b44bdc3d17c14e1d45618b5ddeba1"
+    }
+  },
+  {
+    "id": "ms-azure-load-testing.microsoft-testing",
+    "name": "Azure Load Testing",
+    "version": "0.2.0",
+    "publisher": "ms-azure-load-testing",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 5,
+    "command_count": 5,
+    "conflict_count": 0,
+    "contribution_points": [
+      "chatParticipants",
+      "commands",
+      "configuration",
+      "languageModelTools",
+      "walkthroughs"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/60dd4493c2c3125a21d60fd56b10ae3a452f7a410649da4a988e5d4d985542e4.json",
+      "sha256": "43daf93beba6f14679409e76a5093056352de35ec1d51d0b840429eee7fd69cb"
+    }
+  },
+  {
+    "id": "ms-azuretools.azure-dev",
+    "name": "Azure Developer CLI",
+    "version": "0.10.0",
+    "publisher": "ms-azuretools",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 8,
+    "command_count": 23,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "menus",
+      "submenus",
+      "taskDefinitions",
+      "walkthroughs",
+      "x-azResources",
+      "yamlValidation"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/64a66829ebfa0c1a68483ddcc139478a806fc1271429266b0a55665c707df1cb.json",
+      "sha256": "93e6e12305ab4e90c8a6ba61c8dcebcda8ca9cd27613835fbc11f39b5f05dff4"
+    }
+  },
+  {
+    "id": "ms-azuretools.vscode-azure-github-copilot",
+    "name": "GitHub Copilot for Azure",
+    "version": "1.0.231",
+    "publisher": "ms-azuretools",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 10,
+    "command_count": 9,
+    "conflict_count": 0,
+    "contribution_points": [
+      "chatAgents",
+      "chatParticipants",
+      "chatPromptFiles",
+      "commands",
+      "configuration",
+      "configurationDefaults",
+      "languageModelTools",
+      "mcpServerDefinitionProviders",
+      "menus",
+      "walkthroughs"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/411302530768a767e306ed63731f44a3ed4c1b443e5bca1bfe74fe7766487767.json",
+      "sha256": "b8da83f1d5dde57595737b40541bccad70a50db32d68548e56b287bc7789c20a"
+    }
+  },
+  {
+    "id": "ms-azuretools.vscode-azure-mcp-server",
+    "name": "Azure MCP Server",
+    "version": "2.0.46",
+    "publisher": "ms-azuretools",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configuration",
+      "mcpServerDefinitionProviders"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/64add2818ef3a6695d04e51f7c20fc3847a2a36e3482f6b1dc96cd19c7d64de2.json",
+      "sha256": "afadb8b4d798771984833a9c57ff48f92e0afde148ac35c4179872fd796ffdb3"
+    }
+  },
+  {
+    "id": "ms-azuretools.vscode-azureappservice",
+    "name": "Azure App Service",
+    "version": "0.27.0",
+    "publisher": "ms-azuretools",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 5,
+    "command_count": 46,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "menus",
+      "submenus",
+      "x-azResources"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/cf037d640c3e88acc02a41f96b5341df01617ae794d84036e4f156dd272abaf8.json",
+      "sha256": "3607bcdcba0696773722b0ce5b8fed67be711ce7f23e886abc78fa8e4ddd1f38"
+    }
+  },
+  {
+    "id": "ms-azuretools.vscode-azurecontainerapps",
+    "name": "Azure Container Apps",
+    "version": "0.11.2",
+    "publisher": "ms-azuretools",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 7,
+    "command_count": 53,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "jsonValidation",
+      "menus",
+      "submenus",
+      "walkthroughs",
+      "x-azResources"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/c3bf688afbe1b430823c520c3333eb6bd9b7c80e8d091b31a20959f5d29c8eb9.json",
+      "sha256": "2613c145509f85b6bdf49e79dbadf887e01c0a4943fa1c21d70ddb2f6a956c75"
+    }
+  },
+  {
+    "id": "ms-azuretools.vscode-azurefunctions",
+    "name": "Azure Functions",
+    "version": "1.22.0",
+    "publisher": "ms-azuretools",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 11,
+    "command_count": 74,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "jsonValidation",
+      "menus",
+      "problemMatchers",
+      "problemPatterns",
+      "submenus",
+      "taskDefinitions",
+      "views",
+      "walkthroughs",
+      "x-azResources"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/27c4e1e60c0ef30de5b69bc0756b3ddc1f3e7ad5f08457d97303d3e53b9124d3.json",
+      "sha256": "f32204c9052ca1db0e396d1240fe1ed5beecb6f07144fdeef3481ae29c38703a"
+    }
+  },
+  {
+    "id": "ms-azuretools.vscode-azureresourcegroups",
+    "name": "Azure Resources",
+    "version": "0.12.7",
+    "publisher": "ms-azuretools",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 13,
+    "command_count": 41,
+    "conflict_count": 0,
+    "contribution_points": [
+      "chatParticipants",
+      "commands",
+      "configuration",
+      "keybindings",
+      "languageModelTools",
+      "menus",
+      "submenus",
+      "terminal",
+      "views",
+      "viewsContainers",
+      "viewsWelcome",
+      "walkthroughs",
+      "x-azResources"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/0bbb0a1b3fb9a88d00c0b205ae968ea60786e3fa2acf0aa966e69ac308fcffe7.json",
+      "sha256": "eeeb010bf227a4e2e7f455d8843c849386519e600733a6844a8dceee15da8d59"
+    }
+  },
+  {
+    "id": "ms-azuretools.vscode-azurestaticwebapps",
+    "name": "Azure Static Web Apps",
+    "version": "0.13.3",
+    "publisher": "ms-azuretools",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 8,
+    "command_count": 27,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "debuggers",
+      "jsonValidation",
+      "menus",
+      "problemMatchers",
+      "submenus",
+      "x-azResources"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/e46dae76b6ec8bf43da2249ddea8338aba1be4376c0b4e9667a311f321d984fd.json",
+      "sha256": "36d569c1ecfbc1c0570b8bf892aa168333f8c101b723f2905463f13101605dc3"
+    }
+  },
+  {
+    "id": "ms-azuretools.vscode-azurestorage",
+    "name": "Azure Storage",
+    "version": "0.17.2",
+    "publisher": "ms-azuretools",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 5,
+    "command_count": 42,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "menus",
+      "submenus",
+      "x-azResources"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/4daa6fe9b70a5a81535a7eb69829f2560bf3a86234e94bdf3b43d097c882e6cd.json",
+      "sha256": "a87df0ee3668ef7e96fd1f80688c2e14c758e3cd65455ecfe5f82e65405c3f48"
+    }
+  },
+  {
+    "id": "ms-azuretools.vscode-azurevirtualmachines",
+    "name": "Azure Virtual Machines",
+    "version": "0.6.11",
+    "publisher": "ms-azuretools",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 4,
+    "command_count": 10,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "menus",
+      "x-azResources"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/734904df205847326a7d32ae468cacb48c71139d4fe45b0d8ec076d8cfc8bfa3.json",
+      "sha256": "46ccb50b40789deac7508fa4eee075cd9d949ccb228d0bdb10b7939ca7814016"
+    }
+  },
+  {
+    "id": "ms-azuretools.vscode-containers",
+    "name": "Container Tools",
+    "version": "2.4.5",
+    "publisher": "ms-azuretools",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 11,
+    "command_count": 100,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "configurationDefaults",
+      "debuggers",
+      "languageModelTools",
+      "languages",
+      "menus",
+      "taskDefinitions",
+      "views",
+      "viewsContainers",
+      "walkthroughs"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/1b8ab3ff4068bd39194fa5e58dd414ea5b334c99ca83987c591b80ad7e95760b.json",
+      "sha256": "b5e60d5b0092e55372e0306580612fbbe3bea63f9845bb7913d13e3009ee7b2a"
+    }
+  },
+  {
+    "id": "ms-azuretools.vscode-cosmosdb",
+    "name": "Azure Cosmos DB",
+    "version": "0.36.0",
+    "publisher": "ms-azuretools",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 11,
+    "command_count": 43,
+    "conflict_count": 0,
+    "contribution_points": [
+      "chatSkills",
+      "commands",
+      "configuration",
+      "grammars",
+      "keybindings",
+      "languageModelTools",
+      "languages",
+      "mcpServerDefinitionProviders",
+      "menus",
+      "submenus",
+      "x-azResources"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/d5423ae797e405deb1a9025afad565690ae652768fdf2987806cdff7252e2e97.json",
+      "sha256": "5c24da449df716f97f714f2a2e7098ca9ed9aa78e018d66f984f3179aa40b3f6"
+    }
+  },
+  {
+    "id": "ms-azuretools.vscode-docker",
+    "name": "Docker",
+    "version": "2.0.0",
+    "publisher": "ms-azuretools",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 0,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/413831e5f82ea72da124557b43c2761e3b5bf385a779978b223fa17b6565d715.json",
+      "sha256": "4171fcf5f972cfdd7cb636f5ce443cfd5065e8e031f4d6a7a77a95804c7ebb5a"
+    }
+  },
+  {
+    "id": "ms-edgedevtools.vscode-edge-devtools",
+    "name": "Microsoft Edge Tools for VS Code",
+    "version": "2.1.10",
+    "publisher": "ms-edgedevtools",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 8,
+    "command_count": 16,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "debuggers",
+      "menus",
+      "submenus",
+      "views",
+      "viewsContainers",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/4c1aee6900a2b5f31dd5f5a425a481429c8d86d281e6c1039897e52c121f9beb.json",
+      "sha256": "4c42bd3544a4432cb0ef89f0b82d22eed37ed1071c64084a81b50469bf0afb08"
+    }
+  },
+  {
+    "id": "ms-python.debugpy",
+    "name": "Python Debugger",
+    "version": "2026.6.0",
+    "publisher": "ms-python",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 6,
+    "command_count": 5,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "debugVisualizers",
+      "debuggers",
+      "menus",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/620e3f6c26efbc36af0316c23adfa7d45a21eb6e3c311363a23aabd67451c8ea.json",
+      "sha256": "319879c608e6cae66c8fc2dea52fb2d4b9f5aa947c3627767e75626db94a424c"
+    }
+  },
+  {
+    "id": "ms-python.python",
+    "name": "Python",
+    "version": "2026.4.0",
+    "publisher": "ms-python",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 15,
+    "command_count": 23,
+    "conflict_count": 0,
+    "contribution_points": [
+      "breakpoints",
+      "commands",
+      "configuration",
+      "debuggers",
+      "grammars",
+      "jsonValidation",
+      "keybindings",
+      "languageModelTools",
+      "languages",
+      "menus",
+      "problemMatchers",
+      "submenus",
+      "viewsWelcome",
+      "walkthroughs",
+      "yamlValidation"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/663e005aac2be59f931e0f490e3741eb909e4cff16dbca643d6331548a6ce2cb.json",
+      "sha256": "8e4419a0e8d120fdd91a8bc8c5c45ff05f8c362ef9a1e95e4e320b63ac55be90"
+    }
+  },
+  {
+    "id": "ms-python.vscode-pylance",
+    "name": "Pylance",
+    "version": "2026.3.1",
+    "publisher": "ms-python",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 11,
+    "command_count": 19,
+    "conflict_count": 0,
+    "contribution_points": [
+      "chatSkills",
+      "commands",
+      "configuration",
+      "configurationDefaults",
+      "grammars",
+      "jsonValidation",
+      "mcpServerDefinitionProviders",
+      "menus",
+      "semanticTokenModifiers",
+      "semanticTokenScopes",
+      "semanticTokenTypes"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/3e2ff92e33fc878deb3ac412b0094feeef8264b1758ec2c85e3a9f5c5c893c16.json",
+      "sha256": "8beff7ab784f66514f78c6c2362c98fe34dcb7cdad5034236594b433202dc36a"
+    }
+  },
+  {
+    "id": "ms-python.vscode-python-envs",
+    "name": "Python Environments",
+    "version": "1.36.0",
+    "publisher": "ms-python",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 6,
+    "command_count": 32,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "menus",
+      "taskDefinitions",
+      "views",
+      "viewsContainers"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/5fd6ccf427b1609f725a70494afb844d4e93ed3f625ffef46dc3cbf395ff7c50.json",
+      "sha256": "610f2a6f7ace107786d7d5eca1cf52b32b9c517ab52544c83b957c93d6216797"
+    }
+  },
+  {
+    "id": "ms-vscode-remote.remote-containers",
+    "name": "Dev Containers",
+    "version": "0.466.0",
+    "publisher": "ms-vscode-remote",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 10,
+    "command_count": 71,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "continueEditSession",
+      "jsonValidation",
+      "languages",
+      "menus",
+      "remoteHelp",
+      "resourceLabelFormatters",
+      "views",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/c23fc9ca8a212ce372d2db8a59f837aeadcd65ee7158aeb2e5eca5263ecb996b.json",
+      "sha256": "4a35cc8a29eb83736699bfe6bc1942bc870a5e9af8de21f403742068b486887d"
+    }
+  },
+  {
+    "id": "ms-vscode-remote.remote-ssh",
+    "name": "Remote - SSH",
+    "version": "0.123.0",
+    "publisher": "ms-vscode-remote",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 6,
+    "command_count": 17,
+    "conflict_count": 0,
+    "contribution_points": [
+      "chatParticipants",
+      "commands",
+      "configuration",
+      "menus",
+      "remoteHelp",
+      "resourceLabelFormatters"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/46a086bb624d65e46997ed7083ccdeaa2ec345130a15373665471d2229f667db.json",
+      "sha256": "6b4ace6719ec7cbecde040dc22ce359b4831d7a89880cc053f61d8d9df37f4e4"
+    }
+  },
+  {
+    "id": "ms-vscode-remote.remote-ssh-edit",
+    "name": "Remote - SSH: Editing Configuration Files",
+    "version": "0.87.0",
+    "publisher": "ms-vscode-remote",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/f3a6fc34d6cd33d9d3b15f0c86c7bd5edf3293a08c73772fff7420acf945e2fc.json",
+      "sha256": "684ebbc0485cdea31bf89bc81e4cf3981cb21610e260e0fe370d992c938b0cda"
+    }
+  },
+  {
+    "id": "ms-vscode-remote.remote-wsl",
+    "name": "WSL",
+    "version": "0.104.3",
+    "publisher": "ms-vscode-remote",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 9,
+    "command_count": 23,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "keybindings",
+      "menus",
+      "remoteHelp",
+      "resourceLabelFormatters",
+      "views",
+      "viewsWelcome",
+      "walkthroughs"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/5f3e598b631837472264ee33dd804e061ef0759d22248cdc32c8130a8c7aee4d.json",
+      "sha256": "59ee3f7a7231453b1400e2fdfd9e27538b45017dbd12f9156a828141a67a8b82"
+    }
+  },
+  {
+    "id": "ms-vscode.azure-repos",
+    "name": "Azure Repos",
+    "version": "0.40.0",
+    "publisher": "ms-vscode",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configuration",
+      "resourceLabelFormatters",
+      "virtualWorkspaces"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/0d9577aaf58b7b9ea1f050cb7fd4e8fad21d10983660499362a5ab7726ae6b33.json",
+      "sha256": "d7c5fef25d203dcd5359ce38259a79d2d3a70637e8a32fe8c5aa0e2847437816"
+    }
+  },
+  {
+    "id": "ms-vscode.js-debug",
+    "name": "JavaScript Debugger",
+    "version": "1.117.0",
+    "publisher": "ms-vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 11,
+    "command_count": 31,
+    "conflict_count": 0,
+    "contribution_points": [
+      "breakpoints",
+      "commands",
+      "configuration",
+      "debuggers",
+      "grammars",
+      "keybindings",
+      "languages",
+      "menus",
+      "terminal",
+      "views",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/dfe9bde7f498c6d9adfabaf3276f0f1dd0cfa8b3dff01af73b6db04b45d4f5a7.json",
+      "sha256": "b8e7171c8409445e5f678bd8a5d99fcb94142a4bc56a4ee8924cd96a80ea4362"
+    }
+  },
+  {
+    "id": "ms-vscode.js-debug-companion",
+    "name": "JavaScript Debugger Companion Extension",
+    "version": "1.1.3",
+    "publisher": "ms-vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 0,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/1f3afc7b5d0fda3859ec0bd975ac5b861cbbfa211d4e64c3f16f26423b86577f.json",
+      "sha256": "6b1ba798856dc04b319da36f15d96285560e915f6aa0093db759fef8f4db55a3"
+    }
+  },
+  {
+    "id": "ms-vscode.powershell",
+    "name": "PowerShell",
+    "version": "2025.4.0",
+    "publisher": "ms-vscode",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 14,
+    "command_count": 27,
+    "conflict_count": 0,
+    "contribution_points": [
+      "breakpoints",
+      "capabilities",
+      "commands",
+      "configuration",
+      "configurationDefaults",
+      "debuggers",
+      "keybindings",
+      "menus",
+      "problemMatchers",
+      "snippets",
+      "themes",
+      "views",
+      "viewsContainers",
+      "walkthroughs"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/51a3cb7a9ed97a6eaa4d4a7146c8cc83658e13a0f3a8f44414de0b149eea9fe7.json",
+      "sha256": "de9a6ec95e92b02dbec2fa33e20554b4fed34f199ea1516025e5ecd67d524f7b"
+    }
+  },
+  {
+    "id": "ms-vscode.remote-explorer",
+    "name": "Remote Explorer",
+    "version": "0.5.0",
+    "publisher": "ms-vscode",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 4,
+    "command_count": 13,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "menus",
+      "views"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/f1bda16e9f802a951749bfa186209f65adab40098d10cdd7363d6ab96aac92e2.json",
+      "sha256": "25906f6ffcbd52bf28f679f6f1ad0a5b11a4a1507a499c347933bbe8ac8e26c0"
+    }
+  },
+  {
+    "id": "ms-vscode.remote-repositories",
+    "name": "Remote Repositories",
+    "version": "0.42.0",
+    "publisher": "ms-vscode",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 13,
+    "command_count": 59,
+    "conflict_count": 0,
+    "contribution_points": [
+      "colors",
+      "commands",
+      "configuration",
+      "continueEditSession",
+      "fileSystemProviders",
+      "jsonValidation",
+      "menus",
+      "remoteHelp",
+      "resourceLabelFormatters",
+      "submenus",
+      "views",
+      "viewsWelcome",
+      "walkthroughs"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/e5086f6c475bf5ff7b63efbd71be0f0e711f2b376bff2fa9e1b2a4ef8cdf360c.json",
+      "sha256": "3b2180e4642dea0206c5f5611df8a2cb1674d777bb40bcf6620ac5028afd5b87"
+    }
+  },
+  {
+    "id": "ms-vscode.vscode-js-profile-table",
+    "name": "Table Visualizer for JavaScript Profiles",
+    "version": "1.0.11",
+    "publisher": "ms-vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 1,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "customEditors",
+      "menus"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/d1e045596c1744c192e494c95d19682822618aa5944ea7b0c737bc4bd0c224aa.json",
+      "sha256": "0cf53ad9e897148cf104d909311b5dc29a0d44e498ddf8170e73aac42ee7ff62"
+    }
+  },
+  {
+    "id": "ms-vscode.vscode-node-azure-pack",
+    "name": "Azure Tools",
+    "version": "1.8.2",
+    "publisher": "ms-vscode",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 0,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/de6b3c72b8a14775177ac16e28cb2c9b5f6e935011e949f6f573e397e9b60baa.json",
+      "sha256": "16e1cdf497bf5e3ce419ac3079e368847ca8dc6b22eeae2bad793247f010e639"
+    }
+  },
+  {
+    "id": "ms-windows-ai-studio.windows-ai-studio",
+    "name": "Foundry Toolkit for VS Code",
+    "version": "1.6.7",
+    "publisher": "ms-windows-ai-studio",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 15,
+    "command_count": 181,
+    "conflict_count": 0,
+    "contribution_points": [
+      "chatAgents",
+      "chatSkills",
+      "commands",
+      "configuration",
+      "customEditors",
+      "languageModelChatProviders",
+      "languageModelTools",
+      "mcpServerDefinitionProviders",
+      "menus",
+      "submenus",
+      "taskDefinitions",
+      "views",
+      "viewsContainers",
+      "walkthroughs",
+      "x-azResources"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/2e53743b1f2f001f4a404df322ae9e092e4fd7c3a80c2199c033cc5896e6f026.json",
+      "sha256": "11bb8a951542d7a027c600b7f229b73c149c4846dae8b7d021a0fc06b5846545"
+    }
+  },
+  {
+    "id": "NSTechBytes.html-view",
+    "name": "HTML View",
+    "version": "0.0.1",
+    "publisher": "NSTechBytes",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 1,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "keybindings"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/22db43fb479e628ea8606232560c4f3af05da280035fec897bc1b3cf0c56a814.json",
+      "sha256": "b28668f90d591049caee14405bac99a114a1e151bcbd5b13d8a70f89461f4b9d"
+    }
+  },
+  {
+    "id": "openai.chatgpt",
+    "name": "Codex – OpenAI’s coding agent",
+    "version": "26.721.41059",
+    "publisher": "openai",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 10,
+    "command_count": 10,
+    "conflict_count": 0,
+    "contribution_points": [
+      "chatSessions",
+      "commands",
+      "configuration",
+      "customEditors",
+      "grammars",
+      "keybindings",
+      "languages",
+      "menus",
+      "views",
+      "viewsContainers"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/8e764cd760c22c2fa2ef043261c4383011caaa99ee12cb91a9b8cafbbaaa1f2d.json",
+      "sha256": "04d62d0e7a518b21175fc9711434e1ee90fd9c83f5b8e45f6ea7e5832d76dd30"
+    }
+  },
+  {
+    "id": "OWASP.Github-Workflow-Updater-Extension",
+    "name": "OWASP GitHub Workflow Updater",
+    "version": "1.0.2",
+    "publisher": "OWASP",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 3,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "menus"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/953693382e0b241ce7dded10a8ad3b1ca0abede1740734903bb82991fac5b745.json",
+      "sha256": "35eb6a039b4044b8b6cd3c7a33ce23c19970a777008e2c5d8cb4eef7a6cf8492"
+    }
+  },
+  {
+    "id": "redhat.java",
+    "name": "Language Support for Java(TM) by Red Hat",
+    "version": "1.55.0",
+    "publisher": "redhat",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 15,
+    "command_count": 36,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "configurationDefaults",
+      "customEditors",
+      "grammars",
+      "javaBuildFilePatterns",
+      "javaBuildTools",
+      "javaShortcuts",
+      "jsonValidation",
+      "keybindings",
+      "languages",
+      "menus",
+      "semanticTokenModifiers",
+      "semanticTokenScopes",
+      "semanticTokenTypes"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/e1594e021a1304ab5c15387599f0cf683f84ccf4cb572eb3a7952e5fdd12eba4.json",
+      "sha256": "3ec79a022425f2e5bf045fde0ddce3f6c556864a3654c00f26b0c357ce2e8418"
+    }
+  },
+  {
+    "id": "redhat.vscode-yaml",
+    "name": "YAML",
+    "version": "1.24.0",
+    "publisher": "redhat",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 4,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configuration",
+      "configurationDefaults",
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/f9e8bb75864fbed354e8267636a4b8557e9dbd4a11197ffa70031c5ae85e38df.json",
+      "sha256": "33476814400d7ec2a8f561e18b32f2842559e4ecc4c10ae819a82e1f25e2bc9e"
+    }
+  },
+  {
+    "id": "ritwickdey.LiveServer",
+    "name": "Live Server",
+    "version": "5.7.10",
+    "publisher": "ritwickdey",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 4,
+    "command_count": 3,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "keybindings",
+      "menus"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/fe73eabcc18cc056809441e231098a83050710365566740fc0ebd7bfd2b03c94.json",
+      "sha256": "abb23d833830e54c26c9b0f11b11b641e088ee5fae1b93de65a1eb23e157daa7"
+    }
+  },
+  {
+    "id": "sooraj171.mcp-sharp-staf-selenium",
+    "name": "MCP Sharp STAF Selenium",
+    "version": "1.0.0",
+    "publisher": "sooraj171",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "mcpServerDefinitionProviders"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/1cf62214193cdcd9f87e0c660310771be49cd47c4169cea77bf7cc838446ec92.json",
+      "sha256": "d12686f9401133e504784f61da0b3037cec1b2750d06dcaee98ca329f197ce36"
+    }
+  },
+  {
+    "id": "streetsidesoftware.code-spell-checker",
+    "name": "Code Spell Checker",
+    "version": "4.5.6",
+    "publisher": "streetsidesoftware",
+    "active": true,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 12,
+    "command_count": 67,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "configurationDefaults",
+      "icons",
+      "jsonValidation",
+      "languages",
+      "menus",
+      "submenus",
+      "terminal",
+      "views",
+      "viewsContainers",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/5fc46d37d5d378d4b9867e5ed1bd2a94a95ae3cc95a007962c3ae981e7f9ebea.json",
+      "sha256": "c258812ed1a46401f9aec782e4d25c74cc180325a58a58474119f1f400905d1e"
+    }
+  },
+  {
+    "id": "ThunderCompute.thunder-compute",
+    "name": "Thunder Compute",
+    "version": "0.5.8",
+    "publisher": "ThunderCompute",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 6,
+    "command_count": 20,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "keybindings",
+      "menus",
+      "views",
+      "viewsContainers",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/e24f8b65cb4019b670b6d3cf553b12dda005a14e2772e8f059b56f2e8f88284b.json",
+      "sha256": "f760f79d34266a0f7a4a8f149eafcc345dcc447794eb4723ccb4569f915e9b75"
+    }
+  },
+  {
+    "id": "tomoki1207.pdf",
+    "name": "vscode-pdf",
+    "version": "1.2.2",
+    "publisher": "tomoki1207",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "capabilities",
+      "configuration",
+      "customEditors"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/e0c8ab1666602e476a07736daf17c43c05a170debb3974f6ab49c7de96348913.json",
+      "sha256": "24a48be0513b31f4753a80f93c6fb1923c692104c4a0fc780dc07d58c58025c1"
+    }
+  },
+  {
+    "id": "TypeScriptTeam.jsts-chat-features",
+    "name": "JS/TS Chat Features",
+    "version": "0.0.4",
+    "publisher": "TypeScriptTeam",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "chatSkills",
+      "configuration"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/e784562cb3047792ee1788319e9b1c5b532460c823d0238ce109a03705db12d7.json",
+      "sha256": "1e81add1e18ec78800f4ff85ba718cc1bf4630a89fffc4dde344d643dc2b214e"
+    }
+  },
+  {
+    "id": "uctakeoff.vscode-counter",
+    "name": "VS Code Counter",
+    "version": "3.7.2",
+    "publisher": "uctakeoff",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 5,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "menus"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/b65f5839fcd8c53e6087e2c531f4cc247a4ee61b4e768809bcaac81111e56768.json",
+      "sha256": "844efada304c8ebc3fb327c6346dae6a5494a1ec19d5ffb3733a745e07308c15"
+    }
+  },
+  {
+    "id": "vscjava.vscode-gradle",
+    "name": "Gradle for Java",
+    "version": "3.18.0",
+    "publisher": "vscjava",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 12,
+    "command_count": 39,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "grammars",
+      "javaExtensions",
+      "jsonValidation",
+      "languages",
+      "menus",
+      "problemMatchers",
+      "submenus",
+      "taskDefinitions",
+      "views",
+      "viewsContainers"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/5fcd36918c59c24706d61124289917d05f9027e46576ba15cb5ca7fcc4174140.json",
+      "sha256": "b084bde767148b4dbc15dbdc5b58e3f0b4da9a58bdf1228320de51c19a640b23"
+    }
+  },
+  {
+    "id": "vscjava.vscode-java-debug",
+    "name": "Debugger for Java",
+    "version": "0.59.0",
+    "publisher": "vscjava",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 7,
+    "command_count": 22,
+    "conflict_count": 0,
+    "contribution_points": [
+      "breakpoints",
+      "commands",
+      "configuration",
+      "debuggers",
+      "javaExtensions",
+      "languageModelTools",
+      "menus"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/2fce70226aed883f80decf3a81c94091b8272ab2a1bd6dacd331cab28fc90c47.json",
+      "sha256": "884bb24bbd22c8cd35c203eade73c961668cfc22a18a14a81aa01d9bc07d92fb"
+    }
+  },
+  {
+    "id": "vscjava.vscode-java-dependency",
+    "name": "Project Manager for Java",
+    "version": "0.27.6",
+    "publisher": "vscjava",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 12,
+    "command_count": 46,
+    "conflict_count": 0,
+    "contribution_points": [
+      "chatInstructions",
+      "chatSkills",
+      "commands",
+      "configuration",
+      "javaExtensions",
+      "keybindings",
+      "languageModelTools",
+      "menus",
+      "submenus",
+      "taskDefinitions",
+      "views",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/cc77b11549b926184440eb48c8a71f7be2b5245c1cbe71a955c4978300b59f1c.json",
+      "sha256": "59c00d9b86014ef1536ef5d52a3528bcefa57056ecc70e7f241a4b5293a289d1"
+    }
+  },
+  {
+    "id": "vscjava.vscode-java-pack",
+    "name": "Extension Pack for Java",
+    "version": "0.31.1",
+    "publisher": "vscjava",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 7,
+    "command_count": 13,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "customEditors",
+      "javaShortcuts",
+      "keybindings",
+      "menus",
+      "walkthroughs"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/9ab678f2409d30a7c9074aeb0dfe53166c7cb579b47cbbbd16e3f09354df54da.json",
+      "sha256": "bf96a428ebec3b2a140082eb1842d967b2af0b056de0cb151b927a3f53b51766"
+    }
+  },
+  {
+    "id": "vscjava.vscode-java-test",
+    "name": "Test Runner for Java",
+    "version": "0.46.0",
+    "publisher": "vscjava",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 5,
+    "command_count": 6,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "javaExtensions",
+      "menus",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/5473820a16f7070acd3d87be19ced611c5e5bf6ef03a1b1dec92d3be07ede508.json",
+      "sha256": "dc17032f27ce7b2f62d2bf6f206a0c7f839995e1f9cd15a8e37482b60fa64ec5"
+    }
+  },
+  {
+    "id": "vscjava.vscode-maven",
+    "name": "Maven for Java",
+    "version": "0.45.3",
+    "publisher": "vscjava",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 7,
+    "command_count": 37,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "javaExtensions",
+      "menus",
+      "submenus",
+      "views",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/b2f04ec7e6ba0799dbaa2fb816f9d108188a334f176bbbb282a76f08df38f6e7.json",
+      "sha256": "cec46739b94db0407d16597ae59b31c8816805328c082e613fd0261302d56053"
+    }
+  },
+  {
+    "id": "vscode.bat",
+    "name": "Windows Bat Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages",
+      "snippets"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/c8af7b9462aa2d2e7740af1788da13c4950c51bd71a5627da4f8528716c70969.json",
+      "sha256": "89ad195e871906f4505ca9da1368df1eef9f877bcc932b487c18b770109450ab"
+    }
+  },
+  {
+    "id": "vscode.builtin-notebook-renderers",
+    "name": "Builtin Notebook Output Renderers",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "notebookRenderer"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/1c35ef16b83bb122aaa3c5592c8a9b4e23a9ee8a65ba3d6d701e4ab41e3e3519.json",
+      "sha256": "1f0f94a9ff4cb10f5ee5f089decdfcb75f10b8a9638ec04256a12b60a1e60696"
+    }
+  },
+  {
+    "id": "vscode.clojure",
+    "name": "Clojure Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/6d62b9fd86d06965639b4bb36e9352b59f4cf6d9087d94fb4fee4df4048d0344.json",
+      "sha256": "12322899e4e5a945086abb8310d043cb7de8d2c20a59c9ce9554cb33a13e0224"
+    }
+  },
+  {
+    "id": "vscode.coffeescript",
+    "name": "CoffeeScript Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 5,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "breakpoints",
+      "configurationDefaults",
+      "grammars",
+      "languages",
+      "snippets"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/7535d885a32b2a8894f6e00b89b8e89cb2802533bef69a389be0f468bf26c8df.json",
+      "sha256": "dc749702f936e0cb309567ad70aeac92e4cd66e16d6c28f52ffe8a3ee10db96a"
+    }
+  },
+  {
+    "id": "vscode.configuration-editing",
+    "name": "Configuration Editing",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "jsonValidation",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/cdf7e13c31666759cb280a47d5d84e45e47a4942b495f696e8b603114af173bb.json",
+      "sha256": "a9dd08372a5543ecee04fdb5710aeaa37e59a9c406a6b1fa453560ac21c8a12a"
+    }
+  },
+  {
+    "id": "vscode.cpp",
+    "name": "C/C++ Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 5,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages",
+      "problemMatchers",
+      "problemPatterns",
+      "snippets"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/ca893cc944b288541c0b03a2658e28bbe372d46aba73652a79d3a8f54f0703e2.json",
+      "sha256": "747702ae85fa394576df61fe324cee4e128e5688118ac068986a8124a73ecab4"
+    }
+  },
+  {
+    "id": "vscode.csharp",
+    "name": "C# Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 4,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages",
+      "snippets"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/b00b4e1e0ed5c5ab5eccad124e6e73e61e881d138921fe04fdd171ac0d79c1c1.json",
+      "sha256": "39604dbe9998572db5b81979784531cdd2e961d0047eab71ba160dec16953019"
+    }
+  },
+  {
+    "id": "vscode.css",
+    "name": "CSS Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/60bdd4a8eb0455c714af42d267b694f45bbebd473f3a0fcf734adfc6ec95a8a0.json",
+      "sha256": "fa4136fd8e92c71b01ea96efba3b2cb187387df5ed97b2f1251438f47e43f01c"
+    }
+  },
+  {
+    "id": "vscode.css-language-features",
+    "name": "CSS Language Features",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configuration",
+      "configurationDefaults",
+      "jsonValidation"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/5f0caaa60ae9cdb2c11a4a0a57cc0165fbbff221a6ba7521537e06eeb30fd047.json",
+      "sha256": "a3d2f6bdfaaca393fe3dc77726debfb634aa53076c0c25252f2c4884a10edf09"
+    }
+  },
+  {
+    "id": "vscode.dart",
+    "name": "Dart Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/783cbb0118576416f41f9919f94cc23f109d349e23da23e9c768dc7af6beb000.json",
+      "sha256": "dac813b77b490554f711ba41f6ec8bd2eeb323c368b9409cc48dcf700ce1ee83"
+    }
+  },
+  {
+    "id": "vscode.debug-auto-launch",
+    "name": "Node Debug Auto-attach",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": true,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 1,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/2e370f41d49164ecbfb18bde0ac014283ce1eca434b53cc98ab2f36d3d038f0e.json",
+      "sha256": "9adf57b989a65ac0652a7084421593f512d9fd2717db78cce0887c97e1dce552"
+    }
+  },
+  {
+    "id": "vscode.debug-server-ready",
+    "name": "Server Ready Action",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "debuggers"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/68a27740220b689cc4b7dc6de1d2da8944dd5430f734936ea60dad2bc42a4905.json",
+      "sha256": "ac48b1abb37755f52182f7ae3950f7160e46285916c5ba91d36bbf0342edbbfb"
+    }
+  },
+  {
+    "id": "vscode.diff",
+    "name": "Diff Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/7aed7ec41e0b0d298088b7755df704d33a3024cc16347a4bc141d78014b30501.json",
+      "sha256": "3c792f8442d0a4e8c51a6325fb69ee09cc49e3edd80537340505dff4120227c6"
+    }
+  },
+  {
+    "id": "vscode.docker",
+    "name": "Docker Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/1a99679431c61cfb554239c116d49580214c5455c11648916be833fa33094067.json",
+      "sha256": "0db63a1804cb79f54cbab70cb143e907ef219b982e4f3edb6960b3f3bd6a1752"
+    }
+  },
+  {
+    "id": "vscode.dotenv",
+    "name": "Dotenv Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/26a78726fab6f4894af35167bac94b2b832b753c4b99e4836e50126ac27fd9e7.json",
+      "sha256": "c6686ddb62e525a82458f79b7494ecdf411bcbd1e52552f21d1f3bf8395fa464"
+    }
+  },
+  {
+    "id": "vscode.extension-editing",
+    "name": "Extension Authoring",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "jsonValidation",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/304e1a315215a9aa6efb256b9a99adb0c743bbd8c7c2066791bd082202e627ab.json",
+      "sha256": "0fabc8fdaf3387b5558c5b8882186e14284c59cb623bff9758287b31af667921"
+    }
+  },
+  {
+    "id": "vscode.fsharp",
+    "name": "F# Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 4,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages",
+      "snippets"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/344ff481b9798fec8371d962e6d6a9aced946cf2e9e77886de46b0440de4053f.json",
+      "sha256": "951f9f7b21176e5eda181a1e802d81ba46558d86d10a35f6e57810a2521740ff"
+    }
+  },
+  {
+    "id": "vscode.git",
+    "name": "Git",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": true,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 9,
+    "command_count": 183,
+    "conflict_count": 0,
+    "contribution_points": [
+      "colors",
+      "commands",
+      "configuration",
+      "configurationDefaults",
+      "continueEditSession",
+      "keybindings",
+      "menus",
+      "submenus",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/ac4d2083ca965c21b20e0c08d6522807f91c6284f9321da12d6767362a3eb52c.json",
+      "sha256": "391433438c81f8c4068d0c20d2531460892e1d2f346b8ad7280e38deda472edb"
+    }
+  },
+  {
+    "id": "vscode.git-base",
+    "name": "Git Base",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": true,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 4,
+    "command_count": 1,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "grammars",
+      "languages",
+      "menus"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/628d83ce5356ff8debb9acb7c50bfd88e4a5e49ff0e3b491b9aa0d67338d1c9b.json",
+      "sha256": "fb4750e87fb6e16625f1ac9d76bcf8cd8b0d8aa5eeaf8e193b19ce99fb2e628d"
+    }
+  },
+  {
+    "id": "vscode.github",
+    "name": "GitHub",
+    "version": "0.0.1",
+    "publisher": "vscode",
+    "active": true,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 6,
+    "command_count": 9,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "continueEditSession",
+      "markdown.previewStyles",
+      "menus",
+      "viewsWelcome"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/8b6b3c7d97d94cee517643d55a89a2c88d2c0cb6386c2e729d95d339eb6ec8c8.json",
+      "sha256": "3c19e628f39859640b410554719a0c59048fe39daf149382c2523cb076bb7974"
+    }
+  },
+  {
+    "id": "vscode.github-authentication",
+    "name": "GitHub Authentication",
+    "version": "0.0.2",
+    "publisher": "vscode",
+    "active": true,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "authentication",
+      "configuration"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/c5dea09d651898692fb7d0f2ac0bf91300f297a98b880bfff937b52810c1a7ee.json",
+      "sha256": "7abfcabad016eb29eff433ea01f60ce97252ac3dda33d49a11ed53f7f83ec9e4"
+    }
+  },
+  {
+    "id": "vscode.go",
+    "name": "Go Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/740c7345e9d7b9e5ac70d9e7aaffbbbb8c51347a065958d617eb573988c54867.json",
+      "sha256": "80480ddc1fbd241dc17e8b774c18c9d9482266c313387bf4ae3c28d307053eb6"
+    }
+  },
+  {
+    "id": "vscode.groovy",
+    "name": "Groovy Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages",
+      "snippets"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/34c8e4b6c0cd2cf3b59941120096e7b567de5cc180e7b962491325fad3aa8fd5.json",
+      "sha256": "f03b6c8922d1ede56e742e119b1e2d67c9adcffcdd1fa5ce78f0091e6276aedd"
+    }
+  },
+  {
+    "id": "vscode.grunt",
+    "name": "Grunt support for VS Code",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configuration",
+      "taskDefinitions"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/f8d50ed24798aa9607e6241bf2bfc386e6a0f62fc9916dde83e767e3f1410c3b.json",
+      "sha256": "ee958b9a8b95431e09d6c739402453f3dab2f3b78deab061b16100fd925815f6"
+    }
+  },
+  {
+    "id": "vscode.gulp",
+    "name": "Gulp support for VSCode",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configuration",
+      "taskDefinitions"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/7f16bc3c29dcf0d7872dc90e40f480ea5e7057b086be6708f3eb71b7d17bf8d4.json",
+      "sha256": "78dfe2c970ea69998e0584bea76c6c9d11fab495015b5d5acf297987cacb366c"
+    }
+  },
+  {
+    "id": "vscode.handlebars",
+    "name": "Handlebars Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "htmlLanguageParticipants",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/98b91e487e338c9acece474624eebd681c927c5b8dc99ddb49be51a90b08fc4c.json",
+      "sha256": "c9991ca65de4468adaa2dc04751e9746d2c105a177406a18fe3952f031377215"
+    }
+  },
+  {
+    "id": "vscode.hlsl",
+    "name": "HLSL Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/2b8fa08859f00bfaada7643769de87b080fe41ab1efb12ce4f4826aaa3a39df0.json",
+      "sha256": "46d3714b9713ff086f71712eafff8e38758409ded522cb7d49fcf524d2e5d317"
+    }
+  },
+  {
+    "id": "vscode.html",
+    "name": "HTML Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages",
+      "snippets"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/616954491b630386e0a6a652f66ed0ab80bb9599af7b31e3ae933a6c1a794e23.json",
+      "sha256": "944f4810bcc114d63ce22bb178b91e0753b8a5646a8c3cf83728f57eca57cb1e"
+    }
+  },
+  {
+    "id": "vscode.html-language-features",
+    "name": "HTML Language Features",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configuration",
+      "configurationDefaults",
+      "jsonValidation"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/874cd63c786107709f530c1961366e5a995d2613df39287feb5ba7ca59517a91.json",
+      "sha256": "501f253d5dab78e9c90454d19f70882ef085841786b4bba4f92476852cf347bd"
+    }
+  },
+  {
+    "id": "vscode.ini",
+    "name": "Ini Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/5b6ce237f384d627cc083bc57dd76f4e92625e6bdd1a8d9dd789c1da12be9cbc.json",
+      "sha256": "cee8cbc183cc2a23849a9030c00a45a584ae8f9b0d31a18ed27024fbb32d6244"
+    }
+  },
+  {
+    "id": "vscode.ipynb",
+    "name": ".ipynb Support",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 5,
+    "command_count": 6,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "menus",
+      "notebookRenderer",
+      "notebooks"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/5b76ce455ac46e9c14b03ccd34aa7cf24eb9ecadf8f94f6569943cb50c52b42c.json",
+      "sha256": "af86e013664a4273439b869814b354c69269356be1685ee14ac80e631293174d"
+    }
+  },
+  {
+    "id": "vscode.jake",
+    "name": "Jake support for VS Code",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configuration",
+      "taskDefinitions"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/1fdc070fe16724a156ec0b006a27869c5e78c5993da7c781ce1c690827fe465c.json",
+      "sha256": "db392b060651b0d2363af458ef84f36f94608f411de3723a059d3f8cfdff6b7f"
+    }
+  },
+  {
+    "id": "vscode.java",
+    "name": "Java Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages",
+      "snippets"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/dde4decb6a8185090c6bdce421fb8d4ebd9f199d5022bf813370acceecd65460.json",
+      "sha256": "2a1da62a55ca71957a871798027d9194cfa01ba76aa837881b6b0c5a4f06f58a"
+    }
+  },
+  {
+    "id": "vscode.javascript",
+    "name": "JavaScript Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 5,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages",
+      "semanticTokenScopes",
+      "snippets"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/6682e83659961212db9210ed487ffd22941bcf1b5411a167c6ec525fc262ab4a.json",
+      "sha256": "284e4104cb13c22251dbe0e4eb4420c64fd6e3938fbcb706a58e3a779bd885d3"
+    }
+  },
+  {
+    "id": "vscode.json",
+    "name": "JSON Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/47db30d482d3d38fc5f251414686e275e4d1ad2432cfeafb2b98c14b20d3a05c.json",
+      "sha256": "4d5b6ddedaf86c86a5c5f06de16e221472384ae90376340627cec36c0216f140"
+    }
+  },
+  {
+    "id": "vscode.json-language-features",
+    "name": "JSON Language Features",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 5,
+    "command_count": 2,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "configurationDefaults",
+      "jsonValidation",
+      "jsonValidationRegistry"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/ff0b5d88adbdd2d39c60c1221a5fc9d4644b2c3a7466194a138d9d2da8cb7155.json",
+      "sha256": "4549d4f22017d02f8a68a17fdadc3f50168978da54991e3db727292a61961e4a"
+    }
+  },
+  {
+    "id": "vscode.julia",
+    "name": "Julia Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/4beca5b44543f9670f932f3c0341645aca0af5ec577f2661a22b3caded4d582c.json",
+      "sha256": "989c0d111c0f9cf2a4e3faeceef8b125e76fd34d489a48a4d73f6cc2c4bd1fa5"
+    }
+  },
+  {
+    "id": "vscode.latex",
+    "name": "LaTeX Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/e7f9056147dcb1161b2b44a883725e018c335485f1f6bc988a42ddb2ab3494a2.json",
+      "sha256": "b5b374c8e024319f4a2e0d360e1ba4b7a9426df636910a14f01e6503d956e70f"
+    }
+  },
+  {
+    "id": "vscode.less",
+    "name": "Less Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages",
+      "problemMatchers"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/956727a3e9a803a2630d3b7c16d6b7b81d79f5d982845429001e471a7fc24b66.json",
+      "sha256": "871bdb092a9219ab77bcc84c949c04da19c1ccb377f253dc66ee5121c10bfec0"
+    }
+  },
+  {
+    "id": "vscode.log",
+    "name": "Log",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/27a54793ab5110f2d0a801637f3ae42f758a34656e36afd21be64956f310aa53.json",
+      "sha256": "0e5dc0a917aa6ae1196e5a3636f0b81d34d0a45abf3a46dbcfaee52ebf838316"
+    }
+  },
+  {
+    "id": "vscode.lua",
+    "name": "Lua Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/c01c2b2abf948bb066cac2478d297ee5e2812f06adbdeb63f6209bb50516e316.json",
+      "sha256": "4943a5ea0f6ba781d381ee1d761a162b7c2af90956d15fd44c47617aac5c2bc8"
+    }
+  },
+  {
+    "id": "vscode.make",
+    "name": "Make Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/75434d4c9a6e8ad449d023428bc61b337563ba8eba0cd65618dc187292207b40.json",
+      "sha256": "924e205d1d6cd04120d35459abddefcbd10489a5c2efae4ae1c72ea94fe73115"
+    }
+  },
+  {
+    "id": "vscode.markdown",
+    "name": "Markdown Language Basics",
+    "version": "30.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 4,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages",
+      "snippets"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/c41a45fae38ed91c72f5e616a1913a6575ad07a610e526502f11e4e587fbfe73.json",
+      "sha256": "8d166538bc530113436f6f2b283539be90177e39090adb0af9b0bbe2a0666d61"
+    }
+  },
+  {
+    "id": "vscode.markdown-language-features",
+    "name": "Markdown Language Features",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 10,
+    "command_count": 16,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "configurationDefaults",
+      "customEditors",
+      "jsonValidation",
+      "keybindings",
+      "markdown.previewScripts",
+      "markdown.previewStyles",
+      "menus",
+      "notebookRenderer"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/43aa31bdcb4cf89f1e561d5aa63b8c9fe29e5fdd113be7e223bbe5b5e60bd776.json",
+      "sha256": "ba6efcadfc15838236916554c020c733f12f16f3b43e32114f1b136ebadee952"
+    }
+  },
+  {
+    "id": "vscode.markdown-math",
+    "name": "Markdown Math",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 6,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configuration",
+      "grammars",
+      "languages",
+      "markdown.markdownItPlugins",
+      "markdown.previewStyles",
+      "notebookRenderer"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/69546a257c07838804e45e70f09efecb0209a0c45e0b0a828871d46055c9c95d.json",
+      "sha256": "f55140837bac2062296847097642db056f6675a67945abf33348f8f1745a007c"
+    }
+  },
+  {
+    "id": "vscode.media-preview",
+    "name": "Media Preview",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 4,
+    "command_count": 5,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "customEditors",
+      "menus"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/d1da8eec5ae87b66b3d57cd120beca9201659ebe6e7335f4adae203f83f10260.json",
+      "sha256": "8db165c3e8cdacd474a57a674ebadc4b17bbcb1d2c7e780033eb7026284c3e5e"
+    }
+  },
+  {
+    "id": "vscode.merge-conflict",
+    "name": "Merge Conflict",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": true,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 10,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "menus"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/4118be9edd8b100b5e6c37b2e1449abee35870b49c0e6342cc964ade7338edb7.json",
+      "sha256": "63fa9957f29c28187dcad3a4c2a015487f60b599e22da4030e40472c0faabf44"
+    }
+  },
+  {
+    "id": "vscode.mermaid-markdown-features",
+    "name": "Mermaid Markdown Features",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 8,
+    "command_count": 3,
+    "conflict_count": 0,
+    "contribution_points": [
+      "chatOutputRenderers",
+      "commands",
+      "configuration",
+      "languageModelTools",
+      "markdown.markdownItPlugins",
+      "markdown.previewScripts",
+      "menus",
+      "notebookRenderer"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/58e153996bf16df570723af2b111fd9d34284cc2043846ba7dc807b14e28a19c.json",
+      "sha256": "afdef3c9aa1b80c940c638d8b776a01d89a28ddd743dbcbb9a99ab8b6c05607b"
+    }
+  },
+  {
+    "id": "vscode.microsoft-authentication",
+    "name": "Microsoft Account",
+    "version": "0.0.1",
+    "publisher": "vscode",
+    "active": true,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "authentication",
+      "configuration"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/20176264e1807f9940e0ad0ccdf4a39c7eecfb75e63f878947c1fa53e3b18847.json",
+      "sha256": "6705bd4764a4b022f127324b0d2a3bab6e35c2d73d6e8922499cfb41158b57d6"
+    }
+  },
+  {
+    "id": "vscode.npm",
+    "name": "NPM support for VS Code",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 8,
+    "command_count": 8,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "jsonValidation",
+      "languages",
+      "menus",
+      "taskDefinitions",
+      "terminalQuickFixes",
+      "views"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/74da0c7f93574819ddcdc1934df85dab5cedb14f2fc3015050ae18702c90dd1b.json",
+      "sha256": "4ecb64dcd2d1b7957af59a0160bdef276f64bbe53b4bce9f40c13916abda0cb4"
+    }
+  },
+  {
+    "id": "vscode.objective-c",
+    "name": "Objective-C Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/48d0ffa5d99863ae2acd5c56a8925674ab167a3c6dc68f69ebcbcd23b651df4d.json",
+      "sha256": "7fcc34ad5e8c3addf7e0c78c800717493cf2709e5474468c53be767acb89955e"
+    }
+  },
+  {
+    "id": "vscode.perl",
+    "name": "Perl Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/b53002fb338ea128811633aefdc3392d4a922a1473661f94dfb445c8bd2bcf51.json",
+      "sha256": "c030a8ac7e05919cc70288d92838ba229c45ed17cb0c7948d3ecad650ef87435"
+    }
+  },
+  {
+    "id": "vscode.php",
+    "name": "PHP Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages",
+      "snippets"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/806cde5e9c078beded26f352912e5d7d4cf1c4df6136ef44c900fbbea24eda41.json",
+      "sha256": "06fa1f224c8138371891697c8f4f06650503016c7437e2d3bc016ec4a7c03863"
+    }
+  },
+  {
+    "id": "vscode.php-language-features",
+    "name": "PHP Language Features",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configuration",
+      "jsonValidation"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/992d864acb72beb64857148d551b32bd6e1193fdf3ee4247d2118a67ee283207.json",
+      "sha256": "d5f6a811062f36650410e3fbcf3e853b9e03d3ee873ee62e56866713d292a0de"
+    }
+  },
+  {
+    "id": "vscode.powershell",
+    "name": "Powershell Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/c14fee3bedf3556400b48740e5f9df20361f43c48e255327d3de1d6a04c8fcd7.json",
+      "sha256": "bbb7506013087f9717e560d24cad0ff1920a15dce68f29f4c497d8ca23a0225b"
+    }
+  },
+  {
+    "id": "vscode.prompt",
+    "name": "Prompt Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/15aa284ae4634868015e7caca736cb69e936f0acb4f5bb696e16019e9efb2980.json",
+      "sha256": "9c55c3588df07be9148e99927beccbafb357d1a90637d1a0b06e39d02d97cdff"
+    }
+  },
+  {
+    "id": "vscode.pug",
+    "name": "Pug Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/20ea55ad420169bc06d2e39c320bbef9d6711430df552bac99b1484cd555a9bb.json",
+      "sha256": "1089c5a3cd38e2a1791c97393095d025362239dee5fdb331170bfdf226843e9e"
+    }
+  },
+  {
+    "id": "vscode.python",
+    "name": "Python Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/180e6a6befc49c9d9141c57d4e87a6b7966715a8086d1057113b345b4d6f73e5.json",
+      "sha256": "bf0de9dc884730863edaf9cdba6a043bc5ab8cf9bc40e35368f934191cde70fc"
+    }
+  },
+  {
+    "id": "vscode.r",
+    "name": "R Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/b172a7daee2d8c581e97e524e236b5929c1d72ba5ee5fad5ffb36711dbba0ceb.json",
+      "sha256": "5bbdc2a901c8aa20a7842751da831874f241a2fbaff16f9cc5b9ff0409c8a174"
+    }
+  },
+  {
+    "id": "vscode.razor",
+    "name": "Razor Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/c2080b50d9c20e212b3e1a3e81aacf83b0f622e8c4e60a3ce93d944129991207.json",
+      "sha256": "2ae2625f0e4fcd3cb1407c3f199881f1a4afff984b6e9a06d0dbe8239bae33da"
+    }
+  },
+  {
+    "id": "vscode.references-view",
+    "name": "Reference Search View",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 6,
+    "command_count": 21,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "keybindings",
+      "menus",
+      "views",
+      "viewsContainers"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/1323edc0051a03dc42c3f6492d82c1491cf1136af4177e27c6355c25f19658a6.json",
+      "sha256": "9eb414b7213cdd34ec270702fc50aec5ebf8a107f219d2057a328671df6392c5"
+    }
+  },
+  {
+    "id": "vscode.restructuredtext",
+    "name": "reStructuredText Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/4e9e1bd72967b78e5e78ae8e7601e048130df19004f756a1c0908f4f686cb957.json",
+      "sha256": "3ea55b2d1fce50825afdb4f3969ba48db17de39d9a95c288f0dcbd079a5c4a5f"
+    }
+  },
+  {
+    "id": "vscode.ruby",
+    "name": "Ruby Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/b20f6af8b8754b5e0f7577db0f51fca69686315a362a897950c012faba298a7d.json",
+      "sha256": "99336aca2f19b95ee9be474c332358812cc70b9f689f1aa3958b99f1b446695f"
+    }
+  },
+  {
+    "id": "vscode.rust",
+    "name": "Rust Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/5511d6859ba63eb1cac452712b3cbf1d407df28028997b4f8adabf234b2700da.json",
+      "sha256": "f96c53a358f8e7f1411babe701c02694f13aaaae59d6956e0f4f3657762cf57f"
+    }
+  },
+  {
+    "id": "vscode.scss",
+    "name": "SCSS Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages",
+      "problemMatchers"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/d24608a2a061c6d005f4fa14871e14d186c9ad8509e8a8a9efd4cad234fd6f12.json",
+      "sha256": "fa94a239e2bb46c739c2fd3433f6056ed2d644415bbc9842782b3b8342a20f05"
+    }
+  },
+  {
+    "id": "vscode.search-result",
+    "name": "Search Result",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/3e1ab38c3866cd120db26ea0288045fa0523dde1c431833e2aa8ac60b6ddb2a7.json",
+      "sha256": "064e2993b87ad1ae6aaeae8df3048c04619f32478b6f2fe65c8ff5dcd18b5582"
+    }
+  },
+  {
+    "id": "vscode.shaderlab",
+    "name": "Shaderlab Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/50e39415b21e99d8c61121dcfc8a41a0b817515adbad3080253ad388864f226d.json",
+      "sha256": "9c538b4b74d4bbb93d7f9ebb0197222adfc76eedb775a6f71f079efd4ef7ad81"
+    }
+  },
+  {
+    "id": "vscode.shellscript",
+    "name": "Shell Script Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/1f8d7053ec3ce9f7b0fbab2df61c0e3f9b1c831bcaed541b1c6f6977f9cf48e4.json",
+      "sha256": "5f0c02418ac3ca6792e60eefee15459e490e4cac168afc02df0d753bf670990c"
+    }
+  },
+  {
+    "id": "vscode.simple-browser",
+    "name": "Simple Browser",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 1,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "menus"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/75786ca3e25fe83db000045fbf967a8709547f03207b0d46a7867e95bb4092e1.json",
+      "sha256": "fed67a5d5d34c110ecfa39e41e8002fb31e215c67fcccbc80120a1def7d43e62"
+    }
+  },
+  {
+    "id": "vscode.sql",
+    "name": "SQL Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/2e3b9cdbb1fd81221a099ac6a21daacb7ddd5b76e44a39922be42cd927e055f0.json",
+      "sha256": "46a4b7fb5c8d1043c70704ca79f53537d6dc4665262d314c801d5977d1822e37"
+    }
+  },
+  {
+    "id": "vscode.swift",
+    "name": "Swift Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages",
+      "snippets"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/3828861855690215d238993fc6b07a66dd7565821d0f390dfb983823069d4777.json",
+      "sha256": "5acd1df03221c76c90cf107024aecf2f135da2ba396f0763540624b043dc18d6"
+    }
+  },
+  {
+    "id": "vscode.terminal-suggest",
+    "name": "Terminal Suggest for VS Code",
+    "version": "1.0.1",
+    "publisher": "vscode",
+    "active": true,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 1,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "terminal"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/9c43df68b47ecebe2f71d11a4d186772e1ffd0ea8e6f11dd727dd79d0da0bbff.json",
+      "sha256": "1a76046c92699e9d151440a8db748ae732ea4035588809cfce37a4948a8c1f3f"
+    }
+  },
+  {
+    "id": "vscode.theme-abyss",
+    "name": "Abyss Theme",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "themes"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/da21e0d144fab5097eadfccbc586b32456c16a9f77ac558b74e01872d55ab503.json",
+      "sha256": "d1a361a39aedfbad871e3e26e608c31b0c92375e48f292cca0aea83f0efc9119"
+    }
+  },
+  {
+    "id": "vscode.theme-defaults",
+    "name": "Default Themes",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "iconThemes",
+      "themes"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/aa7022e9dcebb6b03213667527a03b01ca9a0ca320dcd78e5ef816bafbe5a919.json",
+      "sha256": "672b0b8206f32a0c3efa7a13518c82a76a6e5fe1b985a8ba7f033f3b984cf4b2"
+    }
+  },
+  {
+    "id": "vscode.theme-kimbie-dark",
+    "name": "Kimbie Dark Theme",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "themes"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/e94635bcbe3e4daa96202954a56018aa10e47ba4b47187912c190b879b79ee22.json",
+      "sha256": "700a61e4a54b090f5eb56ace850b715e84a8e6ecbaa7e594ae3bd38b1f5a916d"
+    }
+  },
+  {
+    "id": "vscode.theme-monokai",
+    "name": "Monokai Theme",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "themes"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/2a11ec3e4d82f7360d68d673715f68a6eb1c315baaac8b817df8ff1a993a81b4.json",
+      "sha256": "b87781a8d4c20b9ff7514e820333e143b7bd4cbc78d8372afe4acc38edf9c3c6"
+    }
+  },
+  {
+    "id": "vscode.theme-monokai-dimmed",
+    "name": "Monokai Dimmed Theme",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "themes"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/be1b7648dd3673ab212aaedb358c074e9f30aa380ab5bc3b158d826c1db06209.json",
+      "sha256": "b869754ae8bb0d1a666a26522b753b7fe77ff82f0eaef21bc6d0befbb968ac10"
+    }
+  },
+  {
+    "id": "vscode.theme-quietlight",
+    "name": "Quiet Light Theme",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "themes"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/efcfbb495d74d296a314c2c373964ae76e51da451c2bfc73967697d3e37da50f.json",
+      "sha256": "19c3ed6d567dd0f18f46ef539654d72d0e4e4bbab36829be54ce4fce554ed3b7"
+    }
+  },
+  {
+    "id": "vscode.theme-red",
+    "name": "Red Theme",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "themes"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/06b296727aae2d0a252eab23c283edef2dd1c5bfa009e94148cc7e480d3c6d7c.json",
+      "sha256": "d7ddaae29ae91e97a82d5c68a39f4148b335d151fbce3a33f58d7d21bc050d04"
+    }
+  },
+  {
+    "id": "vscode.theme-solarized-dark",
+    "name": "Solarized Dark Theme",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "themes"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/3317a1911a007def3c04ec4fecce3b110a30c5f3d70de767b2eac16786158682.json",
+      "sha256": "ccbc3661581b11a149ecefd5ca524ea021fd3a44e2af8411c882488d0cfb1f1c"
+    }
+  },
+  {
+    "id": "vscode.theme-solarized-light",
+    "name": "Solarized Light Theme",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "themes"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/8a48559c5e0302f6ef5dd77d6ea49ea7a62660c9a58e017edcd187a3e9285591.json",
+      "sha256": "f4491d903c48ad4577871ad72af6a5f32b4b58a19226ebfbcbf993ff7f8676a9"
+    }
+  },
+  {
+    "id": "vscode.theme-tomorrow-night-blue",
+    "name": "Tomorrow Night Blue Theme",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "themes"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/bb19ffd4a10c3cdea5afb3f59bd89f92819b72efe916be7cb09e4213a9ed1474.json",
+      "sha256": "a58c6c0c7a19cb6a5e2bcb6462d962cbe10a07e68fe8dc6d713dbb319e6c4686"
+    }
+  },
+  {
+    "id": "vscode.tunnel-forwarding",
+    "name": "Local Tunnel Port Forwarding",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 2,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/bde00e7c044b9806656cc581eb961ea9b67dfe1003ebad66cc243772964b9754.json",
+      "sha256": "13606013eaeeab50c8f7d321c7136f589a3bb256c9ca2b7d8c8f4d2ac8173681"
+    }
+  },
+  {
+    "id": "vscode.typescript",
+    "name": "TypeScript Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 4,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages",
+      "semanticTokenScopes",
+      "snippets"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/2bf9d52a1a609382882dee961c32c90825f7ad16c1e000e75a0262ff4f38e02e.json",
+      "sha256": "92f859145e002e55e3369ed7753204787109a6d87bd29ad70c36e3e358fde076"
+    }
+  },
+  {
+    "id": "vscode.typescript-language-features",
+    "name": "JavaScript and TypeScript Language Features",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 8,
+    "command_count": 15,
+    "conflict_count": 0,
+    "contribution_points": [
+      "breakpoints",
+      "commands",
+      "configuration",
+      "jsonValidation",
+      "menus",
+      "problemMatchers",
+      "problemPatterns",
+      "taskDefinitions"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/4cb326e387ce25eb93136813a86e316743c7a437064f513d148acc2efa59f188.json",
+      "sha256": "d4fc2d9e2479bc31dcc1debe80994c9a4a5b8771408c3bc8807a877e050e3beb"
+    }
+  },
+  {
+    "id": "vscode.vb",
+    "name": "Visual Basic Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages",
+      "snippets"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/741e6618a75b0b1dde775a167734ed70f140ec4ed1fa100262cb569aef7a1547.json",
+      "sha256": "6638b5f3f949fcf9596d59b371d776dff6e25f40cf53ee9c378ed939dd2abf12"
+    }
+  },
+  {
+    "id": "vscode.vscode-theme-seti",
+    "name": "Seti File Icon Theme",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 1,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "iconThemes"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/c58c6cde549beeab468d863d2711b8a64c7acb9ccc64614ed857b8a10e97907a.json",
+      "sha256": "28ccb01e862c46025199857cc9167411557dbaa67c91f625a3f5111ae4951546"
+    }
+  },
+  {
+    "id": "vscode.xml",
+    "name": "XML Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 2,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/6a2a460bf18e11f7bb76dce76de8113b4bed3b486b5268b3c14b06ff3dac7c78.json",
+      "sha256": "c3040aab4f461d5b983ddef1683ef08aed9b6d80c0207fb686128cfa159c702d"
+    }
+  },
+  {
+    "id": "vscode.yaml",
+    "name": "YAML Language Basics",
+    "version": "10.0.0",
+    "publisher": "vscode",
+    "active": false,
+    "builtin": true,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 3,
+    "command_count": 0,
+    "conflict_count": 0,
+    "contribution_points": [
+      "configurationDefaults",
+      "grammars",
+      "languages"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/00a827149f04aafad83766c506d3aaac9b19e0af2801e297c3c751679892bfb9.json",
+      "sha256": "ff5b02a4e5ac8b05a3facdcc60d917bb24582f8cd0f9804ee0f0a961f82f4728"
+    }
+  },
+  {
+    "id": "ziyasal.vscode-open-in-github",
+    "name": "Open in GitHub, Bitbucket, Gitlab, VisualStudio.com !",
+    "version": "1.3.6",
+    "publisher": "ziyasal",
+    "active": false,
+    "builtin": false,
+    "integration_status": "detected-metadata-only",
+    "capability_count": 4,
+    "command_count": 3,
+    "conflict_count": 0,
+    "contribution_points": [
+      "commands",
+      "configuration",
+      "keybindings",
+      "menus"
+    ],
+    "detail_ref": {
+      "path": "snapshots/ec11938f429b50698c67706928e4a4056abfdc0a0ab17ebddf0366ac20315fc1/extensions/7a2f900fcbd456ed58030c54d9d334cd5004ee86b8cc651816148047caac58e8.json",
+      "sha256": "642181acb4fa6f6e716a9e033af615dacc47905bc58a077aded305eb8b05f9f6"
+    }
+  }
+]

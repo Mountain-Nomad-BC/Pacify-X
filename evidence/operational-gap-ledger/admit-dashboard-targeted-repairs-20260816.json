@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-938",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004987",
+  "effect": "execute",
+  "scope": [
+    "node --check extension/media/dashboard/48-graph-surface.js",
+    "node --check extension/media/dashboard/49-studio-editors.js",
+    "node --check extension/media/dashboard/90-controller.js",
+    "node --test --test-name-pattern targeted-repair-pattern extension/tests/ui-scaffold.test.js extension/tests/extension-contract.test.js extension/tests/dashboard-e2e.test.js"
+  ],
+  "authority": "The registered dashboard interaction gaps require exact focused verification before CSS ownership work or an owned section gate.",
+  "expected_effect": "The repaired browser walk, Studio editor model, persisted state, metric metadata, and extension source contract pass; unrelated tests are skipped, not represented as passing.",
+  "rollback": "Read-only focused execution; log every new failure before repair and keep PX-OS-062 open.",
+  "evidence": [{"claim": "Immediate targeted-verification checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004987"}]
+}

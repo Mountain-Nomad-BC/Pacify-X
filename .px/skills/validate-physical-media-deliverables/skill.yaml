@@ -1,0 +1,39 @@
+{
+  "admission_record": "validate-physical-media-deliverables",
+  "body_sha256": "dcf56a29f3126e888db4f9cf8ffce890ce1a7a930193e5b6a34226ce5579333a",
+  "contract": {
+    "available": true,
+    "sha256": "510f2c6afc621a24c00299d4041fd0f949719a3bcad59424765fd0ec952e7c27",
+    "source": "registry/skill_packages/validate-physical-media-deliverables.json"
+  },
+  "description": "Validate CAD, manufacturing, robotics, and media deliverables against explicit technical promises and independent checks. Use when generated geometry, robot descriptions, fabrication artifacts, images, audio, or video must be proven complete rather than merely produced.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "validate-physical-media-deliverables",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/validate-physical-media-deliverables"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "cad",
+    "manufacturing",
+    "media",
+    "robotics",
+    "validation"
+  ],
+  "version": "1.0.0"
+}

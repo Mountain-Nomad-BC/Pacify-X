@@ -1,0 +1,38 @@
+{
+  "admission_record": "trajectory-failure-sentinel",
+  "body_sha256": "79da68a94e6db3d29028b22c6dc538d68c529db82d0252987630458f4c965cd8",
+  "contract": {
+    "available": true,
+    "sha256": "4d1e87ffe7d33d7dda9edd05bb7af9fe77631ce6b81a85f6442bb441ca09bb08",
+    "source": "registry/skill_packages/trajectory-failure-sentinel.json"
+  },
+  "description": "Detect failure onset early enough to recover before cost or state damage accumulates. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "trajectory-failure-sentinel",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/trajectory-failure-sentinel"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "evaluation",
+    "failure",
+    "sentinel",
+    "trajectory"
+  ],
+  "version": "0.1.0"
+}

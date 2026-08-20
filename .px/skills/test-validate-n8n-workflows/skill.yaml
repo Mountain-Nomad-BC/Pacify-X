@@ -1,0 +1,39 @@
+{
+  "admission_record": "test-validate-n8n-workflows",
+  "body_sha256": "35d51b1e75c68cc675a92bec34863892f7a79c3e654fded531e67757e091813a",
+  "contract": {
+    "available": true,
+    "sha256": "708e9fedb68c1427f0cbf1f946a50867849b9042e99814175e718e2f8956faee",
+    "source": "registry/skill_packages/test-validate-n8n-workflows.json"
+  },
+  "description": "Test n8n workflows using fixtures, contracts, failure injection, replay checks, and external outcome assertions.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "test-validate-n8n-workflows",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/test-validate-n8n-workflows"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "contracts",
+    "failure-injection",
+    "fixtures",
+    "n8n",
+    "outcome-verification"
+  ],
+  "version": "1.0.0"
+}

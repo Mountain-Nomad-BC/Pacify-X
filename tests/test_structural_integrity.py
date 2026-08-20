@@ -1,22 +1,95 @@
 from __future__ import annotations
 
 import json
+import ast
+import hashlib
+import importlib.util
 from pathlib import Path
 import shutil
 import sys
 import tempfile
 
-from runtime.structural_integrity import audit_structural_integrity
+from runtime.structural_integrity import (
+    _exclude_structural_path,
+    _stable_ast,
+    audit_structural_integrity,
+)
 
 
 ROOT = Path(__file__).parents[1]
+
+
+def test_completed_wal_images_are_inactive_but_pending_wal_remains_auditable() -> None:
+    assert _exclude_structural_path(
+        ".engineering-bootstrap/doctor/wal/committed/tx/after/0000.json"
+    )
+    assert not _exclude_structural_path(
+        ".engineering-bootstrap/doctor/wal/pending/tx/after/0000.json"
+    )
+
+
+def test_logic_review_identity_is_interpreter_neutral() -> None:
+    node = ast.parse(
+        "def sample(x: int = 1):\n"
+        "    y = x + 2\n"
+        "    if y > 2:\n"
+        "        return y\n"
+        "    return 0\n"
+    ).body[0]
+    digest = hashlib.sha256(
+        repr(_stable_ast(node, function_root=True)).encode()
+    ).hexdigest()
+    assert digest == "448822aedd5e47d05dfb53a36144e696ef8a25dda4aac8442734064b71a93456"
+
+
+def test_ellipsis_finding_identity_is_source_derived_across_python_versions(
+    tmp_path,
+) -> None:
+    scanner = (
+        ROOT
+        / ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py"
+    )
+    spec = importlib.util.spec_from_file_location("_portable_incomplete_audit", scanner)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    previous = sys.dont_write_bytecode
+    sys.dont_write_bytecode = True
+    try:
+        spec.loader.exec_module(module)
+    finally:
+        sys.dont_write_bytecode = previous
+    source = "class Surface:\n    def run(self, value: int) -> str: ...\n"
+    (tmp_path / "sample.py").write_text(source, encoding="utf-8")
+    result = module.audit(tmp_path)
+    finding = next(
+        item for item in result["findings"] if item["rule"] == "python-ellipsis-body"
+    )
+    semantic = "def run(self, value: int) -> str: ..."
+    expected = hashlib.sha256(
+        f"sample.py:python-ellipsis-body:{semantic}".encode()
+    ).hexdigest()[:20]
+    assert finding["id"] == expected
 
 
 def _clone() -> Path:
     directory = Path(tempfile.mkdtemp())
     target = directory / "framework"
     shutil.copytree(
-        ROOT, target, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache")
+        ROOT,
+        target,
+        ignore=shutil.ignore_patterns(
+            ".git",
+            ".venv*",
+            ".vscode-test",
+            "Python",
+            "node_modules",
+            "__pycache__",
+            ".pytest_cache",
+            ".ruff_cache",
+            "quarantine",
+            "operation-bus",
+            "preserved-extension-installations",
+        ),
     )
     return target
 
@@ -49,7 +122,7 @@ def test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection() -> None:
 
 def test_structural_audit_never_writes_dynamic_loader_bytecode() -> None:
     root = _clone()
-    cache = root / ".agents/skills/audit-incomplete-implementations/scripts/__pycache__"
+    cache = root / ".px/skills/audit-incomplete-implementations/scripts/__pycache__"
     previous = sys.dont_write_bytecode
     sys.dont_write_bytecode = False
     try:
@@ -128,6 +201,10 @@ def test_declared_generated_duplicates_regenerate_cleanly() -> None:
         if item["classification"] != "unreviewed"
     ]
     assert all(item.get("equivalence_rule") for item in declared)
+    classifications = {item["classification"] for item in declared}
+    assert "native-skill-manifest-aliases" in classifications
+    assert "native-skill-surface-scaffolds" in classifications
+    assert "native-skill-policy-projections" in classifications
 
 
 def test_undeclared_duplicate_group_fails_audit() -> None:

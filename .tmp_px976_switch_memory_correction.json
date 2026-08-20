@@ -1,0 +1,17 @@
+{
+  "gap_id": "PX-OS-976",
+  "note": "Correction to the immediately preceding task-switch annotation: its evidence reference resolved to the annotation event itself because the discovery append had failed timestamp validation. PX-OS-988 is now durably created by the later exact event referenced here; the Studio card remains open and its return action is unchanged.",
+  "patch": {
+    "next_action": "Switch to PX-OS-988 for the user-prioritized layered promotion hash parser, then return to the current-source installed-host Studio walk without dropping PX-OS-976."
+  },
+  "evidence": [
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005687",
+      "claim": "Authoritative stable discovery event for PX-OS-988"
+    },
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005686",
+      "claim": "Preserved annotation containing the superseded self-reference"
+    }
+  ]
+}

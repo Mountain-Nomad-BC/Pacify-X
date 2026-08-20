@@ -2,7 +2,7 @@
   "id": "frontier-questioning",
   "version": "1.0.0",
   "status": "active",
-  "body": ".agents/skills/frontier-questioning/SKILL.md",
+  "body": ".px/skills/frontier-questioning/SKILL.md",
   "body_sha256": "76b0d8dd66a6bf68a3c67e3a41bc27e2b1dbcfd5f5db695ccae5c900810e1002",
   "references": [],
   "capability_tags": [
@@ -19,7 +19,7 @@
       "evidence/integration/pxi-20260804/candidate_disposition_ledger.json",
       "LICENSES/mattpocock-skills-MIT.txt"
     ],
-    "canonical_owner": ".agents/skills/frontier-questioning/SKILL.md"
+    "canonical_owner": ".px/skills/frontier-questioning/SKILL.md"
   },
   "clean_room": false,
   "tests": "tests/test_project_reasoning.py",

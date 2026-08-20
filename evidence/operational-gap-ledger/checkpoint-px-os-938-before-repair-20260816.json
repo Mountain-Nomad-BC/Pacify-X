@@ -1,0 +1,7 @@
+{
+  "active_gap_id": "PX-OS-938",
+  "learned": "The controller already retains the exact submitted query in state.graphRequest, but the graph surface renders only graphData.requested_query while graphData is cleared during the pending transition.",
+  "next_action": "Render the current request query as the pending/result-preservation source before falling back to returned graph data.",
+  "unresolved_branch_gap_ids": ["PX-OS-938"],
+  "evidence": [{"claim": "The exact interaction defect is registered.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004979"}]
+}

@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-934",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004951",
+  "authority": "The bounded sentinel repair requires exact syntax and cache regression verification.",
+  "effect": "execute",
+  "scope": ["node --check extension/src/pxBridge.js", "node --test extension/tests/px-bridge-cache.test.js"],
+  "expected_effect": "All cache, fingerprint, coalescing, approval, and transport checks pass with immediate same-size freshness.",
+  "rollback": "Read-only focused execution; retain exact failures and do not broaden the run.",
+  "evidence": [
+    {
+      "claim": "Immediate post-sentinel checkpoint.",
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004951"
+    }
+  ]
+}

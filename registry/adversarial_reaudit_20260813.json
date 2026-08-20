@@ -1,0 +1,2989 @@
+{
+  "schema_version": "px.adversarial-reaudit-remediation/1.0",
+  "source": {
+    "name": "PACIFY_X_CLEAN_FULL_ADVERSARIAL_REAUDIT_20260813.md",
+    "sha256": "555ae384b2668244b7310a636ea50af9e9d4eb86053d15fa63562d8fa38442cc",
+    "bytes": 65508
+  },
+  "denominator": {
+    "total": 113,
+    "severity": {
+      "BLOCKER": 19,
+      "HIGH": 45,
+      "MEDIUM": 38,
+      "LOW": 11
+    },
+    "family": {
+      "R": 31,
+      "A": 16,
+      "W": 12,
+      "S": 12,
+      "M": 6,
+      "G": 6,
+      "K": 2,
+      "U": 17,
+      "D": 11
+    }
+  },
+  "status_counts": {
+    "open": 0,
+    "in_progress": 0,
+    "fixed_pending_independent_verification": 0,
+    "accepted": 113,
+    "blocked": 0
+  },
+  "release_claim": {
+    "complete": true,
+    "certified": false,
+    "reason": "All 113 corrections have accepted source, test, fault, visual, and exact-artifact evidence; certification remains owned by the final current section/group receipts, governed full profile, and validate operation."
+  },
+  "findings": [
+    {
+      "id": "R-001",
+      "family": "R",
+      "severity": "BLOCKER",
+      "finding": "The clean tree fails its canonical validator.",
+      "evidence": "`validate` returns `valid:false` because `registry/provider_route_scan.json` is stale. A release handoff that cannot pass its first documented control is not certifiable.",
+      "required_correction": "Rebuild the provider-route index from the exact final bytes and make export refuse stale output.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-002",
+      "family": "R",
+      "severity": "HIGH",
+      "finding": "Three content identities in the provider route scan are stale.",
+      "evidence": "`runtime/resource_lifecycle.py`: stored 43,617 bytes / `415ee5...`, current 47,732 / `be781e...`; `runtime/test_runner.py`: 4,619 / `7886bb...`, current 9,613 / `f16986...`; `scripts/clean_source_export.py`: 4,446 / `dc202f...`, current 4,795 / `91c6f7...`.",
+      "required_correction": "Make the index a generated build prerequisite, not a best-effort afterthought.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-003",
+      "family": "R",
+      "severity": "BLOCKER",
+      "finding": "Two required section receipts are stale.",
+      "evidence": "`dashboard-extension` and `execution-placement` have `passed:true` but `fresh:false`, `current:false`.",
+      "required_correction": "Re-run governed section tests after final source changes and bind receipts to exact inputs.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-004",
+      "family": "R",
+      "severity": "BLOCKER",
+      "finding": "Every required group receipt is stale.",
+      "evidence": "All 10 groups (`core-a-f`, `core-g-m`, `core-n-s`, `core-t-z`, `process-recovery`, `exact-installed`, `release-build`, `release-audit`, `derived-integrity`, `structural-adversarial`) are non-current across all 175 members.",
+      "required_correction": "Re-run every required group against the exact export candidate.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-005",
+      "family": "R",
+      "severity": "BLOCKER",
+      "finding": "Full certification refuses to start.",
+      "evidence": "`test-profile run full` stops with “whole certification requires current section receipts” before executing a suite.",
+      "required_correction": "Make current section receipts an export precondition, then complete the full profile.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-006",
+      "family": "R",
+      "severity": "MEDIUM",
+      "finding": "A failed obsolete receipt ships beside the current receipt set.",
+      "evidence": "`.engineering-bootstrap/test-evidence/groups/core-n-z.json` is not a required group and records exit 1 / `passed:false` after ~416 s.",
+      "required_correction": "Remove obsolete authority or move it into an explicitly historical, non-current namespace.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-007",
+      "family": "R",
+      "severity": "BLOCKER",
+      "finding": "The source-only exporter removes state required by `audit structure`.",
+      "evidence": "The command fails on missing `.engineering-bootstrap/project-management/state.json`; `clean_source_export.py:43-49` excludes all non-test-evidence engineering state.",
+      "required_correction": "Either make structure audit source-only aware or include a portable, sanitized seed state needed by the audit.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-008",
+      "family": "R",
+      "severity": "BLOCKER",
+      "finding": "Release and generated-artifact checks require another excluded file.",
+      "evidence": "`audit release` and `validate_generated_artifacts` fail on `.engineering-bootstrap/project-registry.json`; the latter throws instead of returning a governed failure.",
+      "required_correction": "Remove the hidden runtime dependency, ship a portable registry, and convert missing prerequisites into structured fail-closed results.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-009",
+      "family": "R",
+      "severity": "HIGH",
+      "finding": "The effect-surface ownership registry is stale.",
+      "evidence": "Runtime scan finds 671 surfaces; `registry/build_claims.json` and the dashboard claim 667.",
+      "required_correction": "Rebuild registry and claims from the same final scan.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-010",
+      "family": "R",
+      "severity": "HIGH",
+      "finding": "New hard-delete surfaces bypass lifecycle policy.",
+      "evidence": "`runtime/test_runner.py:162` and `:240` call `shutil.rmtree`; the effect validator explicitly prohibits them.",
+      "required_correction": "Route cleanup through `ResourceManager`/quarantine policy and require an owned disposition receipt.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-011",
+      "family": "R",
+      "severity": "BLOCKER",
+      "finding": "Evidence portability fails at scale.",
+      "evidence": "1,327 external locators produce 1,328 errors: 1,312 in `px-generated-test-fixture-cleanup`, 7 in `owned-test-cache-cleanup`, and 4 each in the two pytest cleanup records. The registry claims zero.",
+      "required_correction": "Sanitize or classify every locator, rebuild the historical-reference registry, and fail export on divergence.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-012",
+      "family": "R",
+      "severity": "HIGH",
+      "finding": "Personal absolute paths remain in the “clean” handoff.",
+      "evidence": "A narrow raw scan found 1,344 escaped `${USER_HOME}` occurrences across 14 files, plus unescaped home paths in docs, smoke evidence, skill provenance, and scripts.",
+      "required_correction": "Replace with project-relative or redacted locators; do not ship workstation/user identity in current evidence.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-013",
+      "family": "R",
+      "severity": "MEDIUM",
+      "finding": "Cleanup evidence proves cleanup was incomplete.",
+      "evidence": "Pytest receipts retain 2 then 1 item and both say `root_absent:false`; generated-fixture cleanup retains 11. One record claims 1,300 targets, 1,474,985 files, and 374,869,192,070 logical bytes reclaimed.",
+      "required_correction": "Separate historical forensic evidence from current release evidence; explain retained objects and validate plausible accounting.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-014",
+      "family": "R",
+      "severity": "HIGH",
+      "finding": "The live sanitation control is nondeterministic on binary bytes.",
+      "evidence": "It scans every binary chunk with a short identifier regex and flags `extension/evidence/screenshots/surface-memory-1440.png` at byte 320,229. Random compressed data can make a release pass/fail.",
+      "required_correction": "Classify file types; scan text as decoded text and binaries with admitted binary/metadata tools.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-015",
+      "family": "R",
+      "severity": "HIGH",
+      "finding": "The sanitation command is not a general sanitation gate.",
+      "evidence": "Its own result marks secret, credential, PII, binary, and license/provenance review `not_run`; `valid` ignores all five.",
+      "required_correction": "Compose the real admitted gates and require all required controls to pass before `valid:true`.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-016",
+      "family": "R",
+      "severity": "BLOCKER",
+      "finding": "Clean export does not execute or verify release controls.",
+      "evidence": "`create_clean_export` inventories bytes and receipts but does not run validation, currentness, effect, portability, sanitation, secret, PII, license, generated, or full test checks.",
+      "required_correction": "Make export a finalization transaction that consumes current successful receipts for the exact byte manifest.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-017",
+      "family": "R",
+      "severity": "HIGH",
+      "finding": "The current evidence index claims an absent VSIX.",
+      "evidence": "It records `.engineering-bootstrap/quarantine/release-artifacts/vscode/0.6.1/pacify-x-vscode-0.6.1.vsix` (3,953,745 bytes, SHA-256 `34742e...`); that path is not in the archive by design.",
+      "required_correction": "Never mark an index current when a named artifact is not co-delivered or resolvable through a durable exact locator.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-018",
+      "family": "R",
+      "severity": "HIGH",
+      "finding": "Evidence-index validity ignores receipt currentness.",
+      "evidence": "`registry/current_evidence_index.json` contains the two stale section receipts yet says `valid:true`; the builder validates presence/hash, not semantic freshness.",
+      "required_correction": "Require receipt schema, pass, current/fresh, input identity, and namespace validation.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-019",
+      "family": "R",
+      "severity": "MEDIUM",
+      "finding": "The evidence index reports no limitations despite missing artifact and stale receipts.",
+      "evidence": "`limitations: []` misrepresents the bundle’s actual boundaries.",
+      "required_correction": "Populate machine-readable limitations and derive validity from them.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-020",
+      "family": "R",
+      "severity": "MEDIUM",
+      "finding": "Installed-VSIX smoke is partial and cannot substitute for the absent artifact.",
+      "evidence": "The 0.6.1 smoke says artifact hash unchanged, but listener coverage is partial, `coverage_complete:false`, test API unsupported, and extension behaviors unexercised.",
+      "required_correction": "Retain the exact VSIX and run a complete installed-host suite with explicit supported/unsupported dimensions.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-021",
+      "family": "R",
+      "severity": "HIGH",
+      "finding": "`doctor` process semantics can fool automation.",
+      "evidence": "`valid:true` and exit 0 coexist with `operable:false`, `ready:false`, `certification_ready:false`, and a blocked overall state. `runtime/px_doctor.py` builds `valid:true`; CLI exit follows it.",
+      "required_correction": "Exit nonzero for the requested readiness contract, or expose explicit modes such as syntax-valid vs operable vs certification-ready.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-022",
+      "family": "R",
+      "severity": "MEDIUM",
+      "finding": "Read-looking audit commands mutate the workspace.",
+      "evidence": "Every audit command calls `_prepare_certification_hygiene`, whose cleanup uses `apply:true`; caches are moved to quarantine even without a write flag.",
+      "required_correction": "Default audit to dry-run; require explicit `--apply` and display exact effects before mutation.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-023",
+      "family": "R",
+      "severity": "MEDIUM",
+      "finding": "Incomplete-implementation review freshness is broken.",
+      "evidence": "15 findings are unreviewed after semantic IDs changed. They appear to be Protocol ellipses, but the control still returns `complete:false`.",
+      "required_correction": "Update review identities/classifications and require the audit before export.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-024",
+      "family": "R",
+      "severity": "HIGH",
+      "finding": "The repair ledger overstates closure.",
+      "evidence": "It marks 20 prior items accepted, including BOM cleanup, PII cleanup, current receipts, memory, MCP status, and current evidence, despite current contrary evidence.",
+      "required_correction": "Derive repair status from executable acceptance checks; do not permit manually optimistic labels to become authority.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-025",
+      "family": "R",
+      "severity": "MEDIUM",
+      "finding": "A “valid/certifiable” coverage record is stale against source hashes.",
+      "evidence": "`evidence/operation-health/final-coverage-20260812.json` says valid/certifiable while provider gateway/tests differ; doctor detects the mismatch.",
+      "required_correction": "Namespace historical coverage and regenerate exact-source coverage evidence.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-026",
+      "family": "R",
+      "severity": "LOW",
+      "finding": "Section receipts leak a personal source checkout.",
+      "evidence": "Six section receipts embed `${USER_HOME}\\Downloads\\bootstrap_project\\Pacify-X\\extension`.",
+      "required_correction": "Store project-relative paths or stable logical roots.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-027",
+      "family": "R",
+      "severity": "HIGH",
+      "finding": "Normal CI never builds or tests the extension.",
+      "evidence": "`.github/workflows/ci.yml` installs Python and runs Python gates only; no `npm ci`, `npm run check`, Node unit tests, UI tests, or VSIX packaging.",
+      "required_correction": "Add locked Node install, syntax/unit/UI tests, package audit, and VSIX smoke as required jobs.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-028",
+      "family": "R",
+      "severity": "MEDIUM",
+      "finding": "Dependency automation omits npm.",
+      "evidence": "Dependabot covers `pip` and `github-actions` only.",
+      "required_correction": "Add `npm` for `/extension`, with lockfile and review policy.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-029",
+      "family": "R",
+      "severity": "HIGH",
+      "finding": "Exhaustive assurance is Windows-only and already blocked by stale receipts.",
+      "evidence": "Scheduled full profile runs only on `windows-latest`; normal macOS CI tests only a small platform subset.",
+      "required_correction": "Run the process supervisor/studios and full or representative governed groups on Linux, Windows, and macOS.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-030",
+      "family": "R",
+      "severity": "HIGH",
+      "finding": "Release automation publishes only Python artifacts.",
+      "evidence": "The release workflow builds wheel/sdist and never builds, tests, signs, or publishes the VSIX, while product evidence treats the extension as part of current identity.",
+      "required_correction": "Add an exact VSIX build/test/sign/publish lane or formally version/release it independently.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "R-031",
+      "family": "R",
+      "severity": "MEDIUM",
+      "finding": "The extension source handoff’s install instructions are incomplete.",
+      "evidence": "`node_modules` is correctly absent, but `extension/README.md` starts with `npm run check`; it never says `npm ci`, so a clean user immediately gets missing packages such as `zod`.",
+      "required_correction": "Start with `npm ci`, document tool versions, and distinguish source build from VSIX install.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/provider_route_scan.json",
+        "registry/effect_surface_ownership.json",
+        ".engineering-bootstrap/test-evidence/groups"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-001",
+      "family": "A",
+      "severity": "BLOCKER",
+      "finding": "The “agent harness” is not an agent harness.",
+      "evidence": "`agent_harness_worker.py` validates five identity fields, prints `accepted_by_harness`, and explicitly returns `model_invoked:false`; `agent_runtime.py:75` also hardcodes false.",
+      "required_correction": "Implement an admitted model/worker adapter, real message/task contract, tool dispatch, lifecycle, and independently verified result.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-002",
+      "family": "A",
+      "severity": "BLOCKER",
+      "finding": "Task content is discarded before launch.",
+      "evidence": "`invoke_harness` computes a digest but writes only `task_sha256`, binding IDs, and grant IDs. The worker never receives the user task.",
+      "required_correction": "Store/stream a bounded signed task envelope, or a resolvable content-addressed body with authorization.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-003",
+      "family": "A",
+      "severity": "HIGH",
+      "finding": "Declared tests are never executed.",
+      "evidence": "`test_candidate` treats `bool(spec.required_tests)` as success. A nonexistent test name passes.",
+      "required_correction": "Resolve allowed tests, run them through the governed runner, capture exact outputs/inputs, and fail unknown tests.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-004",
+      "family": "A",
+      "severity": "BLOCKER",
+      "finding": "Agent admission trusts caller-constructed lifecycle state.",
+      "evidence": "`admit` only checks whether provided dataclass objects have matching IDs and `state == \"admitted\"`.",
+      "required_correction": "Resolve bindings/grants from canonical signed registries; callers may submit IDs, never authoritative objects.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-005",
+      "family": "A",
+      "severity": "BLOCKER",
+      "finding": "Foreign, expired, or mismatched grants can be accepted.",
+      "evidence": "The code does not verify grant subject, expiry, effect-to-binding linkage, scope roots, approver, evidence, cost, egress, credential namespace, or capability existence. A probe admitted an expired/foreign grant.",
+      "required_correction": "Validate every semantic link and current time/scope against canonical authority.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-006",
+      "family": "A",
+      "severity": "BLOCKER",
+      "finding": "Admission receipts are unsigned and forgeable.",
+      "evidence": "Invocation reads local JSON and checks only `decision:\"admitted\"` plus record hash. A forged receipt reached process launch.",
+      "required_correction": "Sign/MAC receipts or store them in an append-only authenticated ledger and verify issuer/scope/nonce/revision.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-007",
+      "family": "A",
+      "severity": "HIGH",
+      "finding": "Invocation does not revalidate live authority.",
+      "evidence": "Binding/grant IDs are copied into a task record but their current status, expiry, scope, and revocation are never checked.",
+      "required_correction": "Re-resolve at launch and at every effect boundary; bind their hashes into the runtime receipt.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-008",
+      "family": "A",
+      "severity": "HIGH",
+      "finding": "There is no start/stop/pause/cancel agent lifecycle.",
+      "evidence": "Invocation is one synchronous subprocess that exits; returned `runtime_state` is always `stopped`. No controller methods expose stop/cancel/status.",
+      "required_correction": "Build a supervised long-running session state machine with ownership, heartbeat, cancellation, bounded shutdown, and recovery.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "runtime/studio_run_control.py",
+        "tests/test_studio_run_control.py",
+        "tests/test_agent_runtime.py"
+      ],
+      "notes": [
+        "Authenticated pause/cancel/stop/resume, heartbeats, bounded process-tree shutdown, exact-identity restart, stale-owner reconciliation, and event-before-head crash recovery pass adversarial tests."
+      ]
+    },
+    {
+      "id": "A-009",
+      "family": "A",
+      "severity": "HIGH",
+      "finding": "UI and adapter expose create only.",
+      "evidence": "The only host message is `createStudioDraft`; `runtime/studio_api.py` only calls `create_candidate`/`save_revision`/`stage_draft`. There is no list/edit/test/admit/bind/run/stop/promote/rollback API.",
+      "required_correction": "Expose the complete lifecycle with authority-gated commands and live state.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-010",
+      "family": "A",
+      "severity": "HIGH",
+      "finding": "The promised capability-flow/harness view does not exist.",
+      "evidence": "Agent Studio is a JSON textarea and a generic catalog. There is no visual mapping of start/stop, model, plugins, workflows, skills, grants, data flow, or test evidence.",
+      "required_correction": "Add a human editor plus a read-only executable topology and per-edge authority/evidence inspector.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-011",
+      "family": "A",
+      "severity": "BLOCKER",
+      "finding": "Studio state writes can escape the project through an intermediate symlink.",
+      "evidence": "`write_versioned_record` resolves only the project root, then writes through `.engineering-bootstrap/...`. A probe made `.engineering-bootstrap` a symlink and created records outside the project.",
+      "required_correction": "Use descriptor/handle-relative no-follow traversal, verify every ancestor identity, and reject links/reparse points immediately before atomic replace.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-012",
+      "family": "A",
+      "severity": "MEDIUM",
+      "finding": "Candidate persistence is not fully atomic.",
+      "evidence": "`record.json` and `instructions.md` use direct `write_text`; a crash can leave partial/mismatched state despite the presence of an atomic JSON helper.",
+      "required_correction": "Stage the complete revision directory and publish by one atomic directory swap with fsync where supported.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-013",
+      "family": "A",
+      "severity": "MEDIUM",
+      "finding": "Identity/version normalization is validated but not retained.",
+      "evidence": "`_identity`/`_version` normalize local variables; frozen dataclass fields keep original case/whitespace. Paths/hashes can diverge for semantically equal IDs.",
+      "required_correction": "Canonicalize in constructors via `object.__setattr__` or reject noncanonical input.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-014",
+      "family": "A",
+      "severity": "HIGH",
+      "finding": "The advertised 256 KiB studio payload cannot work on Windows.",
+      "evidence": "Payload JSON is base64url inside argv. Windows `CreateProcessW` limits the command line to 32,767 characters, so roughly >24 KiB raw payloads fail despite a 256 KiB contract.",
+      "required_correction": "Send through stdin or an owned temporary file. Microsoft documents the limit [here](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw).",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-015",
+      "family": "A",
+      "severity": "MEDIUM",
+      "finding": "Create responses are cached for 30 seconds.",
+      "evidence": "`_request` caches by body hash; a deleted, redirected, or independently changed revision can receive a stale success without rechecking disk.",
+      "required_correction": "Disable result caching for writes or require an idempotency key plus authoritative post-write readback.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "A-016",
+      "family": "A",
+      "severity": "HIGH",
+      "finding": "Workspace-less Studio writes fall back to the engine source root.",
+      "evidence": "`pxBridge.js:304` selects `projectRoot`, otherwise `engineRoot`. Opening Studio without a project can mutate the Pacify-X installation itself.",
+      "required_correction": "Require an explicit bounded project root; never treat engine source as project state.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/agent_runtime.py",
+        "tests/test_agent_runtime.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "W-001",
+      "family": "W",
+      "severity": "HIGH",
+      "finding": "The UI is not a workflow editor or flow view.",
+      "evidence": "“New workflow definition” opens raw JSON. Existing workflows cannot be opened as editable typed nodes/ports/edges; there is no canvas, binding selector, validation display, run monitor, or diff.",
+      "required_correction": "Build a node/edge editor backed by the canonical schema, with JSON as an alternate synchronized view.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/media/dashboard/49-studio-editors.js",
+        "extension/tests/ui-scaffold.test.js",
+        "extension/tests/dashboard-e2e.test.js"
+      ],
+      "notes": [
+        "Typed draggable nodes, ports, edges, binding/policy fields, synchronized JSON, structural validation, and existing-revision editing pass Edge and Chrome."
+      ]
+    },
+    {
+      "id": "W-002",
+      "family": "W",
+      "severity": "BLOCKER",
+      "finding": "Node timeout is ignored.",
+      "evidence": "`execute` calls the executor directly; a probe with `timeout_seconds=0.01` and ~0.12 s sleep succeeded.",
+      "required_correction": "Execute under a supervised deadline and record timeout/cancellation.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "W-003",
+      "family": "W",
+      "severity": "HIGH",
+      "finding": "Retry limit is ignored.",
+      "evidence": "`retry_limit` appears only in dry-run output. No retry loop/backoff/idempotency policy exists.",
+      "required_correction": "Implement bounded retry policy with attempt receipts and effect-safe idempotency.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "W-004",
+      "family": "W",
+      "severity": "HIGH",
+      "finding": "Failure policy is ignored.",
+      "evidence": "`failure_policy` is stored but never read during execution.",
+      "required_correction": "Define and enforce supported policies; reject unknown values.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "W-005",
+      "family": "W",
+      "severity": "HIGH",
+      "finding": "Edge condition is ignored.",
+      "evidence": "Every matching edge transfers data regardless of `WorkflowEdge.condition`; a probe using `condition:\"never\"` still propagated output.",
+      "required_correction": "Parse a closed condition language or use admitted predicate bindings; never silently treat unknown conditions as true.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "W-006",
+      "family": "W",
+      "severity": "BLOCKER",
+      "finding": "Human approval is caller-asserted.",
+      "evidence": "`approvals` is a plain sequence of node IDs. No signed approver, scope, expiry, intent, or replay protection exists.",
+      "required_correction": "Resolve approval receipts from canonical authority and bind them to workflow/revision/run/node/effects.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "W-007",
+      "family": "W",
+      "severity": "BLOCKER",
+      "finding": "Workflow binding/grant admission repeats the agent authority flaw.",
+      "evidence": "`validate_and_admit` trusts caller-created objects with `state:\"admitted\"` and an executor ID list.",
+      "required_correction": "Resolve canonical binding/grant/executor records and validate subject, effects, scope, expiry, cost, and egress.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "W-008",
+      "family": "W",
+      "severity": "HIGH",
+      "finding": "Executors run unrestricted in-process.",
+      "evidence": "Arbitrary callbacks receive inputs and grant IDs, but no supervisor, sandbox, effect mediation, timeout, cancellation, or resource limits.",
+      "required_correction": "Execute admitted adapters behind the same owned process/effect boundary as other runtime operations.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "W-009",
+      "family": "W",
+      "severity": "HIGH",
+      "finding": "Failures produce no durable failed-run receipt.",
+      "evidence": "Exceptions escape before receipt creation; only a final success receipt is written.",
+      "required_correction": "Create the run record before execution and append node/attempt/failure/cancel state atomically.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "W-010",
+      "family": "W",
+      "severity": "MEDIUM",
+      "finding": "Port contracts accept invalid/ambiguous schemas.",
+      "evidence": "`WorkflowPort` has no validation. Blank/duplicate names and unknown data types can be constructed; multiple edges can drive one input; undeclared extra outputs are retained.",
+      "required_correction": "Validate names/types/uniqueness/cardinality and either reject or explicitly model fan-in and extra outputs.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "W-011",
+      "family": "W",
+      "severity": "MEDIUM",
+      "finding": "`effects_executed:true` is an assertion, not evidence.",
+      "evidence": "Any successful callback completion sets the flag, even if no effect ran or an undeclared effect ran.",
+      "required_correction": "Derive effect execution from mediated effect receipts; report declared, attempted, completed, denied separately.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "W-012",
+      "family": "W",
+      "severity": "HIGH",
+      "finding": "There is no cancel/resume/recovery model.",
+      "evidence": "Runs are synchronous and receipt-at-end only; crash recovery, pause, compensation, resume, and owner termination do not exist.",
+      "required_correction": "Add a durable run state machine and reconciliation on restart.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/workflow_studio.py",
+        "runtime/studio_run_control.py",
+        "tests/test_workflow_studio.py",
+        "tests/test_studio_run_control.py"
+      ],
+      "notes": [
+        "Durable workflow pause/cancel/resume, completed-node checkpoints, fresh approval on retried effect nodes, stale-owner reconciliation, and crash-window recovery pass."
+      ]
+    },
+    {
+      "id": "S-001",
+      "family": "S",
+      "severity": "HIGH",
+      "finding": "There is still no human skill editor.",
+      "evidence": "Skill Studio is a JSON manifest plus `source_directory`; users cannot edit `SKILL.md`, triggers, examples, resources, scripts, tests, permissions, or diffs in a guided surface. Existing skills cannot be edited.",
+      "required_correction": "Add a structured human editor, file tree/text editor, validation preview, diff, test run, and revision history.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/media/dashboard/49-studio-editors.js",
+        "extension/src/studioPackage.js",
+        "extension/tests/studio-package.test.js",
+        "extension/tests/dashboard-e2e.test.js"
+      ],
+      "notes": [
+        "Guided manifest and bounded SKILL.md/capability/YAML/contracts/tests/resources editing, validation, diff, immutable staging, history, and canonical/preserved loading pass."
+      ]
+    },
+    {
+      "id": "S-002",
+      "family": "S",
+      "severity": "HIGH",
+      "finding": "The API accepts an arbitrary absolute source directory.",
+      "evidence": "`studio_api.py:63-70` converts caller text directly to `Path`; there is no admitted source-root boundary or file picker token.",
+      "required_correction": "Require a user-selected/attested directory within an allowed root and revalidate its identity.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "S-003",
+      "family": "S",
+      "severity": "BLOCKER",
+      "finding": "Nested directory symlinks can copy external data into a draft.",
+      "evidence": "`_tree` does not enumerate a directory symlink’s descendants, while `shutil.copytree(..., symlinks=False)` dereferences it. A probe copied an outside `private.txt` that was absent from the package record’s file list.",
+      "required_correction": "Reject every link/reparse point in the entire source tree and copy by verified no-follow handles; rehash the copied result.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "S-004",
+      "family": "S",
+      "severity": "HIGH",
+      "finding": "Validation is non-idempotent.",
+      "evidence": "First validation writes `validation-receipt.json`; the next `_tree(root)` includes that receipt, changes the tree digest, and fails `tree_current`.",
+      "required_correction": "Exclude all studio metadata consistently or store receipts outside the sealed source tree.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "S-005",
+      "family": "S",
+      "severity": "BLOCKER",
+      "finding": "Promotion trusts stale admission after tampering.",
+      "evidence": "`promote` checks only `decision:\"admitted\"`; it does not recompute the draft tree/manifest against the admitted hashes. A validate/admit/tamper/promote probe succeeded with altered `SKILL.md`.",
+      "required_correction": "Rehash immediately before promotion and verify signed admission identities.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "S-006",
+      "family": "S",
+      "severity": "HIGH",
+      "finding": "Promotion does not integrate the skill into canonical catalogs or packaging.",
+      "evidence": "It copies to `.px/skills/<hash-suffixed-component>` but does not update `.px/skill-index.json`, `registry/skill_catalog.toml`, package records, `pyproject.toml` data files, build claims, or graphs.",
+      "required_correction": "Make promotion a transactional compiler/update across every authoritative projection, followed by current tests.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "S-007",
+      "family": "S",
+      "severity": "HIGH",
+      "finding": "Rollback is claimed but not implemented.",
+      "evidence": "Module docstring/UI say promote/rollback; public methods end at `promote`. `rollback_available` is only a boolean.",
+      "required_correction": "Implement authenticated rollback with exact target identity, conflict check, atomic restore, and receipt.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "S-008",
+      "family": "S",
+      "severity": "HIGH",
+      "finding": "Stage has a hash/copy time-of-check-to-time-of-use window.",
+      "evidence": "Source is hashed, then `copytree` copies it; the copied tree is not compared with the pre-copy rows before publish.",
+      "required_correction": "Copy into staging using no-follow semantics, hash staging, and publish only on exact match.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "S-009",
+      "family": "S",
+      "severity": "MEDIUM",
+      "finding": "Existing revision identity ignores manifest changes.",
+      "evidence": "If destination exists, `stage_draft` compares only `source_tree_sha256` and returns the old record; a changed manifest with the same files is silently ignored.",
+      "required_correction": "Compare both manifest and tree identities, or return a precise immutable-revision conflict.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "S-010",
+      "family": "S",
+      "severity": "MEDIUM",
+      "finding": "Preserved-original manifest can lie about later backups.",
+      "evidence": "A changed source under the same label creates a new backup directory, but `setdefault` retains the first manifest record and leaves the new backup unindexed.",
+      "required_correction": "Model label revisions or reject reuse; never create unindexed preserved data.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "S-011",
+      "family": "S",
+      "severity": "MEDIUM",
+      "finding": "Promotion copies studio metadata into the canonical skill.",
+      "evidence": "Draft `package-record`, validation, and admission receipts are copied as part of the tree; promoted digest therefore includes control-plane artifacts and can change after receipts.",
+      "required_correction": "Separate package payload from lifecycle evidence and compile a canonical clean package.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "S-012",
+      "family": "S",
+      "severity": "HIGH",
+      "finding": "Skill validation checks presence, not behavior or safety.",
+      "evidence": "It verifies files/declared paths and `tests_declared`, but executes no tests, schema/compiler validation, permission analysis, script/effect scan, secret scan, or trigger-quality checks.",
+      "required_correction": "Run the authoritative skill compiler, governed tests, effect scan, permissions/provenance checks, and sandbox probes before admission.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/studio_models.py",
+        "tests/test_studio_models.py",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "M-001",
+      "family": "M",
+      "severity": "HIGH",
+      "finding": "Default canonical-memory browse crashes with an active lease.",
+      "evidence": "UI state/query defaults to `''` and auto-requests on opening Memory. `rank_memories` rejects blank queries, producing a traceback through `browse_canonical_memory`.",
+      "required_correction": "Define blank query as bounded recent/eligible browse or require a query before sending. Return structured errors, never traceback.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/dashboard_api.py",
+        "tests/test_dashboard_api.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "M-002",
+      "family": "M",
+      "severity": "MEDIUM",
+      "finding": "Memory remains stuck in “Reading…” after that error.",
+      "evidence": "Generic `operationError` clears graph pending state only; it does not set `memoryPending=false`.",
+      "required_correction": "Clear the matching request state and show a persistent inline error with retry.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/dashboard_api.py",
+        "tests/test_dashboard_api.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "M-003",
+      "family": "M",
+      "severity": "HIGH",
+      "finding": "“Set up canonical memory” does not create an operable canonical scope.",
+      "evidence": "It only runs `workspace init` and writes `pacifyX.workspaceRoot`; it does not discover/register a project, create/acquire a lease, or choose actor scope.",
+      "required_correction": "Add a guided workspace → project → actor/scope → lease setup and verify a retrieval round trip.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/dashboard_api.py",
+        "tests/test_dashboard_api.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "M-004",
+      "family": "M",
+      "severity": "HIGH",
+      "finding": "Empty initialization is falsely reported as attached and healthy.",
+      "evidence": "A live probe after init only returned `instrumented:true`, `status:\"healthy\"`, `project_count:0`, `record_count:0`; UI maps `instrumented` to “Lease-bound workspace memory is attached.”",
+      "required_correction": "Separate configured, valid, project-registered, lease-active, vault-open, and retrieval-ready dimensions.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/dashboard_api.py",
+        "tests/test_dashboard_api.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "M-005",
+      "family": "M",
+      "severity": "MEDIUM",
+      "finding": "Memory health conflates config validity with instrumentation.",
+      "evidence": "`_memory` sets `instrumented = workspace_valid` by design, even with no project or active session.",
+      "required_correction": "Derive operational health from monitor integration, project/vault integrity, and active lease; keep empty-valid as a distinct neutral state.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/dashboard_api.py",
+        "tests/test_dashboard_api.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "M-006",
+      "family": "M",
+      "severity": "MEDIUM",
+      "finding": "Browser functionality is still thin.",
+      "evidence": "Query limit caps at 100 with no offset/cursor, lifecycle/status filters, project/source filters, invalid/rejected view, export, open-source action, or record history/diff.",
+      "required_correction": "Add paged/filterable audit browsing and lifecycle/provenance actions.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/dashboard_api.py",
+        "tests/test_dashboard_api.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "G-001",
+      "family": "G",
+      "severity": "HIGH",
+      "finding": "Repository graph silently becomes empty in the clean handoff.",
+      "evidence": "Its source is `.engineering-bootstrap/project-map/architecture-graph.json`, which the exporter removes. Missing JSON defaults to `{}` and returns `0/0` without error/limitation.",
+      "required_correction": "Return `available:false` with a build action; optionally generate a bounded graph from the selected project.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/graph_registry.py",
+        "tests/test_graph_registry.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "G-002",
+      "family": "G",
+      "severity": "MEDIUM",
+      "finding": "Graph summary counts remain capability counts in repository view.",
+      "evidence": "UI cards always use snapshot `graphRecords`/`graphEdges` (984/1,917) while the selected repository response can be 0/0.",
+      "required_correction": "Use source-specific totals from the current response.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/graph_registry.py",
+        "tests/test_graph_registry.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "G-003",
+      "family": "G",
+      "severity": "MEDIUM",
+      "finding": "Bare graph IDs are ambiguous.",
+      "evidence": "At least 12 bare IDs exist under multiple keyed kinds. `aliases[id] = key` overwrites the prior match, so bare-ID focus depends on iteration order.",
+      "required_correction": "Require qualified keys or return a disambiguation list.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/graph_registry.py",
+        "tests/test_graph_registry.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "G-004",
+      "family": "G",
+      "severity": "LOW",
+      "finding": "Graph search is basic substring matching.",
+      "evidence": "It searches key/id/title/summary with exact/prefix/contains sorting only; no token ranking, fuzzy match, provenance/status/domain filters, or saved views.",
+      "required_correction": "Add ranked token search and explicit filters after correctness issues are fixed.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/media/dashboard/48-graph-surface.js",
+        "extension/media/dashboard/49-studio-editors.js",
+        "extension/tests/ui-scaffold.test.js",
+        "extension/tests/dashboard-e2e.test.js"
+      ],
+      "notes": [
+        "Bounded typo-tolerant token ranking, kind/status filters, and twelve saved views now operate over the host-authoritative neighborhood."
+      ]
+    },
+    {
+      "id": "G-005",
+      "family": "G",
+      "severity": "MEDIUM",
+      "finding": "There is no UI path to build/rebuild the project graph.",
+      "evidence": "The surface can select “Repository / GitHub map” but cannot initialize or refresh `project-map`.",
+      "required_correction": "Expose a dry-run/build action with scope, source, freshness, and receipt.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/graph_registry.py",
+        "tests/test_graph_registry.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "G-006",
+      "family": "G",
+      "severity": "MEDIUM",
+      "finding": "Graph screenshots and visible labels are not trustworthy data evidence.",
+      "evidence": "Retained preview says 977/1,901 and uses generic `Agent 1`/`Skill 2`; current source says 984/1,917. Screenshots are layout fixtures, not live graph proof.",
+      "required_correction": "Label fixture screenshots explicitly and retain separate current live-data screenshots with source hash.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/graph_registry.py",
+        "tests/test_graph_registry.py",
+        "extension/evidence/installed-vsix-smoke.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "K-001",
+      "family": "K",
+      "severity": "HIGH",
+      "finding": "Knowledge Core remains a placeholder, not an audit surface.",
+      "evidence": "It provides four metrics, a lifecycle strip, one preview button, and disabled rebuild/promotion controls. There is no source browser, provenance graph, invalid/conflict queue, lifecycle record list, diff, search, or audit trail.",
+      "required_correction": "Build the actual source→candidate→verified→promoted control plane with inspectable records and blocked-reason guidance.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/knowledge_core_controller.py",
+        "runtime/dashboard_api.py",
+        "tests/test_knowledge_core_controller.py",
+        "extension/media/dashboard/47-advanced-surfaces.js"
+      ],
+      "notes": [
+        "Knowledge Core exposes source/provenance, candidate/verified/blocked/promoted lifecycle, invalid/conflict queues, history, and authenticated canonical revisions."
+      ]
+    },
+    {
+      "id": "K-002",
+      "family": "K",
+      "severity": "MEDIUM",
+      "finding": "Disabled Knowledge Core controls provide no operational path.",
+      "evidence": "Rebuild/promotion are disabled without a linked workflow, eligibility reason, required evidence, or handoff.",
+      "required_correction": "Display prerequisites and route to the exact workflow/approval action.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "runtime/knowledge_core_controller.py",
+        "runtime/studio_api.py",
+        "tests/test_knowledge_core_controller.py",
+        "extension/src/uiActionInventory.js"
+      ],
+      "notes": [
+        "Controls now expose exact prerequisites and governed propose/verify/approve/promote/reject/recover/rollback routes while retaining Codex host authority."
+      ]
+    },
+    {
+      "id": "U-001",
+      "family": "U",
+      "severity": "HIGH",
+      "finding": "Normal text contrast repeatedly fails WCAG AA.",
+      "evidence": "`--faint:#526171` produces only 2.784:1–3.159:1 on common declared backgrounds; the later `#60778a` override is 3.791:1–4.301:1. These colors are used at 7–10 px. WCAG AA requires 4.5:1 for normal text ([W3C SC 1.4.3](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html)).",
+      "required_correction": "Raise contrast for all active informational text, then run automated and manual theme contrast checks.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/vscode-host-listener-smoke.json",
+        "extension/package.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "U-002",
+      "family": "U",
+      "severity": "HIGH",
+      "finding": "Graph labels/lines are visually suppressed below useful contrast.",
+      "evidence": "Edge text is 9–10 px at opacity `.24`/`.34`; many node/relationship labels are 7–8 px and faint. Meaningful graph components need 3:1 non-text contrast ([W3C SC 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)).",
+      "required_correction": "Use readable default labels, thicker/high-contrast selected paths, zoom-aware density, and optional label decluttering.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/vscode-host-listener-smoke.json",
+        "extension/package.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "U-003",
+      "family": "U",
+      "severity": "MEDIUM",
+      "finding": "CSS architecture is still accumulated override debt.",
+      "evidence": "`dashboard.css` is ~98 KiB/1,172 lines; audit baseline accepts ~1,300 selector occurrences, 806 unique selectors, 263 duplicated selectors/494 duplicate occurrences. `.shell` appears 10 times; several graph/control selectors 9–10 times.",
+      "required_correction": "Consolidate component layers, lower baseline ceilings, and fail new duplicates.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/resources/ui/css-audit-baseline.json",
+        "extension/scripts/audit-dashboard-css.js",
+        "extension/media/styles/30-components.css",
+        "extension/media/styles/50-responsive.css"
+      ],
+      "notes": [
+        "Scope-aware consolidation reduces duplicate debt from 263/494 to 195/242 and the reduced ceiling rejects regressions."
+      ]
+    },
+    {
+      "id": "U-004",
+      "family": "U",
+      "severity": "HIGH",
+      "finding": "Settings still hard-code MCP success.",
+      "evidence": "`45-system-surfaces.js:46` always displays MCP as success with “Context + coordination + environment,” independent of process/listener/registration state.",
+      "required_correction": "Bind badge to explicit detected/process-ready/connected/registered/healthy dimensions.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/vscode-host-listener-smoke.json",
+        "extension/package.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "U-005",
+      "family": "U",
+      "severity": "HIGH",
+      "finding": "Bundled MCP catalog still hard-codes active state and stale version.",
+      "evidence": "`extension/server/source.mjs:77,150` and bundled `index.js:32678,32776` identify version `0.5.5` and return `{status:\"active\"}` for MCP.",
+      "required_correction": "Source version from package identity and compute live lifecycle state.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/vscode-host-listener-smoke.json",
+        "extension/package.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "U-006",
+      "family": "U",
+      "severity": "LOW",
+      "finding": "Extension README is two versions stale.",
+      "evidence": "It brands “Pacify-X 0.5,” claims 176 skills, and tells users to install `pacify-x-vscode-0.5.5.vsix`; manifest/current evidence use 0.6.1 and build claims 177 skills.",
+      "required_correction": "Generate docs from current manifests/count authorities.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/vscode-host-listener-smoke.json",
+        "extension/package.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "U-007",
+      "family": "U",
+      "severity": "LOW",
+      "finding": "Extension changelog stops at 0.5.5.",
+      "evidence": "No 0.6.0/0.6.1 release notes exist despite major new surfaces.",
+      "required_correction": "Document changes, migrations, limitations, and artifact identity.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/vscode-host-listener-smoke.json",
+        "extension/package.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "U-008",
+      "family": "U",
+      "severity": "LOW",
+      "finding": "Audit-bundle PowerShell default is stale.",
+      "evidence": "`extension/scripts/build-audit-bundle.ps1` defaults to `0.5.5`.",
+      "required_correction": "Read package version or require an explicit version and verify it.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/vscode-host-listener-smoke.json",
+        "extension/package.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "U-009",
+      "family": "U",
+      "severity": "LOW",
+      "finding": "Root changelog contains visible mojibake.",
+      "evidence": "`Python 3.11â€“3.14` appears in the Unreleased section.",
+      "required_correction": "Normalize UTF-8 and add a display-text mojibake check.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/vscode-host-listener-smoke.json",
+        "extension/package.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "U-010",
+      "family": "U",
+      "severity": "MEDIUM",
+      "finding": "WorkGovernor diagnostics can crash in restricted/proc-less hosts.",
+      "evidence": "`snapshot()` calls `process.memoryUsage()` without a guard; in this environment Node throws `ENOENT uv_resident_set_memory`, breaking focused bridge/governor tests.",
+      "required_correction": "Catch telemetry failure, return `unavailable` with an error class, and keep the dashboard alive.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/vscode-host-listener-smoke.json",
+        "extension/package.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "U-011",
+      "family": "U",
+      "severity": "HIGH",
+      "finding": "Screenshot E2E evidence is synthetic.",
+      "evidence": "`dashboard-e2e.test.js` opens `extension/tests/preview.html`; the fixture fabricates catalogs, memory, hardware, auth, Git, graph, and agent states. It does not exercise `runtime.dashboard_api` or installed VSIX handlers.",
+      "required_correction": "Keep fixture visual tests, but label them non-operational and add live installed-extension E2E.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/screenshots/manifest.json",
+        "extension/evidence/browser-matrix.json",
+        "extension/tests/dashboard-e2e.test.js"
+      ],
+      "notes": [
+        "Fixture screenshots remain labeled visual/layout evidence while exact installed Windows and Linux receipts independently prove live runtime/sidebar/graph behavior."
+      ]
+    },
+    {
+      "id": "U-012",
+      "family": "U",
+      "severity": "MEDIUM",
+      "finding": "Visual tests are Windows/Edge only and absent from CI.",
+      "evidence": "The E2E test skips non-Windows; GitHub workflows never run npm tests.",
+      "required_correction": "Add Chromium/WebView-compatible CI on all supported platforms and a real VS Code host lane.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/installed-vsix-smoke-linux.json",
+        "extension/evidence/browser-matrix.json",
+        ".github/workflows/ci.yml"
+      ],
+      "notes": [
+        "Edge and Chrome source visual lanes run without skips; the same immutable VSIX passes real VS Code hosts on Windows and Linux, and CI declares Linux/macOS source lanes."
+      ]
+    },
+    {
+      "id": "U-013",
+      "family": "U",
+      "severity": "MEDIUM",
+      "finding": "Agent and workflow catalogs visually imply an operating fleet.",
+      "evidence": "“Agent fleet” counts 270 source records, many advisory/reference-only, while only a tiny subset is active and the new harness cannot execute a model. Workflow totals mix definitions and bindings.",
+      "required_correction": "Label catalog records vs runnable revisions vs live processes/runs distinctly.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/vscode-host-listener-smoke.json",
+        "extension/package.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "U-014",
+      "family": "U",
+      "severity": "MEDIUM",
+      "finding": "Generic fixture data weakens product credibility.",
+      "evidence": "Screens show `Agent 1`, `Skill 2`, `Canonical decision 1`, repeated placeholder hashes, and generic plugin names.",
+      "required_correction": "Use sanitized but realistic named fixtures with explicit `DEMO DATA` banners.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/vscode-host-listener-smoke.json",
+        "extension/package.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "U-015",
+      "family": "U",
+      "severity": "LOW",
+      "finding": "Several surfaces are visually sparse despite dense navigation.",
+      "evidence": "Settings and Knowledge Core leave large unused regions while key details are tiny; this reads as unfinished rather than intentionally minimal.",
+      "required_correction": "Rebalance layout around actionable state, onboarding, errors, and detail panes after functional completion.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/vscode-host-listener-smoke.json",
+        "extension/package.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "U-016",
+      "family": "U",
+      "severity": "MEDIUM",
+      "finding": "Old cross-version listener evidence remains adjacent to current evidence.",
+      "evidence": "`extension/evidence/vscode-host-listener-smoke.json` describes extension 0.5.4 against Python 0.6.3 and includes a personal path.",
+      "required_correction": "Move to historical namespace and make current index exclude it.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/vscode-host-listener-smoke.json",
+        "extension/package.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "U-017",
+      "family": "U",
+      "severity": "LOW",
+      "finding": "`python-surface-certification-0.6.1.json` has ambiguous identity.",
+      "evidence": "Filename can be read as Python 0.6.1 even though 0.6.1 is the extension version and Python source is 0.7.0.dev0.",
+      "required_correction": "Include both identities in filename/schema and authority text.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "extension/evidence/installed-vsix-smoke.json",
+        "extension/evidence/vscode-host-listener-smoke.json",
+        "extension/package.json"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "D-001",
+      "family": "D",
+      "severity": "MEDIUM",
+      "finding": "Skill counts disagree across authorities.",
+      "evidence": "`skill_catalog.toml` and `.px/skills` = 177; package JSONs = 173; `.px/skill-index.json` = 203 including vendor records; dashboard snapshot = 173; catalog = 177; screenshot = 176.",
+      "required_correction": "Define named denominators and derive each label from one authority.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/build_claims.json",
+        "registry/python_surface_ownership.json",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "D-002",
+      "family": "D",
+      "severity": "MEDIUM",
+      "finding": "Four native skills lack package records.",
+      "evidence": "`admit-capability`, `commission-project`, `orchestrate-engineering-loop`, and `verify-outcome` are cataloged but absent from `registry/skill_packages`.",
+      "required_correction": "Generate/admit package records or mark them intentionally non-packageable.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/build_claims.json",
+        "registry/python_surface_ownership.json",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "D-003",
+      "family": "D",
+      "severity": "MEDIUM",
+      "finding": "Workflow totals are semantically inconsistent.",
+      "evidence": "Build claim = 38 YAML definitions; snapshot = 51 definitions (17 project + 34 skill); catalog = 72 when 21 bindings are included.",
+      "required_correction": "Expose separate fields everywhere and avoid a single “workflows” number.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/build_claims.json",
+        "registry/python_surface_ownership.json",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "D-004",
+      "family": "D",
+      "severity": "MEDIUM",
+      "finding": "Agent count is a registry count, not an executable fleet count.",
+      "evidence": "270 includes advisory/reference-only records and does not map to runnable harness instances.",
+      "required_correction": "Publish registered/admitted/runnable/running counts separately.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/build_claims.json",
+        "registry/python_surface_ownership.json",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "D-005",
+      "family": "D",
+      "severity": "MEDIUM",
+      "finding": "Four current JSON files are not strict UTF-8 JSON.",
+      "evidence": "They begin with UTF-8 BOM and fail `json.loads(read_text(encoding=\"utf-8\"))`: the four cleanup evidence files.",
+      "required_correction": "Rewrite without BOM and enforce canonical UTF-8/LF in export.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/build_claims.json",
+        "registry/python_surface_ownership.json",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "D-006",
+      "family": "D",
+      "severity": "MEDIUM",
+      "finding": "The deterministic exporter strips every executable bit.",
+      "evidence": "All 5,738 ZIP members are mode 0644, including 251 shebang scripts (243 Python, 8 shell). Direct execution of the shell scripts fails after extraction. `clean_source_export.py:115` forces this.",
+      "required_correction": "Preserve normalized source executable modes (0755 where required) in the manifest and ZIP.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/build_claims.json",
+        "registry/python_surface_ownership.json",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "D-007",
+      "family": "D",
+      "severity": "LOW",
+      "finding": "Line-ending normalization is incomplete.",
+      "evidence": "1,339 archive files contain CRLF despite portability claims; mixed repository conventions increase diff/tooling risk.",
+      "required_correction": "Define per-file line-ending policy in `.gitattributes` and export normalized text where safe.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/build_claims.json",
+        "registry/python_surface_ownership.json",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "D-008",
+      "family": "D",
+      "severity": "LOW",
+      "finding": "Archive timestamps erase useful provenance without a secondary timestamp record.",
+      "evidence": "Every entry is `1980-01-01` for determinism. This is acceptable for reproducibility but makes file chronology unavailable to recipients.",
+      "required_correction": "Keep deterministic timestamps, but include source commit/time and build time in the signed manifest.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/build_claims.json",
+        "registry/python_surface_ownership.json",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "D-009",
+      "family": "D",
+      "severity": "MEDIUM",
+      "finding": "npm supply-chain freshness has no automated gate.",
+      "evidence": "`esbuild` is pinned at 0.25.12 while the official release stream is 0.28.2 as of this audit; newer releases include correctness/security changes. This is not proof the project is exploitable, but there is no npm Dependabot/audit lane. See [official esbuild releases](https://github.com/evanw/esbuild/releases).",
+      "required_correction": "Add npm update/audit policy and evaluate upgrades under extension tests.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/build_claims.json",
+        "registry/python_surface_ownership.json",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "D-010",
+      "family": "D",
+      "severity": "LOW",
+      "finding": "Build/document count values are hand-carried into screenshots/docs.",
+      "evidence": "Stale 176/977/1,901 values survive after registries move to 177/984/1,917.",
+      "required_correction": "Generate docs/fixtures from one versioned snapshot and fail drift.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/build_claims.json",
+        "registry/python_surface_ownership.json",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    },
+    {
+      "id": "D-011",
+      "family": "D",
+      "severity": "HIGH",
+      "finding": "Owned subprocess execution is broken on macOS and proc-less POSIX.",
+      "evidence": "`_process_start_fingerprint` sends every non-Windows OS to `/proc/<pid>/stat`. macOS has no Linux `/proc`; when the fingerprint is `None`, `ProcessSupervisor.run` terminates the child and raises “spawned process identity cannot be proven.” The same failure was reproduced in this proc-less audit host, including Agent harness launch.",
+      "required_correction": "Implement native macOS/BSD process birth identity (and a safe restricted-container strategy), then run supervisor, Agent, and governed-runner tests on every supported OS.",
+      "status": "accepted",
+      "owners": [
+        "pacify-x"
+      ],
+      "acceptance_checks": [
+        "python -m runtime.cli test-section status",
+        "python -m runtime.cli test-group status",
+        "python -m runtime.cli test-profile run full",
+        "python -m runtime.cli validate"
+      ],
+      "evidence_refs": [
+        "registry/build_claims.json",
+        "registry/python_surface_ownership.json",
+        "registry/skill_catalog.toml"
+      ],
+      "notes": [
+        "Correction implemented and covered by the governed section/group evidence; final owned profile and validator run follow this ledger reconciliation."
+      ]
+    }
+  ]
+}

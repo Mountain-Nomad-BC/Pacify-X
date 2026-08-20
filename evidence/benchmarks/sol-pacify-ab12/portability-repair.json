@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "repair_id": "portability-49271bd41b14ea50f0a0",
+  "finding_id": "49271bd41b14ea50f0a0",
+  "target": "evidence/benchmarks/sol-pacify-ab12/RESULTS.md",
+  "reason": "Remove a machine-local temporary locator from portable release evidence while retaining content-addressed custody references.",
+  "original_file_sha256": "769820f2723717536f8a582b313253bc49d9f706a41dbe4af7d1676768250ddd",
+  "repaired_file_sha256": "945c83f5c14e967f1885a7176a5f826d09f8b117880fa8b3cc009193bee297e1",
+  "removed_locator_sha256": "707643ef9f5e4ae17daa7b75cd1c8b41c07a5b4986356cc8b10e3aa732dc0727",
+  "removed_locator_retained": false,
+  "custody_reference": "evidence/benchmarks/sol-pacify-ab12/custody.json",
+  "rollback": "Restore the original file from version control only in a non-portable historical branch; do not reintroduce the machine-local locator into release evidence."
+}

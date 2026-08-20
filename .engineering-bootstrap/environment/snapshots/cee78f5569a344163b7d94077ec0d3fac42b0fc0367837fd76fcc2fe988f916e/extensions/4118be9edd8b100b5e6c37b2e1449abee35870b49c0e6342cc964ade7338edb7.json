@@ -1,0 +1,189 @@
+{
+  "id": "vscode.merge-conflict",
+  "name": "Merge Conflict",
+  "version": "10.0.0",
+  "publisher": "vscode",
+  "active": true,
+  "builtin": true,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "menus"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "vscode.merge-conflict",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "vscode.merge-conflict",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "vscode.merge-conflict",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "merge-conflict.accept.all-both",
+      "invocation": "vscode.commands.executeCommand('merge-conflict.accept.all-both', ...args)",
+      "title": "Accept All Both",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isMergeEditor"
+    },
+    {
+      "id": "merge-conflict.accept.all-current",
+      "invocation": "vscode.commands.executeCommand('merge-conflict.accept.all-current', ...args)",
+      "title": "Accept All Current",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isMergeEditor"
+    },
+    {
+      "id": "merge-conflict.accept.all-incoming",
+      "invocation": "vscode.commands.executeCommand('merge-conflict.accept.all-incoming', ...args)",
+      "title": "Accept All Incoming",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isMergeEditor"
+    },
+    {
+      "id": "merge-conflict.accept.both",
+      "invocation": "vscode.commands.executeCommand('merge-conflict.accept.both', ...args)",
+      "title": "Accept Both",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isMergeEditor"
+    },
+    {
+      "id": "merge-conflict.accept.current",
+      "invocation": "vscode.commands.executeCommand('merge-conflict.accept.current', ...args)",
+      "title": "Accept Current",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isMergeEditor"
+    },
+    {
+      "id": "merge-conflict.accept.incoming",
+      "invocation": "vscode.commands.executeCommand('merge-conflict.accept.incoming', ...args)",
+      "title": "Accept Incoming",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isMergeEditor"
+    },
+    {
+      "id": "merge-conflict.accept.selection",
+      "invocation": "vscode.commands.executeCommand('merge-conflict.accept.selection', ...args)",
+      "title": "Accept Selection",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isMergeEditor"
+    },
+    {
+      "id": "merge-conflict.compare",
+      "invocation": "vscode.commands.executeCommand('merge-conflict.compare', ...args)",
+      "title": "Compare Current Conflict",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isMergeEditor"
+    },
+    {
+      "id": "merge-conflict.next",
+      "invocation": "vscode.commands.executeCommand('merge-conflict.next', ...args)",
+      "title": "Next Conflict",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isMergeEditor"
+    },
+    {
+      "id": "merge-conflict.previous",
+      "invocation": "vscode.commands.executeCommand('merge-conflict.previous', ...args)",
+      "title": "Previous Conflict",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isMergeEditor"
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onStartupFinished"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": true
+    },
+    "virtual_workspaces": true,
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "vscode.merge-conflict",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:menus"
+    ],
+    "interface": [
+      "merge-conflict.accept.all-both",
+      "merge-conflict.accept.all-current",
+      "merge-conflict.accept.all-incoming",
+      "merge-conflict.accept.both",
+      "merge-conflict.accept.current",
+      "merge-conflict.accept.incoming",
+      "merge-conflict.accept.selection",
+      "merge-conflict.compare",
+      "merge-conflict.next",
+      "merge-conflict.previous"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": true
+      },
+      "virtual_workspaces": true,
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

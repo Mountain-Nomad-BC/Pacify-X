@@ -1,0 +1,38 @@
+{
+  "admission_record": "skill-admission-controller",
+  "body_sha256": "b4e9f683f31f0906380b14eaad66a3ec08d6fa52f8f38f2972780a65f6228d30",
+  "contract": {
+    "available": true,
+    "sha256": "432b204ec385c2cac439d5af5affe22fe5d2a5fb316a18a381cba59bd288f106",
+    "source": "registry/skill_packages/skill-admission-controller.json"
+  },
+  "description": "Control whether a skill may enter registry, sandbox, canary, or production. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "skill-admission-controller",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/skill-admission-controller"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "admission",
+    "controller",
+    "security",
+    "skill"
+  ],
+  "version": "0.1.0"
+}

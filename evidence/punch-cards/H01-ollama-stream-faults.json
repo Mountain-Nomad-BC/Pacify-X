@@ -1,0 +1,19 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "H01",
+  "status": "accepted",
+  "recorded_at": "2026-08-12T06:53:13.262481+00:00",
+  "claim": "The local Ollama streaming adapter classifies bounded disconnect, malformed, truncated, oversized, timeout, remote, HTTP, and cancellation failures without collapsing them into a generic parse error.",
+  "artifacts": [
+    {
+      "path": "evidence/extension-verification/H01-ollama-faults.json",
+      "sha256": "6f1fc6138c63af794a071888568e07d32a5f9ab809a8c7f8d7eb8e2e8a593fad"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --test tests/ollama-provider.test.js",
+      "result": "4 passed against deterministic loopback fault servers"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "dependencies": [
+    "run-evidence-campaigns",
+    "certify-reversible-validation"
+  ],
+  "domain": "optimization",
+  "failure_modes": [
+    "metric gaming",
+    "moving benchmark",
+    "single-run promotion",
+    "rollback that was never tested"
+  ],
+  "formula_refs": [
+    "pareto-dominance",
+    "normalized-improvement",
+    "regret"
+  ],
+  "id": "closed-loop-system-optimizer",
+  "inputs": [
+    "frozen baseline",
+    "candidate change",
+    "metrics, guardrails, environment, and rollback"
+  ],
+  "invariants": [
+    "No optimization without a stable baseline.",
+    "Safety and correctness constraints cannot be silently traded away.",
+    "Negative results and failed candidates are retained."
+  ],
+  "outputs": [
+    "reproducible experiment",
+    "Pareto/guardrail comparison",
+    "promotion, defer, reject, or rollback decision"
+  ],
+  "procedure": [
+    "Freeze baseline, data, environment, objective hierarchy, and falsifier.",
+    "Generate one bounded reversible candidate.",
+    "Run repeated controlled trials with full evidence.",
+    "Compare target metrics, guardrails, cost, and regression surface.",
+    "Promote only with reproducible evidence and tested rollback."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Run observe, benchmark, propose, test, compare, promote-or-rollback cycles across workflows, prompts, routing, retrieval, tools, and runtime settings.",
+  "title": "Closed-Loop System Optimizer",
+  "version": "1.0.0",
+  "when_to_use": "Use only after a stable baseline and measurable objectives exist."
+}

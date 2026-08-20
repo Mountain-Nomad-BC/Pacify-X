@@ -1,0 +1,35 @@
+{
+  "schema_version": "px.targeted-check-receipt/1.0",
+  "gap_id": "PX-OS-103",
+  "scope": "Punch-card control-plane implementation and targeted verification only",
+  "focused_test": {
+    "command": "python -m pytest tests/test_operational_gap_ledger.py -q",
+    "exit_code": 0,
+    "result": "48 passed in 24.71s",
+    "observed_by": "codex-host",
+    "observation_limit": "The command output was observed in-session; this is a compact retained receipt, not an independent certification."
+  },
+  "governed_section": {
+    "command": "python -m runtime.cli test-section run testing-governance",
+    "exit_code": 0,
+    "result": "68 passed, 9 subtests passed in 11.82s",
+    "input_sha256": "b0f459acec1acdc72eb6b41d12fe9eb0138d5bc53a00e9f2c399c5f8280bcd0d",
+    "receipt_sha256": "a22960a14556aa591fef9a3bc3860ed231e74ec64d3166e3ed01fb220e91c0ee",
+    "receipt": ".engineering-bootstrap/test-evidence/sections/testing-governance.json"
+  },
+  "input_sha256s": {
+    "runtime/operational_gap_ledger.py": "e6901ffe29e13cab334e31e04f0e484fac4a19174d3eff2e2ee5b1752aceaca7",
+    "tests/test_operational_gap_ledger.py": "0a308d5de287732baf0c615264ba91472cb318bc32d3313c3f98f8ac06549543",
+    "scripts/operational_gap_ledger.py": "8cc4f63b5685ae2fe3f05a293f43ffc0035bcf90d7f30d83f3aade4659247e60",
+    "scripts/reconcile_operational_card_bindings.py": "d59f38ce9b6a9518112888995200da59cddf5517f66c0dfc6a801266639cde04",
+    "scripts/attest_operational_card_evidence.py": "334d0aaab831f0e6e76955ee4fc283dde842206661719543752c950b66fc48f1",
+    "scripts/split_operational_aggregate_cards.py": "67d9f9327f7480a973a9589c8c4d3072f18c35e1074bfaba112ee0eeb3ab937b",
+    "scripts/register_card_control_resolution_review.py": "0a0b1db1ddefa290a9067e4ba3adfe190a3f1d64ae8094f8003e0c8b0bf5437e",
+    "registry/test_group_index.json": "fe200f4f9443a458c386a3c57bd2893e90f5f4b4b5169fe74b20690281576b8f"
+  },
+  "limits": [
+    "No full test profile was run.",
+    "No product UI control is certified or claimed operational.",
+    "No integration, operational-verification, closure, release, packaging, or export claim is made."
+  ]
+}

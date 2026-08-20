@@ -1,0 +1,184 @@
+{
+  "id": "vscode.ipynb",
+  "name": ".ipynb Support",
+  "version": "10.0.0",
+  "publisher": "vscode",
+  "active": false,
+  "builtin": true,
+  "extension_kind": [
+    "workspace",
+    "ui"
+  ],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "menus",
+    "notebookRenderer",
+    "notebooks"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "vscode.ipynb",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "vscode.ipynb",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "vscode.ipynb",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:notebookRenderer",
+      "kind": "notebookRenderer",
+      "provider": "vscode.ipynb",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:notebooks",
+      "kind": "notebooks",
+      "provider": "vscode.ipynb",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "ipynb.cleanInvalidImageAttachment",
+      "invocation": "vscode.commands.executeCommand('ipynb.cleanInvalidImageAttachment', ...args)",
+      "title": "Clean Invalid Image Attachment Reference",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ipynb.newUntitledIpynb",
+      "invocation": "vscode.commands.executeCommand('ipynb.newUntitledIpynb', ...args)",
+      "title": "New Jupyter Notebook",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ipynb.openIpynbInNotebookEditor",
+      "invocation": "vscode.commands.executeCommand('ipynb.openIpynbInNotebookEditor', ...args)",
+      "title": "Open IPYNB File In Notebook Editor",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "notebook.cellOutput.addToChat",
+      "invocation": "vscode.commands.executeCommand('notebook.cellOutput.addToChat', ...args)",
+      "title": "Add Cell Output to Chat",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "chatIsEnabled"
+    },
+    {
+      "id": "notebook.cellOutput.copy",
+      "invocation": "vscode.commands.executeCommand('notebook.cellOutput.copy', ...args)",
+      "title": "Copy Cell Output",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "notebook.cellOutput.openInTextEditor",
+      "invocation": "vscode.commands.executeCommand('notebook.cellOutput.openInTextEditor', ...args)",
+      "title": "Open Cell Output in Text Editor",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onNotebook:jupyter-notebook",
+    "onNotebookSerializer:interactive",
+    "onNotebookSerializer:repl"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "workspace",
+      "ui"
+    ],
+    "workspace_trust": {
+      "supported": true
+    },
+    "virtual_workspaces": true,
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "vscode.ipynb",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:menus",
+      "contribution:notebookRenderer",
+      "contribution:notebooks"
+    ],
+    "interface": [
+      "ipynb.cleanInvalidImageAttachment",
+      "ipynb.newUntitledIpynb",
+      "ipynb.openIpynbInNotebookEditor",
+      "notebook.cellOutput.addToChat",
+      "notebook.cellOutput.copy",
+      "notebook.cellOutput.openInTextEditor"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "workspace",
+        "ui"
+      ],
+      "workspace_trust": {
+        "supported": true
+      },
+      "virtual_workspaces": true,
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

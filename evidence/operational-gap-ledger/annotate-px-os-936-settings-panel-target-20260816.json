@@ -1,0 +1,9 @@
+{
+  "gap_id": "PX-OS-936",
+  "note": "The mobile Settings containment assertion compares .policy-switch in the final Billable execution guardrails panel against document.querySelector's first .surface-settings > .panel. The reported vertical separation is cross-panel, not overflow; the preceding horizontal-overflow check passed.",
+  "evidence": [
+    {"claim": "Child top 1653 and parent top 428 identify two different vertically stacked panels; the mobile horizontal overflow check had already passed.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005001; extension/tests/dashboard-e2e.test.js:439-445"},
+    {"claim": "Settings renders Effective configuration first and Billable execution guardrails last, each through a separate section/panel.", "reference": "extension/media/dashboard/45-system-surfaces.js:90-106"}
+  ],
+  "patch": {"next_action": "Target the direct panel containing .policy-switch and retain the mobile containment assertion."}
+}

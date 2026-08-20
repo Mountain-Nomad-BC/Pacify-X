@@ -1,0 +1,59 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "never overwrite unknown files silently",
+    "install state is not proof of runtime health",
+    "target-specific projections remain derived"
+  ],
+  "bundle": "install-capabilities-selectively",
+  "category": "installation",
+  "dependencies": [
+    "skill-bundle-resolver",
+    "admit-capability",
+    "commission-project"
+  ],
+  "id": "plan-selective-capability-installation",
+  "keywords": [
+    "selective install",
+    "install profile",
+    "module manifest",
+    "install state",
+    "plan apply"
+  ],
+  "mechanisms": [
+    "profile/module/component manifests",
+    "plan then apply",
+    "state ledger",
+    "incremental update",
+    "conflict strategy",
+    "uninstall ownership"
+  ],
+  "owner": "skill-bundle-resolver",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "docs/SELECTIVE-INSTALL-ARCHITECTURE.md",
+      "manifests/install-modules.json",
+      "manifests/install-components.json",
+      "scripts/install-plan.js",
+      "scripts/install-apply.js"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "docs/SELECTIVE-INSTALL-ARCHITECTURE.md",
+    "manifests/install-modules.json",
+    "manifests/install-components.json",
+    "scripts/install-plan.js",
+    "scripts/install-apply.js"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Resolve profiles, modules, components, dependencies, targets, conflicts, and ownership into a deterministic install plan before applying any filesystem changes.",
+  "title": "Plan Selective Capability Installation",
+  "use_when": [
+    "different projects need different capability subsets",
+    "cross-harness installation must remain reproducible",
+    "updates must know what the framework owns"
+  ]
+}

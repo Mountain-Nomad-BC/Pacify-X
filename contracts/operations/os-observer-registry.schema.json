@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:operations:os-observer-registry",
+  "title": "PACIFY-X operating-system observer adapter registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "policy", "adapters"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "policy": {"type": "string", "minLength": 1},
+    "adapters": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["observer_id", "adapter_version", "route_id", "platform", "mechanism", "implementation", "status", "auto_start", "capture_classification", "exact_scope_required", "argument_policy", "privilege", "backend_requirements", "command_profiles", "support_limit"],
+        "properties": {
+          "observer_id": {"enum": ["windows-etw", "linux-audit-ebpf", "macos-endpoint-security"]},
+          "adapter_version": {"const": "1.0.0"},
+          "route_id": {"enum": ["os.windows.etw", "os.linux.audit", "os.macos.endpoint-security"]},
+          "platform": {"enum": ["win32", "linux", "darwin"]},
+          "mechanism": {"enum": ["ETW", "Linux Audit", "EndpointSecurity"]},
+          "implementation": {"const": "runtime/operational_observers.py"},
+          "status": {"enum": ["partial", "unsupported"]},
+          "auto_start": {"const": false},
+          "capture_classification": {"const": "metadata_only"},
+          "exact_scope_required": {"const": true},
+          "argument_policy": {"const": "admitted_fixed_profile_only"},
+          "privilege": {"type": "string", "minLength": 1},
+          "backend_requirements": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "command_profiles": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "support_limit": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "recommendation does not authorize installation",
+    "avoid inferring tools solely from filenames",
+    "report ambiguous detection"
+  ],
+  "bundle": "maintain-capability-catalog",
+  "category": "capability-discovery",
+  "dependencies": [
+    "audit-source-capabilities",
+    "skill-navigator",
+    "plan-selective-capability-installation"
+  ],
+  "id": "detect-workspace-capability-needs",
+  "keywords": [
+    "workspace surface audit",
+    "project detect",
+    "recommend skills",
+    "selective capability"
+  ],
+  "mechanisms": [
+    "project detection",
+    "workspace surface inventory",
+    "capability-to-surface mapping",
+    "minimal bundle recommendation",
+    "install readiness checks"
+  ],
+  "owner": "audit-source-capabilities",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "skills/workspace-surface-audit/SKILL.md",
+      "skills/codebase-onboarding/SKILL.md",
+      "scripts/lib/project-detect.js"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "skills/workspace-surface-audit/SKILL.md",
+    "skills/codebase-onboarding/SKILL.md",
+    "scripts/lib/project-detect.js"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Inspect repository languages, frameworks, connected surfaces, MCPs, plugins, and workflows, then recommend the smallest relevant capability bundle with reasons and missing prerequisites.",
+  "title": "Detect Workspace Capability Needs",
+  "use_when": [
+    "onboarding an unfamiliar workspace",
+    "deciding which domain packs to load",
+    "avoiding a full install by default"
+  ]
+}

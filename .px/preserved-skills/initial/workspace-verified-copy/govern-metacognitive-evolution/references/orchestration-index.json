@@ -1,0 +1,396 @@
+{
+  "count": 15,
+  "schema_version": "1.0",
+  "workflows": [
+    {
+      "id": "reason-under-uncertainty",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "epistemic-state-manager"
+        },
+        {
+          "order": 2,
+          "skill_id": "assumption-lineage-ledger"
+        },
+        {
+          "order": 3,
+          "skill_id": "hypothesis-portfolio-manager"
+        },
+        {
+          "order": 4,
+          "skill_id": "evidence-weighting-engine"
+        },
+        {
+          "order": 5,
+          "skill_id": "uncertainty-calibration-engine"
+        },
+        {
+          "order": 6,
+          "skill_id": "explanation-provenance-builder"
+        }
+      ],
+      "trigger": "A decision has incomplete, conflicting, stale, or probabilistic evidence."
+    },
+    {
+      "id": "resolve-conflicting-evidence-forensically",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "contradiction-resolution-engine"
+        },
+        {
+          "order": 2,
+          "skill_id": "evidence-weighting-engine"
+        },
+        {
+          "order": 3,
+          "skill_id": "causal-reasoning-planner"
+        },
+        {
+          "order": 4,
+          "skill_id": "epistemic-state-manager"
+        },
+        {
+          "order": 5,
+          "skill_id": "explanation-provenance-builder"
+        }
+      ],
+      "trigger": "Sources, memories, tests, documentation, or runtime observations disagree."
+    },
+    {
+      "id": "manage-hypothesis-diagnostic-portfolio",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "hypothesis-portfolio-manager"
+        },
+        {
+          "order": 2,
+          "skill_id": "assumption-lineage-ledger"
+        },
+        {
+          "order": 3,
+          "skill_id": "causal-reasoning-planner"
+        },
+        {
+          "order": 4,
+          "skill_id": "uncertainty-reduction-contract"
+        },
+        {
+          "order": 5,
+          "skill_id": "epistemic-state-manager"
+        }
+      ],
+      "trigger": "A diagnosis, incident, or research question has multiple plausible mechanisms."
+    },
+    {
+      "id": "design-and-verify-semantic-effect-contract",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "semantic-effect-contract-designer"
+        },
+        {
+          "order": 2,
+          "skill_id": "semantic-contract-linter"
+        },
+        {
+          "order": 3,
+          "skill_id": "state-mutation-auditor"
+        },
+        {
+          "order": 4,
+          "skill_id": "uncertainty-reduction-contract"
+        }
+      ],
+      "trigger": "A capability may alter persistent, epistemic, permission, external, or derived state."
+    },
+    {
+      "id": "inspect-reasoning-brain-mri",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "reasoning-trace-recorder"
+        },
+        {
+          "order": 2,
+          "skill_id": "decision-path-reconstructor"
+        },
+        {
+          "order": 3,
+          "skill_id": "memory-influence-auditor"
+        },
+        {
+          "order": 4,
+          "skill_id": "alternative-path-analyzer"
+        },
+        {
+          "order": 5,
+          "skill_id": "introspection-report-builder"
+        }
+      ],
+      "trigger": "A workflow requires debugging, audit, certification, dispute resolution, or human explanation."
+    },
+    {
+      "id": "reconstruct-and-repair-failed-decision",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "decision-path-reconstructor"
+        },
+        {
+          "order": 2,
+          "skill_id": "memory-influence-auditor"
+        },
+        {
+          "order": 3,
+          "skill_id": "contradiction-resolution-engine"
+        },
+        {
+          "order": 4,
+          "skill_id": "alternative-path-analyzer"
+        },
+        {
+          "order": 5,
+          "skill_id": "assumption-lineage-ledger"
+        },
+        {
+          "order": 6,
+          "skill_id": "regression-rollback-controller"
+        }
+      ],
+      "trigger": "A decision or workflow produced a surprising, unsafe, or incorrect outcome."
+    },
+    {
+      "id": "build-and-evolve-capability-genome",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "capability-genome-builder"
+        },
+        {
+          "order": 2,
+          "skill_id": "capability-relation-inferencer"
+        },
+        {
+          "order": 3,
+          "skill_id": "capability-dependency-health"
+        },
+        {
+          "order": 4,
+          "skill_id": "duplication-supersession-resolver"
+        },
+        {
+          "order": 5,
+          "skill_id": "capability-gap-mutation-planner"
+        }
+      ],
+      "trigger": "Capabilities are imported, generated, merged, refactored, or recertified."
+    },
+    {
+      "id": "route-profiled-multi-agent-team",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "agent-cognitive-profile-designer"
+        },
+        {
+          "order": 2,
+          "skill_id": "agent-failure-mode-calibrator"
+        },
+        {
+          "order": 3,
+          "skill_id": "agent-risk-budgeter"
+        },
+        {
+          "order": 4,
+          "skill_id": "agent-profile-router"
+        },
+        {
+          "order": 5,
+          "skill_id": "multi-agent-composition-planner"
+        }
+      ],
+      "trigger": "A task benefits from specialized model routing or multiple bounded agents."
+    },
+    {
+      "id": "run-closed-loop-optimization-cycle",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "workflow-autotuning-advisor"
+        },
+        {
+          "order": 2,
+          "skill_id": "optimization-experiment-manager"
+        },
+        {
+          "order": 3,
+          "skill_id": "closed-loop-system-optimizer"
+        },
+        {
+          "order": 4,
+          "skill_id": "pareto-improvement-selector"
+        },
+        {
+          "order": 5,
+          "skill_id": "regression-rollback-controller"
+        }
+      ],
+      "trigger": "A stable workflow has measurable quality, cost, latency, memory, or reliability opportunities."
+    },
+    {
+      "id": "induce-and-certify-meta-capability",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "concept-cluster-inducer"
+        },
+        {
+          "order": 2,
+          "skill_id": "shared-mechanism-extractor"
+        },
+        {
+          "order": 3,
+          "skill_id": "meta-capability-proposer"
+        },
+        {
+          "order": 4,
+          "skill_id": "theory-validation-gate"
+        },
+        {
+          "order": 5,
+          "skill_id": "capability-genome-builder"
+        }
+      ],
+      "trigger": "Multiple capabilities repeatedly exhibit the same underlying mechanism."
+    },
+    {
+      "id": "profile-and-transfer-engineering-dna",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "engineering-dna-profiler"
+        },
+        {
+          "order": 2,
+          "skill_id": "architecture-habit-detector"
+        },
+        {
+          "order": 3,
+          "skill_id": "anti-pattern-lineage-tracer"
+        },
+        {
+          "order": 4,
+          "skill_id": "team-pattern-transfer-controller"
+        }
+      ],
+      "trigger": "Project history should inform a new project or improvement cycle."
+    },
+    {
+      "id": "simulate-knowledge-ecosystem",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "knowledge-dynamics-modeler"
+        },
+        {
+          "order": 2,
+          "skill_id": "trust-decay-controller"
+        },
+        {
+          "order": 3,
+          "skill_id": "capability-entropy-monitor"
+        },
+        {
+          "order": 4,
+          "skill_id": "capability-attractor-detector"
+        },
+        {
+          "order": 5,
+          "skill_id": "contradiction-pressure-monitor"
+        },
+        {
+          "order": 6,
+          "skill_id": "knowledge-stability-simulator"
+        }
+      ],
+      "trigger": "A source removal, dependency change, merge, or policy update may destabilize knowledge."
+    },
+    {
+      "id": "schedule-risk-based-revalidation",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "trust-decay-controller"
+        },
+        {
+          "order": 2,
+          "skill_id": "contradiction-pressure-monitor"
+        },
+        {
+          "order": 3,
+          "skill_id": "capability-dependency-health"
+        },
+        {
+          "order": 4,
+          "skill_id": "revalidation-scheduler"
+        }
+      ],
+      "trigger": "Capabilities age, dependencies change, contradictions rise, or certification becomes stale."
+    },
+    {
+      "id": "integrate-metacognitive-pack-safely",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "cache-transient-release-cleaner"
+        },
+        {
+          "order": 2,
+          "skill_id": "integration-conflict-mapper"
+        },
+        {
+          "order": 3,
+          "skill_id": "duplication-supersession-resolver"
+        },
+        {
+          "order": 4,
+          "skill_id": "semantic-contract-linter"
+        },
+        {
+          "order": 5,
+          "skill_id": "metacognitive-certification"
+        }
+      ],
+      "trigger": "This pack is applied to an existing engineering bootstrap."
+    },
+    {
+      "id": "certify-metacognitive-evolution-layer",
+      "steps": [
+        {
+          "order": 1,
+          "skill_id": "semantic-contract-linter"
+        },
+        {
+          "order": 2,
+          "skill_id": "state-mutation-auditor"
+        },
+        {
+          "order": 3,
+          "skill_id": "capability-dependency-health"
+        },
+        {
+          "order": 4,
+          "skill_id": "metacognitive-certification"
+        },
+        {
+          "order": 5,
+          "skill_id": "cache-transient-release-cleaner"
+        }
+      ],
+      "trigger": "The pack or integrated target is ready for release."
+    }
+  ]
+}

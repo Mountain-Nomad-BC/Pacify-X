@@ -1,0 +1,38 @@
+{
+  "admission_record": "dependency-impact-tracer",
+  "body_sha256": "ed588fbe233a0d4efe300fd0403f4e706544326e55930864097aea480fa54a7a",
+  "contract": {
+    "available": true,
+    "sha256": "fbfca4a423e184233780ee8a293aad8c03f395e81145b910c575d850ebffad89",
+    "source": "registry/skill_packages/dependency-impact-tracer.json"
+  },
+  "description": "Predict downstream effects of changing a skill, tool, schema, state, model, policy, or data contract. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "dependency-impact-tracer",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/dependency-impact-tracer"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "dependency",
+    "engineering",
+    "impact",
+    "tracer"
+  ],
+  "version": "0.1.0"
+}

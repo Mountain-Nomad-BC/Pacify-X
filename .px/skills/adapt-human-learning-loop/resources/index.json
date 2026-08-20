@@ -1,0 +1,19 @@
+{
+  "resources": [
+    "agents/openai.yaml",
+    "contracts/manifest.json",
+    "references/capture-human-observer-assessment.json",
+    "references/design-replayable-exercise-state-machine.json",
+    "references/evaluate-cue-recall-and-recognition.json",
+    "references/govern-reinforcement-token-economy.json",
+    "references/maintain-behavior-event-ledger.json",
+    "references/maintain-learner-profile-boundary.json",
+    "references/safeguard-human-learning-systems.json",
+    "references/separate-supervisor-and-learner-roles.json",
+    "references/sequence-adaptive-learning-exercises.json",
+    "references/summarize-learning-progress.json",
+    "SKILL.md",
+    "tests/validation.json"
+  ],
+  "schema_version": "px.skill-resources/1.0"
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "O08",
+  "status": "accepted",
+  "recorded_at": "2026-08-14T01:09:20.374647+00:00",
+  "refreshed_utc": "2026-08-14T23:55:00Z",
+  "claim": "Every admitted model invocation is mediated by one fail-closed gateway, produces metadata-only correlated lifecycle events and durable receipts, and is rejected when its adapter is absent, disabled, unready, or identity-mismatched.",
+  "artifacts": [
+    {
+      "path": "runtime/provider_gateway.py",
+      "sha256": "34c64e2afc36a38846e001ce9a2ddf9e647153538483ce07f41b2e26ff244fbd"
+    },
+    {
+      "path": "tests/test_provider_gateway.py",
+      "sha256": "a65064f37540b35e0a44261d7b1d240e2353081ff364322ea43d64880d089373"
+    },
+    {
+      "path": "contracts/operations/provider-adapter-registry.schema.json",
+      "sha256": "a624e048545712e49f3f24dd5b8248f789bd9818e9ec80d22be46e05540d47fd"
+    },
+    {
+      "path": "registry/provider_adapters.json",
+      "sha256": "67358d69704a57df9068e730b093eb886807e430586dc7ea9662423ca61c66f4"
+    },
+    {
+      "path": "registry/operation_route_registry.json",
+      "sha256": "4fde6be2ebba2143a55beefd7eb401148aad68df5ebe2e8439fdca90388beea1"
+    }
+  ],
+  "verification": [
+    {
+      "command": "python -B -m pytest -q --rootdir=. -p no:cacheprovider tests/test_runtime_lifecycle.py tests/test_agent_session_coordinator.py tests/test_provider_gateway.py tests/test_provider_budget.py tests/test_operational_visibility.py tests/test_operational_event_bus.py",
+      "result": "45 passed in 35.16s after anchored-head optimization"
+    },
+    {
+      "command": "python -m pytest tests/test_provider_gateway.py tests/test_operational_visibility.py tests/test_operational_event_bus.py -q",
+      "result": "14 passed"
+    },
+    {
+      "command": "ruff check runtime/provider_gateway.py tests/test_provider_gateway.py",
+      "result": "passed"
+    },
+    {
+      "command": "python -m runtime.cli validate",
+      "result": "valid=true"
+    }
+  ],
+  "acceptance": {
+    "remote_and_local_contract_adapters_tested": true,
+    "direct_provider_reachability_scan_valid": true,
+    "request_and_response_content_not_retained": true,
+    "failure_text_not_retained": true,
+    "unknown_unready_and_spoofed_adapters_refused": true,
+    "production_adapters_admitted": 0,
+    "production_adapter_state": "registered candidates remain unconfigured and non-executable"
+  },
+  "limitations": [
+    "O09 owns durable spend, reservation, limit, and fallback enforcement.",
+    "Provider availability is not claimed; both shipped adapter candidates are explicitly unconfigured and unadmitted."
+  ]
+}

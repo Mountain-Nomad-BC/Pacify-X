@@ -82,7 +82,7 @@ python -m runtime.cli --root <BOOTSTRAP_DIR> startup --project <PROJECT_DIR>
 
 Startup must remain metadata-only and report zero hydrated skill bodies. Do not install tools, choose a model/provider, access credentials, start services, or mutate a project merely because a compatible capability exists.
 
-The startup response includes a read-only tooling assessment. Treat detected tools and project signals as observations. Treat missing-tool suggestions as proposals only. Obsidian may be proposed for documentation-heavy projects; Graphify is reference-only and has governed built-in alternatives. Any installation or configuration requires a separate bounded plan with declared effects and explicit user approval.
+The startup response includes a read-only tooling assessment. Treat detected tools and project signals as observations. Treat missing-tool suggestions as proposals only. Obsidian may be proposed for documentation-heavy projects; Graphify is reference-only and has governed built-in alternatives. Any installation or configuration requires a separate bounded plan with declared effects and rollback; proceed when it is reversible and inside the user-approved task scope.
 
 ## Mapping and pre-edit impact
 
@@ -158,10 +158,10 @@ Classify an operation before execution:
 | Effect | Default behavior |
 |---|---|
 | Read-only inspection | Proceed within the declared project scope |
-| Repository write | Preview, identify targets and rollback, obtain approval when the workflow requires it |
-| Install, network, service, migration, or credential access | Require explicit authorization |
+| Repository write | Preview, identify targets and rollback, then proceed inside the user-approved task scope |
+| Install, network, service, migration, or credential access | Declare scope, evidence, and rollback, then proceed when reversible and in scope |
 | Cross-project operation | Deny unless a specific governed transfer workflow and approval exist |
-| Deletion or cleanup | Never hard-delete; inventory, hash, quarantine, verify, and retain a receipt |
+| Deletion or cleanup | Ask before any irreversible destructive action; otherwise inventory, hash, use a reversible quarantine, verify, and retain a receipt |
 
 A successful process exit is not proof of completion. Require postconditions, current task-scoped evidence, and contradiction checks.
 

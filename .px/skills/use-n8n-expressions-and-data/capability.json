@@ -1,0 +1,39 @@
+{
+  "admission_record": "use-n8n-expressions-and-data",
+  "body_sha256": "9b89a33de357e24e1cd27d06ca9f98e608ff0dc3e07636014d3e4e73459bc5bc",
+  "contract": {
+    "available": true,
+    "sha256": "7fa60085f2a7ec9f4bfc8302397a0f9fa0105030078cfdcc2a027f083c9adbb1",
+    "source": "registry/skill_packages/use-n8n-expressions-and-data.json"
+  },
+  "description": "Use n8n items, expressions, mappings, and transformations without cardinality, type, or item-linking mistakes.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "use-n8n-expressions-and-data",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/use-n8n-expressions-and-data"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "binary-data",
+    "expressions",
+    "items",
+    "mapping",
+    "n8n"
+  ],
+  "version": "1.0.0"
+}

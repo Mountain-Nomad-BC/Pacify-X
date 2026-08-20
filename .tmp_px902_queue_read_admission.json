@@ -1,0 +1,13 @@
+{
+  "gap_id": "PX-OS-902",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000006296",
+  "effect": "read",
+  "scope": ["inspect:registry/operational_gap_ledger.jsonl","inspect:registry/operational_gap_ledger.snapshot.json"],
+  "authority": "PX902 is the active card; this bounded coherent snapshot read reconciles the full remaining-card denominator requested by the user.",
+  "expected_effect": "Complete the deduplicated dependency-ordered queue and flag unsupported completion states from one coherent ledger head.",
+  "rollback": "Read-only inspection; no rollback required.",
+  "evidence": [
+    {"reference":"registry/operational_gap_ledger.jsonl","artifact_sha256":"272ca890f9b4951f47e2fd1d8911398a96b716eafb8334261bf70ce4bb499a2e","artifact_size":13082665,"claim":"Coherent append-only ledger head after PX902 incoming checkpoint."},
+    {"reference":"registry/operational_gap_ledger.snapshot.json","artifact_sha256":"f88638f3a6730745babdc3232269484fe808ae9ead004b5d076f03a12e5807af","artifact_size":17861376,"claim":"Coherent projected card snapshot after PX902 incoming checkpoint."}
+  ]
+}

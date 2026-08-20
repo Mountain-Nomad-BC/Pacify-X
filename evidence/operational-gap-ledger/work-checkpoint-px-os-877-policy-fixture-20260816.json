@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-877",
+  "learned": "All seven knowledge-controller failures occur during construction because the bounded temporary project omits policies/learning-promotion.json. The controller correctly fails closed and validates exact learning bounds; the test project bootstrap is incomplete.",
+  "next_action": "Provision the exact required learning-promotion policy in the bounded test project and run only the knowledge-controller file.",
+  "unresolved_branch_gap_ids": ["PX-OS-877", "PX-OS-011", "PX-OS-095"],
+  "evidence": [
+    {
+      "claim": "Seven governed Studio-section failures share FileNotFoundError for policies/learning-promotion.json.",
+      "reference": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json"
+    },
+    {
+      "claim": "Controller requires schema 1.0, direct canonical write false, and bounded trial/history constants.",
+      "reference": "runtime/knowledge_core_controller.py:113-125"
+    }
+  ]
+}

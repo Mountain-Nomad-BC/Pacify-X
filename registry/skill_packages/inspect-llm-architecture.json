@@ -2,13 +2,13 @@
   "id": "inspect-llm-architecture",
   "version": "0.1.0",
   "status": "active",
-  "body": ".agents/skills/inspect-llm-architecture/SKILL.md",
+  "body": ".px/skills/inspect-llm-architecture/SKILL.md",
   "body_sha256": "594294286c2e9f5031e41c87fafdc97a69445e9731f3368a62f03ab996ea859b",
   "references": [
-    ".agents/skills/inspect-llm-architecture/references/architecture-inspection-contract.md"
+    ".px/skills/inspect-llm-architecture/references/architecture-inspection-contract.md"
   ],
   "resources": [
-    ".agents/skills/inspect-llm-architecture/scripts/inspect_llm_architecture.py"
+    ".px/skills/inspect-llm-architecture/scripts/inspect_llm_architecture.py"
   ],
   "capability_tags": [
     "model",

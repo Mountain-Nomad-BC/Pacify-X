@@ -1,0 +1,1811 @@
+{
+  "id": "vscode.git",
+  "name": "Git",
+  "version": "10.0.0",
+  "publisher": "vscode",
+  "active": true,
+  "builtin": true,
+  "extension_kind": [],
+  "contribution_points": [
+    "colors",
+    "commands",
+    "configuration",
+    "configurationDefaults",
+    "continueEditSession",
+    "keybindings",
+    "menus",
+    "submenus",
+    "viewsWelcome"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:colors",
+      "kind": "colors",
+      "provider": "vscode.git",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "vscode.git",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "vscode.git",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configurationDefaults",
+      "kind": "configurationDefaults",
+      "provider": "vscode.git",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:continueEditSession",
+      "kind": "continueEditSession",
+      "provider": "vscode.git",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "vscode.git",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "vscode.git",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "vscode.git",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "vscode.git",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "git.acceptMerge",
+      "invocation": "vscode.commands.executeCommand('git.acceptMerge', ...args)",
+      "title": "Complete Merge",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "isMergeEditor && mergeEditorResultUri in git.mergeChanges"
+    },
+    {
+      "id": "git.addRemote",
+      "invocation": "vscode.commands.executeCommand('git.addRemote', ...args)",
+      "title": "Add Remote...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.api.getRemoteSources",
+      "invocation": "vscode.commands.executeCommand('git.api.getRemoteSources', ...args)",
+      "title": "Get Remote Sources",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.api.getRepositories",
+      "invocation": "vscode.commands.executeCommand('git.api.getRepositories', ...args)",
+      "title": "Get Repositories",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.api.getRepositoryState",
+      "invocation": "vscode.commands.executeCommand('git.api.getRepositoryState', ...args)",
+      "title": "Get Repository State",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.blame.toggleEditorDecoration",
+      "invocation": "vscode.commands.executeCommand('git.blame.toggleEditorDecoration', ...args)",
+      "title": "Toggle Git Blame Editor Decoration",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.blame.toggleStatusBarItem",
+      "invocation": "vscode.commands.executeCommand('git.blame.toggleStatusBarItem', ...args)",
+      "title": "Toggle Git Blame Status Bar Item",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.branch",
+      "invocation": "vscode.commands.executeCommand('git.branch', ...args)",
+      "title": "Create Branch...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.branchFrom",
+      "invocation": "vscode.commands.executeCommand('git.branchFrom', ...args)",
+      "title": "Create Branch From...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.checkout",
+      "invocation": "vscode.commands.executeCommand('git.checkout', ...args)",
+      "title": "Checkout to...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.checkoutDetached",
+      "invocation": "vscode.commands.executeCommand('git.checkoutDetached', ...args)",
+      "title": "Checkout to (Detached)...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.cherryPick",
+      "invocation": "vscode.commands.executeCommand('git.cherryPick', ...args)",
+      "title": "Cherry Pick...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.cherryPickAbort",
+      "invocation": "vscode.commands.executeCommand('git.cherryPickAbort', ...args)",
+      "title": "Abort Cherry Pick",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.clean",
+      "invocation": "vscode.commands.executeCommand('git.clean', ...args)",
+      "title": "Discard Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.cleanAll",
+      "invocation": "vscode.commands.executeCommand('git.cleanAll', ...args)",
+      "title": "Discard All Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.cleanAllTracked",
+      "invocation": "vscode.commands.executeCommand('git.cleanAllTracked', ...args)",
+      "title": "Discard All Tracked Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.cleanAllUntracked",
+      "invocation": "vscode.commands.executeCommand('git.cleanAllUntracked', ...args)",
+      "title": "Discard All Untracked Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.clone",
+      "invocation": "vscode.commands.executeCommand('git.clone', ...args)",
+      "title": "Clone",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.cloneRecursive",
+      "invocation": "vscode.commands.executeCommand('git.cloneRecursive', ...args)",
+      "title": "Clone (Recursive)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.close",
+      "invocation": "vscode.commands.executeCommand('git.close', ...args)",
+      "title": "Close Repository",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.closeAllDiffEditors",
+      "invocation": "vscode.commands.executeCommand('git.closeAllDiffEditors', ...args)",
+      "title": "Close All Diff Editors",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.closeAllUnmodifiedEditors",
+      "invocation": "vscode.commands.executeCommand('git.closeAllUnmodifiedEditors', ...args)",
+      "title": "Close All Unmodified Editors",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.closeOtherRepositories",
+      "invocation": "vscode.commands.executeCommand('git.closeOtherRepositories', ...args)",
+      "title": "Close Other Repositories",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commit",
+      "invocation": "vscode.commands.executeCommand('git.commit', ...args)",
+      "title": "Commit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitAll",
+      "invocation": "vscode.commands.executeCommand('git.commitAll', ...args)",
+      "title": "Commit All",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitAllAmend",
+      "invocation": "vscode.commands.executeCommand('git.commitAllAmend', ...args)",
+      "title": "Commit All (Amend)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitAllAmendNoVerify",
+      "invocation": "vscode.commands.executeCommand('git.commitAllAmendNoVerify', ...args)",
+      "title": "Commit All (Amend, No Verify)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitAllNoVerify",
+      "invocation": "vscode.commands.executeCommand('git.commitAllNoVerify', ...args)",
+      "title": "Commit All (No Verify)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitAllSigned",
+      "invocation": "vscode.commands.executeCommand('git.commitAllSigned', ...args)",
+      "title": "Commit All (Signed Off)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitAllSignedNoVerify",
+      "invocation": "vscode.commands.executeCommand('git.commitAllSignedNoVerify', ...args)",
+      "title": "Commit All (Signed Off, No Verify)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitAmend",
+      "invocation": "vscode.commands.executeCommand('git.commitAmend', ...args)",
+      "title": "Commit (Amend)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitAmendNoVerify",
+      "invocation": "vscode.commands.executeCommand('git.commitAmendNoVerify', ...args)",
+      "title": "Commit (Amend, No Verify)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitEmpty",
+      "invocation": "vscode.commands.executeCommand('git.commitEmpty', ...args)",
+      "title": "Commit Empty",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitEmptyNoVerify",
+      "invocation": "vscode.commands.executeCommand('git.commitEmptyNoVerify', ...args)",
+      "title": "Commit Empty (No Verify)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitMessageAccept",
+      "invocation": "vscode.commands.executeCommand('git.commitMessageAccept', ...args)",
+      "title": "Commit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commitMessageDiscard",
+      "invocation": "vscode.commands.executeCommand('git.commitMessageDiscard', ...args)",
+      "title": "Cancel",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commitNoVerify",
+      "invocation": "vscode.commands.executeCommand('git.commitNoVerify', ...args)",
+      "title": "Commit (No Verify)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitSigned",
+      "invocation": "vscode.commands.executeCommand('git.commitSigned', ...args)",
+      "title": "Commit (Signed Off)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitSignedNoVerify",
+      "invocation": "vscode.commands.executeCommand('git.commitSignedNoVerify', ...args)",
+      "title": "Commit (Signed Off, No Verify)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitStaged",
+      "invocation": "vscode.commands.executeCommand('git.commitStaged', ...args)",
+      "title": "Commit Staged",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitStagedAmend",
+      "invocation": "vscode.commands.executeCommand('git.commitStagedAmend', ...args)",
+      "title": "Commit Staged (Amend)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitStagedAmendNoVerify",
+      "invocation": "vscode.commands.executeCommand('git.commitStagedAmendNoVerify', ...args)",
+      "title": "Commit Staged (Amend, No Verify)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitStagedNoVerify",
+      "invocation": "vscode.commands.executeCommand('git.commitStagedNoVerify', ...args)",
+      "title": "Commit Staged (No Verify)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitStagedSigned",
+      "invocation": "vscode.commands.executeCommand('git.commitStagedSigned', ...args)",
+      "title": "Commit Staged (Signed Off)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.commitStagedSignedNoVerify",
+      "invocation": "vscode.commands.executeCommand('git.commitStagedSignedNoVerify', ...args)",
+      "title": "Commit Staged (Signed Off, No Verify)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.compareWithWorkspace",
+      "invocation": "vscode.commands.executeCommand('git.compareWithWorkspace', ...args)",
+      "title": "Compare with Workspace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.continueInLocalClone",
+      "invocation": "vscode.commands.executeCommand('git.continueInLocalClone', ...args)",
+      "title": "Clone Repository Locally and Open on Desktop...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.git.enabled && !git.missing && gitOpenRepositoryCount != 0 && remoteName"
+    },
+    {
+      "id": "git.copyCommitId",
+      "invocation": "vscode.commands.executeCommand('git.copyCommitId', ...args)",
+      "title": "Copy Commit Hash",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.copyCommitMessage",
+      "invocation": "vscode.commands.executeCommand('git.copyCommitMessage', ...args)",
+      "title": "Copy Commit Message",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.createTag",
+      "invocation": "vscode.commands.executeCommand('git.createTag', ...args)",
+      "title": "Create Tag...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.createWorktree",
+      "invocation": "vscode.commands.executeCommand('git.createWorktree', ...args)",
+      "title": "Create Worktree...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.delete",
+      "invocation": "vscode.commands.executeCommand('git.delete', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.deleteBranch",
+      "invocation": "vscode.commands.executeCommand('git.deleteBranch', ...args)",
+      "title": "Delete Branch...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.deleteRemoteBranch",
+      "invocation": "vscode.commands.executeCommand('git.deleteRemoteBranch', ...args)",
+      "title": "Delete Remote Branch...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.deleteRemoteTag",
+      "invocation": "vscode.commands.executeCommand('git.deleteRemoteTag', ...args)",
+      "title": "Delete Remote Tag...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.deleteTag",
+      "invocation": "vscode.commands.executeCommand('git.deleteTag', ...args)",
+      "title": "Delete Tag...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.deleteWorktree",
+      "invocation": "vscode.commands.executeCommand('git.deleteWorktree', ...args)",
+      "title": "Delete Worktree...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.deleteWorktree2",
+      "invocation": "vscode.commands.executeCommand('git.deleteWorktree2', ...args)",
+      "title": "Delete Worktree",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.diff.stageHunk",
+      "invocation": "vscode.commands.executeCommand('git.diff.stageHunk', ...args)",
+      "title": "Stage Block",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.diff.stageSelection",
+      "invocation": "vscode.commands.executeCommand('git.diff.stageSelection', ...args)",
+      "title": "Stage Selection",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.fetch",
+      "invocation": "vscode.commands.executeCommand('git.fetch', ...args)",
+      "title": "Fetch",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.fetchAll",
+      "invocation": "vscode.commands.executeCommand('git.fetchAll', ...args)",
+      "title": "Fetch From All Remotes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.fetchPrune",
+      "invocation": "vscode.commands.executeCommand('git.fetchPrune', ...args)",
+      "title": "Fetch (Prune)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.fetchRef",
+      "invocation": "vscode.commands.executeCommand('git.fetchRef', ...args)",
+      "title": "Fetch",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.graph.checkout",
+      "invocation": "vscode.commands.executeCommand('git.graph.checkout', ...args)",
+      "title": "Checkout",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.graph.checkoutDetached",
+      "invocation": "vscode.commands.executeCommand('git.graph.checkoutDetached', ...args)",
+      "title": "Checkout (Detached)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.graph.cherryPick",
+      "invocation": "vscode.commands.executeCommand('git.graph.cherryPick', ...args)",
+      "title": "Cherry Pick",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.graph.compareRef",
+      "invocation": "vscode.commands.executeCommand('git.graph.compareRef', ...args)",
+      "title": "Compare with...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.graph.compareWithMergeBase",
+      "invocation": "vscode.commands.executeCommand('git.graph.compareWithMergeBase', ...args)",
+      "title": "Compare with Merge Base",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress && scmCurrentHistoryItemRefHasBase"
+    },
+    {
+      "id": "git.graph.compareWithRemote",
+      "invocation": "vscode.commands.executeCommand('git.graph.compareWithRemote', ...args)",
+      "title": "Compare with Remote",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress && scmCurrentHistoryItemRefHasRemote"
+    },
+    {
+      "id": "git.graph.deleteBranch",
+      "invocation": "vscode.commands.executeCommand('git.graph.deleteBranch', ...args)",
+      "title": "Delete Branch",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.graph.deleteTag",
+      "invocation": "vscode.commands.executeCommand('git.graph.deleteTag', ...args)",
+      "title": "Delete Tag",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.ignore",
+      "invocation": "vscode.commands.executeCommand('git.ignore', ...args)",
+      "title": "Add to .gitignore",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.init",
+      "invocation": "vscode.commands.executeCommand('git.init', ...args)",
+      "title": "Initialize Repository",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.manageUnsafeRepositories",
+      "invocation": "vscode.commands.executeCommand('git.manageUnsafeRepositories', ...args)",
+      "title": "Manage Unsafe Repositories",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.merge",
+      "invocation": "vscode.commands.executeCommand('git.merge', ...args)",
+      "title": "Merge...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.mergeAbort",
+      "invocation": "vscode.commands.executeCommand('git.mergeAbort', ...args)",
+      "title": "Abort Merge",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "gitMergeInProgress"
+    },
+    {
+      "id": "git.migrateWorktreeChanges",
+      "invocation": "vscode.commands.executeCommand('git.migrateWorktreeChanges', ...args)",
+      "title": "Migrate Worktree Changes...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.openAllChanges",
+      "invocation": "vscode.commands.executeCommand('git.openAllChanges', ...args)",
+      "title": "Open All Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.openChange",
+      "invocation": "vscode.commands.executeCommand('git.openChange', ...args)",
+      "title": "Open Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.openFile",
+      "invocation": "vscode.commands.executeCommand('git.openFile', ...args)",
+      "title": "Open File",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.openFile2",
+      "invocation": "vscode.commands.executeCommand('git.openFile2', ...args)",
+      "title": "Open File",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.openHEADFile",
+      "invocation": "vscode.commands.executeCommand('git.openHEADFile', ...args)",
+      "title": "Open File (HEAD)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.openMergeEditor",
+      "invocation": "vscode.commands.executeCommand('git.openMergeEditor', ...args)",
+      "title": "Resolve in Merge Editor",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.openRepositoriesInParentFolders",
+      "invocation": "vscode.commands.executeCommand('git.openRepositoriesInParentFolders', ...args)",
+      "title": "Open Repositories In Parent Folders",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.openRepository",
+      "invocation": "vscode.commands.executeCommand('git.openRepository', ...args)",
+      "title": "Open Repository",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.openWorktree",
+      "invocation": "vscode.commands.executeCommand('git.openWorktree', ...args)",
+      "title": "Open Worktree in Current Window",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.openWorktreeInNewWindow",
+      "invocation": "vscode.commands.executeCommand('git.openWorktreeInNewWindow', ...args)",
+      "title": "Open Worktree in New Window",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.publish",
+      "invocation": "vscode.commands.executeCommand('git.publish', ...args)",
+      "title": "Publish Branch...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.pull",
+      "invocation": "vscode.commands.executeCommand('git.pull', ...args)",
+      "title": "Pull",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.pullFrom",
+      "invocation": "vscode.commands.executeCommand('git.pullFrom', ...args)",
+      "title": "Pull from...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.pullRebase",
+      "invocation": "vscode.commands.executeCommand('git.pullRebase', ...args)",
+      "title": "Pull (Rebase)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.pullRef",
+      "invocation": "vscode.commands.executeCommand('git.pullRef', ...args)",
+      "title": "Pull",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress && scmCurrentHistoryItemRefInFilter && scmCurrentHistoryItemRefHasRemote"
+    },
+    {
+      "id": "git.push",
+      "invocation": "vscode.commands.executeCommand('git.push', ...args)",
+      "title": "Push",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.pushForce",
+      "invocation": "vscode.commands.executeCommand('git.pushForce', ...args)",
+      "title": "Push (Force)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.pushRef",
+      "invocation": "vscode.commands.executeCommand('git.pushRef', ...args)",
+      "title": "Push",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress && scmCurrentHistoryItemRefInFilter && scmCurrentHistoryItemRefHasRemote"
+    },
+    {
+      "id": "git.pushTags",
+      "invocation": "vscode.commands.executeCommand('git.pushTags', ...args)",
+      "title": "Push Tags",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.pushTo",
+      "invocation": "vscode.commands.executeCommand('git.pushTo', ...args)",
+      "title": "Push to...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.pushToForce",
+      "invocation": "vscode.commands.executeCommand('git.pushToForce', ...args)",
+      "title": "Push to... (Force)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.pushWithTags",
+      "invocation": "vscode.commands.executeCommand('git.pushWithTags', ...args)",
+      "title": "Push (Follow Tags)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.pushWithTagsForce",
+      "invocation": "vscode.commands.executeCommand('git.pushWithTagsForce', ...args)",
+      "title": "Push (Follow Tags, Force)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.rebase",
+      "invocation": "vscode.commands.executeCommand('git.rebase', ...args)",
+      "title": "Rebase Branch...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.rebaseAbort",
+      "invocation": "vscode.commands.executeCommand('git.rebaseAbort', ...args)",
+      "title": "Abort Rebase",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "gitRebaseInProgress"
+    },
+    {
+      "id": "git.refresh",
+      "invocation": "vscode.commands.executeCommand('git.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.removeRemote",
+      "invocation": "vscode.commands.executeCommand('git.removeRemote', ...args)",
+      "title": "Remove Remote",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.rename",
+      "invocation": "vscode.commands.executeCommand('git.rename', ...args)",
+      "title": "Rename",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.renameBranch",
+      "invocation": "vscode.commands.executeCommand('git.renameBranch', ...args)",
+      "title": "Rename Branch...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.reopenClosedRepositories",
+      "invocation": "vscode.commands.executeCommand('git.reopenClosedRepositories', ...args)",
+      "title": "Reopen Closed Repositories...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress && git.closedRepositoryCount != 0"
+    },
+    {
+      "id": "git.repositories.checkout",
+      "invocation": "vscode.commands.executeCommand('git.repositories.checkout', ...args)",
+      "title": "Checkout",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress && !scmArtifactIsHistoryItemRef"
+    },
+    {
+      "id": "git.repositories.checkoutDetached",
+      "invocation": "vscode.commands.executeCommand('git.repositories.checkoutDetached', ...args)",
+      "title": "Checkout (Detached)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.compareRef",
+      "invocation": "vscode.commands.executeCommand('git.repositories.compareRef', ...args)",
+      "title": "Compare with...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.copyBranchName",
+      "invocation": "vscode.commands.executeCommand('git.repositories.copyBranchName', ...args)",
+      "title": "Copy Branch Name",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.repositories.copyCommitHash",
+      "invocation": "vscode.commands.executeCommand('git.repositories.copyCommitHash', ...args)",
+      "title": "Copy Commit Hash",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.repositories.copyStashName",
+      "invocation": "vscode.commands.executeCommand('git.repositories.copyStashName', ...args)",
+      "title": "Copy Stash Name",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.repositories.copyTagName",
+      "invocation": "vscode.commands.executeCommand('git.repositories.copyTagName', ...args)",
+      "title": "Copy Tag Name",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.repositories.createBranch",
+      "invocation": "vscode.commands.executeCommand('git.repositories.createBranch', ...args)",
+      "title": "Create Branch...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.createFrom",
+      "invocation": "vscode.commands.executeCommand('git.repositories.createFrom', ...args)",
+      "title": "Create from...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.createTag",
+      "invocation": "vscode.commands.executeCommand('git.repositories.createTag', ...args)",
+      "title": "Create Tag...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.createWorktree",
+      "invocation": "vscode.commands.executeCommand('git.repositories.createWorktree', ...args)",
+      "title": "Create Worktree...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.deleteBranch",
+      "invocation": "vscode.commands.executeCommand('git.repositories.deleteBranch', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress && !scmArtifactIsHistoryItemRef"
+    },
+    {
+      "id": "git.repositories.deleteTag",
+      "invocation": "vscode.commands.executeCommand('git.repositories.deleteTag', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress && !scmArtifactIsHistoryItemRef"
+    },
+    {
+      "id": "git.repositories.deleteWorktree",
+      "invocation": "vscode.commands.executeCommand('git.repositories.deleteWorktree', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.merge",
+      "invocation": "vscode.commands.executeCommand('git.repositories.merge', ...args)",
+      "title": "Merge",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.openWorktree",
+      "invocation": "vscode.commands.executeCommand('git.repositories.openWorktree', ...args)",
+      "title": "Open",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.openWorktreeInNewWindow",
+      "invocation": "vscode.commands.executeCommand('git.repositories.openWorktreeInNewWindow', ...args)",
+      "title": "Open in New Window",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.rebase",
+      "invocation": "vscode.commands.executeCommand('git.repositories.rebase', ...args)",
+      "title": "Rebase",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.stashApply",
+      "invocation": "vscode.commands.executeCommand('git.repositories.stashApply', ...args)",
+      "title": "Apply Stash",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.stashCopyBranchName",
+      "invocation": "vscode.commands.executeCommand('git.repositories.stashCopyBranchName', ...args)",
+      "title": "Copy Branch Name",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.repositories.stashDrop",
+      "invocation": "vscode.commands.executeCommand('git.repositories.stashDrop', ...args)",
+      "title": "Drop Stash",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.stashPop",
+      "invocation": "vscode.commands.executeCommand('git.repositories.stashPop', ...args)",
+      "title": "Pop Stash",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.stashView",
+      "invocation": "vscode.commands.executeCommand('git.repositories.stashView', ...args)",
+      "title": "View Stash",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.repositories.worktreeCopyBranchName",
+      "invocation": "vscode.commands.executeCommand('git.repositories.worktreeCopyBranchName', ...args)",
+      "title": "Copy Branch Name",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.repositories.worktreeCopyCommitHash",
+      "invocation": "vscode.commands.executeCommand('git.repositories.worktreeCopyCommitHash', ...args)",
+      "title": "Copy Commit Hash",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.repositories.worktreeCopyPath",
+      "invocation": "vscode.commands.executeCommand('git.repositories.worktreeCopyPath', ...args)",
+      "title": "Copy Worktree Path",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.restoreCommitTemplate",
+      "invocation": "vscode.commands.executeCommand('git.restoreCommitTemplate', ...args)",
+      "title": "Restore Commit Template",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.revealFileInOS.linux",
+      "invocation": "vscode.commands.executeCommand('git.revealFileInOS.linux', ...args)",
+      "title": "Open Containing Folder",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.revealFileInOS.mac",
+      "invocation": "vscode.commands.executeCommand('git.revealFileInOS.mac', ...args)",
+      "title": "Reveal in Finder",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.revealFileInOS.windows",
+      "invocation": "vscode.commands.executeCommand('git.revealFileInOS.windows', ...args)",
+      "title": "Reveal in File Explorer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.revealInExplorer",
+      "invocation": "vscode.commands.executeCommand('git.revealInExplorer', ...args)",
+      "title": "Reveal in Explorer View",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.revertChange",
+      "invocation": "vscode.commands.executeCommand('git.revertChange', ...args)",
+      "title": "Revert Change",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.revertSelectedRanges",
+      "invocation": "vscode.commands.executeCommand('git.revertSelectedRanges', ...args)",
+      "title": "Revert Selected Ranges",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.runGitMerge",
+      "invocation": "vscode.commands.executeCommand('git.runGitMerge', ...args)",
+      "title": "Compute Conflicts With Git",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "isMergeEditor"
+    },
+    {
+      "id": "git.runGitMergeDiff3",
+      "invocation": "vscode.commands.executeCommand('git.runGitMergeDiff3', ...args)",
+      "title": "Compute Conflicts With Git (Diff3)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "isMergeEditor"
+    },
+    {
+      "id": "git.showOutput",
+      "invocation": "vscode.commands.executeCommand('git.showOutput', ...args)",
+      "title": "Show Git Output",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.stage",
+      "invocation": "vscode.commands.executeCommand('git.stage', ...args)",
+      "title": "Stage Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stageAll",
+      "invocation": "vscode.commands.executeCommand('git.stageAll', ...args)",
+      "title": "Stage All Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stageAllMerge",
+      "invocation": "vscode.commands.executeCommand('git.stageAllMerge', ...args)",
+      "title": "Stage All Merge Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stageAllTracked",
+      "invocation": "vscode.commands.executeCommand('git.stageAllTracked', ...args)",
+      "title": "Stage All Tracked Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stageAllUntracked",
+      "invocation": "vscode.commands.executeCommand('git.stageAllUntracked', ...args)",
+      "title": "Stage All Untracked Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stageChange",
+      "invocation": "vscode.commands.executeCommand('git.stageChange', ...args)",
+      "title": "Stage Change",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stageFile",
+      "invocation": "vscode.commands.executeCommand('git.stageFile', ...args)",
+      "title": "Stage Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stageSelectedRanges",
+      "invocation": "vscode.commands.executeCommand('git.stageSelectedRanges', ...args)",
+      "title": "Stage Selected Ranges",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stash",
+      "invocation": "vscode.commands.executeCommand('git.stash', ...args)",
+      "title": "Stash",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stashApply",
+      "invocation": "vscode.commands.executeCommand('git.stashApply', ...args)",
+      "title": "Apply Stash...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stashApplyEditor",
+      "invocation": "vscode.commands.executeCommand('git.stashApplyEditor', ...args)",
+      "title": "Apply Stash",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stashApplyLatest",
+      "invocation": "vscode.commands.executeCommand('git.stashApplyLatest', ...args)",
+      "title": "Apply Latest Stash",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stashDrop",
+      "invocation": "vscode.commands.executeCommand('git.stashDrop', ...args)",
+      "title": "Drop Stash...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stashDropAll",
+      "invocation": "vscode.commands.executeCommand('git.stashDropAll', ...args)",
+      "title": "Drop All Stashes...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stashDropEditor",
+      "invocation": "vscode.commands.executeCommand('git.stashDropEditor', ...args)",
+      "title": "Drop Stash",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stashIncludeUntracked",
+      "invocation": "vscode.commands.executeCommand('git.stashIncludeUntracked', ...args)",
+      "title": "Stash (Include Untracked)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stashPop",
+      "invocation": "vscode.commands.executeCommand('git.stashPop', ...args)",
+      "title": "Pop Stash...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stashPopEditor",
+      "invocation": "vscode.commands.executeCommand('git.stashPopEditor', ...args)",
+      "title": "Pop Stash",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stashPopLatest",
+      "invocation": "vscode.commands.executeCommand('git.stashPopLatest', ...args)",
+      "title": "Pop Latest Stash",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.stashStaged",
+      "invocation": "vscode.commands.executeCommand('git.stashStaged', ...args)",
+      "title": "Stash Staged",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress && gitVersion2.35"
+    },
+    {
+      "id": "git.stashView",
+      "invocation": "vscode.commands.executeCommand('git.stashView', ...args)",
+      "title": "View Stash...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.sync",
+      "invocation": "vscode.commands.executeCommand('git.sync', ...args)",
+      "title": "Sync",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.syncRebase",
+      "invocation": "vscode.commands.executeCommand('git.syncRebase', ...args)",
+      "title": "Sync (Rebase)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.timeline.compareWithSelected",
+      "invocation": "vscode.commands.executeCommand('git.timeline.compareWithSelected', ...args)",
+      "title": "Compare with Selected",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.timeline.copyCommitId",
+      "invocation": "vscode.commands.executeCommand('git.timeline.copyCommitId', ...args)",
+      "title": "Copy Commit Hash",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.timeline.copyCommitMessage",
+      "invocation": "vscode.commands.executeCommand('git.timeline.copyCommitMessage', ...args)",
+      "title": "Copy Commit Message",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.timeline.openDiff",
+      "invocation": "vscode.commands.executeCommand('git.timeline.openDiff', ...args)",
+      "title": "Open Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.timeline.selectForCompare",
+      "invocation": "vscode.commands.executeCommand('git.timeline.selectForCompare', ...args)",
+      "title": "Select for Compare",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.timeline.viewCommit",
+      "invocation": "vscode.commands.executeCommand('git.timeline.viewCommit', ...args)",
+      "title": "Open Commit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.undoCommit",
+      "invocation": "vscode.commands.executeCommand('git.undoCommit', ...args)",
+      "title": "Undo Last Commit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.unstage",
+      "invocation": "vscode.commands.executeCommand('git.unstage', ...args)",
+      "title": "Unstage Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.unstageAll",
+      "invocation": "vscode.commands.executeCommand('git.unstageAll', ...args)",
+      "title": "Unstage All Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.unstageChange",
+      "invocation": "vscode.commands.executeCommand('git.unstageChange', ...args)",
+      "title": "Unstage Change",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.unstageFile",
+      "invocation": "vscode.commands.executeCommand('git.unstageFile', ...args)",
+      "title": "Unstage Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.unstageSelectedRanges",
+      "invocation": "vscode.commands.executeCommand('git.unstageSelectedRanges', ...args)",
+      "title": "Unstage Selected Ranges",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.viewChanges",
+      "invocation": "vscode.commands.executeCommand('git.viewChanges', ...args)",
+      "title": "Open Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.viewCommit",
+      "invocation": "vscode.commands.executeCommand('git.viewCommit', ...args)",
+      "title": "Open Commit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.viewStagedChanges",
+      "invocation": "vscode.commands.executeCommand('git.viewStagedChanges', ...args)",
+      "title": "Open Staged Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    },
+    {
+      "id": "git.viewUntrackedChanges",
+      "invocation": "vscode.commands.executeCommand('git.viewUntrackedChanges', ...args)",
+      "title": "Open Untracked Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!operationInProgress"
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "vscode.git-base"
+  ],
+  "activation_events": [
+    "*",
+    "onEditSession:file",
+    "onFileSystem:git",
+    "onFileSystem:git-show"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": false
+    },
+    "virtual_workspaces": true,
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "vscode.git",
+    "capabilities": [
+      "contribution:colors",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:configurationDefaults",
+      "contribution:continueEditSession",
+      "contribution:keybindings",
+      "contribution:menus",
+      "contribution:submenus",
+      "contribution:viewsWelcome"
+    ],
+    "interface": [
+      "git.acceptMerge",
+      "git.addRemote",
+      "git.api.getRemoteSources",
+      "git.api.getRepositories",
+      "git.api.getRepositoryState",
+      "git.blame.toggleEditorDecoration",
+      "git.blame.toggleStatusBarItem",
+      "git.branch",
+      "git.branchFrom",
+      "git.checkout",
+      "git.checkoutDetached",
+      "git.cherryPick",
+      "git.cherryPickAbort",
+      "git.clean",
+      "git.cleanAll",
+      "git.cleanAllTracked",
+      "git.cleanAllUntracked",
+      "git.clone",
+      "git.cloneRecursive",
+      "git.close",
+      "git.closeAllDiffEditors",
+      "git.closeAllUnmodifiedEditors",
+      "git.closeOtherRepositories",
+      "git.commit",
+      "git.commitAll",
+      "git.commitAllAmend",
+      "git.commitAllAmendNoVerify",
+      "git.commitAllNoVerify",
+      "git.commitAllSigned",
+      "git.commitAllSignedNoVerify",
+      "git.commitAmend",
+      "git.commitAmendNoVerify",
+      "git.commitEmpty",
+      "git.commitEmptyNoVerify",
+      "git.commitMessageAccept",
+      "git.commitMessageDiscard",
+      "git.commitNoVerify",
+      "git.commitSigned",
+      "git.commitSignedNoVerify",
+      "git.commitStaged",
+      "git.commitStagedAmend",
+      "git.commitStagedAmendNoVerify",
+      "git.commitStagedNoVerify",
+      "git.commitStagedSigned",
+      "git.commitStagedSignedNoVerify",
+      "git.compareWithWorkspace",
+      "git.continueInLocalClone",
+      "git.copyCommitId",
+      "git.copyCommitMessage",
+      "git.createTag",
+      "git.createWorktree",
+      "git.delete",
+      "git.deleteBranch",
+      "git.deleteRemoteBranch",
+      "git.deleteRemoteTag",
+      "git.deleteTag",
+      "git.deleteWorktree",
+      "git.deleteWorktree2",
+      "git.diff.stageHunk",
+      "git.diff.stageSelection",
+      "git.fetch",
+      "git.fetchAll",
+      "git.fetchPrune",
+      "git.fetchRef",
+      "git.graph.checkout",
+      "git.graph.checkoutDetached",
+      "git.graph.cherryPick",
+      "git.graph.compareRef",
+      "git.graph.compareWithMergeBase",
+      "git.graph.compareWithRemote",
+      "git.graph.deleteBranch",
+      "git.graph.deleteTag",
+      "git.ignore",
+      "git.init",
+      "git.manageUnsafeRepositories",
+      "git.merge",
+      "git.mergeAbort",
+      "git.migrateWorktreeChanges",
+      "git.openAllChanges",
+      "git.openChange",
+      "git.openFile",
+      "git.openFile2",
+      "git.openHEADFile",
+      "git.openMergeEditor",
+      "git.openRepositoriesInParentFolders",
+      "git.openRepository",
+      "git.openWorktree",
+      "git.openWorktreeInNewWindow",
+      "git.publish",
+      "git.pull",
+      "git.pullFrom",
+      "git.pullRebase",
+      "git.pullRef",
+      "git.push",
+      "git.pushForce",
+      "git.pushRef",
+      "git.pushTags",
+      "git.pushTo",
+      "git.pushToForce",
+      "git.pushWithTags",
+      "git.pushWithTagsForce",
+      "git.rebase",
+      "git.rebaseAbort",
+      "git.refresh",
+      "git.removeRemote",
+      "git.rename",
+      "git.renameBranch",
+      "git.reopenClosedRepositories",
+      "git.repositories.checkout",
+      "git.repositories.checkoutDetached",
+      "git.repositories.compareRef",
+      "git.repositories.copyBranchName",
+      "git.repositories.copyCommitHash",
+      "git.repositories.copyStashName",
+      "git.repositories.copyTagName",
+      "git.repositories.createBranch",
+      "git.repositories.createFrom",
+      "git.repositories.createTag",
+      "git.repositories.createWorktree",
+      "git.repositories.deleteBranch",
+      "git.repositories.deleteTag",
+      "git.repositories.deleteWorktree",
+      "git.repositories.merge",
+      "git.repositories.openWorktree",
+      "git.repositories.openWorktreeInNewWindow",
+      "git.repositories.rebase",
+      "git.repositories.stashApply",
+      "git.repositories.stashCopyBranchName",
+      "git.repositories.stashDrop",
+      "git.repositories.stashPop",
+      "git.repositories.stashView",
+      "git.repositories.worktreeCopyBranchName",
+      "git.repositories.worktreeCopyCommitHash",
+      "git.repositories.worktreeCopyPath",
+      "git.restoreCommitTemplate",
+      "git.revealFileInOS.linux",
+      "git.revealFileInOS.mac",
+      "git.revealFileInOS.windows",
+      "git.revealInExplorer",
+      "git.revertChange",
+      "git.revertSelectedRanges",
+      "git.runGitMerge",
+      "git.runGitMergeDiff3",
+      "git.showOutput",
+      "git.stage",
+      "git.stageAll",
+      "git.stageAllMerge",
+      "git.stageAllTracked",
+      "git.stageAllUntracked",
+      "git.stageChange",
+      "git.stageFile",
+      "git.stageSelectedRanges",
+      "git.stash",
+      "git.stashApply",
+      "git.stashApplyEditor",
+      "git.stashApplyLatest",
+      "git.stashDrop",
+      "git.stashDropAll",
+      "git.stashDropEditor",
+      "git.stashIncludeUntracked",
+      "git.stashPop",
+      "git.stashPopEditor",
+      "git.stashPopLatest",
+      "git.stashStaged",
+      "git.stashView",
+      "git.sync",
+      "git.syncRebase",
+      "git.timeline.compareWithSelected",
+      "git.timeline.copyCommitId",
+      "git.timeline.copyCommitMessage",
+      "git.timeline.openDiff",
+      "git.timeline.selectForCompare",
+      "git.timeline.viewCommit",
+      "git.undoCommit",
+      "git.unstage",
+      "git.unstageAll",
+      "git.unstageChange",
+      "git.unstageFile",
+      "git.unstageSelectedRanges",
+      "git.viewChanges",
+      "git.viewCommit",
+      "git.viewStagedChanges",
+      "git.viewUntrackedChanges"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": false
+      },
+      "virtual_workspaces": true,
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

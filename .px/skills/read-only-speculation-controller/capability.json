@@ -1,0 +1,39 @@
+{
+  "admission_record": "read-only-speculation-controller",
+  "body_sha256": "9f80c8f11157a2fa0a97293ef0affaf01ae1eb5904a4d2352a661c97e714852e",
+  "contract": {
+    "available": true,
+    "sha256": "02b9778b5b1cfcf2f047053d587844f58528d4b87f88cc884c46c887828ac46a",
+    "source": "registry/skill_packages/read-only-speculation-controller.json"
+  },
+  "description": "Predict and prefetch likely next read-only tool results into a quarantined cache. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "read-only-speculation-controller",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/read-only-speculation-controller"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "advanced",
+    "controller",
+    "only",
+    "read",
+    "speculation"
+  ],
+  "version": "0.1.0"
+}

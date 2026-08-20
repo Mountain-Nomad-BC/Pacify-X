@@ -1,0 +1,12 @@
+{
+  "active_gap_id": "PX-OS-877",
+  "learned": "The bounded knowledge test-project helper now provisions the exact current learning lifecycle, confidence bounds, history cap, direct-write denial, loser retention, partial promotion, rollback, and non-destructive retirement policy contract.",
+  "next_action": "Run only tests/test_knowledge_core_controller.py once.",
+  "unresolved_branch_gap_ids": ["PX-OS-877", "PX-OS-011"],
+  "evidence": [
+    {
+      "claim": "Explicit policy fixture added under admission 4944.",
+      "reference": "tests/test_knowledge_core_controller.py:_project"
+    }
+  ]
+}

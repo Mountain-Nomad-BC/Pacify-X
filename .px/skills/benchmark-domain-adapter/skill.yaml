@@ -1,0 +1,38 @@
+{
+  "admission_record": "benchmark-domain-adapter",
+  "body_sha256": "d09d5a78d6505caa56f1c412e38af37228e7c7e1940e79ebe092a638e985db1a",
+  "contract": {
+    "available": true,
+    "sha256": "5fa9ccfbe02400587099f6bb69e4bfe18327fbb3d9c8f56ef0af7144a7356c8e",
+    "source": "registry/skill_packages/benchmark-domain-adapter.json"
+  },
+  "description": "Translate an academic benchmark into independent framework domain cases, outcomes, risks, and evidence requirements. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "benchmark-domain-adapter",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/benchmark-domain-adapter"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "adapter",
+    "benchmark",
+    "domain",
+    "research-ops"
+  ],
+  "version": "0.1.0"
+}

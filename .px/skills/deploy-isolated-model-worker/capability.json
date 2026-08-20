@@ -1,0 +1,39 @@
+{
+  "admission_record": "deploy-isolated-model-worker",
+  "body_sha256": "936a84618047127e17ce58c73ca1d6e00f4ea001254edd4051323401a0da8927",
+  "contract": {
+    "available": true,
+    "sha256": "60b56c96c83f61fcab62f74e5a4ca9584a3ccc035e25357652974cd9e541e6a1",
+    "source": "registry/skill_packages/deploy-isolated-model-worker.json"
+  },
+  "description": "Design, provision, validate, and recover an isolated accelerator-backed worker for inference, embedding, or reranking without coupling model dependencies to the primary application. Use when a project needs a local GPU/accelerator service, model warmup, health contracts, or a replaceable ML worker boundary.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "deploy-isolated-model-worker",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/deploy-isolated-model-worker"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "model",
+    "worker",
+    "gpu",
+    "container",
+    "isolation"
+  ],
+  "version": "0.1.0"
+}

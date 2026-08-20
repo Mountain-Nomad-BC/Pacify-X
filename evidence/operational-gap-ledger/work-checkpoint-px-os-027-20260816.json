@@ -1,0 +1,21 @@
+{
+  "active_gap_id": "PX-OS-027",
+  "learned": "The attempted ledger checkpoint/admission at 20:19 failed before append because PowerShell stripped JSON quotes; the bounded diagnostic then ran without a recorded admission. Its evidence is retained: conditional-never now skips durably, same-scope exclusive effects serialize correctly, and pause fails to reach paused.",
+  "next_action": "Repair the two stale workflow tests and expose then repair the actual pause transition defect in the admitted workflow/test scope.",
+  "unresolved_branch_gap_ids": [
+    "PX-OS-027",
+    "PX-OS-056",
+    "PX-OS-057",
+    "PX-OS-891"
+  ],
+  "evidence": [
+    {
+      "claim": "Three focused workflow tests failed in 20.84 seconds.",
+      "reference": "pytest focused diagnostic 2026-08-16T20:19 local output"
+    },
+    {
+      "claim": "The two pre-run ledger CLI calls failed JSON decoding and appended no event.",
+      "reference": "scripts/operational_gap_ledger.py JSONDecodeError at 2026-08-16T20:19"
+    }
+  ]
+}

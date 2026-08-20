@@ -1,0 +1,39 @@
+{
+  "admission_record": "test-n8n-supabase-integrations",
+  "body_sha256": "23c0b549b22743d4347330cc62769c45263d7fd2a57ee4f5108cdd9f7c2a520b",
+  "contract": {
+    "available": true,
+    "sha256": "86bb1fcac71dc56ffbdf683f31e3a7633cc6b1e8f8ab494b7454412dd531d9e8",
+    "source": "registry/skill_packages/test-n8n-supabase-integrations.json"
+  },
+  "description": "Test n8n-Supabase integrations end to end with local services, seeded role matrices, failures, and external outcome assertions.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "test-n8n-supabase-integrations",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/test-n8n-supabase-integrations"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "cross",
+    "e2e",
+    "failure-injection",
+    "fixtures",
+    "rls-tests"
+  ],
+  "version": "1.0.0"
+}

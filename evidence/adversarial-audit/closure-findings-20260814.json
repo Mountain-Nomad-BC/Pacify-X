@@ -1,0 +1,71 @@
+{
+  "schema_version": "px.adversarial-closure-findings/1.0",
+  "generated_utc": "2026-08-14T03:48:00Z",
+  "authority": "Observed findings and dispositions; no item is omitted merely because it was repaired during the audit.",
+  "findings": [
+    {
+      "id": "PX-CLOSE-001",
+      "severity": "critical",
+      "finding": "Failed Windows test cleanup retries stranded four PX-owned workspaces and consumed about 23.6 GiB.",
+      "status": "accepted",
+      "disposition": "Bounded read-only-aware cleanup retries, exact-root validation, regression coverage, and governed reconciliation reclaimed all four workspaces with zero failures.",
+      "evidence_refs": ["runtime/resource_lifecycle.py", "tests/test_resource_lifecycle.py", "evidence/learning/owned-workspace-reclamation-promotion-20260813.json"]
+    },
+    {
+      "id": "PX-CLOSE-002",
+      "severity": "high",
+      "finding": "A Linux VS Code CLI launched under WSL prompts interactively and blocks noninteractive VSIX installation.",
+      "status": "accepted",
+      "disposition": "The owned Linux host sets VS Code's documented DONT_PROMPT_WSL_INSTALL override only for the isolated child.",
+      "evidence_refs": ["extension/scripts/run-installed-vsix-smoke.js", "extension/evidence/installed-vsix-smoke-linux.json"]
+    },
+    {
+      "id": "PX-CLOSE-003",
+      "severity": "high",
+      "finding": "The Linux certification profile assumed the Windows `python` launcher even though Ubuntu exposes `python3`.",
+      "status": "accepted",
+      "disposition": "The isolated workspace and host test now select python on Windows and python3 on non-Windows platforms.",
+      "evidence_refs": ["extension/scripts/run-installed-vsix-smoke.js", "extension/tests/vscode-host/index.js", "extension/evidence/installed-vsix-smoke-linux.json"]
+    },
+    {
+      "id": "PX-CLOSE-004",
+      "severity": "high",
+      "finding": "The installed-host listener test assumed a desktop trash service and Windows shell commands.",
+      "status": "accepted",
+      "disposition": "The disposable Linux profile disables trash and uses platform-native terminal/task commands while retaining VS Code file-operation listeners.",
+      "evidence_refs": ["extension/scripts/run-installed-vsix-smoke.js", "extension/tests/vscode-host/index.js", "extension/evidence/installed-vsix-smoke-linux.json"]
+    },
+    {
+      "id": "PX-CLOSE-005",
+      "severity": "blocker",
+      "finding": "A crash after a signed Studio event write but before head replacement left a valid trailing event that ordinary reconciliation could not consume.",
+      "status": "accepted",
+      "disposition": "Explicitly approved recovery accepts exactly one authenticated linked trailing event and rejects tampering, illegal transitions, missing ancestry, or multiple-event divergence.",
+      "evidence_refs": ["runtime/studio_run_control.py", "tests/test_studio_run_control.py"]
+    },
+    {
+      "id": "PX-CLOSE-006",
+      "severity": "medium",
+      "finding": "The first formal fault campaign correctly failed because the generated provider-route index was stale.",
+      "status": "accepted",
+      "disposition": "The route index was rebuilt from current source; the same two-lane/eight-dimension campaign then passed.",
+      "evidence_refs": ["registry/provider_route_scan.json", "evidence/fault-campaign/release-fault-campaign-20260813.json"]
+    },
+    {
+      "id": "PX-CLOSE-007",
+      "severity": "medium",
+      "finding": "The Windows installed test host briefly reported extension-host unresponsiveness while built-in GitHub authentication performed account probes.",
+      "status": "accepted_limitation",
+      "disposition": "PX activation was independently measured at 4.544 ms with zero activation subprocesses, discovery, or project writes; the external built-in work is not attributed to PX and did not invalidate the host receipt.",
+      "evidence_refs": ["extension/evidence/installed-vsix-smoke.json"]
+    },
+    {
+      "id": "PX-CLOSE-008",
+      "severity": "informational",
+      "finding": "NVIDIA hardware is visible but the current Python environment has no compatible CUDA execution backend.",
+      "status": "accepted_limitation",
+      "disposition": "PX selects zero GPU workers and deterministic CPU fallback. Compatibility, exact-workload benchmark, correctness, VRAM, OOM and fallback logic remain gated and tested; no speedup is claimed.",
+      "evidence_refs": ["runtime/hardware_routing.py", "tests/test_hardware_routing.py", "policies/hardware-aware-execution.json"]
+    }
+  ]
+}

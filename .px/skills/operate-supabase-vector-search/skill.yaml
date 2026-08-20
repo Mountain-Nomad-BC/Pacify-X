@@ -1,0 +1,40 @@
+{
+  "admission_record": "operate-supabase-vector-search",
+  "body_sha256": "e133b865f97203834cdcb019ffe1ac5f6323b139f6ae5d6fb5b93d5968025842",
+  "contract": {
+    "available": true,
+    "sha256": "a5b06569ef62fc6ba66cf0eb9d717ddc55273c1675afe5129ef8be544f475397",
+    "source": "registry/skill_packages/operate-supabase-vector-search.json"
+  },
+  "description": "Design and operate pgvector schemas, embedding lifecycle, indexes, filtered matching RPCs, and retrieval evaluation.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "operate-supabase-vector-search",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/operate-supabase-vector-search"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "embeddings",
+    "hnsw",
+    "match_documents",
+    "pgvector",
+    "retrieval-evaluation",
+    "supabase"
+  ],
+  "version": "1.0.0"
+}

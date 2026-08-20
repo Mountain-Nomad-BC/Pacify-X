@@ -1,0 +1,13 @@
+{
+  "schema_version": "px.external-extension-verification/1.0",
+  "card_id": "H01",
+  "extension_root": "portable-sources/Pacify-X_Extension",
+  "verified_at": "2026-08-11T00:00:00Z",
+  "artifacts": {
+    "src/ollamaProvider.js": "c17dd64824792f466993d516ccfaa6e4d7911ddc39e722801ac570b36f4290fc",
+    "tests/ollama-provider.test.js": "772c05afdf55acbbfa53c1c56bc8c2564727c9c5bf608bb3f8e49bb2bb20f950"
+  },
+  "verification": "node --test tests/ollama-provider.test.js",
+  "result": "4 passed",
+  "faults": ["disconnect", "malformed", "truncated", "oversized", "idle-timeout", "total-timeout", "remote-error", "http-error", "cancelled"]
+}

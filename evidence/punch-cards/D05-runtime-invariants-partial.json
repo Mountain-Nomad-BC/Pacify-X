@@ -1,0 +1,20 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "legacy_card_id": "D05",
+  "status": "partial",
+  "recorded_at": "2026-08-11T00:00:00Z",
+  "claim": "The Python coordination runtime now rejects hostile state transitions before WAL publication and audits retained coordination state on startup.",
+  "artifacts": [
+    {"path": "runtime/state_invariants.py", "sha256": "82761d9a94e4fbbeffb9210f0cdc50efb5f49e4dd9f613abc748d79af02c321a"},
+    {"path": "runtime/wal_transaction.py", "sha256": "b9cc28a813b37a2873f8449c00f9afc88ef5b3753a08a1281c5e0292a202bec7"},
+    {"path": "runtime/startup.py", "sha256": "2ef047a51641a1eb263e50aef200f7ae54c56ce52715f14a9052b7c57bd09296"},
+    {"path": "tests/test_state_invariants.py", "sha256": "18920415a2f30df512fd80ed1f61e86a501d8330dbfb214d2c63b12ff9c0615f"}
+  ],
+  "verification": [
+    {"command": "python -m pytest tests/test_state_invariants.py tests/test_wal_transaction.py tests/test_operational_event_bus.py tests/test_drop_in_bootstrap.py -q", "result": "36 passed independently"},
+    {"command": "agent expanded D05 lane", "result": "56 passed and 9 subtests; one concurrent contract-corpus drift failure excluded from the focused claim"},
+    {"command": "python -m runtime.cli validate", "result": "valid=true"},
+    {"command": "live runtime.cli startup --project .", "result": "22 retained coordination revisions audited"}
+  ],
+  "remaining_acceptance_gap": "The VS Code extension has a separate JavaScript authoritative coordination writer. It must enforce equivalent pre-publication invariants before D05 can be accepted globally."
+}

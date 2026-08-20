@@ -1,0 +1,34 @@
+{
+  "authoritative_source_sha256": "ff20550f0d408ae43892efe8ed9b7b6460c862dc27335c977dd5312ca2988d8a",
+  "authority_and_safety": "A certificate is revocable, scope-bound, and hash-bound; any material change or failed dependency invalidates affected claims until recertification.",
+  "evidence": [
+    "normalized inputs",
+    "owner and dependency resolution",
+    "structured result",
+    "negative-case result",
+    "content hashes",
+    "verification receipt"
+  ],
+  "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+  "id": "collision-merge-planner",
+  "implementation_disposition": "namespaced_exact_body",
+  "implementation_target": ".px/skills/manage-revocable-certification/scripts/authoritative_collision_merge_planner.py",
+  "inputs": {
+    "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+    "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+    "target": "Explicit file, repository, service, record set, or artifact scope."
+  },
+  "kind": "script",
+  "procedure": [
+    "freeze-scope-and-denominators",
+    "reconcile-owners-and-artifacts",
+    "run-independent-completion-gates",
+    "issue-hash-bound-certificate",
+    "monitor-revoke-and-recertify"
+  ],
+  "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+  "source_paths": [
+    "packs/07-revocable-certification-integration_v1.0.0/scripts/collision_merge_planner.py"
+  ],
+  "trigger": "Use when the requested outcome is collision merge planner or when that outcome is a required dependency."
+}

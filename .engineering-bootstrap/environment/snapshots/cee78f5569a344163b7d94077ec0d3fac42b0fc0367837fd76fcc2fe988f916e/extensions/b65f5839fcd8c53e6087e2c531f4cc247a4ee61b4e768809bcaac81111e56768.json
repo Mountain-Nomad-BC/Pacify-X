@@ -1,0 +1,148 @@
+{
+  "id": "uctakeoff.vscode-counter",
+  "name": "VS Code Counter",
+  "version": "3.7.2",
+  "publisher": "uctakeoff",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "menus"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "uctakeoff.vscode-counter",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "uctakeoff.vscode-counter",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "uctakeoff.vscode-counter",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "extension.vscode-counter.countInDirectory",
+      "invocation": "vscode.commands.executeCommand('extension.vscode-counter.countInDirectory', ...args)",
+      "title": "Count lines in directory",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.vscode-counter.countInFile",
+      "invocation": "vscode.commands.executeCommand('extension.vscode-counter.countInFile', ...args)",
+      "title": "Toggle Real-time Counter Visibility",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.vscode-counter.countInWorkspace",
+      "invocation": "vscode.commands.executeCommand('extension.vscode-counter.countInWorkspace', ...args)",
+      "title": "Count lines in workspace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.vscode-counter.outputAvailableLanguages",
+      "invocation": "vscode.commands.executeCommand('extension.vscode-counter.outputAvailableLanguages', ...args)",
+      "title": "Check available languages",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.vscode-counter.saveLanguageConfigurations",
+      "invocation": "vscode.commands.executeCommand('extension.vscode-counter.saveLanguageConfigurations', ...args)",
+      "title": "Save the collected language configurations",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "workspaceContains:**/.VSCodeCounterCountRealtime"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "uctakeoff.vscode-counter",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:menus"
+    ],
+    "interface": [
+      "extension.vscode-counter.countInDirectory",
+      "extension.vscode-counter.countInFile",
+      "extension.vscode-counter.countInWorkspace",
+      "extension.vscode-counter.outputAvailableLanguages",
+      "extension.vscode-counter.saveLanguageConfigurations"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

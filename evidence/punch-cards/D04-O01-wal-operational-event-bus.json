@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "punch-cards-D04-O01-wal-operational-event-bus-20260811",
+  "created_utc": "2026-08-18T14:11:01.041879+00:00",
+  "cards": [
+    "D04",
+    "O01"
+  ],
+  "accepted": true,
+  "artifacts": {
+    "runtime/wal_transaction.py": "ba42f568f7cdcacf06b4afa72ea6ee7423ada9f7392f1f0b74f5b59107f43723",
+    "runtime/file_lock.py": "f37b43194647dcd8446fe9b582445fd2b94539df2b240ea132a43f57a4cd7572",
+    "tests/test_wal_transaction.py": "89b348bfd2c1362f86a2285c1319c05babaea3dca8a89709dd461b3adb096ed9",
+    "tests/test_file_lock_contention.py": "b579377c3334175f299f4a7a7341631eca7af6b7a06fa062a72d0ced29ed3142",
+    "runtime/operational_event_bus.py": "2028471cc3c522486b1af340c25d94667480ab6dcf5251c762af6f330b38f56f",
+    "tests/test_operational_event_bus.py": "c70a8c5774d859beddb59417e859f63d46f67a9e34e39fba87f68a3d018a2750"
+  },
+  "verification": {
+    "combined_pytest": "27 passed",
+    "ruff": "passed",
+    "wal_kill_campaign": "actual subprocess exit at all 27 durable boundaries",
+    "roles": [
+      "state",
+      "event",
+      "receipt",
+      "handoff",
+      "projection"
+    ],
+    "recovery": "pre-manifest rollback or post-manifest roll-forward; external-write conflict fails closed",
+    "event_bus": "ordered publication, protected head and anchor, verified replay, durable revision, in-process event subscription"
+  },
+  "performance_observation": {
+    "transactions": 30,
+    "artifacts_per_transaction": 5,
+    "median_ms": 143.269,
+    "p95_ms": 158.859,
+    "max_ms": 181.113,
+    "note": "durable fsync path on the current Windows host"
+  }
+}

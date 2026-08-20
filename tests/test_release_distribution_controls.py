@@ -38,14 +38,20 @@ def built_distribution(tmp_path_factory):
         source,
         ignore=shutil.ignore_patterns(
             ".git",
+            ".engineering-bootstrap",
+            ".venv*",
+            "Python",
+            "node_modules",
             "__pycache__",
             ".pytest_cache",
             ".ruff_cache",
+            ".vscode-test",
             "*.pyc",
             "*.pyo",
             "*.egg-info",
             "build",
             "dist",
+            "preserved-extension-installations",
         ),
     )
     output = temporary / "dist"
@@ -105,6 +111,26 @@ def _artifact_set(root: Path, version: str = "1.2.3") -> list[dict]:
         info.size = len(data)
         archive.addfile(info, io.BytesIO(data))
     return [file_record(wheel, "wheel"), file_record(sdist, "sdist")]
+
+
+def test_artifact_manifest_projects_declared_package_data() -> None:
+    manifest = generate_artifact_manifest(ROOT)
+    matching = [
+        record
+        for record in manifest["records"]
+        if record["source_path"] == "runtime/studio_operations.json"
+    ]
+    assert manifest["valid"], manifest["errors"]
+    assert {
+        (record["package_target"], record["installed_path"])
+        for record in matching
+    } == {
+        ("wheel", "engineering_bootstrap/studio_operations.json"),
+        (
+            "sdist",
+            "engineering_loop_bootstrap-0.7.0.dev0/runtime/studio_operations.json",
+        ),
+    }
 
 
 def test_release_build_occurs_once() -> None:

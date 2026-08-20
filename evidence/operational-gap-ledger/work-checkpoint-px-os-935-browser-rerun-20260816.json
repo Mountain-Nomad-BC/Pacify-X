@@ -1,0 +1,10 @@
+{
+  "active_gap_id": "PX-OS-935",
+  "learned": "Metric cards now expose escaped label/value/detail metadata, role, focus, keyboard/click action, inspect cue, and an observational non-authorizing information record. The two registered stale source assertions now match package 0.6.19 and the intended visible advanced default.",
+  "next_action": "Run syntax checks plus only the extension source contract and dashboard Playwright walk.",
+  "unresolved_branch_gap_ids": ["PX-OS-935", "PX-OS-936", "PX-OS-933"],
+  "evidence": [
+    {"claim": "Metric interaction repair implemented under admission 4961.", "reference": "extension/media/dashboard/30-components.js; extension/media/dashboard/90-controller.js"},
+    {"claim": "Two stale source expectations corrected under admission 4959.", "reference": "extension/tests/extension-contract.test.js"}
+  ]
+}

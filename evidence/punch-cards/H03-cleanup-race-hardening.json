@@ -1,0 +1,22 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "H03",
+  "status": "accepted",
+  "recorded_at": "2026-08-12T06:53:13.265253+00:00",
+  "claim": "Cleanup fails closed across path replacement, reparse, hard-link, concurrent tree, locked, partial disposal, deep-path, and Unicode cases and retains an explicit receipt for every uncertain outcome.",
+  "artifacts": [
+    {
+      "path": "evidence/extension-verification/H03-cleanup-hardening.json",
+      "sha256": "fcfd9f0b008fc21a961af1c58f5ed6863282baf130dfc527361e259d2f637fdf"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --test tests/cleanup-manager.test.js tests/extension-contract.test.js",
+      "result": "27 passed independently"
+    }
+  ],
+  "limitations": [
+    "Recycle-bin placement is adapter-reported because the VS Code API does not expose a portable independent placement proof."
+  ]
+}

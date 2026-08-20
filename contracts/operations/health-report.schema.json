@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:operations:health-report",
+  "title": "PACIFY-X canonical health report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "valid", "evaluated_at", "overall_state", "summary", "records"],
+  "properties": {
+    "schema_version": {"const": "px.health-report/1.0"},
+    "valid": {"const": true},
+    "evaluated_at": {"type": "string", "format": "date-time"},
+    "overall_state": {"enum": ["healthy", "degraded", "blocked", "stale", "unknown"]},
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["healthy", "degraded", "blocked", "stale", "unknown"],
+      "properties": {
+        "healthy": {"type": "integer", "minimum": 0},
+        "degraded": {"type": "integer", "minimum": 0},
+        "blocked": {"type": "integer", "minimum": 0},
+        "stale": {"type": "integer", "minimum": 0},
+        "unknown": {"type": "integer", "minimum": 0}
+      }
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/health_record"}
+    }
+  },
+  "$defs": {
+    "nullable_datetime": {
+      "anyOf": [
+        {"type": "string", "format": "date-time"},
+        {"type": "null"}
+      ]
+    },
+    "health_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["surface_id", "domain", "state", "lifecycle", "authority", "freshness", "last_success", "last_failure", "degradation", "blockers", "remediation"],
+      "properties": {
+        "surface_id": {"type": "string", "pattern": "^[a-z][a-z0-9.-]{2,95}$"},
+        "domain": {"enum": ["runtime", "extension", "providers", "observers", "sensors", "coordination", "memory"]},
+        "state": {"enum": ["healthy", "degraded", "blocked", "stale", "unknown"]},
+        "lifecycle": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["configured", "detected", "connected", "authoritative", "ready"],
+          "properties": {
+            "configured": {"type": "boolean"},
+            "detected": {"type": "boolean"},
+            "connected": {"type": "boolean"},
+            "authoritative": {"type": "boolean"},
+            "ready": {"type": "boolean"}
+          }
+        },
+        "authority": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["owner", "kind", "source"],
+          "properties": {
+            "owner": {"type": "string", "minLength": 1},
+            "kind": {"enum": ["authoritative", "observer", "self_asserted"]},
+            "source": {"type": "string", "minLength": 1}
+          }
+        },
+        "freshness": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["observed_at", "evaluated_at", "age_seconds", "ttl_seconds", "stale"],
+          "properties": {
+            "observed_at": {"$ref": "#/$defs/nullable_datetime"},
+            "evaluated_at": {"type": "string", "format": "date-time"},
+            "age_seconds": {
+              "anyOf": [
+                {"type": "number", "minimum": 0},
+                {"type": "null"}
+              ]
+            },
+            "ttl_seconds": {"type": "integer", "minimum": 1, "maximum": 86400},
+            "stale": {"type": "boolean"}
+          }
+        },
+        "last_success": {"$ref": "#/$defs/nullable_datetime"},
+        "last_failure": {
+          "anyOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["at", "code"],
+              "properties": {
+                "at": {"type": "string", "format": "date-time"},
+                "code": {"type": "string", "pattern": "^[a-z][a-z0-9._-]{1,95}$"}
+              }
+            }
+          ]
+        },
+        "degradation": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^[a-z][a-z0-9._-]{1,95}$"}
+        },
+        "blockers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^[a-z][a-z0-9._-]{1,95}$"}
+        },
+        "remediation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["summary", "deep_link"],
+          "properties": {
+            "summary": {"type": "string", "minLength": 1},
+            "deep_link": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "admission_record": "deep-module-design",
+  "body_sha256": "9464e69f622c924e2d08e4813439435d4e05f99a6dc06d8c2dd6409c5a573b32",
+  "contract": {
+    "available": true,
+    "sha256": "7eaf4a773b5166898c24a2856aeb4669a0a1aa76540f47784d149384d5a512a7",
+    "source": "registry/skill_packages/deep-module-design.json"
+  },
+  "description": "Design deep modules with small stable interfaces, strong locality, and explicit seams.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "deep-module-design",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/deep-module-design"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "deep",
+    "design",
+    "engineering-reasoning",
+    "module"
+  ],
+  "version": "1.0.0"
+}

@@ -1,0 +1,12 @@
+{
+  "active_gap_id": "PX-OS-934",
+  "learned": "The watch stamp now hashes direct watched files only when each is at most 1 MiB and the deterministic global sentinel budget remains at or below 4 MiB. Directory children remain metadata-only; a changed sentinel triggers the existing complete fingerprint.",
+  "next_action": "Run syntax validation and the one cache test file once.",
+  "unresolved_branch_gap_ids": ["PX-OS-934"],
+  "evidence": [
+    {
+      "claim": "Bounded direct-content sentinel implemented under admission 4950.",
+      "reference": "extension/src/pxBridge.js:snapshotSourceRevision"
+    }
+  ]
+}

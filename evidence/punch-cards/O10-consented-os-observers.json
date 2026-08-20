@@ -1,0 +1,71 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "O10",
+  "status": "accepted",
+  "recorded_at": "2026-08-12T06:55:43.885817+00:00",
+  "claim": "Optional operating-system observation is explicit-consent, exact-scope, metadata-only, bounded, loss-aware, durably receipted, disabled by default, and truthful about platform, privilege, collector, decoding, and entitlement limitations.",
+  "artifacts": [
+    {
+      "path": "runtime/operational_observers.py",
+      "sha256": "6da9dd927c97b96c40f3b1d4e7f3fd2821c23d9ac6267f1d637427145b15028b"
+    },
+    {
+      "path": "tests/test_operational_observers.py",
+      "sha256": "dd1a9406b00d4088253cfc970a07814d7bd6efc06fa390107439495ef94e2b62"
+    },
+    {
+      "path": "contracts/operations/os-observer-registry.schema.json",
+      "sha256": "81fb1631c0365cda1986d6dcd285860af2b6ceda565755c4053b452479d9c9b8"
+    },
+    {
+      "path": "registry/os_observer_registry.json",
+      "sha256": "5ce952daba76b8e2c85a1749667be8d29900fe55baa7a1ec43cda2432715527c"
+    },
+    {
+      "path": "registry/operation_route_registry.json",
+      "sha256": "4fde6be2ebba2143a55beefd7eb401148aad68df5ebe2e8439fdca90388beea1"
+    },
+    {
+      "path": "registry/contract_ownership.json",
+      "sha256": "0d0a52eab03b85507e5971b8693c657fec5f175d6e2fa50285048e738c75cdfa"
+    }
+  ],
+  "verification": [
+    {
+      "command": "python -m pytest tests/test_operational_observers.py tests/test_contract_runtime.py -q",
+      "result": "39 passed and 332 contract subtests independently"
+    },
+    {
+      "command": "expanded adversarial O10 lane",
+      "result": "42 passed and 332 contract subtests"
+    },
+    {
+      "command": "python -m runtime.cli validate",
+      "result": "valid=true with 6 active contract families"
+    },
+    {
+      "command": "probe_observers() on the certification host",
+      "result": "Windows ETW collector present, not elevated, not configured, not consented, inactive; Linux and macOS explicitly unsupported on this host"
+    },
+    {
+      "command": "logman query -ets after tests",
+      "result": "zero PacifyX-* sessions"
+    }
+  ],
+  "acceptance": {
+    "automatic_start": false,
+    "explicit_consent_and_exact_scope": true,
+    "fixed_argv_non_shell_lifecycle": true,
+    "bounded_metadata_capture_and_drop_health": true,
+    "expiry_disable_and_uninstall": true,
+    "durable_receipts_and_event_outbox": true,
+    "failure_details_sanitized": true,
+    "macos_support_overstated": false,
+    "observer_started_during_certification": false
+  },
+  "limitations": [
+    "ETW raw decoding is not bundled; the admitted adapter controls lifecycle and filters consented metadata supplied by an admitted decoder.",
+    "Linux exact-directory Audit lifecycle is implemented, but raw Audit decoding and eBPF loading are not bundled.",
+    "macOS EndpointSecurity remains unsupported without a separately signed, notarized, user-approved system extension carrying Apple's entitlement."
+  ]
+}

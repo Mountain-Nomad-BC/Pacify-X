@@ -1,0 +1,38 @@
+{
+  "admission_record": "configure-n8n",
+  "body_sha256": "88358555f9da1f345d96191ab50ada90b7e84f68fb244ba9080ea6b35fbb9cbe",
+  "contract": {
+    "available": true,
+    "sha256": "d4006b32d894b846d3aa8fbdba455f1f563101730828102d845429a8cbad0eb3",
+    "source": "registry/skill_packages/configure-n8n.json"
+  },
+  "description": "Configure n8n URLs, database, encryption, execution, logging, retention, and runtime settings from an explicit contract.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "configure-n8n",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/configure-n8n"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "environment-variables",
+    "n8n",
+    "reverse-proxy",
+    "runtime-contract"
+  ],
+  "version": "1.0.0"
+}

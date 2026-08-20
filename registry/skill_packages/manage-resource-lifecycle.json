@@ -1,5 +1,5 @@
 {
-  "body": ".agents/skills/manage-resource-lifecycle/SKILL.md",
+  "body": ".px/skills/manage-resource-lifecycle/SKILL.md",
   "body_sha256": "418f87a6f2b21746e7202c297405d0d08761fd7325b0cbc5774f30737a5e6755",
   "capability_tags": [
     "cleanup",
@@ -28,7 +28,7 @@
     "type": "clean_room_user_specification_implementation"
   },
   "references": [
-    ".agents/skills/manage-resource-lifecycle/references/lifecycle-policy.md"
+    ".px/skills/manage-resource-lifecycle/references/lifecycle-policy.md"
   ],
   "status": "active",
   "tests": "tests/test_resource_lifecycle.py",

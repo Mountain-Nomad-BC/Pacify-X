@@ -2,7 +2,7 @@
   "id": "guided-procedure-wizard",
   "version": "1.0.0",
   "status": "active",
-  "body": ".agents/skills/guided-procedure-wizard/SKILL.md",
+  "body": ".px/skills/guided-procedure-wizard/SKILL.md",
   "body_sha256": "42fe1e69b7ce78d824d351a3220b912d0b6a802eee3ee6885bba047be831c137",
   "references": [],
   "capability_tags": [
@@ -21,7 +21,7 @@
       "evidence/integration/pxi-20260804/candidate_disposition_ledger.json",
       "LICENSES/mattpocock-skills-MIT.txt"
     ],
-    "canonical_owner": ".agents/skills/guided-procedure-wizard/SKILL.md"
+    "canonical_owner": ".px/skills/guided-procedure-wizard/SKILL.md"
   },
   "clean_room": false,
   "tests": "tests/test_project_reasoning.py",

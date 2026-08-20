@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "goal_id": "px-universal-visibility-and-operational-completion",
+  "project_id": "pacify-x",
+  "status": "in_progress",
+  "continuation_budget": 95,
+  "paused_session_id": null,
+  "history": [
+    {
+      "event": "start",
+      "from": "planned",
+      "to": "in_progress",
+      "session_id": "planning-20260811",
+      "blocker": null,
+      "evidence_ids": [
+        "source-intake-c25a72a8-420e4101-390359dc"
+      ],
+      "acceptance": {}
+    },
+    {
+      "event": "continue",
+      "from": "in_progress",
+      "to": "in_progress",
+      "session_id": "implementation-20260811",
+      "blocker": null,
+      "evidence_ids": [
+        "plan-dag-59-cards"
+      ],
+      "acceptance": {}
+    }
+  ],
+  "event_applied": true,
+  "errors": [],
+  "authority_granted": false,
+  "state_sha256": "ea7574227d1a5990e8d87cf774b8298b4451a663aed496ef2fffcaf4370a6ce6"
+}

@@ -1,0 +1,84 @@
+{
+  "schema_version": "px.external-functional-validation-remediation/2.0",
+  "source": {
+    "name": "FUNCTIONAL_VALIDATION_R2_REPORT.md",
+    "sha256": "85f3252b0add06fb534179f476db664a4dd5a6807ed53174272b584143c76f49",
+    "findings_sha256": "99a565ea6dd275c5af6af5cfa82123bf95b14b83376cc7d35afdec6c20a5aa65",
+    "target_archive": "PACIFY_X_FUNCTIONAL_REPAIRS_ONLY_UNCERTIFIED_AUDIT_20260814_R2.zip",
+    "target_sha256": "b521a10aadf987127b23f2035b6a9027265d36abb06df6fae44c09c81db4eecf",
+    "received_date": "2026-08-14",
+    "checksum_manifest_entries": 22,
+    "checksum_manifest_valid": true
+  },
+  "denominator": {
+    "total": 5,
+    "severity": {"high": 1, "medium": 3, "low": 1}
+  },
+  "status_counts": {
+    "open": 0,
+    "fixed_pending_independent_verification": 2,
+    "improved_residual_debt": 1,
+    "accepted": 2,
+    "blocked": 0
+  },
+  "release_claim": {
+    "complete": false,
+    "certified": false,
+    "reason": "R2 control-path repairs and further CSS consolidation pass focused and governed sections; exact-artifact independent verification and deferred full certification remain outstanding. Same-file CSS debt is reduced, not eliminated."
+  },
+  "repair_evidence": "evidence/adversarial-audit/functional-validation-r2-repair-20260814.json",
+  "findings": [
+    {
+      "id": "R2-F001",
+      "severity": "high",
+      "finding": "Approval capabilities remain self-issuable outside an authenticated human host action",
+      "external_status": "open",
+      "status": "fixed_pending_independent_verification",
+      "root_cause": "Python both minted and consumed approval records, while a same-user writable shared-secret enrollment file supplied no independent host authority.",
+      "repair": "Approval signing moved entirely into the VS Code extension host using an RSA private key retained in SecretStorage. Python exposes only a read-only verifier locator, verifies exact project/kind/operation/payload/expiry/nonce claims, and consumes each nonce once. The public Python issuer and shared broker-secret CLI were removed.",
+      "evidence_refs": ["runtime/studio_approval.py", "runtime/studio_authority.py", "runtime/studio_api.py", "extension/src/studioApprovalHost.js", "extension/src/pxBridge.js", "extension/src/extension.js", "tests/test_studio_api.py", "extension/tests/px-bridge-cache.test.js"]
+    },
+    {
+      "id": "R2-F002",
+      "severity": "medium",
+      "finding": "Relative key-root locators split authentication across child working directories",
+      "external_status": "open",
+      "status": "accepted",
+      "root_cause": "PX_STUDIO_KEY_ROOT was accepted and forwarded without an absolute-path grammar.",
+      "repair": "Relative configured roots now fail closed; admitted absolute roots are canonicalized before propagation.",
+      "evidence_refs": ["runtime/studio_authority.py", "tests/test_studio_api.py", "registry/operational_validation_r3_20260814.json"],
+      "independent_verification": "R3 OP-M09 passed relative-root rejection and absolute-root canonicalization."
+    },
+    {
+      "id": "R2-F003",
+      "severity": "medium",
+      "finding": "Prefix-based containment check admits an in-project ..broker authority root",
+      "external_status": "open",
+      "status": "fixed_pending_independent_verification",
+      "root_cause": "The JavaScript boundary used a lexical startsWith('..') test and Python did not independently reject project-contained authority roots.",
+      "repair": "The bridge now uses component-aware canonical containment, and StudioAuthorityStore independently rejects any authority root equal to or beneath the project.",
+      "evidence_refs": ["extension/src/pxBridge.js", "runtime/studio_authority.py", "extension/tests/px-bridge-cache.test.js", "tests/test_studio_api.py"]
+    },
+    {
+      "id": "R2-F004",
+      "severity": "medium",
+      "finding": "Broker secret rotation or loss can disable all approval-gated mutations",
+      "external_status": "open",
+      "status": "accepted",
+      "root_cause": "A single shared secret and create-only enrollment record had neither proven rotation nor a user-mediated recovery lifecycle.",
+      "repair": "The host now retains a bounded private-key history, authorizes normal rotation with the old key, offers an explicit modal recovery path when the old key is unavailable, and backs up the prior verifier before recovery.",
+      "evidence_refs": ["extension/src/studioApprovalHost.js", "extension/src/pxBridge.js", "extension/src/extension.js", "extension/tests/px-bridge-cache.test.js", "registry/operational_validation_r3_20260814.json"],
+      "independent_verification": "R3 OP-M10 passed rotation, continued operation, explicit recovery, denial, and bounded backup behavior."
+    },
+    {
+      "id": "R2-F005",
+      "severity": "low",
+      "finding": "CSS ownership improved but same-file selector duplication remains substantial",
+      "external_status": "improved_residual_debt",
+      "status": "improved_residual_debt",
+      "root_cause": "Legacy compatibility generations retain sequential same-file overrides even after cross-file ownership was consolidated.",
+      "repair": "Redundant base/override blocks were merged without changing the layer contract. Duplicate selectors fell from 167 to 157 and duplicate occurrences from 208 to 193; the enforced baseline was ratcheted and cross-file duplication remains zero.",
+      "evidence_refs": ["extension/media/dashboard.css", "extension/resources/ui/css-audit-baseline.json", "extension/scripts/audit-dashboard-css.js", "extension/tests/ui-scaffold.test.js"]
+    }
+  ]
+}

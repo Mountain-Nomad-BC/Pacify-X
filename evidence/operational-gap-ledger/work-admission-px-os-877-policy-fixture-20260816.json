@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-877",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004943",
+  "authority": "The governed Studio receipt identifies an incomplete bounded knowledge-project bootstrap fixture.",
+  "effect": "write",
+  "scope": ["tests/test_knowledge_core_controller.py"],
+  "expected_effect": "Every knowledge-controller test project explicitly provisions the required fail-closed learning-promotion policy without weakening controller behavior.",
+  "rollback": "Single fixture-helper edit; retain failures and revert through explicit patch if policy validation is bypassed.",
+  "evidence": [
+    {
+      "claim": "Immediate shared-root-cause checkpoint.",
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004943"
+    }
+  ]
+}

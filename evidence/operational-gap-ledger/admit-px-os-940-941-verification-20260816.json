@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-940",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004995",
+  "effect": "execute",
+  "scope": [
+    "node --check extension/media/dashboard/48-graph-surface.js",
+    "node --check extension/media/dashboard/49-studio-editors.js",
+    "node --check extension/media/dashboard/90-controller.js",
+    "node --test --test-name-pattern targeted-repair-pattern extension/tests/ui-scaffold.test.js extension/tests/extension-contract.test.js extension/tests/dashboard-e2e.test.js"
+  ],
+  "authority": "The registered Workflow Builder and Knowledge Graph gaps require governed focused verification after repair.",
+  "expected_effect": "The two normalized editor models, source contracts, persisted state, metric metadata, skill revision identity, graph query state, graph effective mode, and browser interactions pass; CSS ownership remains explicitly excluded and open.",
+  "rollback": "Read-only focused execution; log any newly exposed failure before repair and do not run the dashboard section yet.",
+  "evidence": [{"claim": "Immediate post-repair governed checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004995"}]
+}

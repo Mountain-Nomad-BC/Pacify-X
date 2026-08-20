@@ -8,6 +8,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from .repository_scope import is_project_source
+
 
 PROCESS_CALLS = {
     "subprocess.run",
@@ -36,6 +38,16 @@ MUTATION_NAMES = {
 }
 DESTRUCTIVE_NAMES = {"rmtree", "unlink", "rmdir"}
 RESOURCE_LIFECYCLE_OWNER = "runtime/resource_lifecycle.py"
+RECOVERABLE_RECLAMATION_OWNERS = {
+    "scripts/archive_committed_wal.py": "policies/operational-evidence-retention.json",
+    "scripts/archive_project_map_history.py": "policies/operational-evidence-retention.json",
+    "runtime/global_skill_isolation.py": "policies/operational-evidence-retention.json",
+    "runtime/operational_gap_ledger.py": "policies/operational-evidence-retention.json",
+    "runtime/skill_studio.py": "policies/operational-evidence-retention.json",
+    "runtime/studio_authority.py": "policies/operational-evidence-retention.json",
+    "runtime/studio_models.py": "policies/operational-evidence-retention.json",
+    "runtime/work_admission.py": "policies/operational-evidence-retention.json",
+}
 
 
 def _call_name(node: ast.Call) -> str:
@@ -92,7 +104,12 @@ def discover_effect_surfaces(root: Path) -> list[dict[str, Any]]:
     records = []
     for path in sorted(root.rglob("*.py"), key=lambda item: item.as_posix().casefold()):
         relative = path.relative_to(root).as_posix()
-        if "__pycache__" in path.parts or relative.startswith("tests/"):
+        if (
+            not is_project_source(path, root)
+            or "__pycache__" in path.parts
+            or relative.startswith("tests/")
+            or relative.startswith(".px/preserved-skills/")
+        ):
             continue
         tree = ast.parse(path.read_text(encoding="utf-8-sig"), filename=relative)
         for node in ast.walk(tree):
@@ -118,7 +135,11 @@ def discover_effect_surfaces(root: Path) -> list[dict[str, Any]]:
                 process_timeout = _popen_communication_timeout(tree, node)
                 if relative == RESOURCE_LIFECYCLE_OWNER:
                     process_timeout = "owned_resource_lifecycle_process_tree_receipt"
-            semantic = f"{relative}:{node.lineno}:{call}:{ast.dump(node, include_attributes=False)}"
+            # Identity is a source locator, not an interpreter serialization.
+            # ast.dump() changes when Python adds AST fields (for example
+            # type_params in 3.12), which made the same bytes produce different
+            # ownership IDs across supported runtimes.
+            semantic = f"{relative}:{node.lineno}:{node.col_offset}:{call}"
             records.append(
                 {
                     "id": hashlib.sha256(semantic.encode()).hexdigest()[:20],
@@ -130,6 +151,8 @@ def discover_effect_surfaces(root: Path) -> list[dict[str, Any]]:
                     "policy": (
                         "policies/resource-lifecycle-retention.json"
                         if relative == RESOURCE_LIFECYCLE_OWNER
+                        else RECOVERABLE_RECLAMATION_OWNERS[relative]
+                        if relative in RECOVERABLE_RECLAMATION_OWNERS
                         else "policies/contained-execution.json"
                         if effect in {"process", "network"}
                         else "policies/artifact-preservation.json"
@@ -164,7 +187,11 @@ def validate_effect_surfaces(root: Path) -> dict[str, Any]:
                 errors.append(
                     f"{record['path']}:{record['line']}: process call lacks timeout"
                 )
-        if record["destructive"] and record["path"] != RESOURCE_LIFECYCLE_OWNER:
+        if (
+            record["destructive"]
+            and record["path"] != RESOURCE_LIFECYCLE_OWNER
+            and record["path"] not in RECOVERABLE_RECLAMATION_OWNERS
+        ):
             errors.append(
                 f"{record['path']}:{record['line']}: hard-delete surface is prohibited"
             )

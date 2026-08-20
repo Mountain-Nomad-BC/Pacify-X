@@ -1,0 +1,67 @@
+{
+  "dependencies": [
+    "synchronize-derived-architecture",
+    "propose-change-intelligence"
+  ],
+  "domain": "engineering-dna",
+  "failure_modes": [
+    "personality profiling",
+    "cargo-cult transfer",
+    "novelty bias",
+    "blaming people instead of propagation mechanisms"
+  ],
+  "formula_refs": [
+    "pattern-stability",
+    "context-distance",
+    "expected-plan-utility"
+  ],
+  "id": "architecture-habit-detector",
+  "inputs": [
+    "repository and decision history",
+    "tests, incidents, recovery, and deployment evidence",
+    "project context"
+  ],
+  "invariants": [
+    "The profile describes project practices, not human worth or personality.",
+    "Protected or psychological inference is prohibited.",
+    "Every pattern includes context, evidence, confidence, and expiry."
+  ],
+  "outputs": [
+    "evidence-backed project practice profile",
+    "lineage or habit analysis",
+    "bounded transfer plan"
+  ],
+  "procedure": [
+    "Extract observable engineering behaviors and opportunities.",
+    "Normalize for project constraints and time.",
+    "Separate stable patterns from isolated events.",
+    "Trace benefits, costs, lineage, and recurrence.",
+    "Transfer only after context fit, adaptation, pilot, and validation."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Detect repeated architecture defaults and avoidance patterns, preserve their original context, and test whether they remain rational under current constraints.",
+  "title": "Architecture Habit Detector",
+  "version": "1.0.0",
+  "when_to_use": "Use during architecture review, modernization, and repeated design disputes."
+}

@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-095",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005018",
+  "effect": "execute",
+  "scope": ["python -m runtime.cli test-section run testing-governance"],
+  "authority": "AGENTS.md requires the governed section gate after test control-plane membership/index changes.",
+  "expected_effect": "Run exactly the bounded testing-governance section against current membership and index; no dashboard, Studio, full profile, or certification.",
+  "rollback": "The governed runner owns timeout and process reconciliation; retain failure evidence and repair only the exact governance defect if needed.",
+  "evidence": [{"claim": "Immediate current-index checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005018"}]
+}

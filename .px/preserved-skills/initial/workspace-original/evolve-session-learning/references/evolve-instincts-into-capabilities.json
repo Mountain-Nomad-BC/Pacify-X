@@ -1,0 +1,54 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "proposal only until admission",
+    "contradictory instincts must not be averaged into nonsense",
+    "retain negative evidence and scope"
+  ],
+  "bundle": "evolve-session-learning",
+  "category": "continuous-learning",
+  "dependencies": [
+    "observe-project-scoped-instincts",
+    "forge-skills-from-knowledge",
+    "skill-admission-controller"
+  ],
+  "id": "evolve-instincts-into-capabilities",
+  "keywords": [
+    "evolve instincts",
+    "cluster learned behavior",
+    "skill promotion",
+    "rule generation"
+  ],
+  "mechanisms": [
+    "confidence decay and reinforcement",
+    "cross-project promotion threshold",
+    "cluster coherence checks",
+    "skill/rule/agent output selection",
+    "rollback metadata"
+  ],
+  "owner": "forge-skills-from-knowledge",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "skills/continuous-learning-v2/SKILL.md",
+      "skills/continuous-learning-v2/scripts/instinct-cli.py",
+      "commands/evolve.md",
+      "commands/promote.md"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "skills/continuous-learning-v2/SKILL.md",
+    "skills/continuous-learning-v2/scripts/instinct-cli.py",
+    "commands/evolve.md",
+    "commands/promote.md"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Cluster compatible atomic candidate behaviors, test them against held-out evidence, and propose skills, rules, commands, or agent refinements without self-authorizing activation.",
+  "title": "Evolve Instincts Into Capabilities",
+  "use_when": [
+    "several candidate instincts describe one reusable procedure",
+    "a repeated pattern is mature enough for formalization"
+  ]
+}

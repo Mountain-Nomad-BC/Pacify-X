@@ -1,0 +1,40 @@
+{
+  "admission_record": "analyze-engineering-intelligence",
+  "body_sha256": "17746bfc6c684ee185521a91353dd8999e7d0636c86fe89dd5675050cea40981",
+  "contract": {
+    "available": true,
+    "sha256": "c844832e210270c00b0e9de996779864ff1f4aba37f82dc33133860af35f5ec5",
+    "source": "registry/skill_packages/analyze-engineering-intelligence.json"
+  },
+  "description": "Detect architecture drift, dependency shockwaves, semantic contract changes, knowledge collisions, future debt, code structure changes, engineering health gaps, and refactoring candidates. Use when assessing the impact or fitness of a repository or proposed change from bounded manifests and source excerpts.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "analyze-engineering-intelligence",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/analyze-engineering-intelligence"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "architecture",
+    "dependency",
+    "semantic-drift",
+    "engineering-health",
+    "research",
+    "refactoring"
+  ],
+  "version": "0.1.0"
+}

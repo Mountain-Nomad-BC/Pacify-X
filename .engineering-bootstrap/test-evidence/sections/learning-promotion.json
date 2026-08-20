@@ -1,0 +1,23 @@
+{
+  "chunks": [],
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_learning_promotion.py",
+    "tests/test_reclamation_learning_promotion.py"
+  ],
+  "cwd": ".",
+  "dependencies": [],
+  "duration_seconds": 19.184598,
+  "exit_code": 0,
+  "input_sha256": "3be7c78777c56be4c98c07c0de9752965999738407a147f599f6e5b98ab7b22c",
+  "passed": true,
+  "receipt_sha256": "0b1a885540438316ad9b9050635d5a2864a67cd404f3795a40bf7a41fc2b50f4",
+  "schema_version": "px.test-section-receipt/1.0",
+  "section": "learning-promotion",
+  "timed_out": false
+}

@@ -7,10 +7,12 @@
     {"id": "generated-domain-tool-projections", "rationale": "Portable skill projections are generated and byte-reconciled to one canonical owner."},
     {"id": "generated-declared-suite-projections", "rationale": "Pack-local templates are generated and byte-reconciled to authoritative templates."},
     {"id": "generated-profile-projections", "rationale": "Installed profile projections are generated from bootstrap profile owners."},
+    {"id": "studio-operation-projections", "rationale": "Runtime and extension consume exact byte-reconciled projections of the canonical Studio operation contract."},
     {"id": "portable-skill-hash-helpers", "rationale": "Small hashing helpers remain self-contained inside independently portable skill tools."},
     {"id": "bounded-cli-boilerplate", "rationale": "CLI entry functions share bounded argument/check/apply scaffolding without domain behavior."},
     {"id": "digest-adapters", "rationale": "Tiny SHA-256 adapters have identical standard-library behavior but distinct ownership boundaries."},
-    {"id": "ledger-authority-head-anchor", "rationale": "A hash-ledger authority head intentionally mirrors its current immutable sequence anchor and is verified byte-for-byte."}
+    {"id": "ledger-authority-head-anchor", "rationale": "A hash-ledger authority head intentionally mirrors its current immutable sequence anchor and is verified byte-for-byte."},
+    {"id": "native-skill-policy-projections", "rationale": "Portable PX-native skill packages retain byte-identical local copies of authoritative root policies."}
   ],
   "marker_review_registry": "registry/incomplete_finding_reviews.json",
   "forbidden_active_claims_while_open": ["Status: Certified deployment-ready", "Status: deployment-ready"],

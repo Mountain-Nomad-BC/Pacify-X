@@ -223,8 +223,8 @@ def package(root: Path, domain: dict, tests: str) -> dict:
         "body": body.relative_to(root).as_posix(),
         "body_sha256": hashlib.sha256(body.read_bytes()).hexdigest(),
         "references": [
-            f".agents/skills/{domain['owner']}/references/capability-contracts.json",
-            f".agents/skills/{domain['owner']}/references/script-contracts.json",
+            f".px/skills/{domain['owner']}/references/capability-contracts.json",
+            f".px/skills/{domain['owner']}/references/script-contracts.json",
         ],
         "capability_tags": domain["owner"].split("-")
         + ["declared-suite", "reconstruction"],
@@ -252,7 +252,7 @@ def append_catalog(root: Path, domains: list[dict]) -> None:
 id = "{domain["owner"]}"
 version = "0.1.0"
 status = "active"
-body = ".agents/skills/{domain["owner"]}/SKILL.md"
+body = ".px/skills/{domain["owner"]}/SKILL.md"
 contract = "registry/skill_packages/{domain["owner"]}.json"
 admission_record = "{domain["owner"]}"
 tags = [{tags}]
@@ -392,8 +392,8 @@ def main() -> int:
             if card["current_state"] != "implemented_verified":
                 card["current_state"] = "contract_and_owner_wired_not_verified"
             card["implementation_targets"] = [
-                f".agents/skills/{domain['owner']}/SKILL.md",
-                f".agents/skills/{domain['owner']}/references/{'capability-contracts' if card['kind'] == 'skill' else 'script-contracts' if card['kind'] == 'script' else 'capability-contracts'}.json",
+                f".px/skills/{domain['owner']}/SKILL.md",
+                f".px/skills/{domain['owner']}/references/{'capability-contracts' if card['kind'] == 'skill' else 'script-contracts' if card['kind'] == 'script' else 'capability-contracts'}.json",
             ]
             card["wiring_targets"] = [
                 "registry/declared_outcome_owners.json",

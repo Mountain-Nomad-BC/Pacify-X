@@ -1,0 +1,38 @@
+{
+  "admission_record": "domain-language-maintenance",
+  "body_sha256": "8b727330d295fb266b8fa1d1e389a14956e1ee126bd0edcb01800aff0d8163ba",
+  "contract": {
+    "available": true,
+    "sha256": "5e5aa7615a5f69dc22412d3bf5e5ae377513fe53e8fee9e084a9c5e652b099a5",
+    "source": "registry/skill_packages/domain-language-maintenance.json"
+  },
+  "description": "Maintain a canonical project vocabulary and challenge ambiguous or overloaded terms during work.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "domain-language-maintenance",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/domain-language-maintenance"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "domain",
+    "engineering-reasoning",
+    "language",
+    "maintenance"
+  ],
+  "version": "1.0.0"
+}

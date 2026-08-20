@@ -1,0 +1,578 @@
+{
+  "schema_version": "px.instruction-reconciliation/1.0",
+  "audit_id": "PX-INSTRUCTION-RECONCILIATION-20260816",
+  "status": "open",
+  "authority": "Current requirement-to-operation audit. Historical acceptance, source presence, route-name parity, fixtures, and certification receipts are not current functional completion evidence.",
+  "method": {
+    "tests_or_certification_run": false,
+    "writes_before_issue_log": false,
+    "evidence_classes": [
+      "user instruction history",
+      "supplied audit and architecture documents",
+      "current source and manifests",
+      "current installed-host/process/log observations",
+      "current punch-card and completion projections",
+      "supplied Agent Builder reference"
+    ]
+  },
+  "source_set": [
+    "C:/Users/Ben/Downloads/PX_RUNTIME_EFFICIENCY_AND_BOUNDED_WORK_ARCHITECTURE.md",
+    "C:/Users/Ben/Downloads/PX_EXECUTION_PLACEMENT_DECISION_SKILL_ADDON.zip",
+    "C:/Users/Ben/Downloads/open-agent-builder-main/open-agent-builder-main",
+    "C:/Users/Ben/Downloads/PACIFY_X_FULL_ADVERSARIAL_AUDIT_20260813.md",
+    "C:/Users/Ben/Downloads/PACIFY_X_CLEAN_FULL_ADVERSARIAL_REAUDIT_20260813.md",
+    "C:/Users/Ben/Downloads/ADVERSARIAL_AUDIT_REPORT.md",
+    "C:/Users/Ben/Downloads/PACIFY_X_REPAIRS_ONLY_FUNCTIONAL_VALIDATION_20260814",
+    "C:/Users/Ben/Downloads/PACIFY_X_R2_FUNCTIONAL_ADVERSARIAL_VALIDATION_20260814",
+    "C:/Users/Ben/Downloads/PACIFY_X_R3_OPERATIONAL_ADVERSARIAL_VALIDATION_20260814",
+    "C:/Users/Ben/Downloads/PACIFY_X_FINAL_OPERATIONAL_ADVERSARIAL_AUDIT_20260815",
+    "C:/Users/Ben/Downloads/PACIFY_X_R1_INDEPENDENT_OPERATIONAL_ADVERSARIAL_AUDIT_20260815",
+    "docs/PX_ADVERSARIAL_AUDIT_20260811.md",
+    "docs/PX_UNIVERSAL_VISIBILITY_PUNCH_CARDS.md",
+    ".engineering-bootstrap/project-management/PUNCH_CARDS.md",
+    "registry/operational_surface_audit_20260816.json",
+    "registry/completion_status.json"
+  ],
+  "current_facts": {
+    "operational_findings": 67,
+    "open_findings": 40,
+    "pending_live_verification": 27,
+    "px_native_packages": 177,
+    "px_facade_skills": 16,
+    "skill_index_records": 203,
+    "skill_index_declared_px_standard": 176,
+    "skill_index_actual_px_standard": 177,
+    "installed_extension_versions_retained": [
+      "0.6.9",
+      "0.6.10",
+      "0.6.11",
+      "0.6.12",
+      "0.6.13"
+    ],
+    "installed_selected_version": "0.6.13",
+    "live_main_process_started_before_0_6_13_install": true,
+    "canonical_memory_workspace_configured": false,
+    "runnable_agent_revisions_observed": 0,
+    "runnable_workflow_revisions_observed": 0,
+    "git_status_entries": 1373,
+    "project_map_current_and_history_gib_approx": 0.88,
+    "operation_bus_files_approx": 11957,
+    "system_drive_free_gib_observed": 334.21
+  },
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "requirement": "Audit and trace everything, log every issue before repair, and preserve continuity across reports and chat history.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "crosswalk_created_metadata_ownership_fields_still_open",
+      "live_state": "unknown",
+      "evidence": "This ledger now preserves the full requirement crosswalk and dependency order, but per-requirement source, owner, live-state, and contrary-evidence fields still need to be normalized before PX-OS-049 can close.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-049",
+        "PX-OS-050"
+      ]
+    },
+    {
+      "id": "REQ-002",
+      "requirement": "Diagnose long Codex startup rather than only PX extension activation.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "open",
+      "live_state": "unknown",
+      "evidence": "PX registration timing was substituted for end-to-end Codex readiness; current logs/processes expose separate extension, Copilot, Python, MCP, and code-mode-host delays.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-051"
+      ]
+    },
+    {
+      "id": "REQ-003",
+      "requirement": "PX defines governance while Codex retains native host execution and approval authority.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "concept_defined_runtime_integration_partial",
+      "live_state": "unknown",
+      "evidence": "The source labels Codex as executor owner, but Continue with Codex only prepares a JSON document and PX policy is not an enforceable Codex-host authority layer.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-038",
+        "PX-OS-060"
+      ]
+    },
+    {
+      "id": "REQ-004",
+      "requirement": "Resolve operation/permission conflicts between Codex and PX.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "open",
+      "live_state": "unknown",
+      "evidence": "Codex approvals, repository instructions, PX claims/grants, and extension-owned executors remain distinct planes; the strictest-denial guidance exists but seamless enforcement does not.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-038",
+        "PX-OS-052",
+        "PX-OS-060"
+      ]
+    },
+    {
+      "id": "REQ-005",
+      "requirement": "Use 10-20 lightweight .agents facade skills and lazy-load one PX-native skill body after semantic or exact selection.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "structurally_implemented_not_host_enforced",
+      "live_state": "unknown",
+      "evidence": "There are 16 facades, a maximum-three query and exact-one hydration broker, and 177 native packages; the Codex host still enumerates global skills directly.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-052",
+        "PX-OS-053"
+      ]
+    },
+    {
+      "id": "REQ-006",
+      "requirement": "Every PX skill has SKILL.md, capability.json, skill.yaml, contracts, tests, and resources.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "structurally_implemented",
+      "live_state": "unknown",
+      "evidence": "All 177 current .px/skills directories contain all six required entries; operational creation, admission, comparison, rollback, and index consistency remain open.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-015",
+        "PX-OS-047",
+        "PX-OS-053"
+      ]
+    },
+    {
+      "id": "REQ-007",
+      "requirement": "Separate PX-standard, Microsoft/vendor, enterprise-restricted, and user-preserved skills without bleed.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "broker_separated_host_not_separated",
+      "live_state": "unknown",
+      "evidence": "PX index domains and UI tabs are separate; direct Codex global skill discovery bypasses that broker policy.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-015",
+        "PX-OS-052"
+      ]
+    },
+    {
+      "id": "REQ-008",
+      "requirement": "Preserve original user skills permanently, adapt into new candidates, and support comparison/selection/restore without destructive loss.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "backup_exists_lifecycle_partial",
+      "live_state": "unknown",
+      "evidence": "Two workspace copies and a user-original backup exist with 1,888 files, but comparison/adaptation/rollback is not a complete workflow and first initialization is not transactional.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-015",
+        "PX-OS-066"
+      ]
+    },
+    {
+      "id": "REQ-009",
+      "requirement": "Fix the pyproject.toml duplicate key error.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "resolved_current_source",
+      "live_state": "unknown",
+      "evidence": "Python tomllib parses pyproject.toml successfully at version 0.7.0.dev0; generated packaging now rejects duplicate destinations. Skill-index projection drift remains separate.",
+      "contrary_evidence": [],
+      "blocking_findings": []
+    },
+    {
+      "id": "REQ-010",
+      "requirement": "Make the extension command and sidebar provider load correctly.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "source_repaired_live_identity_pending",
+      "live_state": "unknown",
+      "evidence": "The current manifest contributes a webview and the commands; the long-lived VS Code main process predates the newest installation, so exact live behavior is not yet walked.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-001",
+        "PX-OS-002",
+        "PX-OS-003",
+        "PX-OS-041",
+        "PX-OS-063"
+      ]
+    },
+    {
+      "id": "REQ-011",
+      "requirement": "Populate the side panel with current truthful actions and data, including invalid-union diagnostics.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "source_repairs_pending_live_walk",
+      "live_state": "unknown",
+      "evidence": "Inbound, operation, and outbound errors are separated in source, but subtask routing remains wrong and route parity does not prove downstream behavior.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-002",
+        "PX-OS-041",
+        "PX-OS-063"
+      ]
+    },
+    {
+      "id": "REQ-012",
+      "requirement": "Make the dashboard dense, responsive, unclipped, and free of wasted visual space.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "open",
+      "live_state": "unknown",
+      "evidence": "Conflicting CSS ownership, fixed empty panels, clipped lifecycle content, and legacy overrides remain.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-017",
+        "PX-OS-018",
+        "PX-OS-022",
+        "PX-OS-062"
+      ]
+    },
+    {
+      "id": "REQ-013",
+      "requirement": "Provide a full Obsidian/GitNexus-quality Knowledge Graph rather than a generic sparse cluster view.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "open",
+      "live_state": "unknown",
+      "evidence": "Overview clusters replace records, record views are capped, and fixed orbit/lane card layouts do not provide a progressive full map.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-008",
+        "PX-OS-009",
+        "PX-OS-010"
+      ]
+    },
+    {
+      "id": "REQ-014",
+      "requirement": "Connect experience, evidence, patterns, hypotheses, validation, learning, measured reuse, promotion, decay, hashes, A/B trials, and research validation.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "library_only_not_operational",
+      "live_state": "unknown",
+      "evidence": "Side-effect-free primitives and one cleanup build script exist; production controllers, CLI lifecycle, execution routing, UI, and general cross-run correlation are absent.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-011",
+        "PX-OS-034"
+      ]
+    },
+    {
+      "id": "REQ-015",
+      "requirement": "Implement the execution-placement add-on completely and connect GPU/CPU/parallel decisions to evidence.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "partial_cli_only",
+      "live_state": "unknown",
+      "evidence": "Keep-current scoring and some hash gates exist, but the live scheduler/UI/benchmark/rollback lifecycle and Tier 4/5 outputs do not. No compatible CUDA executor is currently admitted, so CPU fallback is the only truthful route.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-020",
+        "PX-OS-055"
+      ]
+    },
+    {
+      "id": "REQ-016",
+      "requirement": "Complete the bounded-work architecture and update only changed pieces after first initialization.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "partial_extension_governor",
+      "live_state": "unknown",
+      "evidence": "Selected extension calls use bounded pools, but no unified cross-runtime Event Hub, dependency graph, State Bus, telemetry sampler, causal invalidation, or proven stable-idle behavior exists.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-032",
+        "PX-OS-054",
+        "PX-OS-067"
+      ]
+    },
+    {
+      "id": "REQ-017",
+      "requirement": "Chunk tests into affected sections, run safe groups in parallel, rerun only failures, and reserve whole testing for final certification.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "mechanism_exists_current_evidence_stale_certification_paused",
+      "live_state": "unknown",
+      "evidence": "Section/group/run-stale and bounded workers exist; eight required receipts are stale or failed and unchanged/incremental behavior is not currently proven.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-067"
+      ]
+    },
+    {
+      "id": "REQ-018",
+      "requirement": "Build a real visual Agent Builder using the supplied reference as a capability benchmark.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "open",
+      "live_state": "unknown",
+      "evidence": "Current Agent Studio is a long form with scroll buttons; its schema lacks model/provider, memory/retrieval, structured I/O, variables, handoffs, preview, templates, and trace inspection.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-004",
+        "PX-OS-005",
+        "PX-OS-006",
+        "PX-OS-029",
+        "PX-OS-059"
+      ]
+    },
+    {
+      "id": "REQ-019",
+      "requirement": "Make agent execution real and truthful.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "deterministic_worker_only",
+      "live_state": "unknown",
+      "evidence": "harness:px explicitly records model_invoked=false and supports only bounded local utility operations.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-029"
+      ]
+    },
+    {
+      "id": "REQ-020",
+      "requirement": "Make Workflow Studio a real visual, parallel, typed, traceable execution system.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "open",
+      "live_state": "unknown",
+      "evidence": "The editor lacks mature canvas navigation and run overlays, runtime node kinds/config are cosmetic, and independent DAG branches execute serially.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-007",
+        "PX-OS-027",
+        "PX-OS-039",
+        "PX-OS-056",
+        "PX-OS-057",
+        "PX-OS-058"
+      ]
+    },
+    {
+      "id": "REQ-021",
+      "requirement": "Make canonical memory attach, lease, retrieval, and remediation actually work.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "unconfigured",
+      "live_state": "unknown",
+      "evidence": "No pacifyX.workspaceRoot is configured and no active canonical memory lease/retrieval root is attached.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-012",
+        "PX-OS-045"
+      ]
+    },
+    {
+      "id": "REQ-022",
+      "requirement": "Make Projects, Plugins, Activity, Diagnostics, Runtime Core, Settings, and governed maintenance operational rather than informational.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "open",
+      "live_state": "unknown",
+      "evidence": "These surfaces remain incomplete managers or status views and omit core lifecycle, cause, repair, placement, and configuration operations.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-014",
+        "PX-OS-016",
+        "PX-OS-017",
+        "PX-OS-018",
+        "PX-OS-020",
+        "PX-OS-021"
+      ]
+    },
+    {
+      "id": "REQ-023",
+      "requirement": "Integrate with Codex and Copilot seamlessly without stealing host authority.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "portable_context_only",
+      "live_state": "unknown",
+      "evidence": "PX registers a local model provider and MCP definition but has no chat participant or end-to-end session correlation; handoff is a JSON document.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-038",
+        "PX-OS-060"
+      ]
+    },
+    {
+      "id": "REQ-024",
+      "requirement": "Follow cleanup/storage rules and avoid filling the disk while preserving evidence and originals.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "open_no_immediate_low_space_condition",
+      "live_state": "unknown",
+      "evidence": "C: currently has about 334 GiB free, but current project-map history, operation-bus volume, installed generations, and dirty-tree growth are not governed by a current incremental retention proof.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-065"
+      ]
+    },
+    {
+      "id": "REQ-025",
+      "requirement": "Do not certify until the product is operational; distinguish operational health from evidence freshness and certification.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "source_repaired_pending_live_walk",
+      "live_state": "unknown",
+      "evidence": "Completion schema 1.3 separates historical cards, current operational readiness, live verification, evidence freshness, and certification. Dashboard source now separates exact-host connectivity, per-feature availability, diagnostic validation, and certification; current-host behavior remains pending live walk.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-023",
+        "PX-OS-050",
+        "PX-OS-064"
+      ]
+    },
+    {
+      "id": "REQ-026",
+      "requirement": "Make every visible UI element perform a useful real operation with truthful success and failure acknowledgement.",
+      "source": "historical-audit",
+      "owner": "codex-primary",
+      "implementation_state": "not_proven",
+      "live_state": "unknown",
+      "evidence": "Static action/handler parity is complete, but numerous controls only change local UI, open prose, or route to narrower backend semantics than their labels claim.",
+      "contrary_evidence": [],
+      "blocking_findings": [
+        "PX-OS-002",
+        "PX-OS-030",
+        "PX-OS-036",
+        "PX-OS-056",
+        "PX-OS-058"
+      ]
+    }
+  ],
+  "dependency_order": [
+    {
+      "wave": 1,
+      "name": "truth and live identity",
+      "findings": [
+        "PX-OS-049",
+        "PX-OS-050",
+        "PX-OS-064",
+        "PX-OS-003",
+        "PX-OS-001",
+        "PX-OS-002"
+      ],
+      "outcome": "One current authority and a live host that can be walked without certification claims."
+    },
+    {
+      "wave": 2,
+      "name": "transactional Studio foundation",
+      "findings": [
+        "PX-OS-061",
+        "PX-OS-025",
+        "PX-OS-027",
+        "PX-OS-030",
+        "PX-OS-058",
+        "PX-OS-059"
+      ],
+      "outcome": "Lossless revisions, real lifecycle control, honest tests, and recoverable saves."
+    },
+    {
+      "wave": 3,
+      "name": "workflow semantics and bounded parallel execution",
+      "findings": [
+        "PX-OS-056",
+        "PX-OS-057",
+        "PX-OS-007",
+        "PX-OS-039"
+      ],
+      "outcome": "Typed nodes do what they say and independent branches run through safe bounded pools."
+    },
+    {
+      "wave": 4,
+      "name": "real agent runtime and visual builder",
+      "findings": [
+        "PX-OS-004",
+        "PX-OS-005",
+        "PX-OS-006",
+        "PX-OS-029",
+        "PX-OS-031"
+      ],
+      "outcome": "Model/provider routes, tools, memory, I/O, topology, preview, and execution trace match actual runtime behavior."
+    },
+    {
+      "wave": 5,
+      "name": "skills and first-initialization custody",
+      "findings": [
+        "PX-OS-015",
+        "PX-OS-047",
+        "PX-OS-052",
+        "PX-OS-053",
+        "PX-OS-066"
+      ],
+      "outcome": "Facade-only default routing, consistent manifests/indexes, comparison/adaptation, and recoverable first initialization."
+    },
+    {
+      "wave": 6,
+      "name": "memory, knowledge, learning, and graph",
+      "findings": [
+        "PX-OS-012",
+        "PX-OS-011",
+        "PX-OS-034",
+        "PX-OS-008",
+        "PX-OS-009",
+        "PX-OS-010"
+      ],
+      "outcome": "Attached canonical memory, an operating experience pipeline, and a progressive full graph."
+    },
+    {
+      "wave": 7,
+      "name": "runtime efficiency and placement",
+      "findings": [
+        "PX-OS-051",
+        "PX-OS-054",
+        "PX-OS-055",
+        "PX-OS-020",
+        "PX-OS-032",
+        "PX-OS-067"
+      ],
+      "outcome": "End-to-end startup evidence, causal bounded work, truthful CPU/GPU placement, and incremental affected-only repair gates."
+    },
+    {
+      "wave": 8,
+      "name": "remaining operational managers and UI",
+      "findings": [
+        "PX-OS-014",
+        "PX-OS-016",
+        "PX-OS-017",
+        "PX-OS-018",
+        "PX-OS-021",
+        "PX-OS-022",
+        "PX-OS-062",
+        "PX-OS-063",
+        "PX-OS-065"
+      ],
+      "outcome": "Projects, plugins, activity, diagnostics, settings, storage, sidebar, and layout are useful working surfaces."
+    },
+    {
+      "wave": 9,
+      "name": "host integration and live walk",
+      "findings": [
+        "PX-OS-038",
+        "PX-OS-060",
+        "PX-OS-041",
+        "PX-OS-042"
+      ],
+      "outcome": "Truthful supported Codex/Copilot integration and a control-by-control current-host walkthrough."
+    },
+    {
+      "wave": 10,
+      "name": "reconciliation before any resumed certification",
+      "findings": [
+        "PX-OS-023",
+        "PX-OS-050"
+      ],
+      "outcome": "Every current card and projection agrees; only explicit user resumption may start section gates and one final certification."
+    }
+  ],
+  "completion_claim": {
+    "complete": false,
+    "fully_operational": false,
+    "certified": false,
+    "perfect": false,
+    "reason": "Forty current findings are open and twenty-seven repairs remain pending live verification."
+  }
+}

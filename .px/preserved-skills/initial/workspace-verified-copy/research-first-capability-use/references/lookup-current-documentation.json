@@ -1,0 +1,57 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "do not send secrets in research queries",
+    "do not exceed query budget without justification",
+    "state unresolved uncertainty"
+  ],
+  "bundle": "research-first-capability-use",
+  "category": "research",
+  "dependencies": [
+    "research-to-operation-translator",
+    "evaluate-retrieval-readiness",
+    "manage-mcp-lifecycle"
+  ],
+  "id": "lookup-current-documentation",
+  "keywords": [
+    "documentation lookup",
+    "search first",
+    "current docs",
+    "version aware",
+    "official sources"
+  ],
+  "mechanisms": [
+    "library identity resolution",
+    "version-aware source selection",
+    "official-source preference",
+    "query budget",
+    "secret redaction",
+    "citation trace"
+  ],
+  "owner": "research-to-operation-translator",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "skills/documentation-lookup/SKILL.md",
+      "skills/search-first/SKILL.md",
+      "skills/deep-research/SKILL.md",
+      "skills/iterative-retrieval/SKILL.md"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "skills/documentation-lookup/SKILL.md",
+    "skills/search-first/SKILL.md",
+    "skills/deep-research/SKILL.md",
+    "skills/iterative-retrieval/SKILL.md"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Resolve the exact library or product, prefer authoritative current documentation, bound query count, and return source-grounded implementation guidance rather than relying on stale model memory.",
+  "title": "Look Up Current Documentation",
+  "use_when": [
+    "APIs or installation steps may have changed",
+    "a named framework version matters",
+    "implementation depends on current documentation"
+  ]
+}

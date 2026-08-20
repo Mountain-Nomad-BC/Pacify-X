@@ -1,0 +1,38 @@
+{
+  "admission_record": "validate-production-containers",
+  "body_sha256": "8ecc926bf157bf8e5c7ce32232e443cb2ffdad29fb6dca606f577782a7ad5b64",
+  "contract": {
+    "available": true,
+    "sha256": "2104e9676f89aa453d787eed84d5deb561e2315d15baac8cfb1ecf7c99eec7c4",
+    "source": "registry/skill_packages/validate-production-containers.json"
+  },
+  "description": "Validate production container images with isolated, temporary test harnesses while keeping test dependencies out of the shipped image and proving cleanup. Use for container-native integration tests, runtime import checks, health probes, or contract tests that must execute in the image environment.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "validate-production-containers",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/validate-production-containers"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "container",
+    "production",
+    "validation",
+    "isolation"
+  ],
+  "version": "0.1.0"
+}

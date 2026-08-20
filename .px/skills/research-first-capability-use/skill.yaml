@@ -1,0 +1,39 @@
+{
+  "admission_record": "research-first-capability-use",
+  "body_sha256": "64681a0953a12c9d1b3e8219bf4adafda3289b7421733bd8d72d5ac1e95b6cd6",
+  "contract": {
+    "available": true,
+    "sha256": "6f622b4dd5da013e5bcf019bbf8d9263e6d8e14326886258568d62d66c84b66c",
+    "source": "registry/skill_packages/research-first-capability-use.json"
+  },
+  "description": "Ground current technology use in authoritative, version-aware documentation",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "research-first-capability-use",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/research-first-capability-use"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "capability",
+    "external-candidate",
+    "first",
+    "research",
+    "use"
+  ],
+  "version": "0.1.0"
+}

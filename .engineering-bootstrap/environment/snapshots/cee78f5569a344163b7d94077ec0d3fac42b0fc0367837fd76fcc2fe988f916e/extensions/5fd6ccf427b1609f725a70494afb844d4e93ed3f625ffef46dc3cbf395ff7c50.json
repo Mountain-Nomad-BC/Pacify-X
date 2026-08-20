@@ -1,0 +1,425 @@
+{
+  "id": "ms-python.vscode-python-envs",
+  "name": "Python Environments",
+  "version": "1.36.0",
+  "publisher": "ms-python",
+  "active": true,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "menus",
+    "taskDefinitions",
+    "views",
+    "viewsContainers"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-python.vscode-python-envs",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-python.vscode-python-envs",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-python.vscode-python-envs",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:taskDefinitions",
+      "kind": "taskDefinitions",
+      "provider": "ms-python.vscode-python-envs",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "ms-python.vscode-python-envs",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "ms-python.vscode-python-envs",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "python-envs.addPythonProject",
+      "invocation": "vscode.commands.executeCommand('python-envs.addPythonProject', ...args)",
+      "title": "Add Python Project",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.addPythonProjectGivenResource",
+      "invocation": "vscode.commands.executeCommand('python-envs.addPythonProjectGivenResource', ...args)",
+      "title": "Add as Python Project",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.clearCache",
+      "invocation": "vscode.commands.executeCommand('python-envs.clearCache', ...args)",
+      "title": "Clear Cache",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.copyEnvPath",
+      "invocation": "vscode.commands.executeCommand('python-envs.copyEnvPath', ...args)",
+      "title": "Copy Environment Path",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.copyEnvPathCopied",
+      "invocation": "vscode.commands.executeCommand('python-envs.copyEnvPathCopied', ...args)",
+      "title": "Copied!",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.copyProjectPath",
+      "invocation": "vscode.commands.executeCommand('python-envs.copyProjectPath', ...args)",
+      "title": "Copy Project Path",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.copyProjectPathCopied",
+      "invocation": "vscode.commands.executeCommand('python-envs.copyProjectPathCopied', ...args)",
+      "title": "Copied!",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.create",
+      "invocation": "vscode.commands.executeCommand('python-envs.create', ...args)",
+      "title": "Create Environment",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.createAny",
+      "invocation": "vscode.commands.executeCommand('python-envs.createAny', ...args)",
+      "title": "Create Environment",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.createNewProjectFromTemplate",
+      "invocation": "vscode.commands.executeCommand('python-envs.createNewProjectFromTemplate', ...args)",
+      "title": "Create New Project from Template",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.createTerminal",
+      "invocation": "vscode.commands.executeCommand('python-envs.createTerminal', ...args)",
+      "title": "Create Python Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.packages",
+      "invocation": "vscode.commands.executeCommand('python-envs.packages', ...args)",
+      "title": "Manage Packages",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.refreshAllManagers",
+      "invocation": "vscode.commands.executeCommand('python-envs.refreshAllManagers', ...args)",
+      "title": "Refresh All Environment Managers",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.refreshPackages",
+      "invocation": "vscode.commands.executeCommand('python-envs.refreshPackages', ...args)",
+      "title": "Refresh Packages List",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.remove",
+      "invocation": "vscode.commands.executeCommand('python-envs.remove', ...args)",
+      "title": "Delete Environment",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.removePythonProject",
+      "invocation": "vscode.commands.executeCommand('python-envs.removePythonProject', ...args)",
+      "title": "Remove Python Project",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.reportIssue",
+      "invocation": "vscode.commands.executeCommand('python-envs.reportIssue', ...args)",
+      "title": "Report Issue",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.revealEnvInManagerView",
+      "invocation": "vscode.commands.executeCommand('python-envs.revealEnvInManagerView', ...args)",
+      "title": "Reveal in Environment Managers View",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.revealProjectInExplorer",
+      "invocation": "vscode.commands.executeCommand('python-envs.revealProjectInExplorer', ...args)",
+      "title": "Reveal Project in Explorer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.runAsTask",
+      "invocation": "vscode.commands.executeCommand('python-envs.runAsTask', ...args)",
+      "title": "Run as Task",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.runInTerminal",
+      "invocation": "vscode.commands.executeCommand('python-envs.runInTerminal', ...args)",
+      "title": "Run in Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.runPetInTerminal",
+      "invocation": "vscode.commands.executeCommand('python-envs.runPetInTerminal', ...args)",
+      "title": "Run Python Environment Tool (PET) in Terminal...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.searchSettings",
+      "invocation": "vscode.commands.executeCommand('python-envs.searchSettings', ...args)",
+      "title": "Configure Search Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.set",
+      "invocation": "vscode.commands.executeCommand('python-envs.set', ...args)",
+      "title": "Set Project Environment",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.setEnv",
+      "invocation": "vscode.commands.executeCommand('python-envs.setEnv', ...args)",
+      "title": "Set As Project Environment",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.setEnvManager",
+      "invocation": "vscode.commands.executeCommand('python-envs.setEnvManager', ...args)",
+      "title": "Set Environment Manager",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.setEnvSelected",
+      "invocation": "vscode.commands.executeCommand('python-envs.setEnvSelected', ...args)",
+      "title": "Set!",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.setPkgManager",
+      "invocation": "vscode.commands.executeCommand('python-envs.setPkgManager', ...args)",
+      "title": "Set Package Manager",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.terminal.activate",
+      "invocation": "vscode.commands.executeCommand('python-envs.terminal.activate', ...args)",
+      "title": "Activate Environment in Current Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.terminal.deactivate",
+      "invocation": "vscode.commands.executeCommand('python-envs.terminal.deactivate', ...args)",
+      "title": "Deactivate Environment in Current Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.terminal.revertStartupScriptChanges",
+      "invocation": "vscode.commands.executeCommand('python-envs.terminal.revertStartupScriptChanges', ...args)",
+      "title": "Revert Shell Startup Script Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python-envs.uninstallPackage",
+      "invocation": "vscode.commands.executeCommand('python-envs.uninstallPackage', ...args)",
+      "title": "Uninstall Package",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onLanguage:python"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": false,
+      "description": "This extension doesn't support untrusted workspaces."
+    },
+    "virtual_workspaces": {
+      "supported": false,
+      "description": "This extension doesn't support virtual workspaces."
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-python.vscode-python-envs",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:menus",
+      "contribution:taskDefinitions",
+      "contribution:views",
+      "contribution:viewsContainers"
+    ],
+    "interface": [
+      "python-envs.addPythonProject",
+      "python-envs.addPythonProjectGivenResource",
+      "python-envs.clearCache",
+      "python-envs.copyEnvPath",
+      "python-envs.copyEnvPathCopied",
+      "python-envs.copyProjectPath",
+      "python-envs.copyProjectPathCopied",
+      "python-envs.create",
+      "python-envs.createAny",
+      "python-envs.createNewProjectFromTemplate",
+      "python-envs.createTerminal",
+      "python-envs.packages",
+      "python-envs.refreshAllManagers",
+      "python-envs.refreshPackages",
+      "python-envs.remove",
+      "python-envs.removePythonProject",
+      "python-envs.reportIssue",
+      "python-envs.revealEnvInManagerView",
+      "python-envs.revealProjectInExplorer",
+      "python-envs.runAsTask",
+      "python-envs.runInTerminal",
+      "python-envs.runPetInTerminal",
+      "python-envs.searchSettings",
+      "python-envs.set",
+      "python-envs.setEnv",
+      "python-envs.setEnvManager",
+      "python-envs.setEnvSelected",
+      "python-envs.setPkgManager",
+      "python-envs.terminal.activate",
+      "python-envs.terminal.deactivate",
+      "python-envs.terminal.revertStartupScriptChanges",
+      "python-envs.uninstallPackage"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": false,
+        "description": "This extension doesn't support untrusted workspaces."
+      },
+      "virtual_workspaces": {
+        "supported": false,
+        "description": "This extension doesn't support virtual workspaces."
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

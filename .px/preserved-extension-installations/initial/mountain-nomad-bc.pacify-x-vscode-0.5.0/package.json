@@ -1,0 +1,399 @@
+{
+	"name": "pacify-x-vscode",
+	"displayName": "Pacify-X Control Plane",
+	"description": "Governed operational dashboard and native VS Code control surface for Pacify-X.",
+	"version": "0.5.0",
+	"publisher": "mountain-nomad-bc",
+	"license": "Apache-2.0",
+	"engines": {
+		"vscode": "^1.132.0"
+	},
+	"categories": [
+		"AI",
+		"Visualization",
+		"Other"
+	],
+	"keywords": [
+		"pacify-x",
+		"agents",
+		"governance",
+		"local-ai",
+		"assurance"
+	],
+	"icon": "media/px-shield-128.png",
+	"main": "./src/extension.js",
+	"activationEvents": [
+		"onStartupFinished",
+		"onLanguageModelChat:pacify-local",
+		"onCommand:pacifyX.openDashboard",
+		"onView:pacifyX.controlCenter"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "pacifyX.openDashboard",
+				"title": "Open Control Plane",
+				"category": "Pacify-X",
+				"icon": "$(dashboard)"
+			},
+			{
+				"command": "pacifyX.refreshDashboard",
+				"title": "Refresh Control Plane",
+				"category": "Pacify-X",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "pacifyX.validateControlPlane",
+				"title": "Validate Control Plane",
+				"category": "Pacify-X",
+				"icon": "$(verified-filled)"
+			},
+			{
+				"command": "pacifyX.createContextSnapshot",
+				"title": "Create Portable Context Snapshot",
+				"category": "Pacify-X"
+			},
+			{
+				"command": "pacifyX.openCleanupManager",
+				"title": "Open Storage & Cleanup Manager",
+				"category": "Pacify-X",
+				"icon": "$(trash)"
+			},
+			{
+				"command": "pacifyX.openSettings",
+				"title": "Open Settings",
+				"category": "Pacify-X",
+				"icon": "$(gear)"
+			},
+			{
+				"command": "pacifyX.continueWithCodex",
+				"title": "Continue with Codex (Governed Context)",
+				"category": "Pacify-X"
+			},
+			{
+				"command": "pacifyX.cancelCodex",
+				"title": "Cancel Bridge-owned Codex Run",
+				"category": "Pacify-X"
+			},
+			{
+				"command": "pacifyX.refreshProviderStatus",
+				"title": "Refresh Provider and Git Status",
+				"category": "Pacify-X"
+			},
+			{
+				"command": "pacifyX.refreshOllama",
+				"title": "Refresh Ollama Models",
+				"category": "Pacify-X"
+			},
+			{
+				"command": "pacifyX.refreshEnvironment",
+				"title": "Refresh Environment Capability Map",
+				"category": "Pacify-X",
+				"icon": "$(extensions)"
+			}
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "pacifyX.openDashboard",
+					"when": "view == pacifyX.controlCenter",
+					"group": "navigation@1"
+				},
+				{
+					"command": "pacifyX.refreshDashboard",
+					"when": "view == pacifyX.controlCenter",
+					"group": "navigation@2"
+				}
+			],
+			"commandPalette": [
+				{
+					"command": "pacifyX.openDashboard"
+				},
+				{
+					"command": "pacifyX.validateControlPlane"
+				},
+				{
+					"command": "pacifyX.createContextSnapshot"
+				},
+				{
+					"command": "pacifyX.openCleanupManager"
+				},
+				{
+					"command": "pacifyX.continueWithCodex"
+				},
+				{
+					"command": "pacifyX.refreshProviderStatus"
+				},
+				{
+					"command": "pacifyX.refreshEnvironment"
+				}
+			]
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "pacifyX",
+					"title": "Pacify-X",
+					"icon": "media/px-activity.svg"
+				}
+			]
+		},
+		"views": {
+			"pacifyX": [
+				{
+					"id": "pacifyX.controlCenter",
+					"name": "Control Center"
+				}
+			]
+		},
+		"configuration": {
+			"title": "Pacify-X",
+			"properties": {
+				"pacifyX.engineRoot": {
+					"type": "string",
+					"default": "",
+					"description": "Pacify-X root containing runtime/cli.py and registry/. Empty enables workspace auto-discovery."
+				},
+				"pacifyX.pythonPath": {
+					"type": "string",
+					"default": "python",
+					"description": "Python executable used only for explicit Pacify-X validation commands."
+				},
+				"pacifyX.workspaceRoot": {
+					"type": "string",
+					"default": "",
+					"description": "Optional Pacify-X workspace-manager root used for canonical memory telemetry. Cross-IDE coordination remains project-owned under the open workspace."
+				},
+				"pacifyX.refreshIntervalSeconds": {
+					"type": "integer",
+					"default": 20,
+					"minimum": 5,
+					"maximum": 3600,
+					"description": "Read-only dashboard refresh interval."
+				},
+				"pacifyX.showAdvancedSurfaces": {
+					"type": "boolean",
+					"default": false,
+					"description": "Reveal Knowledge Core and Runtime Core in the dashboard navigation."
+				},
+				"pacifyX.glassIntensity": {
+					"type": "number",
+					"default": 0.66,
+					"minimum": 0.2,
+					"maximum": 0.95,
+					"description": "Dashboard panel opacity."
+				},
+				"pacifyX.contextInjectionCapTokens": {
+					"type": "integer",
+					"default": 12000,
+					"minimum": 512,
+					"maximum": 200000,
+					"description": "Maximum declared token budget for portable context snapshots."
+				},
+				"pacifyX.activity.enabled": {
+					"type": "boolean",
+					"default": true,
+					"description": "Record local metadata-only AI, agent, editor, task, debug, test, terminal, MCP, and workspace activity in the project-owned Pacify-X trace ledger."
+				},
+				"pacifyX.activity.paused": {
+					"type": "boolean",
+					"default": false,
+					"description": "Pause activity recording without deleting retained evidence."
+				},
+				"pacifyX.activity.captureFileEvents": {
+					"type": "boolean",
+					"default": true,
+					"description": "Record bounded file/editor lifecycle metadata, relative scope references, and change counts. File contents are never retained."
+				},
+				"pacifyX.activity.captureTerminalLifecycle": {
+					"type": "boolean",
+					"default": true,
+					"description": "Record terminal and shell-execution lifecycle metadata. Command text remains off unless separately enabled."
+				},
+				"pacifyX.activity.captureTaskLifecycle": {
+					"type": "boolean",
+					"default": true,
+					"description": "Record VS Code task lifecycle and exit status metadata."
+				},
+				"pacifyX.activity.captureDebugLifecycle": {
+					"type": "boolean",
+					"default": true,
+					"description": "Record debug-session lifecycle metadata without debug payloads or variable contents."
+				},
+				"pacifyX.activity.captureTestLifecycle": {
+					"type": "boolean",
+					"default": true,
+					"description": "Record available VS Code test-result lifecycle metadata without test output content."
+				},
+				"pacifyX.activity.captureMcpCalls": {
+					"type": "boolean",
+					"default": true,
+					"description": "Record start/end/error metadata and hashes for calls handled by the bundled Pacify-X MCP server."
+				},
+				"pacifyX.activity.captureCommandText": {
+					"type": "boolean",
+					"default": false,
+					"description": "Allow the first executable token to be recorded for trusted terminal shell executions. Full commands remain hash-only and terminal output is never retained."
+				},
+				"pacifyX.activity.retentionDays": {
+					"type": "integer",
+					"default": 30,
+					"minimum": 1,
+					"maximum": 3650,
+					"description": "Declared local trace-retention intent. Automatic destructive purge remains disabled and requires a separately governed cleanup action."
+				},
+				"pacifyX.billable.enabled": {
+					"type": "boolean",
+					"default": false,
+					"description": "Master permission for separately configured billable providers. Enabling this does not create credentials, connect to a provider, or authorize an execution by itself."
+				},
+				"pacifyX.guardrails.maxCostPerTaskUsd": {
+					"type": "number",
+					"default": 0,
+					"minimum": 0,
+					"description": "Hard USD cost ceiling per task. Zero denies billable task execution."
+				},
+				"pacifyX.guardrails.maxCostPerSessionUsd": {
+					"type": "number",
+					"default": 0,
+					"minimum": 0,
+					"description": "Hard USD cost ceiling per IDE/agent session. Zero denies billable session execution."
+				},
+				"pacifyX.guardrails.maxCostPerDayUsd": {
+					"type": "number",
+					"default": 0,
+					"minimum": 0,
+					"description": "Hard USD cost ceiling per day. Zero denies billable daily execution."
+				},
+				"pacifyX.guardrails.tokenBudget": {
+					"type": "integer",
+					"default": 12000,
+					"minimum": 0,
+					"maximum": 1000000000,
+					"description": "Maximum tokens allowed for one governed provider execution."
+				},
+				"pacifyX.guardrails.localFirst": {
+					"type": "boolean",
+					"default": true,
+					"description": "Require an admitted local route to be preferred before provider escalation."
+				},
+				"pacifyX.guardrails.providerAllowlist": {
+					"type": "array",
+					"default": [],
+					"uniqueItems": true,
+					"items": {
+						"type": "string",
+						"pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]{0,159}$"
+					},
+					"description": "Provider identifiers admitted for billable evaluation. Empty denies every billable provider."
+				},
+				"pacifyX.guardrails.gpuMemoryCeilingMb": {
+					"type": "integer",
+					"default": 0,
+					"minimum": 0,
+					"maximum": 1048576,
+					"description": "GPU memory ceiling in MiB. Zero denies GPU allocation on billable routes."
+				},
+				"pacifyX.guardrails.cpuCoreCeiling": {
+					"type": "integer",
+					"default": 4,
+					"minimum": 1,
+					"maximum": 4096,
+					"description": "Maximum logical CPU cores assignable to one governed execution."
+				},
+				"pacifyX.guardrails.ramCeilingMb": {
+					"type": "integer",
+					"default": 8192,
+					"minimum": 128,
+					"maximum": 16777216,
+					"description": "Maximum system RAM in MiB assignable to one governed execution."
+				},
+				"pacifyX.guardrails.escalationConfidenceThreshold": {
+					"type": "number",
+					"default": 0.85,
+					"minimum": 0,
+					"maximum": 1,
+					"description": "Minimum confidence required before an external provider escalation can be considered."
+				},
+				"pacifyX.guardrails.cacheReuseAggressiveness": {
+					"type": "string",
+					"enum": [
+						"off",
+						"conservative",
+						"balanced",
+						"aggressive"
+					],
+					"default": "balanced",
+					"description": "How aggressively governed executions should reuse compatible cached results."
+				},
+				"pacifyX.guardrails.requireApprovalBeforeBillableExecution": {
+					"type": "boolean",
+					"default": true,
+					"description": "Require a fresh explicit human approval before every billable execution."
+				},
+				"pacifyX.codexSandbox": {
+					"type": "string",
+					"enum": [
+						"read-only",
+						"workspace-write"
+					],
+					"default": "read-only",
+					"description": "Sandbox for bridge-owned Codex runs. Workspace-write always requires a modal review and never grants Git mutation authority."
+				},
+				"pacifyX.ollama.enabled": {
+					"type": "boolean",
+					"default": false,
+					"description": "Register locally discovered Ollama models with the VS Code Language Model API."
+				},
+				"pacifyX.ollama.baseUrl": {
+					"type": "string",
+					"default": "http://127.0.0.1:11434",
+					"description": "Local Ollama API base URL. Only loopback HTTP endpoints are admitted."
+				}
+			}
+		},
+		"languageModelChatProviders": [
+			{
+				"vendor": "pacify-local",
+				"displayName": "Pacify-X Local Models"
+			}
+		],
+		"mcpServerDefinitionProviders": [
+			{
+				"id": "pacify-x.mcp",
+				"label": "Pacify-X Governed Context"
+			}
+		]
+	},
+	"scripts": {
+		"check": "node --check src/extension.js && node --check src/pxBridge.js && node --check src/runtimeBridge.js && node --check src/contextBridge.js && node --check src/coordinationManager.js && node --check src/activityManager.js && node --check src/teamFabricManager.js && node --check src/enterpriseManager.js && node --check src/discoveryManager.js && node --check src/cleanupManager.js && node --check src/ollamaProvider.js && node --check src/treeProvider.js && node --check media/dashboard.js && node --check server/source.mjs && node --check scripts/build-mcp.js && node --check scripts/package-vsix.js",
+		"test": "npm run check && node --test tests/*.test.js",
+		"build:mcp": "node scripts/build-mcp.js",
+		"build": "npm run build:mcp && npm test",
+		"package": "npm run build && node scripts/package-vsix.js"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/server": "2.0.0",
+		"zod": "4.4.3"
+	},
+	"devDependencies": {
+		"esbuild": "0.25.12",
+		"playwright-core": "1.62.1"
+	},
+	"files": [
+		"src/**",
+		"media/**",
+		"resources/**",
+		"server/index.js",
+		"README.md",
+		"CHANGELOG.md",
+		"LICENSE",
+		"NOTICE",
+		"docs/**"
+	],
+	"__metadata": {
+		"installedTimestamp": 1786465400575,
+		"targetPlatform": "undefined",
+		"size": 5083356
+	}
+}

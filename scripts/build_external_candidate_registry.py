@@ -7,6 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -62,14 +63,14 @@ def _candidate_manifest(
 
 
 def _active_manifest(root: Path) -> dict[str, object]:
-    body = f".agents/skills/{ACTIVE_ID}/SKILL.md"
+    body = f".px/skills/{ACTIVE_ID}/SKILL.md"
     return {
         "id": ACTIVE_ID,
         "version": "1.0.0",
         "status": "active",
         "body": body,
         "body_sha256": hashlib.sha256((root / body).read_bytes()).hexdigest(),
-        "references": [f".agents/skills/{ACTIVE_ID}/references/runtime-contract.md"],
+        "references": [f".px/skills/{ACTIVE_ID}/references/runtime-contract.md"],
         "capability_tags": [
             "admission",
             "external-candidates",
@@ -104,17 +105,29 @@ def build(root: Path) -> dict[str, object]:
     )
     bundles = list(bundle_document["packages"])
     candidates = list(candidate_document["capabilities"])
+    skill_catalog = tomllib.loads(
+        (root / "registry/skill_catalog.toml").read_text(encoding="utf-8")
+    )
+    active_catalog_ids = {
+        str(skill["id"])
+        for skill in skill_catalog.get("skills", ())
+        if skill.get("status") in {"active", "admitted"}
+    }
+    bundle_ids = {str(bundle["id"]) for bundle in bundles}
+    promoted = active_catalog_ids & bundle_ids
     manifests = {
         str(bundle["id"]): _candidate_manifest(root, bundle, candidates)
         for bundle in bundles
+        if str(bundle["id"]) not in promoted
     }
     manifests[ACTIVE_ID] = _active_manifest(root)
-    return {"manifests": manifests, "bundles": bundles}
+    return {"manifests": manifests, "bundles": bundles, "promoted": promoted}
 
 
 def reconcile(root: Path, *, check: bool) -> dict[str, object]:
     projection = build(root)
     manifests = projection["manifests"]
+    promoted = projection["promoted"]
     drift: list[str] = []
     catalog_path = root / "registry/external_capability_catalog.json"
     catalog = load_json_object(catalog_path)
@@ -196,6 +209,7 @@ def reconcile(root: Path, *, check: bool) -> dict[str, object]:
         "checked_manifest_count": len(manifests),
         "candidate_manifest_count": len(manifests) - 1,
         "active_control_count": 1,
+        "promoted_bundle_count": len(promoted),
         "drift": sorted(set(drift)),
         "changed": [] if check else sorted(set(drift)),
     }

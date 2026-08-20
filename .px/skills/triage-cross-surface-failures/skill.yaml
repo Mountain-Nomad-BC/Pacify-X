@@ -1,0 +1,38 @@
+{
+  "admission_record": "triage-cross-surface-failures",
+  "body_sha256": "474618a8b085690466a075b3b2812b9c5c3e5d701a9477c1745ae252092264ef",
+  "contract": {
+    "available": true,
+    "sha256": "1edda9dbf4cfc47bb1dc38a451e503640c77b5d49d7298d2fedbf77bf6a056ab",
+    "source": "registry/skill_packages/triage-cross-surface-failures.json"
+  },
+  "description": "Correlate a failure across browser, API, service health, logs, traces, data state, commits, dependency changes, and resource pressure without silently repairing it. Use for flaky scenarios, multi-service incidents, blocked campaigns, ambiguous ownership, or evidence-backed rerun planning.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "triage-cross-surface-failures",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/triage-cross-surface-failures"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "triage",
+    "failure",
+    "correlation",
+    "diagnosis"
+  ],
+  "version": "0.1.0"
+}

@@ -86,16 +86,31 @@ def test_setuptools_egg_info_is_generated_intermediate_not_product() -> None:
     assert first["product_digest"] == second["product_digest"]
 
 
-def test_git_metadata_is_generated_intermediate_not_product() -> None:
+def test_git_metadata_is_excluded_retained_custody_not_product() -> None:
     root = _minimal_tree()
     first = classify_tree(root)
     metadata = root / ".git/objects/example"
     metadata.parent.mkdir(parents=True)
     metadata.write_text("git metadata\n", encoding="utf-8")
     second = classify_tree(root)
-    record = next(
-        item for item in second["records"] if item["path"] == ".git/objects/example"
-    )
     assert second["valid"], second["errors"]
-    assert record["classification"] == "generated_intermediate"
+    assert not any(item["path"].startswith(".git/") for item in second["records"])
     assert first["product_digest"] == second["product_digest"]
+
+
+def test_px_native_skills_are_product_and_nested_dependencies_are_pruned() -> None:
+    root = _minimal_tree()
+    native = root / ".px/skills/example/SKILL.md"
+    native.parent.mkdir(parents=True)
+    native.write_text("# Example\n", encoding="utf-8")
+    dependency = root / "extension/node_modules/example/dist/index.js"
+    dependency.parent.mkdir(parents=True)
+    dependency.write_text("generated dependency\n", encoding="utf-8")
+    result = classify_tree(root)
+    assert result["valid"], result["errors"]
+    assert any(
+        item["path"] == ".px/skills/example/SKILL.md"
+        and item["classification"] == "product_input"
+        for item in result["records"]
+    )
+    assert not any(item["path"].startswith("extension/node_modules/") for item in result["records"])

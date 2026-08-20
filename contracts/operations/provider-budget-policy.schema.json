@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:operations:provider-budget-policy",
+  "title": "PACIFY-X provider budget policy registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "policy", "budgets"],
+  "properties": {
+    "schema_version": {"const": "px.provider-budget-policy/1.0"},
+    "policy": {"type": "string", "minLength": 1},
+    "budgets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "budget_id", "actor_id", "provider_id", "currency", "enabled",
+          "hard_limit_microunits", "warning_threshold_microunits",
+          "max_requests", "max_input_tokens", "max_output_tokens",
+          "max_charge_per_request_microunits", "unknown_billing",
+          "unknown_charge_microunits", "fallback_adapter_ids"
+        ],
+        "properties": {
+          "budget_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,95}$"},
+          "actor_id": {"type": "string", "minLength": 1},
+          "provider_id": {"type": "string", "minLength": 1},
+          "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+          "enabled": {"type": "boolean"},
+          "hard_limit_microunits": {"type": "integer", "minimum": 0},
+          "warning_threshold_microunits": {"type": "integer", "minimum": 0},
+          "max_requests": {"type": "integer", "minimum": 0},
+          "max_input_tokens": {"type": "integer", "minimum": 0},
+          "max_output_tokens": {"type": "integer", "minimum": 0},
+          "max_charge_per_request_microunits": {"type": "integer", "minimum": 0},
+          "unknown_billing": {"enum": ["deny", "allow_conservative_burn"]},
+          "unknown_charge_microunits": {"type": "integer", "minimum": 0},
+          "fallback_adapter_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"}
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "baseline_sha256": "46840219086540c210ef043d49fcf0480991379b1970b8eb7b4f3bcc6980eacc",
+  "boundary_contract_sha256": "da37caa551ca2bf862d4cce9eb889f1ab694dc11cef33dd516ff00f0bd77f3d7",
+  "candidates": [
+    {
+      "boundary_costs": {
+        "python_node_process_boundary": 0.05
+      },
+      "boundary_penalty": 0.05,
+      "class": "host_language",
+      "eligible": true,
+      "failed_gates": [],
+      "id": "current-python-node-webview-cpu",
+      "keep_current": true,
+      "scores": {
+        "correctness": 1.0,
+        "cost": 1.0,
+        "latency": 0.75,
+        "maintainability": 0.9,
+        "operability": 0.9,
+        "portability": 0.9,
+        "reversibility": 1.0,
+        "throughput": 0.75
+      },
+      "total_system_score": 0.8495,
+      "weighted_benefit": 0.8995
+    }
+  ],
+  "current_candidate": "current-python-node-webview-cpu",
+  "decision_sha256": "442d82621750b6a4ad87fccb127871323bdadcce5cde953b5c2e9383da9ea20c",
+  "hardware_route": {
+    "actual_device": "cpu",
+    "correctness_passed": true,
+    "fallback": false,
+    "fallback_reason": "serialization is CPU/operating-system authoritative",
+    "selected_device": "cpu"
+  },
+  "migration_authorized": false,
+  "minimum_improvement": 0.05,
+  "mode": "language_runtime",
+  "observed_workload": true,
+  "promotion_tier": 0,
+  "provider_selected": false,
+  "recommendation": "keep_current",
+  "requires_benchmark_before_promotion": true,
+  "rollback_artifact_sha256": "c1bd3ecab6fd1a9d2cb656b1ee23cdc7ce1b99624d9f623b12e294d62388c14c",
+  "scheduler_bus_revision": 69,
+  "schema_version": "px.execution-placement-decision/2.0",
+  "selected_candidate": "current-python-node-webview-cpu",
+  "weights": {
+    "correctness": 0.3,
+    "cost": 0.08,
+    "latency": 0.17,
+    "maintainability": 0.08,
+    "operability": 0.12,
+    "portability": 0.08,
+    "reversibility": 0.05,
+    "throughput": 0.12
+  },
+  "workload_observation_sha256": "06c3318f9c8413618a62ec67b80fcbe14b74b300ccc90baf3d5e39325e279141"
+}

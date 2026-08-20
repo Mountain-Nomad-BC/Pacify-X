@@ -1,0 +1,38 @@
+{
+  "admission_record": "manage-agent-session-fabric",
+  "body_sha256": "1ee9fb15339afb2e8353de1aa598dd8fbc9fcedcccd571510468452bfb40af7a",
+  "contract": {
+    "available": true,
+    "sha256": "c18c61ca703455df990f31156a830ae45b01999fb08041c1ae0d0ed300b0734a",
+    "source": "registry/skill_packages/manage-agent-session-fabric.json"
+  },
+  "description": "Inspect and plan optional terminal-session adapter actions without executing, attaching, or persisting a process unless the exact action has separate authority and remains project scoped. Use for resumable terminal or harness session integrations.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "manage-agent-session-fabric",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/manage-agent-session-fabric"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "agent",
+    "authority",
+    "session",
+    "terminal-adapter"
+  ],
+  "version": "1.0.0"
+}

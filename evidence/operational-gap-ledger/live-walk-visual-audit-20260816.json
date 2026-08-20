@@ -1,0 +1,228 @@
+{
+  "schema_version": "px.live-walk-visual-audit/1.0",
+  "report_id": "live-walk-visual-audit-20260816",
+  "generated_at": "2026-08-16T18:31:19.906Z",
+  "decision": "fail",
+  "scope": {
+    "mode": "read-only visual and DOM audit",
+    "receipt": "evidence/operational-ui-walk-punch-ledger-20260816-r2/receipt.json",
+    "screenshots_directory": "evidence/operational-ui-walk-punch-ledger-20260816-r2",
+    "ledger_snapshot": "registry/operational_gap_ledger.snapshot.json",
+    "product_files_modified": false,
+    "ledger_modified": false,
+    "only_write": "evidence/operational-gap-ledger/live-walk-visual-audit-20260816.json"
+  },
+  "input_bindings": {
+    "receipt": {
+      "bytes": 307394,
+      "sha256": "04430706fa528c9896febdafd49365bdef924c781caf97b65bb75ec86efa1d46",
+      "observed_at": "2026-08-16T18:28:03.484Z",
+      "authority": "live installed VS Code host and real workspace; navigation-only dashboard walk"
+    },
+    "ledger_snapshot": {
+      "bytes": 1786990,
+      "sha256": "2c27a16f2b534d5fab063757f70f45dcbae3fe90968186b8326db44841f925fc",
+      "card_count": 135
+    },
+    "screenshots": [
+      {"path": "evidence/operational-ui-walk-punch-ledger-20260816-r2/02-projects.png", "bytes": 331560, "width": 861, "height": 806, "sha256": "9fd67e503de20b5ec28d86fb9ff81e41d5ababac6c1a6528806955cea866e51e", "inspected_with_view_image": true},
+      {"path": "evidence/operational-ui-walk-punch-ledger-20260816-r2/04-knowledgeGraph.png", "bytes": 398590, "width": 861, "height": 806, "sha256": "12b566dcb6e7e42b5ba57612c3c9fea27aef83fc9d5c42d7714b31516b721af3", "inspected_with_view_image": true},
+      {"path": "evidence/operational-ui-walk-punch-ledger-20260816-r2/05-skillsTools.png", "bytes": 405248, "width": 861, "height": 806, "sha256": "77644e65d29010c3221e16edc5f5c6b19abc9141c1291cd2d1ecd5db9177a771", "inspected_with_view_image": true},
+      {"path": "evidence/operational-ui-walk-punch-ledger-20260816-r2/07-plugins.png", "bytes": 403185, "width": 861, "height": 806, "sha256": "7b768a0f12819bbd5a48d9be3d910bfbb6ff639de7e7c719f40e110b7a1e5a98", "inspected_with_view_image": true},
+      {"path": "evidence/operational-ui-walk-punch-ledger-20260816-r2/09-activity.png", "bytes": 453549, "width": 861, "height": 806, "sha256": "670a5d28619536239353e7177d14dae767a1f0f3c7fd80344659bdc40f2a116d", "inspected_with_view_image": true},
+      {"path": "evidence/operational-ui-walk-punch-ledger-20260816-r2/11-assurance.png", "bytes": 399126, "width": 861, "height": 806, "sha256": "a23d000c8bec3df4a8bda1c7313ef60bd9a812dd6d5dc5ebedf1ec71c2135f0e", "inspected_with_view_image": true},
+      {"path": "evidence/operational-ui-walk-punch-ledger-20260816-r2/13-knowledgeCore.png", "bytes": 446761, "width": 861, "height": 806, "sha256": "8c445b0d7ebd16a6c52c0e14f78e92722817c4b694a255683664ceae426ac66e", "inspected_with_view_image": true},
+      {"path": "evidence/operational-ui-walk-punch-ledger-20260816-r2/builder-agent.png", "bytes": 188251, "width": 861, "height": 806, "sha256": "3a9be5df62d99a3f8709f9e31d859fe7e7d39b5fb3b0b1bfe9aec08dcec5cf41", "inspected_with_view_image": true}
+    ]
+  },
+  "coverage": {
+    "dom_surfaces_declared": 14,
+    "dom_surfaces_audited": 14,
+    "png_files_present": 8,
+    "png_files_inspected": 8,
+    "declared_output_captures": 17,
+    "declared_output_captures_succeeded": 8,
+    "declared_output_captures_failed": 9,
+    "supplemental_graph_canvas_capture_failed": 1,
+    "host_screenshot_errors": 10,
+    "interaction_depth": "navigation plus reversible in-memory builder edits; no approval, installation, execution, destructive action, save, reload, or reopen proof"
+  },
+  "overflow_measurements": [
+    {"surface": "dashboard", "candidate_count": 1, "classes": {"hero panel": 1}, "max_horizontal_px": 0, "max_vertical_px": 26},
+    {"surface": "agents", "candidate_count": 50, "classes": {"catalog-row": 50}, "max_horizontal_px": 7, "max_vertical_px": 0},
+    {"surface": "knowledgeGraph", "candidate_count": 1, "classes": {"relationship-inspector": 1}, "max_horizontal_px": 0, "max_vertical_px": 84},
+    {"surface": "skillsTools", "candidate_count": 51, "classes": {"catalog-row": 50, "workspace": 1}, "max_horizontal_px": 154, "max_vertical_px": 0},
+    {"surface": "workflows", "candidate_count": 50, "classes": {"catalog-row": 50}, "max_horizontal_px": 7, "max_vertical_px": 0},
+    {"surface": "activity", "candidate_count": 80, "classes": {"activity-event": 80}, "max_horizontal_px": 82, "max_vertical_px": 0},
+    {"surface": "diagnostics", "candidate_count": 61, "classes": {"readiness-row": 50, "catalog-row": 10, "panel": 1}, "max_horizontal_px": 180, "max_vertical_px": 0},
+    {"surface": "knowledgeCore", "candidate_count": 1, "classes": {"implemented": 1}, "max_horizontal_px": 9, "max_vertical_px": 0}
+  ],
+  "findings": [
+    {
+      "finding_id": "PX-OS-001",
+      "mapping": "exact existing ledger card",
+      "severity": "critical",
+      "category": "evidence validity",
+      "surfaces": ["projects", "knowledgeGraph", "skillsTools", "plugins", "activity", "assurance", "knowledgeCore"],
+      "claim": "Every captured dashboard surface reports that loaded host assets differ from the inspected source, so the images cannot certify the current source implementation.",
+      "evidence": [{"type": "direct screenshot", "references": ["02-projects.png", "04-knowledgeGraph.png", "05-skillsTools.png", "07-plugins.png", "09-activity.png", "11-assurance.png", "13-knowledgeCore.png"]}, {"type": "DOM/source text", "reference": "receipt.json results[*].operational_error_messages", "detail": "host v0.6.19 9cd9ca36ef92546b; source v0.6.19 8a228878f9f7ff03"}],
+      "impact": "Visual successes and DOM action counts are evidence for the loaded host only, not proof that the inspected source renders or behaves the same way.",
+      "action": "Reinstall or reload the exact source asset build, verify matching asset identity before navigation, and recapture the full walk with identity bound into each artifact."
+    },
+    {
+      "finding_id": "LWVA-20260816-001",
+      "mapping": "new report finding; ledger not modified",
+      "related_cards_non_exact": ["PX-OS-022"],
+      "severity": "high",
+      "category": "wasted first-fold space",
+      "surfaces": ["projects", "knowledgeGraph", "skillsTools", "plugins", "activity", "assurance", "knowledgeCore"],
+      "claim": "The repeated global status strip plus large identity-error panel occupies roughly the first 580-605 vertical pixels, pushing surface-specific controls and data below the fold on every captured dashboard surface.",
+      "evidence": [{"type": "direct screenshot", "references": ["02-projects.png", "04-knowledgeGraph.png", "05-skillsTools.png", "07-plugins.png", "09-activity.png", "11-assurance.png", "13-knowledgeCore.png"]}, {"type": "inference", "detail": "Approximate pixel range measured visually from 806 px captures; not an instrumented bounding-box measurement."}],
+      "impact": "The same blocker is restated on every page at the expense of the page's primary task, creating excessive scrolling and low information density.",
+      "action": "Keep a compact persistent blocker badge/banner, provide one expandable identity detail view, and reserve the first fold for surface-specific state and primary actions."
+    },
+    {
+      "finding_id": "PX-OS-010",
+      "mapping": "exact existing ledger card",
+      "severity": "high",
+      "category": "graph usability",
+      "surfaces": ["knowledgeGraph"],
+      "claim": "The graph scene is not usable at the captured fit: 180 nodes and 85 edges are placed in a 385x480 canvas at scale 0.101198; sampled nodes render at only 14x5 px and the selected node is not visible.",
+      "evidence": [{"type": "DOM measurement", "reference": "receipt.json results[knowledgeGraph].graph", "detail": {"canvas": [385, 480], "scene_transform": "translate3d(63.8943px, 202.811px, 0px) scale(0.101198)", "node_count": 180, "edge_count": 85, "visible_node_count": 148, "sample_node_size": [14, 5], "selected_visible": false}}, {"type": "evidence limitation", "detail": "The dedicated graph-canvas screenshot timed out, and the top-of-page surface screenshot does not reach the graph."}],
+      "impact": "Labels, node selection, and edge meaning cannot be inspected at useful size; fit-to-view produces nominal visibility without practical readability.",
+      "action": "Adopt density-aware clustering/layout, enforce a readable minimum node/label scale, center or reveal the selected node, and add a verified dedicated full-screen graph capture."
+    },
+    {
+      "finding_id": "PX-OS-014",
+      "mapping": "exact existing ledger card",
+      "severity": "high",
+      "category": "project surface density",
+      "surfaces": ["projects"],
+      "claim": "The Projects first fold reaches only the top of the Active Project and Files summary cards; repository map history, risks, entrypoints, integrations, and coordination content recorded in the DOM remain below the fold.",
+      "evidence": [{"type": "direct screenshot", "reference": "02-projects.png"}, {"type": "DOM/source text", "reference": "receipt.json results[projects]", "detail": "11 panels and 34 visible actions exist, but headings after the identity panel are not shown in the screenshot."}],
+      "impact": "High-value operational project information is discoverable only through substantial scrolling despite being the surface's purpose.",
+      "action": "Compress global chrome and summary cards, show freshness/risk/entrypoint evidence in the first fold, and keep detail panels progressively expandable."
+    },
+    {
+      "finding_id": "PX-OS-015",
+      "mapping": "exact existing ledger card",
+      "severity": "high",
+      "category": "skills/tools usability",
+      "surfaces": ["skillsTools"],
+      "claim": "The captured first fold shows only aggregate PX Native/Preserved summary cards, while the DOM records 51 overflow candidates, including a workspace 154 px wider than its client box and 50 catalog rows.",
+      "evidence": [{"type": "direct screenshot", "reference": "05-skillsTools.png"}, {"type": "DOM measurement", "reference": "receipt.json results[skillsTools].overflow_candidates", "detail": {"candidate_count": 51, "max_horizontal_px": 154}}],
+      "impact": "Lifecycle and governance work is displaced by static summary presentation, and detailed rows risk hidden content or horizontal clipping.",
+      "action": "Move current lifecycle actions and admission/test/provenance state into the first fold; make the workspace responsive and provide explicit expansion for intentionally truncated catalog text."
+    },
+    {
+      "finding_id": "PX-OS-016",
+      "mapping": "exact existing ledger card",
+      "severity": "high",
+      "category": "stale/nonfunctional plugin state",
+      "surfaces": ["plugins"],
+      "claim": "Plugin Manager presents Detected/Active and Capabilities as Unavailable with 'stale; records suppressed' while the first fold offers no recovery or lifecycle operation beyond generic Controls/settings.",
+      "evidence": [{"type": "direct screenshot", "reference": "07-plugins.png"}, {"type": "DOM/source text", "reference": "receipt.json results[plugins]", "detail": "10 visible actions and 27 panels, with lifecycle content below the captured fold."}],
+      "impact": "Users see a dead-end stale state without an immediately actionable refresh, reconciliation, or governed recovery route.",
+      "action": "Place refresh/reconcile and cause/evidence beside the unavailable metrics, then expose separately approval-bound install/update/enable/disable/uninstall/rollback operations."
+    },
+    {
+      "finding_id": "PX-OS-017",
+      "mapping": "exact existing ledger card",
+      "severity": "medium",
+      "category": "activity density and overflow",
+      "surfaces": ["activity"],
+      "claim": "The Activity first fold is consumed by global blocker chrome and a large explanatory metadata-only panel, while all 80 measured activity-event rows overflow horizontally by as much as 82 px.",
+      "evidence": [{"type": "direct screenshot", "reference": "09-activity.png"}, {"type": "DOM measurement", "reference": "receipt.json results[activity].overflow_candidates", "detail": {"candidate_count": 80, "max_horizontal_px": 82}}],
+      "impact": "The current timeline is pushed down and event content is truncated, weakening the surface's ability to answer what is happening now.",
+      "action": "Collapse the explanatory copy after first view, prioritize live/stale timelines, and use responsive event rows with accessible expansion rather than silent horizontal clipping."
+    },
+    {
+      "finding_id": "PX-OS-019",
+      "mapping": "exact existing ledger card",
+      "severity": "critical",
+      "category": "misleading assurance presentation",
+      "surfaces": ["assurance"],
+      "claim": "Assurance displays confident counts such as 7 Assurance Records and 165 Contracts directly beneath a critical host/source mismatch, without making those counts non-certifying or stale in the card labels.",
+      "evidence": [{"type": "direct screenshot", "reference": "11-assurance.png"}, {"type": "DOM/source text", "reference": "receipt.json results[assurance]"}],
+      "impact": "Structural inventory can be mistaken for current operational readiness even when the rendered host is not the source under inspection.",
+      "action": "Visually subordinate structural counts, mark them explicitly non-certifying, and block readiness presentation until live identity and current receipt prerequisites resolve."
+    },
+    {
+      "finding_id": "PX-OS-018",
+      "mapping": "exact existing ledger card",
+      "severity": "high",
+      "category": "diagnostic clipping",
+      "surfaces": ["diagnostics"],
+      "claim": "Diagnostics has 61 DOM overflow candidates: 50 readiness rows, 10 catalog rows, and one panel, with horizontal excess up to 180 px.",
+      "evidence": [{"type": "DOM measurement", "reference": "receipt.json results[diagnostics].overflow_candidates", "detail": {"candidate_count": 61, "max_horizontal_px": 180}}, {"type": "evidence limitation", "detail": "10-diagnostics.png failed to capture, so the measured overflow lacks direct pixel confirmation."}],
+      "impact": "Long status, cause, and remediation context can be clipped precisely where diagnostic detail is most important.",
+      "action": "Wrap or responsively reflow badges/rows, expose full text via keyboard-accessible details, and recapture Diagnostics after eliminating the unstable screenshot condition."
+    },
+    {
+      "finding_id": "PX-OS-062",
+      "mapping": "exact existing ledger card",
+      "severity": "high",
+      "category": "responsive clipping",
+      "surfaces": ["knowledgeGraph", "agent-studio"],
+      "claim": "The Knowledge Graph page title is visibly truncated to 'Knowledge Gr...' and the Agent Studio modal extends beyond the right content edge, clipping the close control container and the primary 'Save immutable candidate' button.",
+      "evidence": [{"type": "direct screenshot", "references": ["04-knowledgeGraph.png", "builder-agent.png"]}],
+      "impact": "Primary identity and actions are obscured at the actual 861x806 evidence viewport; the save action does not have a fully visible control boundary.",
+      "action": "Remove conflicting fixed widths, let titles wrap or allocate flexible header space, constrain modals to the viewport, and keep footer actions fully visible with responsive stacking."
+    },
+    {
+      "finding_id": "LWVA-20260816-002",
+      "mapping": "new report finding; ledger not modified",
+      "severity": "medium",
+      "category": "navigation state",
+      "surfaces": ["knowledgeCore", "runtimeCore"],
+      "claim": "The receipt records navigation_active=false for Knowledge Core and Runtime Core even though each surface loaded and navigation_scroll_top remained 0; the Knowledge Core screenshot shows no visible selected navigation item.",
+      "evidence": [{"type": "DOM measurement", "reference": "receipt.json results[knowledgeCore|runtimeCore]", "detail": {"navigation_active": false, "navigation_scroll_top": 0, "navigation_at_top": true}}, {"type": "direct screenshot", "reference": "13-knowledgeCore.png"}],
+      "impact": "Users lose location feedback on advanced surfaces and cannot verify which navigation entry owns the displayed page.",
+      "action": "Provide explicit visible advanced-surface navigation entries or a selected parent group, ensure the active item is in view, and assert active-state accessibility attributes in the walk."
+    },
+    {
+      "finding_id": "LWVA-20260816-003",
+      "mapping": "new report finding; ledger not modified",
+      "related_cards_non_exact": ["PX-OS-135"],
+      "severity": "high",
+      "category": "evidence incompleteness",
+      "surfaces": ["dashboard", "agents", "workflows", "memory", "diagnostics", "settings", "runtimeCore", "workflow-studio", "sidebar", "knowledgeGraph"],
+      "claim": "Ten screenshot attempts timed out while waiting for unstable elements. Only 8 of 17 declared output captures succeeded, and the supplemental graph-canvas capture also failed.",
+      "evidence": [{"type": "tool output", "reference": "receipt.json host_errors and screenshot status fields", "detail": {"declared_output_success": 8, "declared_output_failure": 9, "supplemental_graph_canvas_failure": 1, "host_screenshot_errors": 10}}],
+      "impact": "DOM presence cannot substitute for visual proof of layout, clipping, overlap, z-order, or off-screen controls on the uncaptured surfaces.",
+      "action": "Identify the unstable animated/reflowing owner, wait on an explicit settled-state signal rather than generic element stability, retain per-attempt viewport/scroll data, and require a captured image for every surface before visual certification."
+    },
+    {
+      "finding_id": "LWVA-20260816-004",
+      "mapping": "new report finding; ledger not modified",
+      "severity": "medium",
+      "category": "evidence depth",
+      "surfaces": ["all captured dashboard surfaces", "agent-studio"],
+      "claim": "All 8 PNGs are a single 861x806 viewport; dashboard captures are taken at navigation top and show only first-fold content, with no retained scrolled-state images for the deeper panels and controls enumerated by the DOM.",
+      "evidence": [{"type": "artifact measurement", "detail": "All PNG dimensions are 861x806."}, {"type": "DOM measurement", "reference": "receipt.json results[*].navigation_at_top", "detail": "true for all surfaces"}, {"type": "inference", "detail": "A single top viewport cannot visually verify below-fold layout or control affordances."}],
+      "impact": "The walk is an inventory and first-fold audit, not complete visual coverage of every panel, action, empty state, graph, modal state, or overflow candidate.",
+      "action": "Capture deterministic full-page or tiled screenshots plus focused component states for every builder, graph, modal, error, and overflow-prone section; bind each image to surface, scroll position, viewport, and state."
+    }
+  ],
+  "counts": {
+    "findings_total": 13,
+    "exact_existing_card_findings": 9,
+    "new_report_findings": 4,
+    "critical": 2,
+    "high": 8,
+    "medium": 3,
+    "direct_screenshot_findings": 9,
+    "dom_measurement_findings": 6,
+    "evidence_limitation_findings": 4
+  },
+  "sufficiency": {
+    "receipt_and_png_inventory": "pass",
+    "every_present_png_inspected": "pass",
+    "all_14_dom_surfaces_examined": "pass",
+    "complete_visual_surface_coverage": "fail",
+    "exact_source_identity": "fail",
+    "interaction_completion_evidence": "not attempted by source walk",
+    "unsupported_claims": 0,
+    "freshness_warning": "The audit is bound to the 2026-08-16T18:28:03.484Z receipt and does not claim current state beyond those exact hashes."
+  }
+}

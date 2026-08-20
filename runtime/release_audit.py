@@ -21,6 +21,8 @@ from .structural_integrity import audit_structural_integrity
 from .effect_surface import validate_effect_surfaces
 from .evidence_portability import validate_evidence_portability
 from .licensing import validate_licensing
+from .bounded_walk import WalkLimits, bounded_walk
+from .repository_scope import is_external_environment_relative, is_project_source
 
 
 def _json(path: Path) -> dict[str, Any]:
@@ -142,7 +144,7 @@ def audit_framework(
         (root / "registry/skill_catalog.toml").read_text(encoding="utf-8")
     )
     catalog_ids = {str(item["id"]) for item in catalog.get("skills", ())}
-    skill_root = root / ".agents" / "skills"
+    skill_root = root / ".px" / "skills"
     directory_ids = {path.name for path in skill_root.iterdir() if path.is_dir()}
     missing_skill_files = sorted(
         identifier
@@ -154,7 +156,7 @@ def audit_framework(
         "skill-topology",
         catalog_ids == directory_ids and not missing_skill_files,
         f"catalog={len(catalog_ids)}; directories={len(directory_ids)}; incomplete={missing_skill_files}",
-        ["registry/skill_catalog.toml", ".agents/skills"],
+        ["registry/skill_catalog.toml", ".px/skills"],
     )
     active = {
         str(item["id"])
@@ -268,9 +270,9 @@ def audit_framework(
         config = tomllib.loads(pyproject.read_text(encoding="utf-8"))
         data_files = config.get("tool", {}).get("setuptools", {}).get("data-files", {})
         packaged_skills = {
-            key.split(".agents/skills/", 1)[1].split("/", 1)[0]
+            key.split(".px/skills/", 1)[1].split("/", 1)[0]
             for key in data_files
-            if ".agents/skills/" in key
+            if ".px/skills/" in key
         }
         check(
             "package-skill-topology",
@@ -301,20 +303,67 @@ def audit_framework(
         "build",
         "dist",
     }
+    quarantine_prefix = (".engineering-bootstrap", "quarantine")
+    audit_walk = bounded_walk(
+        root,
+        limits=WalkLimits(max_files=100_000, max_depth=128, max_bytes=2 * 1024**3),
+        symlink_policy="skip",
+        exclude=lambda relative: is_external_environment_relative(relative)
+        or Path(relative).parts[:2] == quarantine_prefix,
+    )
     generated = sorted(
-        path.relative_to(root).as_posix()
-        for path in root.rglob("*")
-        if any(
-            part in generated_directory_names for part in path.relative_to(root).parts
+        entry.relative
+        for entry in audit_walk.entries
+        for path in (entry.path,)
+        if (
+            any(
+                part in generated_directory_names
+                for part in path.relative_to(root).parts
+            )
+            or path.name.endswith(".egg-info")
+            or path.suffix.casefold() in {".pyc", ".pyo"}
         )
-        or path.name.endswith(".egg-info")
-        or path.suffix.casefold() in {".pyc", ".pyo"}
+    )
+    generated = [
+        relative
+        for relative in generated
+        if not relative.startswith("extension/dist")
+    ]
+    generated_evidence: list[str] = []
+    # A raw prefix can be monopolized by one large generated tree (for example,
+    # a release-output directory) and hide a different violation entirely.
+    # Retain one deterministic witness for every governed artifact class before
+    # filling the bounded evidence payload with the ordinary sorted remainder.
+    for marker in sorted(generated_directory_names):
+        witness = next(
+            (
+                relative
+                for relative in generated
+                if marker in Path(relative).parts
+            ),
+            None,
+        )
+        if witness is not None and witness not in generated_evidence:
+            generated_evidence.append(witness)
+    for predicate in (
+        lambda path: path.name.endswith(".egg-info"),
+        lambda path: path.suffix.casefold() in {".pyc", ".pyo"},
+    ):
+        witness = next(
+            (relative for relative in generated if predicate(Path(relative))), None
+        )
+        if witness is not None and witness not in generated_evidence:
+            generated_evidence.append(witness)
+    generated_evidence.extend(
+        relative
+        for relative in generated
+        if relative not in generated_evidence
     )
     check(
         "generated-artifact-hygiene",
         not generated,
         f"active generated artifacts={len(generated)}",
-        generated[:20],
+        generated_evidence[:20],
     )
 
     ownership_path = root / "registry/python_surface_ownership.json"
@@ -326,9 +375,13 @@ def audit_framework(
             str(record.get("path")): record for record in ownership.get("records", ())
         }
         python_paths = {
-            path.relative_to(root).as_posix(): path
-            for path in root.rglob("*.py")
-            if "__pycache__" not in path.parts
+            entry.relative: entry.path
+            for entry in audit_walk.files
+            for path in (entry.path,)
+            if path.suffix.casefold() == ".py"
+            and is_project_source(path, root)
+            and "__pycache__" not in path.parts
+            and path.relative_to(root).parts[:2] != quarantine_prefix
         }
         mapped_count = len(mapped)
         for relative, path in python_paths.items():

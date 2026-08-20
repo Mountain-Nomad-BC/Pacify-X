@@ -1,0 +1,66 @@
+{
+  "dependencies": [
+    "candidate-memory-promoter",
+    "revocable-certification"
+  ],
+  "domain": "knowledge-physics",
+  "failure_modes": [
+    "numerology",
+    "trust by popularity",
+    "one half-life for every domain",
+    "unbounded graph propagation"
+  ],
+  "formula_refs": [
+    "exponential-trust-decay",
+    "dependency-decay-propagation"
+  ],
+  "id": "trust-decay-controller",
+  "inputs": [
+    "event-sourced capability state",
+    "validation/use/dependency/contradiction events",
+    "domain calibration policy"
+  ],
+  "invariants": [
+    "Physics language is an operational metaphor, not literal law.",
+    "Composite scores expose raw components and calibration.",
+    "Trust loss is reversible with valid new evidence."
+  ],
+  "outputs": [
+    "trust/entropy/stability/volatility state",
+    "risk and revalidation signals",
+    "reproducible simulation or intervention plan"
+  ],
+  "procedure": [
+    "Initialize explicit dimensions and raw components.",
+    "Apply bounded evidence, validation, contradiction, dependency, use, and decay events.",
+    "Preserve the full event ledger and explain every score change.",
+    "Detect unstable, fragmented, stale, or over-centralized regions.",
+    "Simulate before canonical mutation and schedule risk-based revalidation."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Apply domain-specific evidence half-lives and dependency-sensitive trust decay to stale, unverified, superseded, or volatile knowledge while allowing validation to restore trust.",
+  "title": "Trust Decay Controller",
+  "version": "1.0.0",
+  "when_to_use": "Use continuously for time-sensitive knowledge and after dependency or source changes."
+}

@@ -116,7 +116,7 @@ class ExactToolCertificationTests(unittest.TestCase):
         self.assertEqual(result["python_file_count"], result["syntax_valid_count"])
         self.assertEqual(result["role_counts"].get("unknown", 0), 0)
         installed_skill_tools = len(
-            tuple((ROOT / ".agents/skills").glob("*/scripts/*.py"))
+            tuple((ROOT / ".px/skills").glob("*/scripts/*.py"))
         )
         self.assertEqual(
             result["role_counts"]["installed-skill-tool"],

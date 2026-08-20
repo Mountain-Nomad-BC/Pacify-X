@@ -20,6 +20,8 @@ recursive-include scripts *.py
 recursive-include templates *
 recursive-include tests test_*.py
 recursive-include .agents SKILL.md *.yaml *.md *.py
+include .px/skill-index.json
+recursive-include .px/skills *
 recursive-include .ai *.toml
 recursive-include .codex *
 recursive-include .cursor *

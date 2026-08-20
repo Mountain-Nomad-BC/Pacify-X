@@ -1,0 +1,19 @@
+{
+  "resources": [
+    "agents/openai.yaml",
+    "contracts/manifest.json",
+    "scripts/audit_source_capabilities.py",
+    "scripts/build_declared_suite_reconstruction.py",
+    "scripts/build_manifest_recovery_ledger.py",
+    "scripts/certify_declared_suite_reconstruction.py",
+    "scripts/reconcile_classified_assets.py",
+    "scripts/reconcile_mechanism_records.py",
+    "scripts/reconcile_skill_identities.py",
+    "scripts/reconcile_source_inventory.py",
+    "scripts/reconcile_staged_capabilities.py",
+    "scripts/validate_planning_card_coverage.py",
+    "SKILL.md",
+    "tests/validation.json"
+  ],
+  "schema_version": "px.skill-resources/1.0"
+}

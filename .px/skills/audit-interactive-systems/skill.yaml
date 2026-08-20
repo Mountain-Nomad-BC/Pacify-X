@@ -1,0 +1,39 @@
+{
+  "admission_record": "audit-interactive-systems",
+  "body_sha256": "a339d2f10640afcea386c95d61753221efbfce30e68be37004752c87ffaebec3",
+  "contract": {
+    "available": true,
+    "sha256": "2f40ea46d3c6b0d4361319548b25972b9d6aecbb057cb24a10aea195aa9464f2",
+    "source": "registry/skill_packages/audit-interactive-systems.json"
+  },
+  "description": "Verify complete user action paths and final resolved state rather than",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "audit-interactive-systems",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/audit-interactive-systems"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "audit",
+    "external-candidate",
+    "interactive",
+    "systems",
+    "ui-verification"
+  ],
+  "version": "0.1.0"
+}

@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-851",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000003118",
+  "effect": "write",
+  "scope": [
+    "scripts/build_typed_operational_surface_inventory.py",
+    "registry/operational_surface_inventory.json",
+    "extension/scripts/operational-ui-control-records.js",
+    "extension/scripts/run-operational-ui-walk.js"
+  ],
+  "authority": "Codex retains native host execution authority and applies PX inventory governance within the user-authorized repository.",
+  "expected_effect": "Add all omitted Agent Studio section selector variants, revise the denominator, and keep the walker fail-closed against the exact inventory.",
+  "rollback": "If the focused inventory and walker checks fail, retain PX-OS-851 and the prior inventory revision, stop the live walk, and make no operational claims.",
+  "evidence": [{"reference": "registry/operational_surface_inventory.json", "claim": "The current denominator is the exact admitted revision target."}]
+}

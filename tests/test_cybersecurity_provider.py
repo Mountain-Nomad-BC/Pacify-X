@@ -81,6 +81,19 @@ def test_metadata_search_is_lazy_explainable_and_non_authorizing(
     )
     assert result["results"][0]["metadata_untrusted"] is True
     assert result["results"][0]["score_components"]
+    assert result["descriptions_included"] is False
+    assert "description" not in result["results"][0]
+
+
+def test_external_security_descriptions_require_explicit_output_opt_in() -> None:
+    result = provider.search_security_capabilities(
+        ROOT,
+        "MCP prompt injection tool poisoning",
+        limit=1,
+        include_descriptions=True,
+    )
+    assert result["descriptions_included"] is True
+    assert isinstance(result["results"][0]["description"], str)
 
 
 def test_provider_can_be_disabled_without_breaking_core() -> None:

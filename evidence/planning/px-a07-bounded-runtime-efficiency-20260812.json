@@ -1,0 +1,59 @@
+{
+  "schema_version": "px.planning-evidence/1.0",
+  "card": "A07",
+  "status": "accepted",
+  "generated_utc": "2026-08-12T05:35:00Z",
+  "authority_boundary": {
+    "px": "governance, scope, policy, contracts, validation, observation, evidence",
+    "executor": "Codex host retains native execution, tool, approval, and security authority",
+    "nested_px_codex_executor": false
+  },
+  "acceptance": {
+    "activation_ms": 4.153,
+    "activation_budget_ms": 500,
+    "startup_subprocesses": 0,
+    "startup_discovery": false,
+    "startup_project_writes": 0,
+    "visible_fallback_seconds": 300,
+    "hidden_polling": false,
+    "extension_tests": { "passed": 180, "failed": 0, "skipped": 0 },
+    "live_host": { "vscode": "1.132.1", "connected": true, "canonical_counts_match": true, "process_tree_closed_verified": true, "residual_owned_pids": 0 },
+    "load_profiles": ["current", "2x", "5x", "pathological"],
+    "load_profiles_within_budget": true,
+    "duplicate_requests": 100,
+    "duplicate_executions": 1,
+    "duplicate_joins": 99,
+    "pools_bounded": true,
+    "deadlines_cancellable": true,
+    "circuits_bounded": true,
+    "persistent_cache_fingerprint_verified": true,
+    "persistent_cache_corruption_rejected": true,
+    "read_discovery_memory_only": true,
+    "coordination_read_initializes_state": false,
+    "enterprise_read_initializes_state": false
+  },
+  "root_causes_closed": [
+    "twenty-second provider/Git subprocess polling was replaced by revision events, five-minute visible-only fallback, TTL caching, and single-flight work",
+    "environment discovery and validation bypassed shared scheduling; both now use bounded governor pools with cancellation and deadlines",
+    "environment tool probes launched an excessive burst; probes now use two workers",
+    "Team Fabric recursive hashing blocked the extension host; it now runs in an owned worker",
+    "dashboard reads initialized coordination and enterprise state; both reads are now memory-only until an explicit mutation action",
+    "the admitted filesystem watcher glob missed nested paths; live-host coverage now observes the expected change event",
+    "retained hidden sidebar webviews multiplied retained work; hidden webview context retention is disabled"
+  ],
+  "evidence": {
+    "extension/evidence/vscode-host-listener-smoke.json": "a4520b74037b14602d205f919f42fd4be74ada5b55e87e1aa4cc0eacdcbbdc03",
+    "extension/evidence/runtime-efficiency-load.json": "562feeca5a7aff3a0c72d32ea2f6f40c2ecac1876fd579b27094780dfbbcbdb9"
+  },
+  "source_sha256": {
+    "extension/src/extension.js": "89a9ec58b12468cf3ba8e62556bf22721fa1d0bbde640a81a2199d9c5111c01d",
+    "extension/src/activityObservability.js": "eb9f73da0469a4922f8a9d5efbfa6e881f20eef49c0d7488541904fac6173e3f",
+    "extension/src/coordinationManager.js": "ca6ec58f9ed24b173d68cff41c93cdc6b232a05e3bcc2ed9fd8fbe8f38fd03d4",
+    "extension/src/enterpriseManager.js": "a42ab8c7509aa3cf076d6ddb5f48e187d01821079d13e98f5bb10a7898effcd1",
+    "extension/src/workGovernor.js": "c978cd85b666f7edf45456315e6b96611fbd7943973fec77c0dfb3ae6bab5735",
+    "extension/src/runtimeRevisions.js": "770e0f3ff6699e099d0623839637e6d9398d61aa65dff3a82729c0cf9f797b09",
+    "extension/src/pxBridge.js": "c6308972d661c2b72eb1c8fd3aa3ae3673310082d73b66baf47f5331598b79bc",
+    "extension/src/discoveryManager.js": "bb592d1e6a4423bb349f478ce3f4158f5335a1871f6e73a5a1035056149a8394",
+    "extension/src/teamFabricManager.js": "5d534bed2886bbdf2a75b059b05f525a1fbdb4fa27eeefdb1090fee84163fca6"
+  }
+}

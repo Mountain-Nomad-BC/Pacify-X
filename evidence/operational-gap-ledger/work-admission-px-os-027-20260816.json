@@ -1,0 +1,18 @@
+{
+  "gap_id": "PX-OS-027",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004933",
+  "authority": "User-directed operational repair plus exact focused failure evidence authorizes bounded workflow implementation/test correction.",
+  "effect": "write",
+  "scope": [
+    "runtime/workflow_studio.py",
+    "tests/test_workflow_studio.py"
+  ],
+  "expected_effect": "Preserve durable branch skips, test true disjoint-scope parallelism and same-scope serialization, and make pause/cancel lifecycle publication reliable and observable.",
+  "rollback": "Changes are isolated to workflow runtime and its focused tests; retain failing evidence and revert only through explicit patch if lifecycle safety regresses.",
+  "evidence": [
+    {
+      "claim": "Immediate exact failure checkpoint.",
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004933"
+    }
+  ]
+}

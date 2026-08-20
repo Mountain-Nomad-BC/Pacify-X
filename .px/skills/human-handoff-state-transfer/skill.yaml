@@ -1,0 +1,39 @@
+{
+  "admission_record": "human-handoff-state-transfer",
+  "body_sha256": "d547f50aa5bcd149fda972330aee1278b58eaa9dd7a22c4619cf09f676269300",
+  "contract": {
+    "available": true,
+    "sha256": "1c6d0463a512f84280ab23ea8fe0d6f80d14bcf3c44e2ca669e689d7d47f365a",
+    "source": "registry/skill_packages/human-handoff-state-transfer.json"
+  },
+  "description": "Transfer complete resumable operational state to a human or bounded agent. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "human-handoff-state-transfer",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/human-handoff-state-transfer"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "handoff",
+    "human",
+    "orchestration",
+    "state",
+    "transfer"
+  ],
+  "version": "0.1.0"
+}

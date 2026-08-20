@@ -1,0 +1,39 @@
+{
+  "admission_record": "backup-deploy-recover-supabase",
+  "body_sha256": "ba63e7073a36ff2924097c0bd5073250975d5ced01f0e105cdab67dd6748fd17",
+  "contract": {
+    "available": true,
+    "sha256": "15578a1dd1803d505a6a23e19927eefaf1380ded793e6ab70dde76776f2e87b6",
+    "source": "registry/skill_packages/backup-deploy-recover-supabase.json"
+  },
+  "description": "Deploy and recover Supabase schema, data, functions, config, storage, and secrets with tested backups and rollback evidence.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "backup-deploy-recover-supabase",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/backup-deploy-recover-supabase"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "backup",
+    "deployment",
+    "pitr",
+    "recovery",
+    "supabase"
+  ],
+  "version": "1.0.0"
+}

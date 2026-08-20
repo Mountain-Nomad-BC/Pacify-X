@@ -134,7 +134,7 @@ def test_selective_staging_is_deterministic_review_gated_and_project_local(
 def test_selective_stage_reports_collisions(tmp_path: Path) -> None:
     project = commissioned_project(tmp_path)
     identifier = bundle_ids()[0]
-    (project / ".agents/skills" / identifier).mkdir(parents=True)
+    (project / ".px/skills" / identifier).mkdir(parents=True)
     plan = plan_selective_stage(
         ROOT, project, project_id="project-one", bundle_ids=[identifier]
     )

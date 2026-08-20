@@ -1,0 +1,3329 @@
+{
+  "contracts": [
+    {
+      "dependencies": [
+        "claim-evidence-ledger",
+        "unknown-field-guardian"
+      ],
+      "domain": "reasoning-kernel",
+      "failure_modes": [
+        "false certainty",
+        "evidence double counting",
+        "premature convergence",
+        "scope or timestamp collapse"
+      ],
+      "formula_refs": [
+        "bayes-update",
+        "shannon-entropy",
+        "temporal-evidence-decay"
+      ],
+      "id": "epistemic-state-manager",
+      "inputs": [
+        "claims/evidence",
+        "task context",
+        "scope and time metadata"
+      ],
+      "invariants": [
+        "Unknowns are never silently converted to facts.",
+        "Confidence changes require evidence lineage.",
+        "High-impact uncertainty triggers testing, abstention, or escalation."
+      ],
+      "outputs": [
+        "machine-readable reasoning artifact",
+        "uncertainty and provenance record",
+        "decision or next-test recommendation"
+      ],
+      "procedure": [
+        "Normalize inputs and scope.",
+        "Separate observations, inferences, assumptions, unknowns, and policy choices.",
+        "Apply the referenced method with visible component values.",
+        "Test alternatives, contradictions, and failure conditions.",
+        "Emit a bounded result with provenance and residual uncertainty."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Represent observations, inferences, assumptions, disputes, hypotheses, unknowns, confidence, and provenance as an explicit decision-safe state.",
+      "title": "Epistemic State Manager",
+      "version": "1.0.0",
+      "when_to_use": "Use whenever material information is incomplete, conflicting, probabilistic, stale, or scope-sensitive."
+    },
+    {
+      "dependencies": [
+        "confidence-calibrator"
+      ],
+      "domain": "reasoning-kernel",
+      "failure_modes": [
+        "false certainty",
+        "evidence double counting",
+        "premature convergence",
+        "scope or timestamp collapse"
+      ],
+      "formula_refs": [
+        "brier-score",
+        "expected-calibration-error",
+        "log-loss"
+      ],
+      "id": "uncertainty-calibration-engine",
+      "inputs": [
+        "claims/evidence",
+        "task context",
+        "scope and time metadata"
+      ],
+      "invariants": [
+        "Unknowns are never silently converted to facts.",
+        "Confidence changes require evidence lineage.",
+        "High-impact uncertainty triggers testing, abstention, or escalation."
+      ],
+      "outputs": [
+        "machine-readable reasoning artifact",
+        "uncertainty and provenance record",
+        "decision or next-test recommendation"
+      ],
+      "procedure": [
+        "Normalize inputs and scope.",
+        "Separate observations, inferences, assumptions, unknowns, and policy choices.",
+        "Apply the referenced method with visible component values.",
+        "Test alternatives, contradictions, and failure conditions.",
+        "Emit a bounded result with provenance and residual uncertainty."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Calibrate predicted confidence against observed correctness and detect systematic overconfidence, underconfidence, and unsupported precision.",
+      "title": "Uncertainty Calibration Engine",
+      "version": "1.0.0",
+      "when_to_use": "Use when repeated predictions or decisions have comparable ground-truth outcomes."
+    },
+    {
+      "dependencies": [
+        "source-conflict-resolver",
+        "memory-applicability-critic"
+      ],
+      "domain": "reasoning-kernel",
+      "failure_modes": [
+        "false certainty",
+        "evidence double counting",
+        "premature convergence",
+        "scope or timestamp collapse"
+      ],
+      "formula_refs": [
+        "contradiction-pressure",
+        "weighted-evidence-quality",
+        "jensen-shannon-divergence"
+      ],
+      "id": "contradiction-resolution-engine",
+      "inputs": [
+        "claims/evidence",
+        "task context",
+        "scope and time metadata"
+      ],
+      "invariants": [
+        "Unknowns are never silently converted to facts.",
+        "Confidence changes require evidence lineage.",
+        "High-impact uncertainty triggers testing, abstention, or escalation."
+      ],
+      "outputs": [
+        "machine-readable reasoning artifact",
+        "uncertainty and provenance record",
+        "decision or next-test recommendation"
+      ],
+      "procedure": [
+        "Normalize inputs and scope.",
+        "Separate observations, inferences, assumptions, unknowns, and policy choices.",
+        "Apply the referenced method with visible component values.",
+        "Test alternatives, contradictions, and failure conditions.",
+        "Emit a bounded result with provenance and residual uncertainty."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Detect and classify contradictions while preserving scope-specific truths and resolving conflicts by provenance, time, directness, reproducibility, and causal compatibility.",
+      "title": "Contradiction Resolution Engine",
+      "version": "1.0.0",
+      "when_to_use": "Use when sources, memory, tests, documentation, or runtime observations disagree."
+    },
+    {
+      "dependencies": [
+        "assumption-register",
+        "dependency-impact-tracer"
+      ],
+      "domain": "reasoning-kernel",
+      "failure_modes": [
+        "false certainty",
+        "evidence double counting",
+        "premature convergence",
+        "scope or timestamp collapse"
+      ],
+      "formula_refs": [
+        "assumption-risk-score",
+        "expected-value-of-information"
+      ],
+      "id": "assumption-lineage-ledger",
+      "inputs": [
+        "claims/evidence",
+        "task context",
+        "scope and time metadata"
+      ],
+      "invariants": [
+        "Unknowns are never silently converted to facts.",
+        "Confidence changes require evidence lineage.",
+        "High-impact uncertainty triggers testing, abstention, or escalation."
+      ],
+      "outputs": [
+        "machine-readable reasoning artifact",
+        "uncertainty and provenance record",
+        "decision or next-test recommendation"
+      ],
+      "procedure": [
+        "Normalize inputs and scope.",
+        "Separate observations, inferences, assumptions, unknowns, and policy choices.",
+        "Apply the referenced method with visible component values.",
+        "Test alternatives, contradictions, and failure conditions.",
+        "Emit a bounded result with provenance and residual uncertainty."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Track explicit and implicit assumptions, owners, dependent decisions, validation plans, expiry, invalidation, and downstream blast radius.",
+      "title": "Assumption Lineage Ledger",
+      "version": "1.0.0",
+      "when_to_use": "Use before architecture, planning, estimates, diagnostics, automation, or any decision whose correctness depends on unstated conditions."
+    },
+    {
+      "dependencies": [
+        "scenario-audit-generator",
+        "reasoning-utility-controller"
+      ],
+      "domain": "reasoning-kernel",
+      "failure_modes": [
+        "false certainty",
+        "evidence double counting",
+        "premature convergence",
+        "scope or timestamp collapse"
+      ],
+      "formula_refs": [
+        "bayes-update",
+        "expected-value-of-information",
+        "information-gain"
+      ],
+      "id": "hypothesis-portfolio-manager",
+      "inputs": [
+        "claims/evidence",
+        "task context",
+        "scope and time metadata"
+      ],
+      "invariants": [
+        "Unknowns are never silently converted to facts.",
+        "Confidence changes require evidence lineage.",
+        "High-impact uncertainty triggers testing, abstention, or escalation."
+      ],
+      "outputs": [
+        "machine-readable reasoning artifact",
+        "uncertainty and provenance record",
+        "decision or next-test recommendation"
+      ],
+      "procedure": [
+        "Normalize inputs and scope.",
+        "Separate observations, inferences, assumptions, unknowns, and policy choices.",
+        "Apply the referenced method with visible component values.",
+        "Test alternatives, contradictions, and failure conditions.",
+        "Emit a bounded result with provenance and residual uncertainty."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Maintain competing explanations with priors, evidence, falsifiers, discriminating tests, retirement reasons, and residual uncertainty.",
+      "title": "Hypothesis Portfolio Manager",
+      "version": "1.0.0",
+      "when_to_use": "Use for diagnostics, incident response, research, reverse engineering, and ambiguous requirements."
+    },
+    {
+      "dependencies": [
+        "analyze-engineering-intelligence"
+      ],
+      "domain": "reasoning-kernel",
+      "failure_modes": [
+        "false certainty",
+        "evidence double counting",
+        "premature convergence",
+        "scope or timestamp collapse"
+      ],
+      "formula_refs": [
+        "average-treatment-effect",
+        "counterfactual-delta",
+        "backdoor-adjustment-reference"
+      ],
+      "id": "causal-reasoning-planner",
+      "inputs": [
+        "claims/evidence",
+        "task context",
+        "scope and time metadata"
+      ],
+      "invariants": [
+        "Unknowns are never silently converted to facts.",
+        "Confidence changes require evidence lineage.",
+        "High-impact uncertainty triggers testing, abstention, or escalation."
+      ],
+      "outputs": [
+        "machine-readable reasoning artifact",
+        "uncertainty and provenance record",
+        "decision or next-test recommendation"
+      ],
+      "procedure": [
+        "Normalize inputs and scope.",
+        "Separate observations, inferences, assumptions, unknowns, and policy choices.",
+        "Apply the referenced method with visible component values.",
+        "Test alternatives, contradictions, and failure conditions.",
+        "Emit a bounded result with provenance and residual uncertainty."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Separate correlation, mechanism, intervention, and counterfactual claims; expose confounders, mediators, colliders, and identification assumptions.",
+      "title": "Causal Reasoning Planner",
+      "version": "1.0.0",
+      "when_to_use": "Use whenever a task asks what caused an outcome or what an intervention will change."
+    },
+    {
+      "dependencies": [
+        "evidence-assembler",
+        "provenance-signature-verifier"
+      ],
+      "domain": "reasoning-kernel",
+      "failure_modes": [
+        "false certainty",
+        "evidence double counting",
+        "premature convergence",
+        "scope or timestamp collapse"
+      ],
+      "formula_refs": [
+        "weighted-evidence-quality",
+        "effective-independent-evidence",
+        "sensitivity-index"
+      ],
+      "id": "evidence-weighting-engine",
+      "inputs": [
+        "claims/evidence",
+        "task context",
+        "scope and time metadata"
+      ],
+      "invariants": [
+        "Unknowns are never silently converted to facts.",
+        "Confidence changes require evidence lineage.",
+        "High-impact uncertainty triggers testing, abstention, or escalation."
+      ],
+      "outputs": [
+        "machine-readable reasoning artifact",
+        "uncertainty and provenance record",
+        "decision or next-test recommendation"
+      ],
+      "procedure": [
+        "Normalize inputs and scope.",
+        "Separate observations, inferences, assumptions, unknowns, and policy choices.",
+        "Apply the referenced method with visible component values.",
+        "Test alternatives, contradictions, and failure conditions.",
+        "Emit a bounded result with provenance and residual uncertainty."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Weight evidence by directness, source quality, reproducibility, independence, recency, and scope match while preventing copied evidence from being counted repeatedly.",
+      "title": "Evidence Weighting Engine",
+      "version": "1.0.0",
+      "when_to_use": "Use before confidence aggregation, conflict resolution, certification, or high-impact decisions."
+    },
+    {
+      "dependencies": [
+        "experience-reconstructor",
+        "human-handoff-state-transfer"
+      ],
+      "domain": "reasoning-kernel",
+      "failure_modes": [
+        "false certainty",
+        "evidence double counting",
+        "premature convergence",
+        "scope or timestamp collapse"
+      ],
+      "formula_refs": [
+        "explanation-coverage",
+        "trace-completeness"
+      ],
+      "id": "explanation-provenance-builder",
+      "inputs": [
+        "claims/evidence",
+        "task context",
+        "scope and time metadata"
+      ],
+      "invariants": [
+        "Unknowns are never silently converted to facts.",
+        "Confidence changes require evidence lineage.",
+        "High-impact uncertainty triggers testing, abstention, or escalation."
+      ],
+      "outputs": [
+        "machine-readable reasoning artifact",
+        "uncertainty and provenance record",
+        "decision or next-test recommendation"
+      ],
+      "procedure": [
+        "Normalize inputs and scope.",
+        "Separate observations, inferences, assumptions, unknowns, and policy choices.",
+        "Apply the referenced method with visible component values.",
+        "Test alternatives, contradictions, and failure conditions.",
+        "Emit a bounded result with provenance and residual uncertainty."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Build layered explanations that distinguish observed facts, inferences, assumptions, policies, alternatives, and normative choices with traceable provenance.",
+      "title": "Explanation Provenance Builder",
+      "version": "1.0.0",
+      "when_to_use": "Use for high-impact decisions, debugging, certification, handoff, and user-facing explanations."
+    },
+    {
+      "dependencies": [
+        "typed-capability-contract",
+        "execution-contract-enforcer"
+      ],
+      "domain": "semantic-contracts",
+      "failure_modes": [
+        "type-safe semantic corruption",
+        "hidden memory or registry write",
+        "missing rollback",
+        "UI-only validation"
+      ],
+      "formula_refs": [
+        "semantic-effect-coverage",
+        "side-effect-risk-score"
+      ],
+      "id": "semantic-effect-contract-designer",
+      "inputs": [
+        "capability contract",
+        "declared state surfaces",
+        "execution evidence"
+      ],
+      "invariants": [
+        "Undeclared material mutation is a defect.",
+        "Schema validity never substitutes for runtime effect validation.",
+        "Persistent changes require explicit ownership and evidence."
+      ],
+      "outputs": [
+        "semantic effect artifact",
+        "machine-readable findings",
+        "repair or rollback requirements"
+      ],
+      "procedure": [
+        "Enumerate read, write, epistemic, permission, external, and derived-state surfaces.",
+        "Declare expected, tolerated, and prohibited effects.",
+        "Bind evidence, ownership, postconditions, and rollback.",
+        "Compare declarations with observed behavior.",
+        "Fail closed or produce a repair disposition for material mismatch."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Declare how a capability changes knowledge, confidence, memory, registries, evidence, permissions, external systems, and runtime state\u2014not merely its input and output types.",
+      "title": "Semantic Effect Contract Designer",
+      "version": "1.0.0",
+      "when_to_use": "Use when admitting or changing any capability with persistent, epistemic, or external effects."
+    },
+    {
+      "dependencies": [
+        "validate-engineering-outcomes",
+        "inspect-live-contracts"
+      ],
+      "domain": "semantic-contracts",
+      "failure_modes": [
+        "type-safe semantic corruption",
+        "hidden memory or registry write",
+        "missing rollback",
+        "UI-only validation"
+      ],
+      "formula_refs": [
+        "mutation-coverage",
+        "semantic-drift-score"
+      ],
+      "id": "state-mutation-auditor",
+      "inputs": [
+        "capability contract",
+        "declared state surfaces",
+        "execution evidence"
+      ],
+      "invariants": [
+        "Undeclared material mutation is a defect.",
+        "Schema validity never substitutes for runtime effect validation.",
+        "Persistent changes require explicit ownership and evidence."
+      ],
+      "outputs": [
+        "semantic effect artifact",
+        "machine-readable findings",
+        "repair or rollback requirements"
+      ],
+      "procedure": [
+        "Enumerate read, write, epistemic, permission, external, and derived-state surfaces.",
+        "Declare expected, tolerated, and prohibited effects.",
+        "Bind evidence, ownership, postconditions, and rollback.",
+        "Compare declarations with observed behavior.",
+        "Fail closed or produce a repair disposition for material mismatch."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Compare declared semantic effects with observed changes across files, databases, memory, registries, audit logs, APIs, and derived state.",
+      "title": "State Mutation Auditor",
+      "version": "1.0.0",
+      "when_to_use": "Use during canary runs, testing, certification, and incident investigation."
+    },
+    {
+      "dependencies": [
+        "outcome-verifier"
+      ],
+      "domain": "semantic-contracts",
+      "failure_modes": [
+        "type-safe semantic corruption",
+        "hidden memory or registry write",
+        "missing rollback",
+        "UI-only validation"
+      ],
+      "formula_refs": [
+        "entropy-reduction",
+        "information-gain",
+        "uncertainty-reduction-ratio"
+      ],
+      "id": "uncertainty-reduction-contract",
+      "inputs": [
+        "capability contract",
+        "declared state surfaces",
+        "execution evidence"
+      ],
+      "invariants": [
+        "Undeclared material mutation is a defect.",
+        "Schema validity never substitutes for runtime effect validation.",
+        "Persistent changes require explicit ownership and evidence."
+      ],
+      "outputs": [
+        "semantic effect artifact",
+        "machine-readable findings",
+        "repair or rollback requirements"
+      ],
+      "procedure": [
+        "Enumerate read, write, epistemic, permission, external, and derived-state surfaces.",
+        "Declare expected, tolerated, and prohibited effects.",
+        "Bind evidence, ownership, postconditions, and rollback.",
+        "Compare declarations with observed behavior.",
+        "Fail closed or produce a repair disposition for material mismatch."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Specify which unknowns a capability should reduce, the evidence required, acceptable residual uncertainty, and uncertainties that must remain unresolved.",
+      "title": "Uncertainty Reduction Contract",
+      "version": "1.0.0",
+      "when_to_use": "Use for diagnostic, retrieval, research, classification, ranking, and decision-support capabilities."
+    },
+    {
+      "dependencies": [
+        "validate-contract-boundaries"
+      ],
+      "domain": "semantic-contracts",
+      "failure_modes": [
+        "type-safe semantic corruption",
+        "hidden memory or registry write",
+        "missing rollback",
+        "UI-only validation"
+      ],
+      "formula_refs": [
+        "semantic-effect-coverage"
+      ],
+      "id": "semantic-contract-linter",
+      "inputs": [
+        "capability contract",
+        "declared state surfaces",
+        "execution evidence"
+      ],
+      "invariants": [
+        "Undeclared material mutation is a defect.",
+        "Schema validity never substitutes for runtime effect validation.",
+        "Persistent changes require explicit ownership and evidence."
+      ],
+      "outputs": [
+        "semantic effect artifact",
+        "machine-readable findings",
+        "repair or rollback requirements"
+      ],
+      "procedure": [
+        "Enumerate read, write, epistemic, permission, external, and derived-state surfaces.",
+        "Declare expected, tolerated, and prohibited effects.",
+        "Bind evidence, ownership, postconditions, and rollback.",
+        "Compare declarations with observed behavior.",
+        "Fail closed or produce a repair disposition for material mismatch."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Detect missing semantic effects, ambiguous ownership, contradictory postconditions, undeclared writes, absent rollback, and missing evidence obligations.",
+      "title": "Semantic Contract Linter",
+      "version": "1.0.0",
+      "when_to_use": "Use in pre-commit, CI, capability admission, orchestration validation, and release certification."
+    },
+    {
+      "dependencies": [
+        "long-horizon-progress-ledger",
+        "provenance-signature-verifier"
+      ],
+      "domain": "introspection",
+      "failure_modes": [
+        "post-hoc story presented as fact",
+        "secret leakage",
+        "timestamp-only causality",
+        "retrieved memory treated as used memory"
+      ],
+      "formula_refs": [
+        "trace-completeness",
+        "event-correlation-score"
+      ],
+      "id": "reasoning-trace-recorder",
+      "inputs": [
+        "structured workflow events",
+        "policy/contract snapshots",
+        "evidence and memory references"
+      ],
+      "invariants": [
+        "No private hidden reasoning is requested or stored.",
+        "Every explanation distinguishes recorded fact from reconstruction.",
+        "Trace data is minimized and scope-bound."
+      ],
+      "outputs": [
+        "sanitized operational trace",
+        "decision reconstruction",
+        "compact and forensic report"
+      ],
+      "procedure": [
+        "Capture structured operational events without private chain-of-thought.",
+        "Redact secrets and sensitive data.",
+        "Link decisions, evidence, tools, policies, alternatives, and state transitions.",
+        "Reconstruct gaps as labeled inference, never recorded fact.",
+        "Emit reproducible reports and machine-readable graphs."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Record sanitized operational events: capability selection, assumptions, evidence references, tool calls, policy gates, state transitions, alternatives, and outcomes\u2014without storing private chain-of-thought.",
+      "title": "Reasoning Trace Recorder",
+      "version": "1.0.0",
+      "when_to_use": "Use for multi-step, autonomous, expensive, or high-impact workflows."
+    },
+    {
+      "dependencies": [
+        "experience-reconstructor",
+        "skill-coexecution-graph-builder"
+      ],
+      "domain": "introspection",
+      "failure_modes": [
+        "post-hoc story presented as fact",
+        "secret leakage",
+        "timestamp-only causality",
+        "retrieved memory treated as used memory"
+      ],
+      "formula_refs": [
+        "trace-completeness",
+        "path-explanation-score"
+      ],
+      "id": "decision-path-reconstructor",
+      "inputs": [
+        "structured workflow events",
+        "policy/contract snapshots",
+        "evidence and memory references"
+      ],
+      "invariants": [
+        "No private hidden reasoning is requested or stored.",
+        "Every explanation distinguishes recorded fact from reconstruction.",
+        "Trace data is minimized and scope-bound."
+      ],
+      "outputs": [
+        "sanitized operational trace",
+        "decision reconstruction",
+        "compact and forensic report"
+      ],
+      "procedure": [
+        "Capture structured operational events without private chain-of-thought.",
+        "Redact secrets and sensitive data.",
+        "Link decisions, evidence, tools, policies, alternatives, and state transitions.",
+        "Reconstruct gaps as labeled inference, never recorded fact.",
+        "Emit reproducible reports and machine-readable graphs."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Reconstruct an operational decision path from trace events, policies, evidence, contracts, memory references, and state transitions while labeling missing links and inference.",
+      "title": "Decision Path Reconstructor",
+      "version": "1.0.0",
+      "when_to_use": "Use after failures, surprises, audits, disputes, and human handoff."
+    },
+    {
+      "dependencies": [
+        "memory-applicability-critic",
+        "memory-injection-firewall"
+      ],
+      "domain": "introspection",
+      "failure_modes": [
+        "post-hoc story presented as fact",
+        "secret leakage",
+        "timestamp-only causality",
+        "retrieved memory treated as used memory"
+      ],
+      "formula_refs": [
+        "memory-influence-score",
+        "counterfactual-delta"
+      ],
+      "id": "memory-influence-auditor",
+      "inputs": [
+        "structured workflow events",
+        "policy/contract snapshots",
+        "evidence and memory references"
+      ],
+      "invariants": [
+        "No private hidden reasoning is requested or stored.",
+        "Every explanation distinguishes recorded fact from reconstruction.",
+        "Trace data is minimized and scope-bound."
+      ],
+      "outputs": [
+        "sanitized operational trace",
+        "decision reconstruction",
+        "compact and forensic report"
+      ],
+      "procedure": [
+        "Capture structured operational events without private chain-of-thought.",
+        "Redact secrets and sensitive data.",
+        "Link decisions, evidence, tools, policies, alternatives, and state transitions.",
+        "Reconstruct gaps as labeled inference, never recorded fact.",
+        "Emit reproducible reports and machine-readable graphs."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Identify which memory records affected a decision, test applicability and provenance, and compare safe counterfactual replays with suspect memory removed or substituted.",
+      "title": "Memory Influence Auditor",
+      "version": "1.0.0",
+      "when_to_use": "Use when stale, poisoned, cross-project, or overgeneralized memory may have influenced behavior."
+    },
+    {
+      "dependencies": [
+        "skill-navigator",
+        "reasoning-utility-controller"
+      ],
+      "domain": "introspection",
+      "failure_modes": [
+        "post-hoc story presented as fact",
+        "secret leakage",
+        "timestamp-only causality",
+        "retrieved memory treated as used memory"
+      ],
+      "formula_refs": [
+        "expected-plan-utility",
+        "regret",
+        "routing-utility"
+      ],
+      "id": "alternative-path-analyzer",
+      "inputs": [
+        "structured workflow events",
+        "policy/contract snapshots",
+        "evidence and memory references"
+      ],
+      "invariants": [
+        "No private hidden reasoning is requested or stored.",
+        "Every explanation distinguishes recorded fact from reconstruction.",
+        "Trace data is minimized and scope-bound."
+      ],
+      "outputs": [
+        "sanitized operational trace",
+        "decision reconstruction",
+        "compact and forensic report"
+      ],
+      "procedure": [
+        "Capture structured operational events without private chain-of-thought.",
+        "Redact secrets and sensitive data.",
+        "Link decisions, evidence, tools, policies, alternatives, and state transitions.",
+        "Reconstruct gaps as labeled inference, never recorded fact.",
+        "Emit reproducible reports and machine-readable graphs."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Enumerate feasible alternatives available at a decision point and compare selected versus rejected agents, skills, tools, and plans by utility, risk, permissions, and uncertainty.",
+      "title": "Alternative Path Analyzer",
+      "version": "1.0.0",
+      "when_to_use": "Use for costly, risky, failed, or repeatedly suboptimal decisions."
+    },
+    {
+      "dependencies": [
+        "evidence-assembler",
+        "human-handoff-state-transfer"
+      ],
+      "domain": "introspection",
+      "failure_modes": [
+        "post-hoc story presented as fact",
+        "secret leakage",
+        "timestamp-only causality",
+        "retrieved memory treated as used memory"
+      ],
+      "formula_refs": [
+        "explanation-coverage",
+        "trace-completeness"
+      ],
+      "id": "introspection-report-builder",
+      "inputs": [
+        "structured workflow events",
+        "policy/contract snapshots",
+        "evidence and memory references"
+      ],
+      "invariants": [
+        "No private hidden reasoning is requested or stored.",
+        "Every explanation distinguishes recorded fact from reconstruction.",
+        "Trace data is minimized and scope-bound."
+      ],
+      "outputs": [
+        "sanitized operational trace",
+        "decision reconstruction",
+        "compact and forensic report"
+      ],
+      "procedure": [
+        "Capture structured operational events without private chain-of-thought.",
+        "Redact secrets and sensitive data.",
+        "Link decisions, evidence, tools, policies, alternatives, and state transitions.",
+        "Reconstruct gaps as labeled inference, never recorded fact.",
+        "Emit reproducible reports and machine-readable graphs."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Produce compact and forensic brain-MRI reports showing activated capabilities, evidence, assumptions, memory influence, policy gates, state effects, alternatives, and outcomes.",
+      "title": "Introspection Report Builder",
+      "version": "1.0.0",
+      "when_to_use": "Use for certification, incident review, debugging, external validation, and handoff."
+    },
+    {
+      "dependencies": [
+        "capability_graph",
+        "semantic-capability-index",
+        "skill-coexecution-graph-builder"
+      ],
+      "domain": "capability-genome",
+      "failure_modes": [
+        "name-only deduplication",
+        "silent supersession",
+        "untyped graph edges",
+        "god-capability creation"
+      ],
+      "formula_refs": [
+        "capability-similarity",
+        "dependency-health-score",
+        "graph-centrality"
+      ],
+      "id": "capability-genome-builder",
+      "inputs": [
+        "skill and orchestration registries",
+        "contracts/tests/runtime paths",
+        "execution and evidence records"
+      ],
+      "invariants": [
+        "Similarity never authorizes deletion.",
+        "Inferred edges are labeled and reviewable.",
+        "Stronger tests, contracts, behavior, evidence, and aliases survive reconciliation."
+      ],
+      "outputs": [
+        "typed capability graph",
+        "overlap/dependency findings",
+        "reviewed evolution or merge plan"
+      ],
+      "procedure": [
+        "Normalize capability identity, aliases, versions, and owners.",
+        "Extract dependencies, semantic effects, tests, and runtime paths.",
+        "Infer typed relations with evidence and confidence.",
+        "Detect cycles, orphans, fragile hubs, duplication, and gaps.",
+        "Require review and recertification for destructive or superseding changes."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Represent capabilities as typed genes with dependencies, semantic effects, lifecycle, aliases, evidence, conflicts, composition, duplication, replacement, and supersession relations.",
+      "title": "Capability Genome Builder",
+      "version": "1.0.0",
+      "when_to_use": "Use during integration, skill admission, architecture review, large imports, and release certification."
+    },
+    {
+      "dependencies": [
+        "audit-source-capabilities",
+        "skill-bundle-resolver"
+      ],
+      "domain": "capability-genome",
+      "failure_modes": [
+        "name-only deduplication",
+        "silent supersession",
+        "untyped graph edges",
+        "god-capability creation"
+      ],
+      "formula_refs": [
+        "capability-similarity",
+        "weighted-jaccard",
+        "coexecution-affinity"
+      ],
+      "id": "capability-relation-inferencer",
+      "inputs": [
+        "skill and orchestration registries",
+        "contracts/tests/runtime paths",
+        "execution and evidence records"
+      ],
+      "invariants": [
+        "Similarity never authorizes deletion.",
+        "Inferred edges are labeled and reviewable.",
+        "Stronger tests, contracts, behavior, evidence, and aliases survive reconciliation."
+      ],
+      "outputs": [
+        "typed capability graph",
+        "overlap/dependency findings",
+        "reviewed evolution or merge plan"
+      ],
+      "procedure": [
+        "Normalize capability identity, aliases, versions, and owners.",
+        "Extract dependencies, semantic effects, tests, and runtime paths.",
+        "Infer typed relations with evidence and confidence.",
+        "Detect cycles, orphans, fragile hubs, duplication, and gaps.",
+        "Require review and recertification for destructive or superseding changes."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Infer extends, composes, conflicts-with, duplicates, aliases, replaces, supersedes, and co-executes relations from contracts, tests, behavior, and traces.",
+      "title": "Capability Relation Inferencer",
+      "version": "1.0.0",
+      "when_to_use": "Use after corpus imports, generated skill waves, refactors, and merges."
+    },
+    {
+      "dependencies": [
+        "canonical-owner",
+        "skill-admission-controller",
+        "revocable-certification"
+      ],
+      "domain": "capability-genome",
+      "failure_modes": [
+        "name-only deduplication",
+        "silent supersession",
+        "untyped graph edges",
+        "god-capability creation"
+      ],
+      "formula_refs": [
+        "coverage-dominance",
+        "merge-value-score"
+      ],
+      "id": "duplication-supersession-resolver",
+      "inputs": [
+        "skill and orchestration registries",
+        "contracts/tests/runtime paths",
+        "execution and evidence records"
+      ],
+      "invariants": [
+        "Similarity never authorizes deletion.",
+        "Inferred edges are labeled and reviewable.",
+        "Stronger tests, contracts, behavior, evidence, and aliases survive reconciliation."
+      ],
+      "outputs": [
+        "typed capability graph",
+        "overlap/dependency findings",
+        "reviewed evolution or merge plan"
+      ],
+      "procedure": [
+        "Normalize capability identity, aliases, versions, and owners.",
+        "Extract dependencies, semantic effects, tests, and runtime paths.",
+        "Infer typed relations with evidence and confidence.",
+        "Detect cycles, orphans, fragile hubs, duplication, and gaps.",
+        "Require review and recertification for destructive or superseding changes."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Resolve overlap by preserving the strongest contracts, runtime behavior, tests, evidence, documentation, aliases, and migration paths from all candidates.",
+      "title": "Duplication and Supersession Resolver",
+      "version": "1.0.0",
+      "when_to_use": "Use before integrating external packs or deleting apparently redundant capabilities."
+    },
+    {
+      "dependencies": [
+        "dependency-impact-tracer",
+        "validate-knowledge-relationships"
+      ],
+      "domain": "capability-genome",
+      "failure_modes": [
+        "name-only deduplication",
+        "silent supersession",
+        "untyped graph edges",
+        "god-capability creation"
+      ],
+      "formula_refs": [
+        "dependency-health-score",
+        "blast-radius-score",
+        "graph-centrality"
+      ],
+      "id": "capability-dependency-health",
+      "inputs": [
+        "skill and orchestration registries",
+        "contracts/tests/runtime paths",
+        "execution and evidence records"
+      ],
+      "invariants": [
+        "Similarity never authorizes deletion.",
+        "Inferred edges are labeled and reviewable.",
+        "Stronger tests, contracts, behavior, evidence, and aliases survive reconciliation."
+      ],
+      "outputs": [
+        "typed capability graph",
+        "overlap/dependency findings",
+        "reviewed evolution or merge plan"
+      ],
+      "procedure": [
+        "Normalize capability identity, aliases, versions, and owners.",
+        "Extract dependencies, semantic effects, tests, and runtime paths.",
+        "Infer typed relations with evidence and confidence.",
+        "Detect cycles, orphans, fragile hubs, duplication, and gaps.",
+        "Require review and recertification for destructive or superseding changes."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Detect missing dependencies, cycles, fragile hubs, unsupported effects, incompatible versions, orphans, and excessive blast-radius concentration.",
+      "title": "Capability Dependency Health",
+      "version": "1.0.0",
+      "when_to_use": "Use nightly, before releases, and after integrations or registry changes."
+    },
+    {
+      "dependencies": [
+        "dynamic-skill-detonator",
+        "forge-skills-from-knowledge"
+      ],
+      "domain": "capability-genome",
+      "failure_modes": [
+        "name-only deduplication",
+        "silent supersession",
+        "untyped graph edges",
+        "god-capability creation"
+      ],
+      "formula_refs": [
+        "novelty-score",
+        "merge-value-score",
+        "expected-plan-utility"
+      ],
+      "id": "capability-gap-mutation-planner",
+      "inputs": [
+        "skill and orchestration registries",
+        "contracts/tests/runtime paths",
+        "execution and evidence records"
+      ],
+      "invariants": [
+        "Similarity never authorizes deletion.",
+        "Inferred edges are labeled and reviewable.",
+        "Stronger tests, contracts, behavior, evidence, and aliases survive reconciliation."
+      ],
+      "outputs": [
+        "typed capability graph",
+        "overlap/dependency findings",
+        "reviewed evolution or merge plan"
+      ],
+      "procedure": [
+        "Normalize capability identity, aliases, versions, and owners.",
+        "Extract dependencies, semantic effects, tests, and runtime paths.",
+        "Infer typed relations with evidence and confidence.",
+        "Detect cycles, orphans, fragile hubs, duplication, and gaps.",
+        "Require review and recertification for destructive or superseding changes."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Propose the smallest safe reuse, composition, extension, mutation, or new capability needed to close an evidenced gap without uncontrolled skill proliferation.",
+      "title": "Capability Gap Mutation Planner",
+      "version": "1.0.0",
+      "when_to_use": "Use when admitted capabilities cannot satisfy a workflow contract."
+    },
+    {
+      "dependencies": [
+        "benchmark-domain-adapter",
+        "provider-certification"
+      ],
+      "domain": "agent-genetics",
+      "failure_modes": [
+        "single IQ score",
+        "model-size routing",
+        "stale profile",
+        "agent swarm theater"
+      ],
+      "formula_refs": [
+        "profile-trait-score",
+        "calibration-confidence-interval"
+      ],
+      "id": "agent-cognitive-profile-designer",
+      "inputs": [
+        "task-class benchmarks",
+        "agent/model/provider version",
+        "permissions, cost, latency, and failure evidence"
+      ],
+      "invariants": [
+        "Profiles are task-class and version specific.",
+        "Self-description and marketing claims are not benchmark evidence.",
+        "Permissions and safety are hard gates."
+      ],
+      "outputs": [
+        "versioned cognitive profile",
+        "bounded routing or team plan",
+        "risk budget and fallback"
+      ],
+      "procedure": [
+        "Define task demand and measurable profile dimensions.",
+        "Filter by permissions and hard safety constraints.",
+        "Score fit with confidence and version-specific failure evidence.",
+        "Penalize correlated blind spots and coordination overhead.",
+        "Assign primary, verifier, fallback, authority envelope, and recertification triggers."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Define measured task-class traits such as precision, depth, latency, creativity, risk tolerance, evidence strictness, context efficiency, cost, and known failure conditions.",
+      "title": "Agent Cognitive Profile Designer",
+      "version": "1.0.0",
+      "when_to_use": "Use when registering a model, provider, local agent, verifier, or specialized worker."
+    },
+    {
+      "dependencies": [
+        "capability-router",
+        "bounded-workflow-topology-selector"
+      ],
+      "domain": "agent-genetics",
+      "failure_modes": [
+        "single IQ score",
+        "model-size routing",
+        "stale profile",
+        "agent swarm theater"
+      ],
+      "formula_refs": [
+        "routing-utility",
+        "failure-correlation-penalty",
+        "expected-plan-utility"
+      ],
+      "id": "agent-profile-router",
+      "inputs": [
+        "task-class benchmarks",
+        "agent/model/provider version",
+        "permissions, cost, latency, and failure evidence"
+      ],
+      "invariants": [
+        "Profiles are task-class and version specific.",
+        "Self-description and marketing claims are not benchmark evidence.",
+        "Permissions and safety are hard gates."
+      ],
+      "outputs": [
+        "versioned cognitive profile",
+        "bounded routing or team plan",
+        "risk budget and fallback"
+      ],
+      "procedure": [
+        "Define task demand and measurable profile dimensions.",
+        "Filter by permissions and hard safety constraints.",
+        "Score fit with confidence and version-specific failure evidence.",
+        "Penalize correlated blind spots and coordination overhead.",
+        "Assign primary, verifier, fallback, authority envelope, and recertification triggers."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Route work using trait fit, uncertainty, permissions, cost, latency, safety, and failure-mode correlation rather than model size or branding.",
+      "title": "Agent Profile Router",
+      "version": "1.0.0",
+      "when_to_use": "Use before assigning significant agent work."
+    },
+    {
+      "dependencies": [
+        "permission-diff-auditor",
+        "supervise-contained-execution"
+      ],
+      "domain": "agent-genetics",
+      "failure_modes": [
+        "single IQ score",
+        "model-size routing",
+        "stale profile",
+        "agent swarm theater"
+      ],
+      "formula_refs": [
+        "risk-budget-score",
+        "blast-radius-score"
+      ],
+      "id": "agent-risk-budgeter",
+      "inputs": [
+        "task-class benchmarks",
+        "agent/model/provider version",
+        "permissions, cost, latency, and failure evidence"
+      ],
+      "invariants": [
+        "Profiles are task-class and version specific.",
+        "Self-description and marketing claims are not benchmark evidence.",
+        "Permissions and safety are hard gates."
+      ],
+      "outputs": [
+        "versioned cognitive profile",
+        "bounded routing or team plan",
+        "risk budget and fallback"
+      ],
+      "procedure": [
+        "Define task demand and measurable profile dimensions.",
+        "Filter by permissions and hard safety constraints.",
+        "Score fit with confidence and version-specific failure evidence.",
+        "Penalize correlated blind spots and coordination overhead.",
+        "Assign primary, verifier, fallback, authority envelope, and recertification triggers."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Allocate tool scope, mutation authority, review depth, step limits, and blast-radius boundaries according to task risk and measured agent reliability.",
+      "title": "Agent Risk Budgeter",
+      "version": "1.0.0",
+      "when_to_use": "Use before tool-using or autonomous execution."
+    },
+    {
+      "dependencies": [
+        "trajectory-failure-sentinel",
+        "audit-ai-runtime-assurance"
+      ],
+      "domain": "agent-genetics",
+      "failure_modes": [
+        "single IQ score",
+        "model-size routing",
+        "stale profile",
+        "agent swarm theater"
+      ],
+      "formula_refs": [
+        "conditional-failure-rate",
+        "failure-correlation-penalty",
+        "ewma-drift"
+      ],
+      "id": "agent-failure-mode-calibrator",
+      "inputs": [
+        "task-class benchmarks",
+        "agent/model/provider version",
+        "permissions, cost, latency, and failure evidence"
+      ],
+      "invariants": [
+        "Profiles are task-class and version specific.",
+        "Self-description and marketing claims are not benchmark evidence.",
+        "Permissions and safety are hard gates."
+      ],
+      "outputs": [
+        "versioned cognitive profile",
+        "bounded routing or team plan",
+        "risk budget and fallback"
+      ],
+      "procedure": [
+        "Define task demand and measurable profile dimensions.",
+        "Filter by permissions and hard safety constraints.",
+        "Score fit with confidence and version-specific failure evidence.",
+        "Penalize correlated blind spots and coordination overhead.",
+        "Assign primary, verifier, fallback, authority envelope, and recertification triggers."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Measure recurring error mechanisms, context sensitivities, tool misuse, overconfidence, and domain blind spots by model and version.",
+      "title": "Agent Failure Mode Calibrator",
+      "version": "1.0.0",
+      "when_to_use": "Use after evaluation campaigns, provider changes, model updates, or incidents."
+    },
+    {
+      "dependencies": [
+        "bounded-workflow-topology-selector",
+        "human-handoff-state-transfer"
+      ],
+      "domain": "agent-genetics",
+      "failure_modes": [
+        "single IQ score",
+        "model-size routing",
+        "stale profile",
+        "agent swarm theater"
+      ],
+      "formula_refs": [
+        "team-complementarity",
+        "coordination-overhead",
+        "routing-utility"
+      ],
+      "id": "multi-agent-composition-planner",
+      "inputs": [
+        "task-class benchmarks",
+        "agent/model/provider version",
+        "permissions, cost, latency, and failure evidence"
+      ],
+      "invariants": [
+        "Profiles are task-class and version specific.",
+        "Self-description and marketing claims are not benchmark evidence.",
+        "Permissions and safety are hard gates."
+      ],
+      "outputs": [
+        "versioned cognitive profile",
+        "bounded routing or team plan",
+        "risk budget and fallback"
+      ],
+      "procedure": [
+        "Define task demand and measurable profile dimensions.",
+        "Filter by permissions and hard safety constraints.",
+        "Score fit with confidence and version-specific failure evidence.",
+        "Penalize correlated blind spots and coordination overhead.",
+        "Assign primary, verifier, fallback, authority envelope, and recertification triggers."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Compose bounded teams with complementary strengths, explicit roles, information boundaries, independent verification, fallback, and stop conditions.",
+      "title": "Multi-Agent Composition Planner",
+      "version": "1.0.0",
+      "when_to_use": "Use when planning, execution, critique, and verification require different profiles."
+    },
+    {
+      "dependencies": [
+        "run-evidence-campaigns",
+        "certify-reversible-validation"
+      ],
+      "domain": "optimization",
+      "failure_modes": [
+        "metric gaming",
+        "moving benchmark",
+        "single-run promotion",
+        "rollback that was never tested"
+      ],
+      "formula_refs": [
+        "pareto-dominance",
+        "normalized-improvement",
+        "regret"
+      ],
+      "id": "closed-loop-system-optimizer",
+      "inputs": [
+        "frozen baseline",
+        "candidate change",
+        "metrics, guardrails, environment, and rollback"
+      ],
+      "invariants": [
+        "No optimization without a stable baseline.",
+        "Safety and correctness constraints cannot be silently traded away.",
+        "Negative results and failed candidates are retained."
+      ],
+      "outputs": [
+        "reproducible experiment",
+        "Pareto/guardrail comparison",
+        "promotion, defer, reject, or rollback decision"
+      ],
+      "procedure": [
+        "Freeze baseline, data, environment, objective hierarchy, and falsifier.",
+        "Generate one bounded reversible candidate.",
+        "Run repeated controlled trials with full evidence.",
+        "Compare target metrics, guardrails, cost, and regression surface.",
+        "Promote only with reproducible evidence and tested rollback."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Run observe, benchmark, propose, test, compare, promote-or-rollback cycles across workflows, prompts, routing, retrieval, tools, and runtime settings.",
+      "title": "Closed-Loop System Optimizer",
+      "version": "1.0.0",
+      "when_to_use": "Use only after a stable baseline and measurable objectives exist."
+    },
+    {
+      "dependencies": [
+        "run-evidence-campaigns",
+        "provenance-signature-verifier"
+      ],
+      "domain": "optimization",
+      "failure_modes": [
+        "metric gaming",
+        "moving benchmark",
+        "single-run promotion",
+        "rollback that was never tested"
+      ],
+      "formula_refs": [
+        "effect-size",
+        "confidence-interval-reference",
+        "normalized-improvement"
+      ],
+      "id": "optimization-experiment-manager",
+      "inputs": [
+        "frozen baseline",
+        "candidate change",
+        "metrics, guardrails, environment, and rollback"
+      ],
+      "invariants": [
+        "No optimization without a stable baseline.",
+        "Safety and correctness constraints cannot be silently traded away.",
+        "Negative results and failed candidates are retained."
+      ],
+      "outputs": [
+        "reproducible experiment",
+        "Pareto/guardrail comparison",
+        "promotion, defer, reject, or rollback decision"
+      ],
+      "procedure": [
+        "Freeze baseline, data, environment, objective hierarchy, and falsifier.",
+        "Generate one bounded reversible candidate.",
+        "Run repeated controlled trials with full evidence.",
+        "Compare target metrics, guardrails, cost, and regression surface.",
+        "Promote only with reproducible evidence and tested rollback."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Create reproducible experiment cards with frozen data, environment fingerprints, seeds, hypotheses, falsifiers, metrics, guardrails, budgets, and rollback artifacts.",
+      "title": "Optimization Experiment Manager",
+      "version": "1.0.0",
+      "when_to_use": "Use before any automated optimization, canary, or A/B comparison."
+    },
+    {
+      "dependencies": [
+        "evaluation-budget-allocator"
+      ],
+      "domain": "optimization",
+      "failure_modes": [
+        "metric gaming",
+        "moving benchmark",
+        "single-run promotion",
+        "rollback that was never tested"
+      ],
+      "formula_refs": [
+        "pareto-dominance",
+        "weighted-utility",
+        "regret"
+      ],
+      "id": "pareto-improvement-selector",
+      "inputs": [
+        "frozen baseline",
+        "candidate change",
+        "metrics, guardrails, environment, and rollback"
+      ],
+      "invariants": [
+        "No optimization without a stable baseline.",
+        "Safety and correctness constraints cannot be silently traded away.",
+        "Negative results and failed candidates are retained."
+      ],
+      "outputs": [
+        "reproducible experiment",
+        "Pareto/guardrail comparison",
+        "promotion, defer, reject, or rollback decision"
+      ],
+      "procedure": [
+        "Freeze baseline, data, environment, objective hierarchy, and falsifier.",
+        "Generate one bounded reversible candidate.",
+        "Run repeated controlled trials with full evidence.",
+        "Compare target metrics, guardrails, cost, and regression surface.",
+        "Promote only with reproducible evidence and tested rollback."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Identify candidates that improve multiple objectives without unacceptable regressions and expose the full frontier when no single candidate dominates.",
+      "title": "Pareto Improvement Selector",
+      "version": "1.0.0",
+      "when_to_use": "Use when accuracy, latency, cost, memory, safety, and maintainability compete."
+    },
+    {
+      "dependencies": [
+        "recovery-coordinator",
+        "tool-loop-circuit-breaker"
+      ],
+      "domain": "optimization",
+      "failure_modes": [
+        "metric gaming",
+        "moving benchmark",
+        "single-run promotion",
+        "rollback that was never tested"
+      ],
+      "formula_refs": [
+        "cusum-drift",
+        "ewma-drift",
+        "regression-severity"
+      ],
+      "id": "regression-rollback-controller",
+      "inputs": [
+        "frozen baseline",
+        "candidate change",
+        "metrics, guardrails, environment, and rollback"
+      ],
+      "invariants": [
+        "No optimization without a stable baseline.",
+        "Safety and correctness constraints cannot be silently traded away.",
+        "Negative results and failed candidates are retained."
+      ],
+      "outputs": [
+        "reproducible experiment",
+        "Pareto/guardrail comparison",
+        "promotion, defer, reject, or rollback decision"
+      ],
+      "procedure": [
+        "Freeze baseline, data, environment, objective hierarchy, and falsifier.",
+        "Generate one bounded reversible candidate.",
+        "Run repeated controlled trials with full evidence.",
+        "Compare target metrics, guardrails, cost, and regression surface.",
+        "Promote only with reproducible evidence and tested rollback."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Monitor promoted changes, detect sustained guardrail or outcome regressions, bound affected scope, and execute tested rollback or quarantine.",
+      "title": "Regression Rollback Controller",
+      "version": "1.0.0",
+      "when_to_use": "Use after any workflow, model, tool, retrieval, or routing change is promoted."
+    },
+    {
+      "dependencies": [
+        "propose-change-intelligence",
+        "reasoning-utility-controller"
+      ],
+      "domain": "optimization",
+      "failure_modes": [
+        "metric gaming",
+        "moving benchmark",
+        "single-run promotion",
+        "rollback that was never tested"
+      ],
+      "formula_refs": [
+        "expected-plan-utility",
+        "normalized-improvement",
+        "coordination-overhead"
+      ],
+      "id": "workflow-autotuning-advisor",
+      "inputs": [
+        "frozen baseline",
+        "candidate change",
+        "metrics, guardrails, environment, and rollback"
+      ],
+      "invariants": [
+        "No optimization without a stable baseline.",
+        "Safety and correctness constraints cannot be silently traded away.",
+        "Negative results and failed candidates are retained."
+      ],
+      "outputs": [
+        "reproducible experiment",
+        "Pareto/guardrail comparison",
+        "promotion, defer, reject, or rollback decision"
+      ],
+      "procedure": [
+        "Freeze baseline, data, environment, objective hierarchy, and falsifier.",
+        "Generate one bounded reversible candidate.",
+        "Run repeated controlled trials with full evidence.",
+        "Compare target metrics, guardrails, cost, and regression surface.",
+        "Promote only with reproducible evidence and tested rollback."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Recommend reversible changes to routing, context, retrieval, batching, tool order, retries, and validation depth from observed traces and costs.",
+      "title": "Workflow Autotuning Advisor",
+      "version": "1.0.0",
+      "when_to_use": "Use when a workflow is correct but inefficient, unstable, or wasteful."
+    },
+    {
+      "dependencies": [
+        "cross-paper-mechanism-fuser",
+        "semantic-capability-index"
+      ],
+      "domain": "theory-induction",
+      "failure_modes": [
+        "semantic soup",
+        "abstraction for aesthetics",
+        "held-out leakage",
+        "lowest-common-denominator sludge"
+      ],
+      "formula_refs": [
+        "weighted-jaccard",
+        "cosine-similarity",
+        "cluster-cohesion"
+      ],
+      "id": "concept-cluster-inducer",
+      "inputs": [
+        "capability/paper/trace corpus",
+        "interpretable features",
+        "held-out cases and counterexamples"
+      ],
+      "invariants": [
+        "Clusters and theories remain proposals until validated.",
+        "Specialized children and source distinctions are preserved.",
+        "Elegant abstraction never outranks failed evidence."
+      ],
+      "outputs": [
+        "clusters or shared mechanism",
+        "meta-capability proposal",
+        "held-out validation disposition"
+      ],
+      "procedure": [
+        "Build interpretable multi-view features.",
+        "Cluster conservatively and preserve outliers.",
+        "Extract the smallest useful shared mechanism and variant dimensions.",
+        "Propose an abstraction only when it measurably reduces duplication.",
+        "Test on held-out domains, counterexamples, and competing taxonomies."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Cluster capabilities, papers, formulas, traces, and failure patterns to identify latent shared concepts while preserving source-specific differences and outliers.",
+      "title": "Concept Cluster Inducer",
+      "version": "1.0.0",
+      "when_to_use": "Use when many capabilities appear to describe overlapping mechanisms."
+    },
+    {
+      "dependencies": [
+        "paper-mechanism-extractor",
+        "source_mechanism_mappings"
+      ],
+      "domain": "theory-induction",
+      "failure_modes": [
+        "semantic soup",
+        "abstraction for aesthetics",
+        "held-out leakage",
+        "lowest-common-denominator sludge"
+      ],
+      "formula_refs": [
+        "mechanism-overlap",
+        "coverage-dominance"
+      ],
+      "id": "shared-mechanism-extractor",
+      "inputs": [
+        "capability/paper/trace corpus",
+        "interpretable features",
+        "held-out cases and counterexamples"
+      ],
+      "invariants": [
+        "Clusters and theories remain proposals until validated.",
+        "Specialized children and source distinctions are preserved.",
+        "Elegant abstraction never outranks failed evidence."
+      ],
+      "outputs": [
+        "clusters or shared mechanism",
+        "meta-capability proposal",
+        "held-out validation disposition"
+      ],
+      "procedure": [
+        "Build interpretable multi-view features.",
+        "Cluster conservatively and preserve outliers.",
+        "Extract the smallest useful shared mechanism and variant dimensions.",
+        "Propose an abstraction only when it measurably reduces duplication.",
+        "Test on held-out domains, counterexamples, and competing taxonomies."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Extract the smallest useful common operational mechanism, including state transitions, formulas, invariants, evidence requirements, and variant dimensions.",
+      "title": "Shared Mechanism Extractor",
+      "version": "1.0.0",
+      "when_to_use": "Use before merging related skills or creating a higher-order abstraction."
+    },
+    {
+      "dependencies": [
+        "research-to-operation-translator",
+        "forge-skills-from-knowledge"
+      ],
+      "domain": "theory-induction",
+      "failure_modes": [
+        "semantic soup",
+        "abstraction for aesthetics",
+        "held-out leakage",
+        "lowest-common-denominator sludge"
+      ],
+      "formula_refs": [
+        "abstraction-value-score",
+        "coverage-dominance",
+        "novelty-score"
+      ],
+      "id": "meta-capability-proposer",
+      "inputs": [
+        "capability/paper/trace corpus",
+        "interpretable features",
+        "held-out cases and counterexamples"
+      ],
+      "invariants": [
+        "Clusters and theories remain proposals until validated.",
+        "Specialized children and source distinctions are preserved.",
+        "Elegant abstraction never outranks failed evidence."
+      ],
+      "outputs": [
+        "clusters or shared mechanism",
+        "meta-capability proposal",
+        "held-out validation disposition"
+      ],
+      "procedure": [
+        "Build interpretable multi-view features.",
+        "Cluster conservatively and preserve outliers.",
+        "Extract the smallest useful shared mechanism and variant dimensions.",
+        "Propose an abstraction only when it measurably reduces duplication.",
+        "Test on held-out domains, counterexamples, and competing taxonomies."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Propose higher-order capabilities that reduce duplication while retaining specialized child adapters, constraints, tests, and callable identities.",
+      "title": "Meta-Capability Proposer",
+      "version": "1.0.0",
+      "when_to_use": "Use after stable shared mechanisms recur across domains or projects."
+    },
+    {
+      "dependencies": [
+        "certify-skeptical-engineering"
+      ],
+      "domain": "theory-induction",
+      "failure_modes": [
+        "semantic soup",
+        "abstraction for aesthetics",
+        "held-out leakage",
+        "lowest-common-denominator sludge"
+      ],
+      "formula_refs": [
+        "theory-generalization-score",
+        "counterexample-rate"
+      ],
+      "id": "theory-validation-gate",
+      "inputs": [
+        "capability/paper/trace corpus",
+        "interpretable features",
+        "held-out cases and counterexamples"
+      ],
+      "invariants": [
+        "Clusters and theories remain proposals until validated.",
+        "Specialized children and source distinctions are preserved.",
+        "Elegant abstraction never outranks failed evidence."
+      ],
+      "outputs": [
+        "clusters or shared mechanism",
+        "meta-capability proposal",
+        "held-out validation disposition"
+      ],
+      "procedure": [
+        "Build interpretable multi-view features.",
+        "Cluster conservatively and preserve outliers.",
+        "Extract the smallest useful shared mechanism and variant dimensions.",
+        "Propose an abstraction only when it measurably reduces duplication.",
+        "Test on held-out domains, counterexamples, and competing taxonomies."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Test induced concepts and meta-capabilities against held-out domains, counterexamples, alternative taxonomies, and explicit falsifiers before admission.",
+      "title": "Theory Validation Gate",
+      "version": "1.0.0",
+      "when_to_use": "Use before promoting an inferred abstraction into canonical architecture."
+    },
+    {
+      "dependencies": [
+        "analyze-engineering-intelligence",
+        "long-horizon-progress-ledger"
+      ],
+      "domain": "engineering-dna",
+      "failure_modes": [
+        "personality profiling",
+        "cargo-cult transfer",
+        "novelty bias",
+        "blaming people instead of propagation mechanisms"
+      ],
+      "formula_refs": [
+        "pattern-stability",
+        "behavior-frequency",
+        "context-normalized-score"
+      ],
+      "id": "engineering-dna-profiler",
+      "inputs": [
+        "repository and decision history",
+        "tests, incidents, recovery, and deployment evidence",
+        "project context"
+      ],
+      "invariants": [
+        "The profile describes project practices, not human worth or personality.",
+        "Protected or psychological inference is prohibited.",
+        "Every pattern includes context, evidence, confidence, and expiry."
+      ],
+      "outputs": [
+        "evidence-backed project practice profile",
+        "lineage or habit analysis",
+        "bounded transfer plan"
+      ],
+      "procedure": [
+        "Extract observable engineering behaviors and opportunities.",
+        "Normalize for project constraints and time.",
+        "Separate stable patterns from isolated events.",
+        "Trace benefits, costs, lineage, and recurrence.",
+        "Transfer only after context fit, adaptation, pilot, and validation."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Profile recurring project practices in architecture, testing, deployment, documentation, recovery, change control, and failure handling from observable evidence\u2014not personality guesses.",
+      "title": "Engineering DNA Profiler",
+      "version": "1.0.0",
+      "when_to_use": "Use after enough project history exists to distinguish patterns from isolated events."
+    },
+    {
+      "dependencies": [
+        "cross_project_transfer",
+        "shared_capability_promote"
+      ],
+      "domain": "engineering-dna",
+      "failure_modes": [
+        "personality profiling",
+        "cargo-cult transfer",
+        "novelty bias",
+        "blaming people instead of propagation mechanisms"
+      ],
+      "formula_refs": [
+        "transfer-fit-score",
+        "context-distance"
+      ],
+      "id": "team-pattern-transfer-controller",
+      "inputs": [
+        "repository and decision history",
+        "tests, incidents, recovery, and deployment evidence",
+        "project context"
+      ],
+      "invariants": [
+        "The profile describes project practices, not human worth or personality.",
+        "Protected or psychological inference is prohibited.",
+        "Every pattern includes context, evidence, confidence, and expiry."
+      ],
+      "outputs": [
+        "evidence-backed project practice profile",
+        "lineage or habit analysis",
+        "bounded transfer plan"
+      ],
+      "procedure": [
+        "Extract observable engineering behaviors and opportunities.",
+        "Normalize for project constraints and time.",
+        "Separate stable patterns from isolated events.",
+        "Trace benefits, costs, lineage, and recurrence.",
+        "Transfer only after context fit, adaptation, pilot, and validation."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Transfer validated engineering patterns across projects while filtering incompatible assumptions, dependencies, permissions, architecture, governance, and historical workarounds.",
+      "title": "Team Pattern Transfer Controller",
+      "version": "1.0.0",
+      "when_to_use": "Use during project onboarding, bootstrap, and shared-capability promotion."
+    },
+    {
+      "dependencies": [
+        "synchronize-derived-architecture",
+        "propose-change-intelligence"
+      ],
+      "domain": "engineering-dna",
+      "failure_modes": [
+        "personality profiling",
+        "cargo-cult transfer",
+        "novelty bias",
+        "blaming people instead of propagation mechanisms"
+      ],
+      "formula_refs": [
+        "pattern-stability",
+        "context-distance",
+        "expected-plan-utility"
+      ],
+      "id": "architecture-habit-detector",
+      "inputs": [
+        "repository and decision history",
+        "tests, incidents, recovery, and deployment evidence",
+        "project context"
+      ],
+      "invariants": [
+        "The profile describes project practices, not human worth or personality.",
+        "Protected or psychological inference is prohibited.",
+        "Every pattern includes context, evidence, confidence, and expiry."
+      ],
+      "outputs": [
+        "evidence-backed project practice profile",
+        "lineage or habit analysis",
+        "bounded transfer plan"
+      ],
+      "procedure": [
+        "Extract observable engineering behaviors and opportunities.",
+        "Normalize for project constraints and time.",
+        "Separate stable patterns from isolated events.",
+        "Trace benefits, costs, lineage, and recurrence.",
+        "Transfer only after context fit, adaptation, pilot, and validation."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Detect repeated architecture defaults and avoidance patterns, preserve their original context, and test whether they remain rational under current constraints.",
+      "title": "Architecture Habit Detector",
+      "version": "1.0.0",
+      "when_to_use": "Use during architecture review, modernization, and repeated design disputes."
+    },
+    {
+      "dependencies": [
+        "dependency-impact-tracer",
+        "behavior-to-code-mapper"
+      ],
+      "domain": "engineering-dna",
+      "failure_modes": [
+        "personality profiling",
+        "cargo-cult transfer",
+        "novelty bias",
+        "blaming people instead of propagation mechanisms"
+      ],
+      "formula_refs": [
+        "lineage-propagation-score",
+        "recurrence-rate"
+      ],
+      "id": "anti-pattern-lineage-tracer",
+      "inputs": [
+        "repository and decision history",
+        "tests, incidents, recovery, and deployment evidence",
+        "project context"
+      ],
+      "invariants": [
+        "The profile describes project practices, not human worth or personality.",
+        "Protected or psychological inference is prohibited.",
+        "Every pattern includes context, evidence, confidence, and expiry."
+      ],
+      "outputs": [
+        "evidence-backed project practice profile",
+        "lineage or habit analysis",
+        "bounded transfer plan"
+      ],
+      "procedure": [
+        "Extract observable engineering behaviors and opportunities.",
+        "Normalize for project constraints and time.",
+        "Separate stable patterns from isolated events.",
+        "Trace benefits, costs, lineage, and recurrence.",
+        "Transfer only after context fit, adaptation, pilot, and validation."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Trace recurring defects and workarounds through templates, builders, generated artifacts, copied code, dependencies, and decisions to repair the propagation source.",
+      "title": "Anti-Pattern Lineage Tracer",
+      "version": "1.0.0",
+      "when_to_use": "Use when the same failure class repeatedly reappears after local fixes."
+    },
+    {
+      "dependencies": [
+        "capability-genome-builder",
+        "long-horizon-progress-ledger"
+      ],
+      "domain": "knowledge-physics",
+      "failure_modes": [
+        "numerology",
+        "trust by popularity",
+        "one half-life for every domain",
+        "unbounded graph propagation"
+      ],
+      "formula_refs": [
+        "trust-dynamics",
+        "capability-entropy",
+        "stability-index",
+        "volatility-index"
+      ],
+      "id": "knowledge-dynamics-modeler",
+      "inputs": [
+        "event-sourced capability state",
+        "validation/use/dependency/contradiction events",
+        "domain calibration policy"
+      ],
+      "invariants": [
+        "Physics language is an operational metaphor, not literal law.",
+        "Composite scores expose raw components and calibration.",
+        "Trust loss is reversible with valid new evidence."
+      ],
+      "outputs": [
+        "trust/entropy/stability/volatility state",
+        "risk and revalidation signals",
+        "reproducible simulation or intervention plan"
+      ],
+      "procedure": [
+        "Initialize explicit dimensions and raw components.",
+        "Apply bounded evidence, validation, contradiction, dependency, use, and decay events.",
+        "Preserve the full event ledger and explain every score change.",
+        "Detect unstable, fragmented, stale, or over-centralized regions.",
+        "Simulate before canonical mutation and schedule risk-based revalidation."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Maintain event-sourced capability trust, stability, volatility, evidence energy, entropy, connectivity, decay, usage, and contradiction pressure with inspectable component values.",
+      "title": "Knowledge Dynamics Modeler",
+      "version": "1.0.0",
+      "when_to_use": "Use to operate a large, evolving capability and knowledge ecosystem."
+    },
+    {
+      "dependencies": [
+        "candidate-memory-promoter",
+        "revocable-certification"
+      ],
+      "domain": "knowledge-physics",
+      "failure_modes": [
+        "numerology",
+        "trust by popularity",
+        "one half-life for every domain",
+        "unbounded graph propagation"
+      ],
+      "formula_refs": [
+        "exponential-trust-decay",
+        "dependency-decay-propagation"
+      ],
+      "id": "trust-decay-controller",
+      "inputs": [
+        "event-sourced capability state",
+        "validation/use/dependency/contradiction events",
+        "domain calibration policy"
+      ],
+      "invariants": [
+        "Physics language is an operational metaphor, not literal law.",
+        "Composite scores expose raw components and calibration.",
+        "Trust loss is reversible with valid new evidence."
+      ],
+      "outputs": [
+        "trust/entropy/stability/volatility state",
+        "risk and revalidation signals",
+        "reproducible simulation or intervention plan"
+      ],
+      "procedure": [
+        "Initialize explicit dimensions and raw components.",
+        "Apply bounded evidence, validation, contradiction, dependency, use, and decay events.",
+        "Preserve the full event ledger and explain every score change.",
+        "Detect unstable, fragmented, stale, or over-centralized regions.",
+        "Simulate before canonical mutation and schedule risk-based revalidation."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Apply domain-specific evidence half-lives and dependency-sensitive trust decay to stale, unverified, superseded, or volatile knowledge while allowing validation to restore trust.",
+      "title": "Trust Decay Controller",
+      "version": "1.0.0",
+      "when_to_use": "Use continuously for time-sensitive knowledge and after dependency or source changes."
+    },
+    {
+      "dependencies": [
+        "audit-source-capabilities",
+        "validate-knowledge-relationships"
+      ],
+      "domain": "knowledge-physics",
+      "failure_modes": [
+        "numerology",
+        "trust by popularity",
+        "one half-life for every domain",
+        "unbounded graph propagation"
+      ],
+      "formula_refs": [
+        "capability-entropy",
+        "representation-disagreement"
+      ],
+      "id": "capability-entropy-monitor",
+      "inputs": [
+        "event-sourced capability state",
+        "validation/use/dependency/contradiction events",
+        "domain calibration policy"
+      ],
+      "invariants": [
+        "Physics language is an operational metaphor, not literal law.",
+        "Composite scores expose raw components and calibration.",
+        "Trust loss is reversible with valid new evidence."
+      ],
+      "outputs": [
+        "trust/entropy/stability/volatility state",
+        "risk and revalidation signals",
+        "reproducible simulation or intervention plan"
+      ],
+      "procedure": [
+        "Initialize explicit dimensions and raw components.",
+        "Apply bounded evidence, validation, contradiction, dependency, use, and decay events.",
+        "Preserve the full event ledger and explain every score change.",
+        "Detect unstable, fragmented, stale, or over-centralized regions.",
+        "Simulate before canonical mutation and schedule risk-based revalidation."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Measure identity fragmentation, alias proliferation, lifecycle disagreement, duplicate representations, unresolved uncertainty, and registry inconsistency.",
+      "title": "Capability Entropy Monitor",
+      "version": "1.0.0",
+      "when_to_use": "Use after imports, skill-generation waves, large merges, and before release."
+    },
+    {
+      "dependencies": [
+        "skill-coexecution-graph-builder",
+        "skill-bundle-resolver"
+      ],
+      "domain": "knowledge-physics",
+      "failure_modes": [
+        "numerology",
+        "trust by popularity",
+        "one half-life for every domain",
+        "unbounded graph propagation"
+      ],
+      "formula_refs": [
+        "coexecution-affinity",
+        "graph-centrality",
+        "attractor-strength"
+      ],
+      "id": "capability-attractor-detector",
+      "inputs": [
+        "event-sourced capability state",
+        "validation/use/dependency/contradiction events",
+        "domain calibration policy"
+      ],
+      "invariants": [
+        "Physics language is an operational metaphor, not literal law.",
+        "Composite scores expose raw components and calibration.",
+        "Trust loss is reversible with valid new evidence."
+      ],
+      "outputs": [
+        "trust/entropy/stability/volatility state",
+        "risk and revalidation signals",
+        "reproducible simulation or intervention plan"
+      ],
+      "procedure": [
+        "Initialize explicit dimensions and raw components.",
+        "Apply bounded evidence, validation, contradiction, dependency, use, and decay events.",
+        "Preserve the full event ledger and explain every score change.",
+        "Detect unstable, fragmented, stale, or over-centralized regions.",
+        "Simulate before canonical mutation and schedule risk-based revalidation."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Detect capabilities that repeatedly co-execute, accumulate dependencies, or dominate routing and distinguish useful hubs from accidental gravity wells.",
+      "title": "Capability Attractor Detector",
+      "version": "1.0.0",
+      "when_to_use": "Use when certain skills or bundles become central to many workflows."
+    },
+    {
+      "dependencies": [
+        "contradiction-resolution-engine",
+        "dependency-impact-tracer"
+      ],
+      "domain": "knowledge-physics",
+      "failure_modes": [
+        "numerology",
+        "trust by popularity",
+        "one half-life for every domain",
+        "unbounded graph propagation"
+      ],
+      "formula_refs": [
+        "contradiction-pressure",
+        "blast-radius-score"
+      ],
+      "id": "contradiction-pressure-monitor",
+      "inputs": [
+        "event-sourced capability state",
+        "validation/use/dependency/contradiction events",
+        "domain calibration policy"
+      ],
+      "invariants": [
+        "Physics language is an operational metaphor, not literal law.",
+        "Composite scores expose raw components and calibration.",
+        "Trust loss is reversible with valid new evidence."
+      ],
+      "outputs": [
+        "trust/entropy/stability/volatility state",
+        "risk and revalidation signals",
+        "reproducible simulation or intervention plan"
+      ],
+      "procedure": [
+        "Initialize explicit dimensions and raw components.",
+        "Apply bounded evidence, validation, contradiction, dependency, use, and decay events.",
+        "Preserve the full event ledger and explain every score change.",
+        "Detect unstable, fragmented, stale, or over-centralized regions.",
+        "Simulate before canonical mutation and schedule risk-based revalidation."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Propagate bounded unresolved-conflict risk through dependency and usage graphs to identify unstable or decision-dangerous knowledge regions.",
+      "title": "Contradiction Pressure Monitor",
+      "version": "1.0.0",
+      "when_to_use": "Use in rapidly changing, multi-source, or contested domains."
+    },
+    {
+      "dependencies": [
+        "read-only-speculation-controller"
+      ],
+      "domain": "knowledge-physics",
+      "failure_modes": [
+        "numerology",
+        "trust by popularity",
+        "one half-life for every domain",
+        "unbounded graph propagation"
+      ],
+      "formula_refs": [
+        "trust-dynamics",
+        "stability-index",
+        "sensitivity-index"
+      ],
+      "id": "knowledge-stability-simulator",
+      "inputs": [
+        "event-sourced capability state",
+        "validation/use/dependency/contradiction events",
+        "domain calibration policy"
+      ],
+      "invariants": [
+        "Physics language is an operational metaphor, not literal law.",
+        "Composite scores expose raw components and calibration.",
+        "Trust loss is reversible with valid new evidence."
+      ],
+      "outputs": [
+        "trust/entropy/stability/volatility state",
+        "risk and revalidation signals",
+        "reproducible simulation or intervention plan"
+      ],
+      "procedure": [
+        "Initialize explicit dimensions and raw components.",
+        "Apply bounded evidence, validation, contradiction, dependency, use, and decay events.",
+        "Preserve the full event ledger and explain every score change.",
+        "Detect unstable, fragmented, stale, or over-centralized regions.",
+        "Simulate before canonical mutation and schedule risk-based revalidation."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Simulate source revocation, evidence additions, dependency churn, merge dispositions, and decay policy changes without mutating canonical state.",
+      "title": "Knowledge Stability Simulator",
+      "version": "1.0.0",
+      "when_to_use": "Use before major source removals, policy changes, integrations, or recertification."
+    },
+    {
+      "dependencies": [
+        "evaluation-budget-allocator",
+        "certify-reversible-validation"
+      ],
+      "domain": "knowledge-physics",
+      "failure_modes": [
+        "numerology",
+        "trust by popularity",
+        "one half-life for every domain",
+        "unbounded graph propagation"
+      ],
+      "formula_refs": [
+        "revalidation-priority",
+        "blast-radius-score",
+        "exponential-trust-decay"
+      ],
+      "id": "revalidation-scheduler",
+      "inputs": [
+        "event-sourced capability state",
+        "validation/use/dependency/contradiction events",
+        "domain calibration policy"
+      ],
+      "invariants": [
+        "Physics language is an operational metaphor, not literal law.",
+        "Composite scores expose raw components and calibration.",
+        "Trust loss is reversible with valid new evidence."
+      ],
+      "outputs": [
+        "trust/entropy/stability/volatility state",
+        "risk and revalidation signals",
+        "reproducible simulation or intervention plan"
+      ],
+      "procedure": [
+        "Initialize explicit dimensions and raw components.",
+        "Apply bounded evidence, validation, contradiction, dependency, use, and decay events.",
+        "Preserve the full event ledger and explain every score change.",
+        "Detect unstable, fragmented, stale, or over-centralized regions.",
+        "Simulate before canonical mutation and schedule risk-based revalidation."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Prioritize validation campaigns from trust decay, criticality, dependency changes, contradiction pressure, use frequency, blast radius, and certification age.",
+      "title": "Revalidation Scheduler",
+      "version": "1.0.0",
+      "when_to_use": "Use nightly, after dependency changes, and before release."
+    },
+    {
+      "dependencies": [
+        "final-sanitization-audit",
+        "archive-hygiene"
+      ],
+      "domain": "release-hygiene",
+      "failure_modes": [
+        "shipping caches",
+        "overwriting stronger target code",
+        "help-only smoke tests",
+        "certificate by file count"
+      ],
+      "formula_refs": [
+        "release-cleanliness-score"
+      ],
+      "id": "cache-transient-release-cleaner",
+      "inputs": [
+        "staged release tree",
+        "target registry/tree",
+        "certification and merge policy"
+      ],
+      "invariants": [
+        "Destructive integration is never the default.",
+        "Confirmed secrets fail release.",
+        "Unexecuted controls are not certified as passes."
+      ],
+      "outputs": [
+        "cleanliness/conflict report",
+        "non-destructive integration plan",
+        "revocable certificate and hashes"
+      ],
+      "procedure": [
+        "Freeze and hash the staged source and target.",
+        "Scan transients, local paths, likely secrets, duplicates, and overlaps.",
+        "Produce dry-run dispositions that protect stronger artifacts.",
+        "Run syntax, schema, functional, failure, rollback, and archive tests.",
+        "Publish deterministic archive, manifest, limitations, and revocation triggers."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Detect caches, compiled artifacts, logs, temporary files, backups, local absolute paths, likely secrets, and nondeterministic archive debris; clean only staged copies by explicit request.",
+      "title": "Cache and Transient Release Cleaner",
+      "version": "1.0.0",
+      "when_to_use": "Use before every public or certified archive."
+    },
+    {
+      "dependencies": [
+        "audit-source-capabilities",
+        "duplication-supersession-resolver"
+      ],
+      "domain": "release-hygiene",
+      "failure_modes": [
+        "shipping caches",
+        "overwriting stronger target code",
+        "help-only smoke tests",
+        "certificate by file count"
+      ],
+      "formula_refs": [
+        "capability-similarity",
+        "coverage-dominance",
+        "merge-value-score"
+      ],
+      "id": "integration-conflict-mapper",
+      "inputs": [
+        "staged release tree",
+        "target registry/tree",
+        "certification and merge policy"
+      ],
+      "invariants": [
+        "Destructive integration is never the default.",
+        "Confirmed secrets fail release.",
+        "Unexecuted controls are not certified as passes."
+      ],
+      "outputs": [
+        "cleanliness/conflict report",
+        "non-destructive integration plan",
+        "revocable certificate and hashes"
+      ],
+      "procedure": [
+        "Freeze and hash the staged source and target.",
+        "Scan transients, local paths, likely secrets, duplicates, and overlaps.",
+        "Produce dry-run dispositions that protect stronger artifacts.",
+        "Run syntax, schema, functional, failure, rollback, and archive tests.",
+        "Publish deterministic archive, manifest, limitations, and revocation triggers."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Find exact, partial, semantic, runtime, schema, test, and ownership overlap and emit dry-run reuse, extend, compose, merge, alias, migrate, quarantine, or reject dispositions.",
+      "title": "Integration Conflict Mapper",
+      "version": "1.0.0",
+      "when_to_use": "Use before applying the pack to an existing bootstrap."
+    },
+    {
+      "dependencies": [
+        "certify-skeptical-engineering",
+        "revocable-certification"
+      ],
+      "domain": "release-hygiene",
+      "failure_modes": [
+        "shipping caches",
+        "overwriting stronger target code",
+        "help-only smoke tests",
+        "certificate by file count"
+      ],
+      "formula_refs": [
+        "certification-coverage",
+        "release-cleanliness-score"
+      ],
+      "id": "metacognitive-certification",
+      "inputs": [
+        "staged release tree",
+        "target registry/tree",
+        "certification and merge policy"
+      ],
+      "invariants": [
+        "Destructive integration is never the default.",
+        "Confirmed secrets fail release.",
+        "Unexecuted controls are not certified as passes."
+      ],
+      "outputs": [
+        "cleanliness/conflict report",
+        "non-destructive integration plan",
+        "revocable certificate and hashes"
+      ],
+      "procedure": [
+        "Freeze and hash the staged source and target.",
+        "Scan transients, local paths, likely secrets, duplicates, and overlaps.",
+        "Produce dry-run dispositions that protect stronger artifacts.",
+        "Run syntax, schema, functional, failure, rollback, and archive tests.",
+        "Publish deterministic archive, manifest, limitations, and revocation triggers."
+      ],
+      "safety": {
+        "destructive_default": false,
+        "network_required": false,
+        "private_chain_of_thought_required": false
+      },
+      "semantic_effects": {
+        "confidence": [
+          "may adjust only through declared evidence and method"
+        ],
+        "knowledge": [
+          "may add or revise typed records only with provenance"
+        ],
+        "memory": [
+          "no persistent memory write unless explicitly contracted and scope-bound"
+        ],
+        "registry": [
+          "may propose changes; canonical mutation requires admission and evidence"
+        ],
+        "runtime": [
+          "bounded by target orchestration, permissions, containment, and rollback"
+        ]
+      },
+      "summary": "Certify the reasoning, semantic-effect, introspection, genome, routing, optimization, theory, engineering-DNA, knowledge-dynamics, integration, and rollback controls as scoped and revocable.",
+      "title": "Metacognitive Certification",
+      "version": "1.0.0",
+      "when_to_use": "Use before integration, release, and after every material change."
+    }
+  ],
+  "count": 50,
+  "schema_version": "1.0"
+}

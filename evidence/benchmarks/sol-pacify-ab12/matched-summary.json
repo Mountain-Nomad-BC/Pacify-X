@@ -1,0 +1,46 @@
+{
+  "run_id": "sol-pacify-tbench21-ab12-r1",
+  "integration_valid": false,
+  "disposition": "retained_for_diagnosis_only",
+  "invalid_reason": "Prompt-layer candidate/inactive skills were attached instead of activating the canonical PACIFY-X runtime integration.",
+  "benchmark": "terminal-bench@2.1",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "task_count": 12,
+  "attempts_per_task": 1,
+  "control": {
+    "passes": 10,
+    "pass_rate": 0.833333,
+    "agent_seconds": 2352.3,
+    "input_tokens": 4152858,
+    "output_tokens": 67354,
+    "tool_calls": 126
+  },
+  "pacify": {
+    "passes": 9,
+    "pass_rate": 0.75,
+    "agent_seconds": 1851.9,
+    "input_tokens": 2794134,
+    "output_tokens": 63708,
+    "tool_calls": 152
+  },
+  "delta": {
+    "absolute_pass_rate": -0.083333,
+    "relative_pass_rate": -0.1,
+    "agent_seconds": -500.4,
+    "input_tokens": -1358724,
+    "output_tokens": -3646,
+    "tool_calls": 26
+  },
+  "common_failures": [
+    "terminal-bench/kv-store-grpc",
+    "terminal-bench/pytorch-model-recovery"
+  ],
+  "control_only_passes": [
+    "terminal-bench/log-summary-date-ranges"
+  ],
+  "pacify_only_passes": [],
+  "infrastructure_errors": 0,
+  "retries": 0,
+  "significance_claimed": false
+}

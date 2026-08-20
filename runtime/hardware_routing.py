@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 from enum import Enum
 import hashlib
@@ -105,6 +106,13 @@ class HardwareProfile:
     onnx_providers: tuple[str, ...]
     optional_accelerators: tuple[str, ...]
     probe_errors: tuple[str, ...] = ()
+    cuda_device_count: int = 0
+    cuda_executor_available: bool = False
+    available_execution_backends: tuple[str, ...] = ()
+    selected_cuda_device_index: int | None = None
+    gpu_process_parallelism: int = 0
+    gpu_parallelism_reason: str = "no compatible GPU executor is active"
+    probe_duration_seconds: float = 0.0
 
     @property
     def fingerprint(self) -> str:
@@ -117,6 +125,10 @@ class HardwareProfile:
             "torch_cuda": self.torch_cuda_available,
             "onnx": self.onnx_providers,
             "accelerators": self.optional_accelerators,
+            "cuda_device_count": self.cuda_device_count,
+            "cuda_executor_available": self.cuda_executor_available,
+            "execution_backends": self.available_execution_backends,
+            "selected_cuda_device_index": self.selected_cuda_device_index,
         }
         return hashlib.sha256(
             json.dumps(payload, sort_keys=True).encode("utf-8")
@@ -196,6 +208,9 @@ class RoutingDecision:
     required_checks: tuple[str, ...] = ()
     benchmark_speedup: float | None = None
     deterministic_required: bool = True
+    executor_backend: str | None = None
+    device_index: int | None = None
+    process_parallelism: int = 0
 
 
 def _environment() -> Literal["windows", "wsl2", "linux", "docker", "unknown"]:
@@ -247,6 +262,10 @@ def _system_ram() -> int:
         return 0
 
 
+def _hidden_creationflags() -> int:
+    return int(getattr(subprocess, "CREATE_NO_WINDOW", 0)) if os.name == "nt" else 0
+
+
 def _run_nvidia_smi(timeout_seconds: float) -> tuple[dict[str, object], str | None]:
     if not shutil.which("nvidia-smi"):
         return {}, "nvidia-smi unavailable"
@@ -254,69 +273,335 @@ def _run_nvidia_smi(timeout_seconds: float) -> tuple[dict[str, object], str | No
         completed = subprocess.run(
             [
                 "nvidia-smi",
-                "--query-gpu=name,driver_version,memory.total,memory.free",
+                "--query-gpu=index,name,driver_version,memory.total,memory.free,temperature.gpu,utilization.gpu,power.draw,fan.speed",
                 "--format=csv,noheader,nounits",
             ],
             text=True,
             capture_output=True,
             timeout=timeout_seconds,
             check=False,
+            creationflags=_hidden_creationflags(),
         )
     except (OSError, subprocess.SubprocessError) as error:
         return {}, f"nvidia-smi probe failed: {error}"
     if completed.returncode != 0 or not completed.stdout.strip():
         return {}, completed.stderr.strip() or "nvidia-smi returned no devices"
-    parts = [value.strip() for value in completed.stdout.splitlines()[0].split(",")]
-    if len(parts) != 4:
-        return {}, "nvidia-smi returned an unexpected record"
+    devices: list[dict[str, object]] = []
+    for line in completed.stdout.splitlines():
+        parts = [value.strip() for value in line.split(",")]
+        if len(parts) != 9:
+            continue
+        try:
+            devices.append(
+                {
+                    "index": int(parts[0]),
+                    "name": parts[1],
+                    "driver": parts[2],
+                    "total": int(float(parts[3])) * 1024**2,
+                    "free": int(float(parts[4])) * 1024**2,
+                    "temperature": _number_or_none(parts[5]),
+                    "utilization": _number_or_none(parts[6]),
+                    "power": _number_or_none(parts[7]),
+                    "fan": _number_or_none(parts[8]),
+                }
+            )
+        except ValueError:
+            continue
+    if not devices:
+        return {}, "nvidia-smi returned no parseable devices"
+    selected = max(devices, key=lambda item: (int(item["free"]), -int(item["index"])))
+    return {**selected, "devices": tuple(devices)}, None
+
+
+def _sensor(
+    *,
+    sensor_id: str,
+    kind: str,
+    device: str,
+    label: str,
+    metric: str,
+    value: float | None,
+    unit: str,
+    source: str,
+    sampled_at: str,
+    available: bool = True,
+    error: str | None = None,
+) -> dict[str, object]:
+    return {
+        "id": sensor_id,
+        "kind": kind,
+        "device": device,
+        "label": label,
+        "metric": metric,
+        "value": value,
+        "unit": unit,
+        "source": source,
+        "sampled_at": sampled_at,
+        "available": available,
+        "error": error,
+    }
+
+
+def _number_or_none(value: str) -> float | None:
+    cleaned = value.strip()
+    if not cleaned or cleaned.casefold() in {"n/a", "na", "[not supported]", "not supported"}:
+        return None
     try:
-        return {
-            "name": parts[0],
-            "driver": parts[1],
-            "total": int(float(parts[2])) * 1024**2,
-            "free": int(float(parts[3])) * 1024**2,
-        }, None
+        return float(cleaned)
     except ValueError:
-        return {}, "nvidia-smi returned invalid memory values"
+        return None
 
 
-def _probe_torch() -> tuple[bool, str | None, str | None, dict[str, object]]:
+def _nvidia_telemetry_from_snapshot(
+    snapshot: dict[str, object], sampled_at: str
+) -> tuple[list[dict[str, object]], dict[str, object]]:
+    provider = {"id": "nvidia-smi", "available": False, "error": None}
+    devices = snapshot.get("devices", ())
+    if not isinstance(devices, (tuple, list)) or not devices:
+        provider["error"] = "nvidia-smi returned no telemetry"
+        return [], provider
+    sensors: list[dict[str, object]] = []
+    metrics = (
+        ("temperature", "Temperature", "celsius"),
+        ("utilization", "Utilization", "percent"),
+        ("power", "Power draw", "watts"),
+        ("fan", "Fan speed", "percent"),
+    )
+    for record in devices:
+        if not isinstance(record, dict):
+            continue
+        index = str(record.get("index", "unknown"))
+        name = str(record.get("name", "unknown"))
+        values = tuple(record.get(metric) for metric, _label, _unit in metrics)
+        device = f"GPU {index}: {name}"
+        for (metric, label, unit), raw in zip(metrics, values, strict=True):
+            value = float(raw) if isinstance(raw, (int, float)) else None
+            sensors.append(
+                _sensor(
+                    sensor_id=f"gpu:{index}:{metric}",
+                    kind="gpu",
+                    device=device,
+                    label=label,
+                    metric=metric,
+                    value=value,
+                    unit=unit,
+                    source="nvidia-smi",
+                    sampled_at=sampled_at,
+                    available=value is not None,
+                    error=None if value is not None else "metric not supported",
+                )
+            )
+    provider["available"] = bool(sensors)
+    if not sensors:
+        provider["error"] = "nvidia-smi returned no parseable telemetry records"
+    return sensors, provider
+
+
+def _probe_nvidia_telemetry(
+    timeout_seconds: float, sampled_at: str
+) -> tuple[list[dict[str, object]], dict[str, object]]:
+    snapshot, error = _run_nvidia_smi(timeout_seconds)
+    if error:
+        return [], {"id": "nvidia-smi", "available": False, "error": error}
+    return _nvidia_telemetry_from_snapshot(snapshot, sampled_at)
+
+
+def _probe_psutil_telemetry(
+    sampled_at: str,
+) -> tuple[list[dict[str, object]], dict[str, object]]:
+    provider = {"id": "psutil", "available": False, "error": None}
     try:
-        torch = importlib.import_module("torch")
-        available = bool(torch.cuda.is_available())
-        version = str(getattr(torch.version, "cuda", None) or "") or None
-        details: dict[str, object] = {}
-        if available and torch.cuda.device_count():
-            properties = torch.cuda.get_device_properties(0)
-            details = {
-                "name": str(properties.name),
-                "total": int(properties.total_memory),
-            }
-            try:
-                free, total = torch.cuda.mem_get_info(0)
-                details.update({"free": int(free), "total": int(total)})
-            except (AttributeError, RuntimeError):
-                pass
-        return available, version, None, details
-    except Exception as error:  # optional dependency probing must never fail startup
-        return False, None, f"torch probe: {type(error).__name__}: {error}", {}
-
-
-def _probe_onnx() -> tuple[tuple[str, ...], str | None]:
-    try:
-        runtime = importlib.import_module("onnxruntime")
-        return tuple(map(str, runtime.get_available_providers())), None
+        psutil = importlib.import_module("psutil")
     except Exception as error:
-        return (), f"onnxruntime probe: {type(error).__name__}: {error}"
+        provider["error"] = f"psutil unavailable: {type(error).__name__}"
+        return [], provider
+    temperatures = getattr(psutil, "sensors_temperatures", None)
+    if not callable(temperatures):
+        provider["error"] = "temperature API unavailable on this host"
+        return [], provider
+    try:
+        groups = temperatures(fahrenheit=False) or {}
+    except Exception as error:
+        provider["error"] = f"temperature probe failed: {type(error).__name__}: {error}"
+        return [], provider
+    sensors: list[dict[str, object]] = []
+    for group, entries in sorted(groups.items()):
+        kind = "cpu" if any(token in group.casefold() for token in ("cpu", "coretemp", "k10temp")) else "thermal"
+        for index, entry in enumerate(entries):
+            current = getattr(entry, "current", None)
+            value = float(current) if isinstance(current, (int, float)) else None
+            label = str(getattr(entry, "label", "") or f"{group} {index + 1}")
+            sensors.append(
+                _sensor(
+                    sensor_id=f"{kind}:{group}:{index}:temperature",
+                    kind=kind,
+                    device=group,
+                    label=label,
+                    metric="temperature",
+                    value=value,
+                    unit="celsius",
+                    source="psutil",
+                    sampled_at=sampled_at,
+                    available=value is not None,
+                    error=None if value is not None else "metric unavailable",
+                )
+            )
+    provider["available"] = bool(sensors)
+    if not sensors:
+        provider["error"] = "no temperature sensors exposed by the operating system"
+    return sensors, provider
 
 
-def discover_hardware(
-    *, probe_external: bool = True, probe_libraries: bool = True, timeout_seconds: float = 2.0
-) -> HardwareProfile:
+def hardware_telemetry(
+    *,
+    probe_external: bool = True,
+    timeout_seconds: float = 2.0,
+    nvidia_snapshot: dict[str, object] | None = None,
+    nvidia_error: str | None = None,
+) -> dict[str, object]:
+    """Return bounded, best-effort live sensors without changing hardware authority."""
     if not 0.1 <= timeout_seconds <= 10:
         raise ValueError("hardware probe timeout must be between 0.1 and 10 seconds")
+    sampled_at = datetime.now(timezone.utc).isoformat()
+    sensors: list[dict[str, object]] = []
+    providers: list[dict[str, object]] = []
+    psutil_sensors, psutil_provider = _probe_psutil_telemetry(sampled_at)
+    sensors.extend(psutil_sensors)
+    providers.append(psutil_provider)
+    if probe_external:
+        if nvidia_snapshot is None:
+            nvidia_sensors, nvidia_provider = _probe_nvidia_telemetry(
+                timeout_seconds, sampled_at
+            )
+        elif nvidia_error:
+            nvidia_sensors, nvidia_provider = [], {
+                "id": "nvidia-smi", "available": False, "error": nvidia_error
+            }
+        else:
+            nvidia_sensors, nvidia_provider = _nvidia_telemetry_from_snapshot(
+                nvidia_snapshot, sampled_at
+            )
+        sensors.extend(nvidia_sensors)
+        providers.append(nvidia_provider)
+    else:
+        providers.append(
+            {"id": "nvidia-smi", "available": False, "error": "external probes disabled"}
+        )
+    sensors.sort(key=lambda item: str(item["id"]))
+    return {
+        "schema_version": "1.0",
+        "sampled_at": sampled_at,
+        "sensors": sensors,
+        "providers": providers,
+        "available_count": sum(1 for item in sensors if item["available"]),
+        "temperature_count": sum(
+            1 for item in sensors if item["available"] and item["metric"] == "temperature"
+        ),
+        "external_data_transmission": False,
+    }
+
+
+def _probe_library_worker(kind: str, timeout_seconds: float) -> tuple[dict[str, object], str | None]:
+    """Probe an optional accelerator in an owned, bounded child process."""
+    script = (
+        "import json,sys\n"
+        "kind=sys.argv[1]\n"
+        "if kind=='torch':\n"
+        " import torch\n"
+        " available=bool(torch.cuda.is_available())\n"
+        " out={'available':available,'version':str(getattr(torch.version,'cuda',None) or '')}\n"
+        " if available:\n"
+        "  out['device_count']=int(torch.cuda.device_count())\n"
+        "  p=torch.cuda.get_device_properties(0); out.update(name=str(p.name),total=int(p.total_memory))\n"
+        "  try:\n"
+        "   free,total=torch.cuda.mem_get_info(0); out.update(free=int(free),total=int(total))\n"
+        "  except (AttributeError,RuntimeError): pass\n"
+        "else:\n"
+        " import onnxruntime as ort\n"
+        " out={'providers':list(map(str,ort.get_available_providers()))}\n"
+        "print(json.dumps(out,separators=(',',':')))\n"
+    )
+    try:
+        completed = subprocess.run(
+            [sys.executable, "-c", script, kind],
+            text=True,
+            capture_output=True,
+            timeout=timeout_seconds,
+            check=False,
+            creationflags=_hidden_creationflags(),
+        )
+    except subprocess.TimeoutExpired:
+        return {}, f"{kind} probe timed out after {timeout_seconds:g} seconds; child process terminated"
+    except OSError as error:
+        return {}, f"{kind} probe failed: {type(error).__name__}: {error}"
+    if completed.returncode != 0:
+        detail = completed.stderr.strip().splitlines()[-1] if completed.stderr.strip() else f"exit {completed.returncode}"
+        return {}, f"{kind} probe failed: {detail}"
+    try:
+        payload = json.loads(completed.stdout)
+    except (json.JSONDecodeError, TypeError):
+        return {}, f"{kind} probe returned invalid JSON"
+    return (payload, None) if isinstance(payload, dict) else ({}, f"{kind} probe returned an invalid object")
+
+
+def _probe_torch(timeout_seconds: float = 2.0) -> tuple[bool, str | None, str | None, dict[str, object]]:
+    try:
+        if importlib.util.find_spec("torch") is None:
+            return False, None, "torch unavailable", {}
+    except (ImportError, ValueError) as error:
+        return False, None, f"torch discovery failed: {error}", {}
+    payload, error = _probe_library_worker("torch", timeout_seconds)
+    return (
+        bool(payload.get("available")),
+        str(payload.get("version") or "") or None,
+        error,
+        payload,
+    )
+
+
+def _probe_onnx(timeout_seconds: float = 2.0) -> tuple[tuple[str, ...], str | None]:
+    try:
+        if importlib.util.find_spec("onnxruntime") is None:
+            return (), "onnxruntime unavailable"
+    except (ImportError, ValueError) as error:
+        return (), f"onnxruntime discovery failed: {error}"
+    payload, error = _probe_library_worker("onnx", timeout_seconds)
+    providers = payload.get("providers", ())
+    return tuple(map(str, providers)) if isinstance(providers, list) else (), error
+
+
+def _discover_hardware_details(
+    *,
+    probe_external: bool = True,
+    probe_libraries: bool = True,
+    timeout_seconds: float = 2.0,
+    nvidia_snapshot: dict[str, object] | None = None,
+    nvidia_error: str | None = None,
+) -> tuple[HardwareProfile, dict[str, object], str | None]:
+    if not 0.1 <= timeout_seconds <= 10:
+        raise ValueError("hardware probe timeout must be between 0.1 and 10 seconds")
+    started = time.perf_counter()
     errors: list[str] = []
-    smi, smi_error = _run_nvidia_smi(timeout_seconds) if probe_external else ({}, None)
+    smi: dict[str, object] = nvidia_snapshot or {}
+    smi_error = nvidia_error
+    torch_result: tuple[bool, str | None, str | None, dict[str, object]] = (False, None, None, {})
+    onnx_result: tuple[tuple[str, ...], str | None] = ((), None)
+    probes: dict[str, Callable[[], object]] = {}
+    if probe_external and nvidia_snapshot is None:
+        probes["nvidia"] = lambda: _run_nvidia_smi(timeout_seconds)
+    if probe_libraries:
+        probes["torch"] = lambda: _probe_torch(timeout_seconds)
+        probes["onnx"] = lambda: _probe_onnx(timeout_seconds)
+    if probes:
+        with ThreadPoolExecutor(max_workers=min(3, len(probes)), thread_name_prefix="px-hardware-probe") as pool:
+            futures = {name: pool.submit(operation) for name, operation in probes.items()}
+            results = {name: future.result() for name, future in futures.items()}
+        if "nvidia" in results:
+            smi, smi_error = results["nvidia"]  # type: ignore[assignment]
+        if "torch" in results:
+            torch_result = results["torch"]  # type: ignore[assignment]
+        if "onnx" in results:
+            onnx_result = results["onnx"]  # type: ignore[assignment]
     if smi_error and probe_external:
         errors.append(smi_error)
     torch_available = False
@@ -324,10 +609,10 @@ def discover_hardware(
     torch_details: dict[str, object] = {}
     onnx_providers: tuple[str, ...] = ()
     if probe_libraries:
-        torch_available, cuda_runtime, torch_error, torch_details = _probe_torch()
+        torch_available, cuda_runtime, torch_error, torch_details = torch_result
         if torch_error:
             errors.append(torch_error)
-        onnx_providers, onnx_error = _probe_onnx()
+        onnx_providers, onnx_error = onnx_result
         if onnx_error:
             errors.append(onnx_error)
     optional = tuple(
@@ -338,12 +623,24 @@ def discover_hardware(
     gpu_name = str(smi.get("name") or torch_details.get("name") or "") or None
     total_vram = int(smi.get("total") or torch_details.get("total") or 0)
     free_vram = int(smi.get("free") or torch_details.get("free") or 0)
-    cuda_available = bool(
-        torch_available
-        or "CUDAExecutionProvider" in onnx_providers
-        or smi
+    cuda_device_count = len(smi.get("devices", ())) if isinstance(smi.get("devices", ()), (tuple, list)) else 0
+    cuda_available = bool(smi or torch_available or "CUDAExecutionProvider" in onnx_providers)
+    backends = tuple(
+        name
+        for name, available in (
+            ("torch-cuda", torch_available),
+            ("onnx-cuda", "CUDAExecutionProvider" in onnx_providers),
+            ("onnx-directml", "DmlExecutionProvider" in onnx_providers),
+            ("cupy", "cupy" in optional),
+            ("cudf", "cudf" in optional),
+            ("tensorrt", "tensorrt" in optional),
+        )
+        if available
     )
-    return HardwareProfile(
+    cuda_executor_available = any(
+        name in backends for name in ("torch-cuda", "onnx-cuda", "cupy", "cudf", "tensorrt")
+    )
+    profile = HardwareProfile(
         cuda_available=cuda_available,
         gpu_name=gpu_name,
         driver_version=str(smi.get("driver") or "") or None,
@@ -358,7 +655,37 @@ def discover_hardware(
         onnx_providers=onnx_providers,
         optional_accelerators=optional,
         probe_errors=tuple(errors),
+        cuda_device_count=cuda_device_count or int(torch_details.get("device_count") or (1 if torch_available else 0)),
+        cuda_executor_available=cuda_executor_available,
+        available_execution_backends=backends,
+        selected_cuda_device_index=int(smi.get("index")) if smi.get("index") is not None else (0 if torch_available else None),
+        gpu_process_parallelism=1 if cuda_executor_available else 0,
+        gpu_parallelism_reason=(
+            "one bounded GPU executor; parallelism occurs inside batched device kernels"
+            if cuda_executor_available
+            else "GPU hardware may be visible, but no compatible CUDA executor is active"
+        ),
+        probe_duration_seconds=round(time.perf_counter() - started, 6),
     )
+    return profile, smi, smi_error
+
+
+def discover_hardware(
+    *,
+    probe_external: bool = True,
+    probe_libraries: bool = True,
+    timeout_seconds: float = 2.0,
+    nvidia_snapshot: dict[str, object] | None = None,
+    nvidia_error: str | None = None,
+) -> HardwareProfile:
+    profile, _snapshot, _error = _discover_hardware_details(
+        probe_external=probe_external,
+        probe_libraries=probe_libraries,
+        timeout_seconds=timeout_seconds,
+        nvidia_snapshot=nvidia_snapshot,
+        nvidia_error=nvidia_error,
+    )
+    return profile
 
 
 def route_workload(
@@ -394,6 +721,14 @@ def route_workload(
         return RoutingDecision(
             Device.CPU,
             "CUDA is unavailable; using declared CPU fallback",
+            required_checks=tuple(checks),
+            deterministic_required=workload.deterministic_required,
+        )
+    checks.append("cuda_executor_available")
+    if not hardware.cuda_executor_available:
+        return RoutingDecision(
+            Device.CPU,
+            "CUDA hardware is visible, but no compatible CUDA execution backend is ready",
             required_checks=tuple(checks),
             deterministic_required=workload.deterministic_required,
         )
@@ -466,6 +801,12 @@ def route_workload(
         required_checks=tuple(checks),
         benchmark_speedup=benchmark.speedup if benchmark else None,
         deterministic_required=workload.deterministic_required,
+        executor_backend=next(
+            (name for name in hardware.available_execution_backends if name != "onnx-directml"),
+            None,
+        ),
+        device_index=hardware.selected_cuda_device_index,
+        process_parallelism=hardware.gpu_process_parallelism,
     )
 
 
@@ -499,6 +840,9 @@ def execute_with_fallback(
             "selected_device": "cpu",
             "actual_device": "cpu",
             "fallback": False,
+            "executor_backend": None,
+            "device_index": None,
+            "process_parallelism": 0,
             "duration_seconds": time.perf_counter() - started,
             "routing_reason": decision.reason,
         }
@@ -512,6 +856,9 @@ def execute_with_fallback(
                 "selected_device": "cuda",
                 "actual_device": "cuda",
                 "fallback": False,
+                "executor_backend": decision.executor_backend,
+                "device_index": decision.device_index,
+                "process_parallelism": decision.process_parallelism,
                 "batch_size": batch_size,
                 "oom_events": events,
                 "duration_seconds": time.perf_counter() - started,
@@ -528,6 +875,9 @@ def execute_with_fallback(
         "selected_device": "cuda",
         "actual_device": "cpu",
         "fallback": True,
+        "executor_backend": decision.executor_backend,
+        "device_index": decision.device_index,
+        "process_parallelism": decision.process_parallelism,
         "batch_size": batch_size,
         "oom_events": events,
         "duration_seconds": time.perf_counter() - started,
@@ -571,15 +921,57 @@ def benchmark_devices(
     )
 
 
-def hardware_report(*, probe_external: bool = True, probe_libraries: bool = True) -> dict[str, object]:
-    profile = discover_hardware(
-        probe_external=probe_external, probe_libraries=probe_libraries
+def hardware_report(
+    *,
+    probe_external: bool = True,
+    probe_libraries: bool = True,
+    probe_sensors: bool | None = None,
+    timeout_seconds: float = 2.0,
+) -> dict[str, object]:
+    report_started = time.perf_counter()
+    needs_nvidia = probe_external or (probe_external if probe_sensors is None else probe_sensors)
+    profile, nvidia_snapshot, nvidia_error = _discover_hardware_details(
+        probe_external=needs_nvidia,
+        probe_libraries=probe_libraries,
+        timeout_seconds=timeout_seconds,
+        nvidia_snapshot=None if needs_nvidia else {},
+        nvidia_error=None,
+    )
+    telemetry = hardware_telemetry(
+        probe_external=probe_external if probe_sensors is None else probe_sensors,
+        timeout_seconds=timeout_seconds,
+        nvidia_snapshot=nvidia_snapshot,
+        nvidia_error=nvidia_error,
     )
     return {
         "valid": True,
         "hardware": asdict(profile),
+        "telemetry": telemetry,
         "hardware_fingerprint": profile.fingerprint,
         "core_scan_device": "cpu",
         "gpu_optional": True,
+        "probe_duration_seconds": round(time.perf_counter() - report_started, 6),
+        "probe_process_policy": {
+            "maximum_concurrent_children": 3,
+            "discovery_parallelism": "independent read-only probes only",
+            "gpu_execution_processes": profile.gpu_process_parallelism,
+            "per_child_timeout_seconds": timeout_seconds,
+            "shell": False,
+            "visible_window": False,
+            "timeout_terminates_and_waits_for_child": True,
+        },
+        "routing_capabilities": {
+            "cpu_authoritative_workloads": sorted(kind.value for kind in CPU_AUTHORITATIVE),
+            "gpu_eligible_workloads": sorted(kind.value for kind in GPU_SUITABLE),
+            "conditional_gpu_workloads": sorted(kind.value for kind in CONDITIONAL),
+            "cuda_device_visible": profile.cuda_available,
+            "cuda_executor_ready": profile.cuda_executor_available,
+            "directml_discovered": "onnx-directml" in profile.available_execution_backends,
+            "directml_routing": "unsupported until an admitted DirectML executor passes compatibility and benchmark gates; Intel/integrated GPU is never selected implicitly",
+            "process_parallelism": profile.gpu_process_parallelism,
+            "parallelism_reason": profile.gpu_parallelism_reason,
+            "automatic_gpu_requires_current_benchmark": True,
+            "deterministic_cpu_fallback": True,
+        },
         "external_data_transmission": False,
     }

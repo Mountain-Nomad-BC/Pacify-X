@@ -1,0 +1,38 @@
+{
+  "admission_record": "manage-revocable-certification",
+  "body_sha256": "b86848859c54e7d5faf23859414317daec93af33f1c9ea163c8ecdc9c1eae6f7",
+  "contract": {
+    "available": true,
+    "sha256": "a913a7b4cbf463e79560f7905819170bf01b28effb85c0fd2c9c005cb78a40a7",
+    "source": "registry/skill_packages/manage-revocable-certification.json"
+  },
+  "description": "Reconcile manifests, detect duplicates and collisions, enforce completion cutlines, verify archives and packages, aggregate evidence, certify capabilities, revoke stale claims, calculate recertification impact, and convert field feedback into regressions. Use for integration and release readiness.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "manage-revocable-certification",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/manage-revocable-certification"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "manage",
+    "revocable",
+    "certification",
+    "declared-suite"
+  ],
+  "version": "0.1.0"
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": "px.operation-coverage-health/1.0",
+  "route_states": [
+    {
+      "route_id": "extension.vscode-listener",
+      "kind": "observer",
+      "health": "healthy",
+      "observed_at": "2026-08-14T03:56:53.851141+00:00",
+      "receipt_path": "extension/evidence/vscode-host-listener-smoke.json",
+      "receipt_sha256": "481817cc0d7c16d52df0560d2422502bbf9e61800c4ca73f4215aa509e1d6077"
+    },
+    {
+      "route_id": "provider.remote-model",
+      "kind": "mediator",
+      "health": "healthy",
+      "observed_at": "2026-08-14T03:56:53.851141+00:00",
+      "receipt_path": "evidence/punch-cards/O08-provider-invocation-gateway.json",
+      "receipt_sha256": "2eb5290e4d9a89bc8382bd28d58b6b4dcc10be5fbd08ccbe10d06e50de9dd314"
+    },
+    {
+      "route_id": "provider.local-model",
+      "kind": "mediator",
+      "health": "healthy",
+      "observed_at": "2026-08-14T03:56:53.851141+00:00",
+      "receipt_path": "evidence/punch-cards/O08-provider-invocation-gateway.json",
+      "receipt_sha256": "2eb5290e4d9a89bc8382bd28d58b6b4dcc10be5fbd08ccbe10d06e50de9dd314"
+    },
+    {
+      "route_id": "runtime.package-environment",
+      "kind": "observer",
+      "health": "healthy",
+      "observed_at": "2026-08-14T03:56:53.851141+00:00",
+      "receipt_path": "evidence/punch-cards/O12-system-tool-inventory.json",
+      "receipt_sha256": "b79e323a8114abea402668c42348a309b1f50c8139ba8dee41990292f9603895"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "dependencies": [
+    "scenario-audit-generator",
+    "reasoning-utility-controller"
+  ],
+  "domain": "reasoning-kernel",
+  "failure_modes": [
+    "false certainty",
+    "evidence double counting",
+    "premature convergence",
+    "scope or timestamp collapse"
+  ],
+  "formula_refs": [
+    "bayes-update",
+    "expected-value-of-information",
+    "information-gain"
+  ],
+  "id": "hypothesis-portfolio-manager",
+  "inputs": [
+    "claims/evidence",
+    "task context",
+    "scope and time metadata"
+  ],
+  "invariants": [
+    "Unknowns are never silently converted to facts.",
+    "Confidence changes require evidence lineage.",
+    "High-impact uncertainty triggers testing, abstention, or escalation."
+  ],
+  "outputs": [
+    "machine-readable reasoning artifact",
+    "uncertainty and provenance record",
+    "decision or next-test recommendation"
+  ],
+  "procedure": [
+    "Normalize inputs and scope.",
+    "Separate observations, inferences, assumptions, unknowns, and policy choices.",
+    "Apply the referenced method with visible component values.",
+    "Test alternatives, contradictions, and failure conditions.",
+    "Emit a bounded result with provenance and residual uncertainty."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Maintain competing explanations with priors, evidence, falsifiers, discriminating tests, retirement reasons, and residual uncertainty.",
+  "title": "Hypothesis Portfolio Manager",
+  "version": "1.0.0",
+  "when_to_use": "Use for diagnostics, incident response, research, reverse engineering, and ambiguous requirements."
+}

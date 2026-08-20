@@ -2,14 +2,14 @@
   "id": "transcript-analysis",
   "version": "1.0.0",
   "status": "active",
-  "body": ".agents/skills/transcript-analysis/SKILL.md",
+  "body": ".px/skills/transcript-analysis/SKILL.md",
   "body_sha256": "173fc8743679546fef3d133d8e86fb68832f723c79a291e04713258d7e33cfb8",
   "references": [
-    ".agents/skills/transcript-analysis/references/architecture.md",
-    ".agents/skills/transcript-analysis/references/runtime.md"
+    ".px/skills/transcript-analysis/references/architecture.md",
+    ".px/skills/transcript-analysis/references/runtime.md"
   ],
   "resources": [
-    ".agents/skills/transcript-analysis/scripts/export_transcript_summary.py"
+    ".px/skills/transcript-analysis/scripts/export_transcript_summary.py"
   ],
   "capability_tags": [
     "evidence",

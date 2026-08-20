@@ -1,0 +1,66 @@
+{
+  "id": "ms-vscode.vscode-node-azure-pack",
+  "name": "Azure Tools",
+  "version": "1.8.2",
+  "publisher": "ms-vscode",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [],
+  "capabilities": [],
+  "commands": [],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-vscode.vscode-node-azure-pack",
+    "capabilities": [],
+    "interface": [],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "gap_id": "PX-OS-027",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004937",
+  "authority": "The corrected lifecycle fixture requires one exact bounded verification.",
+  "effect": "execute",
+  "scope": [
+    "python -m pytest -vv -p no:cacheprovider tests/test_workflow_studio.py::test_workflow_pause_resume_cancel_and_checkpoint_recovery"
+  ],
+  "expected_effect": "Verify the complete durable lifecycle path against an intentionally serial execution fixture.",
+  "rollback": "Read-only focused execution; retain exact failure evidence if unresolved.",
+  "evidence": [
+    {
+      "claim": "Immediate lifecycle-race checkpoint.",
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004937"
+    }
+  ]
+}

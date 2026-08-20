@@ -1,0 +1,5085 @@
+{
+  "schema_version": "px.operational-ui-walk/1.0",
+  "observed_at": "2026-08-16T15:45:40.403Z",
+  "endpoint": "http://127.0.0.1:9333",
+  "authority": "live installed VS Code host and real workspace; navigation-only dashboard walk",
+  "surfaces": [
+    "dashboard",
+    "projects",
+    "agents",
+    "knowledgeGraph",
+    "skillsTools",
+    "workflows",
+    "plugins",
+    "memory",
+    "activity",
+    "diagnostics",
+    "assurance",
+    "settings"
+  ],
+  "results": [
+    {
+      "surface": "dashboard",
+      "navigation_active": true,
+      "headings": [
+        "Dashboard",
+        "Connected to the exact Pacify-X control plane.",
+        "Attention queue",
+        "Parallel work",
+        "Core services",
+        "Thermals & sensors",
+        "Recent rolling activity"
+      ],
+      "visible_actions": [
+        {
+          "action": "toggleAdvanced",
+          "label": "Advanced\nLOCKED",
+          "disabled": false
+        },
+        {
+          "action": "refresh",
+          "label": "↻ Sync",
+          "disabled": false
+        },
+        {
+          "action": "commandCenter",
+          "label": "CONTROLS",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "⚙",
+          "disabled": false
+        },
+        {
+          "action": "refresh",
+          "label": "Synchronize state",
+          "disabled": false
+        },
+        {
+          "action": "inspectSensor",
+          "label": "GPU\nGPU 0: NVIDIA RTX 2000 Ada Generation Laptop GPU · Fan speed\nnvidia-smi · 2026-08-16T15:43:19.558196+00:00\nUnavailable",
+          "disabled": false
+        },
+        {
+          "action": "inspectSensor",
+          "label": "GPU\nGPU 0: NVIDIA RTX 2000 Ada Generation Laptop GPU · Power draw\nnvidia-smi · 2026-08-16T15:43:19.558196+00:00\n13W",
+          "disabled": false
+        },
+        {
+          "action": "inspectSensor",
+          "label": "GPU\nGPU 0: NVIDIA RTX 2000 Ada Generation Laptop GPU · Temperature\nnvidia-smi · 2026-08-16T15:43:19.558196+00:00\n50.0°C",
+          "disabled": false
+        },
+        {
+          "action": "inspectSensor",
+          "label": "GPU\nGPU 0: NVIDIA RTX 2000 Ada Generation Laptop GPU · Utilization\nnvidia-smi · 2026-08-16T15:43:19.558196+00:00\n0%",
+          "disabled": false
+        }
+      ],
+      "visible_action_count": 9,
+      "visible_panel_count": 21,
+      "text_characters": 3239,
+      "provider_missing_message": false,
+      "invalid_union_message": false,
+      "operational_error_messages": [],
+      "overflow_candidates": [
+        {
+          "tag": "section",
+          "class": "hero panel",
+          "text": "PACIFY-X CONTROL PLANE Connected to the exact Pacify-X control plane. runtime.dashboard_api · Pacify-X · exact host/source identity Synchronize state Parallel plan Diagnostics PX C",
+          "client": [
+            643,
+            196
+          ],
+          "scroll": [
+            643,
+            230
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "projects",
+      "navigation_active": true,
+      "headings": [
+        "Projects",
+        "Repository intelligence",
+        "Risks and gaps",
+        "Runtime entrypoints",
+        "Integration packages",
+        "Map history",
+        "Project authority and coordination"
+      ],
+      "visible_actions": [
+        {
+          "action": "toggleAdvanced",
+          "label": "Advanced\nLOCKED",
+          "disabled": false
+        },
+        {
+          "action": "refresh",
+          "label": "↻ Sync",
+          "disabled": false
+        },
+        {
+          "action": "commandCenter",
+          "label": "CONTROLS",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "⚙",
+          "disabled": false
+        },
+        {
+          "action": "openRepositoryGraph",
+          "label": "Explore repository graph",
+          "disabled": false
+        },
+        {
+          "action": "buildRepositoryGraph",
+          "label": "Refresh project map",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "1 parser errors or unsupported structuresparse-errors\nMEDIUM",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "7409 imports or service dependencies could not be resolved staticallyunresolved-imports\nMEDIUM",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "5 files exceeded the per-file text scan ceilingtruncated-text-scans\nLOW",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "1015 source files have no static test linkuntested-source-candidates\nMEDIUM",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "101 sensitive-looking configuration keys are referenced; values were not capturedsensitive-config-keys\nINFORMATIONAL",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "13 generated or vendor-like files were mappedgenerated-surfaces\nINFORMATIONAL",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "build.px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json\nNPM_SCRIPT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "build:mcp.px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json\nNPM_SCRIPT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "check.px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json\nNPM_SCRIPT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "package.px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json\nNPM_SCRIPT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "test.px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json\nNPM_SCRIPT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "buildextension/package.json\nNPM_SCRIPT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "build:mcpextension/package.json\nNPM_SCRIPT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "build:ui-actionsextension/package.json\nNPM_SCRIPT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "checkextension/package.json\nNPM_SCRIPT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "check:ui-actionsextension/package.json\nNPM_SCRIPT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "@modelcontextprotocol/servernpm / runtime\nINSPECT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "@vscode/test-electronnpm / development\nINSPECT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "esbuildnpm / development\nINSPECT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "playwright-corenpm / development\nINSPECT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "zodnpm / runtime\nINSPECT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "azurepython / scope unavailable\nINSPECT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "buildpython / optional:build, optional:release\nINSPECT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "coloramapython / optional:release\nINSPECT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "coveragepython / optional:release\nINSPECT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "httpxpython / scope unavailable\nINSPECT",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "20260816T025141484762Z-a2878bc42f223535a2878bc42f223535\n10,084 FILES",
+          "disabled": false
+        },
+        {
+          "action": "inspectProjectMapRecord",
+          "label": "20260814T065050392870Z-7d4279fb0099800f7d4279fb0099800f\n9,886 FILES",
+          "disabled": false
+        },
+        {
+          "action": "openEngineRoot",
+          "label": "Open engine README",
+          "disabled": false
+        },
+        {
+          "action": "openCoordinationHandoff",
+          "label": "Open coordination handoff",
+          "disabled": false
+        }
+      ],
+      "visible_action_count": 36,
+      "visible_panel_count": 11,
+      "text_characters": 3939,
+      "provider_missing_message": false,
+      "invalid_union_message": false,
+      "operational_error_messages": [],
+      "overflow_candidates": []
+    },
+    {
+      "surface": "agents",
+      "navigation_active": true,
+      "headings": [
+        "Agents",
+        "Agent Studio",
+        "Agent source registry (not a live fleet)",
+        "Worker adapters"
+      ],
+      "visible_actions": [
+        {
+          "action": "toggleAdvanced",
+          "label": "Advanced\nLOCKED",
+          "disabled": false
+        },
+        {
+          "action": "refresh",
+          "label": "↻ Sync",
+          "disabled": false
+        },
+        {
+          "action": "commandCenter",
+          "label": "CONTROLS",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "⚙",
+          "disabled": false
+        },
+        {
+          "action": "surfaceScope",
+          "label": "Core records",
+          "disabled": false
+        },
+        {
+          "action": "surfaceScope",
+          "label": "MS+Enterprise",
+          "disabled": false
+        },
+        {
+          "action": "openStudioDraft",
+          "label": "New agent candidate",
+          "disabled": false
+        },
+        {
+          "action": "openStudioRuns",
+          "label": "Open durable runs",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "3D & Scene Developer\nagency.gis.3d-scene-developer · Web 3D visualization specialist who creates immersive 3D scenes, terrain models, point cloud visualizations",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Accessibility Auditor\nagency.testing.accessibility-auditor · Expert accessibility specialist who audits interfaces against WCAG standards, tests with assistive ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Account Strategist\nagency.sales.account-strategist · Expert post-sale account strategist specializing in land-and-expand execution, stakeholder mapping, QBR fac",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Accounts Payable Agent\nagency.specialized.accounts-payable-agent · Autonomous payment processing specialist that executes vendor payments, contractor invoices, ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Ad Creative Strategist\nagency.paid_media.ad-creative-strategist · Paid media creative specialist focused on ad copywriting, RSA optimization, asset group design",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "AEO Foundations Architect\nagency.marketing.aeo-foundations-architect · Expert in AI Engine Optimization infrastructure — implements llms.txt, AI-aware robots.tx",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Agentic Identity & Trust Architect\nagency.specialized.agentic-identity-trust-architect · Designs identity, authentication, and trust verification systems for au",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Agentic Search Optimizer\nagency.marketing.agentic-search-optimizer · Expert in WebMCP readiness and agentic task completion — audits whether AI agents can actua",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Agents Orchestrator\nagency.specialized.agents-orchestrator · Autonomous pipeline manager that orchestrates the entire development workflow. You are the leader o",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Aging Parent Care Companion\nagency.specialized.aging-parent-care-companion · Compassionate, HIPAA-aligned care coordination and decision-support agent for famil",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "AI Citation Strategist\nagency.marketing.ai-citation-strategist · Expert in AI recommendation engine optimization (AEO/GEO) — audits brand visibility across Chat",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "AI Data Remediation Engineer\nagency.engineering.ai-data-remediation-engineer · \"Specialist in self-healing data pipelines — uses air-gapped local SLMs and seman",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "AI Engineer\nagency.engineering.ai-engineer · Expert AI/ML engineer specializing in machine learning model development, deployment, and integration into producti",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "AI-Generated Code Security Auditor\nagency.security.ai-generated-code-security-auditor · Security reviewer for AI-generated and vibe-coded apps — hunts the hardc",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Analytics Reporter\nagency.support.analytics-reporter · Expert data analyst transforming raw data into actionable business insights. Creates dashboards, performs",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Anthropologist\nagency.academic.anthropologist · Expert in cultural systems, rituals, kinship, belief systems, and ethnographic method — builds culturally cohere",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "API Platform Engineer\nagency.engineering.api-platform-engineer · Expert API platform engineer for public and partner APIs — contract-first design (OpenAPI/gRPC)",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "API Tester\nagency.testing.api-tester · Expert API testing specialist focused on comprehensive API validation, performance testing, and quality assurance across ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "App Store Optimizer\nagency.marketing.app-store-optimizer · Expert app store marketing specialist focused on App Store Optimization (ASO), conversion rate optimi",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Application Security Engineer\nagency.security.application-security-engineer · AppSec specialist who secures the software development lifecycle through threat mo",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Automation Governance Architect\nagency.specialized.automation-governance-architect · Governance-first architect for business automations (n8n-first) who audits ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Autonomous Optimization Architect\nagency.engineering.autonomous-optimization-architect · Intelligent system governor that continuously shadow-tests APIs for per",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Backend Architect\nagency.engineering.backend-architect · Senior backend architect specializing in scalable system design, database architecture, API development",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Baidu SEO Specialist\nagency.marketing.baidu-seo-specialist · Expert Baidu search optimization specialist focused on Chinese search engine ranking, Baidu ecosyst",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Behavioral Nudge Engine\nagency.product.behavioral-nudge-engine · Behavioral psychology specialist that adapts software interaction cadences and styles to maximi",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Bilibili Content Strategist\nagency.marketing.bilibili-content-strategist · Expert Bilibili marketing specialist focused on UP主 growth, danmaku culture mastery, ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "BIM/GIS Specialist\nagency.gis.bim-gis-specialist · Integration specialist who bridges Building Information Modeling and Geographic Information Systems — Revit/I",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Blender Add-on Engineer\nagency.game_development.blender-add-on-engineer · Blender tooling specialist - Builds Python add-ons, asset validators, exporters, and p",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Blockchain Security Auditor\nagency.security.blockchain-security-auditor · Expert smart contract security auditor specializing in vulnerability detection, formal",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Book Co-Author\nagency.marketing.book-co-author · Strategic thought-leadership book collaborator for founders, experts, and operators turning voice notes, fragme",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Bookkeeper & Controller\nagency.finance.bookkeeper-controller · Expert bookkeeper and controller specializing in day-to-day accounting operations, financial reco",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Brand Guardian\nagency.design.brand-guardian · Expert brand strategist and guardian specializing in brand identity development, consistency maintenance, and stra",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Business Strategist\nagency.specialized.business-strategist · Senior management consulting specialist for competitive analysis, market entry strategy, business m",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Carousel Growth Engine\nagency.marketing.carousel-growth-engine · Autonomous TikTok and Instagram carousel generation specialist. Analyzes any website URL with P",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Cartography Designer\nagency.gis.cartography-designer · Map aesthetics specialist who designs beautiful, readable, and effective maps — color theory, typography,",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Change Management Consultant\nagency.specialized.change-management-consultant · Expert change management specialist using ADKAR, Kotter, and Prosci frameworks to",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Chief Financial Officer\nagency.specialized.chief-financial-officer · Strategic finance executive who governs capital allocation, treasury operations, financial ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Chief of Staff\nagency.specialized.chief-of-staff · Master coordinator for founders and executives — filters noise, owns processes, enforces consistency, routes ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "China E-Commerce Operator\nagency.marketing.china-e-commerce-operator · Expert China e-commerce operations specialist covering Taobao, Tmall, Pinduoduo, and JD e",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "China Market Localization Strategist\nagency.marketing.china-market-localization-strategist · Full-stack China market localization expert who transforms real-tim",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Civil Engineer\nagency.specialized.civil-engineer · Expert civil and structural engineer with global standards coverage — Eurocode, DIN, ACI, AISC, ASCE, AS/NZS,",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Clinical Evidence Agent\nagency.healthcare.clinical-evidence-agent · Evidence standards and clinical credibility framework for AI agents\nagents\nadvisory\nhigh\nDET",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Cloud Security Architect\nagency.security.cloud-security-architect · Cloud-native security specialist designing zero trust architectures, implementing defense-in",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "CMS Developer\nagency.engineering.cms-developer · Drupal and WordPress specialist for theme development, custom plugins/modules, content architecture, and code-f",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Code Reviewer\nagency.engineering.code-reviewer · Expert code reviewer who provides constructive, actionable feedback focused on correctness, maintainability, se",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Codebase Archaeologist\nagency.specialized.codebase-archaeologist · Multi-session, multi-tool drift detection specialist who audits codebases touched by several ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Codebase Onboarding Engineer\nagency.engineering.codebase-onboarding-engineer · Expert developer onboarding specialist who helps new engineers understand unfamil",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Compliance Auditor\nagency.security.compliance-auditor · Expert technical compliance auditor specializing in SOC 2, ISO 27001, HIPAA, and PCI-DSS audits — from r",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Content Creator\nagency.marketing.content-creator · Expert content strategist and creator for multi-platform campaigns. Develops editorial calendars, creates com",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Corporate Training Designer\nagency.specialized.corporate-training-designer · Expert in enterprise training system design and curriculum development — proficient",
+          "disabled": false
+        },
+        {
+          "action": "catalogPrevious",
+          "label": "Previous",
+          "disabled": true
+        },
+        {
+          "action": "catalogNext",
+          "label": "Next",
+          "disabled": false
+        },
+        {
+          "action": "teamPackPreview",
+          "label": "Audit / stage team package",
+          "disabled": false
+        }
+      ],
+      "visible_action_count": 61,
+      "visible_panel_count": 13,
+      "text_characters": 17441,
+      "provider_missing_message": false,
+      "invalid_union_message": false,
+      "operational_error_messages": [],
+      "overflow_candidates": [
+        {
+          "tag": "section",
+          "class": "panel",
+          "text": "REGISTERED + ADVISORY + RUNNABLE DIMENSIONS Agent source registry (not a live fleet) 270 Search Agent source registry (not a live fleet) Name ID Status Kind Showing 1–50 of 270 (27",
+          "client": [
+            367,
+            609
+          ],
+          "scroll": [
+            423,
+            609
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "3D & Scene Developer agency.gis.3d-scene-developer · Web 3D visualization specialist who creates immersive 3D scenes, terrain models, point cloud visualizations, and interactive we",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Accessibility Auditor agency.testing.accessibility-auditor · Expert accessibility specialist who audits interfaces against WCAG standards, tests with assistive technologies, and en",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Account Strategist agency.sales.account-strategist · Expert post-sale account strategist specializing in land-and-expand execution, stakeholder mapping, QBR facilitation, and net r",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Accounts Payable Agent agency.specialized.accounts-payable-agent · Autonomous payment processing specialist that executes vendor payments, contractor invoices, and recurring bills ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Ad Creative Strategist agency.paid_media.ad-creative-strategist · Paid media creative specialist focused on ad copywriting, RSA optimization, asset group design, and creative testi",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "AEO Foundations Architect agency.marketing.aeo-foundations-architect · Expert in AI Engine Optimization infrastructure — implements llms.txt, AI-aware robots.txt, token-budgeted co",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Agentic Identity & Trust Architect agency.specialized.agentic-identity-trust-architect · Designs identity, authentication, and trust verification systems for autonomous AI agents o",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Agentic Search Optimizer agency.marketing.agentic-search-optimizer · Expert in WebMCP readiness and agentic task completion — audits whether AI agents can actually accomplish tasks",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Agents Orchestrator agency.specialized.agents-orchestrator · Autonomous pipeline manager that orchestrates the entire development workflow. You are the leader of this process. agen",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Aging Parent Care Companion agency.specialized.aging-parent-care-companion · Compassionate, HIPAA-aligned care coordination and decision-support agent for family caregivers managin",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "AI Citation Strategist agency.marketing.ai-citation-strategist · Expert in AI recommendation engine optimization (AEO/GEO) — audits brand visibility across ChatGPT, Claude, Gemini,",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "AI Data Remediation Engineer agency.engineering.ai-data-remediation-engineer · \"Specialist in self-healing data pipelines — uses air-gapped local SLMs and semantic clustering to au",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "AI Engineer agency.engineering.ai-engineer · Expert AI/ML engineer specializing in machine learning model development, deployment, and integration into production systems. Focused ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "AI-Generated Code Security Auditor agency.security.ai-generated-code-security-auditor · Security reviewer for AI-generated and vibe-coded apps — hunts the hardcoded secrets, broken",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Analytics Reporter agency.support.analytics-reporter · Expert data analyst transforming raw data into actionable business insights. Creates dashboards, performs statistical analysi",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Anthropologist agency.academic.anthropologist · Expert in cultural systems, rituals, kinship, belief systems, and ethnographic method — builds culturally coherent societies that fe",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "API Platform Engineer agency.engineering.api-platform-engineer · Expert API platform engineer for public and partner APIs — contract-first design (OpenAPI/gRPC), versioning and dep",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "API Tester agency.testing.api-tester · Expert API testing specialist focused on comprehensive API validation, performance testing, and quality assurance across all systems and thir",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "App Store Optimizer agency.marketing.app-store-optimizer · Expert app store marketing specialist focused on App Store Optimization (ASO), conversion rate optimization, and app disc",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Application Security Engineer agency.security.application-security-engineer · AppSec specialist who secures the software development lifecycle through threat modeling, secure code ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Automation Governance Architect agency.specialized.automation-governance-architect · Governance-first architect for business automations (n8n-first) who audits value, risk, and mai",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Autonomous Optimization Architect agency.engineering.autonomous-optimization-architect · Intelligent system governor that continuously shadow-tests APIs for performance while enfor",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Backend Architect agency.engineering.backend-architect · Senior backend architect specializing in scalable system design, database architecture, API development, and cloud infrastr",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Baidu SEO Specialist agency.marketing.baidu-seo-specialist · Expert Baidu search optimization specialist focused on Chinese search engine ranking, Baidu ecosystem integration, ICP ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Behavioral Nudge Engine agency.product.behavioral-nudge-engine · Behavioral psychology specialist that adapts software interaction cadences and styles to maximize user motivation a",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Bilibili Content Strategist agency.marketing.bilibili-content-strategist · Expert Bilibili marketing specialist focused on UP主 growth, danmaku culture mastery, B站 algorithm optimiz",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "BIM/GIS Specialist agency.gis.bim-gis-specialist · Integration specialist who bridges Building Information Modeling and Geographic Information Systems — Revit/IFC data conversion, ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Blender Add-on Engineer agency.game_development.blender-add-on-engineer · Blender tooling specialist - Builds Python add-ons, asset validators, exporters, and pipeline automations ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Blockchain Security Auditor agency.security.blockchain-security-auditor · Expert smart contract security auditor specializing in vulnerability detection, formal verification, explo",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Book Co-Author agency.marketing.book-co-author · Strategic thought-leadership book collaborator for founders, experts, and operators turning voice notes, fragments, and positioning",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Bookkeeper & Controller agency.finance.bookkeeper-controller · Expert bookkeeper and controller specializing in day-to-day accounting operations, financial reconciliations, month-e",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Brand Guardian agency.design.brand-guardian · Expert brand strategist and guardian specializing in brand identity development, consistency maintenance, and strategic brand position",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Business Strategist agency.specialized.business-strategist · Senior management consulting specialist for competitive analysis, market entry strategy, business model design, growth ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Carousel Growth Engine agency.marketing.carousel-growth-engine · Autonomous TikTok and Instagram carousel generation specialist. Analyzes any website URL with Playwright, generates",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Cartography Designer agency.gis.cartography-designer · Map aesthetics specialist who designs beautiful, readable, and effective maps — color theory, typography, label placement, ba",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Change Management Consultant agency.specialized.change-management-consultant · Expert change management specialist using ADKAR, Kotter, and Prosci frameworks to guide organizations",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Chief Financial Officer agency.specialized.chief-financial-officer · Strategic finance executive who governs capital allocation, treasury operations, financial planning, M&A financ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Chief of Staff agency.specialized.chief-of-staff · Master coordinator for founders and executives — filters noise, owns processes, enforces consistency, routes decisions, and posit",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "China E-Commerce Operator agency.marketing.china-e-commerce-operator · Expert China e-commerce operations specialist covering Taobao, Tmall, Pinduoduo, and JD ecosystems with deep ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "China Market Localization Strategist agency.marketing.china-market-localization-strategist · Full-stack China market localization expert who transforms real-time trend signals into",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Civil Engineer agency.specialized.civil-engineer · Expert civil and structural engineer with global standards coverage — Eurocode, DIN, ACI, AISC, ASCE, AS/NZS, CSA, GB, IS, AIJ, a",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Clinical Evidence Agent agency.healthcare.clinical-evidence-agent · Evidence standards and clinical credibility framework for AI agents agents advisory high DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Cloud Security Architect agency.security.cloud-security-architect · Cloud-native security specialist designing zero trust architectures, implementing defense-in-depth across AWS, A",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "CMS Developer agency.engineering.cms-developer · Drupal and WordPress specialist for theme development, custom plugins/modules, content architecture, and code-first CMS implementat",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Code Reviewer agency.engineering.code-reviewer · Expert code reviewer who provides constructive, actionable feedback focused on correctness, maintainability, security, and performa",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Codebase Archaeologist agency.specialized.codebase-archaeologist · Multi-session, multi-tool drift detection specialist who audits codebases touched by several AI coding tools (Cla",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Codebase Onboarding Engineer agency.engineering.codebase-onboarding-engineer · Expert developer onboarding specialist who helps new engineers understand unfamiliar codebases fast b",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Compliance Auditor agency.security.compliance-auditor · Expert technical compliance auditor specializing in SOC 2, ISO 27001, HIPAA, and PCI-DSS audits — from readiness assessment ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Content Creator agency.marketing.content-creator · Expert content strategist and creator for multi-platform campaigns. Develops editorial calendars, creates compelling copy, manage",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Corporate Training Designer agency.specialized.corporate-training-designer · Expert in enterprise training system design and curriculum development — proficient in training needs a",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "knowledgeGraph",
+      "navigation_active": true,
+      "headings": [
+        "Knowledge Graph",
+        "Knowledge graph explorer",
+        ""
+      ],
+      "visible_actions": [
+        {
+          "action": "toggleAdvanced",
+          "label": "Advanced\nLOCKED",
+          "disabled": false
+        },
+        {
+          "action": "refresh",
+          "label": "↻ Sync",
+          "disabled": false
+        },
+        {
+          "action": "commandCenter",
+          "label": "CONTROLS",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "⚙",
+          "disabled": false
+        },
+        {
+          "action": "graphView",
+          "label": "Capability map",
+          "disabled": false
+        },
+        {
+          "action": "graphView",
+          "label": "Repository map",
+          "disabled": false
+        },
+        {
+          "action": "runGraphSearch",
+          "label": "Apply",
+          "disabled": false
+        },
+        {
+          "action": "graphSaveView",
+          "label": "Save current view",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphCommunity",
+          "label": "",
+          "disabled": false
+        },
+        {
+          "action": "graphOverview",
+          "label": "Full map",
+          "disabled": false
+        },
+        {
+          "action": "graphZoomOut",
+          "label": "−",
+          "disabled": false
+        },
+        {
+          "action": "graphZoomIn",
+          "label": "+",
+          "disabled": false
+        },
+        {
+          "action": "graphFit",
+          "label": "Fit",
+          "disabled": false
+        },
+        {
+          "action": "graphReset",
+          "label": "100%",
+          "disabled": false
+        },
+        {
+          "action": "graphBack",
+          "label": "Back",
+          "disabled": true
+        },
+        {
+          "action": "graphToggleInspector",
+          "label": "Hide inspector",
+          "disabled": false
+        },
+        {
+          "action": "graphFocus",
+          "label": "Focus map",
+          "disabled": false
+        },
+        {
+          "action": "graphLoadMore",
+          "label": "Load next page (180/984 nodes · 500/1,917 edges)",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "Statistician\nagent · admitted\n6 LINKS · AGENT::ACADEMIC",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "Experiment Tracker\nagent · admitted\n13 LINKS · AGENT::PROJECT-MANAGEMENT",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "Godot Gameplay Scripter\nagent · admitted\n3 LINKS · AGENT::GAME-DEVELOPMENT",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "Historian\nagent · admitted\n1 LINKS · AGENT::ACADEMIC",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "Jira Workflow Steward\nagent · admitted\n3 LINKS · AGENT::PROJECT-MANAGEMENT",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "Meeting Notes Specialist\nagent · reference_only\n3 LINKS · AGENT::PROJECT-MANAGEMENT",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "Project Shepherd\nagent · admitted\n3 LINKS · AGENT::PROJECT-MANAGEMENT",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "Roblox Avatar Creator\nagent · admitted\n3 LINKS · AGENT::GAME-DEVELOPMENT",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "Senior Project Manager\nagent · reference_only\n8 LINKS · AGENT::PROJECT-MANAGEMENT",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "Studio Operations\nagent · admitted\n3 LINKS · AGENT::PROJECT-MANAGEMENT",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "Studio Producer\nagent · admitted\n3 LINKS · AGENT::PROJECT-MANAGEMENT",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "Unity Editor Tool Developer\nagent · admitted\n3 LINKS · AGENT::GAME-DEVELOPMENT",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "Unity Shader Graph Artist\nagent · admitted\n3 LINKS · AGENT::GAME-DEVELOPMENT",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "Unreal Technical Artist\nagent · admitted\n3 LINKS · AGENT::GAME-DEVELOPMENT",
+          "disabled": false
+        },
+        {
+          "action": "graphFit",
+          "label": "Fit loaded graph records",
+          "disabled": false
+        },
+        {
+          "action": "inspectGraphRecord",
+          "label": "Inspect source record",
+          "disabled": false
+        },
+        {
+          "action": "graphOpenNeighborhood",
+          "label": "Open relationship neighborhood",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "IN\nagent:agency.academic.anthropologist\nHANDS OFF TO\nagent:agency.academic.statistician\n\nAnthropologist —hands_off_to→ Statistician\n\nnot declared",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "IN\nagent:agency.academic.geographer\nHANDS OFF TO\nagent:agency.academic.statistician\n\nGeographer —hands_off_to→ Statistician\n\nnot declared",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "IN\nagent:agency.academic.historian\nHANDS OFF TO\nagent:agency.academic.statistician\n\nHistorian —hands_off_to→ Statistician\n\nnot declared",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "IN\nagent:agency.academic.narratologist\nHANDS OFF TO\nagent:agency.academic.statistician\n\nNarratologist —hands_off_to→ Statistician\n\nnot declared",
+          "disabled": false
+        },
+        {
+          "action": "selectGraphNode",
+          "label": "IN\nagent:agency.academic.psychologist\nHANDS OFF TO\nagent:agency.academic.statistician\n\nPsychologist —hands_off_to→ Statistician\n\nnot declared",
+          "disabled": false
+        },
+        {
+          "action": "focusGraphNode",
+          "label": "OUT\nagent:agency.academic.statistician\nHANDS OFF TO\nagent:agency.specialized.data-privacy-officer\n\nStatistician —hands_off_to→ Data Privacy Officer\n\nnot declare",
+          "disabled": false
+        }
+      ],
+      "visible_action_count": 103,
+      "visible_panel_count": 10,
+      "text_characters": 8164,
+      "provider_missing_message": false,
+      "invalid_union_message": false,
+      "operational_error_messages": [],
+      "overflow_candidates": [
+        {
+          "tag": "aside",
+          "class": "relationship-inspector",
+          "text": "SELECTED RECORD Statistician agent:agency.academic.statistician 6 loaded 5 incoming · 1 outgoing COMMUNITY agent::academic SOURCE registry/agency_agent_registry.json HASH 258d34007",
+          "client": [
+            612,
+            389
+          ],
+          "scroll": [
+            612,
+            446
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "skillsTools",
+      "navigation_active": true,
+      "headings": [
+        "Skills & Tools",
+        "Parallel planning coordination",
+        "Skill operations",
+        "PX-native skill catalog"
+      ],
+      "visible_actions": [
+        {
+          "action": "toggleAdvanced",
+          "label": "Advanced\nLOCKED",
+          "disabled": false
+        },
+        {
+          "action": "refresh",
+          "label": "↻ Sync",
+          "disabled": false
+        },
+        {
+          "action": "commandCenter",
+          "label": "CONTROLS",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "⚙",
+          "disabled": false
+        },
+        {
+          "action": "capabilityTab",
+          "label": "PX Native",
+          "disabled": false
+        },
+        {
+          "action": "capabilityTab",
+          "label": "Preserved Originals",
+          "disabled": false
+        },
+        {
+          "action": "capabilityTab",
+          "label": "Microsoft / Vendor",
+          "disabled": false
+        },
+        {
+          "action": "capabilityTab",
+          "label": "Enterprise Restricted",
+          "disabled": false
+        },
+        {
+          "action": "capabilityTab",
+          "label": "Tools",
+          "disabled": false
+        },
+        {
+          "action": "skillSemanticQuery",
+          "label": "Query standard skills",
+          "disabled": false
+        },
+        {
+          "action": "openStudioDraft",
+          "label": "Stage skill candidate",
+          "disabled": false
+        },
+        {
+          "action": "capabilityTab",
+          "label": "Open native revisions",
+          "disabled": false
+        },
+        {
+          "action": "capabilityTab",
+          "label": "View preserved originals",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Acquire Install n8n\nacquire-install-n8n · Acquire and install n8n through a supported, pinned, reversible channel.\npx-native-skill\nactive\nbounded\nDETAILS",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Acquire Install Supabase\nacquire-install-supabase · Acquire and install the Supabase CLI and official agent resources using supported, pinned channels.\npx-nativ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Active Evaluation Selector\nactive-evaluation-selector · Choose the most informative evaluation cases under fixed time, compute, or review budget. Use when the t",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Adapt Human Learning Loop\nadapt-human-learning-loop · Clean-room adaptive-learning and progress-tracking mechanisms with strong\npx-native-skill\nmapped_deferred\n",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Admit Capability\nadmit-capability · Review, restrict, quarantine, reject, or admit a reusable skill or runtime capability using provenance, license, dependency,",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Analyze Engineering Intelligence\nanalyze-engineering-intelligence · Detect architecture drift, dependency shockwaves, semantic contract changes, knowledge colli",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Analyze Repository Intelligence\nanalyze-repository-intelligence · Map repositories, symbols, dependencies, configuration, runtime paths, ownership, change impac",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Architecture Deepening Audit\narchitecture-deepening-audit · Find shallow abstractions, leakage, duplication, and misplaced seams, then rank deepening opportunit",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Audit AI Runtime Assurance\naudit-ai-runtime-assurance · Produce an opt-in, privacy-bounded cognitive assurance result and runtime passport from redacted identit",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Audit Incomplete Implementations\naudit-incomplete-implementations · Find and classify unfinished-task markers, stubs, placeholder returns, unimplemented branche",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Audit Interactive Systems\naudit-interactive-systems · Verify complete user action paths and final resolved state rather than\npx-native-skill\nmapped_deferred\nbou",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Audit Source Capabilities\naudit-source-capabilities · Inventory a large source or reference tree without mutation, identify reusable engineering mechanisms acro",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Automate Supabase With n8n\nautomate-supabase-with-n8n · Automate Supabase events and operations through n8n with authenticated triggers, idempotency, durable st",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Backup Deploy Recover Supabase\nbackup-deploy-recover-supabase · Deploy and recover Supabase schema, data, functions, config, storage, and secrets with tested ba",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Backup Upgrade Restore n8n\nbackup-upgrade-restore-n8n · Back up, upgrade, roll back, and restore n8n with version-aware compatibility and recovery evidence.\npx-",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Behavior To Code Mapper\nbehavior-to-code-mapper · Map runtime behaviors to code, states, tools, policies, tests, telemetry, and dependencies. Use when the task ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Benchmark And Route Agents\nbenchmark-and-route-agents · Benchmark agent behavior and route models using evidence, reliability,\npx-native-skill\nmapped_deferred\nb",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Benchmark Domain Adapter\nbenchmark-domain-adapter · Translate an academic benchmark into independent framework domain cases, outcomes, risks, and evidence requi",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Bounded Workflow Topology Selector\nbounded-workflow-topology-selector · Select among approved workflow templates based on complexity, novelty, risk, and evidenc",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Build n8n AI Workflows\nbuild-n8n-ai-workflows · Build n8n AI workflows with bounded model/tool authority, structured outputs, retrieval evidence, evaluation, an",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Build n8n Custom Nodes\nbuild-n8n-custom-nodes · Develop custom n8n nodes with typed operations, separate credentials, pagination, errors, tests, and release gov",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Build n8n Supabase RAG\nbuild-n8n-supabase-rag · Build governed RAG ingestion and retrieval with n8n and Supabase pgvector.\npx-native-skill\nactive\nbounded\nDETAIL",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Build Supabase Edge Functions\nbuild-supabase-edge-functions · Build Supabase Edge Functions with explicit auth, secrets, CORS, bounds, idempotency, tests, and d",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Candidate Memory Promoter\ncandidate-memory-promoter · Decide whether a trace-derived observation, claim, or procedure may enter a wider memory scope. Use when t",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Certify Reversible Validation\ncertify-reversible-validation · Validate UI, authentication, database, migration, or runtime behavior that requires temporary stat",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Certify Skeptical Engineering\ncertify-skeptical-engineering · Evaluate engineering maturity using invalidation-first evidence, discovery denominators, contradic",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Commission Evidence First Project\ncommission-evidence-first-project · Commission a new or existing project from structured facts, assumptions, unknowns, accessi",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Commission Project\ncommission-project · Commission a new repository or safely adopt an existing repository with bounded configuration, durable project-managemen",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Configure n8n\nconfigure-n8n · Configure n8n URLs, database, encryption, execution, logging, retention, and runtime settings from an explicit contract.\npx-native",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Connect n8n To Supabase\nconnect-n8n-to-supabase · Connect n8n to Supabase through the built-in node, Data API, RPC, or Postgres with correct URLs, schemas, cred",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Context Compactor\ncontext-compactor · Compress repeated progress and context within an explicit item budget while preserving failures, uncertainty, authority bo",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Context Handoff Package\ncontext-handoff-package · Produce a compact, evidence-linked state transfer that lets another agent continue without reconstructing the ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Corpus To Skill Tree Compiler\ncorpus-to-skill-tree-compiler · Compile large corpora into navigable hierarchical skill/knowledge trees with evidence-linked nodes",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Cross Paper Mechanism Fuser\ncross-paper-mechanism-fuser · Combine compatible research primitives into a stronger subsystem while exposing conflicts. Use when th",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Data Sort Dry Run Picker\ndata-sort-dry-run-picker · Benchmark and select a correct bulk-data sorting strategy without mutating source data. Use for JSON, JSONL,",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Decision Wayfinding\ndecision-wayfinding · Map long-horizon uncertain work as decision tickets and advance only the unblocked knowledge frontier.\npx-native-skill",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Deep Module Design\ndeep-module-design · Design deep modules with small stable interfaces, strong locality, and explicit seams.\npx-native-skill\nactive\nbounded\nDE",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Dependency Impact Tracer\ndependency-impact-tracer · Predict downstream effects of changing a skill, tool, schema, state, model, policy, or data contract. Use wh",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Deploy Isolated Model Worker\ndeploy-isolated-model-worker · Design, provision, validate, and recover an isolated accelerator-backed worker for inference, embedd",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Deploy n8n Docker\ndeploy-n8n-docker · Deploy a durable single-main n8n instance with Docker or Compose, TLS boundaries, health checks, and backup hooks.\npx-nati",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Design Build n8n Workflows\ndesign-build-n8n-workflows · Design maintainable n8n workflows with explicit contracts, modularity, idempotency, errors, and operator",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Design It Twice\ndesign-it-twice · Generate and compare genuinely different interface designs before locking an important seam.\npx-native-skill\nactive\nbounded\nDE",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Design n8n Supabase Reliability\ndesign-n8n-supabase-reliability · Design reliable n8n-Supabase behavior for retries, duplicates, partial failure, transactions, ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Design n8n Supabase Security Boundaries\ndesign-n8n-supabase-security-boundaries · Design trust boundaries between n8n users/workflows, Supabase RLS, service cre",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Design Supabase Postgres\ndesign-supabase-postgres · Design Supabase Postgres schemas, constraints, indexes, functions, extensions, and connection patterns.\npx-n",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Develop n8n Monorepo\ndevelop-n8n-monorepo · Work safely in the supplied n8n monorepo using repository-local agent rules, pnpm, package boundaries, and evidence ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Develop Supabase Locally\ndevelop-supabase-locally · Run Supabase locally with reproducible config, migrations, seeds, tests, and clean reset behavior.\npx-native",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Diagnose Python Repair\ndiagnose-python-repair · Diagnose and repair Python service, async, authorization, schema, retry, transaction, logging, subprocess, path,",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Discover Environment Safely\ndiscover-environment-safely · Inventory project-local tools, runtimes, IDE support, dependencies, and setup gaps without installing ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Domain Language Maintenance\ndomain-language-maintenance · Maintain a canonical project vocabulary and challenge ambiguous or overloaded terms during work.\npx-na",
+          "disabled": false
+        },
+        {
+          "action": "catalogPrevious",
+          "label": "Previous",
+          "disabled": true
+        },
+        {
+          "action": "catalogNext",
+          "label": "Next",
+          "disabled": false
+        }
+      ],
+      "visible_action_count": 65,
+      "visible_panel_count": 12,
+      "text_characters": 15831,
+      "provider_missing_message": false,
+      "invalid_union_message": false,
+      "operational_error_messages": [],
+      "overflow_candidates": [
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Acquire Install n8n acquire-install-n8n · Acquire and install n8n through a supported, pinned, reversible channel. px-native-skill active bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Acquire Install Supabase acquire-install-supabase · Acquire and install the Supabase CLI and official agent resources using supported, pinned channels. px-native-skill active bound",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Active Evaluation Selector active-evaluation-selector · Choose the most informative evaluation cases under fixed time, compute, or review budget. Use when the task requires this bo",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Adapt Human Learning Loop adapt-human-learning-loop · Clean-room adaptive-learning and progress-tracking mechanisms with strong px-native-skill mapped_deferred bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Admit Capability admit-capability · Review, restrict, quarantine, reject, or admit a reusable skill or runtime capability using provenance, license, dependency, effect, duplication",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Analyze Engineering Intelligence analyze-engineering-intelligence · Detect architecture drift, dependency shockwaves, semantic contract changes, knowledge collisions, future debt, ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Analyze Repository Intelligence analyze-repository-intelligence · Map repositories, symbols, dependencies, configuration, runtime paths, ownership, change impact, reproductions, mi",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Architecture Deepening Audit architecture-deepening-audit · Find shallow abstractions, leakage, duplication, and misplaced seams, then rank deepening opportunities. px-native-skill",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Audit AI Runtime Assurance audit-ai-runtime-assurance · Produce an opt-in, privacy-bounded cognitive assurance result and runtime passport from redacted identity, memory, knowledge",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Audit Incomplete Implementations audit-incomplete-implementations · Find and classify unfinished-task markers, stubs, placeholder returns, unimplemented branches, mocks, fabricated",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Audit Interactive Systems audit-interactive-systems · Verify complete user action paths and final resolved state rather than px-native-skill mapped_deferred bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Audit Source Capabilities audit-source-capabilities · Inventory a large source or reference tree without mutation, identify reusable engineering mechanisms across skills, code, con",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Automate Supabase With n8n automate-supabase-with-n8n · Automate Supabase events and operations through n8n with authenticated triggers, idempotency, durable state, and reconciliat",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Backup Deploy Recover Supabase backup-deploy-recover-supabase · Deploy and recover Supabase schema, data, functions, config, storage, and secrets with tested backups and rollback e",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Backup Upgrade Restore n8n backup-upgrade-restore-n8n · Back up, upgrade, roll back, and restore n8n with version-aware compatibility and recovery evidence. px-native-skill active ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Behavior To Code Mapper behavior-to-code-mapper · Map runtime behaviors to code, states, tools, policies, tests, telemetry, and dependencies. Use when the task requires this bounde",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Benchmark And Route Agents benchmark-and-route-agents · Benchmark agent behavior and route models using evidence, reliability, px-native-skill mapped_deferred bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Benchmark Domain Adapter benchmark-domain-adapter · Translate an academic benchmark into independent framework domain cases, outcomes, risks, and evidence requirements. Use when th",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Bounded Workflow Topology Selector bounded-workflow-topology-selector · Select among approved workflow templates based on complexity, novelty, risk, and evidence conflict. Use when",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Build n8n AI Workflows build-n8n-ai-workflows · Build n8n AI workflows with bounded model/tool authority, structured outputs, retrieval evidence, evaluation, and escalation. px-nat",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Build n8n Custom Nodes build-n8n-custom-nodes · Develop custom n8n nodes with typed operations, separate credentials, pagination, errors, tests, and release governance. px-native-s",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Build n8n Supabase RAG build-n8n-supabase-rag · Build governed RAG ingestion and retrieval with n8n and Supabase pgvector. px-native-skill active bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Build Supabase Edge Functions build-supabase-edge-functions · Build Supabase Edge Functions with explicit auth, secrets, CORS, bounds, idempotency, tests, and deployment evidence. ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Candidate Memory Promoter candidate-memory-promoter · Decide whether a trace-derived observation, claim, or procedure may enter a wider memory scope. Use when the task requires thi",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Certify Reversible Validation certify-reversible-validation · Validate UI, authentication, database, migration, or runtime behavior that requires temporary state changes while prov",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Certify Skeptical Engineering certify-skeptical-engineering · Evaluate engineering maturity using invalidation-first evidence, discovery denominators, contradictions, unknown class",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Commission Evidence First Project commission-evidence-first-project · Commission a new or existing project from structured facts, assumptions, unknowns, accessibility, security, in",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Commission Project commission-project · Commission a new repository or safely adopt an existing repository with bounded configuration, durable project-management controls, a read-o",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Configure n8n configure-n8n · Configure n8n URLs, database, encryption, execution, logging, retention, and runtime settings from an explicit contract. px-native-skill active bounde",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Connect n8n To Supabase connect-n8n-to-supabase · Connect n8n to Supabase through the built-in node, Data API, RPC, or Postgres with correct URLs, schemas, credentials, and RLS sem",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Context Compactor context-compactor · Compress repeated progress and context within an explicit item budget while preserving failures, uncertainty, authority boundaries, recovery i",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Context Handoff Package context-handoff-package · Produce a compact, evidence-linked state transfer that lets another agent continue without reconstructing the project. px-native-s",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Corpus To Skill Tree Compiler corpus-to-skill-tree-compiler · Compile large corpora into navigable hierarchical skill/knowledge trees with evidence-linked nodes. Use when the task ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Cross Paper Mechanism Fuser cross-paper-mechanism-fuser · Combine compatible research primitives into a stronger subsystem while exposing conflicts. Use when the task requires this",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Data Sort Dry Run Picker data-sort-dry-run-picker · Benchmark and select a correct bulk-data sorting strategy without mutating source data. Use for JSON, JSONL, NDJSON, CSV, or lin",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Decision Wayfinding decision-wayfinding · Map long-horizon uncertain work as decision tickets and advance only the unblocked knowledge frontier. px-native-skill active bounded DETA",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Deep Module Design deep-module-design · Design deep modules with small stable interfaces, strong locality, and explicit seams. px-native-skill active bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Dependency Impact Tracer dependency-impact-tracer · Predict downstream effects of changing a skill, tool, schema, state, model, policy, or data contract. Use when the task requires",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Deploy Isolated Model Worker deploy-isolated-model-worker · Design, provision, validate, and recover an isolated accelerator-backed worker for inference, embedding, or reranking wi",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Deploy n8n Docker deploy-n8n-docker · Deploy a durable single-main n8n instance with Docker or Compose, TLS boundaries, health checks, and backup hooks. px-native-skill active boun",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Design Build n8n Workflows design-build-n8n-workflows · Design maintainable n8n workflows with explicit contracts, modularity, idempotency, errors, and operator evidence. px-native",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Design It Twice design-it-twice · Generate and compare genuinely different interface designs before locking an important seam. px-native-skill active bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Design n8n Supabase Reliability design-n8n-supabase-reliability · Design reliable n8n-Supabase behavior for retries, duplicates, partial failure, transactions, concurrency, and bac",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Design n8n Supabase Security Boundaries design-n8n-supabase-security-boundaries · Design trust boundaries between n8n users/workflows, Supabase RLS, service credentials, webhooks, ",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Design Supabase Postgres design-supabase-postgres · Design Supabase Postgres schemas, constraints, indexes, functions, extensions, and connection patterns. px-native-skill active b",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Develop n8n Monorepo develop-n8n-monorepo · Work safely in the supplied n8n monorepo using repository-local agent rules, pnpm, package boundaries, and evidence gates. px-native-ski",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Develop Supabase Locally develop-supabase-locally · Run Supabase locally with reproducible config, migrations, seeds, tests, and clean reset behavior. px-native-skill active bounde",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Diagnose Python Repair diagnose-python-repair · Diagnose and repair Python service, async, authorization, schema, retry, transaction, logging, subprocess, path, test-isolation, con",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Discover Environment Safely discover-environment-safely · Inventory project-local tools, runtimes, IDE support, dependencies, and setup gaps without installing or changing anything",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Domain Language Maintenance domain-language-maintenance · Maintain a canonical project vocabulary and challenge ambiguous or overloaded terms during work. px-native-skill active bo",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "workflows",
+      "navigation_active": true,
+      "headings": [
+        "Workflows",
+        "Workflow Studio",
+        "Parallel planning",
+        "Workflow definitions and bindings"
+      ],
+      "visible_actions": [
+        {
+          "action": "toggleAdvanced",
+          "label": "Advanced\nLOCKED",
+          "disabled": false
+        },
+        {
+          "action": "refresh",
+          "label": "↻ Sync",
+          "disabled": false
+        },
+        {
+          "action": "commandCenter",
+          "label": "CONTROLS",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "⚙",
+          "disabled": false
+        },
+        {
+          "action": "surfaceScope",
+          "label": "Local + Team Fabric",
+          "disabled": false
+        },
+        {
+          "action": "surfaceScope",
+          "label": "MS+Enterprise",
+          "disabled": false
+        },
+        {
+          "action": "surfaceScope",
+          "label": "Environment Map",
+          "disabled": false
+        },
+        {
+          "action": "openStudioDraft",
+          "label": "New workflow definition",
+          "disabled": false
+        },
+        {
+          "action": "openStudioRuns",
+          "label": "Open durable runs",
+          "disabled": false
+        },
+        {
+          "action": "newParallelPlan",
+          "label": "New plan",
+          "disabled": false
+        },
+        {
+          "action": "openCoordinationHandoff",
+          "label": "Open handoff",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "workflow:installed-smoke @ 1.0.0\nstudio:workflow:installed-smoke@1.0.0 · Project Studio workflow revision; draft.\nstudio-workflow-revision\ndraft\nbounded\nDETAILS",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Agency Specialist Routing\nagency-specialist-routing · Route, review, hydrate, compile, authorize, verify, and release a bounded specialist panel without eager c",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Agency Specialist Routing — execution binding\nexecution-binding:agency-specialist-routing · Executable validator through runtime.agent_provider:validate_agent_o",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "AI Tool Access Review\nai-tool-access-review · Governed service capability workflow routed by route-n8n-supabase-stack.\nskill-orchestration\ndeclared\nbounded\nDETA",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Benchmark Operational Assurance — execution binding\nexecution-binding:benchmark-operational-assurance · Executable runtime through runtime.benchmark_operations:",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Candidate Pipeline\ncandidate-pipeline · Compile and resolve candidates through explicit membership and evidence boundaries.\nskill-orchestration\ndeclared\nbounded",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Capability Assimilation — execution binding\nexecution-binding:capability-assimilation · Executable validator through runtime.capability_assimilation:validate_ca",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Capability Scheduling — execution binding\nexecution-binding:capability-scheduling · Executable validator through runtime.capability_scheduler:validate_schedulin",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Clean Room Capability Controls\nclean-room-capability-controls · Run independently authored reference-requirement controls through canonical lazy skills and dete",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Clean Room Capability Controls — execution binding\nexecution-binding:clean-room-capability-controls · Executable validator through runtime.clean_room_capabiliti",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Compile supplied sources into a candidate-only improvement backlog\ncontinuous_improvement · Find measured opportunities and govern new skill creation\nproject-or",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Compile supplied sources into candidate project memory\nmemory_ingest_distill · Distill source material into minimal project memory\nproject-orchestration\nexecuta",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Completion Controls — execution binding\nexecution-binding:completion-controls · Executable validator through runtime.completion_controls:validate_completion_con",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Control Plane — execution binding\nexecution-binding:control-plane · Executable runtime through runtime.orchestrator:Orchestrator.run.\nexecution-binding\ndeclared",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Cybersecurity Capability Operations\ncybersecurity-capability-operations · Route security work through one metadata-first provider and canonical fail-closed auth",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Cybersecurity Capability Operations — execution binding\nexecution-binding:cybersecurity-capability-operations · Executable validator through runtime.cybersecuri",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Data Sort Dry Run Selection\ndata-sort-dry-run-selection · Measure a bulk dataset, choose a bounded representative dry-run section, pilot compatible sorts, bench",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Declared Suite — execution binding\nexecution-binding:declared-suite · Executable validator through runtime.declared_suite:validate_declared_suite.\nexecution-bin",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Deliverable Validation\ndeliverable-validation · Prove physical and media deliverables against explicit promises and independent checks.\nskill-orchestration\ndecl",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Distributed Runtime\ndistributed-runtime · Reserve, place, execute, reconcile, and hand off project-scoped distributed work.\nskill-orchestration\ndeclared\nbounded",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Engineering Reasoning Loop\nengineering-reasoning-loop · Resolve uncertainty, stabilize language and interfaces, plan vertical slices, review independently, and ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Engineering Reasoning Loop — execution binding\nexecution-binding:engineering-reasoning-loop · Executable validator through runtime.project_reasoning.frontier:va",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Epistemic Evolution\nepistemic-evolution · Maintain temporal claims and evaluate quarantined skill improvements without live self-editing.\nskill-orchestration\nde",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Evaluate supplied bounded resilience experiment records\nchaos_resilience_cycle · Design and run bounded resilience experiments\nproject-orchestration\nexecutable_",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Evaluate supplied project-health metrics\nnightly_project_health · Evaluate drift, health, stale evidence, dependencies, and agent state\nproject-orchestration\nex",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "External Capability Intake\nexternal-capability-intake · Inventory, search, reconcile, stage, admit, and certify external candidates without source execution or ",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "External Capability Intake — execution binding\nexecution-binding:external-capability-intake · Executable validator through runtime.external_capability_provider:",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "External Tool Lifecycle\nexternal-tool-lifecycle · Audit, quarantine, admit, lazily register, and protocol-certify external tool servers.\nskill-orchestration\ndec",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Failure And Recovery\nfailure-and-recovery · Triage cross-surface failure, prove reversible restoration, exercise bounded resilience, and retain release blockers",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Hardware Aware Execution Routing\nhardware-aware-execution-routing · Select CPU or CUDA from workload, compatibility, resource, correctness, benchmark, and fallb",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Hardware Aware Execution Routing — execution binding\nexecution-binding:hardware-aware-execution-routing · Executable runtime through runtime.hardware_routing:ro",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Initialize a bounded workspace and register dropped projects\nworkspace_bootstrap · Bootstrap a new project-stream workspace\nproject-orchestration\nexecutable_bou",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Inventory and register one existing project\nproject_onboard · Discover and register a repository without modifying it\nproject-orchestration\nexecutable_bounded_s",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Knowledge Refinery\nknowledge-refinery · Convert untrusted sources into reviewed, graph-coherent, retrieval-tested, non-destructive knowledge change proposals.\ns",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Knowledge Refinery — execution binding\nexecution-binding:knowledge-refinery · Executable validator through runtime.knowledge_refinery:validate_refinery_orchestr",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Layered Memory Lifecycle\nlayered-memory-lifecycle · Capture, distill, govern, retrieve, assemble, compact, and evaluate project-scoped memory without creating a",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Layered Memory Lifecycle — execution binding\nexecution-binding:layered-memory-lifecycle · Executable validator through runtime.memory_intelligence:validate_memo",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Local Model Planning\nlocal-model-planning · Inspect a model without importing it, rank feasible execution strategies, enforce data and retrieval gates, and vali",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Local Model Planning — execution binding\nexecution-binding:local-model-planning · Executable runtime through runtime.models:rank_models.\nexecution-binding\ndecla",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Metacognitive Evolution — execution binding\nexecution-binding:metacognitive-evolution · Executable validator through runtime.metacognitive_evolution.facade:vali",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Move explicitly supplied cleanup candidates to recoverable quarantine\nsafe_cleanup · Classify and quarantine cleanup candidates reversibly\nproject-orchestration",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "n8n Install Commission\nn8n-install-commission · Governed service capability workflow routed by route-n8n-capabilities.\nskill-orchestration\ndeclared\nbounded\nDETA",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "n8n Production Security Review\nn8n-production-security-review · Governed service capability workflow routed by route-n8n-capabilities.\nskill-orchestration\ndecla",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "n8n Supabase Integration Release\nn8n-supabase-integration-release · Governed service capability workflow routed by route-n8n-supabase-stack.\nskill-orchestration",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "n8n Supabase RAG Release\nn8n-supabase-rag-release · Governed service capability workflow routed by route-n8n-supabase-stack.\nskill-orchestration\ndeclared\nbounde",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "n8n Workflow Release\nn8n-workflow-release · Governed service capability workflow routed by route-n8n-capabilities.\nskill-orchestration\ndeclared\nbounded\nDETAILS",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Project Change Intelligence\nproject-change-intelligence · Build or validate a sensitive-source-safe project map, retrieve bounded evidence, trace change impact,",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Project Change Intelligence — execution binding\nexecution-binding:project-change-intelligence · Executable validator through runtime.project_impact:validate_pro",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Px Lean Engineering Gate\npx-lean-engineering-gate · Trace current owners, minimize a correct change, preserve safety boundaries, and retain measured delta and v",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Px Team Fabric Recovery\npx-team-fabric-recovery · Classify stopped cross-IDE work, reconcile task/worker/lease/fencing/budget/workspace boundaries, and resume w",
+          "disabled": false
+        },
+        {
+          "action": "catalogPrevious",
+          "label": "Previous",
+          "disabled": true
+        },
+        {
+          "action": "catalogNext",
+          "label": "Next",
+          "disabled": false
+        }
+      ],
+      "visible_action_count": 63,
+      "visible_panel_count": 8,
+      "text_characters": 12157,
+      "provider_missing_message": false,
+      "invalid_union_message": false,
+      "operational_error_messages": [],
+      "overflow_candidates": [
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "workflow:installed-smoke @ 1.0.0 studio:workflow:installed-smoke@1.0.0 · Project Studio workflow revision; draft. studio-workflow-revision draft bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Agency Specialist Routing agency-specialist-routing · Route, review, hydrate, compile, authorize, verify, and release a bounded specialist panel without eager corpus loading or pro",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Agency Specialist Routing — execution binding execution-binding:agency-specialist-routing · Executable validator through runtime.agent_provider:validate_agent_orchestration. execut",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "AI Tool Access Review ai-tool-access-review · Governed service capability workflow routed by route-n8n-supabase-stack. skill-orchestration declared bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Benchmark Operational Assurance — execution binding execution-binding:benchmark-operational-assurance · Executable runtime through runtime.benchmark_operations:evaluate_preflight. ",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Candidate Pipeline candidate-pipeline · Compile and resolve candidates through explicit membership and evidence boundaries. skill-orchestration declared bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Capability Assimilation — execution binding execution-binding:capability-assimilation · Executable validator through runtime.capability_assimilation:validate_capability_assimilatio",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Capability Scheduling — execution binding execution-binding:capability-scheduling · Executable validator through runtime.capability_scheduler:validate_scheduling_layer. execution-b",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Clean Room Capability Controls clean-room-capability-controls · Run independently authored reference-requirement controls through canonical lazy skills and deterministic runtime bi",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Clean Room Capability Controls — execution binding execution-binding:clean-room-capability-controls · Executable validator through runtime.clean_room_capabilities:validate_clean_ro",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Compile supplied sources into a candidate-only improvement backlog continuous_improvement · Find measured opportunities and govern new skill creation project-orchestration executab",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Compile supplied sources into candidate project memory memory_ingest_distill · Distill source material into minimal project memory project-orchestration executable_bounded_scope_wi",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Completion Controls — execution binding execution-binding:completion-controls · Executable validator through runtime.completion_controls:validate_completion_control_workflow. execu",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Control Plane — execution binding execution-binding:control-plane · Executable runtime through runtime.orchestrator:Orchestrator.run. execution-binding declared bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Cybersecurity Capability Operations cybersecurity-capability-operations · Route security work through one metadata-first provider and canonical fail-closed authority, tool, evidenc",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Cybersecurity Capability Operations — execution binding execution-binding:cybersecurity-capability-operations · Executable validator through runtime.cybersecurity_provider:validate",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Data Sort Dry Run Selection data-sort-dry-run-selection · Measure a bulk dataset, choose a bounded representative dry-run section, pilot compatible sorts, benchmark the three faste",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Declared Suite — execution binding execution-binding:declared-suite · Executable validator through runtime.declared_suite:validate_declared_suite. execution-binding declared bounde",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Deliverable Validation deliverable-validation · Prove physical and media deliverables against explicit promises and independent checks. skill-orchestration declared bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Distributed Runtime distributed-runtime · Reserve, place, execute, reconcile, and hand off project-scoped distributed work. skill-orchestration declared bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Engineering Reasoning Loop engineering-reasoning-loop · Resolve uncertainty, stabilize language and interfaces, plan vertical slices, review independently, and preserve continuatio",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Engineering Reasoning Loop — execution binding execution-binding:engineering-reasoning-loop · Executable validator through runtime.project_reasoning.frontier:validate_reasoning_orc",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Epistemic Evolution epistemic-evolution · Maintain temporal claims and evaluate quarantined skill improvements without live self-editing. skill-orchestration declared bounded DETAI",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Evaluate supplied bounded resilience experiment records chaos_resilience_cycle · Design and run bounded resilience experiments project-orchestration executable_composite bounded DE",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Evaluate supplied project-health metrics nightly_project_health · Evaluate drift, health, stale evidence, dependencies, and agent state project-orchestration executable_bounded_sco",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "External Capability Intake external-capability-intake · Inventory, search, reconcile, stage, admit, and certify external candidates without source execution or staging-time authori",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "External Capability Intake — execution binding execution-binding:external-capability-intake · Executable validator through runtime.external_capability_provider:validate_external_ca",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "External Tool Lifecycle external-tool-lifecycle · Audit, quarantine, admit, lazily register, and protocol-certify external tool servers. skill-orchestration declared bounded DETAIL",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Failure And Recovery failure-and-recovery · Triage cross-surface failure, prove reversible restoration, exercise bounded resilience, and retain release blockers. skill-orchestratio",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Hardware Aware Execution Routing hardware-aware-execution-routing · Select CPU or CUDA from workload, compatibility, resource, correctness, benchmark, and fallback evidence. skill-",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Hardware Aware Execution Routing — execution binding execution-binding:hardware-aware-execution-routing · Executable runtime through runtime.hardware_routing:route_workload. execut",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Initialize a bounded workspace and register dropped projects workspace_bootstrap · Bootstrap a new project-stream workspace project-orchestration executable_bounded_scope_with_defe",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Inventory and register one existing project project_onboard · Discover and register a repository without modifying it project-orchestration executable_bounded_scope_with_deferred_e",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Knowledge Refinery knowledge-refinery · Convert untrusted sources into reviewed, graph-coherent, retrieval-tested, non-destructive knowledge change proposals. skill-orchestration d",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Knowledge Refinery — execution binding execution-binding:knowledge-refinery · Executable validator through runtime.knowledge_refinery:validate_refinery_orchestration. execution-bin",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Layered Memory Lifecycle layered-memory-lifecycle · Capture, distill, govern, retrieve, assemble, compact, and evaluate project-scoped memory without creating a parallel store or a",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Layered Memory Lifecycle — execution binding execution-binding:layered-memory-lifecycle · Executable validator through runtime.memory_intelligence:validate_memory_orchestration. ex",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Local Model Planning local-model-planning · Inspect a model without importing it, rank feasible execution strategies, enforce data and retrieval gates, and validate the chosen plan",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Local Model Planning — execution binding execution-binding:local-model-planning · Executable runtime through runtime.models:rank_models. execution-binding declared bounded DETAILS",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Metacognitive Evolution — execution binding execution-binding:metacognitive-evolution · Executable validator through runtime.metacognitive_evolution.facade:validate_layer. executio",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Move explicitly supplied cleanup candidates to recoverable quarantine safe_cleanup · Classify and quarantine cleanup candidates reversibly project-orchestration executable_bounded_",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "n8n Install Commission n8n-install-commission · Governed service capability workflow routed by route-n8n-capabilities. skill-orchestration declared bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "n8n Production Security Review n8n-production-security-review · Governed service capability workflow routed by route-n8n-capabilities. skill-orchestration declared bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "n8n Supabase Integration Release n8n-supabase-integration-release · Governed service capability workflow routed by route-n8n-supabase-stack. skill-orchestration declared bounded DE",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "n8n Supabase RAG Release n8n-supabase-rag-release · Governed service capability workflow routed by route-n8n-supabase-stack. skill-orchestration declared bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "n8n Workflow Release n8n-workflow-release · Governed service capability workflow routed by route-n8n-capabilities. skill-orchestration declared bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Project Change Intelligence project-change-intelligence · Build or validate a sensitive-source-safe project map, retrieve bounded evidence, trace change impact, and verify the pre-",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Project Change Intelligence — execution binding execution-binding:project-change-intelligence · Executable validator through runtime.project_impact:validate_project_change_intellig",
+          "client": [
+            720,
+            75
+          ],
+          "scroll": [
+            727,
+            75
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Px Lean Engineering Gate px-lean-engineering-gate · Trace current owners, minimize a correct change, preserve safety boundaries, and retain measured delta and verification evidence",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Px Team Fabric Recovery px-team-fabric-recovery · Classify stopped cross-IDE work, reconcile task/worker/lease/fencing/budget/workspace boundaries, and resume without blind retry o",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "plugins",
+      "navigation_active": true,
+      "headings": [
+        "Plugin Manager",
+        "Capability catalog contract",
+        "Governed plugin lifecycle",
+        "Installed extension evidence",
+        "Connector and pack readiness"
+      ],
+      "visible_actions": [
+        {
+          "action": "toggleAdvanced",
+          "label": "Advanced\nLOCKED",
+          "disabled": false
+        },
+        {
+          "action": "refresh",
+          "label": "↻ Sync",
+          "disabled": false
+        },
+        {
+          "action": "commandCenter",
+          "label": "CONTROLS",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "⚙",
+          "disabled": false
+        },
+        {
+          "action": "inspectMachineManifest",
+          "label": "Inspect machine contract",
+          "disabled": false
+        },
+        {
+          "action": "refreshEnvironment",
+          "label": "Refresh evidence",
+          "disabled": false
+        },
+        {
+          "action": "openExtensionsView",
+          "label": "Open host manager",
+          "disabled": false
+        },
+        {
+          "action": "openExtensionsView",
+          "label": "Manage activation",
+          "disabled": false
+        },
+        {
+          "action": "openExtensionsView",
+          "label": "Open uninstall controls",
+          "disabled": false
+        },
+        {
+          "action": "refreshEnvironment",
+          "label": "Refresh capability inventory",
+          "disabled": false
+        },
+        {
+          "action": "openExtensionsView",
+          "label": "Open host extension manager",
+          "disabled": false
+        },
+        {
+          "action": "inspectMachineManifest",
+          "label": "AI capability manifest",
+          "disabled": false
+        }
+      ],
+      "visible_action_count": 12,
+      "visible_panel_count": 27,
+      "text_characters": 3605,
+      "provider_missing_message": false,
+      "invalid_union_message": false,
+      "operational_error_messages": [],
+      "overflow_candidates": []
+    },
+    {
+      "surface": "memory",
+      "navigation_active": true,
+      "headings": [
+        "Memory",
+        "Canonical memory vault",
+        "Portable coordination memory",
+        "Canonical record browser"
+      ],
+      "visible_actions": [
+        {
+          "action": "toggleAdvanced",
+          "label": "Advanced\nLOCKED",
+          "disabled": false
+        },
+        {
+          "action": "refresh",
+          "label": "↻ Sync",
+          "disabled": false
+        },
+        {
+          "action": "commandCenter",
+          "label": "CONTROLS",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "⚙",
+          "disabled": false
+        },
+        {
+          "action": "configureCanonicalMemory",
+          "label": "Continue memory setup",
+          "disabled": false
+        },
+        {
+          "action": "captureMemory",
+          "label": "Capture proposed record",
+          "disabled": false
+        },
+        {
+          "action": "openCoordinationHandoff",
+          "label": "Open resume packet",
+          "disabled": false
+        },
+        {
+          "action": "contextSnapshot",
+          "label": "Portable context",
+          "disabled": false
+        },
+        {
+          "action": "memoryRefresh",
+          "label": "Refresh",
+          "disabled": false
+        },
+        {
+          "action": "memoryPrevious",
+          "label": "Previous",
+          "disabled": true
+        },
+        {
+          "action": "memoryNext",
+          "label": "Next",
+          "disabled": true
+        }
+      ],
+      "visible_action_count": 11,
+      "visible_panel_count": 8,
+      "text_characters": 2042,
+      "provider_missing_message": false,
+      "invalid_union_message": false,
+      "operational_error_messages": [],
+      "overflow_candidates": [
+        {
+          "tag": "section",
+          "class": "panel",
+          "text": "CONTINUITY · PROPOSED / CANDIDATE ONLY Portable coordination memory PORTABLE PROJECT AUTHORITY Coordination memory · non-canonical Project-scoped proposed/candidate records support",
+          "client": [
+            313,
+            676
+          ],
+          "scroll": [
+            540,
+            676
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "activity",
+      "navigation_active": true,
+      "headings": [
+        "Activity",
+        "Current presence",
+        "Historical actor sessions",
+        "Trace explorer",
+        "Capture boundary"
+      ],
+      "visible_actions": [
+        {
+          "action": "toggleAdvanced",
+          "label": "Advanced\nLOCKED",
+          "disabled": false
+        },
+        {
+          "action": "refresh",
+          "label": "↻ Sync",
+          "disabled": false
+        },
+        {
+          "action": "commandCenter",
+          "label": "CONTROLS",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "⚙",
+          "disabled": false
+        },
+        {
+          "action": "activityPause",
+          "label": "Pause capture",
+          "disabled": false
+        },
+        {
+          "action": "activityRefresh",
+          "label": "Refresh",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:45:29 AM\n.\nscm\nobserved\ntrace-d93104f1-3db3-436f-9dfd-1a6b5138cde7",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:45:24 AM\n.\nscm\nobserved\ntrace-316bda97-af29-40e4-8849-a17325ca82c0",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:45:19 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:45:18 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:45:18 AM\n.\nscm\nobserved\ntrace-e02a184e-333e-4a27-b44d-65b7b712c568",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:45:06 AM\n.\nscm\nobserved\ntrace-3ee65b69-fc12-4cd2-9c2c-d33f031c4bb7",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:44:55 AM\n.\nscm\nobserved\ntrace-8b503b97-c927-45e3-985c-6d4280f33fa3",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:44:50 AM\n.\nscm\nobserved\ntrace-94b24a46-4dfc-48f4-8318-24b848124bb4",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:44:45 AM\n.\nscm\nobserved\ntrace-9b3551a9-b4e9-4d47-83e5-ddf4aa83dd68",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:44:40 AM\n.\nscm\nobserved\ntrace-3179426d-d90a-4114-99b3-9dce5c8a8780",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:44:34 AM\n.\nscm\nobserved\ntrace-845c2d79-5744-4bc9-ad7e-073998efb773",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:44:33 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:44:33 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:44:24 AM\n.\nscm\nobserved\ntrace-047eeaf9-1cfb-4793-a079-a7ecd529d9aa",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:44:22 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:44:22 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:44:19 AM\n.\nscm\nobserved\ntrace-47022c19-d674-42a5-afb5-867615e02c99",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:44:06 AM\n.\nscm\nobserved\ntrace-41652d00-f90b-4fe2-9aa9-2f52850d46e1",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:43:54 AM\n.\nscm\nobserved\ntrace-35f2e167-ea2c-4ef5-a528-6c0a551e9fcb",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:43:48 AM\n.\nscm\nobserved\ntrace-ae724ee4-82c7-4079-bc3c-74a071e41650",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:43:23 AM\n.\nscm\nobserved\ntrace-1988df48-584d-4fe3-9d39-6c0d4da59f0f",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:43:17 AM\n.\nscm\nobserved\ntrace-f3ea5471-8935-4977-b893-1f285be8cd91",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:43:12 AM\n.\nscm\nobserved\ntrace-0d6741f0-8c15-42e8-9ac9-1e79c5e9b908",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:43:11 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:43:11 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:43:07 AM\n.\nscm\nobserved\ntrace-d7ca3457-bbd5-4dd6-ab32-0783390db9d6",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:42:51 AM\n.\nscm\nobserved\ntrace-22c3ca45-a0df-4eac-a42a-f12308cbfdf9",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:42:46 AM\n.\nscm\nobserved\ntrace-4ecd8c70-aeaa-46d1-b472-4d8b990dc806",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:42:41 AM\n.\nscm\nobserved\ntrace-bf03db7b-b36e-41e1-9a8a-221cc5702b58",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:42:36 AM\n.\nscm\nobserved\ntrace-1345fa89-e5e1-429f-9c93-d93aa72f28e8",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:42:30 AM\n.\nscm\nobserved\ntrace-ff45acb7-cc12-4f49-b820-e0f0e6a656a1",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:42:25 AM\n.\nscm\nobserved\ntrace-94c9918b-6a5f-4619-ac5d-dc5456ab3794",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "scm.repository.changed\nvscode-git-unattributed · vscode-git · 8/16/2026, 11:42:20 AM\n.\nscm\nobserved\ntrace-3bb67272-3acc-473e-adbf-b1879f5b29de",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:41:51 AM\nextension/SHA256SUMS.txt\nfilesystem\nobserved\ntrace-9c43d7f2-1",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:41:49 AM\nextension/resources/ui/action-inventory.jsonextension/server/",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:41:27 AM\nextension/package.jsonextension/CHANGELOG.mdextension/README.",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:41:27 AM\nextension/package.jsonextension/CHANGELOG.mdextension/README.",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:41:08 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:41:08 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:39:55 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:39:55 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:37:58 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:37:58 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:35:34 AM\nextension/media/dashboard/90-controller.jsextension/scripts/r",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:35:34 AM\nextension/media/dashboard/90-controller.jsextension/scripts/r",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:33:40 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:33:40 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "terminal.session\nide-571e4671b58b5c07 · vscode-terminal · 8/16/2026, 11:32:21 AM\nNo content or path payload captured\nterminal\nobserved\nterminal-b5238962-6c19-40",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "vscode.extensions.changed\nide-571e4671b58b5c07 · vscode-extension-service · 8/16/2026, 11:32:15 AM\nNo content or path payload captured\nenvironment\nobserved\ntrac",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:28:42 AM\nextension/SHA256SUMS.txt\nfilesystem\nobserved\ntrace-f9f2c780-9",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:28:41 AM\nextension/server/index.js\nfilesystem\nobserved\ntrace-87770d20-",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:28:32 AM\nextension/resources/ui/action-inventory.json\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:25:50 AM\nextension/media/styles/40-surfaces.cssextension/media/styles/",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:25:15 AM\nruntime/global_skill_isolation.py\nfilesystem\nobserved\ntrace-2",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:25:09 AM\nextension/media/dashboard/45-system-surfaces.js\nfilesystem\nob",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:24:21 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:24:19 AM\nextension/media/dashboard/44-operational-surfaces.js\nfilesyst",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:24:11 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:24:08 AM\nruntime/cli.pyruntime/host_boundaries.py\nfilesystem\nobserved\n",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.created\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:24:08 AM\ntests/test_global_skill_isolation.py\nfilesystem\nobserved\ntrac",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.created\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:23:35 AM\nruntime/global_skill_isolation.py\nfilesystem\nobserved\ntrace-c",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:23:33 AM\nextension/resources/ui/action-inventory.json\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:23:16 AM\nextension/media/dashboard/90-controller.jsextension/src/uiAct",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:21:48 AM\nruntime/host_boundaries.py\nfilesystem\nobserved\ntrace-962c1700",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:21:36 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:21:18 AM\nextension/media/dashboard/43-catalog-surfaces.js\nfilesystem\no",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:21:11 AM\nruntime/host_boundaries.pyruntime/dashboard_api.pytests/test_",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:20:57 AM\nextension/media/dashboard/43-catalog-surfaces.js\nfilesystem\no",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:20:22 AM\nextension/src/pxBridge.jsextension/src/extension.jsextension/",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:19:56 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:19:43 AM\nextension/media/dashboard/46-observability-surfaces.js\nfilesy",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:19:36 AM\nruntime/work_admission.pyruntime/dashboard_api.pytests/test_d",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.created\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:19:36 AM\ntests/test_host_boundaries.py\nfilesystem\nobserved\ntrace-fe84c",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.created\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:18:57 AM\nruntime/host_boundaries.py\nfilesystem\nobserved\ntrace-11b3f5c1",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:18:56 AM\nextension/media/dashboard/90-controller.jsextension/src/uiAct",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:18:43 AM\nextension/media/dashboard/45-system-surfaces.js\nfilesystem\nob",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:17:57 AM\nextension/media/dashboard/90-controller.jsextension/src/uiAct",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:17:42 AM\nextension/media/dashboard/47-advanced-surfaces.js\nfilesystem\n",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:16:32 AM\nextension/media/dashboard/90-controller.jsextension/src/uiAct",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:16:19 AM\nextension/media/dashboard/42-core-surfaces.js\nfilesystem\nobse",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.created\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:15:58 AM\nextension/scripts/run-operational-ui-walk.js\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:14:35 AM\nruntime/dashboard_api.py\nfilesystem\nobserved\ntrace-371b068f-7",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:14:26 AM\nruntime/dashboard_api.py\nfilesystem\nobserved\ntrace-ff28f2de-c",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:14:13 AM\nruntime/dashboard_api.py\nfilesystem\nobserved\ntrace-3d82543c-7",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:14:02 AM\nruntime/work_admission.py\nfilesystem\nobserved\ntrace-e73b7224-",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:13:34 AM\nextension/src/pxBridge.js\nfilesystem\nobserved\ntrace-b89f3044-",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:13:25 AM\nruntime/dashboard_api.pytests/test_dashboard_api.py\nfilesyste",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:13:12 AM\nruntime/execution_placement.pytests/test_execution_placement.",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:11:41 AM\nextension/package.jsonextension/CHANGELOG.mdextension/README.",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:11:00 AM\nextension/resources/ui/action-inventory.json\nfilesystem\nobser",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:10:56 AM\nextension/media/dashboard/48-graph-surface.js\nfilesystem\nobse",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:10:48 AM\nruntime/work_admission.pyruntime/workspace_manager.pytests/te",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:10:30 AM\nruntime/knowledge_core_controller.py\nfilesystem\nobserved\ntrac",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:10:12 AM\nruntime/knowledge_core_controller.py\nfilesystem\nobserved\ntrac",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:09:42 AM\nextension/media/dashboard/48-graph-surface.js\nfilesystem\nobse",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:09:17 AM\nextension/media/dashboard/47-advanced-surfaces.jsextension/sr",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:08:33 AM\nruntime/knowledge_core_controller.py\nfilesystem\nobserved\ntrac",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:08:29 AM\ntests/test_execution_placement.py\nfilesystem\nobserved\ntrace-d",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:08:24 AM\nruntime/execution_placement.pyruntime/knowledge_core_controll",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:08:08 AM\nruntime/knowledge_core_controller.py\nfilesystem\nobserved\ntrac",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:08:00 AM\nruntime/work_admission.py\nfilesystem\nobserved\ntrace-20d2f8b5-",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:07:56 AM\nruntime/knowledge_core_controller.py\nfilesystem\nobserved\ntrac",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:07:06 AM\nruntime/work_admission.py\nfilesystem\nobserved\ntrace-e8bff508-",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:06:51 AM\nextension/media/dashboard/90-controller.js\nfilesystem\nobserve",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:06:40 AM\nruntime/knowledge_core_controller.pyruntime/learning_promotio",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:06:34 AM\nruntime/work_admission.py\nfilesystem\nobserved\ntrace-4bcbce0f-",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:06:15 AM\nruntime/work_admission.py\nfilesystem\nobserved\ntrace-d439b323-",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:06:13 AM\nextension/media/dashboard/90-controller.js\nfilesystem\nobserve",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:05:45 AM\nruntime/test_profiles.pyruntime/work_admission.py\nfilesystem\n",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:05:42 AM\nruntime/knowledge_core_controller.py\nfilesystem\nobserved\ntrac",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:05:36 AM\nruntime/test_profiles.py\nfilesystem\nobserved\ntrace-1d253dcb-4",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:05:25 AM\nextension/src/uiActionInventory.js\nfilesystem\nobserved\ntrace-",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:05:17 AM\nruntime/work_admission.py\nfilesystem\nobserved\ntrace-69788283-",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:05:12 AM\nruntime/project_intelligence.py\nfilesystem\nobserved\ntrace-ce0",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:04:48 AM\nruntime/work_admission.pyruntime/agent_runtime.py\nfilesystem\n",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:04:43 AM\nruntime/cli.py\nfilesystem\nobserved\ntrace-307b09d4-5556-4bb1-9",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:04:40 AM\nextension/src/extension.js\nfilesystem\nobserved\ntrace-fdea34c8",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:04:32 AM\nextension/media/dashboard/49-studio-editors.js\nfilesystem\nobs",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:04:29 AM\nruntime/cli.py\nfilesystem\nobserved\ntrace-27f0cc5c-bc7e-4d8d-8",
+          "disabled": false
+        },
+        {
+          "action": "inspectActivityEvent",
+          "label": "workspace.file.changed\nworkspace-watcher-unattributed · workspace-watcher · 8/16/2026, 11:04:23 AM\nruntime/agent_runtime.py\nfilesystem\nobserved\ntrace-cf975f05-a",
+          "disabled": false
+        }
+      ],
+      "visible_action_count": 126,
+      "visible_panel_count": 25,
+      "text_characters": 27263,
+      "provider_missing_message": false,
+      "invalid_union_message": false,
+      "operational_error_messages": [],
+      "overflow_candidates": [
+        {
+          "tag": "section",
+          "class": "panel",
+          "text": "LIVE / RECENT HEARTBEATS Current presence vscode-git-unattributed vscode-git · external-or-unknown IDLE No active operation 8/16/2026, 11:45:29 AM workspace-watcher-unattributed wo",
+          "client": [
+            313,
+            292
+          ],
+          "scroll": [
+            454,
+            292
+          ]
+        },
+        {
+          "tag": "section",
+          "class": "panel",
+          "text": "ACTION · ACTOR · CORRELATION · EFFECT Trace explorer Search activity Filter by category All categories environment filesystem scm terminal Filter by status All statuses started run",
+          "client": [
+            643,
+            760
+          ],
+          "scroll": [
+            689,
+            760
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "diagnostics",
+      "navigation_active": true,
+      "headings": [
+        "Diagnostics",
+        "Correlated diagnostic traces",
+        "Diagnostic control-plane check",
+        "Feature and integration status",
+        "MS+Enterprise connector readiness"
+      ],
+      "visible_actions": [
+        {
+          "action": "toggleAdvanced",
+          "label": "Advanced\nLOCKED",
+          "disabled": false
+        },
+        {
+          "action": "refresh",
+          "label": "↻ Sync",
+          "disabled": false
+        },
+        {
+          "action": "commandCenter",
+          "label": "CONTROLS",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "⚙",
+          "disabled": false
+        },
+        {
+          "action": "validate",
+          "label": "Run diagnostic check",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Azure MCP\nms-enterprise/connector/azure-mcp · No summary\nms-enterprise-connector\ndisabled\nbounded\nDETAILS",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Business Central\nms-enterprise/connector/business-central · No summary\nms-enterprise-connector\ndisabled\nbounded\nDETAILS",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "DAP / TUI Test Adapters\nms-enterprise/connector/dap-tui · No summary\nms-enterprise-connector\nnot-installed\nbounded\nDETAILS",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "DevSkim CLI\nms-enterprise/connector/devskim · No summary\nms-enterprise-connector\nnot-installed\nbounded\nDETAILS",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Dynamics Omnichannel\nms-enterprise/connector/dynamics · No summary\nms-enterprise-connector\ndisabled\nbounded\nDETAILS",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Microsoft 365 / Graph\nms-enterprise/connector/m365-graph · No summary\nms-enterprise-connector\ndisabled\nbounded\nDETAILS",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Microsoft Foundry\nms-enterprise/connector/foundry · No summary\nms-enterprise-connector\ndisabled\nbounded\nDETAILS",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Microsoft Teams\nms-enterprise/connector/teams · No summary\nms-enterprise-connector\ndisabled\nbounded\nDETAILS",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "ONNX Runtime GenAI\nms-enterprise/connector/onnx-genai · No summary\nms-enterprise-connector\nnot-installed\nbounded\nDETAILS",
+          "disabled": false
+        },
+        {
+          "action": "inspectCatalogItem",
+          "label": "Power Platform / Dataverse\nms-enterprise/connector/power-platform · No summary\nms-enterprise-connector\ndisabled\nbounded\nDETAILS",
+          "disabled": false
+        },
+        {
+          "action": "catalogPrevious",
+          "label": "Previous",
+          "disabled": true
+        },
+        {
+          "action": "catalogNext",
+          "label": "Next",
+          "disabled": true
+        }
+      ],
+      "visible_action_count": 17,
+      "visible_panel_count": 9,
+      "text_characters": 3015,
+      "provider_missing_message": false,
+      "invalid_union_message": false,
+      "operational_error_messages": [],
+      "overflow_candidates": [
+        {
+          "tag": "section",
+          "class": "panel",
+          "text": "DIRECT FACTS Feature and integration status Pacify-X control plane CONTROL PLANE CONNECTED Project map Available Canonical memory vault Attached Portable memory 0 records; non-cano",
+          "client": [
+            259,
+            411
+          ],
+          "scroll": [
+            316,
+            411
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Azure MCP ms-enterprise/connector/azure-mcp · No summary ms-enterprise-connector disabled bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Business Central ms-enterprise/connector/business-central · No summary ms-enterprise-connector disabled bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "DAP / TUI Test Adapters ms-enterprise/connector/dap-tui · No summary ms-enterprise-connector not-installed bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "DevSkim CLI ms-enterprise/connector/devskim · No summary ms-enterprise-connector not-installed bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Dynamics Omnichannel ms-enterprise/connector/dynamics · No summary ms-enterprise-connector disabled bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Microsoft 365 / Graph ms-enterprise/connector/m365-graph · No summary ms-enterprise-connector disabled bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Microsoft Foundry ms-enterprise/connector/foundry · No summary ms-enterprise-connector disabled bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Microsoft Teams ms-enterprise/connector/teams · No summary ms-enterprise-connector disabled bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "ONNX Runtime GenAI ms-enterprise/connector/onnx-genai · No summary ms-enterprise-connector not-installed bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        },
+        {
+          "tag": "button",
+          "class": "catalog-row",
+          "text": "Power Platform / Dataverse ms-enterprise/connector/power-platform · No summary ms-enterprise-connector disabled bounded DETAILS",
+          "client": [
+            720,
+            58
+          ],
+          "scroll": [
+            727,
+            58
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "assurance",
+      "navigation_active": true,
+      "headings": [
+        "Assurance",
+        "Agent readiness matrix",
+        "Canonical ownership map",
+        "MS+Enterprise separation"
+      ],
+      "visible_actions": [
+        {
+          "action": "toggleAdvanced",
+          "label": "Advanced\nLOCKED",
+          "disabled": false
+        },
+        {
+          "action": "refresh",
+          "label": "↻ Sync",
+          "disabled": false
+        },
+        {
+          "action": "commandCenter",
+          "label": "CONTROLS",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "⚙",
+          "disabled": false
+        },
+        {
+          "action": "inspectReadinessReport",
+          "label": "Human + JSON report",
+          "disabled": false
+        },
+        {
+          "action": "inspectReadiness",
+          "label": "D1\nVerification feedback\nCan an agent prove that a bounded change worked?\nCEILING",
+          "disabled": false
+        },
+        {
+          "action": "inspectReadiness",
+          "label": "D2\nContracts and predictability\nCan an agent predict the contracts affected by a change?\nCEILING",
+          "disabled": false
+        },
+        {
+          "action": "inspectReadiness",
+          "label": "D3\nContext legibility\nCan an agent acquire a bounded, current view of the project?\nREADY",
+          "disabled": false
+        },
+        {
+          "action": "inspectReadiness",
+          "label": "D4\nBoundary clarity\nAre actions, ownership, and relationships explicitly bounded?\nREADY",
+          "disabled": false
+        },
+        {
+          "action": "inspectReadiness",
+          "label": "D5\nAction directness\nCan an agent see what a tool or workflow will actually do?\nCEILING",
+          "disabled": false
+        },
+        {
+          "action": "inspectReadiness",
+          "label": "D6\nDocumented intent\nCan an agent distinguish policy and design intent from incidental code?\nREADY",
+          "disabled": false
+        },
+        {
+          "action": "inspectReadiness",
+          "label": "D7\nObservability\nCan an agent perceive runtime and coordination state without guessing?\nREADY",
+          "disabled": false
+        },
+        {
+          "action": "inspectReadiness",
+          "label": "D8\nIteration and delivery\nCan an agent use reproducible local build and delivery gates?\nREADY",
+          "disabled": false
+        },
+        {
+          "action": "inspectReadiness",
+          "label": "D9\nSupply-chain currency\nAre dependencies and external capabilities governed as versioned inputs?\nREADY",
+          "disabled": false
+        },
+        {
+          "action": "enterpriseDoctor",
+          "label": "Run offline readiness doctor",
+          "disabled": false
+        }
+      ],
+      "visible_action_count": 15,
+      "visible_panel_count": 8,
+      "text_characters": 3442,
+      "provider_missing_message": false,
+      "invalid_union_message": false,
+      "operational_error_messages": [],
+      "overflow_candidates": []
+    },
+    {
+      "surface": "settings",
+      "navigation_active": true,
+      "headings": [
+        "Settings",
+        "Effective configuration",
+        "Connections",
+        "Configuration authority",
+        "Billable execution guardrails"
+      ],
+      "visible_actions": [
+        {
+          "action": "toggleAdvanced",
+          "label": "Advanced\nLOCKED",
+          "disabled": false
+        },
+        {
+          "action": "refresh",
+          "label": "↻ Sync",
+          "disabled": false
+        },
+        {
+          "action": "commandCenter",
+          "label": "CONTROLS",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "⚙",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "Edit Pacify-X settings in host",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "Open authoritative editor",
+          "disabled": false
+        },
+        {
+          "action": "openSettings",
+          "label": "Edit guardrails",
+          "disabled": false
+        },
+        {
+          "action": "toggleBillablePolicy",
+          "label": "Cloud / billable provider policy\nNo billable provider execution can pass.\nOFF",
+          "disabled": false
+        }
+      ],
+      "visible_action_count": 8,
+      "visible_panel_count": 5,
+      "text_characters": 2685,
+      "provider_missing_message": false,
+      "invalid_union_message": false,
+      "operational_error_messages": [],
+      "overflow_candidates": []
+    }
+  ],
+  "sidebar": {
+    "text": "PX\nPACIFY-X\nOPEN CONTROL PLANE →\n●\nCONNECTED\nv0.7.0.dev0\nREV 25\nNO ACTIVE EXECUTION\n✓\nPX is idle\n\nAuthoritative coordination has no active plan.\n\nNo completed run is recorded.\n\nPROVIDER ACTIVITY\nNO EXTERNAL BILLING ROUTES\nNo provider telemetry is configured.",
+    "provider_missing_message": false,
+    "invalid_union_message": false,
+    "buttons": [
+      {
+        "label": "OPEN CONTROL PLANE →",
+        "disabled": false,
+        "action": "open-control-plane"
+      }
+    ]
+  },
+  "sidebar_open_error": null,
+  "limitations": [
+    "The walk activates every dashboard navigation surface and records its real DOM and screenshots.",
+    "Mutation, approval, installation, execution, and destructive controls are inventoried but are not automatically clicked."
+  ]
+}

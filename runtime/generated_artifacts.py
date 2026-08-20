@@ -11,16 +11,29 @@ def validate_generated_artifacts(root: Path) -> dict[str, Any]:
     from .effect_surface import discover_effect_surfaces
     from .evidence_portability import discover_historical_references
     from .graph_registry import validate_graph_artifacts
+    from .build_claims import validate_build_claims
     import json
 
     root = root.resolve()
+    studio_owner = root / "registry/studio_operations.json"
+    studio_projections = (
+        root / "runtime/studio_operations.json",
+        root / "extension/resources/studio-operations.json",
+    )
+    studio_projection_check = {
+        "valid": studio_owner.is_file()
+        and all(
+            target.is_file() and target.read_bytes() == studio_owner.read_bytes()
+            for target in studio_projections
+        )
+    }
     source_checkout = (root / "pyproject.toml").is_file() and (
         root / "scripts"
     ).is_dir()
     if not source_checkout:
         domain_owner = root / "templates/generated/domain_tool.py"
         domain_targets = sorted(
-            (root / ".agents/skills").glob("*/scripts/domain_tool.py")
+            (root / ".px/skills").glob("*/scripts/domain_tool.py")
         )
         template_owner = root / "templates/declared_suite/authoritative-pack"
         template_targets = sorted(
@@ -53,6 +66,7 @@ def validate_generated_artifacts(root: Path) -> dict[str, Any]:
                 )
             },
             "graphs": validate_graph_artifacts(root),
+            "studio_operation_projections": studio_projection_check,
         }
         failed = [name for name, result in checks.items() if not result["valid"]]
         return {
@@ -79,6 +93,8 @@ def validate_generated_artifacts(root: Path) -> dict[str, Any]:
         "declared_suite_templates": templates(root, check=True),
         "profile_projections": profiles(root, check=True),
         "commissioned_skill_registry": commissioned_skills(root, check=True),
+        "build_claims": validate_build_claims(root),
+        "studio_operation_projections": studio_projection_check,
     }
     inventory = root / "registry/registry_envelope_inventory.json"
     expected = json.dumps(build_inventory(), indent=2, sort_keys=True) + "\n"

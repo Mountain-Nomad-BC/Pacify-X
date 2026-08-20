@@ -318,7 +318,7 @@ def plan_selective_stage(
         if not body.is_file() or not _inside(body, root):
             raise ValueError(f"external bundle body is unavailable: {identifier}")
         hashes[identifier] = hashlib.sha256(body.read_bytes()).hexdigest()
-        if (project / ".agents/skills" / identifier).exists():
+        if (project / ".px/skills" / identifier).exists():
             collisions.append(identifier)
         for capability_id in bundle.get("candidate_capabilities", ()):
             capability = next(

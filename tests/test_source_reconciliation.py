@@ -14,7 +14,7 @@ class SourceReconciliationTests(unittest.TestCase):
     def test_unknown_mechanism_prevents_completion(self) -> None:
         script = (
             ROOT
-            / ".agents/skills/audit-source-capabilities/scripts/reconcile_mechanism_records.py"
+            / ".px/skills/audit-source-capabilities/scripts/reconcile_mechanism_records.py"
         )
         spec = importlib.util.spec_from_file_location(
             "reconcile_mechanism_records", script

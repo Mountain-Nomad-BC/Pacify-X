@@ -1,0 +1,40 @@
+{
+  "admission_record": "design-n8n-supabase-reliability",
+  "body_sha256": "3c91e7463bb18e4881b7ab92f95b40a9026d8248edf5194cd052e9725f8f05c4",
+  "contract": {
+    "available": true,
+    "sha256": "6f75a6ca75f9dcf34b92ae18467b8f2186051ac1287e35a483113ea2700a64d8",
+    "source": "registry/skill_packages/design-n8n-supabase-reliability.json"
+  },
+  "description": "Design reliable n8n-Supabase behavior for retries, duplicates, partial failure, transactions, concurrency, and backpressure.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "design-n8n-supabase-reliability",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/design-n8n-supabase-reliability"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "backpressure",
+    "cross",
+    "dedupe",
+    "outbox",
+    "reliability",
+    "transactions"
+  ],
+  "version": "1.0.0"
+}

@@ -1,0 +1,55 @@
+{
+  "gap_id": "PX-OS-988",
+  "parent_surface": "knowledge-core",
+  "feature": "layered-learning-promotion-hash-parser",
+  "control_action": "parse and validate every promotion-layer hash by semantic role without collapsing distinct identities",
+  "discovery_source": "user:2026-08-17-promotional-layered-memory-hashes",
+  "discovered_at": "AUTO",
+  "discovered_by": "codex",
+  "source_refs": [
+    {
+      "path": "runtime/knowledge_core_controller.py",
+      "symbols": ["KnowledgeCoreController._read_learning", "KnowledgeCoreController.admit_learning_candidate"]
+    },
+    {
+      "path": "runtime/learning_promotion.py",
+      "symbols": ["freeze_revision", "promote_revision", "measure_reuse"]
+    }
+  ],
+  "expected_behavior": "The learning-state parser validates pipeline revision, frozen revision, artifact, evidence, dependency, promotion decision, canonical corpus, knowledge candidate, and event hashes as separate typed identities; it recomputes role-specific commitments and cross-links, while accepting legitimate unequal hashes between layers.",
+  "observed_behavior": "_read_learning validates signed outer history and pipeline_revision_sha256 but does not semantically parse or recompute the nested frozen-revision and promotion identities. Distinct layer hashes are emitted, but load-time parsing does not prove that each hash belongs to its declared role or that promotion/corpus links match the selected revision.",
+  "interaction_chain": {
+    "open_load": {"state": "partial", "detail": "Signed learning heads and event ancestry load, but nested typed identities are not fully parsed.", "evidence": ["runtime/knowledge_core_controller.py:179"]},
+    "display": {"state": "partial", "detail": "The UI displays multiple hashes but depends on backend semantic truth.", "evidence": ["extension/media/dashboard/47-advanced-surfaces.js:36"]},
+    "user_edit_action": {"state": "not_applicable", "detail": "This is a backend parser boundary; the user does not edit retained promotion hashes directly.", "evidence": ["runtime/knowledge_core_controller.py:179"]},
+    "input_validation": {"state": "missing", "detail": "Nested promotion layer records lack one load-time typed validation pass.", "evidence": ["runtime/knowledge_core_controller.py:179"]},
+    "authorization": {"state": "present", "detail": "Learning histories are signature verified under retained host authority.", "evidence": ["runtime/knowledge_core_controller.py:184"]},
+    "backend_dispatch": {"state": "partial", "detail": "Promotion constructors emit role hashes, but the reader does not independently validate all nested roles.", "evidence": ["runtime/learning_promotion.py:214", "runtime/learning_promotion.py:318"]},
+    "runtime_effect": {"state": "partial", "detail": "Admission consumes selected revision and promotion decision identities after only partial nested read validation.", "evidence": ["runtime/knowledge_core_controller.py:1202"]},
+    "progress_reporting": {"state": "not_applicable", "detail": "Parsing is synchronous and has no long-running progress contract.", "evidence": ["runtime/knowledge_core_controller.py:179"]},
+    "result_acknowledgement": {"state": "partial", "detail": "Loaded state is returned after outer verification without a typed hash-role receipt.", "evidence": ["runtime/knowledge_core_controller.py:230"]},
+    "persistence": {"state": "partial", "detail": "Signed persistence and outer revision commitment exist; nested identity semantics are not revalidated on reopen.", "evidence": ["runtime/knowledge_core_controller.py:218"]},
+    "reload_reopen": {"state": "missing", "detail": "Reopen does not reject swapped or misbound nested layer hashes when the outer signed state is otherwise self-consistent.", "evidence": ["runtime/knowledge_core_controller.py:179"]},
+    "failure_handling": {"state": "partial", "detail": "Outer ancestry/integrity failures fail closed; nested role mismatch classifications are absent.", "evidence": ["runtime/knowledge_core_controller.py:193"]},
+    "recovery_rollback": {"state": "partial", "detail": "Projection recovery validates outer state identity but not the complete nested promotion hash graph.", "evidence": ["runtime/knowledge_core_controller.py:295"]}
+  },
+  "classification": "backend",
+  "severity": "high",
+  "operational_impact": "A signed malformed or buggy learning state can preserve valid-looking but role-swapped or misbound nested hashes, weakening provenance at the exact boundary that promotes evidence into reusable knowledge. Requiring all hashes to be equal would also be wrong because each layer commits different content.",
+  "dependencies": ["PX-OS-034"],
+  "blockers": [],
+  "assigned_owner": "codex",
+  "current_state": "discovered",
+  "tests_required": [
+    "legitimate unequal layer hashes are accepted",
+    "swapped role hashes are rejected",
+    "frozen revision and artifact commitments are recomputed",
+    "promotion decision and canonical corpus commitments are recomputed",
+    "selected revision, source gates, knowledge candidate, and reuse links are cross-validated",
+    "recovery applies the same typed parser"
+  ],
+  "completion_evidence": [],
+  "reopen_reason": null,
+  "defer_skip": null,
+  "next_action": "Implement one bounded typed learning-state parser that independently validates and recomputes each promotion-layer hash role, accepts legitimate unequal hashes, rejects swaps/misbinding, and is used by normal reads and recovery before admission or reuse."
+}

@@ -1,8 +1,13 @@
 {
   "checkpoint": {
     "active_skills": [],
-    "approval_expiry": null,
-    "approved_effects": [],
+    "approval_expiry": "end_of_current_interactive_repair_session",
+    "approved_effects": [
+      "read_local",
+      "write_workspace",
+      "execute_local",
+      "install_local_dependencies"
+    ],
     "budgets": {
       "maximum_heavy_lanes": 1,
       "maximum_selected_skills": 3
@@ -10,25 +15,25 @@
     "changed_file_sha256": {},
     "degraded_components": [],
     "failures": [],
-    "next_safe_action": "preserve the validated development tree; issue a new signed release only through the exact-artifact finalizer when explicitly authorized",
+    "next_safe_action": "complete A08 by repairing the owned full-profile failures and latency, then validate the unchanged tree before remaining punch cards",
     "open_circuits": [],
     "repository": {
-      "branch": "integration/codex-full-intake-20260804",
-      "commit": "172f66c29076ac7cfde97dc89ce6b8f670d2c19d",
+      "branch": "main",
+      "commit": "98470f6d70fb6b2c52530136004485407f5caa6b",
       "root": ".",
-      "working_tree_sha256": "77098d1721daa7fac9aa2fa67c344e6b292b8c7bd32e2f78142f9f86bf20e99c"
+      "working_tree_sha256": null
     },
     "retries": [],
-    "revision": 34,
-    "runtime_version": "0.6.3",
+    "revision": 40,
+    "runtime_version": "0.7.0.dev0",
     "tool_versions": {},
     "validation": {
-      "tests": "rel_014_validated_813_tests_585_subtests_424_unittest_63_tools_8_assurance_gates_24_release_checks_21_structural_checks_2495_file_sanitation_passed",
-      "verifier": "evidence/integration/pxi-20260804/integration_validation_summary.json"
+      "tests": "extension 0.5.4: 183 passed; exact installed VSIX host passed; five section receipts current; raw/full Python certification timed out and remains open; runtime CLI validation passed before current evidence refresh",
+      "verifier": "evidence/full-unittest-timeout-20260812.json"
     },
     "versions": {
-      "assumptions": 12,
-      "plan": 18,
+      "assumptions": 13,
+      "plan": 19,
       "project_management_schema": "1.0"
     }
   },
@@ -67,25 +72,59 @@
         "id": "D-002",
         "status": "accepted"
       },
-      {
-        "decision": "cleanup uses recoverable quarantine only",
-        "id": "D-003",
-        "status": "accepted"
-      }
-    ],
-    "pending_approvals": [],
+    {
+      "decision": "cleanup uses recoverable quarantine only",
+      "id": "D-003",
+      "status": "accepted"
+    },
+    {
+      "decision": "run the authorized adversarial repair wave locally without deployment, credentials, billable provider calls, destructive cleanup, or historical-evidence rewrites",
+      "id": "D-004",
+      "status": "accepted"
+    },
+    {
+      "decision": "move detailed PX skills to native .px packages, retain only a bounded Codex-visible facade taxonomy, and prevent standard, Microsoft/vendor, and enterprise-restricted skill domains from bleeding into one another",
+      "id": "D-005",
+      "status": "accepted"
+    },
+    {
+      "decision": "first initialization preserves a hash-bound recoverable backup and provenance for every pre-existing user/workspace skill without changing originals; backups are user-owned evidence, never auto-purged, and restore-verified; PX may adapt attributes only through admission and must expose origin and selection rationale in the Skills projection",
+      "id": "D-006",
+      "status": "accepted"
+    },
+    {
+      "decision": "PX defines governance, scope, policy, contracts, validation, observation, and evidence for PX-controlled work; Codex retains native host authority and approval/security mechanisms and executes within those PX constraints; the extension never starts a competing Codex process",
+      "id": "D-007",
+      "status": "accepted"
+    }
+  ],
+  "pending_approvals": [
+    "deployment, credential use, billable provider calls, destructive cleanup, and release publication remain unauthorized"
+  ],
     "risks": [
-      {
-        "id": "R-REL-001",
-        "mitigation": "rerun all gates after final mutation",
-        "risk": "release evidence can become stale after implementation changes"
-      }
+    {
+      "id": "R-REL-001",
+      "mitigation": "rerun all gates after final mutation",
+      "risk": "release evidence can become stale after implementation changes"
+    },
+    {
+      "id": "R-PXA-001",
+      "mitigation": "reopen hash-invalid cards and regenerate evidence only from one unchanged final digest",
+      "risk": "historical passing evidence is being mistaken for current-tree acceptance"
+    },
+    {
+      "id": "R-PXA-002",
+      "mitigation": "separate standard, Microsoft/vendor, and enterprise-restricted skill indexes and fail closed on implicit cross-domain routing",
+      "risk": "semantic skill routing can select an ineligible distribution domain"
+    }
     ]
   },
   "knowledge": {
     "assumptions": [],
     "contradictions": [
-      "Release 0.6.1 claimed deployment readiness, but the live test_declared_suite_support.py suite fails because the formula registry envelope emits count instead of formula_count."
+      "Release 0.6.1 claimed deployment readiness, but the live test_declared_suite_support.py suite fails because the formula registry envelope emits count instead of formula_count.",
+      "The prior dashboard and machine state claimed no active work while the human punch-card projection still had active and pending cards.",
+      "Twenty-eight accepted visibility cards reference evidence whose current file hashes no longer match their recorded hashes."
     ],
     "facts": [
       "The repository exposes 166 catalog metadata records, 129 selectable skills, zero startup hydration, and a maximum selected set of three.",
@@ -116,12 +155,15 @@
       "REL-014 passed 813 tests plus 585 subtests in one uninterrupted run, 424 unittest-discovery tests, an exact wheel and source build, installed-wheel execution from an unrelated working directory, byte-identical clean exports, eight current assurance gates, 24 strict release-audit checks, 21 structural maturity checks, and zero-hit sanitation across 2,495 files.",
       "The 13-file audit repair pack closed on two matching snapshots after a 30-second stability interval at tree SHA-256 e4c7e20be030148b55afd1da861632f945c7c7812b61f572c6c17e4f4ca1f369 and moved to recoverable external quarantine without hard deletion."
     ],
-    "unknowns": []
+    "unknowns": [
+      "The final current-tree validation result remains unknown until A08 closes against one unchanged digest.",
+      "Final current-tree certification remains unknown until A08 and its locally attainable prerequisite cards close against one unchanged digest."
+    ]
   },
   "lifecycle": {
-    "next_action": "preserve the validated development tree; issue a new signed release only through the exact-artifact finalizer when explicitly authorized",
-    "phase": "post-closure-validation-complete",
-    "status": "integration-complete"
+    "next_action": "complete A08 by repairing the owned full-profile failures and latency, then validate the unchanged tree before remaining punch cards",
+    "phase": "remaining-punch-card-implementation",
+    "status": "repair-in-progress"
   },
   "project": {
     "mode": "existing",
@@ -130,7 +172,7 @@
   },
   "schema_version": "1.0",
   "work": {
-    "active_punch_card": "none",
+    "active_punch_card": "A08",
     "backlog": [
       {
         "id": "REL-008-LAST-ROUND",
@@ -166,6 +208,46 @@
         "id": "REL-014-AUDIT-REPAIR-DISTRIBUTION-INTEGRITY",
         "outcome": "Every commissioned skill-owned file has a deterministic exact distribution projection, authority toolchain health is explicit, clean exports are reproducible, and evidence distinguishes uninterrupted runs from supplemental reruns.",
         "status": "complete"
+      },
+      {
+        "id": "A01-ADVERSARIAL-AUDIT-CHECKPOINT",
+        "outcome": "Every discovered issue is logged, stale acceptance is reopened, active authority and scope are explicit, and all current control projections agree.",
+        "status": "complete"
+      },
+      {
+        "id": "A02-READ-ONLY-AND-STARTUP-CONTAINMENT",
+        "outcome": "Doctor inspection is side-effect free and extension activation cannot leak work or block the shared extension host.",
+        "status": "complete"
+      },
+      {
+        "id": "A03-CANONICAL-EXTENSION",
+        "outcome": "One repository-owned extension source produces the installed artifact and passes activation, packaging, and lifecycle tests.",
+        "status": "complete"
+      },
+      {
+        "id": "A04-TRANSACTIONAL-EXTENSION-LIFECYCLE",
+        "outcome": "Extension activation, listeners, timers, workers, and children roll back and reconcile at every lifecycle boundary.",
+        "status": "complete"
+      },
+      {
+        "id": "A05-PX-NATIVE-SKILLS",
+        "outcome": "Detailed skills are native lazy PX packages, Codex sees only 10-20 facades, and standard, Microsoft/vendor, and enterprise domains are policy-isolated.",
+        "status": "complete"
+      },
+      {
+        "id": "A06-AUTHORITY-AND-EFFECTS",
+        "outcome": "Codex, PX, and extension operations share one explicit authority/effect contract with no nested competing executor.",
+        "status": "complete"
+      },
+      {
+        "id": "A07-BOUNDED-RUNTIME-EFFICIENCY",
+        "outcome": "The runtime-efficiency architecture is implemented with measurable startup, work, cache, cancellation, and observability budgets.",
+        "status": "complete"
+      },
+      {
+        "id": "A08-CURRENT-TREE-CERTIFICATION",
+        "outcome": "All state, maps, evidence, tests, distribution projections, and acceptance hashes agree on one unchanged product digest.",
+        "status": "active"
       }
     ],
     "milestones": [

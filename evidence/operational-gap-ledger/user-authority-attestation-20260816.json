@@ -1,0 +1,12 @@
+{
+  "schema_version": "px.user-authority-attestation/1.0",
+  "attested_by": "codex-host",
+  "conversation_reference": "conversation:user-approved-full-repairs",
+  "user_message_exact": "I approve, go ahead",
+  "scope": "Repository repairs already requested in the active Pacify-X conversation.",
+  "historical_card_ids": ["PX-OS-068", "PX-OS-069", "PX-OS-094"],
+  "limitations": [
+    "This is a local host attestation from retained conversation context, not a provider-signed transcript export.",
+    "It proves only the recorded user authority claim and does not prove implementation, verification, or completion."
+  ]
+}

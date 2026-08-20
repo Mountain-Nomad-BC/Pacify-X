@@ -1,0 +1,65 @@
+{
+  "dependencies": [
+    "certify-skeptical-engineering"
+  ],
+  "domain": "theory-induction",
+  "failure_modes": [
+    "semantic soup",
+    "abstraction for aesthetics",
+    "held-out leakage",
+    "lowest-common-denominator sludge"
+  ],
+  "formula_refs": [
+    "theory-generalization-score",
+    "counterexample-rate"
+  ],
+  "id": "theory-validation-gate",
+  "inputs": [
+    "capability/paper/trace corpus",
+    "interpretable features",
+    "held-out cases and counterexamples"
+  ],
+  "invariants": [
+    "Clusters and theories remain proposals until validated.",
+    "Specialized children and source distinctions are preserved.",
+    "Elegant abstraction never outranks failed evidence."
+  ],
+  "outputs": [
+    "clusters or shared mechanism",
+    "meta-capability proposal",
+    "held-out validation disposition"
+  ],
+  "procedure": [
+    "Build interpretable multi-view features.",
+    "Cluster conservatively and preserve outliers.",
+    "Extract the smallest useful shared mechanism and variant dimensions.",
+    "Propose an abstraction only when it measurably reduces duplication.",
+    "Test on held-out domains, counterexamples, and competing taxonomies."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Test induced concepts and meta-capabilities against held-out domains, counterexamples, alternative taxonomies, and explicit falsifiers before admission.",
+  "title": "Theory Validation Gate",
+  "version": "1.0.0",
+  "when_to_use": "Use before promoting an inferred abstraction into canonical architecture."
+}

@@ -1,0 +1,10 @@
+{
+  "active_gap_id": "PX-OS-062",
+  "learned": "The deterministic canonicalizer removed 132 legacy selector branches already owned by modular styles, reducing dashboard.css by 14,711 bytes while retaining unique legacy rules. The zero baseline was not changed.",
+  "next_action": "Verify canonicalizer idempotence, CSS audit counts, selector ownership test, full stateful browser walk, forced-colors, and responsive reflow.",
+  "unresolved_branch_gap_ids": ["PX-OS-062"],
+  "evidence": [
+    {"claim": "Canonicalizer write completed under admission 5010.", "reference": "extension/scripts/deduplicate-legacy-css.js; extension/media/dashboard.css"},
+    {"claim": "Transformation reported 132 removed selector branches and 90,108 to 75,397 bytes.", "reference": "node extension/scripts/deduplicate-legacy-css.js --write"}
+  ]
+}

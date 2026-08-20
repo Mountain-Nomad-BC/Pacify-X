@@ -1,0 +1,48 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "O06",
+  "status": "accepted",
+  "recorded_at": "2026-08-18T14:11:01.049315+00:00",
+  "claim": "Every admitted child-process launch is authority-gated, registered before execution, output-bounded, deadline- and cancellation-controlled, tree-owned where the operating system permits, and restart-reconciled only after process identity proof.",
+  "artifacts": [
+    {
+      "path": "runtime/process_supervisor.py",
+      "sha256": "ee6cfc15ea079f5917566bd32cefec68b05384a2422d4c20bb44f0fe07b1c5e9"
+    },
+    {
+      "path": "runtime/resource_lifecycle.py",
+      "sha256": "109c09ae1bf0b964dcaf2bfa4af815fe3b8d99a21e1bcba1c2f605d8cf4e7313"
+    },
+    {
+      "path": "tests/test_process_supervisor.py",
+      "sha256": "1ec9df4416733340c3bd1e9fd115e05bd7731e27ace8a4b31aec189cf59f6c24"
+    }
+  ],
+  "verification": [
+    {
+      "command": "python -m pytest tests/test_process_supervisor.py tests/test_resource_lifecycle.py -q",
+      "result": "24 passed independently"
+    },
+    {
+      "command": "ruff check focused O06 files",
+      "result": "passed"
+    },
+    {
+      "command": "python -m runtime.cli validate",
+      "result": "valid=true"
+    }
+  ],
+  "acceptance": {
+    "pre_execution_registration": true,
+    "windows_job_object_containment": true,
+    "posix_process_group_and_identity_tracking": true,
+    "startup_idle_total_and_shutdown_budgets": true,
+    "bounded_concurrent_output": true,
+    "cancellation_and_restart_reconciliation": true,
+    "shell_execution": false,
+    "command_environment_or_output_persisted": false
+  },
+  "limitations": [
+    "On POSIX, a hostile daemon that deliberately escapes its session requires a separately admitted cgroup or PID-namespace backend for Windows-Job-Object-equivalent kernel containment."
+  ]
+}

@@ -12,14 +12,30 @@ build/
 dist/
 *.egg-info/
 *.whl
+extension/node_modules/
+extension/dist/
+extension/.vscode-test/
+extension/evidence/
+extension/tests/artifacts/
 
 # Virtual environments and local environment files
 .venv/
+.venv*/
 venv/
 env/
+Python/
 .env
 .env.*
 !.env.example
+
+# PACIFY-X local runtime custody (retained and audited outside source control)
+.engineering-bootstrap/operation-bus/
+.engineering-bootstrap/coordination/activity/
+.engineering-bootstrap/project-map-history/
+.engineering-bootstrap/project-map-history-archives/
+.engineering-bootstrap/project-map-lock-history/
+.engineering-bootstrap/resource-lifecycle/
+.engineering-bootstrap/project-map/retrieval-index.json
 
 # IDE and operating-system residue not owned by this framework
 .idea/
@@ -36,6 +52,9 @@ Desktop.ini
 # Recoverable intake/quarantine belongs outside the deployable product
 temp/
 temp_*/
+.tmp/
+.tmp_*/
+tmp_*.json
+docs/tmp_*.md
 quarantine/
 repo_quarantine/
-

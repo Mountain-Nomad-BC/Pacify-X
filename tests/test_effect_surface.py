@@ -62,6 +62,17 @@ def test_registry_cannot_claim_removed_effect_surface() -> None:
     assert not validate_effect_surfaces(root)["valid"]
 
 
+def test_unadmitted_hard_delete_surface_fails_closed() -> None:
+    root = _copy_effect_fixture(Path(tempfile.mkdtemp()))
+    target = root / "runtime/unsafe_delete.py"
+    target.write_text(
+        "from pathlib import Path\nPath('unowned').unlink()\n", encoding="utf-8"
+    )
+    result = validate_effect_surfaces(root)
+    assert not result["valid"]
+    assert any("hard-delete surface is prohibited" in item for item in result["errors"])
+
+
 def test_popen_without_bounded_communication_fails_closed() -> None:
     root = _copy_effect_fixture(Path(tempfile.mkdtemp()))
     target = root / "runtime/unbounded_process.py"
@@ -72,3 +83,8 @@ def test_popen_without_bounded_communication_fails_closed() -> None:
     result = validate_effect_surfaces(root)
     assert not result["valid"]
     assert any("process call lacks timeout" in item for item in result["errors"])
+
+
+def test_effect_identity_is_a_source_locator_not_an_ast_dump() -> None:
+    semantic = "runtime/example.py:3:4:subprocess.run"
+    assert __import__("hashlib").sha256(semantic.encode()).hexdigest()[:20] == "c40e855839d0987c2742"

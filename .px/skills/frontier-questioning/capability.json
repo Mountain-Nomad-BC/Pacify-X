@@ -1,0 +1,37 @@
+{
+  "admission_record": "frontier-questioning",
+  "body_sha256": "76b0d8dd66a6bf68a3c67e3a41bc27e2b1dbcfd5f5db695ccae5c900810e1002",
+  "contract": {
+    "available": true,
+    "sha256": "ef0753b36a5b6d74beb9098820d64dbd632c6f1521edd2af722dd093f172a626",
+    "source": "registry/skill_packages/frontier-questioning.json"
+  },
+  "description": "Interrogate a plan by maintaining a question frontier instead of asking random or repeated questions.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "frontier-questioning",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/frontier-questioning"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "engineering-reasoning",
+    "frontier",
+    "questioning"
+  ],
+  "version": "1.0.0"
+}

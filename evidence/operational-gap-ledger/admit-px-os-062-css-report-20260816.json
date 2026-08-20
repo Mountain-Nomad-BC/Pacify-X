@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-062",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005007",
+  "effect": "execute",
+  "scope": ["node extension/scripts/audit-dashboard-css.js exact-cross-file-report"],
+  "authority": "The registered CSS ownership gap authorizes read-only extraction of the exact duplicate-selector map.",
+  "expected_effect": "Produce every cross-file duplicate selector, scope, occurrence count, and owning file without changing CSS or baselines.",
+  "rollback": "Read-only audit extraction; retain the report as repair evidence.",
+  "evidence": [{"claim": "Immediate CSS ownership diagnostic checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005007"}]
+}

@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-936",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005003",
+  "effect": "write",
+  "scope": ["extension/tests/dashboard-e2e.test.js"],
+  "authority": "The registered browser contract-drift gap authorizes correction of the one ambiguous Settings parent selector.",
+  "expected_effect": "Mobile containment is measured against the policy switch's own panel while retaining the existing horizontal overflow and guardrail-grid checks.",
+  "rollback": "Single parent-selector refinement; revert explicitly if panel semantics change.",
+  "evidence": [{"claim": "Immediate Settings containment checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005003"}]
+}

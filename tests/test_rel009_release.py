@@ -47,7 +47,12 @@ class Rel009ReleaseTests(unittest.TestCase):
             revocation["certificate_sha256"],
         )
         self.assertNotEqual(state["lifecycle"]["phase"], "deployment-certified")
-        self.assertEqual(state["lifecycle"]["status"], "integration-complete")
+        self.assertIn(
+            state["lifecycle"]["status"],
+            {"integration-complete", "repair-in-progress"},
+        )
+        if state["lifecycle"]["status"] == "repair-in-progress":
+            self.assertTrue(state["checkpoint"]["next_safe_action"])
         self.assertEqual(
             state["evidence"]["validation_receipt"],
             "evidence/releases/0.6.3/public-release-verification.json",

@@ -1,0 +1,1617 @@
+{
+  "id": "GitHub.copilot-chat",
+  "name": "GitHub Copilot",
+  "version": "0.60.0",
+  "publisher": "GitHub",
+  "active": true,
+  "builtin": true,
+  "extension_kind": [],
+  "contribution_points": [
+    "chatAgents",
+    "chatParticipants",
+    "chatPromptFiles",
+    "chatSessions",
+    "chatSkills",
+    "chatViewsWelcome",
+    "commands",
+    "configuration",
+    "configurationDefaults",
+    "iconFonts",
+    "icons",
+    "interactiveSession",
+    "jsonValidation",
+    "keybindings",
+    "languageModelChatProviders",
+    "languageModelToolSets",
+    "languageModelTools",
+    "languages",
+    "mcpServerDefinitionProviders",
+    "menus",
+    "submenus",
+    "terminal",
+    "terminalQuickFixes",
+    "typescriptServerPlugins",
+    "views",
+    "viewsContainers",
+    "viewsWelcome",
+    "walkthroughs"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:chatAgents",
+      "kind": "chatAgents",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:chatParticipants",
+      "kind": "chatParticipants",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:chatPromptFiles",
+      "kind": "chatPromptFiles",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:chatSessions",
+      "kind": "chatSessions",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:chatSkills",
+      "kind": "chatSkills",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:chatViewsWelcome",
+      "kind": "chatViewsWelcome",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configurationDefaults",
+      "kind": "configurationDefaults",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:iconFonts",
+      "kind": "iconFonts",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:icons",
+      "kind": "icons",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:interactiveSession",
+      "kind": "interactiveSession",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languageModelChatProviders",
+      "kind": "languageModelChatProviders",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languageModelToolSets",
+      "kind": "languageModelToolSets",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languageModelTools",
+      "kind": "languageModelTools",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languages",
+      "kind": "languages",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:mcpServerDefinitionProviders",
+      "kind": "mcpServerDefinitionProviders",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:terminal",
+      "kind": "terminal",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:terminalQuickFixes",
+      "kind": "terminalQuickFixes",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:typescriptServerPlugins",
+      "kind": "typescriptServerPlugins",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "GitHub.copilot-chat",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "agents.github.copilot.cli.deleteSessions",
+      "invocation": "vscode.commands.executeCommand('agents.github.copilot.cli.deleteSessions', ...args)",
+      "title": "Delete...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "copilot.claude.agents",
+      "invocation": "vscode.commands.executeCommand('copilot.claude.agents', ...args)",
+      "title": "Manage Agents",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "copilot.claude.hooks",
+      "invocation": "vscode.commands.executeCommand('copilot.claude.hooks', ...args)",
+      "title": "Configure Hooks",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "copilot.claude.memory",
+      "invocation": "vscode.commands.executeCommand('copilot.claude.memory', ...args)",
+      "title": "Open Memory Files",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.buildRemoteWorkspaceIndex",
+      "invocation": "vscode.commands.executeCommand('github.copilot.buildRemoteWorkspaceIndex', ...args)",
+      "title": "Build Codebase Semantic Index",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot-chat.activated"
+    },
+    {
+      "id": "github.copilot.chat.applyCopilotCLIAgentSessionChanges",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.applyCopilotCLIAgentSessionChanges', ...args)",
+      "title": "Apply Changes to Workspace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress"
+    },
+    {
+      "id": "github.copilot.chat.applyCopilotCLIAgentSessionChanges.apply",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.applyCopilotCLIAgentSessionChanges.apply', ...args)",
+      "title": "Apply",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress"
+    },
+    {
+      "id": "github.copilot.chat.attachFile",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.attachFile', ...args)",
+      "title": "Add File to Chat",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.attachSelection",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.attachSelection', ...args)",
+      "title": "Add Selection to Chat",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.checkoutPullRequestReroute",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.checkoutPullRequestReroute', ...args)",
+      "title": "Checkout",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.clearTemporalContext",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.clearTemporalContext', ...args)",
+      "title": "Clear Temporal Context",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.cloudSessions.clearCaches",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.cloudSessions.clearCaches', ...args)",
+      "title": "Clear Cloud Agent Caches",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.cloudSessions.createPullRequestForTask",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.cloudSessions.createPullRequestForTask', ...args)",
+      "title": "Create Pull Request",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.cloudSessions.openPullRequestForTask",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.cloudSessions.openPullRequestForTask', ...args)",
+      "title": "Open Pull Request",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.cloudSessions.openRepository",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.cloudSessions.openRepository', ...args)",
+      "title": "Browse repositories...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.codeReview.run",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.codeReview.run', ...args)",
+      "title": "Run Code Review",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.chat.reviewDiff.enabled && !github.copilot.interactiveSession.disabled"
+    },
+    {
+      "id": "github.copilot.chat.compact",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.compact', ...args)",
+      "title": "Compact Conversation",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.completions.disable",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.completions.disable', ...args)",
+      "title": "Disable Inline Suggestions",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.extensionUnification.activated && github.copilot.activated && config.editor.inlineSuggest.enabled && github.copilot.completions.enabled"
+    },
+    {
+      "id": "github.copilot.chat.completions.enable",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.completions.enable', ...args)",
+      "title": "Enable Inline Suggestions",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.extensionUnification.activated && github.copilot.activated && !(config.editor.inlineSuggest.enabled && github.copilot.completions.enabled)"
+    },
+    {
+      "id": "github.copilot.chat.completions.toggle",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.completions.toggle', ...args)",
+      "title": "Toggle (Enable/Disable) Inline Suggestions",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.extensionUnification.activated && github.copilot.activated"
+    },
+    {
+      "id": "github.copilot.chat.copilotCLI.acceptDiff",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.copilotCLI.acceptDiff', ...args)",
+      "title": "Accept Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.chat.copilotCLI.hasActiveDiff"
+    },
+    {
+      "id": "github.copilot.chat.copilotCLI.addFileReference",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.copilotCLI.addFileReference', ...args)",
+      "title": "Add File to Copilot CLI",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.chat.copilotCLI.hasSession"
+    },
+    {
+      "id": "github.copilot.chat.copilotCLI.addSelection",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.copilotCLI.addSelection', ...args)",
+      "title": "Add Selection to Copilot CLI",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.chat.copilotCLI.hasSession"
+    },
+    {
+      "id": "github.copilot.chat.copilotCLI.rejectDiff",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.copilotCLI.rejectDiff', ...args)",
+      "title": "Reject Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.chat.copilotCLI.hasActiveDiff"
+    },
+    {
+      "id": "github.copilot.chat.createDraftPullRequestCopilotCLIAgentSession.createDraftPR",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.createDraftPullRequestCopilotCLIAgentSession.createDraftPR', ...args)",
+      "title": "Create Draft Pull Request",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress && !sessions.hasGitOperationInProgress"
+    },
+    {
+      "id": "github.copilot.chat.createPullRequestCopilotCLIAgentSession.createPR",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.createPullRequestCopilotCLIAgentSession.createPR', ...args)",
+      "title": "Create Pull Request",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress && !sessions.hasGitOperationInProgress"
+    },
+    {
+      "id": "github.copilot.chat.debug.exportAllPromptLogsAsJson",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.debug.exportAllPromptLogsAsJson', ...args)",
+      "title": "Export All Prompt Logs as JSON...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.debug.exportLogItem",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.debug.exportLogItem', ...args)",
+      "title": "Export as...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.debug.exportPromptArchive",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.debug.exportPromptArchive', ...args)",
+      "title": "Export All as Archive...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.debug.exportPromptLogsAsJson",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.debug.exportPromptLogsAsJson', ...args)",
+      "title": "Export All as JSON...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.debug.hideElements",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.debug.hideElements', ...args)",
+      "title": "Hide Rendered Elements",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.debug.hideGhostRequests",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.debug.hideGhostRequests', ...args)",
+      "title": "Hide Ghost Requests",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.debug.hideNesRequests",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.debug.hideNesRequests', ...args)",
+      "title": "Hide NES Requests",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.debug.hideTools",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.debug.hideTools', ...args)",
+      "title": "Hide Tools",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.debug.showElements",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.debug.showElements', ...args)",
+      "title": "Show Rendered Elements",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.debug.showGhostRequests",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.debug.showGhostRequests', ...args)",
+      "title": "Show Ghost Requests",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.debug.showNesRequests",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.debug.showNesRequests', ...args)",
+      "title": "Show NES Requests",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.debug.showRawRequestBody",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.debug.showRawRequestBody', ...args)",
+      "title": "Show Raw Request Body",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.debug.showTools",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.debug.showTools', ...args)",
+      "title": "Show Tools",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.explain",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.explain', ...args)",
+      "title": "Explain",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!github.copilot.interactiveSession.disabled"
+    },
+    {
+      "id": "github.copilot.chat.explain.palette",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.explain.palette', ...args)",
+      "title": "Explain",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!github.copilot.interactiveSession.disabled && !editorReadonly"
+    },
+    {
+      "id": "github.copilot.chat.fix",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.fix', ...args)",
+      "title": "Fix",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!github.copilot.interactiveSession.disabled && !editorReadonly"
+    },
+    {
+      "id": "github.copilot.chat.generate",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.generate', ...args)",
+      "title": "Generate This",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!github.copilot.interactiveSession.disabled && !editorReadonly"
+    },
+    {
+      "id": "github.copilot.chat.generateAltText",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.generateAltText', ...args)",
+      "title": "Generate/Refine Alt Text",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.mcp.setup.check",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.mcp.setup.check', ...args)",
+      "title": "MCP Check: is supported",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.mcp.setup.flow",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.mcp.setup.flow', ...args)",
+      "title": "MCP Check: do prompts",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.mcp.setup.validatePackage",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.mcp.setup.validatePackage', ...args)",
+      "title": "MCP Check: validate package",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.mergeCopilotCLIAgentSessionChanges.merge",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.mergeCopilotCLIAgentSessionChanges.merge', ...args)",
+      "title": "Merge Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress"
+    },
+    {
+      "id": "github.copilot.chat.mergeCopilotCLIAgentSessionChanges.mergeAndSync",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.mergeCopilotCLIAgentSessionChanges.mergeAndSync', ...args)",
+      "title": "Merge Changes & Sync",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress"
+    },
+    {
+      "id": "github.copilot.chat.notebook.disableFollowCellExecution",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.notebook.disableFollowCellExecution', ...args)",
+      "title": "Disable Follow Cell Execution from Chat",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.notebook.enableFollowCellExecution",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.notebook.enableFollowCellExecution', ...args)",
+      "title": "Enable Follow Cell Execution from Chat",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.openModelPicker",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.openModelPicker', ...args)",
+      "title": "Change Completions Model",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.extensionUnification.activated && !isWeb && github.copilot.completions.hasMultipleModels"
+    },
+    {
+      "id": "github.copilot.chat.openSuggestionsPanel",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.openSuggestionsPanel', ...args)",
+      "title": "Open Completions Panel",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.extensionUnification.activated && !isWeb"
+    },
+    {
+      "id": "github.copilot.chat.openUserPreferences",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.openUserPreferences', ...args)",
+      "title": "Open User Preferences",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.github.copilot.chat.enableUserPreferences"
+    },
+    {
+      "id": "github.copilot.chat.otel.exportAgentTracesDB",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.otel.exportAgentTracesDB', ...args)",
+      "title": "Export Agent Traces DB",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.github.copilot.chat.otel.dbSpanExporter.enabled"
+    },
+    {
+      "id": "github.copilot.chat.otel.statusActive",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.otel.statusActive', ...args)",
+      "title": "OpenTelemetry",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.rerunWithCopilotDebug",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.rerunWithCopilotDebug', ...args)",
+      "title": "Debug Last Terminal Command",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.review",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review', ...args)",
+      "title": "Review",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.github.copilot.chat.reviewSelection.enabled && !github.copilot.interactiveSession.disabled"
+    },
+    {
+      "id": "github.copilot.chat.review.apply",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.apply', ...args)",
+      "title": "Apply",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "commentThread =~ /hasSuggestion/"
+    },
+    {
+      "id": "github.copilot.chat.review.applyAndNext",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.applyAndNext', ...args)",
+      "title": "Apply and Go to Next",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "commentThread =~ /hasSuggestion/"
+    },
+    {
+      "id": "github.copilot.chat.review.changes",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.changes', ...args)",
+      "title": "Code Review - Uncommitted Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.chat.reviewDiff.enabled && !github.copilot.interactiveSession.disabled"
+    },
+    {
+      "id": "github.copilot.chat.review.continueInChat",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.continueInChat', ...args)",
+      "title": "View in Chat Panel",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.review.continueInInlineChat",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.continueInInlineChat', ...args)",
+      "title": "Discard and Copy to Inline Chat",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.review.discard",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.discard', ...args)",
+      "title": "Discard",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.review.discardAll",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.discardAll', ...args)",
+      "title": "Discard All",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.review.discardAndNext",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.discardAndNext', ...args)",
+      "title": "Discard and Go to Next",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.review.markHelpful",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.markHelpful', ...args)",
+      "title": "Helpful",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!(commentThread =~ /markedAsHelpful/)"
+    },
+    {
+      "id": "github.copilot.chat.review.markUnhelpful",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.markUnhelpful', ...args)",
+      "title": "Unhelpful",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!(commentThread =~ /markedAsUnhelpful/)"
+    },
+    {
+      "id": "github.copilot.chat.review.next",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.next', ...args)",
+      "title": "Next Suggestion",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.review.previous",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.previous', ...args)",
+      "title": "Previous Suggestion",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.review.stagedChanges",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.stagedChanges', ...args)",
+      "title": "Code Review - Staged Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.chat.reviewDiff.enabled && !github.copilot.interactiveSession.disabled"
+    },
+    {
+      "id": "github.copilot.chat.review.stagedFileChange",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.stagedFileChange', ...args)",
+      "title": "Review Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.chat.reviewDiff.enabled && !github.copilot.interactiveSession.disabled"
+    },
+    {
+      "id": "github.copilot.chat.review.unstagedChanges",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.unstagedChanges', ...args)",
+      "title": "Code Review - Unstaged Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.chat.reviewDiff.enabled && !github.copilot.interactiveSession.disabled"
+    },
+    {
+      "id": "github.copilot.chat.review.unstagedFileChange",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.review.unstagedFileChange', ...args)",
+      "title": "Review Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.chat.reviewDiff.enabled && !github.copilot.interactiveSession.disabled"
+    },
+    {
+      "id": "github.copilot.chat.startCopilotDebugCommand",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.startCopilotDebugCommand', ...args)",
+      "title": "Start Copilot Debug",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.toggleStatusMenu",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.toggleStatusMenu', ...args)",
+      "title": "Open Status Menu",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.extensionUnification.activated"
+    },
+    {
+      "id": "github.copilot.chat.tools.memory.clearMemories",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.tools.memory.clearMemories', ...args)",
+      "title": "Clear All Memory Files",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.tools.memory.showMemories",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.tools.memory.showMemories', ...args)",
+      "title": "Show Memory Files",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chat.triggerPermissiveSignIn",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chat.triggerPermissiveSignIn', ...args)",
+      "title": "Login to GitHub with Full Permissions",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.chronicle.reindex",
+      "invocation": "vscode.commands.executeCommand('github.copilot.chronicle.reindex', ...args)",
+      "title": "Reindex Sessions",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.sessionSearch.enabled"
+    },
+    {
+      "id": "github.copilot.claude.sessions.commit",
+      "invocation": "vscode.commands.executeCommand('github.copilot.claude.sessions.commit', ...args)",
+      "title": "Commit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress"
+    },
+    {
+      "id": "github.copilot.claude.sessions.commitAndSync",
+      "invocation": "vscode.commands.executeCommand('github.copilot.claude.sessions.commitAndSync', ...args)",
+      "title": "Commit and Sync",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress"
+    },
+    {
+      "id": "github.copilot.claude.sessions.initializeRepository",
+      "invocation": "vscode.commands.executeCommand('github.copilot.claude.sessions.initializeRepository', ...args)",
+      "title": "Initialize Repository",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress"
+    },
+    {
+      "id": "github.copilot.claude.sessions.rename",
+      "invocation": "vscode.commands.executeCommand('github.copilot.claude.sessions.rename', ...args)",
+      "title": "Rename...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.claude.sessions.sync",
+      "invocation": "vscode.commands.executeCommand('github.copilot.claude.sessions.sync', ...args)",
+      "title": "Sync Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress"
+    },
+    {
+      "id": "github.copilot.cli.newSession",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cli.newSession', ...args)",
+      "title": "New Copilot CLI Session",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cli.newSessionToSide",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cli.newSessionToSide', ...args)",
+      "title": "New Copilot CLI Session to the Side",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cli.openInCopilotCLI",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cli.openInCopilotCLI', ...args)",
+      "title": "Open in GitHub Copilot CLI",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cli.sessions.commitToRepository",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cli.sessions.commitToRepository', ...args)",
+      "title": "Commit File to Repository",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cli.sessions.commitToWorktree",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cli.sessions.commitToWorktree', ...args)",
+      "title": "Commit File to Worktree",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cli.sessions.copyWorktreeBranchName",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cli.sessions.copyWorktreeBranchName', ...args)",
+      "title": "Copy Session Branch Name",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cli.sessions.delete",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cli.sessions.delete', ...args)",
+      "title": "Delete...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cli.sessions.openRepository",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cli.sessions.openRepository', ...args)",
+      "title": "Open Repository",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cli.sessions.openWorktreeInNewWindow",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cli.sessions.openWorktreeInNewWindow', ...args)",
+      "title": "Open Session in New Window",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cli.sessions.openWorktreeInTerminal",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cli.sessions.openWorktreeInTerminal', ...args)",
+      "title": "Open Session in Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cli.sessions.rename",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cli.sessions.rename', ...args)",
+      "title": "Rename...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cli.sessions.resumeInTerminal",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cli.sessions.resumeInTerminal', ...args)",
+      "title": "Resume in Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cli.sessions.setTitle",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cli.sessions.setTitle', ...args)",
+      "title": "Set Title",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cloud.resetWorkspaceConfirmations",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cloud.resetWorkspaceConfirmations', ...args)",
+      "title": "Reset Cloud Agent Workspace Confirmations",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cloud.sessions.installPRExtension",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cloud.sessions.installPRExtension', ...args)",
+      "title": "Install GitHub Pull Request Extension",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cloud.sessions.openInBrowser",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cloud.sessions.openInBrowser', ...args)",
+      "title": "Open in Browser",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.cloud.sessions.proxy.closeChatSessionPullRequest",
+      "invocation": "vscode.commands.executeCommand('github.copilot.cloud.sessions.proxy.closeChatSessionPullRequest', ...args)",
+      "title": "Close Pull Request",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.debug.collectDiagnostics",
+      "invocation": "vscode.commands.executeCommand('github.copilot.debug.collectDiagnostics', ...args)",
+      "title": "Chat Diagnostics",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.debug.collectWorkspaceIndexDiagnostics",
+      "invocation": "vscode.commands.executeCommand('github.copilot.debug.collectWorkspaceIndexDiagnostics', ...args)",
+      "title": "Collect Workspace Index Diagnostics",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.debug.extensionState",
+      "invocation": "vscode.commands.executeCommand('github.copilot.debug.extensionState', ...args)",
+      "title": "Log Extension State",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.debug.generateInlineEditTests",
+      "invocation": "vscode.commands.executeCommand('github.copilot.debug.generateInlineEditTests', ...args)",
+      "title": "Generate Inline Edit Tests",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "resourceScheme == 'ccreq'"
+    },
+    {
+      "id": "github.copilot.debug.generateSTest",
+      "invocation": "vscode.commands.executeCommand('github.copilot.debug.generateSTest', ...args)",
+      "title": "Generate STest From Last Chat Request",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.debugReportFeedback"
+    },
+    {
+      "id": "github.copilot.debug.inlineEdit.clearCache",
+      "invocation": "vscode.commands.executeCommand('github.copilot.debug.inlineEdit.clearCache', ...args)",
+      "title": "Clear Inline Suggestion Cache",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.debug.inlineEdit.reportNotebookNESIssue",
+      "invocation": "vscode.commands.executeCommand('github.copilot.debug.inlineEdit.reportNotebookNESIssue', ...args)",
+      "title": "Report Notebook Inline Suggestion Issue",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.github.copilot.chat.advanced.notebook.alternativeNESFormat.enabled || github.copilot.chat.enableEnhancedNotebookNES"
+    },
+    {
+      "id": "github.copilot.debug.resetVirtualToolGroups",
+      "invocation": "vscode.commands.executeCommand('github.copilot.debug.resetVirtualToolGroups', ...args)",
+      "title": "Reset Virtual Tool Groups",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.debug.showChatLogView",
+      "invocation": "vscode.commands.executeCommand('github.copilot.debug.showChatLogView', ...args)",
+      "title": "Show Chat Debug View",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.debug.showContextInspectorView",
+      "invocation": "vscode.commands.executeCommand('github.copilot.debug.showContextInspectorView', ...args)",
+      "title": "Inspect Language Context",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.debug.showOutputChannel",
+      "invocation": "vscode.commands.executeCommand('github.copilot.debug.showOutputChannel', ...args)",
+      "title": "Show Output Channel",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.debug.togglePowerSaveBlocker",
+      "invocation": "vscode.commands.executeCommand('github.copilot.debug.togglePowerSaveBlocker', ...args)",
+      "title": "Toggle Power Save Blocker",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.debug.validateNesRename",
+      "invocation": "vscode.commands.executeCommand('github.copilot.debug.validateNesRename', ...args)",
+      "title": "Validate NES Rename",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.debug.workbenchState",
+      "invocation": "vscode.commands.executeCommand('github.copilot.debug.workbenchState', ...args)",
+      "title": "Log Workbench State",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.deleteExternalIngestWorkspaceIndex",
+      "invocation": "vscode.commands.executeCommand('github.copilot.deleteExternalIngestWorkspaceIndex', ...args)",
+      "title": "Delete External Ingest Codebase Index",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot-chat.activated && !github.copilot.blackbirdExternalIndexingDisabled"
+    },
+    {
+      "id": "github.copilot.devcontainer.generateDevContainerConfig",
+      "invocation": "vscode.commands.executeCommand('github.copilot.devcontainer.generateDevContainerConfig', ...args)",
+      "title": "Generate Dev Container Configuration",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.git.generateCommitMessage",
+      "invocation": "vscode.commands.executeCommand('github.copilot.git.generateCommitMessage', ...args)",
+      "title": "Generate Commit Message",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!github.copilot.interactiveSession.disabled"
+    },
+    {
+      "id": "github.copilot.git.resolveMergeConflicts",
+      "invocation": "vscode.commands.executeCommand('github.copilot.git.resolveMergeConflicts', ...args)",
+      "title": "Resolve Conflicts with AI",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!github.copilot.interactiveSession.disabled"
+    },
+    {
+      "id": "github.copilot.interactiveSession.feedback",
+      "invocation": "vscode.commands.executeCommand('github.copilot.interactiveSession.feedback', ...args)",
+      "title": "Send Chat Feedback",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot-chat.activated && !github.copilot.interactiveSession.disabled"
+    },
+    {
+      "id": "github.copilot.nes.captureExpected.abort",
+      "invocation": "vscode.commands.executeCommand('github.copilot.nes.captureExpected.abort', ...args)",
+      "title": "Cancel Expected Edit Capture",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.nes.captureExpected.confirm",
+      "invocation": "vscode.commands.executeCommand('github.copilot.nes.captureExpected.confirm', ...args)",
+      "title": "Confirm and Save Expected Edit Capture",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.nes.captureExpected.start",
+      "invocation": "vscode.commands.executeCommand('github.copilot.nes.captureExpected.start', ...args)",
+      "title": "Record Expected Edit (NES)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.nes.captureExpected.submit",
+      "invocation": "vscode.commands.executeCommand('github.copilot.nes.captureExpected.submit', ...args)",
+      "title": "Submit NES Captures",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.open.walkthrough",
+      "invocation": "vscode.commands.executeCommand('github.copilot.open.walkthrough', ...args)",
+      "title": "Open Walkthrough",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.report",
+      "invocation": "vscode.commands.executeCommand('github.copilot.report', ...args)",
+      "title": "Report Issue",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.search.feedback",
+      "invocation": "vscode.commands.executeCommand('github.copilot.search.feedback', ...args)",
+      "title": "Feedback",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!github.copilot.search.feedback.sent"
+    },
+    {
+      "id": "github.copilot.search.markHelpful",
+      "invocation": "vscode.commands.executeCommand('github.copilot.search.markHelpful', ...args)",
+      "title": "Helpful",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!github.copilot.search.feedback.sent"
+    },
+    {
+      "id": "github.copilot.search.markUnhelpful",
+      "invocation": "vscode.commands.executeCommand('github.copilot.search.markUnhelpful', ...args)",
+      "title": "Unhelpful",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!github.copilot.search.feedback.sent"
+    },
+    {
+      "id": "github.copilot.sessions.commit",
+      "invocation": "vscode.commands.executeCommand('github.copilot.sessions.commit', ...args)",
+      "title": "Commit Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress && !sessions.hasGitOperationInProgress"
+    },
+    {
+      "id": "github.copilot.sessions.commitAndSync",
+      "invocation": "vscode.commands.executeCommand('github.copilot.sessions.commitAndSync', ...args)",
+      "title": "Commit and Sync Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress && !sessions.hasGitOperationInProgress"
+    },
+    {
+      "id": "github.copilot.sessions.discardChanges",
+      "invocation": "vscode.commands.executeCommand('github.copilot.sessions.discardChanges', ...args)",
+      "title": "Discard Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress"
+    },
+    {
+      "id": "github.copilot.sessions.initializeRepository",
+      "invocation": "vscode.commands.executeCommand('github.copilot.sessions.initializeRepository', ...args)",
+      "title": "Initialize Repository",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress"
+    },
+    {
+      "id": "github.copilot.sessions.refreshChanges",
+      "invocation": "vscode.commands.executeCommand('github.copilot.sessions.refreshChanges', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.sessions.sync",
+      "invocation": "vscode.commands.executeCommand('github.copilot.sessions.sync', ...args)",
+      "title": "Sync Changes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!chatSessionRequestInProgress && !sessions.hasGitOperationInProgress"
+    },
+    {
+      "id": "github.copilot.sessionSync.deleteSessions",
+      "invocation": "vscode.commands.executeCommand('github.copilot.sessionSync.deleteSessions', ...args)",
+      "title": "Delete Session Sync Data",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "github.copilot.sessionSearch.enabled && config.chat.sessionSync.enabled"
+    },
+    {
+      "id": "github.copilot.terminal.explainTerminalLastCommand",
+      "invocation": "vscode.commands.executeCommand('github.copilot.terminal.explainTerminalLastCommand', ...args)",
+      "title": "Explain Last Terminal Command",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.tests.fixTestFailure",
+      "invocation": "vscode.commands.executeCommand('github.copilot.tests.fixTestFailure', ...args)",
+      "title": "Fix Test Failure",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copilot.tests.fixTestFailure.fromInline",
+      "invocation": "vscode.commands.executeCommand('github.copilot.tests.fixTestFailure.fromInline', ...args)",
+      "title": "Fix Test Failure",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onFileSystem:ccreq",
+    "onFileSystem:ccsettings",
+    "onLanguageModelChat:copilot",
+    "onStartupFinished",
+    "onUri"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "GitHub.copilot-chat",
+    "capabilities": [
+      "contribution:chatAgents",
+      "contribution:chatParticipants",
+      "contribution:chatPromptFiles",
+      "contribution:chatSessions",
+      "contribution:chatSkills",
+      "contribution:chatViewsWelcome",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:configurationDefaults",
+      "contribution:iconFonts",
+      "contribution:icons",
+      "contribution:interactiveSession",
+      "contribution:jsonValidation",
+      "contribution:keybindings",
+      "contribution:languageModelChatProviders",
+      "contribution:languageModelToolSets",
+      "contribution:languageModelTools",
+      "contribution:languages",
+      "contribution:mcpServerDefinitionProviders",
+      "contribution:menus",
+      "contribution:submenus",
+      "contribution:terminal",
+      "contribution:terminalQuickFixes",
+      "contribution:typescriptServerPlugins",
+      "contribution:views",
+      "contribution:viewsContainers",
+      "contribution:viewsWelcome",
+      "contribution:walkthroughs"
+    ],
+    "interface": [
+      "agents.github.copilot.cli.deleteSessions",
+      "copilot.claude.agents",
+      "copilot.claude.hooks",
+      "copilot.claude.memory",
+      "github.copilot.buildRemoteWorkspaceIndex",
+      "github.copilot.chat.applyCopilotCLIAgentSessionChanges",
+      "github.copilot.chat.applyCopilotCLIAgentSessionChanges.apply",
+      "github.copilot.chat.attachFile",
+      "github.copilot.chat.attachSelection",
+      "github.copilot.chat.checkoutPullRequestReroute",
+      "github.copilot.chat.clearTemporalContext",
+      "github.copilot.chat.cloudSessions.clearCaches",
+      "github.copilot.chat.cloudSessions.createPullRequestForTask",
+      "github.copilot.chat.cloudSessions.openPullRequestForTask",
+      "github.copilot.chat.cloudSessions.openRepository",
+      "github.copilot.chat.codeReview.run",
+      "github.copilot.chat.compact",
+      "github.copilot.chat.completions.disable",
+      "github.copilot.chat.completions.enable",
+      "github.copilot.chat.completions.toggle",
+      "github.copilot.chat.copilotCLI.acceptDiff",
+      "github.copilot.chat.copilotCLI.addFileReference",
+      "github.copilot.chat.copilotCLI.addSelection",
+      "github.copilot.chat.copilotCLI.rejectDiff",
+      "github.copilot.chat.createDraftPullRequestCopilotCLIAgentSession.createDraftPR",
+      "github.copilot.chat.createPullRequestCopilotCLIAgentSession.createPR",
+      "github.copilot.chat.debug.exportAllPromptLogsAsJson",
+      "github.copilot.chat.debug.exportLogItem",
+      "github.copilot.chat.debug.exportPromptArchive",
+      "github.copilot.chat.debug.exportPromptLogsAsJson",
+      "github.copilot.chat.debug.hideElements",
+      "github.copilot.chat.debug.hideGhostRequests",
+      "github.copilot.chat.debug.hideNesRequests",
+      "github.copilot.chat.debug.hideTools",
+      "github.copilot.chat.debug.showElements",
+      "github.copilot.chat.debug.showGhostRequests",
+      "github.copilot.chat.debug.showNesRequests",
+      "github.copilot.chat.debug.showRawRequestBody",
+      "github.copilot.chat.debug.showTools",
+      "github.copilot.chat.explain",
+      "github.copilot.chat.explain.palette",
+      "github.copilot.chat.fix",
+      "github.copilot.chat.generate",
+      "github.copilot.chat.generateAltText",
+      "github.copilot.chat.mcp.setup.check",
+      "github.copilot.chat.mcp.setup.flow",
+      "github.copilot.chat.mcp.setup.validatePackage",
+      "github.copilot.chat.mergeCopilotCLIAgentSessionChanges.merge",
+      "github.copilot.chat.mergeCopilotCLIAgentSessionChanges.mergeAndSync",
+      "github.copilot.chat.notebook.disableFollowCellExecution",
+      "github.copilot.chat.notebook.enableFollowCellExecution",
+      "github.copilot.chat.openModelPicker",
+      "github.copilot.chat.openSuggestionsPanel",
+      "github.copilot.chat.openUserPreferences",
+      "github.copilot.chat.otel.exportAgentTracesDB",
+      "github.copilot.chat.otel.statusActive",
+      "github.copilot.chat.rerunWithCopilotDebug",
+      "github.copilot.chat.review",
+      "github.copilot.chat.review.apply",
+      "github.copilot.chat.review.applyAndNext",
+      "github.copilot.chat.review.changes",
+      "github.copilot.chat.review.continueInChat",
+      "github.copilot.chat.review.continueInInlineChat",
+      "github.copilot.chat.review.discard",
+      "github.copilot.chat.review.discardAll",
+      "github.copilot.chat.review.discardAndNext",
+      "github.copilot.chat.review.markHelpful",
+      "github.copilot.chat.review.markUnhelpful",
+      "github.copilot.chat.review.next",
+      "github.copilot.chat.review.previous",
+      "github.copilot.chat.review.stagedChanges",
+      "github.copilot.chat.review.stagedFileChange",
+      "github.copilot.chat.review.unstagedChanges",
+      "github.copilot.chat.review.unstagedFileChange",
+      "github.copilot.chat.startCopilotDebugCommand",
+      "github.copilot.chat.toggleStatusMenu",
+      "github.copilot.chat.tools.memory.clearMemories",
+      "github.copilot.chat.tools.memory.showMemories",
+      "github.copilot.chat.triggerPermissiveSignIn",
+      "github.copilot.chronicle.reindex",
+      "github.copilot.claude.sessions.commit",
+      "github.copilot.claude.sessions.commitAndSync",
+      "github.copilot.claude.sessions.initializeRepository",
+      "github.copilot.claude.sessions.rename",
+      "github.copilot.claude.sessions.sync",
+      "github.copilot.cli.newSession",
+      "github.copilot.cli.newSessionToSide",
+      "github.copilot.cli.openInCopilotCLI",
+      "github.copilot.cli.sessions.commitToRepository",
+      "github.copilot.cli.sessions.commitToWorktree",
+      "github.copilot.cli.sessions.copyWorktreeBranchName",
+      "github.copilot.cli.sessions.delete",
+      "github.copilot.cli.sessions.openRepository",
+      "github.copilot.cli.sessions.openWorktreeInNewWindow",
+      "github.copilot.cli.sessions.openWorktreeInTerminal",
+      "github.copilot.cli.sessions.rename",
+      "github.copilot.cli.sessions.resumeInTerminal",
+      "github.copilot.cli.sessions.setTitle",
+      "github.copilot.cloud.resetWorkspaceConfirmations",
+      "github.copilot.cloud.sessions.installPRExtension",
+      "github.copilot.cloud.sessions.openInBrowser",
+      "github.copilot.cloud.sessions.proxy.closeChatSessionPullRequest",
+      "github.copilot.debug.collectDiagnostics",
+      "github.copilot.debug.collectWorkspaceIndexDiagnostics",
+      "github.copilot.debug.extensionState",
+      "github.copilot.debug.generateInlineEditTests",
+      "github.copilot.debug.generateSTest",
+      "github.copilot.debug.inlineEdit.clearCache",
+      "github.copilot.debug.inlineEdit.reportNotebookNESIssue",
+      "github.copilot.debug.resetVirtualToolGroups",
+      "github.copilot.debug.showChatLogView",
+      "github.copilot.debug.showContextInspectorView",
+      "github.copilot.debug.showOutputChannel",
+      "github.copilot.debug.togglePowerSaveBlocker",
+      "github.copilot.debug.validateNesRename",
+      "github.copilot.debug.workbenchState",
+      "github.copilot.deleteExternalIngestWorkspaceIndex",
+      "github.copilot.devcontainer.generateDevContainerConfig",
+      "github.copilot.git.generateCommitMessage",
+      "github.copilot.git.resolveMergeConflicts",
+      "github.copilot.interactiveSession.feedback",
+      "github.copilot.nes.captureExpected.abort",
+      "github.copilot.nes.captureExpected.confirm",
+      "github.copilot.nes.captureExpected.start",
+      "github.copilot.nes.captureExpected.submit",
+      "github.copilot.open.walkthrough",
+      "github.copilot.report",
+      "github.copilot.search.feedback",
+      "github.copilot.search.markHelpful",
+      "github.copilot.search.markUnhelpful",
+      "github.copilot.sessions.commit",
+      "github.copilot.sessions.commitAndSync",
+      "github.copilot.sessions.discardChanges",
+      "github.copilot.sessions.initializeRepository",
+      "github.copilot.sessions.refreshChanges",
+      "github.copilot.sessions.sync",
+      "github.copilot.sessionSync.deleteSessions",
+      "github.copilot.terminal.explainTerminalLastCommand",
+      "github.copilot.tests.fixTestFailure",
+      "github.copilot.tests.fixTestFailure.fromInline"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

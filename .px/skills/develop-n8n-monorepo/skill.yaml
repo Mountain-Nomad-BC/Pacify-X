@@ -1,0 +1,39 @@
+{
+  "admission_record": "develop-n8n-monorepo",
+  "body_sha256": "5a5de52f4427c3c40fe8c5cb6459933ec2e1a61af78156d753c66dcf33d85f3b",
+  "contract": {
+    "available": true,
+    "sha256": "8a7d2a3145758b80dfe32b8d9ef68b94c0fc322bbf755e9f3cf4b2be51432219",
+    "source": "registry/skill_packages/develop-n8n-monorepo.json"
+  },
+  "description": "Work safely in the supplied n8n monorepo using repository-local agent rules, pnpm, package boundaries, and evidence gates.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "develop-n8n-monorepo",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/develop-n8n-monorepo"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "agents.md",
+    "monorepo",
+    "n8n",
+    "package-gates",
+    "pnpm"
+  ],
+  "version": "1.0.0"
+}

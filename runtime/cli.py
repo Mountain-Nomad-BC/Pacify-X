@@ -4,12 +4,74 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import asdict
+import hashlib
 import json
 from pathlib import Path
-import shutil
 import sys
+from typing import Mapping
 
 from .version import VERSION
+
+
+def _summarize_audit(scope: str, report: Mapping[str, object]) -> dict[str, object]:
+    """Return decision-useful audit metadata without hydrating large detail sets."""
+    summary: dict[str, object] = {
+        "schema_version": "px.audit-summary/1.0",
+        "scope": scope,
+        "valid": bool(report.get("valid")),
+        "release_open": report.get("release_open"),
+        "errors": list(report.get("errors", ()))[:100]
+        if isinstance(report.get("errors"), list)
+        else [],
+        "detail_mode": "rerun without --summary for the complete report",
+    }
+    for key in (
+        "category_count",
+        "required_audit_item_count",
+        "checked_file_count",
+        "record_count",
+        "artifact_count",
+    ):
+        value = report.get(key)
+        if isinstance(value, int) and not isinstance(value, bool):
+            summary[key] = value
+    for key in (
+        "categories",
+        "audit_items",
+        "files",
+        "duplicate_file_groups",
+        "duplicate_logic_groups",
+        "marker_findings",
+        "reachability_records",
+    ):
+        value = report.get(key)
+        if isinstance(value, (list, dict)):
+            summary[f"{key}_count"] = len(value)
+    hygiene = report.get("audit_hygiene")
+    if isinstance(hygiene, Mapping):
+        summary["audit_hygiene"] = dict(hygiene)
+    return summary
+
+
+def _prepare_certification_hygiene(root: Path, *, apply: bool) -> dict[str, object]:
+    """Remove startup bytecode from the active tree before owned certification."""
+    # `python -m runtime.cli` may compile the CLI before profile environment
+    # overrides exist. Stop any further writes, then move those startup caches
+    # into recoverable PX custody before spawning the no-bytecode child.
+    sys.dont_write_bytecode = True
+    from scripts.cleanup_python_caches import cleanup
+
+    return cleanup(
+        root,
+        apply=apply,
+        quarantine_root=(
+            root
+            / ".engineering-bootstrap"
+            / "quarantine"
+            / "disposable-cache"
+            / "certification-preflight"
+        ),
+    )
 
 
 def parser() -> argparse.ArgumentParser:
@@ -21,14 +83,45 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--version", action="version", version=f"%(prog)s {VERSION}")
     commands = result.add_subparsers(dest="command", required=True)
     commands.add_parser("validate")
-    commands.add_parser("doctor")
+    doctor = commands.add_parser("doctor")
+    doctor.add_argument("--format", choices=("json", "human"), default="json")
+    doctor.add_argument("--health", type=Path)
+    doctor.add_argument("--health-claims", type=Path)
+    doctor.add_argument("--max-age-seconds", type=int, default=300)
+    doctor.add_argument(
+        "--require",
+        choices=("syntax", "operable", "ready", "certification-ready"),
+        default="operable",
+        help="readiness contract that controls the process exit status",
+    )
+    doctor.add_argument(
+        "--write-receipt",
+        nargs="?",
+        const=Path(".engineering-bootstrap/diagnostics"),
+        type=Path,
+        metavar="DIR",
+        help="retain the diagnostic receipt below the project root (optional DIR)",
+    )
+    visibility = commands.add_parser("visibility")
+    visibility.add_argument("action", choices=("routes", "coverage", "publish"))
+    visibility.add_argument("--health", type=Path)
+    visibility.add_argument(
+        "--evidence-dir", type=Path, default=Path("evidence/punch-cards")
+    )
+    visibility.add_argument("--max-age-seconds", type=int, default=300)
+    visibility.add_argument("--bus-root", type=Path)
+    health = commands.add_parser("health")
+    health_commands = health.add_subparsers(dest="health_action", required=True)
+    health_commands.add_parser("catalog")
+    health_assess = health_commands.add_parser("assess")
+    health_assess.add_argument("--claims", type=Path, required=True)
+    health_assess.add_argument("--at")
+    health_assess.add_argument("--extension-projection", action="store_true")
     lifecycle = commands.add_parser("lifecycle")
     lifecycle.add_argument("action", choices=("status", "plan"))
     lifecycle.add_argument("--project", type=Path, required=True)
     resources = commands.add_parser("resources")
-    resource_commands = resources.add_subparsers(
-        dest="resources_action", required=True
-    )
+    resource_commands = resources.add_subparsers(dest="resources_action", required=True)
     resource_status_parser = resource_commands.add_parser("status")
     resource_status_parser.add_argument(
         "--ledger", type=Path, default=Path(".pacify-x/resource-ledger.json")
@@ -39,6 +132,14 @@ def parser() -> argparse.ArgumentParser:
         "--ledger", type=Path, default=Path(".pacify-x/resource-ledger.json")
     )
     resource_reconcile.add_argument("--apply", action="store_true")
+    recovery = commands.add_parser("recovery")
+    recovery_commands = recovery.add_subparsers(dest="recovery_action", required=True)
+    recovery_doctor = recovery_commands.add_parser("doctor")
+    recovery_doctor.add_argument("--project", type=Path, default=Path("."))
+    recovery_doctor.add_argument("--state", type=Path, action="append", default=[])
+    recovery_doctor.add_argument("--wal", type=Path, action="append", default=[])
+    recovery_doctor.add_argument("--ledger", type=Path)
+    recovery_doctor.add_argument("--apply", action="store_true")
     hardware = commands.add_parser("hardware")
     hardware_commands = hardware.add_subparsers(dest="hardware_action", required=True)
     hardware_report = hardware_commands.add_parser("report")
@@ -69,7 +170,9 @@ def parser() -> argparse.ArgumentParser:
     hardware_route.add_argument("--batchable", action="store_true")
     hardware_route.add_argument("--estimated-device-bytes", type=int)
     hardware_route.add_argument("--operation-id", default="cli-workload")
-    hardware_route.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
+    hardware_route.add_argument(
+        "--device", choices=("auto", "cpu", "cuda"), default="auto"
+    )
     hardware_route.add_argument("--benchmark", type=Path)
     hardware_route.add_argument("--no-external-probe", action="store_true")
     hardware_route.add_argument("--no-library-probe", action="store_true")
@@ -85,6 +188,13 @@ def parser() -> argparse.ArgumentParser:
     benchmark_compare = benchmark_commands.add_parser("compare")
     benchmark_compare.add_argument("--on-profile", type=Path, required=True)
     benchmark_compare.add_argument("--off-profile", type=Path, required=True)
+    placement = commands.add_parser("placement")
+    placement_commands = placement.add_subparsers(
+        dest="placement_action", required=True
+    )
+    for placement_operation in ("observe", "decide", "promote", "production", "reuse"):
+        placement_parser = placement_commands.add_parser(placement_operation)
+        placement_parser.add_argument("--input", type=Path, required=True)
     assurance = commands.add_parser("assurance")
     assurance_commands = assurance.add_subparsers(
         dest="assurance_action", required=True
@@ -113,6 +223,16 @@ def parser() -> argparse.ArgumentParser:
     )
     audit.add_argument("--strict-external-evidence", action="store_true")
     audit.add_argument("--write-report", action="store_true")
+    audit.add_argument(
+        "--summary",
+        action="store_true",
+        help="emit bounded decision metadata instead of the complete audit detail tree",
+    )
+    audit.add_argument(
+        "--apply-hygiene",
+        action="store_true",
+        help="move proven generated caches into recoverable quarantine before auditing",
+    )
     gates = commands.add_parser("gates")
     gate_commands = gates.add_subparsers(dest="gates_action", required=True)
     gate_run = gate_commands.add_parser("run")
@@ -171,6 +291,28 @@ def parser() -> argparse.ArgumentParser:
     hydrate = commands.add_parser("hydrate")
     hydrate.add_argument("--skill", required=True)
     hydrate.add_argument("--include-references", action="store_true")
+    skill_query = commands.add_parser("skill-query")
+    skill_query.add_argument("--goal", default="")
+    skill_query.add_argument("--skill-id")
+    skill_query.add_argument("--domain", action="append", default=[])
+    skill_query.add_argument("--grant", action="append", default=[])
+    skill_query.add_argument("--limit", type=int, default=3)
+    skill_hydrate = commands.add_parser("skill-hydrate")
+    skill_hydrate.add_argument("--skill", required=True)
+    skill_hydrate.add_argument("--domain", action="append", default=[])
+    skill_hydrate.add_argument("--grant", action="append", default=[])
+    skill_compare = commands.add_parser("skill-compare")
+    skill_compare.add_argument("--skill", required=True)
+    skill_backup = commands.add_parser("skill-backup")
+    skill_backup.add_argument("--verify", action="store_true")
+    skill_backup.add_argument("--restore-source")
+    skill_backup.add_argument("--destination", type=Path)
+    skill_host_isolation = commands.add_parser("skill-host-isolation")
+    skill_host_isolation.add_argument(
+        "action", choices=("preview", "apply", "restore-preview", "restore")
+    )
+    skill_host_isolation.add_argument("--source", type=Path)
+    skill_host_isolation.add_argument("--relocation-root", type=Path)
     intake = commands.add_parser("commission")
     intake.add_argument("--mode", choices=("new", "existing"), required=True)
     intake.add_argument("--project", type=Path, required=True)
@@ -233,6 +375,24 @@ def parser() -> argparse.ArgumentParser:
     test_profile = commands.add_parser("test-profile")
     test_profile.add_argument("action", choices=("show", "run"))
     test_profile.add_argument("name", choices=("fast", "full", "release"))
+    test_section = commands.add_parser("test-section")
+    test_section.add_argument("action", choices=("show", "run", "status"))
+    test_section.add_argument(
+        "name",
+        nargs="?",
+        choices=(
+            "testing-governance",
+            "dashboard-extension",
+            "studio-memory-graph",
+            "learning-promotion",
+            "execution-placement",
+            "hardware-routing",
+        ),
+    )
+    test_group = commands.add_parser("test-group")
+    test_group.add_argument("action", choices=("show", "run", "status", "run-stale"))
+    test_group.add_argument("name", nargs="?")
+    test_group.add_argument("--workers", type=int, default=2)
     release = commands.add_parser("release")
     release_commands = release.add_subparsers(dest="release_action", required=True)
     release_verify = release_commands.add_parser("verify")
@@ -245,6 +405,13 @@ def parser() -> argparse.ArgumentParser:
     release_finalize.add_argument("--signing-key", type=Path)
     release_commands.add_parser("manifest")
     release_commands.add_parser("environment")
+    release_readiness = release_commands.add_parser("readiness")
+    release_readiness.add_argument("--extension-root", type=Path)
+    release_readiness.add_argument("--python")
+    release_readiness.add_argument("--node")
+    release_readiness.add_argument("--npm")
+    release_readiness.add_argument("--browser")
+    release_readiness.add_argument("--vscode")
     brief = commands.add_parser("brief")
     brief.add_argument("--project", type=Path, required=True)
     brief.add_argument("--questionnaire", type=Path, required=True)
@@ -670,6 +837,11 @@ def parser() -> argparse.ArgumentParser:
     security_search = security_commands.add_parser("search")
     security_search.add_argument("--query", required=True)
     security_search.add_argument("--limit", type=int, default=10)
+    security_search.add_argument(
+        "--include-descriptions",
+        action="store_true",
+        help="include untrusted external descriptions in output; omitted by default",
+    )
     security_authority = security_commands.add_parser("authority")
     security_authority.add_argument(
         "--risk", choices=("R0", "R1", "R2", "R3", "R4"), required=True
@@ -740,51 +912,125 @@ def parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     try:
-        from .paths import declared_file_available, framework_root
+        from .paths import framework_root
 
         root = args.root or framework_root()
         if args.command == "validate":
             from .registry import validate_registry
 
             output = validate_registry(root)
-        elif args.command == "doctor":
-            from .external_toolchain import openssh_authority_status
-            from .platform_support import runtime_python_status
+        elif args.command == "visibility":
+            if args.action == "routes":
+                from .operational_visibility import validate_route_registry
 
-            capability_map = json.loads(
-                (root / "registry" / "capability_map.json").read_text(encoding="utf-8")
+                output = validate_route_registry(root)
+            elif args.action == "coverage":
+                from .operation_coverage import reconcile_operation_coverage
+
+                health = args.health
+                if health is not None and not health.is_absolute():
+                    health = root / health
+                output = reconcile_operation_coverage(
+                    root,
+                    health_snapshot=health,
+                    evidence_dir=args.evidence_dir,
+                    max_age_seconds=args.max_age_seconds,
+                )
+            else:
+                from .operational_event_bus import OperationalEventBus
+
+                if args.bus_root is None:
+                    raise ValueError("visibility publish requires --bus-root")
+                raw = sys.stdin.buffer.read(4 * 1024 * 1024 + 1)
+                if len(raw) > 4 * 1024 * 1024:
+                    raise ValueError("operation ingress exceeds 4 MiB")
+                document = json.loads(raw.decode("utf-8"))
+                if (
+                    not isinstance(document, dict)
+                    or document.get("schema_version") != "px.operation-batch/1.0"
+                    or not isinstance(document.get("events"), list)
+                    or not all(isinstance(event, dict) for event in document["events"])
+                ):
+                    raise ValueError("operation ingress batch is invalid")
+                bus_root = args.bus_root
+                if not bus_root.is_absolute():
+                    bus_root = root / bus_root
+                bus_root = bus_root.resolve()
+                allowed_root = bus_root.parent
+                allowed_root.mkdir(parents=True, exist_ok=True)
+                receipts = OperationalEventBus(
+                    root, bus_root, allowed_root
+                ).publish_batch(document["events"], link_current_head=True)
+                output = {
+                    "valid": True,
+                    "schema_version": "px.operation-ingress-result/1.0",
+                    "published": len(receipts),
+                    "receipts": receipts,
+                }
+        elif args.command == "health":
+            from .health_model import (
+                assess_health_report,
+                health_catalog,
+                project_health_for_extension,
             )
-            active = capability_map.get("active_capabilities", [])
-            registry_errors = [
-                f"missing active capability surface: {item.get(field)}"
-                for item in active
-                for field in ("contract", "implementation", "evidence")
-                if not declared_file_available(root, str(item.get(field, "")))
-            ]
-            registry = {
-                "valid": not registry_errors,
-                "active_count": len(active),
-                "errors": registry_errors,
-                "scope": "lightweight_startup_health",
+
+            if args.health_action == "catalog":
+                output = health_catalog(root)
+            else:
+                claims_path = args.claims
+                if not claims_path.is_absolute():
+                    claims_path = root / claims_path
+                document = json.loads(claims_path.read_text(encoding="utf-8"))
+                if isinstance(document, dict) and set(document) == {"claims"}:
+                    claims = document["claims"]
+                else:
+                    claims = document
+                if not isinstance(claims, list) or not all(
+                    isinstance(claim, dict) for claim in claims
+                ):
+                    raise ValueError("health claims must be an array of objects")
+                output = assess_health_report(root, claims, evaluated_at=args.at)
+                if args.extension_projection:
+                    output = project_health_for_extension(root, output)
+        elif args.command == "doctor":
+            from .px_doctor import render_doctor_human, run_px_doctor
+
+            health = args.health
+            if health is not None and not health.is_absolute():
+                health = root / health
+            claims = None
+            if args.health_claims is not None:
+                claims_path = args.health_claims
+                if not claims_path.is_absolute():
+                    claims_path = root / claims_path
+                claims_document = json.loads(claims_path.read_text(encoding="utf-8"))
+                claims = (
+                    claims_document.get("claims")
+                    if isinstance(claims_document, dict)
+                    else claims_document
+                )
+                if not isinstance(claims, list) or not all(
+                    isinstance(claim, dict) for claim in claims
+                ):
+                    raise ValueError("doctor health claims must be an array of objects")
+            output = run_px_doctor(
+                root,
+                health_snapshot=health,
+                health_claims=claims,
+                max_age_seconds=args.max_age_seconds,
+                receipt_dir=args.write_receipt,
+            )
+            requirements = {
+                "syntax": bool(output["valid"]),
+                "operable": bool(output["operable"]),
+                "ready": bool(output["ready"]),
+                "certification-ready": bool(output["certification_ready"]),
             }
-            python_status = runtime_python_status(root)
-            authority_status = openssh_authority_status()
-            output = {
-                "valid": registry["valid"] and python_status["supported"],
-                "python": sys.version.split()[0],
-                "python_support": python_status,
-                "registry": registry,
-                "tools": {
-                    name: shutil.which(name)
-                    for name in ("git", "rg", "docker", "ssh-keygen")
-                },
-                "authority_features": {
-                    "signed_evidence": authority_status,
-                    "available": authority_status["authoritative_signing_available"],
-                    "required_for_basic_inspection": False,
-                    "required_for_authoritative_signing": True,
-                },
-            }
+            output["requested_contract"] = args.require
+            output["contract_satisfied"] = requirements[args.require]
+            output["_exit_code"] = 0 if requirements[args.require] else 2
+            if args.format == "human":
+                output["_human_output"] = render_doctor_human(output)
         elif args.command == "lifecycle":
             from .engineering_lifecycle import lifecycle_status
 
@@ -813,6 +1059,35 @@ def main(argv: list[str] | None = None) -> int:
                 output = resource_status(ledger, storage_path=storage_path)
             else:
                 output = ResourceManager(ledger).reconcile(apply=args.apply)
+        elif args.command == "recovery":
+            from .recovery import RecoveryConfiguration, RecoveryCoordinator
+            from .resource_lifecycle import ResourceManager
+
+            project = (
+                args.project if args.project.is_absolute() else root / args.project
+            )
+            states = tuple(
+                path if path.is_absolute() else project / path for path in args.state
+            )
+            wal_targets = tuple(
+                (path if path.is_absolute() else project / path, project)
+                for path in args.wal
+            )
+            resource_reconcilers = ()
+            if args.ledger is not None:
+                ledger = (
+                    args.ledger if args.ledger.is_absolute() else project / args.ledger
+                )
+                manager = ResourceManager(ledger)
+                resource_reconcilers = (lambda apply: manager.reconcile(apply=apply),)
+            output = RecoveryCoordinator(
+                RecoveryConfiguration(
+                    project.resolve(),
+                    wal_targets=wal_targets,
+                    durable_state_paths=states,
+                    resource_reconcilers=resource_reconcilers,
+                )
+            ).reconcile(apply=args.apply)
         elif args.command == "hardware":
             from .hardware_routing import (
                 BenchmarkEvidence,
@@ -822,24 +1097,27 @@ def main(argv: list[str] | None = None) -> int:
                 hardware_report,
                 route_workload,
             )
+            from .work_admission import RuntimeWorkPlane
 
             probe_external = not args.no_external_probe
             probe_libraries = not args.no_library_probe
-            if args.hardware_action == "report":
-                output = hardware_report(
-                    probe_external=probe_external,
-                    probe_libraries=probe_libraries,
-                )
-            else:
+            def hardware_operation():
+                if args.hardware_action == "report":
+                    return hardware_report(
+                        probe_external=probe_external,
+                        probe_libraries=probe_libraries,
+                    )
                 profile = discover_hardware(
                     probe_external=probe_external,
                     probe_libraries=probe_libraries,
                 )
-                benchmark = None
-                if args.benchmark:
-                    benchmark = BenchmarkEvidence(
+                benchmark = (
+                    BenchmarkEvidence(
                         **json.loads(args.benchmark.read_text(encoding="utf-8"))
                     )
+                    if args.benchmark
+                    else None
+                )
                 decision = route_workload(
                     WorkloadProfile(
                         kind=WorkloadKind(args.kind),
@@ -853,12 +1131,35 @@ def main(argv: list[str] | None = None) -> int:
                     benchmark=benchmark,
                     requested_device=args.device,
                 )
-                output = {
+                return {
                     "valid": True,
                     "hardware_fingerprint": profile.fingerprint,
                     "routing_decision": asdict(decision),
                     "probe_errors": profile.probe_errors,
                 }
+            hardware_input = {
+                "action": args.hardware_action,
+                "external": probe_external,
+                "libraries": probe_libraries,
+                "kind": getattr(args, "kind", None),
+                "items": getattr(args, "items", None),
+                "bytes": getattr(args, "bytes", None),
+                "device": getattr(args, "device", None),
+                "benchmark_sha256": hashlib.sha256(args.benchmark.read_bytes()).hexdigest()
+                if getattr(args, "benchmark", None)
+                else None,
+            }
+            hardware_work = RuntimeWorkPlane(root).execute(
+                f"hardware.cli.{args.hardware_action}",
+                hardware_operation,
+                reason="explicit hardware CLI request",
+                input_fingerprint=hardware_input,
+                domains=("hardware", "runtime"),
+                lane="light",
+                cache_seconds=60 if args.hardware_action == "report" else 0,
+                timeout_seconds=10,
+            )
+            output = {**hardware_work["result"], "work_admission": hardware_work["admission"]}
         elif args.command == "benchmark":
             from .benchmark_operations import (
                 evaluate_preflight,
@@ -881,6 +1182,43 @@ def main(argv: list[str] | None = None) -> int:
                 on_profile = json.loads(args.on_profile.read_text(encoding="utf-8"))
                 off_profile = json.loads(args.off_profile.read_text(encoding="utf-8"))
                 output = matched_control_comparison(on_profile, off_profile)
+        elif args.command == "placement":
+            from .execution_placement import (
+                decide_observed_placement,
+                decide_placement,
+                observe_workload,
+                observed_promotion_gate,
+                production_promotion_gate,
+                promotion_gate,
+                publish_placement_artifact,
+                reusable_pattern_gate,
+            )
+
+            payload = json.loads(args.input.read_text(encoding="utf-8"))
+            if args.placement_action == "observe":
+                output = observe_workload(**payload)
+            elif args.placement_action == "decide":
+                output = (
+                    decide_observed_placement(**payload)
+                    if "observation" in payload
+                    else decide_placement(**payload)
+                )
+                if "observation" not in payload:
+                    output["integration_status"] = "unobserved-advisory-only"
+            elif args.placement_action == "promote":
+                decision = payload.pop("decision")
+                output = (
+                    observed_promotion_gate(decision, **payload)
+                    if decision.get("observed_workload") is True
+                    else promotion_gate(decision, **payload)
+                )
+            elif args.placement_action == "production":
+                tier3 = payload.pop("tier3")
+                output = production_promotion_gate(tier3, **payload)
+            else:
+                tier4 = payload.pop("tier4")
+                output = reusable_pattern_gate(tier4, **payload)
+            output["artifact"] = publish_placement_artifact(root, output)
         elif args.command == "assurance":
             from .behavioral_assurance import (
                 FailureSignals,
@@ -923,6 +1261,9 @@ def main(argv: list[str] | None = None) -> int:
 
             output = validate_graph_artifacts(root)
         elif args.command == "audit":
+            audit_hygiene = _prepare_certification_hygiene(
+                root, apply=args.apply_hygiene
+            )
             if args.scope == "structure":
                 from .structural_integrity import audit_structural_integrity
 
@@ -941,6 +1282,9 @@ def main(argv: list[str] | None = None) -> int:
                 output = audit_framework(
                     root, require_external_manifests=args.strict_external_evidence
                 )
+            output["audit_hygiene"] = audit_hygiene
+            if args.summary:
+                output = _summarize_audit(args.scope, output)
         elif args.command == "gates":
             from .gate_runner import finalize_gates, run_gates
 
@@ -964,7 +1308,6 @@ def main(argv: list[str] | None = None) -> int:
             output = validate_research_candidate(root, args.kind, record)
         elif args.command == "startup":
             from .startup import bounded_startup
-            from .tool_recommendations import assess_project_tooling
 
             snapshot = bounded_startup(root, args.project)
             output = {
@@ -976,7 +1319,15 @@ def main(argv: list[str] | None = None) -> int:
                 "project_profile": snapshot.project_profile,
                 "skill_catalog_metadata_count": len(snapshot.skill_catalog_metadata),
                 "hydrated_skill_bodies": list(snapshot.hydrated_skill_bodies),
-                "tooling_assessment": assess_project_tooling(root, args.project),
+                "tooling_assessment": {
+                    "schema_version": "1.0",
+                    "valid": True,
+                    "deferred": True,
+                    "reason": "project inventory is excluded from bounded startup",
+                    "command": "python -m runtime.cli tooling --project <path>",
+                    "read_only": True,
+                    "executed_changes": False,
+                },
             }
         elif args.command == "tooling":
             from .tool_recommendations import assess_project_tooling
@@ -1053,6 +1404,66 @@ def main(argv: list[str] | None = None) -> int:
                 "active_ids": list(loader.active_ids),
                 "release": "process_exit_releases_hydrated_context",
             }
+        elif args.command == "skill-query":
+            from .native_skills import query_skills
+
+            output = {
+                "valid": True,
+                **query_skills(
+                    root,
+                    args.goal,
+                    skill_id=args.skill_id,
+                    domains=args.domain or ("px-standard",),
+                    grants=args.grant,
+                    limit=args.limit,
+                ),
+            }
+        elif args.command == "skill-hydrate":
+            from .native_skills import hydrate_skill
+
+            output = {
+                "valid": True,
+                **hydrate_skill(
+                    root,
+                    args.skill,
+                    domains=args.domain or ("px-standard",),
+                    grants=args.grant,
+                ),
+            }
+        elif args.command == "skill-compare":
+            from .native_skills import compare_skill
+
+            output = {"valid": True, **compare_skill(root, args.skill)}
+        elif args.command == "skill-backup":
+            from .native_skills import restore_backup, verify_backup
+
+            snapshot = root / ".px" / "preserved-skills" / "initial"
+            if args.restore_source:
+                if args.destination is None:
+                    raise ValueError("--destination is required with --restore-source")
+                output = {
+                    "valid": True,
+                    **restore_backup(snapshot, args.restore_source, args.destination),
+                }
+            else:
+                output = verify_backup(snapshot)
+        elif args.command == "skill-host-isolation":
+            from .global_skill_isolation import (
+                isolate_global_skills,
+                restore_global_skills,
+            )
+
+            if args.action in {"restore-preview", "restore"}:
+                output = restore_global_skills(
+                    root, apply=args.action == "restore"
+                )
+            else:
+                output = isolate_global_skills(
+                    root,
+                    source=args.source,
+                    relocation_root=args.relocation_root,
+                    apply=args.action == "apply",
+                )
         elif args.command == "commission":
             from .commissioning import commission
 
@@ -1187,6 +1598,201 @@ def main(argv: list[str] | None = None) -> int:
             from .profiles import validate_profile_set
 
             output = validate_profile_set(root / "bootstrap" / "profiles")
+        elif args.command == "test-section":
+            from uuid import uuid4
+            import os
+
+            from .resource_lifecycle import ResourceManager
+            from .test_profiles import (
+                read_section_chunk_receipt,
+                resolve_test_section,
+                section_chunk_receipt,
+                section_receipt,
+                section_status,
+                write_section_chunk_receipt,
+                write_section_receipt,
+            )
+            from .test_runner import run_test_command
+
+            if args.action == "status":
+                output = section_status(root)
+            else:
+                if not args.name:
+                    raise ValueError("test section name is required for show or run")
+                output = resolve_test_section(root, args.name)
+                if args.action == "run":
+                    status = section_status(root)
+                    status_by_name = {row["section"]: row for row in status["sections"]}
+                    stale_dependencies = [
+                        name
+                        for name in output["dependencies"]
+                        if status_by_name.get(name, {}).get("current") is not True
+                    ]
+                    if stale_dependencies:
+                        raise ValueError(
+                            "test section dependencies are not current: "
+                            + ", ".join(stale_dependencies)
+                        )
+                    environment = dict(os.environ)
+                    environment.update(output["environment"])
+                    command = [
+                        sys.executable if value == "python" else value
+                        for value in output["command"]
+                    ]
+                    chunks = list(output.get("chunks", ()))
+                    if chunks:
+                        from concurrent.futures import ThreadPoolExecutor, as_completed
+                        from time import monotonic
+
+                        chunk_rows: dict[str, dict[str, object]] = {}
+                        pending: list[dict[str, object]] = []
+                        for chunk in chunks:
+                            chunk_id = str(chunk["chunk_id"])
+                            current = read_section_chunk_receipt(
+                                root, str(args.name), chunk_id
+                            )
+                            if (
+                                current.get("passed") is True
+                                and current.get("section") == args.name
+                                and current.get("chunk_id") == chunk_id
+                                and current.get("input_sha256")
+                                == chunk["input_sha256"]
+                            ):
+                                chunk_rows[chunk_id] = {
+                                    **current,
+                                    "reused": True,
+                                    "receipt_path": str(
+                                        root
+                                        / ".engineering-bootstrap/test-evidence/section-chunks"
+                                        / str(args.name)
+                                        / f"{chunk_id}.json"
+                                    ),
+                                }
+                            else:
+                                pending.append(chunk)
+
+                        scheduling_started = monotonic()
+
+                        def run_chunk(chunk: dict[str, object]) -> dict[str, object]:
+                            chunk_id = str(chunk["chunk_id"])
+                            chunk_command = [
+                                sys.executable if value == "python" else str(value)
+                                for value in chunk["command"]
+                            ]
+                            execution = run_test_command(
+                                chunk_command,
+                                cwd=Path(output["cwd"]),
+                                environment=environment,
+                                timeout_seconds=chunk["timeout_seconds"],
+                                resource_manager=ResourceManager(
+                                    root
+                                    / ".engineering-bootstrap/resource-lifecycle/ledger.json"
+                                ),
+                                run_id=f"test-section-{args.name}-{chunk_id}-{uuid4().hex}",
+                                lane_id=f"section:{args.name}:{chunk_id}",
+                            )
+                            receipt = section_chunk_receipt(output, chunk, execution)
+                            receipt_path = write_section_chunk_receipt(root, receipt)
+                            return {
+                                **receipt,
+                                "reused": False,
+                                "receipt_path": receipt_path.as_posix(),
+                                "stdout": str(execution.get("stdout") or "")[-8000:],
+                                "stderr": str(execution.get("stderr") or "")[-8000:],
+                            }
+
+                        if pending:
+                            with ThreadPoolExecutor(
+                                max_workers=min(
+                                    int(output["max_parallel_chunks"]), len(pending)
+                                ),
+                                thread_name_prefix=f"px-section-{args.name}",
+                            ) as executor:
+                                futures = {
+                                    executor.submit(run_chunk, chunk): chunk
+                                    for chunk in pending
+                                }
+                                for future in as_completed(futures):
+                                    chunk = futures[future]
+                                    chunk_id = str(chunk["chunk_id"])
+                                    try:
+                                        chunk_rows[chunk_id] = future.result()
+                                    except Exception as exc:
+                                        failure = section_chunk_receipt(
+                                            output,
+                                            chunk,
+                                            {
+                                                "valid": False,
+                                                "exit_code": 1,
+                                                "timed_out": False,
+                                                "duration_seconds": 0.0,
+                                            },
+                                        )
+                                        failure_path = write_section_chunk_receipt(
+                                            root, failure
+                                        )
+                                        chunk_rows[chunk_id] = {
+                                            **failure,
+                                            "reused": False,
+                                            "receipt_path": failure_path.as_posix(),
+                                            "stdout": "",
+                                            "stderr": (
+                                                "chunk worker failed before completion: "
+                                                f"{type(exc).__name__}"
+                                            ),
+                                        }
+                        ordered_chunks = [
+                            chunk_rows[str(chunk["chunk_id"])] for chunk in chunks
+                        ]
+                        passed = all(row.get("passed") is True for row in ordered_chunks)
+                        execution = {
+                            "valid": passed,
+                            "exit_code": 0 if passed else 1,
+                            "timed_out": any(
+                                row.get("timed_out") is True for row in ordered_chunks
+                            ),
+                            "duration_seconds": round(
+                                monotonic() - scheduling_started, 6
+                            ),
+                            "chunks": [
+                                {
+                                    key: row.get(key)
+                                    for key in (
+                                        "chunk_id",
+                                        "input_sha256",
+                                        "member_count",
+                                        "passed",
+                                        "timed_out",
+                                        "duration_seconds",
+                                        "receipt_sha256",
+                                        "reused",
+                                    )
+                                }
+                                for row in ordered_chunks
+                            ],
+                        }
+                    else:
+                        execution = run_test_command(
+                            command,
+                            cwd=Path(output["cwd"]),
+                            environment=environment,
+                            timeout_seconds=output["timeout_seconds"],
+                            resource_manager=ResourceManager(
+                                root
+                                / ".engineering-bootstrap/resource-lifecycle/ledger.json"
+                            ),
+                            run_id=f"test-section-{args.name}-{uuid4().hex}",
+                            lane_id=f"section:{args.name}",
+                        )
+                    receipt = section_receipt(output, execution)
+                    receipt_path = write_section_receipt(root, receipt)
+                    output = {
+                        **output,
+                        **execution,
+                        **({"chunk_results": ordered_chunks} if chunks else {}),
+                        "section_receipt": receipt,
+                        "receipt_path": receipt_path.as_posix(),
+                    }
         elif args.command == "test-profile":
             from uuid import uuid4
 
@@ -1198,10 +1804,50 @@ def main(argv: list[str] | None = None) -> int:
             if args.action == "run":
                 import os
 
+                if args.name in {"full", "release"}:
+                    from .test_profiles import (
+                        cross_group_certification,
+                        group_status,
+                        section_status,
+                    )
+
+                    gate = section_status(root)
+                    if not gate["valid"]:
+                        stale = [
+                            row["section"]
+                            for row in gate["sections"]
+                            if not row["current"]
+                        ]
+                        raise ValueError(
+                            "whole certification requires current section receipts: "
+                            + ", ".join(stale)
+                        )
+                    groups = group_status(root)
+                    if not groups["valid"]:
+                        stale = [
+                            row["group"]
+                            for row in groups["groups"]
+                            if not row["current"]
+                        ]
+                        raise ValueError(
+                            "whole certification requires current test-group receipts: "
+                            + ", ".join(stale)
+                        )
+                    coexistence = cross_group_certification(root)
+                    output["certification_mode"] = (
+                        "current_group_receipts_plus_cross_group"
+                    )
+                    output["group_status"] = groups
+                    output["command"] = coexistence["command"]
+                    output["timeout_seconds"] = coexistence["timeout_seconds"]
+                    output["environment"].update(coexistence["environment"])
+
+                    output["certification_hygiene"] = _prepare_certification_hygiene(
+                        root, apply=True
+                    )
+
                 environment = dict(os.environ)
-                environment.update(
-                    {"PYTHONDONTWRITEBYTECODE": "1", "PYTHONNOUSERSITE": "1"}
-                )
+                environment.update(output["environment"])
                 run_id = f"test-profile-{args.name}-{uuid4().hex}"
                 resource_manager = ResourceManager(
                     root
@@ -1223,6 +1869,149 @@ def main(argv: list[str] | None = None) -> int:
                     **execution,
                     "profile_budget_seconds": output["timeout_seconds"],
                 }
+        elif args.command == "test-group":
+            from concurrent.futures import ThreadPoolExecutor, as_completed
+            from uuid import uuid4
+            import os
+
+            from .resource_lifecycle import ResourceManager
+            from .test_profiles import (
+                group_receipt,
+                group_status,
+                resolve_test_group,
+                resolve_test_groups,
+                write_group_receipt,
+            )
+            from .test_runner import run_test_command
+
+            if args.workers < 1 or args.workers > 3:
+                raise ValueError("test-group workers must be between 1 and 3")
+            if args.action == "status":
+                output = group_status(root)
+            elif args.action == "show":
+                if not args.name:
+                    output = {
+                        "schema_version": "px.test-groups/1.0",
+                        "groups": resolve_test_groups(root),
+                    }
+                else:
+                    output = resolve_test_group(root, args.name)
+            else:
+                if args.action == "run":
+                    if not args.name:
+                        raise ValueError("test group name is required for run")
+                    selected = [resolve_test_group(root, args.name)]
+                else:
+                    current = {
+                        row["group"]: row for row in group_status(root)["groups"]
+                    }
+                    selected = [
+                        group
+                        for group in resolve_test_groups(root)
+                        if current[group["group"]]["current"] is not True
+                    ]
+
+                certification_hygiene = None
+                if any(group["group"] == "release-audit" for group in selected):
+                    certification_hygiene = _prepare_certification_hygiene(
+                        root, apply=True
+                    )
+
+                manager = ResourceManager(
+                    root / ".engineering-bootstrap/resource-lifecycle/ledger.json"
+                )
+
+                def execute_group(group):
+                    if group.get("index_current") is not True:
+                        raise ValueError(
+                            f"test group index is stale for {group['group']}; run python scripts/build_test_group_index.py"
+                        )
+                    environment = dict(os.environ)
+                    environment.update(group["environment"])
+                    execution = run_test_command(
+                        group["command"],
+                        cwd=root,
+                        environment=environment,
+                        timeout_seconds=group["timeout_seconds"],
+                        resource_manager=manager,
+                        run_id=f"test-group-{group['group']}-{uuid4().hex}",
+                        lane_id=f"group:{group['group']}",
+                    )
+                    receipt = group_receipt(group, execution)
+                    path = write_group_receipt(root, receipt)
+                    return {
+                        **group,
+                        **execution,
+                        "group_receipt": receipt,
+                        "receipt_path": path.as_posix(),
+                    }
+
+                def refresh_completion_projection() -> dict[str, object]:
+                    # The completion projection summarizes gate receipts.  Refresh it
+                    # immediately before the group that verifies it, after all earlier
+                    # serial receipts are settled, and once more after that group's own
+                    # receipt is published.  This avoids a self-referential stale
+                    # snapshot without weakening the equality assertion.
+                    from scripts.build_completion_status import write
+
+                    projection = write(root)
+                    return {
+                        "path": "registry/completion_status.json",
+                        "complete": bool(projection.get("complete")),
+                        "certified": bool(projection.get("certified")),
+                        "blocking_reason_count": len(
+                            projection.get("blocking_reasons", ())
+                        ),
+                    }
+
+                safe = [group for group in selected if group["parallel_safe"]]
+                serial = [group for group in selected if not group["parallel_safe"]]
+                results = []
+                if safe:
+                    with ThreadPoolExecutor(
+                        max_workers=min(args.workers, len(safe)),
+                        thread_name_prefix="px-test-group",
+                    ) as pool:
+                        futures = {
+                            pool.submit(execute_group, group): group["group"]
+                            for group in safe
+                        }
+                        for future in as_completed(futures):
+                            results.append(future.result())
+                completion_projection_refreshes = []
+                for group in serial:
+                    if "tests/test_completion_status.py" in group["members"]:
+                        completion_projection_refreshes.append(
+                            {
+                                "phase": "before-derived-integrity",
+                                **refresh_completion_projection(),
+                            }
+                        )
+                    results.append(execute_group(group))
+                if any(
+                    "tests/test_completion_status.py" in group["members"]
+                    for group in selected
+                ):
+                    completion_projection_refreshes.append(
+                        {
+                            "phase": "after-derived-integrity-receipt",
+                            **refresh_completion_projection(),
+                        }
+                    )
+                results.sort(key=lambda item: item["group"])
+                output = {
+                    "schema_version": "px.test-group-run/1.0",
+                    "valid": all(item["valid"] for item in results),
+                    "workers": args.workers,
+                    "selected_count": len(selected),
+                    "parallel_count": len(safe),
+                    "serial_count": len(serial),
+                    "results": results,
+                    "status": group_status(root),
+                    "completion_projection_refreshes": completion_projection_refreshes,
+                }
+                if certification_hygiene is not None:
+                    output["certification_hygiene"] = certification_hygiene
         elif args.command == "release":
             from .release_artifacts import classify_tree
             from .release_certification import (
@@ -1239,6 +2028,18 @@ def main(argv: list[str] | None = None) -> int:
                 output = classify_tree(root)
             elif args.release_action == "environment":
                 output = validate_release_environment(root)
+            elif args.release_action == "readiness":
+                from .certification_readiness import assess_certification_readiness
+
+                output = assess_certification_readiness(
+                    root,
+                    args.extension_root,
+                    python=args.python,
+                    node=args.node,
+                    npm=args.npm,
+                    browser=args.browser,
+                    vscode=args.vscode,
+                )
             else:
                 output = finalize_release(
                     root,
@@ -2010,7 +2811,10 @@ def main(argv: list[str] | None = None) -> int:
                 output = security_provider_status(root)
             elif action == "search":
                 output = search_security_capabilities(
-                    root, args.query, limit=args.limit
+                    root,
+                    args.query,
+                    limit=args.limit,
+                    include_descriptions=args.include_descriptions,
                 )
             elif action == "authority":
                 engagement = json.loads(args.engagement.read_text(encoding="utf-8"))
@@ -2131,7 +2935,8 @@ def main(argv: list[str] | None = None) -> int:
     except (OSError, ValueError, KeyError, RuntimeError, json.JSONDecodeError) as error:
         output = {"valid": False, "errors": [f"{type(error).__name__}: {error}"]}
     exit_code = int(output.pop("_exit_code", 0 if output.get("valid", True) else 1))
-    print(json.dumps(output, indent=2))
+    human_output = output.pop("_human_output", None)
+    print(human_output if human_output is not None else json.dumps(output, indent=2))
     return exit_code
 
 

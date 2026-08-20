@@ -1,0 +1,2332 @@
+{
+  "schema_version": "1.0",
+  "scanner": "audit-source-capabilities/1.2.0",
+  "created_utc": "2026-08-17T07:06:16.653243+00:00",
+  "source_root": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/extension",
+  "configuration": {
+    "max_bytes": 2000000,
+    "excluded_names": [
+      ".git",
+      ".hg",
+      ".mypy_cache",
+      ".pytest_cache",
+      ".ruff_cache",
+      ".svn",
+      "__pycache__",
+      "build",
+      "coverage",
+      "dist",
+      "node_modules",
+      "out",
+      "venv"
+    ]
+  },
+  "coverage": {
+    "bytes": 18747935,
+    "excluded_bytes": 88715707,
+    "excluded_directories": 2,
+    "excluded_files": 1377,
+    "files": 206,
+    "non_text": 28,
+    "text_scanned": 178,
+    "total_accounted_bytes": 107463642,
+    "total_accounted_files": 1583,
+    "extension_counts": {
+      ".css": 10,
+      ".html": 2,
+      ".js": 116,
+      ".json": 28,
+      ".md": 16,
+      ".mjs": 1,
+      ".png": 25,
+      ".ps1": 3,
+      ".svg": 1,
+      ".txt": 1,
+      "<none>": 3
+    },
+    "excluded_counts": {
+      "dist": 1,
+      "node_modules": 1
+    },
+    "inventory_sha256": "2a246beca57bb02956261611389ac013999e98fac879b5870cd0b81ad520c4b2",
+    "inventory_scope": "all regular files including explicitly excluded generated/cache boundaries",
+    "error_count": 0
+  },
+  "mechanism_counts": {
+    "atomic-state": 37,
+    "bounded-retry": 0,
+    "browser-evidence": 14,
+    "capability-admission": 0,
+    "contract-introspection": 0,
+    "data-readiness": 0,
+    "dependency-impact": 0,
+    "derived-artifact-sync": 1,
+    "dynamic-service-discovery": 0,
+    "evaluation-readiness": 0,
+    "evidence-integrity": 241,
+    "knowledge-integrity": 91,
+    "live-contract-validation": 0,
+    "observability-correlation": 146,
+    "orchestration-checkpoint": 118,
+    "retrieval-engineering": 24,
+    "reversible-validation": 623,
+    "security-aggregation": 1,
+    "state-isolation": 0,
+    "text-repair": 0,
+    "tool-lifecycle": 38,
+    "validation-completeness": 0,
+    "visual-accessibility": 21
+  },
+  "candidate_count": 136,
+  "records": [
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 16315,
+      "sha256": "e0ddc23595a71f7f7a7ab0f7e5564f67f01935d511c466d25c73297d194408f5",
+      "mechanisms": {
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 1,
+        "dynamic-service-discovery": 0,
+        "evidence-integrity": 0,
+        "knowledge-integrity": 6,
+        "observability-correlation": 0,
+        "retrieval-engineering": 5,
+        "reversible-validation": 2,
+        "state-isolation": 0,
+        "validation-completeness": 0
+      },
+      "score": 22,
+      "disposition": "review_required"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "bytes": 5219,
+      "sha256": "24cf96f695fe1ce2a008d225d3e0f679bafdefbf3bdc552a425f6b638ff67ef6",
+      "mechanisms": {
+        "atomic-state": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "observability-correlation": 0,
+        "orchestration-checkpoint": 1,
+        "reversible-validation": 1,
+        "state-isolation": 0,
+        "text-repair": 0
+      },
+      "score": 16,
+      "disposition": "review_required"
+    },
+    {
+      "path": "docs/COMPLETION_PUNCH_CARD.md",
+      "bytes": 3848,
+      "sha256": "62f8729fc782df95f2bcd309a829562ae2dfe152f9bc78ac8e5baa0c61df2bc0",
+      "mechanisms": {
+        "browser-evidence": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 0,
+        "knowledge-integrity": 1,
+        "observability-correlation": 0,
+        "orchestration-checkpoint": 2,
+        "reversible-validation": 1,
+        "state-isolation": 0,
+        "validation-completeness": 0
+      },
+      "score": 20,
+      "disposition": "review_required"
+    },
+    {
+      "path": "docs/ENVIRONMENT_CAPABILITY_MAP.md",
+      "bytes": 1975,
+      "sha256": "278fd9fb6c890b023e94098fff3522a29e5645889156179a72838f7f129da155",
+      "mechanisms": {
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "reversible-validation": 0,
+        "state-isolation": 0
+      },
+      "score": 8,
+      "disposition": "review_required"
+    },
+    {
+      "path": "docs/LIMITATIONS.md",
+      "bytes": 3032,
+      "sha256": "04975b2368fe2d12f19c8fdf0974495c1d0efcb1ccdbe1b6a8e51d757ea857c0",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "evidence-integrity": 0,
+        "retrieval-engineering": 1,
+        "tool-lifecycle": 1,
+        "validation-completeness": 0
+      },
+      "score": 10,
+      "disposition": "review_required"
+    },
+    {
+      "path": "docs/MS_ENTERPRISE_OPERATOR_GUIDE.md",
+      "bytes": 1750,
+      "sha256": "28eba66f12b61d60925abaf81e470327ea293d48009e3e4b6341716a6a0d1d92",
+      "mechanisms": {
+        "capability-admission": 0,
+        "evidence-integrity": 0,
+        "knowledge-integrity": 0,
+        "reversible-validation": 0
+      },
+      "score": 8,
+      "disposition": "review_required"
+    },
+    {
+      "path": "docs/MS_ENTERPRISE_SECOND_PASS_PUNCH_CARD.md",
+      "bytes": 4630,
+      "sha256": "349085780120fae6b25290c0f94a27af85b1643422b58b87d8ba4236acbabf27",
+      "mechanisms": {
+        "evidence-integrity": 0,
+        "knowledge-integrity": 0,
+        "live-contract-validation": 0,
+        "orchestration-checkpoint": 1,
+        "reversible-validation": 0,
+        "state-isolation": 0,
+        "validation-completeness": 0
+      },
+      "score": 14,
+      "disposition": "review_required"
+    },
+    {
+      "path": "docs/OWNERSHIP_MAP.md",
+      "bytes": 3226,
+      "sha256": "4dfb8e167505dc5f4a2eade380c842714dc5254830ab5f19274372dba2ecc1ff",
+      "mechanisms": {
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 0,
+        "observability-correlation": 0,
+        "reversible-validation": 2,
+        "state-isolation": 0,
+        "text-repair": 0
+      },
+      "score": 16,
+      "disposition": "review_required"
+    },
+    {
+      "path": "docs/REPAIR_PATCH.md",
+      "bytes": 4748,
+      "sha256": "581bd095509fefd05a2977fee78775effefdec7334db0a3e8711ede1bc3dad3b",
+      "mechanisms": {
+        "atomic-state": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "evidence-integrity": 0,
+        "knowledge-integrity": 1,
+        "reversible-validation": 2,
+        "state-isolation": 0,
+        "tool-lifecycle": 1
+      },
+      "score": 17,
+      "disposition": "review_required"
+    },
+    {
+      "path": "docs/TEAM_FABRIC_INTEGRATION.md",
+      "bytes": 1506,
+      "sha256": "18c1ea25e5a3509c44bac559a7c5e0ab1d0ff9f43d6d542cbb183e293ed3080d",
+      "mechanisms": {
+        "evidence-integrity": 0,
+        "state-isolation": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "evidence/browser-matrix.json",
+      "bytes": 270,
+      "sha256": "e36b8689a6134b7f154d346b7fb50ec1d77c4983ba67ed892af631b2cd3d9817",
+      "mechanisms": {
+        "derived-artifact-sync": 0,
+        "validation-completeness": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "evidence/historical/user-profile-install-0.5.4.json",
+      "bytes": 1094,
+      "sha256": "d7d1171ada5d9fb4c38b5c57baa211fb3a18c6552fb694c311782abf42f0f5d0",
+      "mechanisms": {
+        "evidence-integrity": 0
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "evidence/historical/vscode-host-listener-smoke-0.5.4.json",
+      "bytes": 14872,
+      "sha256": "fbae0ad5344c71f267fdeeaecbc98b35fb6bae67e8b2342dd3df03e66c688746",
+      "mechanisms": {
+        "atomic-state": 0,
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "evidence-integrity": 0,
+        "live-contract-validation": 0,
+        "reversible-validation": 0
+      },
+      "score": 14,
+      "disposition": "review_required"
+    },
+    {
+      "path": "evidence/historical/vscode-host-listener-smoke-0.6.3.json",
+      "bytes": 16370,
+      "sha256": "481817cc0d7c16d52df0560d2422502bbf9e61800c4ca73f4215aa509e1d6077",
+      "mechanisms": {
+        "atomic-state": 0,
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "evidence-integrity": 0,
+        "live-contract-validation": 0,
+        "reversible-validation": 0
+      },
+      "score": 14,
+      "disposition": "review_required"
+    },
+    {
+      "path": "evidence/installed-vsix-smoke-linux.json",
+      "bytes": 19143,
+      "sha256": "38022f04caff663e6cd3df55e7c8ef872469e69ded46a237dd789330dbabe89b",
+      "mechanisms": {
+        "atomic-state": 0,
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "evidence-integrity": 0,
+        "live-contract-validation": 0,
+        "reversible-validation": 0
+      },
+      "score": 14,
+      "disposition": "review_required"
+    },
+    {
+      "path": "evidence/installed-vsix-smoke.json",
+      "bytes": 19137,
+      "sha256": "2693db0baebb2246516eb4240b15f89a4a13f011dc2d1dc4654b7cdf42011fa6",
+      "mechanisms": {
+        "atomic-state": 0,
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "evidence-integrity": 0,
+        "live-contract-validation": 0,
+        "reversible-validation": 0
+      },
+      "score": 14,
+      "disposition": "review_required"
+    },
+    {
+      "path": "evidence/runtime-efficiency-load.json",
+      "bytes": 1786,
+      "sha256": "c691c7b53c0f66c1edc3979c676b27174676a58f7814fbf3988dfa3db9828539",
+      "mechanisms": {
+        "derived-artifact-sync": 0,
+        "validation-completeness": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "evidence/screenshots/manifest.json",
+      "bytes": 3338,
+      "sha256": "776719d07a778768c669fa3a29aa339814e8b35b642ccdecab3020553b4fc038",
+      "mechanisms": {
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 19
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "Install-PacifyX.ps1",
+      "bytes": 1854,
+      "sha256": "8b4a911ddbb09183f271374704516ed9ed63a796fb37fba8cb6b9f72bf9ca08d",
+      "mechanisms": {
+        "evidence-integrity": 1
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/dashboard.css",
+      "bytes": 75397,
+      "sha256": "cf58b1dbba99168feed7ae9aaca5b719b53422b31fcd3198ff91d00cd8e7e2d6",
+      "mechanisms": {
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "observability-correlation": 0,
+        "retrieval-engineering": 1,
+        "validation-completeness": 0,
+        "visual-accessibility": 5
+      },
+      "score": 12,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/dashboard/10-state.js",
+      "bytes": 8952,
+      "sha256": "66cd3c92bab9051a7d31fe0da1661b0064634f1fa32b849c0edcb1522ba075a9",
+      "mechanisms": {
+        "evidence-integrity": 0,
+        "reversible-validation": 1,
+        "text-repair": 0
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/dashboard/25-health-state.js",
+      "bytes": 3384,
+      "sha256": "3346b7ca47c113665853a006a34b219c65a36a1c5b3a823f5a22e16440fcb54a",
+      "mechanisms": {
+        "reversible-validation": 13,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 7,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/dashboard/40-surfaces.js",
+      "bytes": 1129,
+      "sha256": "68fd7217524084ea8b5191ca3ecfd1d83256a12082dbff1377617e41b58e75fb",
+      "mechanisms": {
+        "retrieval-engineering": 2
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "media/dashboard/42-core-surfaces.js",
+      "bytes": 14877,
+      "sha256": "06d897e2712facd1f2220f3efb0fee32d04c2ee8f36d357bbcc00f646ac34ae0",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "evidence-integrity": 0,
+        "observability-correlation": 0,
+        "reversible-validation": 28,
+        "security-aggregation": 0,
+        "validation-completeness": 0
+      },
+      "score": 12,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/dashboard/43-catalog-surfaces.js",
+      "bytes": 8801,
+      "sha256": "0e2dba295b7fc50b44dc5794d5be1a754b8094956b90742a2b4917950ad2ebc5",
+      "mechanisms": {
+        "capability-admission": 0,
+        "evidence-integrity": 0,
+        "knowledge-integrity": 1,
+        "reversible-validation": 9,
+        "tool-lifecycle": 1
+      },
+      "score": 10,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/dashboard/44-operational-surfaces.js",
+      "bytes": 11292,
+      "sha256": "9fe402ef4761ae9fa84d687240f9e20b87379e6e0fb4ed5d9a9ec520554a0dca",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 0,
+        "knowledge-integrity": 1,
+        "reversible-validation": 8,
+        "security-aggregation": 1,
+        "tool-lifecycle": 1
+      },
+      "score": 18,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/dashboard/45-system-surfaces.js",
+      "bytes": 26783,
+      "sha256": "b5569598efa462852788c1bea97ec34d35d7f61da7492e17e0a8955a15af1b07",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "data-readiness": 0,
+        "evidence-integrity": 0,
+        "live-contract-validation": 0,
+        "observability-correlation": 0,
+        "orchestration-checkpoint": 3,
+        "reversible-validation": 60,
+        "security-aggregation": 0,
+        "state-isolation": 0,
+        "validation-completeness": 0
+      },
+      "score": 24,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/dashboard/46-observability-surfaces.js",
+      "bytes": 19223,
+      "sha256": "a649deed35d29fb8e8f044c9ef50b2853bbc985553218dfbf4b82aa4150ffd14",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "evidence-integrity": 0,
+        "observability-correlation": 10,
+        "reversible-validation": 3,
+        "state-isolation": 0,
+        "validation-completeness": 0
+      },
+      "score": 12,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/dashboard/47-advanced-surfaces.js",
+      "bytes": 24101,
+      "sha256": "32741ee51ae0949cb9f5b908651071f6d1654eefe8e5fcf9c4fc10af0aeae250",
+      "mechanisms": {
+        "atomic-state": 0,
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 0,
+        "knowledge-integrity": 2,
+        "observability-correlation": 0,
+        "reversible-validation": 31,
+        "validation-completeness": 0
+      },
+      "score": 18,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/dashboard/48-graph-surface.js",
+      "bytes": 23089,
+      "sha256": "d0a60600acc86bc4018313f2ffd899b37d53ba975b47088457a15c641fd071a5",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "dependency-impact": 0,
+        "evidence-integrity": 0,
+        "knowledge-integrity": 7,
+        "live-contract-validation": 0,
+        "retrieval-engineering": 1,
+        "reversible-validation": 2,
+        "validation-completeness": 0
+      },
+      "score": 20,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/dashboard/49-studio-editors.js",
+      "bytes": 58856,
+      "sha256": "92518d46b8154986374ac884724bc20db7dbdf914e2fe5f12bf7014ffb96407e",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "evidence-integrity": 1,
+        "knowledge-integrity": 3,
+        "orchestration-checkpoint": 1,
+        "text-repair": 0
+      },
+      "score": 14,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/dashboard/90-controller.js",
+      "bytes": 374386,
+      "sha256": "9045c1a7c8bf63fbfb81deacbf6228ab948df946b4f894ae74e397ba0a249945",
+      "mechanisms": {
+        "atomic-state": 0,
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 20,
+        "knowledge-integrity": 16,
+        "live-contract-validation": 0,
+        "observability-correlation": 4,
+        "orchestration-checkpoint": 20,
+        "retrieval-engineering": 2,
+        "reversible-validation": 85,
+        "state-isolation": 0,
+        "text-repair": 0,
+        "validation-completeness": 0,
+        "visual-accessibility": 12
+      },
+      "score": 32,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/sidebar.css",
+      "bytes": 11652,
+      "sha256": "2d67d1d9422355bc6d64b1db3c87a61444885974f4d485a2bae60a09c6c72f3c",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "contract-introspection": 0,
+        "observability-correlation": 0,
+        "validation-completeness": 0,
+        "visual-accessibility": 1
+      },
+      "score": 10,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/sidebar.js",
+      "bytes": 19486,
+      "sha256": "a632985f29f2a317532f24f02cda08bf02ee5d5d053df73c4b145fbf7eec305c",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "observability-correlation": 0,
+        "orchestration-checkpoint": 3,
+        "reversible-validation": 3,
+        "validation-completeness": 0
+      },
+      "score": 14,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/styles/20-layout.css",
+      "bytes": 2589,
+      "sha256": "e862e0c862f3ddb3c3f2f33364ac7aa885f04b64140fa18007b144778af615f7",
+      "mechanisms": {
+        "observability-correlation": 0
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "media/styles/30-components.css",
+      "bytes": 25854,
+      "sha256": "55670f45878388ca339b3c3524f696a48606109bd4dd0ca39ccd32f61697fab3",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "live-contract-validation": 0,
+        "observability-correlation": 0,
+        "validation-completeness": 0
+      },
+      "score": 8,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/styles/40-surfaces.css",
+      "bytes": 39147,
+      "sha256": "92fcfc13802da78fe06911002172b66a7a1c11b731010b1774e37197250ffa2b",
+      "mechanisms": {
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "evidence-integrity": 0,
+        "knowledge-integrity": 6,
+        "observability-correlation": 0,
+        "retrieval-engineering": 1,
+        "validation-completeness": 0
+      },
+      "score": 14,
+      "disposition": "review_required"
+    },
+    {
+      "path": "media/styles/50-responsive.css",
+      "bytes": 8180,
+      "sha256": "bfeb84bec6def36622bc708878ee5073bf31b4a88389fbfe79bc758d7b7859d9",
+      "mechanisms": {
+        "observability-correlation": 0
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "media/styles/60-accessibility.css",
+      "bytes": 1996,
+      "sha256": "36b1a145dafea2e865cf093e839afdd80887e2b9fa772924e5cf81a9af900d1e",
+      "mechanisms": {
+        "visual-accessibility": 1
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 33036,
+      "sha256": "e93550214791fd562a3ee4bb4386af3f895fe90d55ec4037cdf9d5131847449e",
+      "mechanisms": {
+        "browser-evidence": 5,
+        "reversible-validation": 4
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "package.json",
+      "bytes": 17183,
+      "sha256": "31830b5844953a1bd2c1de3c00f46560176d27a98b04f32cf6ef9ed7fe715ada",
+      "mechanisms": {
+        "browser-evidence": 1,
+        "evidence-integrity": 0,
+        "live-contract-validation": 0,
+        "observability-correlation": 0,
+        "reversible-validation": 1,
+        "tool-lifecycle": 1
+      },
+      "score": 12,
+      "disposition": "review_required"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7283,
+      "sha256": "7ddb38951286964c65bf669a286557461c850cc81b289f259dcd256215846176",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 1,
+        "observability-correlation": 0,
+        "orchestration-checkpoint": 2,
+        "reversible-validation": 0,
+        "state-isolation": 0,
+        "tool-lifecycle": 1,
+        "validation-completeness": 0
+      },
+      "score": 18,
+      "disposition": "review_required"
+    },
+    {
+      "path": "resources/enterprise/boundary-contract.json",
+      "bytes": 867,
+      "sha256": "1a4cb43ce003ab7826455188a05dd365ce6e8fda1c506762da5069a6a75bf964",
+      "mechanisms": {
+        "capability-admission": 0,
+        "knowledge-integrity": 0,
+        "reversible-validation": 0
+      },
+      "score": 7,
+      "disposition": "review_required"
+    },
+    {
+      "path": "resources/enterprise/execution-guardrails.json",
+      "bytes": 839,
+      "sha256": "473573a9e22c22e572333933511d39833e0ca5e28d76782a13bc359b7ac737d2",
+      "mechanisms": {
+        "state-isolation": 0
+      },
+      "score": 3,
+      "disposition": "review_required"
+    },
+    {
+      "path": "resources/environment/ontology.json",
+      "bytes": 1072,
+      "sha256": "554e19636277c8944bdceaabbe68ab6cdeec0168fb6a3a264aa4f20979aa30a2",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "reversible-validation": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "resources/mcp/README.md",
+      "bytes": 1449,
+      "sha256": "4706566a4fb092e0a47fa45d9cc752d5debed5b9e71a109067aae52aa8795454",
+      "mechanisms": {
+        "observability-correlation": 1,
+        "reversible-validation": 0,
+        "state-isolation": 0,
+        "tool-lifecycle": 1
+      },
+      "score": 8,
+      "disposition": "review_required"
+    },
+    {
+      "path": "resources/orchestrations/data-sort-dry-run-selection.json",
+      "bytes": 750,
+      "sha256": "efd4fd85cceb959f841e20d273839e64407803f6d07c8f86d05f37c199f133ee",
+      "mechanisms": {
+        "orchestration-checkpoint": 5,
+        "validation-completeness": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "resources/orchestrations/parallel-planning.json",
+      "bytes": 1495,
+      "sha256": "c6d8b18c1a7f71eafc25f86e2ef18afd522aa0248afc86bcc02436f26ac68e7b",
+      "mechanisms": {
+        "evidence-integrity": 0,
+        "orchestration-checkpoint": 8,
+        "state-isolation": 0
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "resources/orchestrations/team-fabric-recovery.json",
+      "bytes": 750,
+      "sha256": "66e71e020f97b4fdc229c5e0947411299d19581ae746e62eb832f2aaa0f66c25",
+      "mechanisms": {
+        "evidence-integrity": 0,
+        "orchestration-checkpoint": 5
+      },
+      "score": 5,
+      "disposition": "review_required"
+    },
+    {
+      "path": "resources/skills/data-sort-dry-run-picker/SKILL.md",
+      "bytes": 938,
+      "sha256": "b49d8cc60a7497dff718f22c1f3da2f99c8352a21031f0eeee631694d3ccd595",
+      "mechanisms": {
+        "validation-completeness": 0
+      },
+      "score": 6,
+      "disposition": "review_required",
+      "skill": {
+        "name": "data-sort-dry-run-picker",
+        "description": "Benchmark and select a correct bulk-data sorting strategy without mutating source data; use when JSON, JSONL, CSV, or line data requires a measured algorithm choice or a bounded sample for oversized input.",
+        "catalog_matches": [
+          {
+            "id": "data-sort-dry-run-picker",
+            "status": "active",
+            "similarity": 0.25
+          },
+          {
+            "id": "use-n8n-expressions-and-data",
+            "status": "active",
+            "similarity": 0.0857
+          },
+          {
+            "id": "benchmark-and-route-agents",
+            "status": "mapped_deferred",
+            "similarity": 0.0541
+          },
+          {
+            "id": "integrate-supabase-data-api-and-clients",
+            "status": "active",
+            "similarity": 0.0526
+          },
+          {
+            "id": "use-supabase-mcp-and-agent-skills",
+            "status": "active",
+            "similarity": 0.0513
+          }
+        ]
+      }
+    },
+    {
+      "path": "resources/skills/parallel-planning-coordination/SKILL.md",
+      "bytes": 1567,
+      "sha256": "8c645ffb6c4e388c2cec1261fb892ee0ca5f786abec6e3ef46d427b5b178565d",
+      "mechanisms": {
+        "atomic-state": 0,
+        "evidence-integrity": 0,
+        "reversible-validation": 0,
+        "state-isolation": 0
+      },
+      "score": 12,
+      "disposition": "review_required",
+      "skill": {
+        "name": "parallel-planning-coordination",
+        "description": "Coordinate dependency-safe work across IDEs and agents through durable task graphs, bounded claims, leases, receipts, reconciliation, and layered memory.",
+        "catalog_matches": [
+          {
+            "id": "px-work-stop-diagnostics",
+            "status": "active",
+            "similarity": 0.12
+          },
+          {
+            "id": "benchmark-and-route-agents",
+            "status": "mapped_deferred",
+            "similarity": 0.069
+          },
+          {
+            "id": "govern-memory-fabric",
+            "status": "active",
+            "similarity": 0.0588
+          },
+          {
+            "id": "candidate-memory-promoter",
+            "status": "mapped_deferred",
+            "similarity": 0.0417
+          },
+          {
+            "id": "experience-reconstructor",
+            "status": "mapped_deferred",
+            "similarity": 0.0417
+          }
+        ]
+      }
+    },
+    {
+      "path": "resources/skills/px-lean-engineering/SKILL.md",
+      "bytes": 717,
+      "sha256": "1650e7c0d965123b869ea21ce8252a1b821e669b7f98c8d8437646ef2bece1db",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "evidence-integrity": 0,
+        "observability-correlation": 0
+      },
+      "score": 10,
+      "disposition": "review_required",
+      "skill": {
+        "name": "px-lean-engineering",
+        "description": "Apply Pacify-X repository intelligence and canonical ownership before adding code, dependencies, services, or abstractions; preserve every safety and explicit behavior boundary.",
+        "catalog_matches": [
+          {
+            "id": "px-lean-engineering",
+            "status": "active",
+            "similarity": 0.1739
+          },
+          {
+            "id": "behavior-to-code-mapper",
+            "status": "mapped_deferred",
+            "similarity": 0.1364
+          },
+          {
+            "id": "analyze-repository-intelligence",
+            "status": "active",
+            "similarity": 0.0833
+          },
+          {
+            "id": "dual-axis-code-review",
+            "status": "active",
+            "similarity": 0.08
+          },
+          {
+            "id": "map-project-intelligence",
+            "status": "active",
+            "similarity": 0.0769
+          }
+        ]
+      }
+    },
+    {
+      "path": "resources/skills/px-work-stop-diagnostics/SKILL.md",
+      "bytes": 588,
+      "sha256": "f46014b1102278fcef639b8872cb5ae8dbafb2279d29f691c4911ca36aa46f7c",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "evidence-integrity": 0,
+        "state-isolation": 0
+      },
+      "score": 10,
+      "disposition": "review_required",
+      "skill": {
+        "name": "px-work-stop-diagnostics",
+        "description": "Classify why Pacify-X cross-IDE or agent work stopped by tracing tasks, workers, claims, leases, fencing, worktrees, budgets, providers, policies, evidence, and resume revisions before retrying.",
+        "catalog_matches": [
+          {
+            "id": "px-work-stop-diagnostics",
+            "status": "active",
+            "similarity": 0.1429
+          },
+          {
+            "id": "use-supabase-mcp-and-agent-skills",
+            "status": "active",
+            "similarity": 0.0571
+          },
+          {
+            "id": "evidence-assembler",
+            "status": "active",
+            "similarity": 0.0357
+          },
+          {
+            "id": "verify-outcome",
+            "status": "active",
+            "similarity": 0.0345
+          },
+          {
+            "id": "certify-skeptical-engineering",
+            "status": "active",
+            "similarity": 0.0323
+          }
+        ]
+      }
+    },
+    {
+      "path": "resources/studio-operations.json",
+      "bytes": 832,
+      "sha256": "27f82bb8dcc77a41d5c17b82bce4d99b626f08f372843190a3793b374c8bcce1",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "reversible-validation": 2
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "resources/team-fabric/capability-manifest.json",
+      "bytes": 754,
+      "sha256": "dc7802726697aed32060f4e9e78886c5280868435c773b874c4146c5dbddb8a0",
+      "mechanisms": {
+        "capability-admission": 0,
+        "state-isolation": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "resources/ui/action-inventory.json",
+      "bytes": 97298,
+      "sha256": "7c48320ac06243ac2996da634c99d83728494e4ca12e69c18a75398b9ab406a8",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 1,
+        "knowledge-integrity": 1,
+        "observability-correlation": 0,
+        "reversible-validation": 13,
+        "state-isolation": 0,
+        "validation-completeness": 0
+      },
+      "score": 20,
+      "disposition": "review_required"
+    },
+    {
+      "path": "resources/ui/css-audit-baseline.json",
+      "bytes": 695,
+      "sha256": "60d993672fcd4df694d04e629323bdcd2399b7d9cd1ec318678c1c35ac72f197",
+      "mechanisms": {},
+      "score": 1,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "resources/ui/health-state-contract.json",
+      "bytes": 1102,
+      "sha256": "0996918ce133ea9b67ae711659dcb4ea18973e88248107dfbaf389229e79cd5b",
+      "mechanisms": {
+        "evidence-integrity": 0
+      },
+      "score": 3,
+      "disposition": "review_required"
+    },
+    {
+      "path": "scripts/audit-dashboard-css.js",
+      "bytes": 7986,
+      "sha256": "a75e7408c6408b8c23d6efb2f21fb5e9fd24292d30bf2d16d23eee4ec187d0a4",
+      "mechanisms": {
+        "text-repair": 0
+      },
+      "score": 3,
+      "disposition": "review_required"
+    },
+    {
+      "path": "scripts/build-audit-bundle.ps1",
+      "bytes": 1735,
+      "sha256": "1db9ab0a5be6f8faa18eee564be9df9ed7b8ff754844474b44f94a7919def866",
+      "mechanisms": {
+        "evidence-integrity": 3
+      },
+      "score": 3,
+      "disposition": "review_required"
+    },
+    {
+      "path": "scripts/build-ui-action-inventory.js",
+      "bytes": 2455,
+      "sha256": "74657907162d49cd56af693e35628f7c7aa8a4896cc61b26df72f1a2f90077d0",
+      "mechanisms": {
+        "derived-artifact-sync": 0
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "scripts/deduplicate-legacy-css.js",
+      "bytes": 4875,
+      "sha256": "bc00e3facf873f8f84353362a848c6d8139247d5c68585ed1ee04b34758049be",
+      "mechanisms": {
+        "text-repair": 0
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "scripts/measure-runtime-efficiency.js",
+      "bytes": 4128,
+      "sha256": "7ca5ef622c3031307efe8ba62510eced811dc430a65549945617f1ebd78b31bb",
+      "mechanisms": {
+        "atomic-state": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 0,
+        "reversible-validation": 1,
+        "state-isolation": 0,
+        "validation-completeness": 0
+      },
+      "score": 12,
+      "disposition": "review_required"
+    },
+    {
+      "path": "scripts/operational-ui-control-records.js",
+      "bytes": 18314,
+      "sha256": "737b2c4d455beb03e5e565383d11fcf41075e24ebcc45e034fe8a86480643b03",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "browser-evidence": 0,
+        "contract-introspection": 0,
+        "dynamic-service-discovery": 0,
+        "evidence-integrity": 10,
+        "reversible-validation": 2,
+        "state-isolation": 0,
+        "validation-completeness": 0
+      },
+      "score": 16,
+      "disposition": "review_required"
+    },
+    {
+      "path": "scripts/operational-walk-status.js",
+      "bytes": 15556,
+      "sha256": "edd4b70f798a38e45e65e4090a1ef22eb435437df25ec1348713a6822087f8ca",
+      "mechanisms": {
+        "browser-evidence": 0,
+        "contract-introspection": 0,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 8,
+      "disposition": "review_required"
+    },
+    {
+      "path": "scripts/owned-host-runner.js",
+      "bytes": 8809,
+      "sha256": "e59a4f64b8c8c575df09ce21cd772cb54a6c14abc3b6c18f73c9ac7757bd9587",
+      "mechanisms": {
+        "state-isolation": 0
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "scripts/owned-vscode-test-cache.js",
+      "bytes": 2887,
+      "sha256": "a1aa204bb8d171e1ae2416de2100a1fd1ea54f00b54e38072c862abd864d265e",
+      "mechanisms": {
+        "atomic-state": 0,
+        "live-contract-validation": 0,
+        "validation-completeness": 0
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "scripts/package-vsix.js",
+      "bytes": 8596,
+      "sha256": "69602e489ca5b11c40ec24dd8018edbfe8e277cb9c7eb94f6022d5c703fd4c8a",
+      "mechanisms": {
+        "evidence-integrity": 1,
+        "reversible-validation": 0,
+        "state-isolation": 0
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "scripts/run-installed-vsix-smoke.js",
+      "bytes": 10384,
+      "sha256": "f83241a484d7bfe50a4a0989983fd5a92ffd1ca9c0de546998b3a383bac6ae67",
+      "mechanisms": {
+        "atomic-state": 0,
+        "evidence-integrity": 2,
+        "state-isolation": 0
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "scripts/run-isolated-current-source-walk.js",
+      "bytes": 24498,
+      "sha256": "03143a6a3c0060af4e3ad487dff45af91e72ea49479b9bfbdc19233c8d2089d5",
+      "mechanisms": {
+        "atomic-state": 0,
+        "evidence-integrity": 14,
+        "live-contract-validation": 0,
+        "observability-correlation": 0,
+        "reversible-validation": 0,
+        "state-isolation": 0,
+        "text-repair": 0
+      },
+      "score": 14,
+      "disposition": "review_required"
+    },
+    {
+      "path": "scripts/run-operational-ui-walk.js",
+      "bytes": 32111,
+      "sha256": "52baa419f85ff42efd5f3714a0fa08c1c2c59c8f21d78557b77f91e7de113d76",
+      "mechanisms": {
+        "browser-evidence": 1,
+        "contract-introspection": 0,
+        "dynamic-service-discovery": 0,
+        "evidence-integrity": 1,
+        "live-contract-validation": 0,
+        "retrieval-engineering": 1,
+        "validation-completeness": 0
+      },
+      "score": 14,
+      "disposition": "review_required"
+    },
+    {
+      "path": "scripts/run-test-profile.js",
+      "bytes": 2342,
+      "sha256": "d76f92312025a29d56f13faf2a87479fa41d7cdc7b80bc0fcaa61ead7ab01bb8",
+      "mechanisms": {
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 0,
+        "validation-completeness": 0
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "scripts/run-vscode-host-smoke.js",
+      "bytes": 5266,
+      "sha256": "3763cece5eb4ebf555876c791ce934f77047bff695de65175ab85d8c7f59cee9",
+      "mechanisms": {
+        "atomic-state": 0,
+        "evidence-integrity": 0,
+        "state-isolation": 0
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "server/index.js",
+      "bytes": 1372238,
+      "sha256": "e82f48310a46c553419652502e0e4962c90fe0662acd27f51dca1adf4bd46ee6",
+      "mechanisms": {
+        "atomic-state": 18,
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "dynamic-service-discovery": 0,
+        "evaluation-readiness": 0,
+        "evidence-integrity": 23,
+        "knowledge-integrity": 2,
+        "live-contract-validation": 0,
+        "observability-correlation": 34,
+        "orchestration-checkpoint": 14,
+        "retrieval-engineering": 1,
+        "reversible-validation": 47,
+        "state-isolation": 0,
+        "text-repair": 0,
+        "tool-lifecycle": 29,
+        "validation-completeness": 0
+      },
+      "score": 36,
+      "disposition": "review_required"
+    },
+    {
+      "path": "server/source.mjs",
+      "bytes": 30129,
+      "sha256": "fb88f4c4db40cbdd6530117f6dfa55f534e9fb4429e9ec2baf3000efd15791cb",
+      "mechanisms": {
+        "atomic-state": 0,
+        "bounded-retry": 0,
+        "contract-introspection": 0,
+        "evidence-integrity": 0,
+        "knowledge-integrity": 0,
+        "observability-correlation": 1,
+        "orchestration-checkpoint": 1,
+        "retrieval-engineering": 1,
+        "reversible-validation": 18,
+        "state-isolation": 0,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 24,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/activationTransaction.js",
+      "bytes": 1501,
+      "sha256": "cd6a7fcafe0e1240b9c0edc915c10ca0cb137ebad5f51178447f8ee223712dbf",
+      "mechanisms": {
+        "live-contract-validation": 0,
+        "reversible-validation": 1
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/activityManager.js",
+      "bytes": 20625,
+      "sha256": "f804dca55f6878f1b1ec37660262fe81dafa55213d68de1baae952d93e172f24",
+      "mechanisms": {
+        "atomic-state": 4,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 1,
+        "observability-correlation": 19,
+        "reversible-validation": 0,
+        "state-isolation": 0,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 16,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/activityObservability.js",
+      "bytes": 27716,
+      "sha256": "f6d2819508a160bd6f0ed1b6cd07d5175fd582a299afec1452c6bc3ff8b3d5e5",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "evidence-integrity": 1,
+        "live-contract-validation": 0,
+        "observability-correlation": 26,
+        "reversible-validation": 3,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 14,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/canonicalEventPublisher.js",
+      "bytes": 6440,
+      "sha256": "2a23b0ae966bf6a7f437d68abb6e4f7185424be236c0bbc0dd2adb31c63465a0",
+      "mechanisms": {
+        "reversible-validation": 0
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "src/canonicalMemoryLease.js",
+      "bytes": 2486,
+      "sha256": "5cb41426e4c48bbc27d319c7d15685343182ab9b892ec2cf4791ee5b601b9072",
+      "mechanisms": {
+        "reversible-validation": 1,
+        "state-isolation": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/cleanupManager.js",
+      "bytes": 24063,
+      "sha256": "36053cacb3d659f1c936ad52c4030539414769477ac34b864dce4d4e89d83c6c",
+      "mechanisms": {
+        "atomic-state": 1,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 5,
+        "reversible-validation": 0,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 12,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/contextBridge.js",
+      "bytes": 12179,
+      "sha256": "47504fa71af480c7f6aa0420fff7c0098f3cdd29f16003bc2507a58223eff188",
+      "mechanisms": {
+        "evidence-integrity": 2,
+        "live-contract-validation": 0,
+        "observability-correlation": 1,
+        "orchestration-checkpoint": 2,
+        "reversible-validation": 15,
+        "validation-completeness": 0
+      },
+      "score": 12,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/coordinationManager.js",
+      "bytes": 48884,
+      "sha256": "ca6ec58f9ed24b173d68cff41c93cdc6b232a05e3bcc2ed9fd8fbe8f38fd03d4",
+      "mechanisms": {
+        "atomic-state": 7,
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 8,
+        "knowledge-integrity": 1,
+        "observability-correlation": 0,
+        "orchestration-checkpoint": 9,
+        "reversible-validation": 20,
+        "state-isolation": 0,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 26,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/discoveryManager.js",
+      "bytes": 55317,
+      "sha256": "709ecf80c97c09f029990ce33f82a1e3e84fd8f673fb811a2fd5b1e78c00a714",
+      "mechanisms": {
+        "atomic-state": 3,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 4,
+        "knowledge-integrity": 0,
+        "live-contract-validation": 0,
+        "reversible-validation": 0,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 21,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/discoveryWorker.js",
+      "bytes": 744,
+      "sha256": "bbb0a183bb06c83c0e21730d4761f95a572a414c7e4e88db5a6f89cd9853996c",
+      "mechanisms": {
+        "derived-artifact-sync": 0
+      },
+      "score": 3,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/enterpriseManager.js",
+      "bytes": 14634,
+      "sha256": "a42ab8c7509aa3cf076d6ddb5f48e187d01821079d13e98f5bb10a7898effcd1",
+      "mechanisms": {
+        "atomic-state": 4,
+        "capability-admission": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 1,
+        "knowledge-integrity": 0,
+        "reversible-validation": 0,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 16,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/environmentLifecycleManager.js",
+      "bytes": 7862,
+      "sha256": "515cb24cb7dc51461dd3843c709fbfdbcfda9dad61c6523016480e1762ac53bb",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "evidence-integrity": 1,
+        "knowledge-integrity": 0,
+        "reversible-validation": 13
+      },
+      "score": 8,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/extension.js",
+      "bytes": 117646,
+      "sha256": "324b05ab4c3a0882e19e41e09cba6e698f1c2b326352a02c74298b725698c2d5",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "browser-evidence": 1,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 13,
+        "knowledge-integrity": 12,
+        "live-contract-validation": 0,
+        "observability-correlation": 13,
+        "reversible-validation": 27,
+        "state-isolation": 0,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 26,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/healthState.js",
+      "bytes": 1484,
+      "sha256": "30d39c828055a057302e35bb41f42c24f055ec128e3a878a03512dc00fd90846",
+      "mechanisms": {
+        "text-repair": 0
+      },
+      "score": 3,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/instrumentationSdk.js",
+      "bytes": 2939,
+      "sha256": "419c8ca3b21fea22229e9f9f23df548598ed53c449a898ce7593d3d1113203c8",
+      "mechanisms": {
+        "observability-correlation": 1
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "src/mcpActivityIntegration.js",
+      "bytes": 7549,
+      "sha256": "de4ca9d7c3db1b532b983fcaf98efc459a7d6fef039ca33aebf2e5d6c4e25e50",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "evidence-integrity": 1,
+        "observability-correlation": 13
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/pxBridge.js",
+      "bytes": 51700,
+      "sha256": "df1ff2994c44680d733d05de28b04023df6b304afe916f3816206ddbb86535cb",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 8,
+        "knowledge-integrity": 3,
+        "observability-correlation": 0,
+        "reversible-validation": 12,
+        "state-isolation": 0,
+        "text-repair": 0
+      },
+      "score": 18,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/runtimeBridge.js",
+      "bytes": 4550,
+      "sha256": "0540f9997c245f92e4c453b30c23705b947a581ea5c1ad85f3d5bed56b21976b",
+      "mechanisms": {
+        "knowledge-integrity": 0,
+        "validation-completeness": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/runtimeRevisions.js",
+      "bytes": 4789,
+      "sha256": "889e31e20aeb51c4a2d2a0bee2927d5c07320ae55eaaf6955c9c4e0824699631",
+      "mechanisms": {
+        "evidence-integrity": 2,
+        "reversible-validation": 2
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/sidebarMessages.js",
+      "bytes": 10424,
+      "sha256": "d6dcae0a63ebc37d1c18000a404498d55fa24e088ac8d12fe9323b12c038f3b5",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "derived-artifact-sync": 0,
+        "observability-correlation": 0,
+        "reversible-validation": 3,
+        "validation-completeness": 0
+      },
+      "score": 10,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/sidebarProjection.js",
+      "bytes": 19265,
+      "sha256": "3953647b1778ad7002ab1979e2ece3bd57e3b31aaeade5ed5bcee4a82eeded13",
+      "mechanisms": {
+        "derived-artifact-sync": 0,
+        "observability-correlation": 0,
+        "orchestration-checkpoint": 1,
+        "reversible-validation": 36,
+        "state-isolation": 0,
+        "validation-completeness": 0
+      },
+      "score": 12,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/sidebarView.js",
+      "bytes": 11180,
+      "sha256": "eb9a15582eb34b5070c14244299e33b001d3ac479d36054250d6ee9f71c332f0",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "contract-introspection": 0,
+        "reversible-validation": 11
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/stateInvariants.js",
+      "bytes": 15182,
+      "sha256": "975a84c7b208575574ed89820e8d6396832a2f2c4fd6a6d79f794778e48e9e60",
+      "mechanisms": {
+        "evidence-integrity": 1,
+        "orchestration-checkpoint": 4,
+        "state-isolation": 0,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 10,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/studioApprovalHost.js",
+      "bytes": 3251,
+      "sha256": "3c4f65796fb190bc52d9429e302b0101a644333c28c26c435bfcef1112f9b3c6",
+      "mechanisms": {
+        "evidence-integrity": 2
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "src/studioCatalog.js",
+      "bytes": 32660,
+      "sha256": "cf29947f45af00db423537d80aeb24f875cdd07735a6147759cb2adffe50565c",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "evidence-integrity": 14,
+        "reversible-validation": 0,
+        "text-repair": 0
+      },
+      "score": 8,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/studioDashboardHost.js",
+      "bytes": 7917,
+      "sha256": "673c506273d8c3ffe7b6ee112220e087cc89941f8433d741620a654c565dbaeb",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "evidence-integrity": 6
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/studioDraftHost.js",
+      "bytes": 41386,
+      "sha256": "b0574ba8de3995abbf5c22d4060122d2e7d424d00f37b0dc71d4b5691fda8d39",
+      "mechanisms": {
+        "capability-admission": 0,
+        "evidence-integrity": 27,
+        "knowledge-integrity": 6,
+        "reversible-validation": 0,
+        "state-isolation": 0,
+        "text-repair": 0
+      },
+      "score": 12,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/studioPackage.js",
+      "bytes": 32123,
+      "sha256": "7eca7ef5afc4916a3e90f82b01f547f3f6e094f3d51a3cb6ae7e960a0f40d8b9",
+      "mechanisms": {
+        "evidence-integrity": 7,
+        "knowledge-integrity": 0,
+        "reversible-validation": 0,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 10,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/teamFabricManager.js",
+      "bytes": 9977,
+      "sha256": "5d534bed2886bbdf2a75b059b05f525a1fbdb4fa27eeefdb1090fee84163fca6",
+      "mechanisms": {
+        "atomic-state": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "evidence-integrity": 7,
+        "knowledge-integrity": 1,
+        "reversible-validation": 0,
+        "validation-completeness": 0
+      },
+      "score": 14,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/treeProvider.js",
+      "bytes": 1501,
+      "sha256": "bdca9413a7e9a988a09ad509d537503f81b46431984191970ca283bb335a2085",
+      "mechanisms": {
+        "reversible-validation": 6,
+        "validation-completeness": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/uiActionInventory.js",
+      "bytes": 24066,
+      "sha256": "b3d14e267581a47ba323c26b85e7884ff1f76fb4a0f221f33e373c19d7aac878",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "evidence-integrity": 1,
+        "knowledge-integrity": 1,
+        "observability-correlation": 0,
+        "reversible-validation": 10,
+        "state-isolation": 0,
+        "validation-completeness": 0
+      },
+      "score": 18,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/webviewMessages.js",
+      "bytes": 18636,
+      "sha256": "374f8f45de25be3dee9b7fa041a7bd39fa3550188d1b99fc40c7659f072f681d",
+      "mechanisms": {
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "evidence-integrity": 0,
+        "knowledge-integrity": 1,
+        "reversible-validation": 0,
+        "state-isolation": 0
+      },
+      "score": 12,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/workflowTraceProjection.js",
+      "bytes": 6805,
+      "sha256": "fc012ed6e95d5c153aee2ff7aa4c3672bac70fe0cb8a0d46223b754b919cf58b",
+      "mechanisms": {
+        "evidence-integrity": 1,
+        "observability-correlation": 1,
+        "orchestration-checkpoint": 13
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "src/workGovernor.js",
+      "bytes": 11729,
+      "sha256": "04428d0763a9d063ca2a61c0c2d5c10a8989b1944c15385e1ab3e7a321afefde",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "observability-correlation": 0,
+        "reversible-validation": 1
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/activation-transaction.test.js",
+      "bytes": 2061,
+      "sha256": "6f9d7c7cc871780aab69a9ed4650c820ccfe39384739b0723786a14ad489e71d",
+      "mechanisms": {
+        "live-contract-validation": 0,
+        "reversible-validation": 4
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/activity-observability.test.js",
+      "bytes": 17261,
+      "sha256": "82667d2327aafcbf9ba08149adac3a5a9e859fa412a3caa880af6eb8cddf702c",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "live-contract-validation": 0,
+        "reversible-validation": 12
+      },
+      "score": 10,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/activity.test.js",
+      "bytes": 9880,
+      "sha256": "c9972dae9e4cb2d4eb86fc654c4f3413ff6e4c8085996d87e47b320a595b16ca",
+      "mechanisms": {
+        "evidence-integrity": 0,
+        "observability-correlation": 7,
+        "state-isolation": 0,
+        "validation-completeness": 0
+      },
+      "score": 8,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/canonical-event-publisher.test.js",
+      "bytes": 5271,
+      "sha256": "313cb1d226c598f567f920d16918b15436fabced03899518c837adecc12c375a",
+      "mechanisms": {
+        "validation-completeness": 0
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "tests/cleanup-manager.test.js",
+      "bytes": 14602,
+      "sha256": "d96a72d3cf6f0a4106bcd6d20953e8c0515ad848d144bb2625cf53aa035c9a39",
+      "mechanisms": {
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 0,
+        "reversible-validation": 0,
+        "validation-completeness": 0
+      },
+      "score": 8,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/context-bridge.test.js",
+      "bytes": 1980,
+      "sha256": "d1281cbb4ddcccddc642620ff3460d910fe9ff659de11922dcbc56a4ac773814",
+      "mechanisms": {
+        "observability-correlation": 1
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "tests/coordination-manager.test.js",
+      "bytes": 11725,
+      "sha256": "a5a7320a80606511d4b68b918b48b7e1a24e4734433bdf969ebb51ee4e13892c",
+      "mechanisms": {
+        "capability-admission": 0,
+        "evidence-integrity": 3,
+        "knowledge-integrity": 1,
+        "observability-correlation": 0,
+        "orchestration-checkpoint": 1,
+        "reversible-validation": 4,
+        "state-isolation": 0,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 18,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/dashboard-e2e.test.js",
+      "bytes": 70747,
+      "sha256": "c63dab6e84381a5cb51f588ea495f30102cecd1d5c54a8277ba10ffbcbe12381",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "browser-evidence": 5,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 2,
+        "retrieval-engineering": 5,
+        "reversible-validation": 4,
+        "state-isolation": 0,
+        "validation-completeness": 0,
+        "visual-accessibility": 1
+      },
+      "score": 22,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/discovery-manager.test.js",
+      "bytes": 14651,
+      "sha256": "64bc5873bcc5822ed230309d81db2ca4f50c8e5f4cf1fb8c1b6b1040be9f223a",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "dynamic-service-discovery": 0,
+        "evidence-integrity": 1,
+        "knowledge-integrity": 0,
+        "reversible-validation": 0,
+        "validation-completeness": 0
+      },
+      "score": 15,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/enterprise-manager.test.js",
+      "bytes": 5034,
+      "sha256": "ff78c11247a4378671671d58666c1e4c931ce1270725f319b9c29d65597528b8",
+      "mechanisms": {
+        "capability-admission": 0,
+        "evidence-integrity": 0,
+        "knowledge-integrity": 0,
+        "reversible-validation": 0,
+        "validation-completeness": 0
+      },
+      "score": 10,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/environment-lifecycle-manager.test.js",
+      "bytes": 4431,
+      "sha256": "52d6ba57a5f1cfd024c33f1645fc003278ca37c132e2ce990fe642869b79e36d",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "knowledge-integrity": 0,
+        "reversible-validation": 1
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/extension-contract.test.js",
+      "bytes": 17360,
+      "sha256": "810b6cdacaadba59e6aaf6e0664d8d2ff6ddc25c6e03060f1ac5c318cccfafe0",
+      "mechanisms": {
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 0,
+        "knowledge-integrity": 1,
+        "observability-correlation": 0,
+        "reversible-validation": 1,
+        "state-isolation": 0,
+        "text-repair": 0,
+        "visual-accessibility": 1
+      },
+      "score": 21,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/extension-studio-wiring.test.js",
+      "bytes": 3079,
+      "sha256": "2d92318b97024997afd36ab9cb026f3f2572df41fe0f6adb1f4b8552c9e509ce",
+      "mechanisms": {
+        "evidence-integrity": 0,
+        "reversible-validation": 0,
+        "text-repair": 0
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/fixtures/context.json",
+      "bytes": 274,
+      "sha256": "2db48b9f4a058d3ad562b72ea1f389f0d2634ff09aa6ec10faaa9da60a16a7c5",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "observability-correlation": 1
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/hardening-boundaries.test.js",
+      "bytes": 17087,
+      "sha256": "cb05ab7da7aa4ff946412f6558f5ec8361b42ede812f7c8a9da43e390562a3a7",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "evidence-integrity": 0,
+        "state-isolation": 0
+      },
+      "score": 7,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/instrumentation-sdk.test.js",
+      "bytes": 1890,
+      "sha256": "b206502d1282c603bccce337deab69604ddf0f04147eac67e37d2779e7996fa8",
+      "mechanisms": {
+        "evidence-integrity": 0,
+        "observability-correlation": 2
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/mcp-activity-integration.test.js",
+      "bytes": 4392,
+      "sha256": "6d1016e3bb89ae881d0c8e792664f71900d5d1ca38b0e14b7e0c3326237dbd81",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "evidence-integrity": 1,
+        "observability-correlation": 4
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/mcp-server.test.js",
+      "bytes": 8328,
+      "sha256": "a65ddc1cc66249c283697b78c210edd117e20a554b197a603ae1e82554e7306e",
+      "mechanisms": {
+        "observability-correlation": 2,
+        "reversible-validation": 0,
+        "state-isolation": 0,
+        "tool-lifecycle": 2
+      },
+      "score": 8,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/operational-walk-bootstrap/index.js",
+      "bytes": 2352,
+      "sha256": "7a68e54eb1fe079ea2615b3d6f0449389cb8284a9e2a0c13752060b12c55631a",
+      "mechanisms": {
+        "reversible-validation": 0,
+        "state-isolation": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/operational-walk-status.test.js",
+      "bytes": 6402,
+      "sha256": "7738b36fe24beedff34bd7d2b016e1f6ef9bd30c11591e87beeb92ae1c5176b2",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/owned-host-runner.test.js",
+      "bytes": 4653,
+      "sha256": "c27f096bc5fa0b71b882f697eccca532ffe9c4ae5d32dff2b75bfe76e7654f81",
+      "mechanisms": {
+        "state-isolation": 0,
+        "validation-completeness": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/package-contract.test.js",
+      "bytes": 6837,
+      "sha256": "38753153fadb99591602543b28621fb67e9c5cd384f304d661ed7d895c5518af",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 1,
+        "state-isolation": 0,
+        "validation-completeness": 0
+      },
+      "score": 11,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/preview.html",
+      "bytes": 44233,
+      "sha256": "a99818c685a6cf78ddd20248af0fbb2fb399fda289c3ccc45da6d80896632862",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 2,
+        "knowledge-integrity": 3,
+        "live-contract-validation": 0,
+        "observability-correlation": 2,
+        "orchestration-checkpoint": 4,
+        "reversible-validation": 6,
+        "state-isolation": 0,
+        "text-repair": 0,
+        "validation-completeness": 0
+      },
+      "score": 26,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/px-bridge-cache.test.js",
+      "bytes": 22392,
+      "sha256": "075b9a6cf25b7a1a3661dfe44da64dada2425ee9e884992eddd6614673575a1e",
+      "mechanisms": {
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 0,
+        "reversible-validation": 15,
+        "state-isolation": 0,
+        "validation-completeness": 0
+      },
+      "score": 10,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/runtime-revisions.test.js",
+      "bytes": 1730,
+      "sha256": "82009a62606a77a9c8ba8741e3ffc00d3cad2f0be01f0829fe9202324283a5c8",
+      "mechanisms": {
+        "reversible-validation": 5
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "tests/sidebar-e2e.test.js",
+      "bytes": 11951,
+      "sha256": "ed44cd0868734025a4309e414b02ca56fd3fb2462472dcd4886949a7282faffd",
+      "mechanisms": {
+        "browser-evidence": 1,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 2,
+        "observability-correlation": 0,
+        "orchestration-checkpoint": 3,
+        "reversible-validation": 2,
+        "validation-completeness": 0
+      },
+      "score": 16,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/sidebar-messages.test.js",
+      "bytes": 4828,
+      "sha256": "ae4f203ce83891aab37fe536772e01587fbba5bb165409d5678a025e23498396",
+      "mechanisms": {
+        "derived-artifact-sync": 0,
+        "reversible-validation": 5
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/sidebar-preview.html",
+      "bytes": 1910,
+      "sha256": "4742fc610811571be2e9e25d4cf011fb77331f6812e19e2815c4f13ebe6c5bb9",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "validation-completeness": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/sidebar-projection.test.js",
+      "bytes": 8363,
+      "sha256": "ee6aa42d58f049e03d9421f836cd27e8e70f830a2bbe918a80d8853e0f74083e",
+      "mechanisms": {
+        "derived-artifact-sync": 0,
+        "observability-correlation": 0,
+        "orchestration-checkpoint": 5,
+        "reversible-validation": 13,
+        "validation-completeness": 0
+      },
+      "score": 10,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/sidebar-view.test.js",
+      "bytes": 2463,
+      "sha256": "f60c9898653bf3f363fafec4ee5d9994131f4b4aabef5cb2750bac378fff89e0",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "evidence-integrity": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/state-invariants.test.js",
+      "bytes": 9384,
+      "sha256": "01d38f16bc64eaaac58ef44c7f54018bcc3ef0df5701ca4ad9bd88f602b3d82e",
+      "mechanisms": {
+        "evidence-integrity": 0,
+        "orchestration-checkpoint": 1,
+        "state-isolation": 0
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/studio-catalog-agent-builder.test.js",
+      "bytes": 11077,
+      "sha256": "135ec9abae72181aa304e0245449b3cd00033ac119446e580f5b34f73f37b692",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "evidence-integrity": 9,
+        "reversible-validation": 4
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/studio-catalog-workflow-layout.test.js",
+      "bytes": 9895,
+      "sha256": "eaeade049e11f2aceb80a70406d3de6f513d22efe7f373d81160efe07739ac75",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "contract-introspection": 0,
+        "evidence-integrity": 7,
+        "reversible-validation": 4,
+        "text-repair": 0
+      },
+      "score": 10,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/studio-dashboard-host.test.js",
+      "bytes": 3744,
+      "sha256": "6adb8f120ad76fa541b290b6f86776b37c34128d53e5cc6cbac58bc94e8869d7",
+      "mechanisms": {
+        "evidence-integrity": 0,
+        "reversible-validation": 0
+      },
+      "score": 4,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/studio-draft-host.test.js",
+      "bytes": 36193,
+      "sha256": "a29bc255b93a632abcc6bbab4e77be93b9e09bcb8c19f589200b78d7a9189699",
+      "mechanisms": {
+        "capability-admission": 0,
+        "evidence-integrity": 2,
+        "knowledge-integrity": 13,
+        "reversible-validation": 0,
+        "state-isolation": 0,
+        "text-repair": 0
+      },
+      "score": 12,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/studio-package.test.js",
+      "bytes": 22547,
+      "sha256": "a291aa7e32f218a222729290518e2a8ad9c8a70a11051ed60815d0411af71dea",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "evidence-integrity": 0,
+        "knowledge-integrity": 0,
+        "live-contract-validation": 0,
+        "text-repair": 0
+      },
+      "score": 10,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/system-surfaces.test.js",
+      "bytes": 6675,
+      "sha256": "8950d01c14e47c4018335c0eed5d8e9caff8bd2b40bedf6564406c571d287eae",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "contract-introspection": 0,
+        "evidence-integrity": 0,
+        "live-contract-validation": 0,
+        "orchestration-checkpoint": 4,
+        "reversible-validation": 6,
+        "security-aggregation": 0,
+        "validation-completeness": 0
+      },
+      "score": 16,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/team-fabric-manager.test.js",
+      "bytes": 2978,
+      "sha256": "5255a40f541410a06fa0da73db4cc44c39d3433b4f5aca905e6156cf9d9b6fcb",
+      "mechanisms": {
+        "evidence-integrity": 0
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "tests/test-profiles.test.js",
+      "bytes": 1601,
+      "sha256": "af7ce890b8d8921d5ebc27c74d37ea7bd5c9a4ef8f1caf6c83d27fda41b6c411",
+      "mechanisms": {
+        "dynamic-service-discovery": 0
+      },
+      "score": 2,
+      "disposition": "no_reusable_signal"
+    },
+    {
+      "path": "tests/ui-action-inventory.test.js",
+      "bytes": 6106,
+      "sha256": "767083edad611a4a5a41b9716d5d71b444cde63ba6df8b4eb15ca2e455669189",
+      "mechanisms": {
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "derived-artifact-sync": 0,
+        "evidence-integrity": 0,
+        "reversible-validation": 0,
+        "validation-completeness": 0
+      },
+      "score": 12,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/ui-scaffold.test.js",
+      "bytes": 24706,
+      "sha256": "b6d14c02f970b7c8f42fd3fd84a97439ee5768cdec0b309c22b7e5f637b80e12",
+      "mechanisms": {
+        "contract-introspection": 0,
+        "evidence-integrity": 1,
+        "retrieval-engineering": 3,
+        "reversible-validation": 15,
+        "state-isolation": 0,
+        "text-repair": 0
+      },
+      "score": 12,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/vscode-host/index.js",
+      "bytes": 18594,
+      "sha256": "4e75ddf114b748b0d0e6f818d58e73599af2075e78de9a4c328e6351b0ea9601",
+      "mechanisms": {
+        "atomic-state": 0,
+        "capability-admission": 0,
+        "contract-introspection": 0,
+        "knowledge-integrity": 1,
+        "live-contract-validation": 0,
+        "reversible-validation": 13,
+        "validation-completeness": 0
+      },
+      "score": 14,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/work-governor.test.js",
+      "bytes": 4535,
+      "sha256": "8691ce11b305a40e1b4123b65ac55e950f5a9398dd9d84c1c4db8a5b9e95fa7b",
+      "mechanisms": {
+        "bounded-retry": 0,
+        "observability-correlation": 0,
+        "reversible-validation": 9
+      },
+      "score": 6,
+      "disposition": "review_required"
+    },
+    {
+      "path": "tests/workflow-trace-projection.test.js",
+      "bytes": 7459,
+      "sha256": "d2fcea6d83063c8fb3b58142f3084c14c32a9042393ca8cf43bfe9a0a66dad58",
+      "mechanisms": {
+        "evidence-integrity": 0,
+        "observability-correlation": 3,
+        "orchestration-checkpoint": 5,
+        "validation-completeness": 0
+      },
+      "score": 8,
+      "disposition": "review_required"
+    }
+  ],
+  "duplicate_candidate_groups": [],
+  "excluded_boundaries": [
+    {
+      "path": "dist",
+      "reason": "dist",
+      "file_count": 12,
+      "byte_count": 48820839,
+      "tree_sha256": "c914b50010069b0d36c609cb0d14f46df0991ede9cfcf4e038b513a23b281203"
+    },
+    {
+      "path": "node_modules",
+      "reason": "node_modules",
+      "file_count": 1365,
+      "byte_count": 39894868,
+      "tree_sha256": "bab7c1319d6ccd948be6da22c703fbc6bc4b8e1a1dd452db0d881aa47ba5052f"
+    }
+  ],
+  "errors": [],
+  "complete": true
+}

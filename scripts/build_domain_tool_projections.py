@@ -25,7 +25,7 @@ def reconcile(root: Path, *, check: bool) -> dict[str, object]:
     expected = source.read_bytes()
     stale: list[str] = []
     for owner in OWNERS:
-        target = root / ".agents/skills" / owner / "scripts/domain_tool.py"
+        target = root / ".px/skills" / owner / "scripts/domain_tool.py"
         if not target.is_file() or target.read_bytes() != expected:
             stale.append(target.relative_to(root).as_posix())
             if not check:

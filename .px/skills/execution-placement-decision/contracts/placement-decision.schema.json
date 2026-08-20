@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "px.execution-placement-decision/1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "mode", "baseline_sha256", "candidates", "selected_candidate", "current_candidate", "recommendation", "promotion_tier", "migration_authorized", "decision_sha256"],
+  "properties": {
+    "schema_version": {"const": "px.execution-placement-decision/1.0"},
+    "mode": {"enum": ["language_runtime", "deployment_platform", "database_storage"]},
+    "baseline_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "weights": {"type": "object", "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}},
+    "minimum_improvement": {"type": "number", "minimum": 0, "maximum": 1},
+    "candidates": {"type": "array", "minItems": 1, "maxItems": 64, "items": {"type": "object"}},
+    "selected_candidate": {"type": "string", "minLength": 1, "maxLength": 200},
+    "current_candidate": {"type": "string", "minLength": 1, "maxLength": 200},
+    "recommendation": {"enum": ["keep_current", "bounded_prototype"]},
+    "promotion_tier": {"type": "integer", "minimum": 0, "maximum": 5},
+    "migration_authorized": {"const": false},
+    "provider_selected": {"const": false},
+    "requires_benchmark_before_promotion": {"const": true},
+    "decision_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}
+

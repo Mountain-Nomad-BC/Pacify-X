@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "punch-cards-U02-U05-migration-batch-01-20260811",
+  "created_utc": "2026-08-11T19:47:35.115Z",
+  "cards": ["U02", "U05"],
+  "accepted": false,
+  "state": "implemented-foundation-requiring-additional-batches",
+  "extension_root": "portable-sources/Pacify-X_Extension",
+  "artifact_tree": {
+    "file_count": 16,
+    "sha256": "fb4ede2ab668f1ec3509ac53b11acfa593ad631490bf23fed98281be288962b7"
+  },
+  "migrated": {
+    "shared_components": ["escape", "number", "bytes", "badge", "unavailable", "card", "section", "empty"],
+    "surface_renderers": ["diagnostics", "assurance", "settings", "readiness"],
+    "css_owners": ["validation", "ownership/readiness", "billable policy/guardrails", "responsive variants", "forced colors"],
+    "removed": "superseded legacy renderer functions and proven selector owners",
+    "fixed": "settings policy-control width and margin overflow"
+  },
+  "verification": {
+    "npm_build": "passed",
+    "tests": {"passed": 83, "failed": 0, "skipped": 0, "todo": 0},
+    "playwright": "all routes and high-risk interactions passed at desktop and mobile widths",
+    "css_before": {"selector_occurrences": 1311, "unique_selectors": 781, "duplicate_selectors": 285, "duplicate_occurrences": 530},
+    "css_after": {"selector_occurrences": 1301, "unique_selectors": 786, "duplicate_selectors": 275, "duplicate_occurrences": 515}
+  },
+  "remaining": "Additional renderer and CSS ownership batches must complete before U02/U05 can move from partial to accepted."
+}

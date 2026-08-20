@@ -1,0 +1,257 @@
+{
+  "id": "ms-azuretools.vscode-azure-github-copilot",
+  "name": "GitHub Copilot for Azure",
+  "version": "1.0.231",
+  "publisher": "ms-azuretools",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "chatAgents",
+    "chatParticipants",
+    "chatPromptFiles",
+    "commands",
+    "configuration",
+    "configurationDefaults",
+    "languageModelTools",
+    "mcpServerDefinitionProviders",
+    "menus",
+    "walkthroughs"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:chatAgents",
+      "kind": "chatAgents",
+      "provider": "ms-azuretools.vscode-azure-github-copilot",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:chatParticipants",
+      "kind": "chatParticipants",
+      "provider": "ms-azuretools.vscode-azure-github-copilot",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:chatPromptFiles",
+      "kind": "chatPromptFiles",
+      "provider": "ms-azuretools.vscode-azure-github-copilot",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-azuretools.vscode-azure-github-copilot",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-azuretools.vscode-azure-github-copilot",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configurationDefaults",
+      "kind": "configurationDefaults",
+      "provider": "ms-azuretools.vscode-azure-github-copilot",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languageModelTools",
+      "kind": "languageModelTools",
+      "provider": "ms-azuretools.vscode-azure-github-copilot",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:mcpServerDefinitionProviders",
+      "kind": "mcpServerDefinitionProviders",
+      "provider": "ms-azuretools.vscode-azure-github-copilot",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-azuretools.vscode-azure-github-copilot",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "ms-azuretools.vscode-azure-github-copilot",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "@azure.askAgentAboutResource",
+      "invocation": "vscode.commands.executeCommand('@azure.askAgentAboutResource', ...args)",
+      "title": "Ask @azure",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "@azure.installAzureSkillsGlobally",
+      "invocation": "vscode.commands.executeCommand('@azure.installAzureSkillsGlobally', ...args)",
+      "title": "Install Azure Skills Globally",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "@azure.installAzureSkillsLocally",
+      "invocation": "vscode.commands.executeCommand('@azure.installAzureSkillsLocally', ...args)",
+      "title": "Install Azure Skills Locally",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "@azure.openBugReport",
+      "invocation": "vscode.commands.executeCommand('@azure.openBugReport', ...args)",
+      "title": "Report an issue",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "@azure.openFeatureRequest",
+      "invocation": "vscode.commands.executeCommand('@azure.openFeatureRequest', ...args)",
+      "title": "Make a feature request",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "@azure.setGlobalState",
+      "invocation": "vscode.commands.executeCommand('@azure.setGlobalState', ...args)",
+      "title": "Set Global State",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "copilotforazure.inDebugContext"
+    },
+    {
+      "id": "@azure.showOutputChannel",
+      "invocation": "vscode.commands.executeCommand('@azure.showOutputChannel', ...args)",
+      "title": "Show output channel",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "@azure.uninstallAzureSkillsGlobally",
+      "invocation": "vscode.commands.executeCommand('@azure.uninstallAzureSkillsGlobally', ...args)",
+      "title": "Uninstall Azure Skills Globally",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "@azure.viewGlobalState",
+      "invocation": "vscode.commands.executeCommand('@azure.viewGlobalState', ...args)",
+      "title": "View Global State",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "copilotforazure.inDebugContext"
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "ms-azuretools.vscode-azure-mcp-server",
+    "ms-azuretools.vscode-azureresourcegroups"
+  ],
+  "activation_events": [
+    "onChatParticipant:github.copilot.default"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-azuretools.vscode-azure-github-copilot",
+    "capabilities": [
+      "contribution:chatAgents",
+      "contribution:chatParticipants",
+      "contribution:chatPromptFiles",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:configurationDefaults",
+      "contribution:languageModelTools",
+      "contribution:mcpServerDefinitionProviders",
+      "contribution:menus",
+      "contribution:walkthroughs"
+    ],
+    "interface": [
+      "@azure.askAgentAboutResource",
+      "@azure.installAzureSkillsGlobally",
+      "@azure.installAzureSkillsLocally",
+      "@azure.openBugReport",
+      "@azure.openFeatureRequest",
+      "@azure.setGlobalState",
+      "@azure.showOutputChannel",
+      "@azure.uninstallAzureSkillsGlobally",
+      "@azure.viewGlobalState"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

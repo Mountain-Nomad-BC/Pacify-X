@@ -30,7 +30,7 @@ def expected(root: Path) -> dict[str, bytes]:
         owner = parts[2]
         reference = (
             root
-            / ".agents/skills"
+            / ".px/skills"
             / owner
             / "references/scripts"
             / f"{record['id']}.json"
@@ -42,7 +42,7 @@ def expected(root: Path) -> dict[str, bytes]:
         owner_refs.setdefault(owner, []).append((record["id"], reference))
     outputs[registry_path.relative_to(root).as_posix()] = _render(registry)
     for owner, references in owner_refs.items():
-        index_path = root / ".agents/skills" / owner / "references/scripts-index.json"
+        index_path = root / ".px/skills" / owner / "references/scripts-index.json"
         index = json.loads(index_path.read_text(encoding="utf-8"))
         by_id = {item["id"]: item for item in index["records"]}
         for identifier, reference in references:

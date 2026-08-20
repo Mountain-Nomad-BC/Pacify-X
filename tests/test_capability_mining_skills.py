@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def load_script(skill: str, script: str):
-    path = ROOT / ".agents" / "skills" / skill / "scripts" / script
+    path = ROOT / ".px" / "skills" / skill / "scripts" / script
     spec = importlib.util.spec_from_file_location(
         f"test_{skill.replace('-', '_')}", path
     )
@@ -150,6 +150,19 @@ class CapabilityMiningSkillTests(unittest.TestCase):
             moved = module.audit(root, review_registry=registry)
             self.assertTrue(moved["complete"])
             self.assertEqual(moved["unreviewed_count"], 0)
+
+    def test_incomplete_audit_excludes_preserved_user_skill_custody(self):
+        module = load_script("audit-incomplete-implementations", "audit_incomplete.py")
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            preserved = root / ".px/preserved-skills/initial/user-original/example.py"
+            preserved.parent.mkdir(parents=True)
+            preserved.write_text("def user_owned():\n    pass\n", encoding="utf-8")
+            active = root / "runtime.py"
+            active.write_text("VALUE = 1\n", encoding="utf-8")
+            result = module.audit(root)
+            self.assertTrue(result["complete"])
+            self.assertEqual(result["finding_count"], 0)
 
     def test_source_auditor_accounts_for_every_file(self):
         module = load_script(

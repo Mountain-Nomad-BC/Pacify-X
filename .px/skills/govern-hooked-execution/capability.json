@@ -1,0 +1,40 @@
+{
+  "admission_record": "govern-hooked-execution",
+  "body_sha256": "24d1cb75bb598eb9da03a37b96ff390a738647056befb07f54a2e1754b114a66",
+  "contract": {
+    "available": true,
+    "sha256": "d2f012d6a2e031f6b00d06bff9ea9dd6426885607d3f42b9c4233a0ed1cd7ef8",
+    "source": "registry/skill_packages/govern-hooked-execution.json"
+  },
+  "description": "Treat hooks and agent configuration as governed, validated runtime supply-chain",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-hooked-execution",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-hooked-execution"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "execution",
+    "external-candidate",
+    "govern",
+    "hooked",
+    "hooks",
+    "security"
+  ],
+  "version": "0.1.0"
+}

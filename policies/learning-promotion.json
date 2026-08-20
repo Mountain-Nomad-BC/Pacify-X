@@ -1,0 +1,15 @@
+{
+  "schema_version": "px.learning-promotion-policy/1.0",
+  "lifecycle": ["experience", "evidence", "pattern", "hypothesis", "validation", "learned-candidate", "measured-reuse", "promotion-or-decay"],
+  "identity_hashes_separate_from_evidence_hashes": true,
+  "aggregation_identity": "hashless-live-state",
+  "required_gates": ["confidence", "a-b", "independent-research", "final-validation", "dependency-current"],
+  "minimum_trials_per_confidence_gate": 6,
+  "maximum_trials_per_confidence_gate": 200,
+  "maximum_retained_pipeline_history_bytes": 33554432,
+  "learning_direct_canonical_write": false,
+  "loser_retention_required": true,
+  "partial_promotion_allowed": true,
+  "rollback_required": true,
+  "automatic_destructive_retirement": false
+}

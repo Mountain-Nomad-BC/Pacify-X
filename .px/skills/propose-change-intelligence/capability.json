@@ -1,0 +1,38 @@
+{
+  "admission_record": "propose-change-intelligence",
+  "body_sha256": "371219134666efd26b9b48f800bb97c7ba2d74fedd9e7748bc053f2c75bf2937",
+  "contract": {
+    "available": true,
+    "sha256": "674e0fa4e4de229bae1a0c80f31258df4bc066258d05a358172a76cfee22d9a9",
+    "source": "registry/skill_packages/propose-change-intelligence.json"
+  },
+  "description": "Stage proposal-only capabilities for dependency impact, semantic drift, architecture entropy, business-rule collision, and living documentation. Use when repeated change-analysis work suggests a new reusable capability.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "propose-change-intelligence",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/propose-change-intelligence"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "change",
+    "architecture",
+    "drift",
+    "candidate"
+  ],
+  "version": "0.1.0"
+}

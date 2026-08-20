@@ -1,0 +1,4 @@
+interface:
+  display_name: "Isolate Project Streams"
+  short_description: "Enforce project, session, lease, and transfer isolation"
+  default_prompt: "Use $isolate-project-streams to validate project-scoped execution and prevent cross-project context leakage."

@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-935",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004960",
+  "authority": "The registered operational UI gap authorizes restoration of the existing inspectable-metric contract.",
+  "effect": "write",
+  "scope": ["extension/media/dashboard/30-components.js", "extension/media/dashboard/90-controller.js", "extension/tests/dashboard-e2e.test.js"],
+  "expected_effect": "Metric cards become accessible controls and open bounded human/machine-readable current-snapshot records without backend mutation or authority.",
+  "rollback": "Isolated shared-component/controller route; revert through explicit patch if surface rendering or modal focus behavior regresses.",
+  "evidence": [{"claim": "Immediate metric-gap checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004960"}]
+}

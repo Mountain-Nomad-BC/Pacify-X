@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Mapping
 
 from .effect_grants import validate_effect_grant
+from .operation_authority import AuthorityRequest, decide as decide_authority
 from .trusted_evidence import EvidenceScope, TrustedEvidenceResolver
 
 NON_READ_EFFECTS = {
@@ -206,6 +207,35 @@ def authorize_with_policy_evidence(
     if not isinstance(policy_result, dict):
         policy_result = {}
     approval_id = str(policy_result.get("approval_id", "")) or None
+    authority = decide_authority(
+        AuthorityRequest(
+            executor=str(request_data.get("executor", "codex-host")),
+            effects=effects,
+            scopes=tuple(map(str, request_data.get("scopes", ()))),
+            observed_only=bool(request_data.get("observed_only", False)),
+            user_approval_id=approval_id,
+            px_policy_decision_id=str(resolved.record.get("evidence_id", "")) or None,
+            claim_id=str(request_data.get("claim_id", "")) or None,
+            claim_status=str(request_data.get("claim_status", "")) or None,
+            idempotency_key=str(request_data.get("idempotency_key", "")) or None,
+            explicit_delegation=bool(request_data.get("explicit_delegation", False)),
+            active_executors=tuple(
+                map(str, request_data.get("active_executors", ()))
+            ),
+        )
+    )
+    if not authority.allowed:
+        return {
+            "evaluated": True,
+            "approved": False,
+            "authoritative": False,
+            "decision_source": "resolved_signed_policy+operation_authority",
+            "policy_evidence_id": resolved.record.get("evidence_id"),
+            "effect_grant_verified": False,
+            "executor_owner": authority.executor_owner,
+            "reasons": list(authority.reasons),
+            "requires_verification": bool(set(effects) & NON_READ_EFFECTS),
+        }
     decision = enforce(
         ExecutionRequest(
             capability_id,
@@ -243,6 +273,7 @@ def authorize_with_policy_evidence(
         "authoritative": decision.approved,
         "decision_source": "resolved_signed_policy",
         "policy_evidence_id": resolved.record.get("evidence_id"),
+        "executor_owner": authority.executor_owner,
         "effect_grant_verified": decision.approved
         if set(effects) & NON_READ_EFFECTS
         else False,

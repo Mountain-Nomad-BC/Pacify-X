@@ -1,0 +1,39 @@
+{
+  "schema_version": "px.environment-capability-ontology/1.0",
+  "canonical_chain": [
+    "resource",
+    "capabilities",
+    "interface",
+    "requirements",
+    "effects",
+    "conflicts",
+    "policy",
+    "state"
+  ],
+  "subjects": [
+    "vscode-extension",
+    "vscode-command",
+    "vscode-contribution-point",
+    "system-tool",
+    "installed-package",
+    "orchestration-plane"
+  ],
+  "lazy_storage": {
+    "compact_index": ".engineering-bootstrap/environment/current.json",
+    "snapshot_shards": ".engineering-bootstrap/environment/snapshots/<content-hash>/",
+    "per_extension_contracts": true,
+    "hash_verification_required": true
+  },
+  "discovery_effects": [
+    "read extension manifests without activation",
+    "run fixed local version and package-list probes",
+    "write project-owned hashed discovery snapshots and change events"
+  ],
+  "forbidden_effects": [
+    "activate arbitrary extensions",
+    "install or update packages",
+    "read credentials",
+    "make network or billable calls",
+    "infer undocumented input/output contracts"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "checks": [
+    "native-package-schema",
+    "body-hash",
+    "domain-policy",
+    "bounded-hydration"
+  ],
+  "schema_version": "px.skill-validation-links/1.0",
+  "shared_suite": "tests/test_native_skills.py"
+}

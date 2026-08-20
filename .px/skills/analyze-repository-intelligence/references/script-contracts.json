@@ -1,0 +1,278 @@
+{
+  "contracts": [
+    {
+      "authoritative_source_sha256": "2d0c69c73eb3fb835b2d4b6a3de4544fbf44fe8191dd69d8f4f616264f7175b3",
+      "authority_and_safety": "Default to read-only analysis; never widen a patch or infer ownership without traceable repository evidence.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "agents-md-generator",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "inventory-repository",
+        "trace-relationships",
+        "form-testable-hypotheses",
+        "measure-change-impact",
+        "propose-minimal-safe-action"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/scripts/agents_md_generator.py"
+      ],
+      "trigger": "Use when the requested outcome is agents md generator or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "37a11f168f869a452e04cc56318c860eef8d2d59baae28563826546b723b0692",
+      "authority_and_safety": "Default to read-only analysis; never widen a patch or infer ownership without traceable repository evidence.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "change-impact",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "inventory-repository",
+        "trace-relationships",
+        "form-testable-hypotheses",
+        "measure-change-impact",
+        "propose-minimal-safe-action"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/scripts/change_impact.py"
+      ],
+      "trigger": "Use when the requested outcome is change impact or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "08e7faae66ab45e9baf4c995160d8a971393ba1467406575cd31da5c9369174c",
+      "authority_and_safety": "Default to read-only analysis; never widen a patch or infer ownership without traceable repository evidence.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "config-trace",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_config_trace.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "inventory-repository",
+        "trace-relationships",
+        "form-testable-hypotheses",
+        "measure-change-impact",
+        "propose-minimal-safe-action"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/scripts/config_trace.py"
+      ],
+      "trigger": "Use when the requested outcome is config trace or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "9b9c5967c7b00597de7cce6e31031d14d66d552f41fe53d7560f1f60720b1e8d",
+      "authority_and_safety": "Default to read-only analysis; never widen a patch or infer ownership without traceable repository evidence.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "patch-scope-guard",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_patch_scope_guard.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "inventory-repository",
+        "trace-relationships",
+        "form-testable-hypotheses",
+        "measure-change-impact",
+        "propose-minimal-safe-action"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/scripts/patch_scope_guard.py"
+      ],
+      "trigger": "Use when the requested outcome is patch scope guard or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "a5f18ea59e7545d5f21e12bd76af9981e75e51b52a5a131f2e21336427dc8fdf",
+      "authority_and_safety": "Default to read-only analysis; never widen a patch or infer ownership without traceable repository evidence.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "repo-mapper",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_repo_mapper.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "inventory-repository",
+        "trace-relationships",
+        "form-testable-hypotheses",
+        "measure-change-impact",
+        "propose-minimal-safe-action"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/scripts/repo_mapper.py"
+      ],
+      "trigger": "Use when the requested outcome is repo mapper or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "125db72ad7bcbfe56ca9f7eb0dcf82add59be7bc24a7eab352d8b6f5a21bcfe9",
+      "authority_and_safety": "Default to read-only analysis; never widen a patch or infer ownership without traceable repository evidence.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "reproduction-scaffold",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_reproduction_scaffold.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "inventory-repository",
+        "trace-relationships",
+        "form-testable-hypotheses",
+        "measure-change-impact",
+        "propose-minimal-safe-action"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/scripts/reproduction_scaffold.py"
+      ],
+      "trigger": "Use when the requested outcome is reproduction scaffold or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "11bfda7a014173e854c23f9968fe2034a05ce84e8056119c332514df22c64fe3",
+      "authority_and_safety": "Default to read-only analysis; never widen a patch or infer ownership without traceable repository evidence.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "runtime-path",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_runtime_path.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "inventory-repository",
+        "trace-relationships",
+        "form-testable-hypotheses",
+        "measure-change-impact",
+        "propose-minimal-safe-action"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/scripts/runtime_path.py"
+      ],
+      "trigger": "Use when the requested outcome is runtime path or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "f824de19a8a5045d1b84cba5328a5475bc1705c9bcfcb4752ee30e87e1409e86",
+      "authority_and_safety": "Default to read-only analysis; never widen a patch or infer ownership without traceable repository evidence.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "symbol-index",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/analyze-repository-intelligence/scripts/authoritative_symbol_index.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "inventory-repository",
+        "trace-relationships",
+        "form-testable-hypotheses",
+        "measure-change-impact",
+        "propose-minimal-safe-action"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/02-repository-intelligence-aci_v1.0.0/scripts/symbol_index.py"
+      ],
+      "trigger": "Use when the requested outcome is symbol index or when that outcome is a required dependency."
+    }
+  ],
+  "owner": "analyze-repository-intelligence",
+  "schema_version": "1.0"
+}

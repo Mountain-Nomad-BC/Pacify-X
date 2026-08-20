@@ -1,0 +1,39 @@
+{
+  "admission_record": "map-project-intelligence",
+  "body_sha256": "be4d0fdd32ead5ac6917a465045f44359ee63b518b5ce3f3960352e1c3b0e06a",
+  "contract": {
+    "available": true,
+    "sha256": "ed5a62f298241412589f1ceeff655efb90c36b1e849a9871a8e50c760b9c212f",
+    "source": "registry/skill_packages/map-project-intelligence.json"
+  },
+  "description": "Build or refresh a complete, evidence-backed project map covering files, symbols, dependencies, calls, runtime services, data flow, integrations, configuration keys, ownership, contracts, tests, traceability, risks, and retrieval. Use when onboarding a project, before broad changes, after architecture drift, or when the AI lacks a dependable model of how the project works.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "map-project-intelligence",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/map-project-intelligence"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "project-map",
+    "repository",
+    "architecture",
+    "inventory",
+    "retrieval"
+  ],
+  "version": "1.0.0"
+}

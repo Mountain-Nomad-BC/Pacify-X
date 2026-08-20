@@ -1,0 +1,8 @@
+{
+  "gap_id":"PX-OS-906","checkpoint_event_id":"gap-event:PX-OPERATIONAL-GAPS-20260816:000000006337","effect":"execute",
+  "scope":["node-diagnostic:dashboard-extension-hardening-ui-contract"],
+  "authority":"PX906 owns a focused diagnostic of the failed governed section owners; Codex retains process authority.",
+  "expected_effect":"Identify exact hardening, UI scaffold, and extension contract failures without rerunning the governed section or any full profile.",
+  "rollback":"Read-only Node tests; no host or repository mutation.",
+  "evidence":[{"reference":".engineering-bootstrap/test-evidence/sections/dashboard-extension.json","artifact_sha256":"ddcc8c82f2d3abe369480c67b1fd993fc1bf9b04b38f562bed69b8785c8e1d6a","artifact_size":987,"claim":"The grouped dashboard-extension section failed and names hardening, UI scaffold, and contract owners."}]
+}

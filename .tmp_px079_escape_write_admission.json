@@ -1,0 +1,17 @@
+{
+  "gap_id": "PX-OS-079",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005676",
+  "effect": "write",
+  "scope": [
+    "extension/media/dashboard/90-controller.js"
+  ],
+  "authority": "User directed full operational repair; the governed UI walk exposed a document-focus modal dismissal defect inside PX-controlled scope.",
+  "expected_effect": "Close a visible modal on Escape even when editor refresh leaves focus outside #app, while retaining the existing graph focus and Studio trust cleanup behavior.",
+  "rollback": "Revert only the document-scoped Escape listener if source review or the bounded dashboard section shows duplicate dismissal or lost graph focus behavior.",
+  "evidence": [
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005675",
+      "claim": "Exact modal interaction failure and source boundary"
+    }
+  ]
+}

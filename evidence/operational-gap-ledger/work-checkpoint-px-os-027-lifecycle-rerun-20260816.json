@@ -1,0 +1,12 @@
+{
+  "active_gap_id": "PX-OS-027",
+  "learned": "The pause request was rejected from finalizing because the lifecycle fixture's read-only nodes legitimately ran in parallel and completed before the request. The lifecycle-only fixture now declares an exclusive write effect so first-node completion leaves a real second-node pause window.",
+  "next_action": "Run only the lifecycle test once to verify pause, resume, cancel, worker closure, and immediate subsequent execution.",
+  "unresolved_branch_gap_ids": ["PX-OS-027"],
+  "evidence": [
+    {
+      "claim": "The exact failure was finalizing -> pause_requested, not a stuck pause state.",
+      "reference": "focused rerun under gap-event:PX-OPERATIONAL-GAPS-20260816:000000004936"
+    }
+  ]
+}

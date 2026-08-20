@@ -18,13 +18,18 @@
     {"id": "hardware-aware-execution", "summary": "Route optional accelerators only with compatibility, VRAM, correctness, benchmark, telemetry, and fallback evidence.", "body": "policies/hardware-aware-execution.json"},
     {"id": "benchmark-operational-assurance", "summary": "Freeze benchmark treatments, protect cold runs, bound retries, and separate infrastructure failures from graded results.", "body": "policies/benchmark-operational-assurance.json"},
     {"id": "closed-loop-assurance", "summary": "Turn sealed evidence into independently admitted and verified improvement candidates without self-certification.", "body": "policies/closed-loop-assurance.json"},
+    {"id": "codex-host-skill-boundary", "summary": "Separate Codex-host and PX governance boundaries while keeping native discovery and execution authority explicit.", "body": "policies/codex-host-skill-boundary.json"},
     {"id": "release-artifact-classification", "summary": "Classify every release file as product input, evidence output, generated intermediate, or bounded control output before hashing and certification.", "body": "policies/release-artifact-policy.json"},
     {"id": "release-coverage-assurance", "summary": "Require executed branch coverage and per-test contexts for safety-critical release classes.", "body": "policies/coverage-assurance.json"},
     {"id": "effect-grant-trust", "summary": "Trust effect authority only when a scoped, unexpired grant has a verified publisher signature.", "body": "policies/effect-grant-trust.json"},
     {"id": "release-signing-trust", "summary": "Verify signed release certificates against explicitly trusted and non-revoked publisher keys.", "body": "policies/release-trust.json"},
     {"id": "public-data-allowlist", "summary": "Admit only reviewed public identifiers, inert test domains, technical URI tokens, and binary signatures during sanitation review.", "body": "policies/public-data-allowlist.json"},
     {"id": "platform-support", "summary": "Bound Python and operating-system support claims to the public CI and release matrices.", "body": "policies/platform-support.json"},
-    {"id": "agency-agent-runtime", "summary": "Keep specialist routing bounded, lazy, project-scoped, evidence-governed, and separate from runtime authority.", "body": "policies/agency-agent-runtime.json"}
+    {"id": "agency-agent-runtime", "summary": "Keep specialist routing bounded, lazy, project-scoped, evidence-governed, and separate from runtime authority.", "body": "policies/agency-agent-runtime.json"},
+    {"id": "operation-authority-boundary", "summary": "PX governs admitted scope and evidence while each host retains its native execution, approval, and security authority.", "body": "policies/operation-authority-boundary.json"},
+    {"id": "learning-promotion", "summary": "Promote learned candidates only through hash-bound evidence, confidence, comparison, independent validation, measured reuse, and reversible lifecycle gates.", "body": "policies/learning-promotion.json"},
+    {"id": "execution-placement", "summary": "Recommend bounded execution placement only against the current baseline, full boundary cost, correctness, rollback, and after-state evidence.", "body": "policies/execution-placement.json"},
+    {"id": "operational-evidence-retention", "summary": "Archive superseded PX-owned map and committed-WAL evidence only after bounded-path, member-hash, archive-integrity, and recovery-receipt gates.", "body": "policies/operational-evidence-retention.json"}
   ],
   "loading_rule": "Load a full policy body only when the request, selected capability, or declared effect references its policy ID."
 }

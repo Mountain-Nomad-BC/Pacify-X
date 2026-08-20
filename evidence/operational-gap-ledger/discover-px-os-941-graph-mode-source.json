@@ -1,0 +1,40 @@
+{
+  "gap_id": "PX-OS-941",
+  "feature": "knowledge-graph-effective-mode-contract",
+  "parent_surface": "knowledge-graph",
+  "control_action": "render a graph response whose mode field is absent",
+  "severity": "high",
+  "classification": "editor",
+  "observed_behavior": "The graph shell resolves mode from controller state, but projection controls and node semantics read only response.data.mode. When a valid response omits that redundant field, full-map state exposes flow/orbit controls that cannot change the deterministic full-map layout.",
+  "expected_behavior": "Every graph subrenderer uses one effective mode resolved from response mode or the authoritative controller request/state, so visible controls always affect the rendered layout.",
+  "operational_impact": "The UI can display nonfunctional layout controls and incorrect coverage/selection labels, making the Knowledge Graph appear interactive while ignoring those actions.",
+  "discovered_at": "2026-08-16T20:46:00Z",
+  "discovered_by": "codex-host:focused-dashboard-browser-walk",
+  "discovery_source": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004988",
+  "discovery_evidence": [
+    {"claim": "The flow control rendered unpressed while controller state was full/community after search.", "reference": "extension/tests/dashboard-e2e.test.js:183-192; gap-event:PX-OPERATIONAL-GAPS-20260816:000000004988"},
+    {"claim": "Projection branches repeatedly on data.mode while the shell separately resolves state.graphMode.", "reference": "extension/media/dashboard/48-graph-surface.js:15,66,74,85,88-90,112"}
+  ],
+  "source_refs": [{"path": "extension/media/dashboard/48-graph-surface.js", "symbols": ["projection", "render"]}],
+  "assigned_owner": "codex-primary",
+  "dependencies": ["PX-OS-938"],
+  "blockers": [],
+  "next_action": "Resolve effective mode once inside projection and use it for layout controls, coverage, interactions, scene identity, and labels; exercise a focused analysis mode before testing orbit/flow controls.",
+  "tests_required": ["extension/tests/dashboard-e2e.test.js", "python -m runtime.cli test-section run dashboard-extension"],
+  "completion_evidence": [],
+  "interaction_chain": {
+    "open_load": {"state": "present", "detail": "Graph response loads.", "evidence": ["extension/tests/dashboard-e2e.test.js:183-191"]},
+    "display": {"state": "partial", "detail": "Projection shows controls for the wrong effective mode.", "evidence": ["extension/media/dashboard/48-graph-surface.js:88-90"]},
+    "user_edit_action": {"state": "partial", "detail": "Layout buttons accept clicks but full-map layout ignores them.", "evidence": ["extension/tests/dashboard-e2e.test.js:234-235"]},
+    "input_validation": {"state": "missing", "detail": "No shared effective-mode invariant guards the response/state mismatch.", "evidence": ["extension/media/dashboard/48-graph-surface.js"]},
+    "authorization": {"state": "not_applicable", "detail": "View-only graph interaction.", "evidence": []},
+    "backend_dispatch": {"state": "present", "detail": "Typed graph request includes mode.", "evidence": ["extension/media/dashboard/90-controller.js:1036-1049"]},
+    "runtime_effect": {"state": "partial", "detail": "Graph renders but exposed layout action can be ineffective.", "evidence": ["extension/media/dashboard/90-controller.js:821-851"]},
+    "progress_reporting": {"state": "present", "detail": "Graph loading state is shown.", "evidence": ["extension/media/dashboard/48-graph-surface.js:90"]},
+    "result_acknowledgement": {"state": "partial", "detail": "Response is accepted without reconciling omitted mode.", "evidence": ["extension/media/dashboard/90-controller.js:1882"]},
+    "failure_handling": {"state": "missing", "detail": "Omitted redundant mode silently creates divergent semantics.", "evidence": ["extension/media/dashboard/48-graph-surface.js"]},
+    "persistence": {"state": "not_applicable", "detail": "View layout persistence is separate.", "evidence": []},
+    "reload_reopen": {"state": "partial", "detail": "Reopen can reproduce state/response divergence.", "evidence": ["extension/tests/preview.html:110,138-143"]},
+    "recovery_rollback": {"state": "missing", "detail": "No visible recovery identifies the ineffective control.", "evidence": ["extension/tests/dashboard-e2e.test.js:192"]}
+  }
+}

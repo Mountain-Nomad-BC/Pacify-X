@@ -1,0 +1,59 @@
+{
+  "schema_version": "px.operational-builder-trace.v1",
+  "trace_id": "workflow-builder-operational-trace-20260816",
+  "trace_mode": "read-only-source-walk",
+  "generated_utc": "2026-08-16T19:48:00Z",
+  "state_claim": "gap-only-no-operational-promotion",
+  "sources": [
+    {"path": "extension/media/dashboard/90-controller.js", "size": 284692, "sha256": "6a2c67fca34053b06836cf5939f6de5ec22fc57c53d1ee293a74e2be14ec52af"},
+    {"path": "extension/src/studioCatalog.js", "size": 8979, "sha256": "839e07534e142b38d58591c3d16068f698cdbb95b79045d03661818db7ccaeec"},
+    {"path": "extension/src/extension.js", "size": 96996, "sha256": "bbc31eb861955094a88a4a279f6e3f2865d4d2177f25fdec73244fb7824fd18f"},
+    {"path": "runtime/studio_models.py", "size": 24172, "sha256": "b747de45384c7a56c3be2fdba6f5d53a39ae36caa1dca19a33c56c6ce435809e"},
+    {"path": "runtime/studio_api.py", "size": 33957, "sha256": "8ad22045d98c5cccc825f5ab6da8a756ebe4d1b75687469ba0e00350c851cf60"},
+    {"path": "runtime/workflow_studio.py", "size": 59427, "sha256": "fac38a840a106f6686aea5e5d0fd19c10a8c77910ecb8e0dd969d3d898609d89"},
+    {"path": "runtime/studio_run_control.py", "size": 27195, "sha256": "c6b4f80ae7f3b410381edc33326652b33a29d4a146b28883eba63afc0d69567a"}
+  ],
+  "findings": [
+    {
+      "finding_id": "workflow-builder-trace:PX-OS-889",
+      "gap_ids": ["PX-OS-889", "PX-OS-076"],
+      "finding": "The workflow editor has real task, validation, and approval nodes plus typed port connections, but only always, never, source-present, and source-truthy edge conditions. Decision, branch, merge, loop, subflow, event, recovery, comparison-rule, default-branch, and visible branch-outcome contracts are absent.",
+      "exact_controls": ["workflowAddNode.task", "workflowAddNode.validation", "workflowAddNode.approval", "field.node.kind", "field.node.config", "field.edge.condition"],
+      "source_symbols": ["normalizeNode", "normalizeWorkflow", "validateWorkflow", "WORKFLOW_NODE_KINDS", "EDGE_CONDITIONS", "_edge_enabled", "_node_inputs", "_ready_node_ids"]
+    },
+    {
+      "finding_id": "workflow-builder-trace:PX-OS-890",
+      "gap_ids": ["PX-OS-890", "PX-OS-080", "PX-OS-083"],
+      "finding": "Durable approval, pause, resume, interruption, failure, and recovery behavior exists behind the UI, but the canvas projects only a pink approval border, a checkbox, and generic lifecycle actions. Cancellation at the host approval boundary emits no typed acknowledgement.",
+      "exact_controls": ["workflowAddNode.approval", "field.node.approval_required", "studioLifecycle.approve", "studioRunAction.status", "studioRunAction.pause", "studioRunAction.resume", "studioRunAction.reconcile"],
+      "source_symbols": ["WorkflowStudio.issue_approval", "WorkflowStudio.execute", "DurableRunControl"]
+    },
+    {
+      "finding_id": "workflow-builder-trace:PX-OS-891",
+      "gap_ids": ["PX-OS-891", "PX-OS-083"],
+      "finding": "The node trace overlay reads only top-level result.node_receipts while durable status and list operations return checkpoint.node_receipts. Trace identity is not revision/run-bound, polling or subscription is absent, and start replaces the canvas before a useful live overlay can appear.",
+      "exact_controls": ["pxui.workflow-studio.indicator.nodeRunTrace", "pxui.workflow-studio.action.openStudioRuns.workflow", "pxui.workflow-studio.action.studioRunAction.status", "pxui.workflow-studio.action.studioRunAction.resume"],
+      "source_symbols": ["workflowRunTrace", "workflowTraceIdentity", "workflowEditorHtml", "studioOperationResult", "checkpoint.node_receipts"]
+    },
+    {
+      "finding_id": "workflow-builder-trace:PX-OS-068",
+      "gap_ids": ["PX-OS-068"],
+      "finding": "studioEditorPayload removes node.position into editor_layout, but workflow parsing, the authority envelope, immutable revision records, and catalog reload do not persist or reload that layout sidecar.",
+      "source_symbols": ["studioEditorPayload", "_workflow", "WorkflowDefinition", "_revision_authority_envelope", "studioCatalog"]
+    }
+  ],
+  "additional_blockers": [
+    "Exact resume depends on the currently paged catalog instead of an authenticated exact subject/version fetch.",
+    "Browser and Python identity normalization, version allocation, derived catalog fields, and ephemeral draft/run boundaries are not represented by one lossless payload contract.",
+    "Current dashboard E2E selectors target obsolete edge endpoint attributes and do not prove the current editor path."
+  ],
+  "bounded_repair_order": [
+    "Separate executable definition, authority, editor layout, ephemeral run input, durable run state, and derived catalog metadata, all revision-bound.",
+    "Define closed branching and trace projection contracts together.",
+    "Repair immutable version allocation, exact lookup, draft restore/discard, and save/reopen equality.",
+    "Separate structural validation from admission.",
+    "Project approval, cancellation, interruption, failure, and recovery states onto the canvas.",
+    "Bind durable trace to workflow ID, version, revision hash, and run ID and read checkpoint receipts.",
+    "Repair exact resume and authority-editor round-trip."
+  ]
+}

@@ -1,0 +1,279 @@
+{
+  "schema_version": "px.live-walk-coverage-adversary/1.0",
+  "report_id": "live-walk-coverage-adversary-20260816",
+  "generated_utc": "2026-08-16T19:15:00Z",
+  "mode": "read-only audit; only this report was created",
+  "scope": "Adversarial reconciliation of the operational UI walker and its current receipt against the authoritative 827-control inventory and current operational-gap-ledger projection.",
+  "verdict": {
+    "can_satisfy_827_control_interaction_chain_inventory": false,
+    "complete_per_control_chains": 0,
+    "inventory_controls": 827,
+    "inventory_surfaces": 20,
+    "reason": "The walker records navigation, visible DOM summaries, screenshots, and two unsaved builder deltas. It neither joins observations to stable control_id values nor records the profile stages, authority, effects, receipts, source requery, recovery, persistence, or reload/reopen evidence required to disposition an inventory control. The current ledger independently projects zero operational controls and zero examined surfaces."
+  },
+  "source_evidence": [
+    {
+      "path": "extension/scripts/run-operational-ui-walk.js",
+      "size_bytes": 20431,
+      "sha256": "9c516fd1bd8d69def5a3d1af67aae727dd59fff68b65ba3f29def4c157c0d2d6",
+      "role": "walker implementation"
+    },
+    {
+      "path": "evidence/operational-ui-walk-punch-ledger-20260816-r2/receipt.json",
+      "size_bytes": 307394,
+      "sha256": "04430706fa528c9896febdafd49365bdef924c781caf97b65bb75ec86efa1d46",
+      "role": "current live-walk receipt"
+    },
+    {
+      "path": "registry/operational_surface_inventory.json",
+      "size_bytes": 364597,
+      "sha256": "9e06f339616e645684436bd9382fd5e1957170f2c5618640fb7d7248d5c8c84c",
+      "role": "authoritative expected inventory"
+    },
+    {
+      "path": "registry/operational_gap_ledger.snapshot.json",
+      "size_bytes": 7688302,
+      "sha256": "84a9df1e8d32e484e9168688786c2a8b11d1064b02536f7bc414ddc2e09758d9",
+      "role": "current ledger projection"
+    },
+    {
+      "path": "registry/operational_gap_ledger.jsonl",
+      "size_bytes": 6066310,
+      "sha256": "a3ce803a640f1979be8793572cece6285f311c6041e697021ee2c5c41ad88214",
+      "role": "append-only ledger authority"
+    },
+    {
+      "path": "evidence/operational-gap-ledger/typed-surface-inventory-20260816.json",
+      "size_bytes": 36112,
+      "sha256": "a19366f37023d4d14d307e6493ff6aed350a03d186538ac1ff2f4d4f96c7f8a4",
+      "role": "interaction-profile definitions and source trace"
+    }
+  ],
+  "current_ledger_projection": {
+    "event_count": 1527,
+    "head_event_sha256": "1fc991889afbb92bca80dee8d1566b45fa4a062620cc3e8c7b6bd57b0107e9de",
+    "known_controls": 827,
+    "controls_with_disposition": 123,
+    "gap_controls": 123,
+    "controls_not_yet_disposed": 704,
+    "operational_controls": 0,
+    "examined_controls": 123,
+    "surfaces_inventoried": 20,
+    "surfaces_examined": 0,
+    "operationally_verified_cards": 0,
+    "narrowly_verified_cards": 31,
+    "interpretation": "The 123 dispositions are gap links, not operational interaction-chain completions. The walk receipt cannot upgrade them because it contains no stable control bindings or complete stage evidence."
+  },
+  "receipt_observations": {
+    "declared_authority": "live installed VS Code host and real workspace; navigation-only dashboard walk",
+    "navigation_surface_ids": [
+      "dashboard",
+      "projects",
+      "agents",
+      "knowledgeGraph",
+      "skillsTools",
+      "workflows",
+      "plugins",
+      "memory",
+      "activity",
+      "diagnostics",
+      "assurance",
+      "settings",
+      "knowledgeCore",
+      "runtimeCore"
+    ],
+    "navigation_surface_count": 14,
+    "additional_semantic_regions": [
+      "agent-studio",
+      "workflow-studio",
+      "sidebar",
+      "dashboard-control-plane"
+    ],
+    "semantic_surfaces_with_some_presence_or_delta_evidence": 18,
+    "semantic_surfaces_with_no_receipt_region": [
+      "skill-studio",
+      "studio-lifecycle"
+    ],
+    "unique_surface_action_literal_pairs_observed": 111,
+    "pairs_matching_at_least_one_same-surface_inventory_action": 82,
+    "unambiguous_same-surface_inventory_action_ids_present": 72,
+    "candidate_same-surface_inventory_action_ids_present_including_ambiguous_variants": 103,
+    "inventory_action_controls": 304,
+    "statically_targeted_inventory_action_ids_in_walker": 29,
+    "statically_targeted_note": "This is only selector-level source coverage: fourteen semantic navigation actions, toggleAdvanced, agent/workflow draft open, two agent additions, four workflow canvas additions/layout actions, four editor-tab actions, and two modal closes. Optional selectors and the conditional advanced toggle are not logged as per-control attempts.",
+    "captured_screenshots": 8,
+    "failed_screenshots": 10,
+    "host_errors": 10,
+    "non_screenshot_host_errors": 0,
+    "identity_mismatch_surfaces": 14,
+    "identity_mismatch_detail": "Every navigation result contains the installed-host/source asset identity mismatch (host 9cd9ca36ef92546b versus source 8a228878f9f7ff03).",
+    "complete_profile_chains": 0
+  },
+  "interaction_profiles_required": {
+    "local_view": "rendered control -> delegated handler -> bounded in-memory state mutation -> render -> declared vscode.setState -> reload reconstruction",
+    "read_query": "load/action -> requestId-bound message -> contract validation -> host dispatch -> bounded reader -> typed result -> requestId check -> render -> retry/error state",
+    "write_operation": "exact control/modal -> browser validation -> message validation -> retained authority/approval -> backend effect -> typed receipt -> source requery -> visible result; failures fail closed",
+    "host_ui": "webview action -> validated host message -> native VS Code UI -> host-owned result boundary",
+    "durable_run": "authenticated admitted revision -> ephemeral inputs -> approval -> durable run ID -> lifecycle controls -> terminal/reconciliation receipt"
+  },
+  "missing_control_classes": [
+    {"kind": "acknowledgement", "inventory_count": 1, "complete_chain_count": 0, "missing_complete_chain_count": 1},
+    {"kind": "action", "inventory_count": 304, "complete_chain_count": 0, "missing_complete_chain_count": 304},
+    {"kind": "command", "inventory_count": 9, "complete_chain_count": 0, "missing_complete_chain_count": 9},
+    {"kind": "editor", "inventory_count": 7, "complete_chain_count": 0, "missing_complete_chain_count": 7},
+    {"kind": "failure_recovery", "inventory_count": 20, "complete_chain_count": 0, "missing_complete_chain_count": 20},
+    {"kind": "field", "inventory_count": 165, "complete_chain_count": 0, "missing_complete_chain_count": 165},
+    {"kind": "form", "inventory_count": 39, "complete_chain_count": 0, "missing_complete_chain_count": 39},
+    {"kind": "gesture", "inventory_count": 18, "complete_chain_count": 0, "missing_complete_chain_count": 18},
+    {"kind": "indicator", "inventory_count": 201, "complete_chain_count": 0, "missing_complete_chain_count": 201},
+    {"kind": "lifecycle", "inventory_count": 7, "complete_chain_count": 0, "missing_complete_chain_count": 7},
+    {"kind": "menu", "inventory_count": 16, "complete_chain_count": 0, "missing_complete_chain_count": 16},
+    {"kind": "persistence", "inventory_count": 20, "complete_chain_count": 0, "missing_complete_chain_count": 20},
+    {"kind": "reload_reopen", "inventory_count": 20, "complete_chain_count": 0, "missing_complete_chain_count": 20}
+  ],
+  "surface_reconciliation": [
+    {"surface_id":"activity","controls":23,"ledger_gap_dispositions":4,"ledger_undisposed":19,"receipt_representation":"navigation_presence","complete_chains":0,"kinds":{"action":5,"failure_recovery":1,"field":3,"form":1,"indicator":11,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"agent-studio","controls":67,"ledger_gap_dispositions":13,"ledger_undisposed":54,"receipt_representation":"unsaved_builder_delta","complete_chains":0,"kinds":{"action":16,"editor":2,"failure_recovery":1,"field":34,"form":3,"gesture":1,"indicator":6,"menu":2,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"agents","controls":29,"ledger_gap_dispositions":1,"ledger_undisposed":28,"receipt_representation":"navigation_presence","complete_chains":0,"kinds":{"action":12,"failure_recovery":1,"field":2,"form":1,"indicator":10,"menu":1,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"assurance","controls":16,"ledger_gap_dispositions":3,"ledger_undisposed":13,"receipt_representation":"navigation_presence","complete_chains":0,"kinds":{"action":3,"failure_recovery":1,"indicator":10,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"dashboard","controls":15,"ledger_gap_dispositions":0,"ledger_undisposed":15,"receipt_representation":"navigation_presence","complete_chains":0,"kinds":{"action":4,"failure_recovery":1,"indicator":8,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"dashboard-control-plane","controls":52,"ledger_gap_dispositions":4,"ledger_undisposed":48,"receipt_representation":"indirect_shell_and_navigation","complete_chains":0,"kinds":{"action":23,"command":9,"failure_recovery":1,"gesture":3,"indicator":11,"menu":3,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"diagnostics","controls":45,"ledger_gap_dispositions":19,"ledger_undisposed":26,"receipt_representation":"navigation_presence","complete_chains":0,"kinds":{"action":21,"failure_recovery":1,"field":6,"form":2,"indicator":13,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"knowledge-core","controls":91,"ledger_gap_dispositions":2,"ledger_undisposed":89,"receipt_representation":"navigation_presence","complete_chains":0,"kinds":{"action":22,"failure_recovery":1,"field":43,"form":10,"indicator":10,"lifecycle":3,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"knowledge-graph","controls":68,"ledger_gap_dispositions":5,"ledger_undisposed":63,"receipt_representation":"navigation_presence_and_graph_geometry","complete_chains":0,"kinds":{"action":28,"editor":2,"failure_recovery":1,"field":9,"form":2,"gesture":10,"indicator":11,"menu":3,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"memory","controls":34,"ledger_gap_dispositions":7,"ledger_undisposed":27,"receipt_representation":"navigation_presence","complete_chains":0,"kinds":{"action":10,"failure_recovery":1,"field":7,"form":2,"indicator":12,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"plugins","controls":21,"ledger_gap_dispositions":4,"ledger_undisposed":17,"receipt_representation":"navigation_presence","complete_chains":0,"kinds":{"action":8,"failure_recovery":1,"indicator":10,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"projects","controls":19,"ledger_gap_dispositions":1,"ledger_undisposed":18,"receipt_representation":"navigation_presence","complete_chains":0,"kinds":{"action":8,"failure_recovery":1,"indicator":8,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"runtime-core","controls":34,"ledger_gap_dispositions":2,"ledger_undisposed":32,"receipt_representation":"navigation_presence","complete_chains":0,"kinds":{"action":17,"failure_recovery":1,"field":1,"form":1,"indicator":12,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"settings","controls":16,"ledger_gap_dispositions":3,"ledger_undisposed":13,"receipt_representation":"navigation_presence","complete_chains":0,"kinds":{"action":4,"failure_recovery":1,"indicator":9,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"sidebar","controls":33,"ledger_gap_dispositions":0,"ledger_undisposed":33,"receipt_representation":"text_and_button_presence","complete_chains":0,"kinds":{"acknowledgement":1,"action":13,"failure_recovery":1,"indicator":16,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"skill-studio","controls":22,"ledger_gap_dispositions":3,"ledger_undisposed":19,"receipt_representation":"absent","complete_chains":0,"kinds":{"action":8,"editor":1,"failure_recovery":1,"field":4,"form":2,"indicator":4,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"skills-tools","controls":38,"ledger_gap_dispositions":0,"ledger_undisposed":38,"receipt_representation":"navigation_presence","complete_chains":0,"kinds":{"action":17,"failure_recovery":1,"field":4,"form":2,"indicator":11,"menu":1,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"studio-lifecycle","controls":43,"ledger_gap_dispositions":9,"ledger_undisposed":34,"receipt_representation":"absent_by_design_no_save_or_run","complete_chains":0,"kinds":{"action":22,"failure_recovery":1,"field":2,"form":2,"indicator":8,"lifecycle":4,"menu":2,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"workflow-studio","controls":85,"ledger_gap_dispositions":34,"ledger_undisposed":51,"receipt_representation":"unsaved_builder_delta","complete_chains":0,"kinds":{"action":28,"editor":2,"failure_recovery":1,"field":34,"form":5,"gesture":4,"indicator":7,"menu":2,"persistence":1,"reload_reopen":1}},
+    {"surface_id":"workflows","controls":76,"ledger_gap_dispositions":9,"ledger_undisposed":67,"receipt_representation":"navigation_presence","complete_chains":0,"kinds":{"action":35,"failure_recovery":1,"field":16,"form":6,"indicator":14,"menu":2,"persistence":1,"reload_reopen":1}}
+  ],
+  "findings": [
+    {
+      "finding_id": "PX-WALK-COV-001",
+      "severity": "critical",
+      "title": "No stable-control denominator join",
+      "evidence": ["run-operational-ui-walk.js:274-279", "run-operational-ui-walk.js:322-340"],
+      "detail": "The walker discovers runtime data-surface values and emits result objects by surface name. It never loads operational_surface_inventory.json, emits control_id, verifies 827 unique records, or fails on missing/duplicate inventory controls."
+    },
+    {
+      "finding_id": "PX-WALK-COV-002",
+      "severity": "critical",
+      "title": "Presence is recorded instead of interaction-chain execution",
+      "evidence": ["run-operational-ui-walk.js:109-163"],
+      "detail": "inspectSurface collects headings, visible data-action literals, panel counts, text, overflow, errors, and graph geometry after a navigation click. Visible actions are not invoked and no before/action/dispatch/result/acknowledgement/recovery chain is captured."
+    },
+    {
+      "finding_id": "PX-WALK-COV-003",
+      "severity": "high",
+      "title": "Two semantic inventory surfaces are absent",
+      "evidence": ["receipt.json:surfaces", "receipt.json:builders", "receipt.json:limitations"],
+      "detail": "skill-studio has no builder walk. studio-lifecycle is intentionally avoided because save, approval, execution, and lifecycle actions are not clicked. Their 22 and 43 controls respectively have no receipt region."
+    },
+    {
+      "finding_id": "PX-WALK-COV-004",
+      "severity": "critical",
+      "title": "All thirteen control kinds lack complete chain evidence",
+      "evidence": ["registry/operational_surface_inventory.json", "receipt.json"],
+      "detail": "The receipt has no typed records for acknowledgement, command, editor, failure_recovery, field, form, gesture, indicator, lifecycle, menu, persistence, or reload_reopen controls. Action literals are presence observations; even the 29 statically targeted action IDs lack complete profile evidence."
+    },
+    {
+      "finding_id": "PX-WALK-COV-005",
+      "severity": "critical",
+      "title": "Skipped mutating controls have no per-control disposition",
+      "evidence": ["run-operational-ui-walk.js:334-338"],
+      "detail": "A global limitation says approval, installation, execution, and destructive controls are not clicked. It does not identify each skipped control_id, declaring authority, exact effect/reason, prerequisite evidence, or return condition. Therefore skipped controls cannot be reconciled against the 827 denominator."
+    },
+    {
+      "finding_id": "PX-WALK-COV-006",
+      "severity": "high",
+      "title": "Variant identity is discarded",
+      "evidence": ["run-operational-ui-walk.js:119-123"],
+      "detail": "Visible action records retain data-action, label, and disabled only. Placement/variant attributes such as row, kind, scope, tab, direction, or lifecycle action are dropped. Ten observed surface/action pairs map to multiple inventory IDs; exact attribution is impossible from the receipt."
+    },
+    {
+      "finding_id": "PX-WALK-COV-007",
+      "severity": "critical",
+      "title": "No persistence, reload/reopen, or negative recovery pass",
+      "evidence": ["run-operational-ui-walk.js:237-344"],
+      "detail": "The run uses one connected webview session, does not close/reopen or reload and reconstruct state, does not inject bounded invalid inputs or failed responses, and does not prove retry, cancel, stale-result rejection, or fail-closed behavior."
+    },
+    {
+      "finding_id": "PX-WALK-COV-008",
+      "severity": "critical",
+      "title": "Installed host and audited source differ",
+      "evidence": ["receipt.json:results[*].operational_error_messages"],
+      "detail": "All fourteen navigation results report host-assets-differ-from-source. A receipt from host asset identity 9cd9ca36ef92546b cannot establish behavior of source identity 8a228878f9f7ff03 without an explicit equivalence proof."
+    },
+    {
+      "finding_id": "PX-WALK-COV-009",
+      "severity": "medium",
+      "title": "Screenshot evidence is incomplete",
+      "evidence": ["receipt.json:host_errors"],
+      "detail": "Ten of eighteen attempted screenshots failed. Failure retention is good recovery evidence for the screenshot mechanism, but screenshots cannot supply the missing per-control chain fields and do not cover every surface."
+    },
+    {
+      "finding_id": "PX-WALK-COV-010",
+      "severity": "critical",
+      "title": "Current ledger explicitly remains open",
+      "evidence": ["registry/operational_gap_ledger.snapshot.json:progress"],
+      "detail": "The projection reports 827 known controls, 123 gap dispositions, 704 undisposed controls, zero operational controls, zero examined surfaces, and all twenty surfaces not yet examined. No receipt-only inference may override that projection."
+    }
+  ],
+  "bounded_safe_enhancement_design": {
+    "design_id": "PX-WALK-PER-CONTROL-CHAIN-1",
+    "objective": "Produce exactly one deterministic terminal record for each of the 827 inventory controls while exercising only read-only or provably reversible non-authoritative UI behavior.",
+    "minimal_changes": [
+      "Load and hash registry/operational_surface_inventory.json at startup; materialize a map by control_id and fail before interaction unless the denominator is exactly 20 surfaces and 827 unique controls.",
+      "Add stable data-control-id attributes where practical; otherwise use an explicit checked resolver keyed by surface_id, kind, label, and all variant attributes. Never infer a row/placement variant from data-action alone.",
+      "Emit one per-control record with control_id, surface_id, kind, interaction_profiles, selector/resolver, rendered, visible, enabled, attempted, terminal_disposition, stage evidence, timestamps, before/after state digests, authority, declared_effects, observed_effects, screenshot references, and errors.",
+      "Use a fail-closed effect classifier before every interaction. The default allowlist is observe-only indicators/acknowledgements, read queries, host UI that only opens a view, and ephemeral unsaved draft edits whose authoritative workspace/backend digest is unchanged after cleanup.",
+      "Execute profile-specific stage assertions: requestId and typed-result correlation for read_query; delegated handler/render/state restoration for local_view; native host target observation for host_ui. Do not mark a profile complete when any required stage is absent.",
+      "For reversible builder controls, capture canonical draft before, interact, assert the expected in-memory delta, close without submit, reopen a fresh draft, and verify the authoritative inventory/catalog/workspace digest is unchanged. Record cleanup in a finally path.",
+      "For each non-allowlisted control, emit skipped_requires_authority with the exact authority currently held, the specific potential effect, the missing approval/isolation/evidence, and a machine-checkable return condition. A global limitations sentence is not sufficient.",
+      "Run reload/reopen and fault-injection passes only in an isolated disposable VS Code profile/workspace with explicit authority. Until then, persistence, reload_reopen, failure_recovery, write_operation, and durable_run stages remain skipped rather than passed.",
+      "At completion, sort records by control_id, reject duplicates/unknown IDs, require exercised plus skipped plus blocked plus not_rendered equals 827, and write aggregate counts derived only from those records."
+    ],
+    "terminal_dispositions": [
+      "exercised_complete_non_mutating",
+      "observed_only",
+      "skipped_requires_authority",
+      "blocked_host_source_mismatch",
+      "not_rendered",
+      "failed"
+    ],
+    "required_skip_record": {
+      "control_id": "stable inventory ID",
+      "terminal_disposition": "skipped_requires_authority",
+      "authority": "Exact authority held by this run, normally live-host read-only plus reversible ephemeral UI only.",
+      "reason": "Specific potential effect, such as workspace write, backend revision creation, install/uninstall, process execution, approval consumption, lifecycle transition, cancellation, cleanup, or destructive action.",
+      "return_condition": "Exact condition for a later run, including explicit effect authority, isolated disposable target where needed, current pre-state digest, rollback/recovery plan, and expected receipt/acknowledgement evidence."
+    },
+    "safety_bounds": [
+      "No submitStudioDraft, install, uninstall, enable, disable, update, run, pause, cancel, stop, resume, cleanup, reconcile, claim, release, memory capture, configuration write, or destructive control without separate exact authority.",
+      "No interaction when installed-host and source asset identities differ.",
+      "Register the disposable profile/workspace and child process before creation; reconcile them on success, failure, timeout, or cancellation.",
+      "Capture authoritative pre/post digests and fail the run if a supposedly non-mutating control changes backend, workspace, repository, extension installation, or durable run state.",
+      "Keep timeouts per control and continue to a terminal evidence record; never silently omit a control because it is hidden, disabled, absent, or timed out."
+    ],
+    "acceptance": [
+      "Exactly 827 unique per-control records match the inventory hash used by the run.",
+      "Every record has one terminal disposition and profile-stage evidence or an exact skip authority/reason/return condition.",
+      "No source/host identity mismatch is present.",
+      "All exercised non-mutating controls have unchanged authoritative pre/post digests and retained cleanup evidence.",
+      "Aggregates are reproducible from per-control records; no aggregate claim is accepted without its denominator records."
+    ]
+  },
+  "audit_boundary": {
+    "code_modified": false,
+    "ledger_modified": false,
+    "runtime_walk_executed": false,
+    "network_used": false,
+    "only_created_artifact": "evidence/operational-gap-ledger/live-walk-coverage-adversary-20260816.json"
+  }
+}

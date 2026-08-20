@@ -1,0 +1,18 @@
+{
+  "authoritative_contract": "# Scheduler Policy Validator Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+  "authoritative_skill_body": "---\nname: scheduler-policy-validator\ndescription: Validate policy consistency, impossible constraints, unsafe fallbacks, hidden egress, and non-deterministic priority rules.\nversion: 1.0.0\n---\n\n# Scheduler Policy Validator\n\n## Purpose\nValidate policy consistency, impossible constraints, unsafe fallbacks, hidden egress, and non-deterministic priority rules.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+  "canonical_owner": "orchestrate-capability-scheduling",
+  "composed_with": [
+    "skill-navigator",
+    "execution-contract-enforcer",
+    "recovery-coordinator",
+    "outcome-verifier",
+    "isolate-project-streams"
+  ],
+  "description": "Validate policy consistency, impossible constraints, unsafe fallbacks, hidden egress, and non-deterministic priority rules.",
+  "id": "scheduler-policy-validator",
+  "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+  "source_body_sha256": "3314bc4ed6378763eb6dda1c781b1c9ee76caa7bc6a2a482a62d9efb53258717",
+  "source_contract_sha256": "01c5e62429075a5d0af6cca8650c740832ea0abef8cb2c2ebc58a602cdb62407",
+  "version": "1.0.0"
+}

@@ -1,0 +1,12 @@
+{
+  "gap_id": "PX-OS-936",
+  "note": "The post-metric focused rerun exposed two additional superseded test assumptions: an unscoped capabilityTab locator now matches a valid lifecycle shortcut as well as the catalog tab, and the graph source check expects removed CONNECTIONS FOR copy rather than the current relationship inspector contract.",
+  "evidence": [
+    {"claim": "Browser strict-mode failure resolves two capabilityTab controls; the tab assertion must be scoped to .catalog-tabs.", "reference": "focused run under gap-event:PX-OPERATIONAL-GAPS-20260816:000000004963"},
+    {"claim": "Current graph source exposes relationship-inspector and Selected record and readable relationships, not CONNECTIONS FOR.", "reference": "extension/media/dashboard/48-graph-surface.js:90"}
+  ],
+  "patch": {
+    "next_action": "Update the two newly exposed stale assertions along with the already-corrected version/default expectations; retain all functional browser and graph checks.",
+    "tests_required": ["extension/tests/extension-contract.test.js", "extension/tests/dashboard-e2e.test.js", "python -m runtime.cli test-section run dashboard-extension"]
+  }
+}

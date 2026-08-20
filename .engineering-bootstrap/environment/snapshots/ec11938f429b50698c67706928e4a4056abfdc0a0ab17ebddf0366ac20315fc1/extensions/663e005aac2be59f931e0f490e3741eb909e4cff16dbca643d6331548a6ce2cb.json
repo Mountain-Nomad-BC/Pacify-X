@@ -1,0 +1,454 @@
+{
+  "id": "ms-python.python",
+  "name": "Python",
+  "version": "2026.4.0",
+  "publisher": "ms-python",
+  "active": true,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "breakpoints",
+    "commands",
+    "configuration",
+    "debuggers",
+    "grammars",
+    "jsonValidation",
+    "keybindings",
+    "languageModelTools",
+    "languages",
+    "menus",
+    "problemMatchers",
+    "submenus",
+    "viewsWelcome",
+    "walkthroughs",
+    "yamlValidation"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:breakpoints",
+      "kind": "breakpoints",
+      "provider": "ms-python.python",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-python.python",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-python.python",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:debuggers",
+      "kind": "debuggers",
+      "provider": "ms-python.python",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:grammars",
+      "kind": "grammars",
+      "provider": "ms-python.python",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "ms-python.python",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "ms-python.python",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languageModelTools",
+      "kind": "languageModelTools",
+      "provider": "ms-python.python",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languages",
+      "kind": "languages",
+      "provider": "ms-python.python",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-python.python",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:problemMatchers",
+      "kind": "problemMatchers",
+      "provider": "ms-python.python",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "ms-python.python",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "ms-python.python",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "ms-python.python",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:yamlValidation",
+      "kind": "yamlValidation",
+      "provider": "ms-python.python",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "python.analysis.restartLanguageServer",
+      "invocation": "vscode.commands.executeCommand('python.analysis.restartLanguageServer', ...args)",
+      "title": "Restart Language Server",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.clearCacheAndReload",
+      "invocation": "vscode.commands.executeCommand('python.clearCacheAndReload', ...args)",
+      "title": "Clear Cache and Reload Window",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.clearWorkspaceInterpreter",
+      "invocation": "vscode.commands.executeCommand('python.clearWorkspaceInterpreter', ...args)",
+      "title": "Clear Workspace Interpreter Setting",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.configureTests",
+      "invocation": "vscode.commands.executeCommand('python.configureTests', ...args)",
+      "title": "Configure Tests",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.copyTestId",
+      "invocation": "vscode.commands.executeCommand('python.copyTestId', ...args)",
+      "title": "Copy Test Id",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.createEnvironment",
+      "invocation": "vscode.commands.executeCommand('python.createEnvironment', ...args)",
+      "title": "Create Environment...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.createEnvironment-button",
+      "invocation": "vscode.commands.executeCommand('python.createEnvironment-button', ...args)",
+      "title": "Create Environment...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.createNewFile",
+      "invocation": "vscode.commands.executeCommand('python.createNewFile', ...args)",
+      "title": "New Python File",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.createTerminal",
+      "invocation": "vscode.commands.executeCommand('python.createTerminal', ...args)",
+      "title": "Create Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.execInDedicatedTerminal",
+      "invocation": "vscode.commands.executeCommand('python.execInDedicatedTerminal', ...args)",
+      "title": "Run Python File in Dedicated Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.execInREPL",
+      "invocation": "vscode.commands.executeCommand('python.execInREPL', ...args)",
+      "title": "Run Selection/Line in Native Python REPL",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.execInTerminal",
+      "invocation": "vscode.commands.executeCommand('python.execInTerminal', ...args)",
+      "title": "Run Python File in Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.execInTerminal-icon",
+      "invocation": "vscode.commands.executeCommand('python.execInTerminal-icon', ...args)",
+      "title": "Run Python File",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.execSelectionInDjangoShell",
+      "invocation": "vscode.commands.executeCommand('python.execSelectionInDjangoShell', ...args)",
+      "title": "Run Selection/Line in Django Shell",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.execSelectionInTerminal",
+      "invocation": "vscode.commands.executeCommand('python.execSelectionInTerminal', ...args)",
+      "title": "Run Selection/Line in Python Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.installJupyter",
+      "invocation": "vscode.commands.executeCommand('python.installJupyter', ...args)",
+      "title": "Install the Jupyter extension",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.reportIssue",
+      "invocation": "vscode.commands.executeCommand('python.reportIssue', ...args)",
+      "title": "Report Issue...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.setInterpreter",
+      "invocation": "vscode.commands.executeCommand('python.setInterpreter', ...args)",
+      "title": "Select Interpreter",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.startNativeREPL",
+      "invocation": "vscode.commands.executeCommand('python.startNativeREPL', ...args)",
+      "title": "Start Native Python REPL",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.startREPL",
+      "invocation": "vscode.commands.executeCommand('python.startREPL', ...args)",
+      "title": "Start Terminal REPL",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "python.viewLanguageServerOutput",
+      "invocation": "vscode.commands.executeCommand('python.viewLanguageServerOutput', ...args)",
+      "title": "Show Language Server Output",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "python.hasLanguageServerOutputChannel"
+    },
+    {
+      "id": "python.viewOutput",
+      "invocation": "vscode.commands.executeCommand('python.viewOutput', ...args)",
+      "title": "Show Output",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "testing.reRunFailTests",
+      "invocation": "vscode.commands.executeCommand('testing.reRunFailTests', ...args)",
+      "title": "Rerun Failed Tests",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:python.copilotSetupTests",
+    "onDebugInitialConfigurations",
+    "onDebugResolve:python",
+    "onLanguage:python",
+    "onLanguageModelTool:configure_python_environment",
+    "onLanguageModelTool:create_virtual_environment",
+    "onLanguageModelTool:get_python_environment_details",
+    "onLanguageModelTool:get_python_executable_details",
+    "onLanguageModelTool:install_python_packages",
+    "onTerminalShellIntegration:python",
+    "workspaceContains:**/pylock.*.toml",
+    "workspaceContains:.conda",
+    "workspaceContains:.venv",
+    "workspaceContains:Pipfile",
+    "workspaceContains:app.py",
+    "workspaceContains:manage.py",
+    "workspaceContains:mspythonconfig.json",
+    "workspaceContains:pylock.toml",
+    "workspaceContains:pyproject.toml",
+    "workspaceContains:requirements.txt",
+    "workspaceContains:setup.py"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": false,
+      "description": "The Python extension is not available in untrusted workspaces. Use Pylance to get partial IntelliSense support for Python files."
+    },
+    "virtual_workspaces": {
+      "supported": "limited",
+      "description": "Only Partial IntelliSense supported."
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-python.python",
+    "capabilities": [
+      "contribution:breakpoints",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:debuggers",
+      "contribution:grammars",
+      "contribution:jsonValidation",
+      "contribution:keybindings",
+      "contribution:languageModelTools",
+      "contribution:languages",
+      "contribution:menus",
+      "contribution:problemMatchers",
+      "contribution:submenus",
+      "contribution:viewsWelcome",
+      "contribution:walkthroughs",
+      "contribution:yamlValidation"
+    ],
+    "interface": [
+      "python.analysis.restartLanguageServer",
+      "python.clearCacheAndReload",
+      "python.clearWorkspaceInterpreter",
+      "python.configureTests",
+      "python.copyTestId",
+      "python.createEnvironment",
+      "python.createEnvironment-button",
+      "python.createNewFile",
+      "python.createTerminal",
+      "python.execInDedicatedTerminal",
+      "python.execInREPL",
+      "python.execInTerminal",
+      "python.execInTerminal-icon",
+      "python.execSelectionInDjangoShell",
+      "python.execSelectionInTerminal",
+      "python.installJupyter",
+      "python.reportIssue",
+      "python.setInterpreter",
+      "python.startNativeREPL",
+      "python.startREPL",
+      "python.viewLanguageServerOutput",
+      "python.viewOutput",
+      "testing.reRunFailTests"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": false,
+        "description": "The Python extension is not available in untrusted workspaces. Use Pylance to get partial IntelliSense support for Python files."
+      },
+      "virtual_workspaces": {
+        "supported": "limited",
+        "description": "Only Partial IntelliSense supported."
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

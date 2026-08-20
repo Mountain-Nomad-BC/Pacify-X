@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "id": "parallel-planning-coordination",
+  "title": "Cross-IDE Parallel Planning and Reconciliation",
+  "owner": "Pacify-X extension coordination controller",
+  "skills": [
+    "parallel-planning-coordination",
+    "orchestrate-agent-fleets",
+    "orchestrate-capability-scheduling",
+    "isolate-project-streams",
+    "long-horizon-progress-ledger",
+    "context-handoff-package",
+    "govern-memory-fabric"
+  ],
+  "steps": [
+    {"id": "graph", "action": "create_task_dag", "depends_on": []},
+    {"id": "claims", "action": "validate_parallel_claims", "depends_on": ["graph"]},
+    {"id": "assign", "action": "assign_actor_harness_agent", "depends_on": ["claims"]},
+    {"id": "lease", "action": "claim_dependency_ready_task", "depends_on": ["assign"]},
+    {"id": "dispatch", "action": "produce_task_handoff", "depends_on": ["lease"]},
+    {"id": "progress", "action": "append_progress_receipts", "depends_on": ["dispatch"]},
+    {"id": "reconcile", "action": "verify_merge_and_release_claim", "depends_on": ["progress"]},
+    {"id": "memory", "action": "update_layered_memory_and_resume_state", "depends_on": ["reconcile"]}
+  ],
+  "failure_policy": "Fail closed on missing project identity, dependency cycles, overlapping unordered claims, stale leases, owner mismatch, Git conflict, missing acceptance evidence, or state-hash mismatch.",
+  "effects": ["read_local", "write_workspace_coordination_state"],
+  "destructive": false,
+  "billable_services": false
+}

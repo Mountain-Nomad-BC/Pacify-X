@@ -61,7 +61,7 @@ class SkillLibraryTests(unittest.TestCase):
         repair = "\n".join(
             path.read_text(encoding="utf-8").casefold()
             for path in (
-                ROOT / ".agents/skills/diagnose-python-repair/references"
+                ROOT / ".px/skills/diagnose-python-repair/references"
             ).glob("*.md")
         )
         for term in (
@@ -83,7 +83,7 @@ class SkillLibraryTests(unittest.TestCase):
         governance = "\n".join(
             path.read_text(encoding="utf-8").casefold()
             for path in (
-                ROOT / ".agents/skills/enforce-governance-controls/references"
+                ROOT / ".px/skills/enforce-governance-controls/references"
             ).glob("*.md")
         )
         for term in (
@@ -104,7 +104,7 @@ class SkillLibraryTests(unittest.TestCase):
     def test_all_skills_have_valid_identity_ui_metadata_and_no_template_markers(
         self,
     ) -> None:
-        for skill in sorted((ROOT / ".agents/skills").iterdir()):
+        for skill in sorted((ROOT / ".px/skills").iterdir()):
             body = (skill / "SKILL.md").read_text(encoding="utf-8")
             self.assertTrue(body.startswith("---\n"))
             self.assertIn(f"name: {skill.name}", body)

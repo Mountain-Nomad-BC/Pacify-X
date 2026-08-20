@@ -1,0 +1,278 @@
+{
+  "contracts": [
+    {
+      "authoritative_source_sha256": "a55a1a7c6a05256ebe36fe069179b2075d13db0a09d6b79a1afaf450a30e7ee5",
+      "authority_and_safety": "A certificate is revocable, scope-bound, and hash-bound; any material change or failed dependency invalidates affected claims until recertification.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "archive-hygiene",
+      "implementation_disposition": "safe_replacement",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "freeze-scope-and-denominators",
+        "reconcile-owners-and-artifacts",
+        "run-independent-completion-gates",
+        "issue-hash-bound-certificate",
+        "monitor-revoke-and-recertify"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "rejection_reason": "hard-deletes files and directories; retained quarantine-only cleanup owner",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/scripts/archive_hygiene.py"
+      ],
+      "trigger": "Use when the requested outcome is archive hygiene or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "86ec40330adff1bdbbdaf36abe8887beefc61efe68450aa2833ac85afc54aa22",
+      "authority_and_safety": "A certificate is revocable, scope-bound, and hash-bound; any material change or failed dependency invalidates affected claims until recertification.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "archive-verifier",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/manage-revocable-certification/scripts/authoritative_archive_verifier.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "freeze-scope-and-denominators",
+        "reconcile-owners-and-artifacts",
+        "run-independent-completion-gates",
+        "issue-hash-bound-certificate",
+        "monitor-revoke-and-recertify"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/scripts/archive_verifier.py"
+      ],
+      "trigger": "Use when the requested outcome is archive verifier or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "3843cffe375074a8686c23a3f47ed15f248151ca8b5206e93687de7b3545bde0",
+      "authority_and_safety": "A certificate is revocable, scope-bound, and hash-bound; any material change or failed dependency invalidates affected claims until recertification.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "certification-aggregator",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/manage-revocable-certification/scripts/authoritative_certification_aggregator.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "freeze-scope-and-denominators",
+        "reconcile-owners-and-artifacts",
+        "run-independent-completion-gates",
+        "issue-hash-bound-certificate",
+        "monitor-revoke-and-recertify"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/scripts/certification_aggregator.py"
+      ],
+      "trigger": "Use when the requested outcome is certification aggregator or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "29712ef5d76e7e5f34e0249b7e8daa3ce462eb3ea1f452c427c641bb33a2d505",
+      "authority_and_safety": "A certificate is revocable, scope-bound, and hash-bound; any material change or failed dependency invalidates affected claims until recertification.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "collision-merge-planner",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/manage-revocable-certification/scripts/authoritative_collision_merge_planner.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "freeze-scope-and-denominators",
+        "reconcile-owners-and-artifacts",
+        "run-independent-completion-gates",
+        "issue-hash-bound-certificate",
+        "monitor-revoke-and-recertify"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/scripts/collision_merge_planner.py"
+      ],
+      "trigger": "Use when the requested outcome is collision merge planner or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "b6dbef7545066966b9f1e05fd0c602471c0678bdc9e59545e65b76de4243f34c",
+      "authority_and_safety": "A certificate is revocable, scope-bound, and hash-bound; any material change or failed dependency invalidates affected claims until recertification.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "completion-cutline",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/manage-revocable-certification/scripts/authoritative_completion_cutline.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "freeze-scope-and-denominators",
+        "reconcile-owners-and-artifacts",
+        "run-independent-completion-gates",
+        "issue-hash-bound-certificate",
+        "monitor-revoke-and-recertify"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/scripts/completion_cutline.py"
+      ],
+      "trigger": "Use when the requested outcome is completion cutline or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "3650108d3c921b18ab5b72514a7fcdcc724e85f0fe789cee27085766805552f8",
+      "authority_and_safety": "A certificate is revocable, scope-bound, and hash-bound; any material change or failed dependency invalidates affected claims until recertification.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "duplicate-detector",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/manage-revocable-certification/scripts/authoritative_duplicate_detector.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "freeze-scope-and-denominators",
+        "reconcile-owners-and-artifacts",
+        "run-independent-completion-gates",
+        "issue-hash-bound-certificate",
+        "monitor-revoke-and-recertify"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/scripts/duplicate_detector.py"
+      ],
+      "trigger": "Use when the requested outcome is duplicate detector or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "4e7370f4892fdc226eae7c4a2a0a40903ffc7cf5a853143bfab24207ef5478ca",
+      "authority_and_safety": "A certificate is revocable, scope-bound, and hash-bound; any material change or failed dependency invalidates affected claims until recertification.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "manifest-reconciler",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/manage-revocable-certification/scripts/authoritative_manifest_reconciler.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "freeze-scope-and-denominators",
+        "reconcile-owners-and-artifacts",
+        "run-independent-completion-gates",
+        "issue-hash-bound-certificate",
+        "monitor-revoke-and-recertify"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/scripts/manifest_reconciler.py"
+      ],
+      "trigger": "Use when the requested outcome is manifest reconciler or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "12a05d2f7192ed0f8c8b9ee1abbd2fbe719117a1ca0b8ce7dadba8dc937f53df",
+      "authority_and_safety": "A certificate is revocable, scope-bound, and hash-bound; any material change or failed dependency invalidates affected claims until recertification.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "recertification-impact",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".agents/skills/manage-revocable-certification/scripts/authoritative_recertification_impact.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "freeze-scope-and-denominators",
+        "reconcile-owners-and-artifacts",
+        "run-independent-completion-gates",
+        "issue-hash-bound-certificate",
+        "monitor-revoke-and-recertify"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/07-revocable-certification-integration_v1.0.0/scripts/recertification_impact.py"
+      ],
+      "trigger": "Use when the requested outcome is recertification impact or when that outcome is a required dependency."
+    }
+  ],
+  "owner": "manage-revocable-certification",
+  "schema_version": "1.0"
+}

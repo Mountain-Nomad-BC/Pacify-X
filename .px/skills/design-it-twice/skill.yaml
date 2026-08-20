@@ -1,0 +1,38 @@
+{
+  "admission_record": "design-it-twice",
+  "body_sha256": "15fa7a60105052643706326f55f58ae325cf19850e92aff3cfaa8f5307a9f3ec",
+  "contract": {
+    "available": true,
+    "sha256": "23c073f436cbd8213705eadaba38229e8e986890c87c57207006ce956ddd8a75",
+    "source": "registry/skill_packages/design-it-twice.json"
+  },
+  "description": "Generate and compare genuinely different interface designs before locking an important seam.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "design-it-twice",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/design-it-twice"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "design",
+    "engineering-reasoning",
+    "it",
+    "twice"
+  ],
+  "version": "1.0.0"
+}

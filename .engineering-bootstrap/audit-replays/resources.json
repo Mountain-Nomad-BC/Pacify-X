@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "updated_at": "2026-08-14T14:46:56.609767+00:00",
+  "resources": [
+    {
+      "resource_id": "path-0ea8bc70e2094cfc961ee2f191511044",
+      "resource_type": "path",
+      "project_id": "pacify-x",
+      "run_id": "pxa2-reproduction-20260814",
+      "lane_id": "audit-replay",
+      "creator": "codex",
+      "classification": "ephemeral",
+      "created_at": "2026-08-14T13:43:17.391209+00:00",
+      "last_activity_at": "2026-08-14T14:46:56.584867+00:00",
+      "expected_cleanup_event": "run_end",
+      "retention_required": false,
+      "run_state": "completed",
+      "active": false,
+      "status": "reclaimed",
+      "path": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.engineering-bootstrap\\audit-replays\\replay-eh8hpozw",
+      "allowed_cleanup_root": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.engineering-bootstrap\\audit-replays",
+      "pid": null,
+      "process_identity": null,
+      "parent_resource_id": null,
+      "link_status": "ordinary_or_absent",
+      "evidence_validated": true,
+      "promoted_outputs": [
+        "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\evidence\\adversarial-audit\\pxa2-delivered-bundle-reproduction-20260814.json"
+      ],
+      "reclamation_approved": false,
+      "files": 3882,
+      "directories": 1215,
+      "bytes": 101606177,
+      "cleanup_result": "reclaimed",
+      "retained_reason": null
+    }
+  ]
+}

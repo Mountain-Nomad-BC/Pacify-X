@@ -1,0 +1,43 @@
+{
+  "gap_id": "PX-OS-936",
+  "feature": "extension-contract-current-identity",
+  "parent_surface": "testing-governance",
+  "control_action": "validate the current extension identity and advanced-surface default",
+  "severity": "medium",
+  "classification": "integration",
+  "observed_behavior": "The source contract still requires version 0.6.10 and showAdvancedSurfaces=false while the current package is 0.6.19 and intentionally defaults advanced surfaces visible.",
+  "expected_behavior": "The owned source contract validates the current package identity and intended visible advanced-surface default without encoding superseded release behavior.",
+  "operational_impact": "The dashboard section fails for stale assertions unrelated to current functionality and obscures real browser failures.",
+  "discovered_at": "2026-08-16T20:31:30Z",
+  "discovered_by": "codex-host:focused-dashboard-source-contract",
+  "discovery_source": "focused source run under gap-event:PX-OPERATIONAL-GAPS-20260816:000000004954",
+  "discovery_evidence": [
+    {"claim": "Package version actual 0.6.19 differs from asserted 0.6.10.", "reference": "extension/tests/extension-contract.test.js:37-38"},
+    {"claim": "Advanced surfaces default true differs from asserted false.", "reference": "extension/tests/extension-contract.test.js:28-34; extension/package.json:194-197"}
+  ],
+  "source_refs": [
+    {"path": "extension/tests/extension-contract.test.js", "symbols": ["dashboard surface inventory", "extension version contract"]},
+    {"path": "extension/package.json", "symbols": ["version", "pacifyX.showAdvancedSurfaces"]}
+  ],
+  "assigned_owner": "codex-primary",
+  "dependencies": [],
+  "blockers": [],
+  "next_action": "Update only the two superseded assertions and retain all functional source checks.",
+  "tests_required": ["extension/tests/extension-contract.test.js", "python -m runtime.cli test-section run dashboard-extension"],
+  "completion_evidence": [],
+  "interaction_chain": {
+    "open_load": {"state": "not_applicable", "detail": "Static owned source contract.", "evidence": []},
+    "display": {"state": "not_applicable", "detail": "Static owned source contract.", "evidence": []},
+    "user_edit_action": {"state": "not_applicable", "detail": "Static owned source contract.", "evidence": []},
+    "input_validation": {"state": "partial", "detail": "Current files are read but compared with superseded expected values.", "evidence": ["extension/tests/extension-contract.test.js:28-38"]},
+    "authorization": {"state": "not_applicable", "detail": "Read-only source validation.", "evidence": []},
+    "backend_dispatch": {"state": "present", "detail": "Node test runner owns the check.", "evidence": ["registry/test_profiles.json"]},
+    "runtime_effect": {"state": "partial", "detail": "Test fails despite intended current package state.", "evidence": ["focused source run under gap-event:PX-OPERATIONAL-GAPS-20260816:000000004954"]},
+    "progress_reporting": {"state": "present", "detail": "Assertion failures identify both stale values.", "evidence": ["focused source run under gap-event:PX-OPERATIONAL-GAPS-20260816:000000004954"]},
+    "result_acknowledgement": {"state": "present", "detail": "Focused run returns failed status.", "evidence": ["focused source run under gap-event:PX-OPERATIONAL-GAPS-20260816:000000004954"]},
+    "failure_handling": {"state": "present", "detail": "Failure is retained and blocks the section.", "evidence": [".engineering-bootstrap/test-evidence/sections/dashboard-extension.json"]},
+    "persistence": {"state": "not_applicable", "detail": "Static test execution.", "evidence": []},
+    "reload_reopen": {"state": "not_applicable", "detail": "Static test execution.", "evidence": []},
+    "recovery_rollback": {"state": "not_applicable", "detail": "No mutation occurs during the check.", "evidence": []}
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": "px.ui-css-selector-baseline/1.1",
+  "scope": "PXA2-033 modular component and surface selector consolidation",
+  "required_layer_order": "@layer px.legacy, px.tokens, px.primitives, px.layout, px.components, px.surfaces, px.responsive, px.accessibility;",
+  "maximums": {
+    "duplicate_selector_count": 157,
+    "duplicate_occurrences": 193,
+    "cross_file_duplicate_selector_count": 0,
+    "cross_file_duplicate_occurrences": 0
+  },
+  "policy": "Duplicates are compared within the same unscoped, media, supports, or container context. Cross-layer selector duplication is prohibited; remaining same-file compatibility rules may only decrease until fully consolidated."
+}

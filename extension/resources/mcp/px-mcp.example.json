@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "pacify-x": {
+      "command": "node",
+      "args": ["<repository-root>/extension/server/index.js"],
+      "env": {
+        "PX_ENGINE_ROOT": "C:/absolute/path/Pacify-X",
+        "PX_WORKSPACE_ROOT": "C:/absolute/path/project",
+        "PX_COORDINATION_ROOT": "C:/absolute/path/project",
+        "PX_TEAM_PACK_ROOTS": "C:/absolute/path/admitted-team-packs",
+        "PX_PYTHON_PATH": "python"
+      }
+    }
+  }
+}

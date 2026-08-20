@@ -1,0 +1,138 @@
+{
+  "count": 22,
+  "records": [
+    {
+      "id": "context-budget-manager",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/context-budget-manager.json",
+      "sha256": "7139fbe3f7d76b6ef347b01c175690d554d39f16b0f4296eebc62e65ede1f300",
+      "trigger": "Use when the requested outcome is context budget manager or when that outcome is a required dependency."
+    },
+    {
+      "id": "context-injection-defender",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/context-injection-defender.json",
+      "sha256": "a2625c7b0e00f5fc80953a145408f36baf32fcfbaf76fbd40ecf633bc552ec38",
+      "trigger": "Use when the requested outcome is context injection defender or when that outcome is a required dependency."
+    },
+    {
+      "id": "document-ingestion-validator",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/document-ingestion-validator.json",
+      "sha256": "88d8d40373a67b34fceb9ad17072cbd2b70de7a015cac2ab68780db36189c3d7",
+      "trigger": "Use when the requested outcome is document ingestion validator or when that outcome is a required dependency."
+    },
+    {
+      "id": "episodic-memory-manager",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/episodic-memory-manager.json",
+      "sha256": "5383dc405fcd6bb578ce60ca3bafe75087eae4569c6fff0ec634929488e9a21e",
+      "trigger": "Use when the requested outcome is episodic memory manager or when that outcome is a required dependency."
+    },
+    {
+      "id": "genai-telemetry-instrumentation",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/genai-telemetry-instrumentation.json",
+      "sha256": "f6af22c8dfa8d55ed1803cc7bd23efd9f0255ec00ba246caca4c177cd4a2d70d",
+      "trigger": "Use when the requested outcome is genai telemetry instrumentation or when that outcome is a required dependency."
+    },
+    {
+      "id": "graph-retrieval",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/graph-retrieval.json",
+      "sha256": "6036f6b07052b11843a10e58f4d216779949bacff0b67d160a902ec40f80420b",
+      "trigger": "Use when the requested outcome is graph retrieval or when that outcome is a required dependency."
+    },
+    {
+      "id": "hybrid-retrieval",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/hybrid-retrieval.json",
+      "sha256": "0b44c82d72fc3f3614e80649b1a175928048cf68ff618ce4823234258861d167",
+      "trigger": "Use when the requested outcome is hybrid retrieval or when that outcome is a required dependency."
+    },
+    {
+      "id": "memory-compaction",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/memory-compaction.json",
+      "sha256": "da939732581aa64c56a888480441a9e549b0cde3bddd540ba0702f52ce1f93d8",
+      "trigger": "Use when the requested outcome is memory compaction or when that outcome is a required dependency."
+    },
+    {
+      "id": "memory-conflict-resolution",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/memory-conflict-resolution.json",
+      "sha256": "2a87937d4c480a20cded7f9e689f9e5f624e6b69aae51887346bbe5d832bd237",
+      "trigger": "Use when the requested outcome is memory conflict resolution or when that outcome is a required dependency."
+    },
+    {
+      "id": "memory-isolation",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/memory-isolation.json",
+      "sha256": "33d8425f421e1f9d126579e075dd3317b8c4afd5679b69086799228427290e9b",
+      "trigger": "Use when the requested outcome is memory isolation or when that outcome is a required dependency."
+    },
+    {
+      "id": "memory-provenance",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/memory-provenance.json",
+      "sha256": "8653271fbdbd806de9af8d0f948a0bf74bb1b06fe9d86eeb4f45fb9de18b6755",
+      "trigger": "Use when the requested outcome is memory provenance or when that outcome is a required dependency."
+    },
+    {
+      "id": "memory-retention-deletion",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/memory-retention-deletion.json",
+      "sha256": "506caa630931624fb889f9718c872063c229552d60f068ff59853b4f106ee28f",
+      "trigger": "Use when the requested outcome is memory retention deletion or when that outcome is a required dependency."
+    },
+    {
+      "id": "memory-retrieval-planner",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/memory-retrieval-planner.json",
+      "sha256": "f14503d9a5bae88461d333b6807cb6619a9257d72b1cdbcb79b84e7241cc9ecf",
+      "trigger": "Use when the requested outcome is memory retrieval planner or when that outcome is a required dependency."
+    },
+    {
+      "id": "memory-write-gate",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/memory-write-gate.json",
+      "sha256": "8ca420c8580017f0de55cd452167938a133efe6a9e062f1c142975d66e729c5f",
+      "trigger": "Use when the requested outcome is memory write gate or when that outcome is a required dependency."
+    },
+    {
+      "id": "procedural-memory-manager",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/procedural-memory-manager.json",
+      "sha256": "a5bca2a56e6d5474afa44e99b1ff02da8eb8f92b4081873e14c614f6cc40c0ed",
+      "trigger": "Use when the requested outcome is procedural memory manager or when that outcome is a required dependency."
+    },
+    {
+      "id": "quality-drift-monitor",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/quality-drift-monitor.json",
+      "sha256": "d411a47090328713ebea705e89d0ce43ab5f5fe1cd263f61ceddeebba097c12b",
+      "trigger": "Use when the requested outcome is quality drift monitor or when that outcome is a required dependency."
+    },
+    {
+      "id": "replay-and-forensics",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/replay-and-forensics.json",
+      "sha256": "1bea66dee020152eb0a2f11e8776c902b04cce0654de885d4a53e10d79f361f0",
+      "trigger": "Use when the requested outcome is replay and forensics or when that outcome is a required dependency."
+    },
+    {
+      "id": "reranking",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/reranking.json",
+      "sha256": "75c99d3253929da50c4e67337de0c13857871aa092fb88d11a09ee09b8a905a2",
+      "trigger": "Use when the requested outcome is reranking or when that outcome is a required dependency."
+    },
+    {
+      "id": "retrieval-evaluator",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/retrieval-evaluator.json",
+      "sha256": "c48958908e4dda93342d4daae8da8a30cd69dc24611a1f55aa30ee062e36dea9",
+      "trigger": "Use when the requested outcome is retrieval evaluator or when that outcome is a required dependency."
+    },
+    {
+      "id": "semantic-memory-manager",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/semantic-memory-manager.json",
+      "sha256": "04385b4bf2f3eeac9e1af82ba9ca3ef85eac23322011254eec4dd7bbcab83380",
+      "trigger": "Use when the requested outcome is semantic memory manager or when that outcome is a required dependency."
+    },
+    {
+      "id": "trace-correlation",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/trace-correlation.json",
+      "sha256": "f6dcfb21bc433fb1420ba993622260a96c4a9dd2d1b666cab348673648646519",
+      "trigger": "Use when the requested outcome is trace correlation or when that outcome is a required dependency."
+    },
+    {
+      "id": "working-memory-manager",
+      "path": ".agents/skills/operate-memory-retrieval-observability/references/capabilities/working-memory-manager.json",
+      "sha256": "caceaca0bb83ad170cea28de4b9d40d6b79e298ae4a75090921621b08fc6c724",
+      "trigger": "Use when the requested outcome is working memory manager or when that outcome is a required dependency."
+    }
+  ],
+  "schema_version": "1.0"
+}

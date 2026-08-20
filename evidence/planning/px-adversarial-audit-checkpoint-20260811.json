@@ -1,0 +1,91 @@
+{
+  "schema_version": "px.audit-checkpoint/1.0",
+  "checkpoint_id": "A01-r2-20260811",
+  "card_id": "A01",
+  "status": "accepted",
+  "repository": {
+    "branch": "main",
+    "commit_before_repairs": "98470f6d70fb6b2c52530136004485407f5caa6b",
+    "working_tree_state": "dirty-preexisting-and-authorized-repair-changes",
+    "release_evidence_treatment": "historical-only-until-A08"
+  },
+  "audit": {
+    "finding_count": 40,
+    "finding_range": "PXA-001..PXA-040",
+    "all_findings_logged_before_implementation": true,
+    "new_cards": 9,
+    "cards_total": 75,
+    "cards_accepted_current": 11,
+    "cards_partial_or_historical": 35,
+    "cards_open": 29,
+    "stale_accepted_cards_reopened": 28
+  },
+  "authority": {
+    "local_repository_writes": true,
+    "local_execution_and_validation": true,
+    "necessary_local_dependency_work": true,
+    "deployment": false,
+    "credential_use": false,
+    "billable_provider_calls": false,
+    "destructive_cleanup": false,
+    "historical_evidence_rewrite": false,
+    "scope": "current interactive repair session"
+  },
+  "skill_boundary_decision": {
+    "codex_visible_facade_target": "10-20",
+    "native_root": ".px/skills",
+    "main_facade": "px-query-skills",
+    "maximum_candidates": 3,
+    "maximum_hydrated_bodies": 1,
+    "distribution_domains": [
+      "px-standard",
+      "microsoft-vendor",
+      "enterprise-restricted"
+      ,
+      "user-preserved"
+    ],
+    "default_domain": "px-standard",
+    "cross_domain_implicit_selection": false,
+    "preexisting_skill_backup": "hash-verified, recoverable, user-owned evidence, never auto-purged, restore-tested"
+  },
+  "artifacts": [
+    {
+      "path": "docs/PX_ADVERSARIAL_AUDIT_20260811.md",
+      "sha256": "228cd6a9fa2e9a215b4b3fb98b5ec4151a27ca51b61ccd1435ed163adfa6b790"
+    },
+    {
+      "path": "evidence/planning/px-adversarial-audit-20260811.json",
+      "sha256": "c908ce39bd0402b5100c5a5b4632ae4d960983e496d91c7ecaad24d3d0260715"
+    },
+    {
+      "path": "docs/PX_UNIVERSAL_VISIBILITY_PUNCH_CARDS.md",
+      "sha256": "12caf593f5a937ac219111d174bcf7844b636b02240402708cdcab2cc67d6a35"
+    },
+    {
+      "path": "PROJECT_MANAGEMENT.md",
+      "sha256": "68a0e9bd9d3c5dd230f049f656e08a0869a9067f30776610269ed4c59ff1dbae"
+    },
+    {
+      "path": ".engineering-bootstrap/project-management/PUNCH_CARDS.md",
+      "sha256": "b3f04c6c004d68e71bd701660a113b47d39fadda38a8ea5a6a92ae2612c92d0e"
+    },
+    {
+      "path": ".engineering-bootstrap/project-management/state.json",
+      "sha256": "4f4c741ad1a1e489b2213b1c96e1cd15c69ed829bfc37624503690db49fd5ed7"
+    },
+    {
+      "path": "evidence/planning/px-universal-visibility-goal-state.json",
+      "sha256": "c2b9c9b7b64ad4a932c4321e0f416ea749059bb65bec1ccf8b4ccdda7614dab8"
+    },
+    {
+      "path": ".engineering-bootstrap/project-map/map-receipt.json",
+      "sha256": "78c31c1236d37bc8e75ef0496cb9752ecfe6eec331646d2563074a52434f382e"
+    }
+  ],
+  "validation": {
+    "json_documents_parse": true,
+    "project_check_valid": true,
+    "project_check_skill_count_before_native_migration": 139,
+    "next_card": "A02"
+  }
+}

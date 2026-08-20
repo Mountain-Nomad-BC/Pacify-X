@@ -28,6 +28,17 @@ def test_all_generated_projections_match_one_canonical_owner():
     )
 
 
+def test_artifact_reachability_excludes_live_receipt_projection_cycle():
+    from runtime.artifact_reachability import build_artifact_reachability
+
+    paths = {row["path"] for row in build_artifact_reachability(ROOT)["records"]}
+    assert "registry/current_evidence_index.json" not in paths
+    assert "registry/completion_status.json" not in paths
+    assert "registry/test_group_index.json" not in paths
+    assert "registry/operational_gap_ledger.head.json" not in paths
+    assert "registry/operational_gap_ledger.snapshot.json" not in paths
+
+
 def test_one_projection_mutation_is_detected_without_rewriting(tmp_path):
     root = tmp_path / "product"
     import shutil
@@ -42,13 +53,13 @@ def test_one_projection_mutation_is_detected_without_rewriting(tmp_path):
         "operate-memory-retrieval-observability",
         "secure-agent-supply-chain",
     ):
-        target = root / ".agents/skills" / owner / "scripts/domain_tool.py"
+        target = root / ".px/skills" / owner / "scripts/domain_tool.py"
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(
-            (ROOT / ".agents/skills" / owner / "scripts/domain_tool.py").read_bytes()
+            (ROOT / ".px/skills" / owner / "scripts/domain_tool.py").read_bytes()
         )
     changed = (
-        root / ".agents/skills/analyze-repository-intelligence/scripts/domain_tool.py"
+        root / ".px/skills/analyze-repository-intelligence/scripts/domain_tool.py"
     )
     changed.write_text(
         changed.read_text(encoding="utf-8") + "\n# drift\n", encoding="utf-8"

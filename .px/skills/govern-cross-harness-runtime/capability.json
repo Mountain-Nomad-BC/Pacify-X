@@ -1,0 +1,41 @@
+{
+  "admission_record": "govern-cross-harness-runtime",
+  "body_sha256": "0b775822f61cb2c04273a38b9e360705ff2be0d96e6c0905331fa7dd60cc5030",
+  "contract": {
+    "available": true,
+    "sha256": "da92a3a2ed1a8ea439f568c2f63357b369f6bc3558e23ca2ff3318d3d3b1e976",
+    "source": "registry/skill_packages/govern-cross-harness-runtime.json"
+  },
+  "description": "Project capabilities across harnesses and MCP surfaces without losing",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-cross-harness-runtime",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-cross-harness-runtime"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "cross",
+    "cross-harness",
+    "external-candidate",
+    "govern",
+    "harness",
+    "mcp",
+    "runtime"
+  ],
+  "version": "0.1.0"
+}

@@ -1,0 +1,622 @@
+{
+  "id": "ms-azuretools.vscode-azurecontainerapps",
+  "name": "Azure Container Apps",
+  "version": "0.11.2",
+  "publisher": "ms-azuretools",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "jsonValidation",
+    "menus",
+    "submenus",
+    "walkthroughs",
+    "x-azResources"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-azuretools.vscode-azurecontainerapps",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-azuretools.vscode-azurecontainerapps",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "ms-azuretools.vscode-azurecontainerapps",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-azuretools.vscode-azurecontainerapps",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "ms-azuretools.vscode-azurecontainerapps",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "ms-azuretools.vscode-azurecontainerapps",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:x-azResources",
+      "kind": "x-azResources",
+      "provider": "ms-azuretools.vscode-azurecontainerapps",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "containerApps.activateRevision",
+      "invocation": "vscode.commands.executeCommand('containerApps.activateRevision', ...args)",
+      "title": "Activate",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.addEnvironmentVariable",
+      "invocation": "vscode.commands.executeCommand('containerApps.addEnvironmentVariable', ...args)",
+      "title": "Add Environment Variable...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.addScaleRule",
+      "invocation": "vscode.commands.executeCommand('containerApps.addScaleRule', ...args)",
+      "title": "Add Scale Rule...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.addSecret",
+      "invocation": "vscode.commands.executeCommand('containerApps.addSecret', ...args)",
+      "title": "Add Secret...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.browse",
+      "invocation": "vscode.commands.executeCommand('containerApps.browse', ...args)",
+      "title": "Browse",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.chooseRevisionMode",
+      "invocation": "vscode.commands.executeCommand('containerApps.chooseRevisionMode', ...args)",
+      "title": "Choose Revision Mode...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.connectToGitHub",
+      "invocation": "vscode.commands.executeCommand('containerApps.connectToGitHub', ...args)",
+      "title": "Connect to GitHub Repository...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.convertEnvironmentVariable",
+      "invocation": "vscode.commands.executeCommand('containerApps.convertEnvironmentVariable', ...args)",
+      "title": "Convert Environment Variable to Secret...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.createAcr",
+      "invocation": "vscode.commands.executeCommand('containerApps.createAcr', ...args)",
+      "title": "Create Azure Container Registry...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.createContainerApp",
+      "invocation": "vscode.commands.executeCommand('containerApps.createContainerApp', ...args)",
+      "title": "Create Container App...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.createManagedEnvironment",
+      "invocation": "vscode.commands.executeCommand('containerApps.createManagedEnvironment', ...args)",
+      "title": "Create Container Apps Environment...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.createRevisionDraft",
+      "invocation": "vscode.commands.executeCommand('containerApps.createRevisionDraft', ...args)",
+      "title": "Create Draft...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.deactivateRevision",
+      "invocation": "vscode.commands.executeCommand('containerApps.deactivateRevision', ...args)",
+      "title": "Deactivate",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.deleteContainerApp",
+      "invocation": "vscode.commands.executeCommand('containerApps.deleteContainerApp', ...args)",
+      "title": "Delete Container App...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.deleteEnvironmentVariable",
+      "invocation": "vscode.commands.executeCommand('containerApps.deleteEnvironmentVariable', ...args)",
+      "title": "Delete Environment Variable...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.deleteManagedEnvironment",
+      "invocation": "vscode.commands.executeCommand('containerApps.deleteManagedEnvironment', ...args)",
+      "title": "Delete Container Apps Environment...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.deleteScaleRule",
+      "invocation": "vscode.commands.executeCommand('containerApps.deleteScaleRule', ...args)",
+      "title": "Delete Scale Rule...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.deleteSecret",
+      "invocation": "vscode.commands.executeCommand('containerApps.deleteSecret', ...args)",
+      "title": "Delete Secret...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.deployContainerApp",
+      "invocation": "vscode.commands.executeCommand('containerApps.deployContainerApp', ...args)",
+      "title": "Deploy to Container App...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.deployContainerAppWithCopilot",
+      "invocation": "vscode.commands.executeCommand('containerApps.deployContainerAppWithCopilot', ...args)",
+      "title": "Deploy to Container App with Copilot...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.deployImageApi",
+      "invocation": "vscode.commands.executeCommand('containerApps.deployImageApi', ...args)",
+      "title": "Deploy Image to Container App (API)...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.deployRevisionDraft",
+      "invocation": "vscode.commands.executeCommand('containerApps.deployRevisionDraft', ...args)",
+      "title": "Deploy Draft...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.deployWorkspaceProject",
+      "invocation": "vscode.commands.executeCommand('containerApps.deployWorkspaceProject', ...args)",
+      "title": "Deploy Project from Workspace...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.deployWorkspaceProjectApi",
+      "invocation": "vscode.commands.executeCommand('containerApps.deployWorkspaceProjectApi', ...args)",
+      "title": "Deploy Project from Workspace (API)...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.disableIngress",
+      "invocation": "vscode.commands.executeCommand('containerApps.disableIngress', ...args)",
+      "title": "Disable Ingress for Container App",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.discardRevisionDraft",
+      "invocation": "vscode.commands.executeCommand('containerApps.discardRevisionDraft', ...args)",
+      "title": "Discard Draft",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.disconnectRepo",
+      "invocation": "vscode.commands.executeCommand('containerApps.disconnectRepo', ...args)",
+      "title": "Disconnect from Repo",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.editContainer",
+      "invocation": "vscode.commands.executeCommand('containerApps.editContainer', ...args)",
+      "title": "Edit Container...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.editContainerApp",
+      "invocation": "vscode.commands.executeCommand('containerApps.editContainerApp', ...args)",
+      "title": "Edit Container App (Advanced)...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.editContainerImage",
+      "invocation": "vscode.commands.executeCommand('containerApps.editContainerImage', ...args)",
+      "title": "Edit Container Image...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.editEnvironmentVariableName",
+      "invocation": "vscode.commands.executeCommand('containerApps.editEnvironmentVariableName', ...args)",
+      "title": "Edit Environment Variable Name...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.editEnvironmentVariables",
+      "invocation": "vscode.commands.executeCommand('containerApps.editEnvironmentVariables', ...args)",
+      "title": "Edit Environment Variables (.env)...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.editEnvironmentVariableValue",
+      "invocation": "vscode.commands.executeCommand('containerApps.editEnvironmentVariableValue', ...args)",
+      "title": "Edit Environment Variable Value...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.editRevisionDraft",
+      "invocation": "vscode.commands.executeCommand('containerApps.editRevisionDraft', ...args)",
+      "title": "Edit Draft (Advanced)...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.editScaleRange",
+      "invocation": "vscode.commands.executeCommand('containerApps.editScaleRange', ...args)",
+      "title": "Edit Scaling Range...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.editSecretValue",
+      "invocation": "vscode.commands.executeCommand('containerApps.editSecretValue', ...args)",
+      "title": "Edit Secret Value...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.editTargetPort",
+      "invocation": "vscode.commands.executeCommand('containerApps.editTargetPort', ...args)",
+      "title": "Edit Target Port...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.enableIngress",
+      "invocation": "vscode.commands.executeCommand('containerApps.enableIngress', ...args)",
+      "title": "Enable Ingress for Container App...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.openAcrBuildLogs",
+      "invocation": "vscode.commands.executeCommand('containerApps.openAcrBuildLogs', ...args)",
+      "title": "Open Azure Container Registry Build Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.openConsoleInPortal",
+      "invocation": "vscode.commands.executeCommand('containerApps.openConsoleInPortal', ...args)",
+      "title": "Open Console in Portal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.openGitHubRepo",
+      "invocation": "vscode.commands.executeCommand('containerApps.openGitHubRepo', ...args)",
+      "title": "Open Repo in GitHub",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.reportIssue",
+      "invocation": "vscode.commands.executeCommand('containerApps.reportIssue', ...args)",
+      "title": "Report Issue...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.restartRevision",
+      "invocation": "vscode.commands.executeCommand('containerApps.restartRevision', ...args)",
+      "title": "Restart",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.revealInEnvironment",
+      "invocation": "vscode.commands.executeCommand('containerApps.revealInEnvironment', ...args)",
+      "title": "Reveal in Container Apps Environments",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.startStreamingLogs",
+      "invocation": "vscode.commands.executeCommand('containerApps.startStreamingLogs', ...args)",
+      "title": "Start Streaming Logs...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.stopStreamingLogs",
+      "invocation": "vscode.commands.executeCommand('containerApps.stopStreamingLogs', ...args)",
+      "title": "Stop Streaming Logs...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.toggleEnvironmentVariableVisibility",
+      "invocation": "vscode.commands.executeCommand('containerApps.toggleEnvironmentVariableVisibility', ...args)",
+      "title": "Toggle Environment Variable Visibility",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.toggleVisibility",
+      "invocation": "vscode.commands.executeCommand('containerApps.toggleVisibility', ...args)",
+      "title": "Switch Ingress Visibility...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.walkthrough.addWorkspaceProject",
+      "invocation": "vscode.commands.executeCommand('containerApps.walkthrough.addWorkspaceProject', ...args)",
+      "title": "Add a workspace project",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.walkthrough.azureSignIn",
+      "invocation": "vscode.commands.executeCommand('containerApps.walkthrough.azureSignIn', ...args)",
+      "title": "Sign in to Azure",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.walkthrough.cleanUpResources",
+      "invocation": "vscode.commands.executeCommand('containerApps.walkthrough.cleanUpResources', ...args)",
+      "title": "Clean up resources",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.walkthrough.deployWorkspaceProject",
+      "invocation": "vscode.commands.executeCommand('containerApps.walkthrough.deployWorkspaceProject', ...args)",
+      "title": "Create and deploy",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "containerApps.walkthrough.gettingStarted.internal",
+      "invocation": "vscode.commands.executeCommand('containerApps.walkthrough.gettingStarted.internal', ...args)",
+      "title": "Open Walkthrough",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "ms-azuretools.vscode-azureresourcegroups"
+  ],
+  "activation_events": [],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "limited",
+      "description": "Some features are not supported in virtual workspaces."
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-azuretools.vscode-azurecontainerapps",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:jsonValidation",
+      "contribution:menus",
+      "contribution:submenus",
+      "contribution:walkthroughs",
+      "contribution:x-azResources"
+    ],
+    "interface": [
+      "containerApps.activateRevision",
+      "containerApps.addEnvironmentVariable",
+      "containerApps.addScaleRule",
+      "containerApps.addSecret",
+      "containerApps.browse",
+      "containerApps.chooseRevisionMode",
+      "containerApps.connectToGitHub",
+      "containerApps.convertEnvironmentVariable",
+      "containerApps.createAcr",
+      "containerApps.createContainerApp",
+      "containerApps.createManagedEnvironment",
+      "containerApps.createRevisionDraft",
+      "containerApps.deactivateRevision",
+      "containerApps.deleteContainerApp",
+      "containerApps.deleteEnvironmentVariable",
+      "containerApps.deleteManagedEnvironment",
+      "containerApps.deleteScaleRule",
+      "containerApps.deleteSecret",
+      "containerApps.deployContainerApp",
+      "containerApps.deployContainerAppWithCopilot",
+      "containerApps.deployImageApi",
+      "containerApps.deployRevisionDraft",
+      "containerApps.deployWorkspaceProject",
+      "containerApps.deployWorkspaceProjectApi",
+      "containerApps.disableIngress",
+      "containerApps.discardRevisionDraft",
+      "containerApps.disconnectRepo",
+      "containerApps.editContainer",
+      "containerApps.editContainerApp",
+      "containerApps.editContainerImage",
+      "containerApps.editEnvironmentVariableName",
+      "containerApps.editEnvironmentVariables",
+      "containerApps.editEnvironmentVariableValue",
+      "containerApps.editRevisionDraft",
+      "containerApps.editScaleRange",
+      "containerApps.editSecretValue",
+      "containerApps.editTargetPort",
+      "containerApps.enableIngress",
+      "containerApps.openAcrBuildLogs",
+      "containerApps.openConsoleInPortal",
+      "containerApps.openGitHubRepo",
+      "containerApps.reportIssue",
+      "containerApps.restartRevision",
+      "containerApps.revealInEnvironment",
+      "containerApps.startStreamingLogs",
+      "containerApps.stopStreamingLogs",
+      "containerApps.toggleEnvironmentVariableVisibility",
+      "containerApps.toggleVisibility",
+      "containerApps.walkthrough.addWorkspaceProject",
+      "containerApps.walkthrough.azureSignIn",
+      "containerApps.walkthrough.cleanUpResources",
+      "containerApps.walkthrough.deployWorkspaceProject",
+      "containerApps.walkthrough.gettingStarted.internal"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "limited",
+        "description": "Some features are not supported in virtual workspaces."
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

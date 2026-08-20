@@ -1,0 +1,38 @@
+{
+  "admission_record": "route-supabase-capabilities",
+  "body_sha256": "fba482aa973ade3fbde099e47780e87c947c6773e5fbfd638059b30fa4f30497",
+  "contract": {
+    "available": true,
+    "sha256": "9d4f372ded6f1b6a7fa29ebd93742f9007d15e116513b37bc1c14f6d86215640",
+    "source": "registry/skill_packages/route-supabase-capabilities.json"
+  },
+  "description": "Route Supabase requests across Postgres, RLS, Auth, Storage, Realtime, Edge Functions, vectors, CLI, self-hosting, and MCP.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "route-supabase-capabilities",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/route-supabase-capabilities"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "capability-selection",
+    "postgres-platform",
+    "routing",
+    "supabase"
+  ],
+  "version": "1.0.0"
+}

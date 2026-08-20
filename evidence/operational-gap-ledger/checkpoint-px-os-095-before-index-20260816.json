@@ -1,0 +1,7 @@
+{
+  "active_gap_id": "PX-OS-095",
+  "learned": "Exact governed membership now includes the CSS canonicalizer, ui-scaffold selector gate, and Studio terminal observer, with regression assertions. Python source/tests changed after the prior derived index.",
+  "next_action": "Regenerate registry/test_group_index.json once from current source; do not run tests in this step.",
+  "unresolved_branch_gap_ids": ["PX-OS-095"],
+  "evidence": [{"claim": "Membership repair implemented under admission 5014.", "reference": "registry/test_profiles.json; tests/test_test_profiles.py"}]
+}

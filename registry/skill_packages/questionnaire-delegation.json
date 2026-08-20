@@ -2,7 +2,7 @@
   "id": "questionnaire-delegation",
   "version": "1.0.0",
   "status": "active",
-  "body": ".agents/skills/questionnaire-delegation/SKILL.md",
+  "body": ".px/skills/questionnaire-delegation/SKILL.md",
   "body_sha256": "1b7d57606b11b8cde821dfed00891623c9c0a90ddfa1c9435aba820099b8a9cd",
   "references": [],
   "capability_tags": [
@@ -20,7 +20,7 @@
       "evidence/integration/pxi-20260804/candidate_disposition_ledger.json",
       "LICENSES/mattpocock-skills-MIT.txt"
     ],
-    "canonical_owner": ".agents/skills/questionnaire-delegation/SKILL.md"
+    "canonical_owner": ".px/skills/questionnaire-delegation/SKILL.md"
   },
   "clean_room": false,
   "tests": "tests/test_project_reasoning.py",

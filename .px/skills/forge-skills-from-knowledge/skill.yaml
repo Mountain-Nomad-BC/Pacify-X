@@ -1,0 +1,41 @@
+{
+  "admission_record": "forge-skills-from-knowledge",
+  "body_sha256": "41f54564e2e956a31637525f3b9111538f7f83308ec4c4b16c1164487fdc561e",
+  "contract": {
+    "available": true,
+    "sha256": "304f567bdeb1eb65015b789b6c2100c734b1dcb5459f1fdadc1b2e73cc180468",
+    "source": "registry/skill_packages/forge-skills-from-knowledge.json"
+  },
+  "description": "Compile documents, engineering notes, code-adjacent text, calculations, transcripts, standards, or research into normalized evidence-linked knowledge, candidate skills, schemas, executable calculation packages, tests, graph updates, documentation, benchmarks, and certification evidence. Use when turning a mixed corpus into reusable capabilities or when composing, repairing, splitting, merging, or reevaluating skills; never activate generated work without separate admission.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "forge-skills-from-knowledge",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/forge-skills-from-knowledge"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "knowledge",
+    "compiler",
+    "skill",
+    "foundry",
+    "research",
+    "calculation",
+    "certification"
+  ],
+  "version": "0.1.0"
+}

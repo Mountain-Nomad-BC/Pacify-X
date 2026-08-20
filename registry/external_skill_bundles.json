@@ -3,7 +3,7 @@
   "packages": [
     {
       "activation": "requires_admission",
-      "body": ".agents/skills/adapt-human-learning-loop/SKILL.md",
+      "body": ".px/skills/adapt-human-learning-loop/SKILL.md",
       "candidate_capabilities": [
         "maintain-learner-profile-boundary",
         "sequence-adaptive-learning-exercises",
@@ -22,16 +22,16 @@
       "id": "adapt-human-learning-loop",
       "owner": "long-horizon-progress-ledger",
       "references": [
-        ".agents/skills/adapt-human-learning-loop/references/maintain-learner-profile-boundary.json",
-        ".agents/skills/adapt-human-learning-loop/references/sequence-adaptive-learning-exercises.json",
-        ".agents/skills/adapt-human-learning-loop/references/capture-human-observer-assessment.json",
-        ".agents/skills/adapt-human-learning-loop/references/maintain-behavior-event-ledger.json",
-        ".agents/skills/adapt-human-learning-loop/references/govern-reinforcement-token-economy.json",
-        ".agents/skills/adapt-human-learning-loop/references/evaluate-cue-recall-and-recognition.json",
-        ".agents/skills/adapt-human-learning-loop/references/summarize-learning-progress.json",
-        ".agents/skills/adapt-human-learning-loop/references/design-replayable-exercise-state-machine.json",
-        ".agents/skills/adapt-human-learning-loop/references/separate-supervisor-and-learner-roles.json",
-        ".agents/skills/adapt-human-learning-loop/references/safeguard-human-learning-systems.json"
+        ".px/skills/adapt-human-learning-loop/references/maintain-learner-profile-boundary.json",
+        ".px/skills/adapt-human-learning-loop/references/sequence-adaptive-learning-exercises.json",
+        ".px/skills/adapt-human-learning-loop/references/capture-human-observer-assessment.json",
+        ".px/skills/adapt-human-learning-loop/references/maintain-behavior-event-ledger.json",
+        ".px/skills/adapt-human-learning-loop/references/govern-reinforcement-token-economy.json",
+        ".px/skills/adapt-human-learning-loop/references/evaluate-cue-recall-and-recognition.json",
+        ".px/skills/adapt-human-learning-loop/references/summarize-learning-progress.json",
+        ".px/skills/adapt-human-learning-loop/references/design-replayable-exercise-state-machine.json",
+        ".px/skills/adapt-human-learning-loop/references/separate-supervisor-and-learner-roles.json",
+        ".px/skills/adapt-human-learning-loop/references/safeguard-human-learning-systems.json"
       ],
       "source_licenses": [
         "hyperlearning-clean-room"
@@ -41,7 +41,7 @@
     },
     {
       "activation": "requires_admission",
-      "body": ".agents/skills/audit-interactive-systems/SKILL.md",
+      "body": ".px/skills/audit-interactive-systems/SKILL.md",
       "candidate_capabilities": [
         "audit-interactive-action-paths"
       ],
@@ -51,7 +51,7 @@
       "id": "audit-interactive-systems",
       "owner": "triage-cross-surface-failures",
       "references": [
-        ".agents/skills/audit-interactive-systems/references/audit-interactive-action-paths.json"
+        ".px/skills/audit-interactive-systems/references/audit-interactive-action-paths.json"
       ],
       "source_licenses": [
         "everything-claude-code"
@@ -61,7 +61,7 @@
     },
     {
       "activation": "requires_admission",
-      "body": ".agents/skills/benchmark-and-route-agents/SKILL.md",
+      "body": ".px/skills/benchmark-and-route-agents/SKILL.md",
       "candidate_capabilities": [
         "benchmark-agent-regressions",
         "govern-model-routing-economics"
@@ -72,8 +72,8 @@
       "id": "benchmark-and-route-agents",
       "owner": "engineer-verification-lab",
       "references": [
-        ".agents/skills/benchmark-and-route-agents/references/benchmark-agent-regressions.json",
-        ".agents/skills/benchmark-and-route-agents/references/govern-model-routing-economics.json"
+        ".px/skills/benchmark-and-route-agents/references/benchmark-agent-regressions.json",
+        ".px/skills/benchmark-and-route-agents/references/govern-model-routing-economics.json"
       ],
       "source_licenses": [
         "everything-claude-code"
@@ -83,7 +83,7 @@
     },
     {
       "activation": "requires_admission",
-      "body": ".agents/skills/evolve-session-learning/SKILL.md",
+      "body": ".px/skills/evolve-session-learning/SKILL.md",
       "candidate_capabilities": [
         "observe-project-scoped-instincts",
         "evolve-instincts-into-capabilities"
@@ -94,8 +94,8 @@
       "id": "evolve-session-learning",
       "owner": "govern-metacognitive-evolution",
       "references": [
-        ".agents/skills/evolve-session-learning/references/observe-project-scoped-instincts.json",
-        ".agents/skills/evolve-session-learning/references/evolve-instincts-into-capabilities.json"
+        ".px/skills/evolve-session-learning/references/observe-project-scoped-instincts.json",
+        ".px/skills/evolve-session-learning/references/evolve-instincts-into-capabilities.json"
       ],
       "source_licenses": [
         "everything-claude-code"
@@ -105,7 +105,7 @@
     },
     {
       "activation": "requires_admission",
-      "body": ".agents/skills/govern-cross-harness-runtime/SKILL.md",
+      "body": ".px/skills/govern-cross-harness-runtime/SKILL.md",
       "candidate_capabilities": [
         "govern-cross-harness-parity",
         "design-mcp-server-capability"
@@ -116,8 +116,8 @@
       "id": "govern-cross-harness-runtime",
       "owner": "govern-runtime-protocol-deployment",
       "references": [
-        ".agents/skills/govern-cross-harness-runtime/references/govern-cross-harness-parity.json",
-        ".agents/skills/govern-cross-harness-runtime/references/design-mcp-server-capability.json"
+        ".px/skills/govern-cross-harness-runtime/references/govern-cross-harness-parity.json",
+        ".px/skills/govern-cross-harness-runtime/references/design-mcp-server-capability.json"
       ],
       "source_licenses": [
         "everything-claude-code"
@@ -127,7 +127,7 @@
     },
     {
       "activation": "requires_admission",
-      "body": ".agents/skills/govern-hooked-execution/SKILL.md",
+      "body": ".px/skills/govern-hooked-execution/SKILL.md",
       "candidate_capabilities": [
         "govern-agent-hook-lifecycle",
         "enforce-agent-config-supply-chain"
@@ -138,8 +138,8 @@
       "id": "govern-hooked-execution",
       "owner": "supervise-contained-execution",
       "references": [
-        ".agents/skills/govern-hooked-execution/references/govern-agent-hook-lifecycle.json",
-        ".agents/skills/govern-hooked-execution/references/enforce-agent-config-supply-chain.json"
+        ".px/skills/govern-hooked-execution/references/govern-agent-hook-lifecycle.json",
+        ".px/skills/govern-hooked-execution/references/enforce-agent-config-supply-chain.json"
       ],
       "source_licenses": [
         "everything-claude-code"
@@ -149,7 +149,7 @@
     },
     {
       "activation": "requires_admission",
-      "body": ".agents/skills/install-capabilities-selectively/SKILL.md",
+      "body": ".px/skills/install-capabilities-selectively/SKILL.md",
       "candidate_capabilities": [
         "plan-selective-capability-installation"
       ],
@@ -159,7 +159,7 @@
       "id": "install-capabilities-selectively",
       "owner": "skill-bundle-resolver",
       "references": [
-        ".agents/skills/install-capabilities-selectively/references/plan-selective-capability-installation.json"
+        ".px/skills/install-capabilities-selectively/references/plan-selective-capability-installation.json"
       ],
       "source_licenses": [
         "everything-claude-code"
@@ -169,7 +169,7 @@
     },
     {
       "activation": "requires_admission",
-      "body": ".agents/skills/maintain-capability-catalog/SKILL.md",
+      "body": ".px/skills/maintain-capability-catalog/SKILL.md",
       "candidate_capabilities": [
         "maintain-skill-health",
         "distill-operational-rules",
@@ -182,10 +182,10 @@
       "id": "maintain-capability-catalog",
       "owner": "skill-admission-controller",
       "references": [
-        ".agents/skills/maintain-capability-catalog/references/maintain-skill-health.json",
-        ".agents/skills/maintain-capability-catalog/references/distill-operational-rules.json",
-        ".agents/skills/maintain-capability-catalog/references/capture-architecture-decisions.json",
-        ".agents/skills/maintain-capability-catalog/references/detect-workspace-capability-needs.json"
+        ".px/skills/maintain-capability-catalog/references/maintain-skill-health.json",
+        ".px/skills/maintain-capability-catalog/references/distill-operational-rules.json",
+        ".px/skills/maintain-capability-catalog/references/capture-architecture-decisions.json",
+        ".px/skills/maintain-capability-catalog/references/detect-workspace-capability-needs.json"
       ],
       "source_licenses": [
         "everything-claude-code"
@@ -195,7 +195,7 @@
     },
     {
       "activation": "requires_admission",
-      "body": ".agents/skills/manage-agent-session-fabric/SKILL.md",
+      "body": ".px/skills/manage-agent-session-fabric/SKILL.md",
       "candidate_capabilities": [
         "manage-session-continuity-adapters"
       ],
@@ -205,7 +205,7 @@
       "id": "manage-agent-session-fabric",
       "owner": "human-handoff-state-transfer",
       "references": [
-        ".agents/skills/manage-agent-session-fabric/references/manage-session-continuity-adapters.json"
+        ".px/skills/manage-agent-session-fabric/references/manage-session-continuity-adapters.json"
       ],
       "source_licenses": [
         "everything-claude-code"
@@ -215,7 +215,7 @@
     },
     {
       "activation": "requires_admission",
-      "body": ".agents/skills/optimize-agent-harness/SKILL.md",
+      "body": ".px/skills/optimize-agent-harness/SKILL.md",
       "candidate_capabilities": [
         "audit-agent-harness-performance",
         "manage-harness-context-budget"
@@ -226,8 +226,8 @@
       "id": "optimize-agent-harness",
       "owner": "govern-operating-kernel",
       "references": [
-        ".agents/skills/optimize-agent-harness/references/audit-agent-harness-performance.json",
-        ".agents/skills/optimize-agent-harness/references/manage-harness-context-budget.json"
+        ".px/skills/optimize-agent-harness/references/audit-agent-harness-performance.json",
+        ".px/skills/optimize-agent-harness/references/manage-harness-context-budget.json"
       ],
       "source_licenses": [
         "everything-claude-code"
@@ -237,7 +237,7 @@
     },
     {
       "activation": "requires_admission",
-      "body": ".agents/skills/orchestrate-agent-fleets/SKILL.md",
+      "body": ".px/skills/orchestrate-agent-fleets/SKILL.md",
       "candidate_capabilities": [
         "orchestrate-isolated-agent-fleet",
         "manage-autonomous-loop-convergence"
@@ -248,8 +248,8 @@
       "id": "orchestrate-agent-fleets",
       "owner": "orchestrate-capability-scheduling",
       "references": [
-        ".agents/skills/orchestrate-agent-fleets/references/orchestrate-isolated-agent-fleet.json",
-        ".agents/skills/orchestrate-agent-fleets/references/manage-autonomous-loop-convergence.json"
+        ".px/skills/orchestrate-agent-fleets/references/orchestrate-isolated-agent-fleet.json",
+        ".px/skills/orchestrate-agent-fleets/references/manage-autonomous-loop-convergence.json"
       ],
       "source_licenses": [
         "everything-claude-code"
@@ -259,7 +259,7 @@
     },
     {
       "activation": "requires_admission",
-      "body": ".agents/skills/research-first-capability-use/SKILL.md",
+      "body": ".px/skills/research-first-capability-use/SKILL.md",
       "candidate_capabilities": [
         "lookup-current-documentation"
       ],
@@ -269,7 +269,7 @@
       "id": "research-first-capability-use",
       "owner": "research-to-operation-translator",
       "references": [
-        ".agents/skills/research-first-capability-use/references/lookup-current-documentation.json"
+        ".px/skills/research-first-capability-use/references/lookup-current-documentation.json"
       ],
       "source_licenses": [
         "everything-claude-code"

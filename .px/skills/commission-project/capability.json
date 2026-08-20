@@ -1,0 +1,36 @@
+{
+  "admission_record": "workflow-orchestrator",
+  "body_sha256": "26cc3a21835c8e5fd52610ad3b85cf50467588ef0fc8cc4789972b38b79b1b53",
+  "contract": {
+    "available": true,
+    "sha256": "fca43988a48ddb9e435948c86dab83bf05d2352c16bdcc55c7654a12cd4e3ab9",
+    "source": "registry/skills/workflow-orchestrator.json"
+  },
+  "description": "Commission a new repository or safely adopt an existing repository with bounded configuration, durable project-management controls, a read-only inventory, collision-preserving integration, two model-neutral startup prompts, and metadata-first skill routing. Use when establishing this bootstrap in a new project or adding it to an existing codebase without overwriting local owners.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "commission-project",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/commission-project"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "bootstrap",
+    "onboarding"
+  ],
+  "version": "0.1.0"
+}

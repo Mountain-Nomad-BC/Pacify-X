@@ -293,7 +293,7 @@
       "owning_paths": [
         "templates/generated/domain_tool.py",
         "scripts/build_domain_tool_projections.py",
-        ".agents/skills"
+        ".px/skills"
       ],
       "priority": "P2",
       "receipts": [
@@ -312,7 +312,7 @@
       "owning_paths": [
         "templates/declared_suite",
         "scripts/build_declared_suite_template_projections.py",
-        ".agents/skills"
+        ".px/skills"
       ],
       "priority": "P3",
       "receipts": [
@@ -389,7 +389,7 @@
       "id": "AUD-010-A",
       "owning_paths": [
         "registry/incomplete_finding_reviews.json",
-        ".agents/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
+        ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
         "tests/test_structural_integrity.py"
       ],
       "priority": "P3",
@@ -493,7 +493,7 @@
       "id": "REL-010-F01",
       "owning_paths": [
         ".engineering-bootstrap/project-registry.json",
-        ".agents/skills/audit-source-capabilities/SKILL.md",
+        ".px/skills/audit-source-capabilities/SKILL.md",
         "tests/test_commissioning_apply.py"
       ],
       "parent": "TST-010-D",
@@ -602,7 +602,7 @@
       "disposition": "Second-pass F-021: missing parser, malformed YAML, duplicate keys, unsupported tags, and alias expansion must fail closed.",
       "id": "SEC-021",
       "owning_paths": [
-        ".agents/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py",
+        ".px/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py",
         "tests/test_authoritative_skill_compiler.py"
       ],
       "parent": "SEC-010-A",

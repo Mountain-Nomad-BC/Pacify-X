@@ -1,0 +1,39 @@
+{
+  "admission_record": "handle-debug-n8n-executions",
+  "body_sha256": "b74f7925b5ab1c9a21bb0494a07f99719deed863470c6156d88bdfdb362aca00",
+  "contract": {
+    "available": true,
+    "sha256": "c065dc24f4424ee542106df6489d57207f252fb51f6aebebf412b86cada9da1a",
+    "source": "registry/skill_packages/handle-debug-n8n-executions.json"
+  },
+  "description": "Diagnose failed, stuck, slow, or incorrect executions from evidence without unsafe reruns.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "handle-debug-n8n-executions",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/handle-debug-n8n-executions"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "error-workflow",
+    "execution-debugging",
+    "n8n",
+    "replay",
+    "root-cause"
+  ],
+  "version": "1.0.0"
+}

@@ -1,0 +1,18 @@
+{
+  "authoritative_contract": "# Cost Token Budget Scheduler Contract\n\n## Preconditions\n- Inputs are schema-valid.\n- Policy and resource snapshots have timestamps.\n- Acceptance criteria are immutable for the scheduling decision.\n\n## Success\nA decision is successful only when it is eligible, policy-compliant, resource-feasible, explainable, and recorded with evidence.\n\n## Failure\nReturn a typed failure: `invalid_input`, `ineligible`, `policy_denied`, `resource_unavailable`, `deadline_infeasible`, `approval_required`, `budget_exhausted`, or `internal_error`.\n",
+  "authoritative_skill_body": "---\nname: cost-token-budget-scheduler\ndescription: Enforce money, token, API-call, compute-minute, and storage budgets while preserving acceptance criteria.\nversion: 1.0.0\n---\n\n# Cost Token Budget Scheduler\n\n## Purpose\nEnforce money, token, API-call, compute-minute, and storage budgets while preserving acceptance criteria.\n\n## Use when\n- Work must be selected, ordered, placed, paused, resumed, verified, or recovered.\n- Multiple valid implementations compete for finite resources.\n- Scheduling decisions need explicit evidence and replayability.\n\n## Required inputs\n- Task contract and acceptance criteria\n- Dependency and state information\n- Available capability/resource inventory\n- Applicable policies, budgets, deadlines, and approval requirements\n\n## Procedure\n1. Normalize task and capability contracts.\n2. Reject impossible or policy-invalid combinations.\n3. Calculate eligibility before preference.\n4. Score eligible paths with recorded factors.\n5. Reserve resources using leases or atomic claims.\n6. Execute with idempotency, timeout, checkpoint, and evidence hooks.\n7. Re-evaluate the schedule after every meaningful state change.\n8. Preserve the original acceptance contract through fallback and recovery.\n\n## Outputs\n- Scheduling decision and reason codes\n- Selected capability/execution target\n- Reservation or lease details\n- Evidence, metrics, and updated task state\n- Escalation or recovery action when completion is not safe\n\n## Non-negotiable safeguards\n- Never bypass approval, privacy, security, or evidence gates to improve throughput.\n- Never claim success from task dispatch alone.\n- Never retry irreversible work without idempotency or an approved compensation path.\n- Never silently move protected work to external execution.\n",
+  "canonical_owner": "orchestrate-capability-scheduling",
+  "composed_with": [
+    "skill-navigator",
+    "execution-contract-enforcer",
+    "recovery-coordinator",
+    "outcome-verifier",
+    "isolate-project-streams"
+  ],
+  "description": "Enforce money, token, API-call, compute-minute, and storage budgets while preserving acceptance criteria.",
+  "id": "cost-token-budget-scheduler",
+  "runtime_boundary": "observe-only planning; canonical execution, leases, evidence, and completion stay with existing owners",
+  "source_body_sha256": "ce6cc4d8dd6b861cebe17203fa90a59362c1d2b87ba0e495df96b3d893a9011a",
+  "source_contract_sha256": "a1c27713b5d0c85bed631ce7bd610bcabf8730469473402d47816773fb94456f",
+  "version": "1.0.0"
+}

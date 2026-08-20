@@ -135,3 +135,31 @@ class ResourceScheduler:
                 self.release(work_id)
                 recovered.append(work_id)
         return tuple(sorted(recovered))
+
+    def snapshot(self, now: datetime | None = None) -> dict[str, object]:
+        """Expose current admission facts without probing or starting work."""
+        lost = self.lost_workers(now)
+        return {
+            "schema_version": "px.resource-scheduler-snapshot/1.0",
+            "limits": {
+                "agents": self.policy.max_agents,
+                "light_lanes": self.policy.max_light_lanes,
+                "heavy_lanes": self.policy.max_heavy_lanes,
+            },
+            "active": {
+                work_id: {
+                    "lane": lane,
+                    "owned_paths": sorted(self._ownership.get(work_id, ())),
+                    "workers": sorted(
+                        worker
+                        for worker, assigned in self._assignments.items()
+                        if assigned == work_id
+                    ),
+                }
+                for work_id, lane in sorted(self._lanes.items())
+            },
+            "active_count": len(self._lanes),
+            "workers": len(self._workers),
+            "lost_workers": list(lost),
+            "cpu_authoritative": True,
+        }

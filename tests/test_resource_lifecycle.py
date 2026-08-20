@@ -3,16 +3,19 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
 import time
 import unittest
 from unittest import mock
+from concurrent.futures import ThreadPoolExecutor
 
 from runtime.resource_lifecycle import (
     ResourceClassification,
     ResourceManager,
+    ResourceRecord,
     ResourceStatus,
     RunState,
     StorageBudget,
@@ -54,7 +57,85 @@ class ResourceLifecycleTests(unittest.TestCase):
             creator="test",
         )
 
-    def test_normal_completion_reclaims_owned_workspace_and_receipts_are_exact(self) -> None:
+    def test_concurrent_registrations_do_not_lose_ledger_records(self) -> None:
+        def register(index: int) -> str:
+            return self._workspace(f"parallel-{index}").resource_id
+
+        with ThreadPoolExecutor(max_workers=3) as pool:
+            resource_ids = set(pool.map(register, range(12)))
+
+        stored = {record.resource_id for record in self.manager.ledger.load()}
+        self.assertEqual(stored, resource_ids)
+
+    def test_current_process_completion_is_idempotent_for_terminal_races(self) -> None:
+        now = "2026-08-14T00:00:00+00:00"
+        record = ResourceRecord(
+            resource_id="process-current",
+            resource_type="process",
+            project_id="project",
+            run_id="run-current",
+            lane_id="workflow",
+            creator="test",
+            classification=ResourceClassification.EPHEMERAL.value,
+            created_at=now,
+            last_activity_at=now,
+            expected_cleanup_event="process_exit_or_cancel",
+            retention_required=False,
+            pid=os.getpid(),
+        )
+        self.manager.ledger.upsert(record)
+        first = self.manager.complete_current_process(
+            record.resource_id,
+            expected_pid=os.getpid(),
+            exit_code=0,
+            run_state=RunState.CANCELLED,
+        )
+        second = self.manager.complete_current_process(
+            record.resource_id,
+            expected_pid=os.getpid(),
+            exit_code=0,
+            run_state=RunState.CANCELLED,
+        )
+        self.assertFalse(first.active)
+        self.assertEqual(first, second)
+        self.assertEqual(second.run_state, RunState.CANCELLED.value)
+
+    def test_separate_process_registrations_do_not_lose_ledger_records(self) -> None:
+        ledger = self.root / "process-state" / "ledger.json"
+        code = (
+            "from pathlib import Path; import sys; "
+            "from runtime.resource_lifecycle import ResourceManager; "
+            "root=Path(sys.argv[1]); target=root/sys.argv[2]; target.mkdir(parents=True); "
+            "record=ResourceManager(root/'process-state'/'ledger.json').register_path("
+            "target,allowed_cleanup_root=root,project_id='project',run_id=sys.argv[2],"
+            "lane_id='parallel-process',creator='test'); print(record.resource_id)"
+        )
+        environment = dict(os.environ)
+        environment["PYTHONDONTWRITEBYTECODE"] = "1"
+        processes = [
+            subprocess.Popen(
+                [sys.executable, "-c", code, str(self.root), f"owned-{index}"],
+                cwd=Path(__file__).parents[1],
+                env=environment,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+            for index in range(8)
+        ]
+        resource_ids = set()
+        for process in processes:
+            stdout, stderr = process.communicate(timeout=45)
+            self.assertEqual(process.returncode, 0, stderr)
+            resource_ids.add(stdout.strip())
+        stored = {
+            record.resource_id for record in ResourceManager(ledger).ledger.load()
+        }
+        self.assertEqual(stored, resource_ids)
+
+    def test_normal_completion_reclaims_owned_workspace_and_receipts_are_exact(
+        self,
+    ) -> None:
         record = self._workspace()
         target = Path(record.path or "")
         (target / "data.bin").write_bytes(b"12345")
@@ -133,7 +214,9 @@ class ResourceLifecycleTests(unittest.TestCase):
                 classification=classification,
             )
             self.manager.mark_run_ended(record.run_id, RunState.COMPLETED)
-            receipt = self.manager.reclaim(record.resource_id, reason="test", apply=True)
+            receipt = self.manager.reclaim(
+                record.resource_id, reason="test", apply=True
+            )
             self.assertEqual(receipt.resources_reclaimed, 0)
             self.assertTrue(path.exists())
 
@@ -152,7 +235,9 @@ class ResourceLifecycleTests(unittest.TestCase):
         self.manager.mark_run_ended(record.run_id, RunState.COMPLETED)
         self.manager.approve_quarantine_reclamation(record.resource_id)
         self.manager.update(record.resource_id, status=ResourceStatus.RECLAIMABLE.value)
-        receipt = self.manager.reclaim(record.resource_id, reason="approved", apply=True)
+        receipt = self.manager.reclaim(
+            record.resource_id, reason="approved", apply=True
+        )
         self.assertEqual(receipt.resources_reclaimed, 1)
         self.assertFalse(path.exists())
 
@@ -188,7 +273,9 @@ class ResourceLifecycleTests(unittest.TestCase):
         self.manager.promote_outputs(record.resource_id, [evidence], validated=True)
         self.manager.mark_run_ended("child-run", RunState.COMPLETED)
         self.manager.update(child.resource_id, status=ResourceStatus.RECLAIMED.value)
-        receipt = self.manager.reclaim(record.resource_id, reason="resolved", apply=True)
+        receipt = self.manager.reclaim(
+            record.resource_id, reason="resolved", apply=True
+        )
         self.assertEqual(receipt.resources_reclaimed, 1)
         self.assertTrue(evidence.is_file())
 
@@ -240,14 +327,68 @@ class ResourceLifecycleTests(unittest.TestCase):
     def test_cleanup_failure_is_ledgered_and_reconciliation_fails(self) -> None:
         record = self._workspace("failure-run")
         self.manager.mark_run_ended("failure-run", RunState.COMPLETED)
-        with mock.patch("runtime.resource_lifecycle.shutil.rmtree", side_effect=OSError("busy")):
-            receipt = self.manager.reclaim(record.resource_id, reason="test", apply=True)
+        with mock.patch(
+            "runtime.resource_lifecycle.shutil.rmtree", side_effect=OSError("busy")
+        ):
+            receipt = self.manager.reclaim(
+                record.resource_id, reason="test", apply=True
+            )
         self.assertEqual(receipt.resources_failed, 1)
         self.assertEqual(
             self.manager.ledger.get(record.resource_id).status,
             ResourceStatus.CLEANUP_FAILED.value,
         )
         self.assertFalse(self.manager.reconcile(apply=False)["valid"])
+
+    def test_cleanup_retries_a_transient_owned_directory_lock(self) -> None:
+        record = self._workspace("retry-run")
+        target = Path(record.path or "")
+        (target / "retained.txt").write_text("retry", encoding="utf-8")
+        self.manager.mark_run_ended("retry-run", RunState.COMPLETED)
+        real_rmtree = shutil.rmtree
+        attempts = 0
+
+        def transient_rmtree(path: object, *args: object, **kwargs: object) -> None:
+            nonlocal attempts
+            attempts += 1
+            if attempts == 1:
+                raise PermissionError("transient scanner lock")
+            real_rmtree(path, *args, **kwargs)
+
+        with mock.patch(
+            "runtime.resource_lifecycle.shutil.rmtree", side_effect=transient_rmtree
+        ):
+            receipt = self.manager.reclaim(
+                record.resource_id, reason="test", apply=True
+            )
+        self.assertEqual(attempts, 2)
+        self.assertEqual(receipt.resources_reclaimed, 1)
+        self.assertFalse(target.exists())
+
+    def test_persisted_process_proven_absent_is_closed_with_receipt(self) -> None:
+        record, process = self.manager.spawn_owned_process(
+            [sys.executable, "-c", "pass"],
+            cwd=self.root,
+            project_id="project",
+            run_id="persisted-dead",
+            lane_id="tests",
+            creator="test",
+        )
+        process.communicate(timeout=10)
+        restarted = ResourceManager(
+            self.root / "state" / "ledger.json", receipt_dir=self.root / "receipts"
+        )
+
+        result = restarted.reconcile(apply=True)
+
+        self.assertTrue(result["valid"])
+        self.assertTrue(result["resource_ledger_reconciled"])
+        self.assertEqual(len(result["receipts"]), 1)
+        self.assertEqual(result["receipts"][0]["resources_reclaimed"], 1)
+        closed = restarted.ledger.get(record.resource_id)
+        self.assertFalse(closed.active)
+        self.assertEqual(closed.run_state, RunState.ABANDONED.value)
+        self.assertEqual(closed.status, ResourceStatus.RECLAIMED.value)
 
     def test_storage_pressure_alerts_without_deleting_anything(self) -> None:
         record = self._workspace("budget-run")

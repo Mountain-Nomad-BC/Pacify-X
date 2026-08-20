@@ -1,0 +1,12 @@
+{
+  "active_gap_id": "PX-OS-934",
+  "learned": "The one-second blind memo is replaced by a per-refresh bounded metadata/tree stamp over the exact watched roots. Unchanged stamps reuse the content fingerprint; changed stamps immediately recompute it. Explicit invalidation clears both values and diagnostics separate watch scans, complete scans, and guarded reuse.",
+  "next_action": "Run syntax validation and only extension/tests/px-bridge-cache.test.js.",
+  "unresolved_branch_gap_ids": ["PX-OS-934"],
+  "evidence": [
+    {
+      "claim": "Bounded watch-stamp implementation and same-logical-time cache regression coverage are present.",
+      "reference": "extension/src/pxBridge.js; extension/tests/px-bridge-cache.test.js"
+    }
+  ]
+}

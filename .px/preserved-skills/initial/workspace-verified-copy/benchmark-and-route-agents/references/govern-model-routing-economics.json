@@ -1,0 +1,55 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "cost cannot override safety or required quality",
+    "routing confidence must be observable",
+    "no vendor lock-in in the canonical policy"
+  ],
+  "bundle": "benchmark-and-route-agents",
+  "category": "model-routing",
+  "dependencies": [
+    "reasoning-utility-controller",
+    "evaluation-budget-allocator",
+    "benchmark-agent-regressions"
+  ],
+  "id": "govern-model-routing-economics",
+  "keywords": [
+    "model route",
+    "cost aware llm",
+    "budget tracking",
+    "fallback model",
+    "prompt caching"
+  ],
+  "mechanisms": [
+    "task complexity bands",
+    "budget envelope",
+    "fallback ladder",
+    "retry economics",
+    "prompt caching",
+    "cost per successful task"
+  ],
+  "owner": "reasoning-utility-controller",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "skills/cost-aware-llm-pipeline/SKILL.md",
+      "commands/model-route.md",
+      "skills/agentic-engineering/SKILL.md"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "skills/cost-aware-llm-pipeline/SKILL.md",
+    "commands/model-route.md",
+    "skills/agentic-engineering/SKILL.md"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Select models by task complexity, required reliability, privacy, latency, and budget using measured evidence, bounded retries, and prompt-cache awareness.",
+  "title": "Govern Model Routing Economics",
+  "use_when": [
+    "not every task requires the largest model",
+    "routing must balance cost and success probability",
+    "fallbacks currently retry blindly"
+  ]
+}

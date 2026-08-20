@@ -1,0 +1,585 @@
+{
+  "id": "ms-azuretools.vscode-cosmosdb",
+  "name": "Azure Cosmos DB",
+  "version": "0.36.0",
+  "publisher": "ms-azuretools",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "chatSkills",
+    "commands",
+    "configuration",
+    "grammars",
+    "keybindings",
+    "languageModelTools",
+    "languages",
+    "mcpServerDefinitionProviders",
+    "menus",
+    "submenus",
+    "x-azResources"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:chatSkills",
+      "kind": "chatSkills",
+      "provider": "ms-azuretools.vscode-cosmosdb",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-azuretools.vscode-cosmosdb",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-azuretools.vscode-cosmosdb",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:grammars",
+      "kind": "grammars",
+      "provider": "ms-azuretools.vscode-cosmosdb",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "ms-azuretools.vscode-cosmosdb",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languageModelTools",
+      "kind": "languageModelTools",
+      "provider": "ms-azuretools.vscode-cosmosdb",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languages",
+      "kind": "languages",
+      "provider": "ms-azuretools.vscode-cosmosdb",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:mcpServerDefinitionProviders",
+      "kind": "mcpServerDefinitionProviders",
+      "provider": "ms-azuretools.vscode-cosmosdb",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-azuretools.vscode-cosmosdb",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "ms-azuretools.vscode-cosmosdb",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:x-azResources",
+      "kind": "x-azResources",
+      "provider": "ms-azuretools.vscode-cosmosdb",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "azureDatabases.createServer",
+      "invocation": "vscode.commands.executeCommand('azureDatabases.createServer', ...args)",
+      "title": "Create Azure Cosmos DB…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureDatabases.filterTreeItems",
+      "invocation": "vscode.commands.executeCommand('azureDatabases.filterTreeItems', ...args)",
+      "title": "Filter…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureDatabases.refresh",
+      "invocation": "vscode.commands.executeCommand('azureDatabases.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureDatabases.reportIssue",
+      "invocation": "vscode.commands.executeCommand('azureDatabases.reportIssue', ...args)",
+      "title": "Report Issue…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureDatabases.sortTreeItems",
+      "invocation": "vscode.commands.executeCommand('azureDatabases.sortTreeItems', ...args)",
+      "title": "Sort…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureDatabases.update",
+      "invocation": "vscode.commands.executeCommand('azureDatabases.update', ...args)",
+      "title": "Update to Cloud",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.copyConnectionString",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.copyConnectionString', ...args)",
+      "title": "Copy Connection String",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.createContainer",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.createContainer', ...args)",
+      "title": "Create Container…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.createDatabase",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.createDatabase', ...args)",
+      "title": "Create Database…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.createDocument",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.createDocument', ...args)",
+      "title": "Create Item…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.createStoredProcedure",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.createStoredProcedure', ...args)",
+      "title": "Create Stored Procedure…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.createTrigger",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.createTrigger', ...args)",
+      "title": "Create Trigger…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.deleteAccount",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.deleteAccount', ...args)",
+      "title": "Delete Account…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.deleteAllSavedSchemas",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.deleteAllSavedSchemas', ...args)",
+      "title": "Delete All Saved Schemas",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.deleteContainer",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.deleteContainer', ...args)",
+      "title": "Delete Container…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.deleteDatabase",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.deleteDatabase', ...args)",
+      "title": "Delete Database…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.deleteDocument",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.deleteDocument', ...args)",
+      "title": "Delete Item…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.deleteStoredProcedure",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.deleteStoredProcedure', ...args)",
+      "title": "Delete Stored Procedure…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.deleteTrigger",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.deleteTrigger', ...args)",
+      "title": "Delete Trigger…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.e2e.attachEmulator",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.e2e.attachEmulator', ...args)",
+      "title": "[E2E Test] Attach Emulator to Workspace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.e2e.openDocument",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.e2e.openDocument', ...args)",
+      "title": "[E2E Test] Open Document",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.e2e.openMigration",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.e2e.openMigration', ...args)",
+      "title": "[E2E Test] Open Seeded Migration Assistant",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.e2e.openMigrationFresh",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.e2e.openMigrationFresh', ...args)",
+      "title": "[E2E Test] Open Empty Migration Assistant",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.e2e.openQueryEditor",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.e2e.openQueryEditor', ...args)",
+      "title": "[E2E Test] Open Query Editor",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.e2e.setAIFeaturesEnabled",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.e2e.setAIFeaturesEnabled', ...args)",
+      "title": "[E2E Test] Enable AI Features",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.e2e.setSurveyCandidate",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.e2e.setSurveyCandidate', ...args)",
+      "title": "[E2E Test] Set Survey Candidate",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.executeStoredProcedure",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.executeStoredProcedure', ...args)",
+      "title": "Execute Stored Procedure…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.importDocument",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.importDocument', ...args)",
+      "title": "Import Document into a Container…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.launchCosmosDBShell",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.launchCosmosDBShell', ...args)",
+      "title": "Launch Azure Cosmos DB Shell",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.migration.open",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.migration.open', ...args)",
+      "title": "New Migration…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.migration.openExisting",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.migration.openExisting', ...args)",
+      "title": "Cosmos DB Migration…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.migration.remove",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.migration.remove', ...args)",
+      "title": "Remove Migration…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.newConnection",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.newConnection', ...args)",
+      "title": "New Connection…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.newEmulatorConnection",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.newEmulatorConnection', ...args)",
+      "title": "New Emulator Connection…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.openDocument",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.openDocument', ...args)",
+      "title": "Open Item",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.openNoSqlQueryEditor",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.openNoSqlQueryEditor', ...args)",
+      "title": "Open Query Editor",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.openStoredProcedure",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.openStoredProcedure', ...args)",
+      "title": "Open Stored Procedure",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.openTrigger",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.openTrigger', ...args)",
+      "title": "Open Trigger",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.openUnsupportedAccount",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.openUnsupportedAccount', ...args)",
+      "title": "Open Unsupported Account",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.quickStart.reset",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.quickStart.reset', ...args)",
+      "title": "Reset Quick Start Tips (Internal)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.removeConnection",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.removeConnection', ...args)",
+      "title": "Remove Connection…",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.viewContainerOffer",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.viewContainerOffer', ...args)",
+      "title": "View Container Offer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cosmosDB.viewDatabaseOffer",
+      "invocation": "vscode.commands.executeCommand('cosmosDB.viewDatabaseOffer', ...args)",
+      "title": "View Database Offer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "ms-azuretools.vscode-azureresourcegroups"
+  ],
+  "activation_events": [
+    "onFileSystem:azureDatabases",
+    "onLanguage:nosql",
+    "onLanguageModelTool:cosmosdb_applyQueryToEditor",
+    "onLanguageModelTool:cosmosdb_executeCurrentQuery",
+    "onLanguageModelTool:cosmosdb_focusQueryEditor",
+    "onLanguageModelTool:cosmosdb_getQueryEditorContext",
+    "onLanguageModelTool:cosmosdb_listOpenConnections",
+    "onLanguageModelTool:cosmosdb_openQueryEditor",
+    "onLanguageModelTool:cosmosdb_sampleContainerSchema",
+    "onUri",
+    "onView:azureResourceGroups",
+    "onView:azureWorkspace",
+    "onView:vscode-fabric.view.workspace",
+    "workspaceContains:.cosmosdb-migration"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-azuretools.vscode-cosmosdb",
+    "capabilities": [
+      "contribution:chatSkills",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:grammars",
+      "contribution:keybindings",
+      "contribution:languageModelTools",
+      "contribution:languages",
+      "contribution:mcpServerDefinitionProviders",
+      "contribution:menus",
+      "contribution:submenus",
+      "contribution:x-azResources"
+    ],
+    "interface": [
+      "azureDatabases.createServer",
+      "azureDatabases.filterTreeItems",
+      "azureDatabases.refresh",
+      "azureDatabases.reportIssue",
+      "azureDatabases.sortTreeItems",
+      "azureDatabases.update",
+      "cosmosDB.copyConnectionString",
+      "cosmosDB.createContainer",
+      "cosmosDB.createDatabase",
+      "cosmosDB.createDocument",
+      "cosmosDB.createStoredProcedure",
+      "cosmosDB.createTrigger",
+      "cosmosDB.deleteAccount",
+      "cosmosDB.deleteAllSavedSchemas",
+      "cosmosDB.deleteContainer",
+      "cosmosDB.deleteDatabase",
+      "cosmosDB.deleteDocument",
+      "cosmosDB.deleteStoredProcedure",
+      "cosmosDB.deleteTrigger",
+      "cosmosDB.e2e.attachEmulator",
+      "cosmosDB.e2e.openDocument",
+      "cosmosDB.e2e.openMigration",
+      "cosmosDB.e2e.openMigrationFresh",
+      "cosmosDB.e2e.openQueryEditor",
+      "cosmosDB.e2e.setAIFeaturesEnabled",
+      "cosmosDB.e2e.setSurveyCandidate",
+      "cosmosDB.executeStoredProcedure",
+      "cosmosDB.importDocument",
+      "cosmosDB.launchCosmosDBShell",
+      "cosmosDB.migration.open",
+      "cosmosDB.migration.openExisting",
+      "cosmosDB.migration.remove",
+      "cosmosDB.newConnection",
+      "cosmosDB.newEmulatorConnection",
+      "cosmosDB.openDocument",
+      "cosmosDB.openNoSqlQueryEditor",
+      "cosmosDB.openStoredProcedure",
+      "cosmosDB.openTrigger",
+      "cosmosDB.openUnsupportedAccount",
+      "cosmosDB.quickStart.reset",
+      "cosmosDB.removeConnection",
+      "cosmosDB.viewContainerOffer",
+      "cosmosDB.viewDatabaseOffer"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

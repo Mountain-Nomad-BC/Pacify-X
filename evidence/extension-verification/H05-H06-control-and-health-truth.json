@@ -1,0 +1,19 @@
+{
+  "schema_version": "px.external-extension-verification/1.0",
+  "card_ids": ["H05", "H06"],
+  "extension_root": "portable-sources/Pacify-X_Extension",
+  "verified_at": "2026-08-11T21:45:00Z",
+  "artifacts": {
+    "resources/ui/action-inventory.json": "6f949655b6dd2babde13be880f2a94864535cd7080181a726790e15bcd05ccea",
+    "resources/ui/health-state-contract.json": "0996918ce133ea9b67ae711659dcb4ea18973e88248107dfbaf389229e79cd5b",
+    "src/uiActionInventory.js": "8a2217ba97b6a6dccf93e5d0d08ae78ed4e7f6ea8572ee3628c8a800f0f96433",
+    "src/healthState.js": "30d39c828055a057302e35bb41f42c24f055ec128e3a878a03512dc00fd90846",
+    "tests/ui-action-inventory.test.js": "9e6b7d7643b35c944d1292d585e63abab3549d18136f99e877b860924543fa69"
+  },
+  "verification": [
+    "21 focused source, contract, and browser-model tests passed independently.",
+    "The generated inventory covers all 75 literal data-action controls plus generic data-surface navigation.",
+    "Configured, detected, connected, authoritative, and ready are independently evidenced and monotonic."
+  ],
+  "limitation": "Static completeness covers rendered literal actions and navigation; actual host-dialog behavior remains exercised by the high-risk installed/browser paths rather than every native dialog."
+}

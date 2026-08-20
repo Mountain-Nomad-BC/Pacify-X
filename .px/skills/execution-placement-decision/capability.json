@@ -1,0 +1,34 @@
+{
+  "admission_record": "execution-placement-decision",
+  "body_sha256": "db11b84c5df0a5ae8bd306a80efdbc4e450793c9c27ce5a80791ed01db4908e6",
+  "contract": {
+    "available": true,
+    "sha256": "79e68dd62ec2403fcac0505ab7a025931d454977922aaf0068478f24748df3b1",
+    "source": ".px/skills/execution-placement-decision/contracts/manifest.json"
+  },
+  "description": "Decide whether a bounded workload should keep its current language/runtime, deployment/platform, or database/storage placement using baselines, total boundary cost, rollback, benchmarks, and promotion evidence.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "execution-placement-decision",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "user-supplied-addon-adapted",
+  "provenance": {
+    "adapted": true,
+    "source": "intake://PX_EXECUTION_PLACEMENT_DECISION_SKILL_ADDON",
+    "source_package_sha256": "803152bcbb81b0570b3114ff54465c218c5569acaafb0895a48f23e3bbf4adca"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": ["a-b", "baseline", "database", "deployment", "placement", "promotion", "rollback", "runtime"],
+  "version": "1.0.0"
+}

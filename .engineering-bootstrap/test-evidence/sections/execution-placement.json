@@ -1,0 +1,26 @@
+{
+  "chunks": [],
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_execution_placement.py",
+    "tests/test_native_skills.py",
+    "tests/test_skill_packaging_projection.py"
+  ],
+  "cwd": ".",
+  "dependencies": [
+    "learning-promotion"
+  ],
+  "duration_seconds": 40.527783,
+  "exit_code": 0,
+  "input_sha256": "e3ceebe18e12bf19c9838bf83f3d33c34ef5529eec53619644ccc02432ab2863",
+  "passed": true,
+  "receipt_sha256": "4164dd74655d924988238619adcdec17fbba00f8b924712a2c8c4e8a07ec5d9f",
+  "schema_version": "px.test-section-receipt/1.0",
+  "section": "execution-placement",
+  "timed_out": false
+}

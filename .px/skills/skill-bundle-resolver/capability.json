@@ -1,0 +1,38 @@
+{
+  "admission_record": "skill-bundle-resolver",
+  "body_sha256": "f713ba80888d80b6db7a81468b0a0c34893f0629b7842a28cf8953691d6193aa",
+  "contract": {
+    "available": true,
+    "sha256": "cb7979d0b62f09f98f93330f0a2e2014372a800e500f7983cf2718e9ebfd7fa8",
+    "source": "registry/skill_packages/skill-bundle-resolver.json"
+  },
+  "description": "Select a compatible set of skills and tools that jointly satisfies all required outcomes. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "skill-bundle-resolver",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/skill-bundle-resolver"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "bundle",
+    "orchestration",
+    "resolver",
+    "skill"
+  ],
+  "version": "0.1.0"
+}

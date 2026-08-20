@@ -1,0 +1,38 @@
+{
+  "admission_record": "govern-operating-kernel",
+  "body_sha256": "ad1bf0a4f9807a40e43a6226a2aff663fc04987418805d37815f1904b70a7eb6",
+  "contract": {
+    "available": true,
+    "sha256": "90a168d37e7c00216e36a27cbd4f6bb559c254301ff92af520e31b9ecda914f3",
+    "source": "registry/skill_packages/govern-operating-kernel.json"
+  },
+  "description": "Govern capability routing, typed execution, permissions, assumptions, claims, durable state, recovery, learning promotion, and independent verification. Use when a task needs explicit authority, evidence, failure handling, or resumable control-plane state.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-operating-kernel",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-operating-kernel"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "govern",
+    "operating",
+    "kernel",
+    "declared-suite"
+  ],
+  "version": "0.1.0"
+}

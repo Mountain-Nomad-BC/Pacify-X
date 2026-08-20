@@ -1,0 +1,39 @@
+{
+  "admission_record": "dual-axis-code-review",
+  "body_sha256": "b7c507bcf4008e3d1a4d3991d952a4d79ed095fc1e4474cc66e9491d936248c8",
+  "contract": {
+    "available": true,
+    "sha256": "4ce9962a315d52adb104f55eb90ba4d24f863958933d08070b5f9ddf940e1754",
+    "source": "registry/skill_packages/dual-axis-code-review.json"
+  },
+  "description": "Review changes independently for repository standards and specification fidelity, then reconcile findings.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "dual-axis-code-review",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/dual-axis-code-review"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "axis",
+    "code",
+    "dual",
+    "engineering-reasoning",
+    "review"
+  ],
+  "version": "1.0.0"
+}

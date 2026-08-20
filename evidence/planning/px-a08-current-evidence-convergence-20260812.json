@@ -1,0 +1,36 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "A08",
+  "status": "accepted",
+  "recorded_at": "2026-08-12T08:02:00Z",
+  "claim": "Current evidence, project state, route coverage, generated maps, package claims, and validation converge on one current product tree without granting PX host execution authority.",
+  "authority_boundary": {
+    "px": "governance, admitted scope, policy, contracts, validation requirements, and evidence inside PX-controlled scope",
+    "codex_host": "native execution, tool, approval, and security authority",
+    "nested_codex_execution": false
+  },
+  "product_digest": "05dbc8130b0d79c0c386c28cddfdd95177bd833769383f6203f8fba2fec5494e",
+  "harness_digest": "d29429e3802a949e383a773de8803b7592275785354e05fa178af15f67b5a4a0",
+  "artifacts": [
+    {"path": "pyproject.toml", "sha256": "f3816a4d88cfd3ce08ee9b6967b7a50e71246844545c511ee698598d2e032014"},
+    {"path": "policies/operation-authority-boundary.json", "sha256": "3da879187a9b53795db42c059b82700522905a85451429d77a3bbde2de499389"},
+    {"path": "registry/operation_route_registry.json", "sha256": "4fde6be2ebba2143a55beefd7eb401148aad68df5ebe2e8439fdca90388beea1"},
+    {"path": "registry/build_claims.json", "sha256": "8f2a80f5359a7defd73732ced242877d8fccbc1e61f2a37d43bcc79bd241dba8"},
+    {"path": ".px/skill-index.json", "sha256": "208957827567266b95140240923b3fda45205319ee8c5c99471910ddd8a3914a"},
+    {"path": ".engineering-bootstrap/project-management/state.json", "sha256": "2de1e3c3626dfaed524f4e12b64dae5fbd1703532ba6916ae9c8842f5c149a82"},
+    {"path": "PROJECT_MANAGEMENT.md", "sha256": "b9b4ae64f3cc6e6e7716e84c86018c46bb8fbcdaa2b471dc7b3f498f84e15f04"}
+  ],
+  "verification": [
+    {"command": "python -m unittest discover -s tests -v", "result": "495 tests passed in 663.015 seconds"},
+    {"command": "python -m runtime.cli validate", "result": "valid=true; active_count=6; errors=[]"},
+    {"command": "python -m runtime.cli visibility coverage --health evidence/operation-health/current.json", "result": "certifiable=true; blockers=[]"},
+    {"command": "python scripts/reconcile_punch_card_evidence.py --apply", "result": "valid=true; errors=[]"}
+  ],
+  "open_scope": [
+    "sidebar and webview completion",
+    "renderer and CSS migration completion",
+    "governed destructive maintenance",
+    "accelerator routing",
+    "exact VSIX and cross-platform release certification"
+  ]
+}

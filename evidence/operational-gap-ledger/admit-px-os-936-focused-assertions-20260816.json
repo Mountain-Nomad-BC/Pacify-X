@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-936",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004985",
+  "effect": "write",
+  "scope": ["extension/tests/extension-contract.test.js", "extension/tests/ui-scaffold.test.js"],
+  "authority": "The registered source/browser contract-drift gap authorizes correction of exactly three stale assertions.",
+  "expected_effect": "Focused checks assert the current plugin lifecycle label, complete persisted graph state, advanced-open default, and inspectable metric metadata without weakening behavior.",
+  "rollback": "Assertion-only changes; revert explicitly if the corresponding product contract changes.",
+  "evidence": [{"claim": "Immediate stale-assertion checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004985"}]
+}

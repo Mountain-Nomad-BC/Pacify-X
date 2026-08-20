@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0",
+  "catalog_id": "px-ms-enterprise",
+  "authority": "Pacify-X",
+  "separation": {
+    "policy": "Enterprise metadata, targets, identities, adapters, receipts, and lifecycle state are separate from local project/session/state/system memory and from provider billing identity.",
+    "id_prefix": "ms-enterprise/",
+    "state_schema": "px.ms-enterprise.state/1.0",
+    "state_root": ".engineering-bootstrap/enterprise",
+    "credential_storage": "external-secret-store-only",
+    "canonical_memory_import": "explicit-reviewed-promotion-only"
+  },
+  "defaults": {
+    "connectors_enabled": false,
+    "network_egress": "deny",
+    "mutation": "deny",
+    "billable_services": "disabled",
+    "credential_reads_on_load": false,
+    "offline_startup_required": true
+  },
+  "packs": [
+    {"id":"ms-enterprise/governance","name":"Enterprise Governance Boundary","priority":"P0","status":"offline-ready","default_enabled":true,"capabilities":["tenant-separation","provider-separation","egress-policy","cost-policy","receipts"]},
+    {"id":"ms-enterprise/skill-fabric","name":"Microsoft Skill Fabric","priority":"P0","status":"metadata-ready","default_enabled":false,"capabilities":["progressive-disclosure","provenance","tool-admission","license-boundaries"]},
+    {"id":"ms-enterprise/azure-foundry","name":"Azure + Microsoft Foundry","priority":"P0","status":"metadata-ready","default_enabled":false,"capabilities":["azure-knowledge","foundry-readiness","azure-mcp","cost-guard"]},
+    {"id":"ms-enterprise/power-platform","name":"Power Platform + Copilot Studio","priority":"P0","status":"metadata-ready","default_enabled":false,"capabilities":["canvas-apps","code-apps","model-apps","mobile-apps","power-automate","power-pages","dataverse","copilot-studio"]},
+    {"id":"ms-enterprise/agent-fabric","name":"Microsoft Agent Fabric Compatibility","priority":"P0","status":"metadata-ready","default_enabled":false,"capabilities":["maf","agent-skills","mcp","a2a","telemetry","user-approval","tool-filtering"]},
+    {"id":"ms-enterprise/durable-orchestration","name":"Durable Orchestration","priority":"P0","status":"contract-ready","default_enabled":false,"capabilities":["checkpoint","replay","ttl","idempotency","compensation","side-effect-receipts"]},
+    {"id":"ms-enterprise/m365-channels","name":"Microsoft 365 Channels","priority":"P1","status":"metadata-ready","default_enabled":false,"capabilities":["m365-agents","teams","graph","oauth","proactive-activity","per-user-isolation"]},
+    {"id":"ms-enterprise/dynamics-omnichannel","name":"Dynamics Omnichannel","priority":"P1","status":"metadata-ready","default_enabled":false,"capabilities":["chat","streaming","ingress-scan","egress-filter","handoff"]},
+    {"id":"ms-enterprise/business-apps","name":"Business Central + Business Apps","priority":"P2","status":"targeted-knowledge","default_enabled":false,"capabilities":["business-central","al","bc-mcp","copilot-patterns"]},
+    {"id":"ms-enterprise/local-inference","name":"ONNX Local Inference","priority":"P0","status":"adapter-not-installed","default_enabled":false,"capabilities":["onnx-genai","constrained-decoding","model-packages","hardware-readiness"]},
+    {"id":"ms-enterprise/security-build","name":"Enterprise Security + Build Evidence","priority":"P0","status":"contract-ready","default_enabled":false,"capabilities":["devskim","content-hash-cache","sandbox-evidence","prompt-injection-defense","high-isolation-target"]},
+    {"id":"ms-enterprise/certification","name":"Enterprise Certification Harness","priority":"P0","status":"contract-ready","default_enabled":false,"capabilities":["workload-profiles","competency-evals","environment-fingerprint","reproducibility"]},
+    {"id":"ms-enterprise/debug-diagnostics","name":"Debugger + Terminal Diagnostics","priority":"P1","status":"adapter-not-installed","default_enabled":false,"capabilities":["dap","debugger-state","tui-evidence"]},
+    {"id":"ms-enterprise/ui-accessibility","name":"Enterprise UI Accessibility","priority":"P1","status":"offline-ready","default_enabled":true,"capabilities":["keyboard","focus","contrast","aria","reduced-motion"]},
+    {"id":"ms-enterprise/structured-memory","name":"Structured + Tacit Memory","priority":"P0","status":"merged-into-px-memory","default_enabled":true,"capabilities":["entities","relations","tacit-invariants","conflict-state","experiment-lineage"]},
+    {"id":"ms-enterprise/retrieval","name":"Enterprise Retrieval Backends","priority":"P1","status":"deterministic-fallback","default_enabled":false,"capabilities":["exact-first","structured","graph","optional-vector-candidates"]},
+    {"id":"ms-enterprise/distributed-ml","name":"SynapseML + Fabric","priority":"P2","status":"optional-knowledge","default_enabled":false,"capabilities":["spark","fabric","anomaly","responsible-ai"]},
+    {"id":"ms-enterprise/quantum-chemistry","name":"QDK Chemistry","priority":"P2","status":"optional-knowledge","default_enabled":false,"capabilities":["quantum-chemistry","hybrid-workflows","encoding-validation"]}
+  ],
+  "skills": [
+    {"id":"ms-enterprise/skill/govern-boundary","name":"Govern Microsoft Enterprise Boundary","status":"active-offline","pack":"ms-enterprise/governance","summary":"Keep tenant, auth, billing, egress, mutation, evidence, and canonical memory authority explicit and separate.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/readiness-doctor","name":"Enterprise Readiness Doctor","status":"active-offline","pack":"ms-enterprise/governance","summary":"Evaluate target, auth namespace, egress, mutation, cost, dependency, and disable/uninstall readiness without connecting.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/import-skill-envelope","name":"Import Microsoft Skill Envelope","status":"contract-ready","pack":"ms-enterprise/skill-fabric","summary":"Validate provenance, license, progressive loading, allowed tools, paths, egress, mutation, and evaluation metadata.","effects":["read_local","write_workspace"]},
+    {"id":"ms-enterprise/skill/azure-foundry-plan","name":"Plan Azure + Foundry Work","status":"knowledge-only","pack":"ms-enterprise/azure-foundry","summary":"Build an offline plan with product freshness, resource scope, cost ceiling, and explicit connector readiness.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/power-platform-alm","name":"Govern Power Platform ALM","status":"knowledge-only","pack":"ms-enterprise/power-platform","summary":"Cover environment routing, solutions, pipelines, DLP, Dataverse, Power Automate, mobile/offline profiles, and mutation gates.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/agent-interop","name":"Assess MAF MCP A2A Interop","status":"contract-ready","pack":"ms-enterprise/agent-fabric","summary":"Check agent identity, session isolation, approvals, tool filtering, telemetry, structured output, and protocol boundaries.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/durable-replay","name":"Certify Durable Replay","status":"contract-ready","pack":"ms-enterprise/durable-orchestration","summary":"Require checkpoint hashes, idempotency keys, replay generations, mutation receipts, and compensation.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/m365-channel-boundary","name":"Govern M365 Channel Boundary","status":"knowledge-only","pack":"ms-enterprise/m365-channels","summary":"Separate channel state from canonical memory and require per-user session, Graph/OAuth, and proactive activity scopes.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/dynamics-handoff","name":"Design Dynamics Handoff","status":"knowledge-only","pack":"ms-enterprise/dynamics-omnichannel","summary":"Plan supported chat, streaming, ingress scanning, egress filtering, telemetry, and human handoff boundaries.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/business-central-slice","name":"Select Business Central Knowledge Slice","status":"knowledge-only","pack":"ms-enterprise/business-apps","summary":"Select a bounded AL/MCP/Copilot domain slice instead of ingesting the complete application corpus.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/onnx-readiness","name":"Check ONNX Local Readiness","status":"adapter-not-installed","pack":"ms-enterprise/local-inference","summary":"Validate runtime version, model hashes, hardware limits, constrained decoding, and tool-call admission.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/devskim-sensor","name":"Normalize DevSkim Findings","status":"adapter-not-installed","pack":"ms-enterprise/security-build","summary":"Map deterministic security findings into Pacify-X evidence without replacing existing security authority.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/workload-certification","name":"Run Enterprise Workload Certification","status":"contract-ready","pack":"ms-enterprise/certification","summary":"Bind profiles, dependencies, metrics, thresholds, environment fingerprints, and reproducibility receipts.","effects":["read_local","write_workspace"]},
+    {"id":"ms-enterprise/skill/debug-evidence","name":"Collect Scoped Debug Evidence","status":"adapter-not-installed","pack":"ms-enterprise/debug-diagnostics","summary":"Collect DAP or TUI state under admitted project/process scopes.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/accessibility-gate","name":"Certify Enterprise Accessibility","status":"active-offline","pack":"ms-enterprise/ui-accessibility","summary":"Verify keyboard, focus containment, contrast, ARIA, screen-reader semantics, and reduced motion.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/session-isolation","name":"Certify Per-User Session Isolation","status":"contract-ready","pack":"ms-enterprise/agent-fabric","summary":"Keep hosted user, tenant, session, thread serialization, and chat-history storage identities disjoint.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/finops-guard","name":"Enforce Enterprise Cost Guard","status":"active-offline","pack":"ms-enterprise/governance","summary":"Require provider billing namespace, budget ceiling, rate controls, and no implicit billable fallback.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/maturity-versioning","name":"Assess Agent Maturity + Versioning","status":"knowledge-only","pack":"ms-enterprise/certification","summary":"Classify behavior compatibility, maturity, version strategy, rollout, and rollback evidence.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/message-mode","name":"Select Agent Message Mode","status":"knowledge-only","pack":"ms-enterprise/agent-fabric","summary":"Choose request-based or message-driven interaction from ordering, durability, fan-out, and failure semantics.","effects":["read_local"]},
+    {"id":"ms-enterprise/skill/prompt-injection-defense","name":"Check Hosted Prompt Injection Boundary","status":"contract-ready","pack":"ms-enterprise/security-build","summary":"Require source trust, filtering middleware, tool approval, output sanitation, and evidence before hosted execution.","effects":["read_local"]}
+  ],
+  "agents": [
+    {"id":"ms-enterprise/agent/governor","name":"Enterprise Boundary Governor","status":"offline-ready","pack":"ms-enterprise/governance","authority":"policy-advice-only"},
+    {"id":"ms-enterprise/agent/azure-foundry-steward","name":"Azure + Foundry Steward","status":"knowledge-only","pack":"ms-enterprise/azure-foundry","authority":"no-cloud-mutation"},
+    {"id":"ms-enterprise/agent/power-platform-steward","name":"Power Platform ALM Steward","status":"knowledge-only","pack":"ms-enterprise/power-platform","authority":"no-tenant-mutation"},
+    {"id":"ms-enterprise/agent/interop-architect","name":"MAF MCP A2A Interop Architect","status":"contract-ready","pack":"ms-enterprise/agent-fabric","authority":"design-only"},
+    {"id":"ms-enterprise/agent/durable-replay-checker","name":"Durable Replay Checker","status":"contract-ready","pack":"ms-enterprise/durable-orchestration","authority":"verification-only"},
+    {"id":"ms-enterprise/agent/m365-channel-steward","name":"M365 Channel Steward","status":"knowledge-only","pack":"ms-enterprise/m365-channels","authority":"no-channel-send"},
+    {"id":"ms-enterprise/agent/dynamics-handoff-steward","name":"Dynamics Handoff Steward","status":"knowledge-only","pack":"ms-enterprise/dynamics-omnichannel","authority":"no-channel-send"},
+    {"id":"ms-enterprise/agent/business-apps-curator","name":"Business Apps Curator","status":"knowledge-only","pack":"ms-enterprise/business-apps","authority":"bounded-knowledge-selection"},
+    {"id":"ms-enterprise/agent/security-certifier","name":"Enterprise Security Certifier","status":"offline-ready","pack":"ms-enterprise/security-build","authority":"independent-checker"},
+    {"id":"ms-enterprise/agent/workload-certifier","name":"Enterprise Workload Certifier","status":"contract-ready","pack":"ms-enterprise/certification","authority":"evidence-verification"},
+    {"id":"ms-enterprise/agent/session-isolation-auditor","name":"Session Isolation Auditor","status":"contract-ready","pack":"ms-enterprise/agent-fabric","authority":"independent-checker"},
+    {"id":"ms-enterprise/agent/accessibility-auditor","name":"Enterprise Accessibility Auditor","status":"offline-ready","pack":"ms-enterprise/ui-accessibility","authority":"independent-checker"}
+  ],
+  "workflows": [
+    {"id":"ms-enterprise/workflow/readiness","name":"Enterprise Readiness Gate","status":"active-offline","summary":"Inventory pack -> select explicit target -> check auth namespace -> cost/egress/mutation gates -> dependency doctor -> receipt."},
+    {"id":"ms-enterprise/workflow/skill-intake","name":"Microsoft Skill Intake","status":"contract-ready","summary":"Hash/license -> envelope -> path/tool admission -> lazy metadata -> evaluation -> candidate staging."},
+    {"id":"ms-enterprise/workflow/durable-change","name":"Durable Enterprise Change","status":"contract-ready","summary":"Typed plan -> human gate -> idempotency -> checkpoint -> mutation -> receipt -> verify/compensate."},
+    {"id":"ms-enterprise/workflow/power-platform-alm","name":"Power Platform ALM Gate","status":"knowledge-only","summary":"Environment -> DLP/auth -> solution/flow/app plan -> preview -> explicit tenant mutation -> verification."},
+    {"id":"ms-enterprise/workflow/channel-handoff","name":"Enterprise Channel Handoff","status":"knowledge-only","summary":"Identity -> session isolation -> ingress scan -> routing -> human handoff -> egress filter -> channel receipt."},
+    {"id":"ms-enterprise/workflow/workload-certification","name":"Enterprise Workload Certification","status":"contract-ready","summary":"Profile -> environment fingerprint -> dependencies -> bounded workload -> raw metrics -> threshold decision -> receipt."},
+    {"id":"ms-enterprise/workflow/maturity-release","name":"Agent Maturity Release Gate","status":"knowledge-only","summary":"Behavior version -> compatibility -> security/eval -> staged rollout -> observability -> rollback readiness."},
+    {"id":"ms-enterprise/workflow/disable-uninstall","name":"Enterprise Pack Disable + Uninstall","status":"active-offline","summary":"Stop adapter -> revoke local enablement -> retain evidence -> verify offline core -> preserve external data ownership."}
+  ],
+  "connectors": [
+    {"id":"ms-enterprise/connector/azure-mcp","name":"Azure MCP","status":"disabled","network":true,"billable_possible":true,"mutation":"deny"},
+    {"id":"ms-enterprise/connector/foundry","name":"Microsoft Foundry","status":"disabled","network":true,"billable_possible":true,"mutation":"deny"},
+    {"id":"ms-enterprise/connector/power-platform","name":"Power Platform / Dataverse","status":"disabled","network":true,"billable_possible":true,"mutation":"deny"},
+    {"id":"ms-enterprise/connector/m365-graph","name":"Microsoft 365 / Graph","status":"disabled","network":true,"billable_possible":false,"mutation":"deny"},
+    {"id":"ms-enterprise/connector/teams","name":"Microsoft Teams","status":"disabled","network":true,"billable_possible":false,"mutation":"deny"},
+    {"id":"ms-enterprise/connector/dynamics","name":"Dynamics Omnichannel","status":"disabled","network":true,"billable_possible":true,"mutation":"deny"},
+    {"id":"ms-enterprise/connector/business-central","name":"Business Central","status":"disabled","network":true,"billable_possible":true,"mutation":"deny"},
+    {"id":"ms-enterprise/connector/devskim","name":"DevSkim CLI","status":"not-installed","network":false,"billable_possible":false,"mutation":"none"},
+    {"id":"ms-enterprise/connector/onnx-genai","name":"ONNX Runtime GenAI","status":"not-installed","network":false,"billable_possible":false,"mutation":"none"},
+    {"id":"ms-enterprise/connector/dap-tui","name":"DAP / TUI Test Adapters","status":"not-installed","network":false,"billable_possible":false,"mutation":"scoped-process"}
+  ],
+  "models": [
+    {"id":"ms-enterprise/model/onnx-genai-local","name":"ONNX Runtime GenAI Local","status":"not-installed","billing_identity":"local-none","auth_identity":"local-process","network_required":false},
+    {"id":"ms-enterprise/model/foundry-provider","name":"Microsoft Foundry Provider","status":"disabled","billing_identity":"explicit-enterprise-subscription-required","auth_identity":"explicit-tenant-required","network_required":true}
+  ],
+  "source_evidence": {
+    "master_inventory_sha256":"9dc615d017805583de85a94cb1f5493a914ae386a8db1ae777d241e319da1c0f",
+    "archive_inventory_sha256":"5d8593e6b8df3b2491a1f74a3120056d9e14cdc35f62966a4ce9264d7369f26d",
+    "archive_count":33,
+    "archive_entry_count":112905,
+    "version_drift":"The current zips 2 set contains 31 exact handoff archive hashes, a newer combined MIT Agent Academy archive, and the Team Fabric v0.2.0 archive."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "gap_id": "PX-OS-936",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004967",
+  "authority": "The exact assertion corrections require one focused source/browser rerun.",
+  "effect": "execute",
+  "scope": ["node --test extension/tests/extension-contract.test.js extension/tests/dashboard-e2e.test.js"],
+  "expected_effect": "All current source contracts and every dashboard browser interaction pass without console, layout, or selector failures.",
+  "rollback": "Read-only focused execution; retain exact failures and do not advance to the owned section until clean.",
+  "evidence": [
+    {"claim": "Immediate assertion-correction checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004967"}
+  ]
+}

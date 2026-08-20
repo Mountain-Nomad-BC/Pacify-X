@@ -7,7 +7,7 @@
     {
       "orchestration_id": "agent_create_validate",
       "status": "executable",
-      "handler": "runtime.project_stream_orchestrator.agent_create_validate",
+      "handler": "runtime.project_stream_orchestrator.agent_specification_validate",
       "effects": [
         "read_local",
         "write_workspace"

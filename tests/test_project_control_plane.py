@@ -16,7 +16,7 @@ from runtime.project_control_plane import (
     promote_capability,
     quarantine_candidates,
     record_project_transition,
-    register_agent,
+    validate_agent_specification,
     register_existing_project,
     recover_incident,
     switch_project,
@@ -78,7 +78,7 @@ class ProjectControlPlaneTests(unittest.TestCase):
                 project, root / "ledger", project_id="prj_project"
             )
             self.assertEqual(registered["state"], "registered")
-            agent = register_agent(
+            agent = validate_agent_specification(
                 root / "ledger",
                 {
                     "agent_id": "agent",
@@ -90,7 +90,11 @@ class ProjectControlPlaneTests(unittest.TestCase):
                     "evidence": ["test-run"],
                 },
             )
-            self.assertEqual(agent["decision"], "active")
+            self.assertEqual(agent["decision"], "validated_candidate")
+            self.assertEqual(agent["admission_state"], "unadmitted")
+            self.assertEqual(agent["runtime_state"], "stopped")
+            self.assertEqual(agent["authority_state"], "none")
+            self.assertFalse(agent["assertions_trusted"])
             health = project_health(
                 {
                     name: 1

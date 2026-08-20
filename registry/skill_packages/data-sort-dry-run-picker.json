@@ -1,0 +1,36 @@
+{
+  "id": "data-sort-dry-run-picker",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".px/skills/data-sort-dry-run-picker/SKILL.md",
+  "body_sha256": "5e5453117178f57ea88a4c51aea18349d9c3530c390ae953605d8e125a50ab41",
+  "references": [
+    ".px/skills/data-sort-dry-run-picker/references/sorting-algorithms.md"
+  ],
+  "scripts": [
+    {
+      "path": ".px/skills/data-sort-dry-run-picker/scripts/sort_picker.py",
+      "sha256": "85828460d8b5a08ba9fc7026249e1155f0896bee0a2b1d22b6ff30ac9c09ecd5"
+    }
+  ],
+  "capability_tags": [
+    "benchmark",
+    "bulk-data",
+    "correctness-trace",
+    "dry-run",
+    "sorting"
+  ],
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
+  "provenance": {
+    "type": "user-requested-clean-room-capability",
+    "request": "Size bulk data, sample when oversized, benchmark the three fastest compatible sort candidates, trace correctness and speed, then select the winner."
+  },
+  "clean_room": true,
+  "tests": "tests/test_sort_picker.py",
+  "evidence": "tests/test_sort_picker.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 24576
+}

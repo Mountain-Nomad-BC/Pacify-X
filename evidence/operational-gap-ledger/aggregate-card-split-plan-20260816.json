@@ -1,0 +1,43 @@
+{
+  "schema_version": "px.aggregate-card-split-plan/1.0",
+  "source_review": {
+    "path": "evidence/operational-gap-ledger/card-control-resolution-review-20260816.json",
+    "sha256": "d5ed841939f8908bb71801a9d0948d20722cfe1b971bc9ebb1a6e837174570d0"
+  },
+  "allocation_basis": {
+    "last_existing_gap_id": "PX-OS-878",
+    "first_allocated_gap_id": "PX-OS-879",
+    "last_allocated_gap_id": "PX-OS-932",
+    "allocated_child_count": 54
+  },
+  "parents": {
+    "PX-OS-002": {"new_children": {"global-visible-operation-assurance": "PX-OS-879"}, "existing_selector": {"control_kinds": ["action", "command", "gesture"]}},
+    "PX-OS-004": {"new_children": {"agent-topology-nodes": "PX-OS-880", "typed-connections": "PX-OS-881", "node-inspector": "PX-OS-882", "resolved-execution-preview": "PX-OS-883"}, "existing_ids": ["PX-OS-075"], "existing_ranges": [[155, 208], [852, 857]]},
+    "PX-OS-005": {"new_children": {"admitted-selection-only": "PX-OS-884", "declaration-authority-distinction": "PX-OS-885", "resolved-contract-preview": "PX-OS-886"}, "existing_ranges": [[71, 73], [168, 204]]},
+    "PX-OS-006": {"new_children": {"filterable-lifecycle-projection": "PX-OS-887", "receipt-linked-runtime-state": "PX-OS-888"}, "existing_ids": ["PX-OS-224", "PX-OS-231", "PX-OS-232"], "existing_ranges": [[688, 721]]},
+    "PX-OS-007": {"new_children": {"branching-node-taxonomy": "PX-OS-889", "approval-recovery-visualization": "PX-OS-890", "execution-trace-overlay": "PX-OS-891"}, "existing_ids": ["PX-OS-068", "PX-OS-076", "PX-OS-083", "PX-OS-768"], "existing_ranges": [[728, 742], [762, 765], [770, 772]]},
+    "PX-OS-010": {"new_children": {"density-aware-clustering": "PX-OS-892", "semantic-node-edge-encoding": "PX-OS-893", "edge-bundling-filtering": "PX-OS-894"}, "existing_ids": ["PX-OS-443", "PX-OS-447", "PX-OS-450", "PX-OS-451", "PX-OS-455", "PX-OS-456", "PX-OS-458", "PX-OS-484", "PX-OS-488"], "existing_ranges": [[437, 441], [467, 477]]},
+    "PX-OS-014": {"new_children": {"module-map": "PX-OS-895", "service-route-map": "PX-OS-896", "test-link-map": "PX-OS-897"}, "existing_ids": ["PX-OS-126"], "existing_ranges": [[535, 552]]},
+    "PX-OS-015": {"new_children": {"original-vs-px-comparison": "PX-OS-898", "backup-promotion-rollback": "PX-OS-899", "routing-rationale": "PX-OS-900"}, "existing_ids": ["PX-OS-125"], "existing_ranges": [[650, 687]]},
+    "PX-OS-016": {"new_children": {"install-operation": "PX-OS-901", "update-operation": "PX-OS-902", "enable-disable-operation": "PX-OS-903", "uninstall-operation": "PX-OS-904", "rollback-operation": "PX-OS-905", "conflict-resolution": "PX-OS-906"}, "existing_ids": ["PX-OS-089", "PX-OS-126"], "existing_ranges": [[518, 534]]},
+    "PX-OS-020": {"new_children": {"scheduler-queues": "PX-OS-907", "worker-process-ownership": "PX-OS-908", "gpu-eligibility-fallback": "PX-OS-909", "latency-bottleneck-traces": "PX-OS-910"}, "existing_ids": ["PX-OS-092"], "existing_ranges": [[553, 584]]},
+    "PX-OS-022": {"new_children": {"topbar-responsive-layout": "PX-OS-911", "empty-region-collapse": "PX-OS-912", "editor-full-workspace": "PX-OS-913", "promotion-boundary-overflow": "PX-OS-914"}, "existing_ids": ["PX-OS-075", "PX-OS-456", "PX-OS-742"]},
+    "PX-OS-024": {"new_children": {"health-source-derivation": "PX-OS-915"}, "existing_selector": {"control_kinds": ["indicator"], "control_id_or_label_contains": ["health", "status", "ready", "readiness", "identity", "validation", "connected", "configured"]}},
+    "PX-OS-030": {"new_children": {"operation-eligibility-projection": "PX-OS-916", "authority-effect-preview": "PX-OS-917"}, "existing_ranges": [[78, 84], [689, 721]]},
+    "PX-OS-033": {"new_children": {}, "existing_ids": ["PX-OS-614", "PX-OS-618", "PX-OS-628"], "existing_ranges": [[600, 605], [620, 624]]},
+    "PX-OS-035": {"new_children": {"verification-wording": "PX-OS-918", "directory-content-hash": "PX-OS-919"}},
+    "PX-OS-036": {"new_children": {"inspect-value-contract": "PX-OS-920"}, "existing_selector": {"control_id_regex": "^pxui\\..*\\.action\\.inspect"}},
+    "PX-OS-039": {"new_children": {}, "existing_ids": ["PX-OS-068", "PX-OS-069", "PX-OS-076", "PX-OS-124", "PX-OS-730"], "existing_ranges": [[734, 765], [768, 770]]},
+    "PX-OS-042": {"new_children": {"graph-request-correlation": "PX-OS-921", "catalog-request-correlation": "PX-OS-922", "memory-request-correlation": "PX-OS-923", "activity-request-correlation": "PX-OS-924"}},
+    "PX-OS-058": {"new_children": {"durable-run-browser": "PX-OS-925", "multi-approval-progression": "PX-OS-926"}, "existing_ids": ["PX-OS-080", "PX-OS-082", "PX-OS-083", "PX-OS-688"], "existing_ranges": [[697, 721]]},
+    "PX-OS-062": {"new_children": {"topbar-css-owner": "PX-OS-927", "graph-css-owner": "PX-OS-928", "studio-css-owner": "PX-OS-929", "promotion-lifecycle-css-owner": "PX-OS-930"}, "existing_ids": ["PX-OS-075", "PX-OS-456", "PX-OS-718", "PX-OS-742"]},
+    "PX-OS-064": {"new_children": {"independent-health-dimensions": "PX-OS-931", "certification-independent-runtime-health": "PX-OS-932"}, "existing_ids": ["PX-OS-001", "PX-OS-019", "PX-OS-239", "PX-OS-244", "PX-OS-254", "PX-OS-294", "PX-OS-331", "PX-OS-336"]}
+  },
+  "state_policy": {
+    "new_child_state": "discovered",
+    "new_child_control_resolution": "unresolved",
+    "parent_resolution": "aggregate_parent; resolved only when every exact child resolves",
+    "operational_claims": 0,
+    "completion_claims": 0
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": "px.functional-validation-repair-evidence/2.0",
+  "evidence_id": "evidence:functional-validation-r2-repair:20260814",
+  "task_id": "repair:PACIFY_X_R2_FUNCTIONAL_ADVERSARIAL_VALIDATION_20260814",
+  "created_utc": "2026-08-14T17:30:00Z",
+  "sensitivity": "internal-sanitized",
+  "status": "supports_repair_pending_independent_verification",
+  "source": {
+    "report": "FUNCTIONAL_VALIDATION_R2_REPORT.md",
+    "report_sha256": "85f3252b0add06fb534179f476db664a4dd5a6807ed53174272b584143c76f49",
+    "findings_sha256": "99a565ea6dd275c5af6af5cfa82123bf95b14b83376cc7d35afdec6c20a5aa65",
+    "checksum_manifest_entries": 22,
+    "checksum_manifest_valid": true
+  },
+  "claims": [
+    {"id": "R2-F001", "relationship": "supports", "postcondition": "Project Python exposes no approval issuer; the extension host signs exact expiring claims with a SecretStorage private key; Python verifies and single-use consumes them.", "result": "passed_focused_and_governed"},
+    {"id": "R2-F002", "relationship": "supports", "postcondition": "Relative PX_STUDIO_KEY_ROOT values fail closed and absolute locators are canonicalized.", "result": "passed_focused_and_governed"},
+    {"id": "R2-F003", "relationship": "supports", "postcondition": "Both JavaScript and Python reject authority roots inside the project, including a literal ..broker component.", "result": "passed_focused_and_governed"},
+    {"id": "R2-F004", "relationship": "supports", "postcondition": "Old-key-proven rotation succeeds; lost-key recovery requires an explicit host modal and retains a backup.", "result": "passed_focused_and_governed"},
+    {"id": "R2-F005", "relationship": "supports", "postcondition": "CSS duplication decreases and the ceiling ratchets without cross-file regression.", "result": "improved_residual_debt", "metrics": {"before_duplicate_selectors": 167, "after_duplicate_selectors": 157, "before_duplicate_occurrences": 208, "after_duplicate_occurrences": 193, "cross_file_duplicate_selectors": 0, "cross_file_duplicate_occurrences": 0}}
+  ],
+  "focused_results": {
+    "python": "32 passed",
+    "extension_and_css": "53 passed",
+    "host_to_python_signature_integration": "passed with replay denial"
+  },
+  "governed_receipts": [
+    {"section": "testing-governance", "passed": true, "tests": "63 passed, 9 subtests passed", "receipt_sha256": "318cbf2b16a8342d714e63dc32db2732e4c110ae118830a1bb458d8a91e0a1b2"},
+    {"section": "studio-memory-graph", "passed": true, "tests": "134 passed", "receipt_sha256": "1af323087a057b1093e963d2ba90c8faada9c28245d77aa7c4391f3aabd139f7"},
+    {"section": "dashboard-extension", "passed": true, "tests": "29 passed including browser lane", "receipt_sha256": "58c3e24cd5e8185aff11bcdf9a9c8c1bbe1b083ec18238e01ddb7c11dd52c571"}
+  ],
+  "decision": {
+    "functional_blockers_repaired": true,
+    "residual_css_debt_eliminated": false,
+    "independently_verified": false,
+    "certified": false,
+    "reason": "Affected governed sections pass, but the repairs have not yet been independently tested from a new exact archive and the deferred full certification profile has not run."
+  }
+}

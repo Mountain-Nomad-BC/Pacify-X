@@ -1,0 +1,12 @@
+{
+  "gap_id": "PX-OS-936",
+  "note": "The focused run exposed three more stale scaffold/source expectations: plugin copy says Governed plugin lifecycle, persisted advancedOpen defaults true and includes graphTarget, and metric controls now use data-metric-label after the registered inspectability repair.",
+  "evidence": [
+    {"claim": "The exact stale assertions failed in the focused run.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004976"},
+    {"claim": "Current product sources expose the changed contracts.", "reference": "extension/media/dashboard/44-operational-surfaces.js; extension/media/dashboard/10-state.js; extension/media/dashboard/30-components.js"}
+  ],
+  "patch": {
+    "next_action": "Correct only the three superseded assertions and retain their behavioral coverage.",
+    "tests_required": ["extension/tests/ui-scaffold.test.js", "extension/tests/extension-contract.test.js", "extension/tests/dashboard-e2e.test.js", "python -m runtime.cli test-section run dashboard-extension"]
+  }
+}

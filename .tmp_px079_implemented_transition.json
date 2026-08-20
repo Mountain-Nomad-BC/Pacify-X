@@ -1,0 +1,30 @@
+{
+  "gap_id": "PX-OS-079",
+  "from_state": "implementing",
+  "to_state": "implemented",
+  "reason": "Collision-free backend allocation, allocation-bound host/browser validation, immutable no-replace publication, exact replay truth, and modal trust lifecycle behavior are implemented in current source; installed-host operational closure remains outstanding.",
+  "implementation_evidence": [
+    {
+      "reference": "runtime/studio_models.py",
+      "claim": "Backend allocation, revalidation, and immutable version publication implementation"
+    },
+    {
+      "reference": "extension/src/studioDraftHost.js",
+      "claim": "Host allocation proof, exact binding, create, conflict, detach, and durable result implementation"
+    },
+    {
+      "reference": "extension/media/dashboard/90-controller.js",
+      "claim": "Browser allocation validation, correlation, conflict recovery, and modal lifecycle implementation"
+    }
+  ],
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+      "claim": "Affected dashboard owner passed"
+    },
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
+      "claim": "Affected Python Studio owner passed"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "dependencies": [
+    "research-to-operation-translator",
+    "forge-skills-from-knowledge"
+  ],
+  "domain": "theory-induction",
+  "failure_modes": [
+    "semantic soup",
+    "abstraction for aesthetics",
+    "held-out leakage",
+    "lowest-common-denominator sludge"
+  ],
+  "formula_refs": [
+    "abstraction-value-score",
+    "coverage-dominance",
+    "novelty-score"
+  ],
+  "id": "meta-capability-proposer",
+  "inputs": [
+    "capability/paper/trace corpus",
+    "interpretable features",
+    "held-out cases and counterexamples"
+  ],
+  "invariants": [
+    "Clusters and theories remain proposals until validated.",
+    "Specialized children and source distinctions are preserved.",
+    "Elegant abstraction never outranks failed evidence."
+  ],
+  "outputs": [
+    "clusters or shared mechanism",
+    "meta-capability proposal",
+    "held-out validation disposition"
+  ],
+  "procedure": [
+    "Build interpretable multi-view features.",
+    "Cluster conservatively and preserve outliers.",
+    "Extract the smallest useful shared mechanism and variant dimensions.",
+    "Propose an abstraction only when it measurably reduces duplication.",
+    "Test on held-out domains, counterexamples, and competing taxonomies."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Propose higher-order capabilities that reduce duplication while retaining specialized child adapters, constraints, tests, and callable identities.",
+  "title": "Meta-Capability Proposer",
+  "version": "1.0.0",
+  "when_to_use": "Use after stable shared mechanisms recur across domains or projects."
+}

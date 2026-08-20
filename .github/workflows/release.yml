@@ -39,6 +39,13 @@ jobs:
         with:
           python-version: "3.14"
 
+      - name: Set up tested extension Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: extension/package-lock.json
+
       - name: Require annotated tag and clean source
         shell: pwsh
         run: |
@@ -100,6 +107,19 @@ jobs:
           $result = Get-Content $verificationPath -Raw | ConvertFrom-Json
           if (-not $result.valid) { throw "independent release verification failed" }
 
+      - name: Build and exercise the exact VSIX without rebuilding it
+        shell: pwsh
+        run: |
+          npm ci --ignore-scripts --prefix extension
+          npm run package --prefix extension
+          $package = Get-Content extension/package.json -Raw | ConvertFrom-Json
+          $vsix = (Resolve-Path "extension/dist/$($package.name)-$($package.version).vsix").Path
+          $sha = (Get-FileHash -LiteralPath $vsix -Algorithm SHA256).Hash.ToLowerInvariant()
+          node extension/scripts/run-installed-vsix-smoke.js --engine-root $PWD --vsix $vsix --expected-sha256 $sha
+          if ((Get-FileHash -LiteralPath $vsix -Algorithm SHA256).Hash.ToLowerInvariant() -ne $sha) { throw "VSIX changed during installed-host certification" }
+          "PACIFY_X_CERTIFIED_VSIX=$vsix" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "PACIFY_X_CERTIFIED_VSIX_SHA256=$sha" | Out-File -FilePath $env:GITHUB_ENV -Append
+
       - name: Assemble immutable release assets without rebuilding
         shell: pwsh
         run: |
@@ -112,6 +132,8 @@ jobs:
           Copy-Item "$run\evidence-manifest.json" release-assets\
           Copy-Item "evidence\releases\$env:PACIFY_X_RELEASE\certificate.json" release-assets\
           Copy-Item "evidence\releases\$env:PACIFY_X_RELEASE\certificate.json.sig" release-assets\
+          Copy-Item $env:PACIFY_X_CERTIFIED_VSIX release-assets\
+          Copy-Item extension/evidence/installed-vsix-smoke.json release-assets\installed-vsix-smoke.json
           if (Test-Path "evidence\release-revocation-$env:PACIFY_X_RELEASE.json") {
             Copy-Item "evidence\release-revocation-$env:PACIFY_X_RELEASE.json" release-assets\
           }

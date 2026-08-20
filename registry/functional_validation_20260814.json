@@ -1,0 +1,85 @@
+{
+  "schema_version": "px.external-functional-validation-remediation/1.0",
+  "source": {
+    "name": "FUNCTIONAL_VALIDATION_REPORT.md",
+    "sha256": "d70c0ef5efcb6477cf7395afdac8660fb8b67f6bd8d5b328594f729720c58bca",
+    "findings_sha256": "36b55d72ea0efc794e39ee7e4204000f6642ebb14932f313d8de3af29a8c74da",
+    "target_archive": "PACIFY_X_REPAIRS_ONLY_UNCERTIFIED_AUDIT_20260814.zip",
+    "target_sha256": "96568ffe86428191accf784bf221b24aeab7984a5c4aadc3416440bfb9d76923",
+    "received_date": "2026-08-14",
+    "checksum_manifest_valid": true
+  },
+  "denominator": {
+    "total": 5,
+    "severity": {
+      "high": 3,
+      "medium": 1,
+      "low": 1
+    }
+  },
+  "status_counts": {
+    "open": 0,
+    "in_progress": 0,
+    "fixed_pending_independent_verification": 5,
+    "accepted": 0,
+    "blocked": 0
+  },
+  "release_claim": {
+    "complete": false,
+    "certified": false,
+    "reason": "All five functional-validation findings have source repairs and focused regression evidence; acceptance remains withheld until an independent exact-artifact verification pass."
+  },
+  "repair_evidence": "evidence/adversarial-audit/functional-validation-repair-20260814.json",
+  "findings": [
+    {
+      "id": "FVAL-001",
+      "severity": "high",
+      "finding": "Nested Agent and Workflow workers discard the configured Studio key root",
+      "external_status": "open",
+      "status": "fixed_pending_independent_verification",
+      "root_cause": "The inner ProcessSupervisor environments were independently reconstructed and omitted the host authority-store locators inherited by the durable session worker.",
+      "repair": "Agent and Workflow inner workers now forward only PX_STUDIO_KEY_ROOT, XDG_STATE_HOME, and LOCALAPPDATA; keys, approval secrets, and unrelated environment values remain excluded.",
+      "evidence_refs": ["runtime/studio_authority.py", "runtime/agent_runtime.py", "runtime/workflow_studio.py", "tests/test_agent_runtime.py", "tests/test_workflow_studio.py", "tests/test_studio_api.py"]
+    },
+    {
+      "id": "FVAL-002",
+      "severity": "high",
+      "finding": "Valid silent Workflow nodes are killed after two seconds",
+      "external_status": "open",
+      "status": "fixed_pending_independent_verification",
+      "root_cause": "Workflow business output was incorrectly used as process-start liveness and idle timeout was capped at two seconds.",
+      "repair": "The worker emits a structured flushed startup acknowledgement, while silent business work receives the declared node timeout as its idle and total bound.",
+      "evidence_refs": ["runtime/workflow_worker.py", "runtime/workflow_studio.py", "tests/test_workflow_studio.py"]
+    },
+    {
+      "id": "FVAL-003",
+      "severity": "high",
+      "finding": "The Studio approval broker remains self-issuable by an untrusted CLI caller",
+      "external_status": "open",
+      "status": "fixed_pending_independent_verification",
+      "root_cause": "The project-callable approval CLI accepted caller-authored approver identity without an independent host-session credential.",
+      "repair": "Caller-controlled approved_by was removed. Issuance requires a VS Code SecretStorage-backed enrolled broker secret and uses a fixed host-derived identity; ordinary direct CLI issuance and wrong-secret issuance fail closed.",
+      "evidence_refs": ["runtime/studio_approval.py", "runtime/studio_authority.py", "extension/src/pxBridge.js", "extension/src/extension.js", "tests/test_studio_api.py", "extension/tests/px-bridge-cache.test.js"]
+    },
+    {
+      "id": "FVAL-004",
+      "severity": "medium",
+      "finding": "Process-supervision receipts report negative dropped bytes",
+      "external_status": "open",
+      "status": "fixed_pending_independent_verification",
+      "root_cause": "Dropped bytes were calculated against remaining capacity rather than the number of bytes actually appended.",
+      "repair": "Capture now counts len(chunk)-actual_appended and derives truncation only from a positive dropped-byte count.",
+      "evidence_refs": ["runtime/process_supervisor.py", "tests/test_process_supervisor.py"]
+    },
+    {
+      "id": "FVAL-005",
+      "severity": "low",
+      "finding": "CSS selector duplication remains substantial",
+      "external_status": "improved_residual_debt",
+      "status": "fixed_pending_independent_verification",
+      "root_cause": "Header, token, control, and accessibility selectors still had simultaneous modular and legacy compatibility owners.",
+      "repair": "Those selectors were migrated to their modular owners, cross-file duplication is now zero and enforced, and the total ceilings were ratcheted from 177/224 to 167/208.",
+      "evidence_refs": ["extension/media/styles/01-tokens.css", "extension/media/styles/20-layout.css", "extension/media/styles/60-accessibility.css", "extension/media/dashboard.css", "extension/scripts/audit-dashboard-css.js", "extension/resources/ui/css-audit-baseline.json", "extension/tests/ui-scaffold.test.js"]
+    }
+  ]
+}

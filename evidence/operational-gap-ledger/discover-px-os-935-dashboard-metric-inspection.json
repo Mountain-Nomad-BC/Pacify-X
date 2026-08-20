@@ -1,0 +1,50 @@
+{
+  "gap_id": "PX-OS-935",
+  "feature": "dashboard-metric-inspection",
+  "parent_surface": "dashboard-control-plane",
+  "control_action": "inspect a dashboard metric",
+  "severity": "high",
+  "classification": "UI",
+  "observed_behavior": "Metric cards render as passive articles even though CSS, keyboard delegation, and browser contracts require inspectable controls; no inspectMetric action exists.",
+  "expected_behavior": "Every metric card is an accessible keyboard/click control that opens a human/machine-readable metric record without granting authority.",
+  "operational_impact": "Dashboard summary values consume space but cannot expose their meaning or machine-readable evidence, and the operational UI walk blocks.",
+  "discovered_at": "2026-08-16T20:31:30Z",
+  "discovered_by": "codex-host:focused-dashboard-browser-walk",
+  "discovery_source": "focused browser run under gap-event:PX-OPERATIONAL-GAPS-20260816:000000004954",
+  "discovery_evidence": [
+    {
+      "claim": "Playwright timed out waiting for the first inspectMetric control and visual selectors could not resolve inspect-cue.",
+      "reference": "extension/tests/dashboard-e2e.test.js:110,482"
+    },
+    {
+      "claim": "The shared card renderer emits no action, role, keyboard focus, or inspect cue.",
+      "reference": "extension/media/dashboard/30-components.js:24-26"
+    }
+  ],
+  "source_refs": [
+    {"path": "extension/media/dashboard/30-components.js", "symbols": ["card"]},
+    {"path": "extension/media/dashboard/90-controller.js", "symbols": ["app click handler", "showInformationModal"]},
+    {"path": "extension/tests/dashboard-e2e.test.js", "symbols": ["inspectMetric browser path"]}
+  ],
+  "assigned_owner": "codex-primary",
+  "dependencies": [],
+  "blockers": [],
+  "next_action": "Restore accessible metric controls and a typed information-modal action, then rerun the focused browser walk.",
+  "tests_required": ["extension/tests/dashboard-e2e.test.js", "python -m runtime.cli test-section run dashboard-extension"],
+  "completion_evidence": [],
+  "interaction_chain": {
+    "open_load": {"state": "present", "detail": "Dashboard surfaces render metric cards.", "evidence": ["extension/media/dashboard/42-core-surfaces.js"]},
+    "display": {"state": "partial", "detail": "Values display but the inspect affordance is absent.", "evidence": ["extension/media/dashboard/30-components.js:25"]},
+    "user_edit_action": {"state": "missing", "detail": "No click/focus action is emitted.", "evidence": []},
+    "input_validation": {"state": "not_applicable", "detail": "Read-only metric inspection has no user payload.", "evidence": []},
+    "authorization": {"state": "not_applicable", "detail": "Read-only inspection must remain non-authorizing.", "evidence": []},
+    "backend_dispatch": {"state": "missing", "detail": "No inspectMetric controller route exists.", "evidence": []},
+    "runtime_effect": {"state": "missing", "detail": "Information modal is never opened.", "evidence": []},
+    "progress_reporting": {"state": "not_applicable", "detail": "Synchronous local inspection.", "evidence": []},
+    "result_acknowledgement": {"state": "missing", "detail": "No human or machine-readable result appears.", "evidence": []},
+    "failure_handling": {"state": "missing", "detail": "Missing action fails as inert UI.", "evidence": ["extension/tests/dashboard-e2e.test.js:110"]},
+    "persistence": {"state": "not_applicable", "detail": "Inspection does not persist state.", "evidence": []},
+    "reload_reopen": {"state": "not_applicable", "detail": "Inspection is derived from the current snapshot.", "evidence": []},
+    "recovery_rollback": {"state": "not_applicable", "detail": "Read-only modal has no rollback boundary.", "evidence": []}
+  }
+}

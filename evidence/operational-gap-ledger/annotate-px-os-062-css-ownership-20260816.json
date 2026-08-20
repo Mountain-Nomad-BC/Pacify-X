@@ -1,0 +1,12 @@
+{
+  "gap_id": "PX-OS-062",
+  "note": "The focused scaffold audit now measures 98 cross-file duplicate selectors even though the admitted ownership contract requires zero. This is a current CSS ownership failure, not an assertion to relax.",
+  "evidence": [
+    {"claim": "The exact cross-file duplicate count was 98 in the focused run.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004976"},
+    {"claim": "The baseline explicitly caps cross-file selector counts and occurrences at zero.", "reference": "extension/resources/ui/css-audit-baseline.json"},
+    {"claim": "Both modular layered styles and the legacy compatibility sheet currently define overlapping graph and metric selectors.", "reference": "extension/media/styles; extension/media/dashboard.css"}
+  ],
+  "patch": {
+    "next_action": "Generate the exact duplicate report, assign every selector to one owning stylesheet/layer, and eliminate the legacy cross-file definitions without weakening the zero-duplicate gate."
+  }
+}

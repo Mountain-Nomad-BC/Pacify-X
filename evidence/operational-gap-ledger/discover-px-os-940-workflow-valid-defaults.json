@@ -1,0 +1,40 @@
+{
+  "gap_id": "PX-OS-940",
+  "feature": "workflow-builder-valid-normalized-defaults",
+  "parent_surface": "workflow-builder",
+  "control_action": "create or normalize a workflow draft",
+  "severity": "high",
+  "classification": "editor",
+  "observed_behavior": "normalizeWorkflow independently invents per-node binding IDs, omits ports for partially supplied nodes, leaves effect grants empty, and supplies no default executor adapter, so normalized drafts can fail their own validator.",
+  "expected_behavior": "Missing workflow fields receive one internally consistent bounded grant, binding, adapter, and typed port baseline; explicitly supplied invalid values remain visible and fail closed.",
+  "operational_impact": "Workflow Builder initialization and node creation can yield a non-runnable candidate before intentional edits, obscuring real user errors with editor-generated contract failures.",
+  "discovered_at": "2026-08-16T20:46:00Z",
+  "discovered_by": "codex-host:focused-workflow-editor-walk",
+  "discovery_source": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004988",
+  "discovery_evidence": [
+    {"claim": "The normalized typed workflow validity assertion failed.", "reference": "extension/tests/ui-scaffold.test.js:102-106; gap-event:PX-OPERATIONAL-GAPS-20260816:000000004988"},
+    {"claim": "Node, grant, binding, and adapter defaults are derived independently and do not form one valid contract.", "reference": "extension/media/dashboard/49-studio-editors.js:55-184"}
+  ],
+  "source_refs": [{"path": "extension/media/dashboard/49-studio-editors.js", "symbols": ["normalizeNode", "normalizeWorkflow", "validateWorkflow"]}],
+  "assigned_owner": "codex-primary",
+  "dependencies": [],
+  "blockers": [],
+  "next_action": "Derive one shared default grant/binding identity before node normalization, add ports only when omitted, and synthesize the identity adapter only when adapters are omitted.",
+  "tests_required": ["extension/tests/ui-scaffold.test.js", "extension/tests/dashboard-e2e.test.js", "python -m runtime.cli test-section run dashboard-extension"],
+  "completion_evidence": [],
+  "interaction_chain": {
+    "open_load": {"state": "partial", "detail": "Draft opens but may start invalid.", "evidence": ["extension/media/dashboard/49-studio-editors.js:115-147"]},
+    "display": {"state": "present", "detail": "Workflow editor renders normalized nodes.", "evidence": ["extension/media/dashboard/90-controller.js"]},
+    "user_edit_action": {"state": "partial", "detail": "Users can edit generated contracts but must repair editor-created mismatches.", "evidence": ["extension/media/dashboard/49-studio-editors.js:55-147"]},
+    "input_validation": {"state": "present", "detail": "Validator correctly detects undeclared bindings, grants, adapters, and ports.", "evidence": ["extension/media/dashboard/49-studio-editors.js:149-224"]},
+    "authorization": {"state": "partial", "detail": "Generated declarations are draft-only, but their identities are inconsistent.", "evidence": ["extension/media/dashboard/49-studio-editors.js:89-113"]},
+    "backend_dispatch": {"state": "not_applicable", "detail": "Defect precedes save/run dispatch.", "evidence": []},
+    "runtime_effect": {"state": "missing", "detail": "Normalized draft cannot pass preflight.", "evidence": ["extension/tests/ui-scaffold.test.js:106"]},
+    "progress_reporting": {"state": "present", "detail": "Preflight reports the generated inconsistencies.", "evidence": ["extension/media/dashboard/49-studio-editors.js:149-224"]},
+    "result_acknowledgement": {"state": "partial", "detail": "Errors are shown but normalization created them.", "evidence": ["extension/media/dashboard/49-studio-editors.js:149-224"]},
+    "failure_handling": {"state": "partial", "detail": "Save fails closed; no coherent default recovery exists.", "evidence": ["extension/media/dashboard/49-studio-editors.js:149-224"]},
+    "persistence": {"state": "not_applicable", "detail": "Invalid draft is not persisted.", "evidence": []},
+    "reload_reopen": {"state": "not_applicable", "detail": "Defect begins at normalization.", "evidence": []},
+    "recovery_rollback": {"state": "partial", "detail": "Manual repair is possible but unnecessary work.", "evidence": ["extension/tests/ui-scaffold.test.js:102-106"]}
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "MCP exposure does not imply authorization",
+    "validate all external input",
+    "do not hide network side effects"
+  ],
+  "bundle": "govern-cross-harness-runtime",
+  "category": "mcp",
+  "dependencies": [
+    "manage-mcp-lifecycle",
+    "validate-contract-boundaries",
+    "quarantine-external-tools"
+  ],
+  "id": "design-mcp-server-capability",
+  "keywords": [
+    "mcp server",
+    "tools resources prompts",
+    "stdio",
+    "streamable http",
+    "schema validation"
+  ],
+  "mechanisms": [
+    "tool/resource/prompt separation",
+    "schema validation",
+    "stdio or HTTP transport choice",
+    "capability discovery",
+    "health check",
+    "error recovery contract"
+  ],
+  "owner": "manage-mcp-lifecycle",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "skills/mcp-server-patterns/SKILL.md",
+      "mcp-configs",
+      ".mcp.json"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "skills/mcp-server-patterns/SKILL.md",
+    "mcp-configs",
+    ".mcp.json"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Design MCP tools, resources, and prompts with narrow schemas, explicit transport, validation, permission boundaries, deterministic outputs, and health checks.",
+  "title": "Design MCP Server Capability",
+  "use_when": [
+    "an integration should become a reusable MCP surface",
+    "tool definitions are too broad or ambiguous",
+    "MCP lifecycle exists but implementation guidance is missing"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "admission_record": "adapt-human-learning-loop",
+  "body_sha256": "61e3cdb546982669ad0fd5aafceac1ecb36836bfed11ee5baa55a6ad18841f76",
+  "contract": {
+    "available": true,
+    "sha256": "0186601b1de91559a748fe8d12edc79c9cc09bdaea958650cf214fd646bf6858",
+    "source": "registry/skill_packages/adapt-human-learning-loop.json"
+  },
+  "description": "Clean-room adaptive-learning and progress-tracking mechanisms with strong",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "adapt-human-learning-loop",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/adapt-human-learning-loop"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "adapt",
+    "adaptive-learning",
+    "authorization",
+    "event-history",
+    "external-candidate",
+    "human",
+    "human-feedback",
+    "human-safety",
+    "learning",
+    "learning-evaluation",
+    "loop",
+    "reinforcement",
+    "state-machine"
+  ],
+  "version": "0.1.0"
+}

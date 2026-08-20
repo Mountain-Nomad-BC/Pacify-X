@@ -1,0 +1,4 @@
+interface:
+  display_name: "Inspect LLM Architecture"
+  short_description: "Inspect model structure and resource requirements"
+  default_prompt: "Use $inspect-llm-architecture to inspect this model configuration and produce evidence-backed architecture and memory estimates."

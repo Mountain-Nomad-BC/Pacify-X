@@ -1,0 +1,309 @@
+{
+  "schema_version": "1.0",
+  "scan_complete": true,
+  "review_complete": true,
+  "complete": true,
+  "files_scanned": 643,
+  "finding_count": 37,
+  "reviewed_count": 37,
+  "unreviewed_count": 0,
+  "findings": [
+    {
+      "id": "19a447161ece9d566843",
+      "path": ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
+      "line": 40,
+      "rule": "todo-comment",
+      "classification": "detector_literal",
+      "review_owner": "audit-incomplete-implementations"
+    },
+    {
+      "id": "fe075cefe4df1d3ab731",
+      "path": ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
+      "line": 41,
+      "rule": "unimplemented-error",
+      "classification": "detector_literal",
+      "review_owner": "audit-incomplete-implementations"
+    },
+    {
+      "id": "6d685fce8c0895bfeb03",
+      "path": ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
+      "line": 77,
+      "rule": "unimplemented-error",
+      "classification": "detector_literal",
+      "review_owner": "audit-incomplete-implementations"
+    },
+    {
+      "id": "3588b0d9af5788d0fa38",
+      "path": "runtime/commissioning.py",
+      "line": 780,
+      "rule": "todo-comment",
+      "classification": "validation_literal",
+      "review_owner": "commission-project"
+    },
+    {
+      "id": "d7768ec131a2200f487d",
+      "path": "runtime/evidence_portability.py",
+      "line": 91,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "2c7131ae941a502957f3",
+      "path": "runtime/file_lock.py",
+      "line": 357,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "8977048be67e52991b6a",
+      "path": "runtime/hardware_routing.py",
+      "line": 223,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "hardware-aware-execution-routing"
+    },
+    {
+      "id": "346f213f0c1afe0631c0",
+      "path": "runtime/lifecycle.py",
+      "line": 23,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "d5ff8114653bd91a35a1",
+      "path": "runtime/operational_observers.py",
+      "line": 288,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "operational-observers"
+    },
+    {
+      "id": "3e36af20c32f2b8089ff",
+      "path": "runtime/operational_observers.py",
+      "line": 290,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "operational-observers"
+    },
+    {
+      "id": "c16144da21fb3df02ca6",
+      "path": "runtime/operational_observers.py",
+      "line": 292,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "operational-observers"
+    },
+    {
+      "id": "d8d9196b3a8be0e82c29",
+      "path": "runtime/operational_observers.py",
+      "line": 294,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "operational-observers"
+    },
+    {
+      "id": "cf15c977497ab99b8c62",
+      "path": "runtime/operational_observers.py",
+      "line": 296,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "operational-observers"
+    },
+    {
+      "id": "3ee0d8347a0b5c240d25",
+      "path": "runtime/operational_observers.py",
+      "line": 300,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "operational-observers"
+    },
+    {
+      "id": "8e1ef0c150c7013d087b",
+      "path": "runtime/orchestrator.py",
+      "line": 68,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "36963e3adadb0d9d475a",
+      "path": "runtime/process_supervisor.py",
+      "line": 510,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "process-supervisor"
+    },
+    {
+      "id": "b74ccc3e4e94ad7237bb",
+      "path": "runtime/project_intelligence.py",
+      "line": 3184,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "review_owner": "map-project-intelligence"
+    },
+    {
+      "id": "97fda3d9c8689618a191",
+      "path": "runtime/provider_certification.py",
+      "line": 16,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "c2acd2ccb929565673dd",
+      "path": "runtime/provider_certification.py",
+      "line": 17,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "4e016cab13b772fae8e8",
+      "path": "runtime/provider_certification.py",
+      "line": 18,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "91d6b367c97e630f89f1",
+      "path": "runtime/provider_certification.py",
+      "line": 19,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "839ae649f99d18b2d6b7",
+      "path": "runtime/provider_certification.py",
+      "line": 20,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "f6b62a00deb956ddf100",
+      "path": "runtime/provider_certification.py",
+      "line": 21,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "2235009678bcec0646c3",
+      "path": "runtime/provider_gateway.py",
+      "line": 54,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "provider-gateway"
+    },
+    {
+      "id": "8f5865fbf5cca2eaf5c9",
+      "path": "runtime/provider_gateway.py",
+      "line": 496,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "provider-gateway"
+    },
+    {
+      "id": "b3661d78263ea2692140",
+      "path": "runtime/release_certification.py",
+      "line": 775,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "review_owner": "release-certification"
+    },
+    {
+      "id": "3e1db89cf32604034b0b",
+      "path": "runtime/resource_lifecycle.py",
+      "line": 472,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "manage-resource-lifecycle"
+    },
+    {
+      "id": "f01b14e46717f526dbdc",
+      "path": "runtime/studio_authority.py",
+      "line": 55,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "studio-authority"
+    },
+    {
+      "id": "17711ec8297f3d9cdafa",
+      "path": "runtime/tool_recommendations.py",
+      "line": 57,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "d837b4d671d2d5b70ea1",
+      "path": "tests/test_bounded_walk.py",
+      "line": 16,
+      "rule": "unimplemented-error",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    },
+    {
+      "id": "8c2c283a843b1f63e15f",
+      "path": "tests/test_capability_mining_skills.py",
+      "line": 198,
+      "rule": "unimplemented-error",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    },
+    {
+      "id": "30dfa8c217e2136a82b9",
+      "path": "tests/test_file_lock_contention.py",
+      "line": 52,
+      "rule": "python-pass",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    },
+    {
+      "id": "f153254c3c14f9ef64aa",
+      "path": "tests/test_instrumentation_sdk.py",
+      "line": 52,
+      "rule": "python-pass",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    },
+    {
+      "id": "726280b1cf380def79de",
+      "path": "tests/test_native_skills.py",
+      "line": 126,
+      "rule": "todo-comment",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    },
+    {
+      "id": "2c07bb454ecead4b2f6c",
+      "path": "tests/test_skill_library.py",
+      "line": 111,
+      "rule": "todo-comment",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    },
+    {
+      "id": "dade03c3c17e2ef39f7c",
+      "path": "tests/test_test_runner_controls.py",
+      "line": 43,
+      "rule": "python-pass",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    },
+    {
+      "id": "f5b85bfe72fdc7dcdbc2",
+      "path": "tests/test_workspace_manager.py",
+      "line": 803,
+      "rule": "python-pass",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    }
+  ],
+  "errors": []
+}

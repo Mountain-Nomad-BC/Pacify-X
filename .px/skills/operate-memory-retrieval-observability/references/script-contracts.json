@@ -1,0 +1,312 @@
+{
+  "contracts": [
+    {
+      "authoritative_source_sha256": "68f82ca91cc6b09804182b74dedff7519a3026a464ca66a1c88813f9e088078d",
+      "authority_and_safety": "Never cross project or subject scope, promote unverified observations, or purge without an auditable scope and recovery policy.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "context-budget",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_context_budget.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "bind-project-and-subject-scope",
+        "validate-ingestion-and-provenance",
+        "retrieve-and-budget-context",
+        "record-trace-and-quality",
+        "retain-promote-or-purge-by-policy"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/scripts/context_budget.py"
+      ],
+      "trigger": "Use when the requested outcome is context budget or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "2be1da5a490d2ac90985480a7a49dcda9a0bb8fbe8bf2611df69b7b7514180b5",
+      "authority_and_safety": "Never cross project or subject scope, promote unverified observations, or purge without an auditable scope and recovery policy.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "drift-monitor",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_drift_monitor.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "bind-project-and-subject-scope",
+        "validate-ingestion-and-provenance",
+        "retrieve-and-budget-context",
+        "record-trace-and-quality",
+        "retain-promote-or-purge-by-policy"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/scripts/drift_monitor.py"
+      ],
+      "trigger": "Use when the requested outcome is drift monitor or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "19bc948f91a1178604c2ccb335cd084f40ee79501a41e7901d60bbf7a65088c3",
+      "authority_and_safety": "Never cross project or subject scope, promote unverified observations, or purge without an auditable scope and recovery policy.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "hybrid-retrieval",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_hybrid_retrieval.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "bind-project-and-subject-scope",
+        "validate-ingestion-and-provenance",
+        "retrieve-and-budget-context",
+        "record-trace-and-quality",
+        "retain-promote-or-purge-by-policy"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/scripts/hybrid_retrieval.py"
+      ],
+      "trigger": "Use when the requested outcome is hybrid retrieval or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "4522e0a170a1b204ba67d3c441d893729fe37e20bc9b0c5ff3db6a2b06767911",
+      "authority_and_safety": "Never cross project or subject scope, promote unverified observations, or purge without an auditable scope and recovery policy.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "ingestion-validator",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_ingestion_validator.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "bind-project-and-subject-scope",
+        "validate-ingestion-and-provenance",
+        "retrieve-and-budget-context",
+        "record-trace-and-quality",
+        "retain-promote-or-purge-by-policy"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/scripts/ingestion_validator.py"
+      ],
+      "trigger": "Use when the requested outcome is ingestion validator or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "6572e07f74910d741f62f4fcbf31afa6e389abf34be7d5d4aca3c1b2890a5637",
+      "authority_and_safety": "Never cross project or subject scope, promote unverified observations, or purge without an auditable scope and recovery policy.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "memory-write-gate",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_memory_write_gate.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "bind-project-and-subject-scope",
+        "validate-ingestion-and-provenance",
+        "retrieve-and-budget-context",
+        "record-trace-and-quality",
+        "retain-promote-or-purge-by-policy"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/scripts/memory_write_gate.py"
+      ],
+      "trigger": "Use when the requested outcome is memory write gate or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "cee34a30b78de1d794d22a59c778be47c372b11b666cef7fdd77ab62aae9a834",
+      "authority_and_safety": "Never cross project or subject scope, promote unverified observations, or purge without an auditable scope and recovery policy.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "replay-bundle",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_replay_bundle.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "bind-project-and-subject-scope",
+        "validate-ingestion-and-provenance",
+        "retrieve-and-budget-context",
+        "record-trace-and-quality",
+        "retain-promote-or-purge-by-policy"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/scripts/replay_bundle.py"
+      ],
+      "trigger": "Use when the requested outcome is replay bundle or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "99752daf496f83ac9a5f1f84d8af12dcbda4896408969a9ddd9293cb6cd7b85c",
+      "authority_and_safety": "Never cross project or subject scope, promote unverified observations, or purge without an auditable scope and recovery policy.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "retrieval-evaluator",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_retrieval_evaluator.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "bind-project-and-subject-scope",
+        "validate-ingestion-and-provenance",
+        "retrieve-and-budget-context",
+        "record-trace-and-quality",
+        "retain-promote-or-purge-by-policy"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/scripts/retrieval_evaluator.py"
+      ],
+      "trigger": "Use when the requested outcome is retrieval evaluator or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "7363b9cffee8dda22039aad5b7ccc6c6d8fd26b8d0f3d80c18a6378a29116515",
+      "authority_and_safety": "Never cross project or subject scope, promote unverified observations, or purge without an auditable scope and recovery policy.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "scoped-memory",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_scoped_memory.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "bind-project-and-subject-scope",
+        "validate-ingestion-and-provenance",
+        "retrieve-and-budget-context",
+        "record-trace-and-quality",
+        "retain-promote-or-purge-by-policy"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/scripts/scoped_memory.py"
+      ],
+      "trigger": "Use when the requested outcome is scoped memory or when that outcome is a required dependency."
+    },
+    {
+      "authoritative_source_sha256": "93098e87152340c41f1964c3d9cd430b47ddd8c45bd35eccb75e1eed0d3edcdc",
+      "authority_and_safety": "Never cross project or subject scope, promote unverified observations, or purge without an auditable scope and recovery policy.",
+      "evidence": [
+        "normalized inputs",
+        "owner and dependency resolution",
+        "structured result",
+        "negative-case result",
+        "content hashes",
+        "verification receipt"
+      ],
+      "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+      "id": "trace-recorder",
+      "implementation_disposition": "namespaced_exact_body",
+      "implementation_target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_trace_recorder.py",
+      "inputs": {
+        "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+        "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+        "target": "Explicit file, repository, service, record set, or artifact scope."
+      },
+      "kind": "script",
+      "procedure": [
+        "bind-project-and-subject-scope",
+        "validate-ingestion-and-provenance",
+        "retrieve-and-budget-context",
+        "record-trace-and-quality",
+        "retain-promote-or-purge-by-policy"
+      ],
+      "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+      "source_paths": [
+        "packs/04-memory-retrieval-observability_v1.0.0/scripts/trace_recorder.py"
+      ],
+      "trigger": "Use when the requested outcome is trace recorder or when that outcome is a required dependency."
+    }
+  ],
+  "owner": "operate-memory-retrieval-observability",
+  "schema_version": "1.0"
+}

@@ -1,0 +1,28 @@
+{
+  "cleanup_id": "cleanup-8e32a43afe12473d90da88b19139e839",
+  "project_id": "Pacify-X",
+  "run_id": "engine-diff-diagnostic",
+  "lane_id": "diagnostic",
+  "start_time": "2026-08-16T02:33:55.595321+00:00",
+  "end_time": "2026-08-16T02:33:56.674463+00:00",
+  "reason": "engine identity diagnostic complete",
+  "validated_roots": [
+    "C:\\Users\\Ben\\Documents"
+  ],
+  "workers": 1,
+  "priority_mode": "conservative_sequential",
+  "resources_considered": 1,
+  "resources_reclaimed": 1,
+  "resources_skipped": 0,
+  "resources_failed": 0,
+  "files_removed": 3931,
+  "directories_removed": 1221,
+  "bytes_reclaimed": 108995284,
+  "retained_artifacts": [],
+  "promoted_artifacts": [],
+  "links_encountered": 0,
+  "orphan_processes_reaped": 0,
+  "errors": [],
+  "remaining_owned_ephemeral_resources": 0,
+  "dry_run": false
+}

@@ -46,6 +46,7 @@ def _digest(path: Path) -> str:
 
 CERTIFICATION_POLICY_VERSION = "2.0"
 MAX_CAPTURE_CHARS = 4_000
+_PROCESS_VALIDATED_RESULTS: dict[str, dict[str, Any]] = {}
 
 
 def _utc_now() -> str:
@@ -891,6 +892,7 @@ def certify_exact_tools(
             key = _cache_key(actual_hash, contract_hash)
             cache_path = cache_dir / f"{key}.json" if cache_dir is not None else None
             cached = None
+            cache_source = None
             if allow_cache and cache_path is not None and cache_path.is_file():
                 try:
                     candidate = _load(cache_path)
@@ -901,8 +903,19 @@ def certify_exact_tools(
                         and "repeat_behavior" in candidate.get("result", {})
                     ):
                         cached = candidate["result"]
+                        cache_source = "persistent"
                 except (OSError, ValueError, json.JSONDecodeError):
                     cached = None
+            if allow_cache and cached is None and key in _PROCESS_VALIDATED_RESULTS:
+                # A prior certification in this Python process already executed
+                # the exact hash-bound tool, negative case, and deterministic
+                # repeat under the same harness/runtime/environment key. Reuse
+                # that immutable JSON-shaped result to avoid multiplying 224
+                # subprocesses in callers that subsequently request a sealed
+                # persistent cache. This never crosses a process boundary and
+                # is not reported as a persistent cache hit.
+                cached = json.loads(json.dumps(_PROCESS_VALIDATED_RESULTS[key]))
+                cache_source = "process"
             if cached is not None:
                 load_result = cached["direct_load"]
                 behavior = cached["positive_behavior"]
@@ -988,7 +1001,8 @@ def certify_exact_tools(
                     if denial is not None and denial["passed"] and deterministic
                     else "contract-certified",
                     "cache_key": key,
-                    "cache_hit": cached is not None,
+                    "cache_hit": cache_source == "persistent",
+                    "process_cache_hit": cache_source == "process",
                 }
             )
             tool_passed = (
@@ -998,7 +1012,22 @@ def certify_exact_tools(
                 and denial["passed"]
                 and deterministic
             )
-            if cache_path is not None and cached is None and tool_passed:
+            if tool_passed:
+                validated_result = {
+                    "passed": True,
+                    "direct_load": load_result,
+                    "positive_behavior": behavior,
+                    "negative_behavior": denial,
+                    "repeat_behavior": repeat,
+                }
+                _PROCESS_VALIDATED_RESULTS[key] = json.loads(
+                    json.dumps(validated_result)
+                )
+            if (
+                cache_path is not None
+                and cache_source != "persistent"
+                and tool_passed
+            ):
                 cache_path.parent.mkdir(parents=True, exist_ok=True)
                 _dump(
                     cache_path,
@@ -1006,13 +1035,7 @@ def certify_exact_tools(
                         {
                             "schema_version": "1.0",
                             "cache_key": key,
-                            "result": {
-                                "passed": True,
-                                "direct_load": load_result,
-                                "positive_behavior": behavior,
-                                "negative_behavior": denial,
-                                "repeat_behavior": repeat,
-                            },
+                            "result": validated_result,
                         }
                     ),
                 )
@@ -1026,7 +1049,8 @@ def certify_exact_tools(
                     ),
                     6,
                 ),
-                cache_hit=cached is not None,
+                cache_hit=cache_source == "persistent",
+                process_cache_hit=cache_source == "process",
             )
         wrapper_input = temp / "domain-wrapper-input.json"
         _dump(
@@ -1058,7 +1082,7 @@ def certify_exact_tools(
             "manage-revocable-certification": "manifest-reconciler",
         }
         for owner, outcome in wrapper_outcomes.items():
-            script = root / ".agents" / "skills" / owner / "scripts" / "domain_tool.py"
+            script = root / ".px" / "skills" / owner / "scripts" / "domain_tool.py"
             publish("started", owner, surface="domain_wrapper")
             behavior = _run(
                 script,

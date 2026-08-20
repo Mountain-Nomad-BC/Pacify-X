@@ -1,0 +1,38 @@
+{
+  "admission_record": "manage-n8n-credentials",
+  "body_sha256": "3e3abadf736bdbf5ba62fcf45f8a146ec9dd45c9c9ba4b666f292688b5a20687",
+  "contract": {
+    "available": true,
+    "sha256": "6c467f24104be0c34203ed7c83c7469daa8013fa17bce4c5936df0e8ff4df7a4",
+    "source": "registry/skill_packages/manage-n8n-credentials.json"
+  },
+  "description": "Create, scope, rotate, test, and retire n8n credentials without exposing values or breaking hidden consumers.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "manage-n8n-credentials",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/manage-n8n-credentials"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "credential-lifecycle",
+    "n8n",
+    "oauth",
+    "secret-rotation"
+  ],
+  "version": "1.0.0"
+}

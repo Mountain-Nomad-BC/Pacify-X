@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:certification-readiness",
+  "title": "PACIFY-X certification environment readiness",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "classification",
+    "valid",
+    "engine_root",
+    "extension_root",
+    "platform",
+    "probe_policy",
+    "prerequisites",
+    "summary",
+    "errors"
+  ],
+  "properties": {
+    "schema_version": {"const": "px.certification-readiness/1.0"},
+    "classification": {"enum": ["ready", "environment-unready"]},
+    "valid": {"type": "boolean"},
+    "engine_root": {"type": "string", "minLength": 1},
+    "extension_root": {"type": ["string", "null"]},
+    "platform": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operating_system", "architecture"],
+      "properties": {
+        "operating_system": {"type": "string"},
+        "architecture": {"type": "string"}
+      }
+    },
+    "probe_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "read_only",
+        "network_access",
+        "install_performed",
+        "environment",
+        "timeout_seconds",
+        "parameterized_roots"
+      ],
+      "properties": {
+        "read_only": {"const": true},
+        "network_access": {"const": "not-used"},
+        "install_performed": {"const": false},
+        "environment": {"const": "allowlisted-and-scrubbed"},
+        "timeout_seconds": {"type": "number", "minimum": 0.001},
+        "parameterized_roots": {"const": true}
+      }
+    },
+    "prerequisites": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "required",
+          "status",
+          "executable",
+          "version",
+          "requirement",
+          "diagnostic"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "python",
+              "python-build",
+              "node",
+              "npm",
+              "node-package-lock",
+              "browser",
+              "vscode",
+              "engine"
+            ]
+          },
+          "required": {"const": true},
+          "status": {
+            "enum": [
+              "ready",
+              "missing",
+              "incompatible",
+              "invalid-configuration",
+              "probe-failed"
+            ]
+          },
+          "executable": {"type": ["string", "null"]},
+          "version": {"type": ["string", "null"]},
+          "requirement": {"type": ["string", "null"]},
+          "diagnostic": {"type": "string"}
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "ready", "unready"],
+      "properties": {
+        "required": {"const": 8},
+        "ready": {"type": "integer", "minimum": 0, "maximum": 8},
+        "unready": {"type": "integer", "minimum": 0, "maximum": 8}
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

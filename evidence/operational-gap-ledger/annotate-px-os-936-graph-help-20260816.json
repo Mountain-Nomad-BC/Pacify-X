@@ -1,0 +1,11 @@
+{
+  "gap_id": "PX-OS-936",
+  "note": "A further source assertion expects the superseded phrase Ctrl+wheel to zoom; the current visible help includes Ctrl+wheel and plus/minus zoom controls, and the browser walk exercises those controls.",
+  "evidence": [
+    {"claim": "Current graph gesture help uses the newer complete wording.", "reference": "extension/media/dashboard/48-graph-surface.js:90"},
+    {"claim": "The stale regex is the only source-contract failure at that assertion.", "reference": "focused run under gap-event:PX-OPERATIONAL-GAPS-20260816:000000004968"}
+  ],
+  "patch": {
+    "next_action": "Update the graph-help regex to the current visible gesture contract and retain the browser zoom interaction checks."
+  }
+}

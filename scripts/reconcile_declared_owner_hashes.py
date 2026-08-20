@@ -17,7 +17,7 @@ def reconcile(root: Path, *, check: bool) -> dict[str, object]:
     for record in payload.get("records", ()):
         owner = str(record.get("canonical_owner", ""))
         source_id = str(record.get("source_id", ""))
-        body = root / ".agents" / "skills" / owner / "SKILL.md"
+        body = root / ".px" / "skills" / owner / "SKILL.md"
         if not body.is_file():
             errors.append(f"{source_id}: owner body missing: {owner}")
             continue

@@ -1,0 +1,26 @@
+{
+  "name": "px-team-fabric",
+  "version": "1.0.0",
+  "source_pack": "PX Team Fabric Ecosystem Integration Pack v0.2.0",
+  "authority": "existing Pacify-X owners plus project coordination ledger",
+  "local_first": true,
+  "network_service_required": false,
+  "billable_api_required": false,
+  "implemented": [
+    "actor-session-events",
+    "task-dag",
+    "claim-modes",
+    "leases",
+    "fencing-tokens",
+    "goal-context",
+    "task-budgets",
+    "worker-adapter-doctor",
+    "work-stop-diagnostics",
+    "derived-work-rooms",
+    "team-pack-preview-and-candidate-stage",
+    "portable-resume",
+    "layered-memory"
+  ],
+  "optional_inactive_adapters": ["team-hub", "buzz", "acp"],
+  "canonical_promotion": "separate Pacify-X admission required"
+}

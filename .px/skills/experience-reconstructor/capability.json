@@ -1,0 +1,37 @@
+{
+  "admission_record": "experience-reconstructor",
+  "body_sha256": "fd78e2e52f43263d492bae39e59e67db29a9fe73a5d284b6cd0fdeffd4f1cf20",
+  "contract": {
+    "available": true,
+    "sha256": "7dca1d2b323bad2133b470ac5059b8952b3ea6ba05c41a4e8fd0f6c6542100dd",
+    "source": "registry/skill_packages/experience-reconstructor.json"
+  },
+  "description": "Rebuild a current procedure from reusable principles rather than replaying old actions. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "experience-reconstructor",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/experience-reconstructor"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "experience",
+    "memory",
+    "reconstructor"
+  ],
+  "version": "0.1.0"
+}

@@ -2,17 +2,17 @@
   "id": "validate-engineering-outcomes",
   "version": "0.1.0",
   "status": "active",
-  "body": ".agents/skills/validate-engineering-outcomes/SKILL.md",
+  "body": ".px/skills/validate-engineering-outcomes/SKILL.md",
   "body_sha256": "f8f5202a618e921ffa1996b197278773449a7a754b77eb76527052e2c725dca1",
   "references": [
-    ".agents/skills/validate-engineering-outcomes/references/repository-contracts.md",
-    ".agents/skills/validate-engineering-outcomes/references/result-aware-validation.md",
-    ".agents/skills/validate-engineering-outcomes/references/deployment-evidence.md",
-    ".agents/skills/validate-engineering-outcomes/references/runtime-surface-evidence.md",
-    ".agents/skills/validate-engineering-outcomes/references/calculation-evidence.md"
+    ".px/skills/validate-engineering-outcomes/references/repository-contracts.md",
+    ".px/skills/validate-engineering-outcomes/references/result-aware-validation.md",
+    ".px/skills/validate-engineering-outcomes/references/deployment-evidence.md",
+    ".px/skills/validate-engineering-outcomes/references/runtime-surface-evidence.md",
+    ".px/skills/validate-engineering-outcomes/references/calculation-evidence.md"
   ],
   "resources": [
-    ".agents/skills/validate-engineering-outcomes/scripts/audit_bootstrap.py"
+    ".px/skills/validate-engineering-outcomes/scripts/audit_bootstrap.py"
   ],
   "capability_tags": [
     "repository",

@@ -1,0 +1,33 @@
+{
+  "cleanup_id": "cleanup-d7026d56c6b84cbcaec2847fba98cff3",
+  "project_id": "Pacify-X",
+  "run_id": "engine-diff-diagnostic",
+  "lane_id": "diagnostic",
+  "start_time": "2026-08-16T02:27:58.303916+00:00",
+  "end_time": "2026-08-16T02:27:58.320892+00:00",
+  "reason": "engine identity diagnostic complete",
+  "validated_roots": [
+    "C:\\Users\\Ben\\Documents"
+  ],
+  "workers": 1,
+  "priority_mode": "conservative_sequential",
+  "resources_considered": 1,
+  "resources_reclaimed": 0,
+  "resources_skipped": 1,
+  "resources_failed": 0,
+  "files_removed": 0,
+  "directories_removed": 0,
+  "bytes_reclaimed": 0,
+  "retained_artifacts": [
+    "C:\\Users\\Ben\\Documents\\.px-engine-diff-tyz4xouc"
+  ],
+  "promoted_artifacts": [],
+  "links_encountered": 0,
+  "orphan_processes_reaped": 0,
+  "errors": [
+    "owning run is active or recoverable",
+    "resource is not marked reclaimable"
+  ],
+  "remaining_owned_ephemeral_resources": 1,
+  "dry_run": false
+}

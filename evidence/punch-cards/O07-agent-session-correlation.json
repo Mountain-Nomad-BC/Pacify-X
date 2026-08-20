@@ -1,0 +1,54 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "O07",
+  "status": "accepted",
+  "recorded_at": "2026-08-12T06:53:13.273270+00:00",
+  "refreshed_utc": "2026-08-14T23:55:00Z",
+  "claim": "Agent sessions have durable, hash-sealed heartbeat and lifecycle projections correlated to exact project, task, claim, orchestration, owner, permissions, and canonical operational events; freshness never grants authority.",
+  "artifacts": [
+    {
+      "path": "runtime/agent_fleet_controls.py",
+      "sha256": "9533d0367ccd8b1a322c849c77c82bb7080664862d552be595864ad4ce080f39"
+    },
+    {
+      "path": "tests/test_agent_session_coordinator.py",
+      "sha256": "e8db4195760df9297d08632f1226ec4c24a46051923d45779375e13b7f6b2f85"
+    }
+  ],
+  "verification": [
+    {
+      "command": "python -B -m pytest -q --rootdir=. -p no:cacheprovider tests/test_runtime_lifecycle.py tests/test_agent_session_coordinator.py tests/test_provider_gateway.py tests/test_provider_budget.py tests/test_operational_visibility.py tests/test_operational_event_bus.py",
+      "result": "45 passed in 35.16s after anchored-head optimization"
+    },
+    {
+      "command": "python -m pytest tests/test_agent_session_coordinator.py tests/test_clean_room_capabilities.py tests/test_operational_event_bus.py tests/test_instrumentation_sdk.py -q",
+      "result": "31 passed independently"
+    },
+    {
+      "command": "python -m runtime.cli validate",
+      "result": "valid=true"
+    },
+    {
+      "command": "git diff --check -- runtime/agent_fleet_controls.py tests/test_agent_session_coordinator.py",
+      "result": "clean"
+    }
+  ],
+  "acceptance": {
+    "required_states": [
+      "active",
+      "waiting",
+      "verifying",
+      "blocked",
+      "recovering",
+      "stale"
+    ],
+    "restart_reconstruction": true,
+    "crash_ahead_event_roll_forward": true,
+    "duplicate_cross_project_and_cumulative_cost_guards": true,
+    "authority_granted": false
+  },
+  "limitations": [
+    "The broad runtime.agent route remains Tier D until O11 proves universal route weaving beyond session-state mediation.",
+    "Reconstruction fails closed when the required canonical event falls outside the bus 10,000-event replay bound."
+  ]
+}

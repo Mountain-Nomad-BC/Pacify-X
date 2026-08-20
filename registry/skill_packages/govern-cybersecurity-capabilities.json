@@ -1,5 +1,5 @@
 {
-  "body": ".agents/skills/govern-cybersecurity-capabilities/SKILL.md",
+  "body": ".px/skills/govern-cybersecurity-capabilities/SKILL.md",
   "body_sha256": "150f0a33f1e5cf88753831e5cd38dea7c30fbcb27d4b3f1a86c068e2c01cb421",
   "capability_tags": [
     "authority",
@@ -28,8 +28,8 @@
     "type": "governed_external_provider_merge"
   },
   "references": [
-    ".agents/skills/govern-cybersecurity-capabilities/references/authority-and-execution.md",
-    ".agents/skills/govern-cybersecurity-capabilities/references/domain-operations.md"
+    ".px/skills/govern-cybersecurity-capabilities/references/authority-and-execution.md",
+    ".px/skills/govern-cybersecurity-capabilities/references/domain-operations.md"
   ],
   "status": "active",
   "tests": "tests/test_cybersecurity_provider.py",

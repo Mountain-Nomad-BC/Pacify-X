@@ -1,0 +1,11 @@
+{
+  "active_gap_id": "PX-OS-937",
+  "learned": "Skill Studio has separate normalize, synchronize, and validate stages, but the open path invokes only normalize. Default capability.json also omits the revision version. A dedicated preparation boundary can synchronize valid files while preserving malformed files for visible repair.",
+  "next_action": "Add a bounded candidate-preparation helper, use it on every skill editor open, add exact unit coverage, and retain the browser interaction as end-to-end evidence.",
+  "unresolved_branch_gap_ids": ["PX-OS-937"],
+  "evidence": [
+    {"claim": "The defect is registered before repair.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004969"},
+    {"claim": "The editor open path invokes normalizeSkill without identity synchronization.", "reference": "extension/media/dashboard/90-controller.js:559-570"},
+    {"claim": "The existing synchronization function is submit-time only and can reject malformed capability JSON.", "reference": "extension/media/dashboard/49-studio-editors.js:362-378; extension/media/dashboard/90-controller.js:555"}
+  ]
+}

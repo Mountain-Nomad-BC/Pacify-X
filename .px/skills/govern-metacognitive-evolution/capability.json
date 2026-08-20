@@ -1,0 +1,39 @@
+{
+  "admission_record": "govern-metacognitive-evolution",
+  "body_sha256": "fbf555b37234ecf0f84bbdf60982e08a4584ef5ecbc5de949c23dccc43af845d",
+  "contract": {
+    "available": true,
+    "sha256": "afeee5cd25481199034bcb9ef8ab940604a0adeafbd8808f019087e9d8e8ee2e",
+    "source": "registry/skill_packages/govern-metacognitive-evolution.json"
+  },
+  "description": "Govern explicit uncertainty, contradiction handling, sanitized decision reconstruction, capability-graph evolution, evidence-based agent routing, bounded optimization, theory induction, observable engineering-practice analysis, and decomposed knowledge-dynamics signals. Use when reasoning quality or the engineering system itself must be inspected, compared, improved, or revalidated without capturing private chain-of-thought or creating a second control plane.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-metacognitive-evolution",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-metacognitive-evolution"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "metacognition",
+    "uncertainty",
+    "introspection",
+    "optimization",
+    "knowledge-dynamics"
+  ],
+  "version": "1.0.0"
+}

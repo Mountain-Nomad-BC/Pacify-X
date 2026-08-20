@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-027",
+  "learned": "The intentionally serial lifecycle path reaches paused and resumes, but cancellation remains finalizing. The terminal observer is spawned before ResourceManager publishes its record and immediately fails if it wins that race; unlike the Studio worker request loader, it has no bounded startup handshake.",
+  "next_action": "Add a bounded observer-resource publication wait, retain fail-closed binding validation after the deadline, and rerun only the lifecycle test.",
+  "unresolved_branch_gap_ids": ["PX-OS-027", "PX-OS-093"],
+  "evidence": [
+    {
+      "claim": "Cancellation remained finalizing at sequence 4 for the full 15-second bound.",
+      "reference": "focused lifecycle rerun under gap-event:PX-OPERATIONAL-GAPS-20260816:000000004938"
+    },
+    {
+      "claim": "spawn_owned_process starts Popen before ledger.upsert; terminal observer checks once and raises if absent.",
+      "reference": "runtime/resource_lifecycle.py:703-735; runtime/studio_terminal_observer.py:25-48"
+    }
+  ]
+}

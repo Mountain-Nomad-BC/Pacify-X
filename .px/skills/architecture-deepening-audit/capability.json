@@ -1,0 +1,38 @@
+{
+  "admission_record": "architecture-deepening-audit",
+  "body_sha256": "4b3249edacd5f8e4a4d1b56a1895f2ac36a5a71eb30e8c7e3cdb5db543c9eea7",
+  "contract": {
+    "available": true,
+    "sha256": "2bde263bca2a9f79f788732d1515ffa4b5491cebff48038da92e1a1a061e3189",
+    "source": "registry/skill_packages/architecture-deepening-audit.json"
+  },
+  "description": "Find shallow abstractions, leakage, duplication, and misplaced seams, then rank deepening opportunities.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "architecture-deepening-audit",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/architecture-deepening-audit"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "architecture",
+    "audit",
+    "deepening",
+    "engineering-reasoning"
+  ],
+  "version": "1.0.0"
+}

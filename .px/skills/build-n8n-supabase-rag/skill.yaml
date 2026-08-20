@@ -1,0 +1,40 @@
+{
+  "admission_record": "build-n8n-supabase-rag",
+  "body_sha256": "dbe7e95583579da5f3b7c7343dd2d8f82b96da75cfe6f9dddd63b96c687bd878",
+  "contract": {
+    "available": true,
+    "sha256": "ed9e92a1e65896f323630a1b40e2774565143170cfb4972bf70ce8057ad9e25a",
+    "source": "registry/skill_packages/build-n8n-supabase-rag.json"
+  },
+  "description": "Build governed RAG ingestion and retrieval with n8n and Supabase pgvector.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "build-n8n-supabase-rag",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/build-n8n-supabase-rag"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "cross",
+    "ingestion",
+    "match_documents",
+    "pgvector",
+    "rag",
+    "retrieval-evaluation"
+  ],
+  "version": "1.0.0"
+}

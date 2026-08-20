@@ -1,0 +1,29 @@
+{
+  "chunks": [],
+  "command": [
+    "node",
+    "--test",
+    "tests/hardening-boundaries.test.js",
+    "tests/extension-contract.test.js",
+    "tests/extension-studio-wiring.test.js",
+    "tests/studio-dashboard-host.test.js",
+    "tests/studio-draft-host.test.js",
+    "tests/studio-package.test.js",
+    "tests/px-bridge-cache.test.js",
+    "tests/dashboard-e2e.test.js",
+    "tests/ui-scaffold.test.js",
+    "tests/studio-catalog-workflow-layout.test.js",
+    "tests/studio-catalog-agent-builder.test.js",
+    "tests/workflow-trace-projection.test.js"
+  ],
+  "cwd": "extension",
+  "dependencies": [],
+  "duration_seconds": 30.452065,
+  "exit_code": 0,
+  "input_sha256": "124500e65829c018a7e76da0c0e988edf5618cbaaf0c14a42dea8fa9498e7b25",
+  "passed": true,
+  "receipt_sha256": "a420dbe1c3a760aabc138684b6d28fe658955d19b1fad9e76927fe228418a7ac",
+  "schema_version": "px.test-section-receipt/1.0",
+  "section": "dashboard-extension",
+  "timed_out": false
+}

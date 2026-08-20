@@ -1,0 +1,5920 @@
+[
+  {
+    "name": "accelerate",
+    "version": "1.14.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:accelerate",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "aiohappyeyeballs",
+    "version": "2.7.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:aiohappyeyeballs",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "aiohttp",
+    "version": "3.14.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:aiohttp",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "aiosignal",
+    "version": "1.4.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:aiosignal",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "aiosqlite",
+    "version": "0.22.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:aiosqlite",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "alembic",
+    "version": "1.13.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:alembic",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "annotated-doc",
+    "version": "0.0.4",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:annotated-doc",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "annotated-types",
+    "version": "0.7.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:annotated-types",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "anyio",
+    "version": "4.13.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:anyio",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "APScheduler",
+    "version": "3.11.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:APScheduler",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "argon2-cffi",
+    "version": "25.1.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:argon2-cffi",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "argon2-cffi-bindings",
+    "version": "25.1.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:argon2-cffi-bindings",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "ast_serialize",
+    "version": "0.5.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:ast_serialize",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "asyncpg",
+    "version": "0.31.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:asyncpg",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "attrs",
+    "version": "26.1.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:attrs",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "autopep8",
+    "version": "2.3.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:autopep8",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "av",
+    "version": "17.1.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:av",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "bandit",
+    "version": "1.9.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:bandit",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "bcrypt",
+    "version": "5.0.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:bcrypt",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "beautifulsoup4",
+    "version": "4.14.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:beautifulsoup4",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "bidict",
+    "version": "0.23.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:bidict",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "blinker",
+    "version": "1.9.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:blinker",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "blis",
+    "version": "1.3.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:blis",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "boolean.py",
+    "version": "5.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:boolean.py",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "brotli",
+    "version": "1.2.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:brotli",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "bs4",
+    "version": "0.0.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:bs4",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "build",
+    "version": "1.5.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:build",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "CacheControl",
+    "version": "0.14.4",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:CacheControl",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "catalogue",
+    "version": "2.0.10",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:catalogue",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "certifi",
+    "version": "2026.5.20",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:certifi",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "cffi",
+    "version": "2.0.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:cffi",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "charset-normalizer",
+    "version": "3.4.7",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:charset-normalizer",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "click",
+    "version": "8.4.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:click",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "cloudpathlib",
+    "version": "0.24.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:cloudpathlib",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "code2flow",
+    "version": "2.5.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:code2flow",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "colorama",
+    "version": "0.4.6",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:colorama",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "comtypes",
+    "version": "1.4.16",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:comtypes",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "confection",
+    "version": "1.3.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:confection",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "ConfigArgParse",
+    "version": "1.7.5",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:ConfigArgParse",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "coverage",
+    "version": "7.14.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:coverage",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "cryptography",
+    "version": "48.0.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:cryptography",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "ctranslate2",
+    "version": "4.8.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:ctranslate2",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "curated-tokenizers",
+    "version": "0.0.9",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:curated-tokenizers",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "curated-transformers",
+    "version": "0.1.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:curated-transformers",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "cyclonedx-python-lib",
+    "version": "11.8.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:cyclonedx-python-lib",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "cymem",
+    "version": "2.0.13",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:cymem",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "datasets",
+    "version": "5.0.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:datasets",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "defusedxml",
+    "version": "0.7.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:defusedxml",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "Deprecated",
+    "version": "1.3.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:Deprecated",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "dill",
+    "version": "0.4.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:dill",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "diskcache",
+    "version": "5.6.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:diskcache",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "dnspython",
+    "version": "2.8.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:dnspython",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "docksec",
+    "version": "2026.7.5",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:docksec",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "duckdb",
+    "version": "1.5.4",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:duckdb",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "email-validator",
+    "version": "2.3.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:email-validator",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "emoji",
+    "version": "2.15.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:emoji",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "en_core_web_lg",
+    "version": "3.8.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:en_core_web_lg",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "en_core_web_sm",
+    "version": "3.8.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:en_core_web_sm",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "en_core_web_trf",
+    "version": "3.8.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:en_core_web_trf",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "et_xmlfile",
+    "version": "2.0.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:et_xmlfile",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "faiss-cpu",
+    "version": "1.14.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:faiss-cpu",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "fastapi",
+    "version": "0.139.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:fastapi",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "faster-whisper",
+    "version": "1.2.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:faster-whisper",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "filelock",
+    "version": "3.29.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:filelock",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "FlagEmbedding",
+    "version": "1.4.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:FlagEmbedding",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "flashtext",
+    "version": "2.7",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:flashtext",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "Flask",
+    "version": "3.1.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:Flask",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "flask-cors",
+    "version": "6.0.5",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:flask-cors",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "Flask-Login",
+    "version": "0.6.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:Flask-Login",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "flatbuffers",
+    "version": "25.12.19",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:flatbuffers",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "fonttools",
+    "version": "4.63.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:fonttools",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "fpdf2",
+    "version": "2.8.7",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:fpdf2",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "frozenlist",
+    "version": "1.8.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:frozenlist",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "fsspec",
+    "version": "2026.4.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:fsspec",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "ftfy",
+    "version": "6.3.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:ftfy",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "gevent",
+    "version": "25.9.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:gevent",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "geventhttpclient",
+    "version": "2.3.9",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:geventhttpclient",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "greenlet",
+    "version": "3.5.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:greenlet",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "h11",
+    "version": "0.16.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:h11",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "hf-xet",
+    "version": "1.5.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:hf-xet",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "httpcore",
+    "version": "1.0.9",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:httpcore",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "httptools",
+    "version": "0.8.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:httptools",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "httpx",
+    "version": "0.28.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:httpx",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "huggingface_hub",
+    "version": "1.20.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:huggingface_hub",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "idna",
+    "version": "3.18",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:idna",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "iniconfig",
+    "version": "2.3.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:iniconfig",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "ir_datasets",
+    "version": "0.6.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:ir_datasets",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "itsdangerous",
+    "version": "2.2.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:itsdangerous",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "Jinja2",
+    "version": "3.1.6",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:Jinja2",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "joblib",
+    "version": "1.5.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:joblib",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "jsonschema",
+    "version": "4.26.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:jsonschema",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "jsonschema-specifications",
+    "version": "2025.9.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:jsonschema-specifications",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "langcodes",
+    "version": "3.5.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:langcodes",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "lemminflect",
+    "version": "0.2.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:lemminflect",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "Levenshtein",
+    "version": "0.27.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:Levenshtein",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "librt",
+    "version": "0.11.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:librt",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "license-expression",
+    "version": "30.4.4",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:license-expression",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "limits",
+    "version": "5.8.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:limits",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "llama_cpp_python",
+    "version": "0.3.31",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:llama_cpp_python",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "locate",
+    "version": "1.1.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:locate",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "locust",
+    "version": "2.46.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:locust",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "lxml",
+    "version": "6.1.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:lxml",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "lz4",
+    "version": "4.4.5",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:lz4",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "Mako",
+    "version": "1.3.12",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:Mako",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "markdown-it-py",
+    "version": "4.2.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:markdown-it-py",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "MarkupSafe",
+    "version": "3.0.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:MarkupSafe",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "mdurl",
+    "version": "0.1.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:mdurl",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "Metaphone",
+    "version": "0.6",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:Metaphone",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "motor",
+    "version": "3.7.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:motor",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "mpmath",
+    "version": "1.3.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:mpmath",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "msgpack",
+    "version": "1.1.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:msgpack",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "multidict",
+    "version": "6.7.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:multidict",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "multiprocess",
+    "version": "0.70.19",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:multiprocess",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "murmurhash",
+    "version": "1.0.15",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:murmurhash",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "mypy",
+    "version": "2.1.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:mypy",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "mypy_extensions",
+    "version": "1.1.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:mypy_extensions",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "narwhals",
+    "version": "2.22.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:narwhals",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "networkx",
+    "version": "3.6.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:networkx",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "numpy",
+    "version": "2.5.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:numpy",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "onnxruntime",
+    "version": "1.27.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:onnxruntime",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "opencv-python-headless",
+    "version": "4.13.0.92",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:opencv-python-headless",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "openpyxl",
+    "version": "3.1.5",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:openpyxl",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "openwakeword",
+    "version": "0.6.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:openwakeword",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "outcome",
+    "version": "1.3.0.post0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:outcome",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "packageurl-python",
+    "version": "0.17.6",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:packageurl-python",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "packaging",
+    "version": "26.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:packaging",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pandas",
+    "version": "3.0.5",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pandas",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "passlib",
+    "version": "1.7.4",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:passlib",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pathspec",
+    "version": "1.1.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pathspec",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pdfminer.six",
+    "version": "20251230",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pdfminer.six",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pdfplumber",
+    "version": "0.11.9",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pdfplumber",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "peft",
+    "version": "0.19.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:peft",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "phonetics",
+    "version": "1.0.5",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:phonetics",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pillow",
+    "version": "12.2.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pillow",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pip",
+    "version": "26.1.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pip",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pip_audit",
+    "version": "2.10.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pip_audit",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pip-api",
+    "version": "0.0.34",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pip-api",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pip-requirements-parser",
+    "version": "32.0.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pip-requirements-parser",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pip-tools",
+    "version": "7.5.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pip-tools",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "platformdirs",
+    "version": "4.10.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:platformdirs",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "playwright",
+    "version": "1.61.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:playwright",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "playwright-stealth",
+    "version": "2.0.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:playwright-stealth",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pluggy",
+    "version": "1.6.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pluggy",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "preshed",
+    "version": "3.0.13",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:preshed",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "prometheus_client",
+    "version": "0.25.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:prometheus_client",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "propcache",
+    "version": "0.5.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:propcache",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "protobuf",
+    "version": "7.35.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:protobuf",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "psutil",
+    "version": "7.2.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:psutil",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "psycopg",
+    "version": "3.3.4",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:psycopg",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "psycopg-binary",
+    "version": "3.3.4",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:psycopg-binary",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "psycopg2-binary",
+    "version": "2.9.12",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:psycopg2-binary",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pur",
+    "version": "7.4.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pur",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pwdlib",
+    "version": "0.3.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pwdlib",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "py-serializable",
+    "version": "2.1.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:py-serializable",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "py-spy",
+    "version": "0.4.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:py-spy",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pyahocorasick",
+    "version": "2.3.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pyahocorasick",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pyarrow",
+    "version": "25.0.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pyarrow",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pycodestyle",
+    "version": "2.14.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pycodestyle",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pycparser",
+    "version": "3.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pycparser",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pydantic",
+    "version": "2.13.4",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pydantic",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pydantic_core",
+    "version": "2.46.4",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pydantic_core",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pydantic-settings",
+    "version": "2.14.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pydantic-settings",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pyee",
+    "version": "13.0.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pyee",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "Pygments",
+    "version": "2.20.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:Pygments",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "PyJWT",
+    "version": "2.13.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:PyJWT",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pymongo",
+    "version": "4.17.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pymongo",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "PyMuPDF",
+    "version": "1.27.2.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:PyMuPDF",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pyparsing",
+    "version": "3.3.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pyparsing",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pypdf",
+    "version": "6.12.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pypdf",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pypdfium2",
+    "version": "5.9.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pypdfium2",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pypiwin32",
+    "version": "223",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pypiwin32",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pyproject_hooks",
+    "version": "1.2.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pyproject_hooks",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "PySocks",
+    "version": "1.7.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:PySocks",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pytesseract",
+    "version": "0.3.13",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pytesseract",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pytest",
+    "version": "9.0.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pytest",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pytest-asyncio",
+    "version": "1.3.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pytest-asyncio",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pytest-cov",
+    "version": "7.1.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pytest-cov",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "python-dateutil",
+    "version": "2.9.0.post0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:python-dateutil",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "python-docx",
+    "version": "1.2.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:python-docx",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "python-dotenv",
+    "version": "1.2.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:python-dotenv",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "python-engineio",
+    "version": "4.13.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:python-engineio",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "python-Levenshtein",
+    "version": "0.27.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:python-Levenshtein",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "python-magic",
+    "version": "0.4.27",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:python-magic",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "python-multipart",
+    "version": "0.0.31",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:python-multipart",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "python-socketio",
+    "version": "5.16.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:python-socketio",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pyttsx3",
+    "version": "2.99",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pyttsx3",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pywin32",
+    "version": "312",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pywin32",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "PyYAML",
+    "version": "6.0.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:PyYAML",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "pyzmq",
+    "version": "27.1.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:pyzmq",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "rank-bm25",
+    "version": "0.2.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:rank-bm25",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "RapidFuzz",
+    "version": "3.14.5",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:RapidFuzz",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "redis",
+    "version": "5.2.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:redis",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "referencing",
+    "version": "0.37.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:referencing",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "regex",
+    "version": "2026.5.9",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:regex",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "reportlab",
+    "version": "4.5.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:reportlab",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "requests",
+    "version": "2.34.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:requests",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "rich",
+    "version": "15.0.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:rich",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "riie-retention",
+    "version": "0.1.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:riie-retention",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "rpds-py",
+    "version": "2026.5.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:rpds-py",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "ruamel.yaml",
+    "version": "0.19.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:ruamel.yaml",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "ruff",
+    "version": "0.14.4",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:ruff",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "safetensors",
+    "version": "0.8.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:safetensors",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "scikit-learn",
+    "version": "1.9.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:scikit-learn",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "scipy",
+    "version": "1.18.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:scipy",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "selenium",
+    "version": "4.46.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:selenium",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "sentence-transformers",
+    "version": "5.6.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:sentence-transformers",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "sentencepiece",
+    "version": "0.2.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:sentencepiece",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "setuptools",
+    "version": "81.0.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:setuptools",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "shellingham",
+    "version": "1.5.4",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:shellingham",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "simple-websocket",
+    "version": "1.1.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:simple-websocket",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "six",
+    "version": "1.17.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:six",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "slowapi",
+    "version": "0.1.10",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:slowapi",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "smart_open",
+    "version": "8.0.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:smart_open",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "sniffio",
+    "version": "1.3.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:sniffio",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "sortedcontainers",
+    "version": "2.4.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:sortedcontainers",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "soupsieve",
+    "version": "2.8.4",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:soupsieve",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "spacy",
+    "version": "3.8.13",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:spacy",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "spacy-curated-transformers",
+    "version": "0.3.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:spacy-curated-transformers",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "spacy-legacy",
+    "version": "3.0.12",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:spacy-legacy",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "spacy-loggers",
+    "version": "1.0.5",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:spacy-loggers",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "SQLAlchemy",
+    "version": "2.0.49",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:SQLAlchemy",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "srsly",
+    "version": "2.5.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:srsly",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "stanza",
+    "version": "1.14.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:stanza",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "starlette",
+    "version": "1.3.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:starlette",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "stevedore",
+    "version": "5.8.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:stevedore",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "structlog",
+    "version": "26.1.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:structlog",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "sympy",
+    "version": "1.14.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:sympy",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "symspellpy",
+    "version": "6.10.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:symspellpy",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "termcolor",
+    "version": "3.3.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:termcolor",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "textdistance",
+    "version": "4.6.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:textdistance",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "thefuzz",
+    "version": "0.22.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:thefuzz",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "thinc",
+    "version": "8.3.13",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:thinc",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "threadpoolctl",
+    "version": "3.6.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:threadpoolctl",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "tiktoken",
+    "version": "0.13.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:tiktoken",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "tokenizers",
+    "version": "0.22.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:tokenizers",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "tomli",
+    "version": "2.4.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:tomli",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "tomli_w",
+    "version": "1.2.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:tomli_w",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "torch",
+    "version": "2.12.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:torch",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "tqdm",
+    "version": "4.68.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:tqdm",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "transformers",
+    "version": "5.14.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:transformers",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "trio",
+    "version": "0.33.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:trio",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "trio-websocket",
+    "version": "0.12.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:trio-websocket",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "typer",
+    "version": "0.25.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:typer",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "typing_extensions",
+    "version": "4.15.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:typing_extensions",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "typing-inspection",
+    "version": "0.4.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:typing-inspection",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "tzdata",
+    "version": "2026.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:tzdata",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "tzlocal",
+    "version": "5.3.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:tzlocal",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "udapi",
+    "version": "0.5.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:udapi",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "udtools",
+    "version": "0.2.8",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:udtools",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "undetected-chromedriver",
+    "version": "3.5.5",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:undetected-chromedriver",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "urllib3",
+    "version": "2.7.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:urllib3",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "uvicorn",
+    "version": "0.32.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:uvicorn",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "wasabi",
+    "version": "1.1.3",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:wasabi",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "watchfiles",
+    "version": "1.2.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:watchfiles",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "wcwidth",
+    "version": "0.8.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:wcwidth",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "weasel",
+    "version": "1.0.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:weasel",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "webrtcvad-wheels",
+    "version": "2.0.14",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:webrtcvad-wheels",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "websocket-client",
+    "version": "1.9.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:websocket-client",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "websockets",
+    "version": "16.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:websockets",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "Werkzeug",
+    "version": "3.1.8",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:Werkzeug",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "wheel",
+    "version": "0.47.0",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:wheel",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "wordfreq",
+    "version": "3.1.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:wordfreq",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "wrapt",
+    "version": "2.2.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:wrapt",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "wsproto",
+    "version": "1.3.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:wsproto",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "xlsxwriter",
+    "version": "3.2.9",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:xlsxwriter",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "xxhash",
+    "version": "3.8.1",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:xxhash",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "yarl",
+    "version": "1.24.5",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:yarl",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "zope.event",
+    "version": "6.2",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:zope.event",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  },
+  {
+    "name": "zope.interface",
+    "version": "8.5",
+    "manager": "python-pip",
+    "scope": "interpreter",
+    "resource_contract": {
+      "resource": "python-pip:interpreter:zope.interface",
+      "capabilities": [
+        "installed-package"
+      ],
+      "interface": "python-pip",
+      "requirements": [
+        "python-pip package environment"
+      ],
+      "effects": [
+        "available-for-separately-governed-invocation"
+      ],
+      "conflicts": [],
+      "policy": "detected-read-only-not-admitted-for-automatic-execution",
+      "state": "installed"
+    }
+  }
+]

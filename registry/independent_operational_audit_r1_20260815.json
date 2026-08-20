@@ -1,0 +1,63 @@
+{
+  "schema_version": "px.independent-operational-audit-remediation/1.0",
+  "audit_id": "px-r1-independent-operational-adversarial-audit-20260815",
+  "received_date": "2026-08-15",
+  "authority": "Independent operational audit. Findings remain open until current exact-byte evidence proves the required outcome; internal self-attestation cannot close independent acceptance.",
+  "source": {
+    "input_archive": "PACIFY_X_FINAL_OPERATIONAL_CERTIFIED_AUDIT_20260815_R1.zip",
+    "input_archive_sha256": "867849e1ebee4e05300a4ab517ecdc8894defc7650f9177645f6c8ac98b6c566",
+    "report_sha256": "7a220a2bf2412709cb47e40a1af645d5086994576b3a4bf254ea8833b074f2b1",
+    "findings_sha256": "1387f075d81ca99ffe4aefdbcc6bff5ba0b6296852faa34aa0a5f206e2f870c4",
+    "machine_summary_sha256": "9c93d29748bd7134af775d1cb2f245ff9c4e4912cd254a20e13d332d36b4b971",
+    "scope_sha256": "c09e67651cb451a6e7878491de0fb4882bc8576a2a9773bff0e65739840ef854",
+    "checksum_manifest_valid": true
+  },
+  "verdict": "repairs_implemented_pending_independent_verification",
+  "status_counts": {
+    "open": 0,
+    "fixed_pending_independent_verification": 5,
+    "accepted": 0
+  },
+  "findings": [
+    {
+      "id": "PX-R1-001",
+      "severity": "high",
+      "status": "fixed_pending_independent_verification",
+      "title": "Delivered final preflight is false and retained gate projections contradict fresh status",
+      "required_outcome": "Freeze final payload bytes before receipt generation, renew every changed section, publish projections from the frozen tree, replay preflight after extraction, bind retained replay evidence to the outer archive identity, and reject certified naming while authoritative completion remains false.",
+      "repair_evidence": ["scripts/clean_source_export.py", "sitecustomize.py", "tests/test_clean_source_export.py"]
+    },
+    {
+      "id": "PX-R1-002",
+      "severity": "medium",
+      "status": "fixed_pending_independent_verification",
+      "title": "Structural gate input identity omits dynamic scanner inputs and preserves a false-current pass",
+      "required_outcome": "Refresh incomplete-marker review identities, bind the structural group to review/scanner/policy/full-tree identities, prove a one-marker change stales the receipt, and require a fresh valid release audit at publication.",
+      "repair_evidence": [".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py", "registry/incomplete_finding_reviews.json", "runtime/test_profiles.py", "tests/test_structural_integrity.py", "tests/test_test_profiles.py"]
+    },
+    {
+      "id": "PX-R1-003",
+      "severity": "medium",
+      "status": "fixed_pending_independent_verification",
+      "title": "Agent terminal publication remains early and workflow finalization depends on a status observer",
+      "required_outcome": "Use one owned autonomous finalization protocol for agents and workflows; terminal visibility requires worker absence and closed resource custody across no-poll, disconnect, restart, success, failure, and cancellation paths.",
+      "repair_evidence": ["runtime/studio_terminal_observer.py", "runtime/studio_worker_launch.py", "runtime/studio_session_worker.py", "runtime/agent_runtime.py", "tests/test_agent_runtime.py", "tests/test_workflow_studio.py"]
+    },
+    {
+      "id": "PX-R1-004",
+      "severity": "medium",
+      "status": "fixed_pending_independent_verification",
+      "title": "Installed-host evidence binds the VSIX but not the exact engine tree",
+      "required_outcome": "Bind every installed-host receipt to a deterministic final engine manifest identity, reject mismatched engine evidence, rerun both platforms after engine changes, and compare platform-independent fields.",
+      "repair_evidence": ["runtime/engine_identity.py", "registry/engine_identity.json", "extension/scripts/run-installed-vsix-smoke.js", "runtime/evidence_index.py", "tests/test_evidence_index.py"]
+    },
+    {
+      "id": "PX-R1-005",
+      "severity": "low",
+      "status": "fixed_pending_independent_verification",
+      "title": "Outer ZIP DOS-origin metadata causes executable-mode loss on standard Linux extraction",
+      "required_outcome": "Write Unix-origin ZIP metadata, verify ordinary Linux extraction, and directly execute an extracted 0755 fixture.",
+      "repair_evidence": ["scripts/clean_source_export.py", "tests/test_clean_source_export.py"]
+    }
+  ]
+}

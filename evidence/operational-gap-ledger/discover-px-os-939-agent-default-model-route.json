@@ -1,0 +1,43 @@
+{
+  "gap_id": "PX-OS-939",
+  "feature": "agent-builder-valid-default-model-route",
+  "parent_surface": "agent-builder",
+  "control_action": "create or normalize a new standard agent draft",
+  "severity": "high",
+  "classification": "editor",
+  "observed_behavior": "normalizeAgent without an explicit harness chooses vscode-lm but fills the required exact vendor, family, model ID, and version with empty/auto placeholders, so the generated standard draft fails its own validator.",
+  "expected_behavior": "A new standard agent draft starts with a valid deterministic PX route unless the user explicitly selects a live host model; host routes remain fail-closed until exact catalog identity is selected.",
+  "operational_impact": "Generic Agent Builder entry points can generate invalid candidates before the user edits anything, undermining the visual builder's preflight and lifecycle path.",
+  "discovered_at": "2026-08-16T20:42:00Z",
+  "discovered_by": "codex-host:focused-agent-editor-model-walk",
+  "discovery_source": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004976",
+  "discovery_evidence": [
+    {"claim": "The default normalizeAgent validity assertion failed in the focused editor test.", "reference": "extension/tests/ui-scaffold.test.js:89-96; gap-event:PX-OPERATIONAL-GAPS-20260816:000000004976"},
+    {"claim": "Provider selection defaults to vscode-lm when harness_id is absent, while validation requires an exact non-auto host model identity.", "reference": "extension/media/dashboard/49-studio-editors.js:247-307"}
+  ],
+  "source_refs": [
+    {"path": "extension/media/dashboard/49-studio-editors.js", "symbols": ["normalizeAgent", "validateAgent"]},
+    {"path": "extension/tests/ui-scaffold.test.js", "symbols": ["W001/S001/G004 Studio editors"]}
+  ],
+  "assigned_owner": "codex-primary",
+  "dependencies": [],
+  "blockers": [],
+  "next_action": "Default only unspecified routes to the valid deterministic harness/model tuple and retain strict exact-host-model validation after explicit host selection.",
+  "tests_required": ["extension/tests/ui-scaffold.test.js", "extension/tests/dashboard-e2e.test.js", "python -m runtime.cli test-section run dashboard-extension"],
+  "completion_evidence": [],
+  "interaction_chain": {
+    "open_load": {"state": "partial", "detail": "The draft opens but normalized generic defaults can be invalid.", "evidence": ["extension/media/dashboard/49-studio-editors.js:247-278"]},
+    "display": {"state": "present", "detail": "Agent preflight can display the model route issue.", "evidence": ["extension/media/dashboard/90-controller.js"]},
+    "user_edit_action": {"state": "partial", "detail": "The user can select a host model, but should not have to repair an implicit invalid default.", "evidence": ["extension/media/dashboard/49-studio-editors.js:259-270"]},
+    "input_validation": {"state": "present", "detail": "Strict host identity validation correctly rejects auto placeholders.", "evidence": ["extension/media/dashboard/49-studio-editors.js:289-298"]},
+    "authorization": {"state": "not_applicable", "detail": "Draft preparation is non-authorizing.", "evidence": []},
+    "backend_dispatch": {"state": "not_applicable", "detail": "Defect precedes save and dispatch.", "evidence": []},
+    "runtime_effect": {"state": "missing", "detail": "The generated draft cannot pass preflight without repairing an implicit route.", "evidence": ["extension/tests/ui-scaffold.test.js:96"]},
+    "progress_reporting": {"state": "present", "detail": "Preflight reports invalid route state.", "evidence": ["extension/media/dashboard/49-studio-editors.js:294"]},
+    "result_acknowledgement": {"state": "partial", "detail": "Validation explains the issue but normalization created it.", "evidence": ["extension/media/dashboard/49-studio-editors.js:294"]},
+    "failure_handling": {"state": "partial", "detail": "Save remains fail-closed, but no valid default recovery exists.", "evidence": ["extension/media/dashboard/49-studio-editors.js:280-334"]},
+    "persistence": {"state": "not_applicable", "detail": "Invalid generic draft is not yet saved.", "evidence": []},
+    "reload_reopen": {"state": "not_applicable", "detail": "Defect is at initialization.", "evidence": []},
+    "recovery_rollback": {"state": "partial", "detail": "Manual live-model selection can recover, but an unspecified draft lacks an automatic valid route.", "evidence": ["extension/media/dashboard/90-controller.js"]}
+  }
+}

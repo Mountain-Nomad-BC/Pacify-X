@@ -1,0 +1,5 @@
+@layer px.primitives {
+  .px-stack { display: flex; flex-direction: column; gap: var(--px-space-3); }
+  .px-cluster { display: flex; flex-wrap: wrap; align-items: center; gap: var(--px-space-2); }
+  .px-readable { max-inline-size: 72ch; line-height: 1.55; }
+}

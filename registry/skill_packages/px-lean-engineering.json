@@ -1,0 +1,16 @@
+{
+  "id": "px-lean-engineering",
+  "version": "1.0.0",
+  "status": "active",
+  "body": ".px/skills/px-lean-engineering/SKILL.md",
+  "body_sha256": "0c42680c0cef12eaf65ba37eee1b4f864fc3e6a69348c07465571155f93458e7",
+  "references": [],
+  "capability_tags": ["lean-engineering", "repository-intelligence", "reuse", "verification"],
+  "effects": ["read_local"],
+  "provenance": {"type": "clean-room-mechanism-merge", "source_pack": "PX Team Fabric Ecosystem Integration Pack v0.2.0", "source_audit_sha256": "af17f82deb7831c1e1b598af8481b3ffb436eb10f275e74c23efd7d1d49b50b0"},
+  "clean_room": true,
+  "tests": "tests/test_dashboard_api.py",
+  "evidence": "evidence/team-fabric-integration-dispositions.json",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

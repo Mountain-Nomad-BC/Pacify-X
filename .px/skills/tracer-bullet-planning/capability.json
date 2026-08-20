@@ -1,0 +1,38 @@
+{
+  "admission_record": "tracer-bullet-planning",
+  "body_sha256": "f118fb4a174410f7233c89dbce4abdd1cdb768e57dc27854347d8d52049f705b",
+  "contract": {
+    "available": true,
+    "sha256": "46b218537a711e589c50d710624a88656268389a0be04b401b4bb38ea5a604fb",
+    "source": "registry/skill_packages/tracer-bullet-planning.json"
+  },
+  "description": "Break work into vertical, independently verifiable slices with explicit blocking edges.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "tracer-bullet-planning",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/tracer-bullet-planning"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "bullet",
+    "engineering-reasoning",
+    "planning",
+    "tracer"
+  ],
+  "version": "1.0.0"
+}

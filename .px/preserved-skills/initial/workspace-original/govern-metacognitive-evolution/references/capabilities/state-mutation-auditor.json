@@ -1,0 +1,66 @@
+{
+  "dependencies": [
+    "validate-engineering-outcomes",
+    "inspect-live-contracts"
+  ],
+  "domain": "semantic-contracts",
+  "failure_modes": [
+    "type-safe semantic corruption",
+    "hidden memory or registry write",
+    "missing rollback",
+    "UI-only validation"
+  ],
+  "formula_refs": [
+    "mutation-coverage",
+    "semantic-drift-score"
+  ],
+  "id": "state-mutation-auditor",
+  "inputs": [
+    "capability contract",
+    "declared state surfaces",
+    "execution evidence"
+  ],
+  "invariants": [
+    "Undeclared material mutation is a defect.",
+    "Schema validity never substitutes for runtime effect validation.",
+    "Persistent changes require explicit ownership and evidence."
+  ],
+  "outputs": [
+    "semantic effect artifact",
+    "machine-readable findings",
+    "repair or rollback requirements"
+  ],
+  "procedure": [
+    "Enumerate read, write, epistemic, permission, external, and derived-state surfaces.",
+    "Declare expected, tolerated, and prohibited effects.",
+    "Bind evidence, ownership, postconditions, and rollback.",
+    "Compare declarations with observed behavior.",
+    "Fail closed or produce a repair disposition for material mismatch."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Compare declared semantic effects with observed changes across files, databases, memory, registries, audit logs, APIs, and derived state.",
+  "title": "State Mutation Auditor",
+  "version": "1.0.0",
+  "when_to_use": "Use during canary runs, testing, certification, and incident investigation."
+}

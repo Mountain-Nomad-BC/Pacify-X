@@ -10,6 +10,7 @@ from datetime import datetime, timedelta, timezone
 
 from runtime.workspace_manager import (
     activate_project,
+    browse_canonical_memory,
     capture_memory_source,
     correct_memory,
     current_project,
@@ -161,10 +162,15 @@ class WorkspaceManagerTests(unittest.TestCase):
             self.assertTrue(workspace_status(workspace, source_root=ROOT)["valid"])
             monitor = workspace_monitor(workspace, source_root=ROOT)
             self.assertTrue(monitor["valid"])
+            self.assertTrue(monitor["memory_valid"])
             self.assertEqual(
                 {item["project_id"] for item in monitor["memory"]},
                 {"prj_alpha", "prj_beta"},
             )
+            self.assertTrue(all(item["integrity"]["valid"] for item in monitor["memory"]))
+            self.assertTrue(all(item["status"] == "healthy" for item in monitor["memory"]))
+            self.assertTrue(all("layer_counts" in item for item in monitor["memory"]))
+            self.assertTrue(all("lifecycle_counts" in item for item in monitor["memory"]))
             self.assertTrue(monitor["integrations"]["smoke_tested"])
 
     def test_active_session_memory_and_project_switch_are_isolated(self) -> None:
@@ -213,6 +219,10 @@ class WorkspaceManagerTests(unittest.TestCase):
                 actor_id="agent_operator",
             )["results"]
             self.assertEqual([item["memory_id"] for item in results], [memory_id])
+            browser = browse_canonical_memory(workspace, "evidence project memory")
+            self.assertEqual([item["memory_id"] for item in browser["records"]], [memory_id])
+            self.assertEqual(browser["records"][0]["authority"], "canonical workspace memory vault")
+            self.assertEqual(len(browser["records"][0]["record_sha256"]), 64)
             correction = correct_memory(
                 workspace,
                 "prj_alpha",
@@ -737,6 +747,59 @@ class WorkspaceManagerTests(unittest.TestCase):
             session.write_text(json.dumps(value), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "projection differs"):
                 current_project(workspace)
+
+    def test_expired_lease_fails_closed_for_current_status_browse_and_renewal(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory))
+            activate_project(workspace, "prj_alpha")
+
+            class FutureClock(datetime):
+                @classmethod
+                def now(cls, tz=None):
+                    value = datetime.now(timezone.utc) + timedelta(hours=2)
+                    return value if tz is not None else value.replace(tzinfo=None)
+
+            with patch.object(workspace_runtime, "datetime", FutureClock):
+                current = current_project(workspace)
+                self.assertIsNone(current["active"])
+                self.assertEqual(current["lease_state"], "expired")
+                self.assertIsNotNone(current["expired"])
+                self.assertEqual(
+                    browse_canonical_memory(workspace, "project memory")["records"],
+                    [],
+                )
+                status = workspace_status(workspace, source_root=ROOT)
+                self.assertFalse(status["valid"])
+                self.assertEqual(status["active_session_count"], 0)
+                self.assertEqual(status["expired_session_ids"], ["session_operator"])
+                with self.assertRaisesRegex(ValueError, "lease expired"):
+                    renew_project(workspace, minutes=5)
+
+    def test_activation_reacquires_an_expired_same_project_lease(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory))
+            first = activate_project(workspace, "prj_alpha")
+
+            class FutureClock(datetime):
+                @classmethod
+                def now(cls, tz=None):
+                    value = datetime.now(timezone.utc) + timedelta(hours=2)
+                    return value if tz is not None else value.replace(tzinfo=None)
+
+            with patch.object(workspace_runtime, "datetime", FutureClock):
+                second = activate_project(workspace, "prj_alpha")
+                self.assertTrue(second["activated"])
+                self.assertNotEqual(
+                    first["session"]["scope"]["lease_id"],
+                    second["session"]["scope"]["lease_id"],
+                )
+                self.assertEqual(current_project(workspace)["lease_state"], "current")
+            events = validate_event_ledger(
+                workspace / "projects_tracking/events"
+            )["events"]
+            self.assertIn("session-expired", [item["kind"] for item in events])
 
     def test_released_session_cannot_be_reactivated_by_projection_edit(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

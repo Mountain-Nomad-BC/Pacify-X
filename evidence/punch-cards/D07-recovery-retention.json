@@ -1,0 +1,63 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "D07",
+  "status": "accepted",
+  "recorded_at": "2026-08-18T14:11:01.044173+00:00",
+  "claim": "Recovery now makes bounded retry/alternate/rollback/escalate/stop decisions, opens a circuit on repeated failures, retains forensic state, reconciles configured durable authorities, preserves evidence/protected/unknown data, and delegates transient reclamation solely to the existing safe resource gate.",
+  "artifacts": [
+    {
+      "path": "runtime/recovery.py",
+      "sha256": "38c0e64e410c473cbed0fda7f95da3f3820456df8d7b367c61a5a356d7b2a4ae"
+    },
+    {
+      "path": "runtime/resource_lifecycle.py",
+      "sha256": "109c09ae1bf0b964dcaf2bfa4af815fe3b8d99a21e1bcba1c2f605d8cf4e7313"
+    },
+    {
+      "path": "runtime/cli.py",
+      "sha256": "68c7c2fd467cf673635875e9c58010c0d43da44b5c119dacdc9ff40c1d6defbe"
+    },
+    {
+      "path": "tests/test_recovery_coordinator_retention.py",
+      "sha256": "8b023b2afccc61afab629981484e6104906ad7062ffdea9bddafa6ba91b8e14c"
+    },
+    {
+      "path": "docs/D07_RECOVERY_RETENTION.md",
+      "sha256": "583adf6e4289109d57c5ed527005672c2e3daa26a8e6aa751da51f7971c0fe02"
+    }
+  ],
+  "verification": [
+    {
+      "command": "agent focused D07 pytest lane",
+      "result": "56 passed"
+    },
+    {
+      "command": "python -m pytest tests/test_recovery_coordinator_retention.py tests/test_recovery.py tests/test_resource_lifecycle.py tests/test_wal_transaction.py -q",
+      "result": "35 passed independently"
+    },
+    {
+      "command": "resource lifecycle unittest lane",
+      "result": "10 passed"
+    },
+    {
+      "command": "python -m runtime.cli recovery doctor --project .",
+      "result": "healthy; 4 components; dry_run; forensic_state=retained"
+    },
+    {
+      "command": "python -m runtime.cli validate",
+      "result": "valid=true"
+    }
+  ],
+  "acceptance": {
+    "policy_denial_and_irreversible_effect_never_retried": true,
+    "repeat_signature_opens_circuit": true,
+    "evidence_protected_unknown_never_auto_purged": true,
+    "operational_pruning_retains_anchor_and_receipt": true,
+    "transient_cleanup_uses_resource_safe_gate": true,
+    "doctor_has_human_and_machine_output": true
+  },
+  "limitations": [
+    "Event-bus and agent-session reconciliation are explicit configured callbacks because no universal instance registry exists; D07 never crawls the machine to guess instances.",
+    "WAL recovery completes already-started transactions even in doctor dry-run; --apply gates migrations and resource reclamation."
+  ]
+}

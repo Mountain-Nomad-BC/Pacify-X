@@ -1,0 +1,41 @@
+{
+  "admission_record": "manage-resource-lifecycle",
+  "body_sha256": "418f87a6f2b21746e7202c297405d0d08761fd7325b0cbc5774f30737a5e6755",
+  "contract": {
+    "available": true,
+    "sha256": "77c40aba98e3b57beab56f6b1c055ace66636c92b3d6e81b05b4f0b367389323",
+    "source": "registry/skill_packages/manage-resource-lifecycle.json"
+  },
+  "description": "Classify, register, retain, reconcile, and safely reclaim PACIFY-X-owned workspaces and process trees with fail-closed path, evidence, quarantine, recovery, budget, and receipt controls. Use when tests, scans, builds, temporary environments, staging, certification, cancellation, restart recovery, cleanup, storage pressure, or quarantine disposition create resources that must not leak or be deleted unsafely.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "manage-resource-lifecycle",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/manage-resource-lifecycle"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "cleanup",
+    "ephemeral",
+    "lifecycle",
+    "process-tree",
+    "quarantine",
+    "recovery",
+    "retention"
+  ],
+  "version": "1.0.0"
+}

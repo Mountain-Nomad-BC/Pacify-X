@@ -1,0 +1,12 @@
+{
+  "active_gap_id": "PX-OS-027",
+  "learned": "The terminal observer now waits up to eight seconds for the launcher to publish the exact run ID, PID, active flag, and observer lane before proceeding; all later authority and process-absence checks remain unchanged.",
+  "next_action": "Run only the complete workflow lifecycle test once.",
+  "unresolved_branch_gap_ids": ["PX-OS-027"],
+  "evidence": [
+    {
+      "claim": "Bounded exact-identity observer handshake implemented under admission 4940.",
+      "reference": "runtime/studio_terminal_observer.py:_wait_for_observer_binding"
+    }
+  ]
+}

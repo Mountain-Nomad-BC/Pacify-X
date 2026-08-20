@@ -1,0 +1,56 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "no private chain-of-thought capture",
+    "no cross-project promotion from one project",
+    "observations remain candidate-only",
+    "redact secrets before persistence"
+  ],
+  "bundle": "evolve-session-learning",
+  "category": "continuous-learning",
+  "dependencies": [
+    "govern-metacognitive-evolution",
+    "isolate-project-streams",
+    "candidate-memory-promoter"
+  ],
+  "id": "observe-project-scoped-instincts",
+  "keywords": [
+    "instincts",
+    "continuous learning",
+    "project scoped memory",
+    "session observation",
+    "confidence"
+  ],
+  "mechanisms": [
+    "pre/post action observation",
+    "project fingerprinting",
+    "atomic trigger-action records",
+    "confidence scoring",
+    "tail sampling",
+    "observer re-entrancy guards"
+  ],
+  "owner": "govern-metacognitive-evolution",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "skills/continuous-learning-v2/SKILL.md",
+      "skills/continuous-learning-v2/hooks/observe.sh",
+      "skills/continuous-learning-v2/agents/observer.md"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "skills/continuous-learning-v2/SKILL.md",
+    "skills/continuous-learning-v2/hooks/observe.sh",
+    "skills/continuous-learning-v2/agents/observer.md"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Capture bounded session observations and derive atomic, evidence-backed candidate behaviors isolated by project before any memory or skill promotion.",
+  "title": "Observe Project-Scoped Instincts",
+  "use_when": [
+    "repeated corrections should become reusable guidance",
+    "project conventions must not leak across repositories",
+    "tool traces contain reusable operational patterns"
+  ]
+}

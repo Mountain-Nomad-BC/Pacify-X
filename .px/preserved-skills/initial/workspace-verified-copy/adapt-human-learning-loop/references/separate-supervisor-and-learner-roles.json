@@ -1,0 +1,52 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "learner autonomy and privacy remain explicit",
+    "no shared credentials",
+    "high-impact edits require traceable authorization"
+  ],
+  "bundle": "adapt-human-learning-loop",
+  "category": "authorization",
+  "dependencies": [
+    "permission-diff-auditor",
+    "execution-contract-enforcer",
+    "maintain-learner-profile-boundary"
+  ],
+  "id": "separate-supervisor-and-learner-roles",
+  "keywords": [
+    "caregiver role",
+    "supervisor role",
+    "learner permissions",
+    "role separation"
+  ],
+  "mechanisms": [
+    "role matrix",
+    "action-level permission checks",
+    "observer attribution",
+    "least privilege",
+    "audit trail"
+  ],
+  "owner": "permission-diff-auditor",
+  "provenance": {
+    "derivation": "clean-room mechanism abstraction",
+    "source": "hyperlearning-clean-room",
+    "source_refs": [
+      "Manual de usuario e instalación.pdf sections 2.1-2.8",
+      "src/IniciarSesion.java",
+      "src/Padre.java"
+    ]
+  },
+  "source": "hyperlearning-clean-room",
+  "source_refs": [
+    "Manual de usuario e instalación.pdf sections 2.1-2.8",
+    "src/IniciarSesion.java",
+    "src/Padre.java"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Separate who performs an activity from who can register profiles, score observations, change rewards, inspect history, or export progress.",
+  "title": "Separate Supervisor and Learner Roles",
+  "use_when": [
+    "one interface currently mixes learner and supervisor actions",
+    "sensitive history or rewards need controlled access"
+  ]
+}

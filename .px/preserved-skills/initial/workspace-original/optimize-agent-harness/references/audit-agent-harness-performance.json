@@ -1,0 +1,55 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "do not treat file counts as proof of behavior",
+    "do not activate external hooks or scripts during audit",
+    "preserve target harness ownership"
+  ],
+  "bundle": "optimize-agent-harness",
+  "category": "agent-harness",
+  "dependencies": [
+    "audit-ai-runtime-assurance",
+    "validate-engineering-outcomes"
+  ],
+  "id": "audit-agent-harness-performance",
+  "keywords": [
+    "harness audit",
+    "tool coverage",
+    "context efficiency",
+    "quality gates",
+    "memory persistence",
+    "cost efficiency"
+  ],
+  "mechanisms": [
+    "deterministic scorecard",
+    "before-after deltas",
+    "scope-specific checks",
+    "action-space audit",
+    "observation contract audit",
+    "recovery contract audit"
+  ],
+  "owner": "govern-operating-kernel",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "skills/agent-harness-construction/SKILL.md",
+      "agents/harness-optimizer.md",
+      "scripts/harness-audit.js"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "skills/agent-harness-construction/SKILL.md",
+    "agents/harness-optimizer.md",
+    "scripts/harness-audit.js"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Score tool coverage, observation quality, recovery behavior, context efficiency, quality gates, memory, evaluation, security, and cost as one measurable harness surface.",
+  "title": "Audit Agent Harness Performance",
+  "use_when": [
+    "an agent repeatedly stalls or loops",
+    "tooling exists but completion quality is poor",
+    "harness changes need measurable proof"
+  ]
+}

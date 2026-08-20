@@ -1,0 +1,22 @@
+{
+  "gap_id": "PX-OS-988",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005690",
+  "effect": "read",
+  "scope": [
+    ".px/skills/govern-memory-fabric/references/layered-memory-lifecycle.md",
+    ".px/skills/govern-memory-fabric/references/memory-contract.md",
+    "runtime/knowledge_core_controller.py",
+    "runtime/learning_promotion.py",
+    "tests/test_knowledge_core_controller.py",
+    "tests/test_learning_promotion.py"
+  ],
+  "authority": "The selected admitted skill requires its lifecycle and contract references before changing the learning promotion parser; source and direct owners are read for exact impact analysis.",
+  "expected_effect": "Establish the typed layer/hash contract and exact current parser/test seams without changing filesystem or lifecycle state.",
+  "rollback": "Read-only inspection; unload the hydrated references after the bounded parser step.",
+  "evidence": [
+    {
+      "reference": ".px/skills/govern-memory-fabric/SKILL.md",
+      "claim": "Required reference routing for layered memory changes"
+    }
+  ]
+}

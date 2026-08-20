@@ -1,0 +1,15 @@
+{
+  "schema_version": "px.external-extension-verification/1.0",
+  "card_id": "O05",
+  "extension_root": "portable-sources/Pacify-X_Extension",
+  "verified_at": "2026-08-11T21:30:00Z",
+  "artifacts": {
+    "src/mcpActivityIntegration.js": "de4ca9d7c3db1b532b983fcaf98efc459a7d6fef039ca33aebf2e5d6c4e25e50",
+    "tests/mcp-activity-integration.test.js": "6d1016e3bb89ae881d0c8e792664f71900d5d1ca38b0e14b7e0c3326237dbd81",
+    "server/source.mjs": "ce88204defddac90f154dcc3bccd52cec2322fe884ab966ef67b5c7c57a0d3d4",
+    "server/index.js": "f53e5181c270056bf0035104553c98b753426c3503d15e41eaaf4c9456adcff5",
+    "tests/mcp-server.test.js": "a65ddc1cc66249c283697b78c210edd117e20a554b197a603ae1e82554e7306e"
+  },
+  "verification": "The full extension build passed 126 tests before the final UI audit; the focused MCP middleware and server tests remain included in the final build gate.",
+  "boundary": "MCP lifecycle records are Tier-C attestations; they do not claim direct Python-bus mediation."
+}

@@ -1,0 +1,3238 @@
+[
+  {
+    "id": "capability:1c8d40a759cd016bafb3",
+    "type": "capability",
+    "label": "python-runtime",
+    "properties": {}
+  },
+  {
+    "id": "capability:27f6b149edcad17ab1e1",
+    "type": "capability",
+    "label": "installed-package",
+    "properties": {}
+  },
+  {
+    "id": "capability:635cc242309f6a9b6064",
+    "type": "capability",
+    "label": "package-management",
+    "properties": {}
+  },
+  {
+    "id": "capability:694358e726af180bf950",
+    "type": "capability",
+    "label": "source-control",
+    "properties": {}
+  },
+  {
+    "id": "capability:8395ffadc769146edaf0",
+    "type": "capability",
+    "label": "container-runtime",
+    "properties": {}
+  },
+  {
+    "id": "capability:b61147a8f7e185209b45",
+    "type": "capability",
+    "label": "isolated-python-application-management",
+    "properties": {}
+  },
+  {
+    "id": "capability:bae14f7aea218ec5508e",
+    "type": "capability",
+    "label": "python-environment-management",
+    "properties": {}
+  },
+  {
+    "id": "capability:bd0b9bd7ad976278c644",
+    "type": "capability",
+    "label": "javascript-runtime",
+    "properties": {}
+  },
+  {
+    "id": "capability:cba415aa7540ecfe5980",
+    "type": "capability",
+    "label": "vscode-cli",
+    "properties": {}
+  },
+  {
+    "id": "capability:d2894a7905c89a64d861",
+    "type": "capability",
+    "label": "local-model-runtime",
+    "properties": {}
+  },
+  {
+    "id": "capability:efe745c45b28f293ec94",
+    "type": "capability",
+    "label": "isolated-python-environment",
+    "properties": {}
+  },
+  {
+    "id": "capability:fc0a1fb4b383c2a2156e",
+    "type": "capability",
+    "label": "javascript-package-management",
+    "properties": {}
+  },
+  {
+    "id": "effect:8ab51cf40339bb508b6c",
+    "type": "effect",
+    "label": "probe-read-only",
+    "properties": {}
+  },
+  {
+    "id": "effect:a0e8a4ba777aecf624a3",
+    "type": "effect",
+    "label": "read-only metadata discovery",
+    "properties": {}
+  },
+  {
+    "id": "effect:ac0cda65a296a7e43e2f",
+    "type": "effect",
+    "label": "available-for-separately-governed-invocation",
+    "properties": {}
+  },
+  {
+    "id": "env-file:72b423e5db99366522f8",
+    "type": "environment-file",
+    "label": "templates/service_capabilities/n8n/.env.example",
+    "properties": {
+      "kind": "schema-template",
+      "readable": true,
+      "exposure": "ignore-pattern-observed"
+    }
+  },
+  {
+    "id": "environment-variable:0f10bd4a80f0f7dddeb2",
+    "type": "environment-variable-schema",
+    "label": "EXECUTIONS_DATA_MAX_AGE",
+    "properties": {
+      "secret_like": false,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "environment-variable:143ef79ea9d881597de3",
+    "type": "environment-variable-schema",
+    "label": "WEBHOOK_URL",
+    "properties": {
+      "secret_like": false,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "environment-variable:1fab6a4eb344d822afde",
+    "type": "environment-variable-schema",
+    "label": "N8N_LOG_LEVEL",
+    "properties": {
+      "secret_like": false,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "environment-variable:2014efa83d6e2e47733c",
+    "type": "environment-variable-schema",
+    "label": "N8N_ENCRYPTION_KEY",
+    "properties": {
+      "secret_like": false,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "environment-variable:2a192bc7a6e8c2bd06f4",
+    "type": "environment-variable-schema",
+    "label": "DB_TYPE",
+    "properties": {
+      "secret_like": false,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "environment-variable:2eef88a7a434782089d7",
+    "type": "environment-variable-schema",
+    "label": "N8N_PORT",
+    "properties": {
+      "secret_like": false,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "environment-variable:33d33e2aa90d04864f75",
+    "type": "environment-variable-schema",
+    "label": "EXECUTIONS_DATA_PRUNE",
+    "properties": {
+      "secret_like": false,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "environment-variable:3ee91e4b76ec3efbcc75",
+    "type": "environment-variable-schema",
+    "label": "N8N_HOST",
+    "properties": {
+      "secret_like": false,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "environment-variable:4f758555b0001f28da97",
+    "type": "environment-variable-schema",
+    "label": "DB_POSTGRESDB_DATABASE",
+    "properties": {
+      "secret_like": false,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "environment-variable:7d8556a038093ea9f233",
+    "type": "environment-variable-schema",
+    "label": "N8N_PROTOCOL",
+    "properties": {
+      "secret_like": false,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "environment-variable:87277789549eea06658e",
+    "type": "environment-variable-schema",
+    "label": "DB_POSTGRESDB_HOST",
+    "properties": {
+      "secret_like": false,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "environment-variable:8a160cf942f00af67b43",
+    "type": "environment-variable-schema",
+    "label": "N8N_EDITOR_BASE_URL",
+    "properties": {
+      "secret_like": false,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "environment-variable:9f26864cd3b3b4a94aaa",
+    "type": "environment-variable-schema",
+    "label": "DB_POSTGRESDB_USER",
+    "properties": {
+      "secret_like": false,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "environment-variable:b97135db5e52bc382ddb",
+    "type": "environment-variable-schema",
+    "label": "DB_POSTGRESDB_PORT",
+    "properties": {
+      "secret_like": false,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "environment-variable:d6df5aa0f77044e59998",
+    "type": "environment-variable-schema",
+    "label": "DB_POSTGRESDB_PASSWORD",
+    "properties": {
+      "secret_like": true,
+      "provider": null,
+      "value_storage": "prohibited"
+    }
+  },
+  {
+    "id": "interface:0133ca8807166b18a42c",
+    "type": "interface",
+    "label": "npm --version",
+    "properties": {}
+  },
+  {
+    "id": "interface:04e964afd2741dbc1fab",
+    "type": "interface",
+    "label": "pipx --version",
+    "properties": {}
+  },
+  {
+    "id": "interface:24bb7e1ee108bf711a49",
+    "type": "interface",
+    "label": "python-pip",
+    "properties": {}
+  },
+  {
+    "id": "interface:2e8f3668735e17d0a9d5",
+    "type": "interface",
+    "label": "ollama --version",
+    "properties": {}
+  },
+  {
+    "id": "interface:2ea5f201616a9e949e29",
+    "type": "interface",
+    "label": "pnpm --version",
+    "properties": {}
+  },
+  {
+    "id": "interface:3313497c6720969a3633",
+    "type": "interface",
+    "label": "node --version",
+    "properties": {}
+  },
+  {
+    "id": "interface:3b0a9207eb9eb062debf",
+    "type": "interface",
+    "label": "code --version",
+    "properties": {}
+  },
+  {
+    "id": "interface:8e03bdef86411f68a1f5",
+    "type": "interface",
+    "label": "yarn --version",
+    "properties": {}
+  },
+  {
+    "id": "interface:a01aa78fb06ba0f46415",
+    "type": "interface",
+    "label": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.venv-certify\\Scripts\\python.exe",
+    "properties": {}
+  },
+  {
+    "id": "interface:b0a2d204bf14aeda1d44",
+    "type": "interface",
+    "label": "conda --version",
+    "properties": {}
+  },
+  {
+    "id": "interface:befe1b0b2846409d5dcb",
+    "type": "interface",
+    "label": "uv --version",
+    "properties": {}
+  },
+  {
+    "id": "interface:e85ae04a9104019ab3e9",
+    "type": "interface",
+    "label": "git --version",
+    "properties": {}
+  },
+  {
+    "id": "interface:f078a8419cc8f5345739",
+    "type": "interface",
+    "label": "docker --version",
+    "properties": {}
+  },
+  {
+    "id": "interface:f2b30a0e5d82b3f983a9",
+    "type": "interface",
+    "label": "python --version",
+    "properties": {}
+  },
+  {
+    "id": "package:python-pip:interpreter:accelerate",
+    "type": "installed-package",
+    "label": "accelerate",
+    "properties": {
+      "version": "1.14.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:aiohappyeyeballs",
+    "type": "installed-package",
+    "label": "aiohappyeyeballs",
+    "properties": {
+      "version": "2.7.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:aiohttp",
+    "type": "installed-package",
+    "label": "aiohttp",
+    "properties": {
+      "version": "3.14.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:aiosignal",
+    "type": "installed-package",
+    "label": "aiosignal",
+    "properties": {
+      "version": "1.4.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:aiosqlite",
+    "type": "installed-package",
+    "label": "aiosqlite",
+    "properties": {
+      "version": "0.22.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:alembic",
+    "type": "installed-package",
+    "label": "alembic",
+    "properties": {
+      "version": "1.13.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:annotated-doc",
+    "type": "installed-package",
+    "label": "annotated-doc",
+    "properties": {
+      "version": "0.0.4",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:annotated-types",
+    "type": "installed-package",
+    "label": "annotated-types",
+    "properties": {
+      "version": "0.7.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:anyio",
+    "type": "installed-package",
+    "label": "anyio",
+    "properties": {
+      "version": "4.13.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:APScheduler",
+    "type": "installed-package",
+    "label": "APScheduler",
+    "properties": {
+      "version": "3.11.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:argon2-cffi",
+    "type": "installed-package",
+    "label": "argon2-cffi",
+    "properties": {
+      "version": "25.1.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:argon2-cffi-bindings",
+    "type": "installed-package",
+    "label": "argon2-cffi-bindings",
+    "properties": {
+      "version": "25.1.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:ast_serialize",
+    "type": "installed-package",
+    "label": "ast_serialize",
+    "properties": {
+      "version": "0.5.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:asyncpg",
+    "type": "installed-package",
+    "label": "asyncpg",
+    "properties": {
+      "version": "0.31.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:attrs",
+    "type": "installed-package",
+    "label": "attrs",
+    "properties": {
+      "version": "26.1.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:autopep8",
+    "type": "installed-package",
+    "label": "autopep8",
+    "properties": {
+      "version": "2.3.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:av",
+    "type": "installed-package",
+    "label": "av",
+    "properties": {
+      "version": "17.1.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:bandit",
+    "type": "installed-package",
+    "label": "bandit",
+    "properties": {
+      "version": "1.9.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:bcrypt",
+    "type": "installed-package",
+    "label": "bcrypt",
+    "properties": {
+      "version": "5.0.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:beautifulsoup4",
+    "type": "installed-package",
+    "label": "beautifulsoup4",
+    "properties": {
+      "version": "4.14.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:bidict",
+    "type": "installed-package",
+    "label": "bidict",
+    "properties": {
+      "version": "0.23.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:blinker",
+    "type": "installed-package",
+    "label": "blinker",
+    "properties": {
+      "version": "1.9.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:blis",
+    "type": "installed-package",
+    "label": "blis",
+    "properties": {
+      "version": "1.3.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:boolean.py",
+    "type": "installed-package",
+    "label": "boolean.py",
+    "properties": {
+      "version": "5.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:brotli",
+    "type": "installed-package",
+    "label": "brotli",
+    "properties": {
+      "version": "1.2.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:bs4",
+    "type": "installed-package",
+    "label": "bs4",
+    "properties": {
+      "version": "0.0.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:build",
+    "type": "installed-package",
+    "label": "build",
+    "properties": {
+      "version": "1.5.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:CacheControl",
+    "type": "installed-package",
+    "label": "CacheControl",
+    "properties": {
+      "version": "0.14.4",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:catalogue",
+    "type": "installed-package",
+    "label": "catalogue",
+    "properties": {
+      "version": "2.0.10",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:certifi",
+    "type": "installed-package",
+    "label": "certifi",
+    "properties": {
+      "version": "2026.5.20",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:cffi",
+    "type": "installed-package",
+    "label": "cffi",
+    "properties": {
+      "version": "2.0.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:charset-normalizer",
+    "type": "installed-package",
+    "label": "charset-normalizer",
+    "properties": {
+      "version": "3.4.7",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:click",
+    "type": "installed-package",
+    "label": "click",
+    "properties": {
+      "version": "8.4.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:cloudpathlib",
+    "type": "installed-package",
+    "label": "cloudpathlib",
+    "properties": {
+      "version": "0.24.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:code2flow",
+    "type": "installed-package",
+    "label": "code2flow",
+    "properties": {
+      "version": "2.5.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:colorama",
+    "type": "installed-package",
+    "label": "colorama",
+    "properties": {
+      "version": "0.4.6",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:comtypes",
+    "type": "installed-package",
+    "label": "comtypes",
+    "properties": {
+      "version": "1.4.16",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:confection",
+    "type": "installed-package",
+    "label": "confection",
+    "properties": {
+      "version": "1.3.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:ConfigArgParse",
+    "type": "installed-package",
+    "label": "ConfigArgParse",
+    "properties": {
+      "version": "1.7.5",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:coverage",
+    "type": "installed-package",
+    "label": "coverage",
+    "properties": {
+      "version": "7.14.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:cryptography",
+    "type": "installed-package",
+    "label": "cryptography",
+    "properties": {
+      "version": "48.0.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:ctranslate2",
+    "type": "installed-package",
+    "label": "ctranslate2",
+    "properties": {
+      "version": "4.8.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:curated-tokenizers",
+    "type": "installed-package",
+    "label": "curated-tokenizers",
+    "properties": {
+      "version": "0.0.9",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:curated-transformers",
+    "type": "installed-package",
+    "label": "curated-transformers",
+    "properties": {
+      "version": "0.1.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:cyclonedx-python-lib",
+    "type": "installed-package",
+    "label": "cyclonedx-python-lib",
+    "properties": {
+      "version": "11.8.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:cymem",
+    "type": "installed-package",
+    "label": "cymem",
+    "properties": {
+      "version": "2.0.13",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:datasets",
+    "type": "installed-package",
+    "label": "datasets",
+    "properties": {
+      "version": "5.0.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:defusedxml",
+    "type": "installed-package",
+    "label": "defusedxml",
+    "properties": {
+      "version": "0.7.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:Deprecated",
+    "type": "installed-package",
+    "label": "Deprecated",
+    "properties": {
+      "version": "1.3.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:dill",
+    "type": "installed-package",
+    "label": "dill",
+    "properties": {
+      "version": "0.4.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:diskcache",
+    "type": "installed-package",
+    "label": "diskcache",
+    "properties": {
+      "version": "5.6.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:dnspython",
+    "type": "installed-package",
+    "label": "dnspython",
+    "properties": {
+      "version": "2.8.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:docksec",
+    "type": "installed-package",
+    "label": "docksec",
+    "properties": {
+      "version": "2026.7.5",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:duckdb",
+    "type": "installed-package",
+    "label": "duckdb",
+    "properties": {
+      "version": "1.5.4",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:email-validator",
+    "type": "installed-package",
+    "label": "email-validator",
+    "properties": {
+      "version": "2.3.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:emoji",
+    "type": "installed-package",
+    "label": "emoji",
+    "properties": {
+      "version": "2.15.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:en_core_web_lg",
+    "type": "installed-package",
+    "label": "en_core_web_lg",
+    "properties": {
+      "version": "3.8.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:en_core_web_sm",
+    "type": "installed-package",
+    "label": "en_core_web_sm",
+    "properties": {
+      "version": "3.8.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:en_core_web_trf",
+    "type": "installed-package",
+    "label": "en_core_web_trf",
+    "properties": {
+      "version": "3.8.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:et_xmlfile",
+    "type": "installed-package",
+    "label": "et_xmlfile",
+    "properties": {
+      "version": "2.0.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:faiss-cpu",
+    "type": "installed-package",
+    "label": "faiss-cpu",
+    "properties": {
+      "version": "1.14.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:fastapi",
+    "type": "installed-package",
+    "label": "fastapi",
+    "properties": {
+      "version": "0.139.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:faster-whisper",
+    "type": "installed-package",
+    "label": "faster-whisper",
+    "properties": {
+      "version": "1.2.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:filelock",
+    "type": "installed-package",
+    "label": "filelock",
+    "properties": {
+      "version": "3.29.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:FlagEmbedding",
+    "type": "installed-package",
+    "label": "FlagEmbedding",
+    "properties": {
+      "version": "1.4.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:flashtext",
+    "type": "installed-package",
+    "label": "flashtext",
+    "properties": {
+      "version": "2.7",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:Flask",
+    "type": "installed-package",
+    "label": "Flask",
+    "properties": {
+      "version": "3.1.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:flask-cors",
+    "type": "installed-package",
+    "label": "flask-cors",
+    "properties": {
+      "version": "6.0.5",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:Flask-Login",
+    "type": "installed-package",
+    "label": "Flask-Login",
+    "properties": {
+      "version": "0.6.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:flatbuffers",
+    "type": "installed-package",
+    "label": "flatbuffers",
+    "properties": {
+      "version": "25.12.19",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:fonttools",
+    "type": "installed-package",
+    "label": "fonttools",
+    "properties": {
+      "version": "4.63.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:fpdf2",
+    "type": "installed-package",
+    "label": "fpdf2",
+    "properties": {
+      "version": "2.8.7",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:frozenlist",
+    "type": "installed-package",
+    "label": "frozenlist",
+    "properties": {
+      "version": "1.8.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:fsspec",
+    "type": "installed-package",
+    "label": "fsspec",
+    "properties": {
+      "version": "2026.4.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:ftfy",
+    "type": "installed-package",
+    "label": "ftfy",
+    "properties": {
+      "version": "6.3.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:gevent",
+    "type": "installed-package",
+    "label": "gevent",
+    "properties": {
+      "version": "25.9.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:geventhttpclient",
+    "type": "installed-package",
+    "label": "geventhttpclient",
+    "properties": {
+      "version": "2.3.9",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:greenlet",
+    "type": "installed-package",
+    "label": "greenlet",
+    "properties": {
+      "version": "3.5.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:h11",
+    "type": "installed-package",
+    "label": "h11",
+    "properties": {
+      "version": "0.16.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:hf-xet",
+    "type": "installed-package",
+    "label": "hf-xet",
+    "properties": {
+      "version": "1.5.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:httpcore",
+    "type": "installed-package",
+    "label": "httpcore",
+    "properties": {
+      "version": "1.0.9",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:httptools",
+    "type": "installed-package",
+    "label": "httptools",
+    "properties": {
+      "version": "0.8.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:httpx",
+    "type": "installed-package",
+    "label": "httpx",
+    "properties": {
+      "version": "0.28.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:huggingface_hub",
+    "type": "installed-package",
+    "label": "huggingface_hub",
+    "properties": {
+      "version": "1.20.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:idna",
+    "type": "installed-package",
+    "label": "idna",
+    "properties": {
+      "version": "3.18",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:iniconfig",
+    "type": "installed-package",
+    "label": "iniconfig",
+    "properties": {
+      "version": "2.3.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:ir_datasets",
+    "type": "installed-package",
+    "label": "ir_datasets",
+    "properties": {
+      "version": "0.6.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:itsdangerous",
+    "type": "installed-package",
+    "label": "itsdangerous",
+    "properties": {
+      "version": "2.2.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:Jinja2",
+    "type": "installed-package",
+    "label": "Jinja2",
+    "properties": {
+      "version": "3.1.6",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:joblib",
+    "type": "installed-package",
+    "label": "joblib",
+    "properties": {
+      "version": "1.5.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:jsonschema",
+    "type": "installed-package",
+    "label": "jsonschema",
+    "properties": {
+      "version": "4.26.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:jsonschema-specifications",
+    "type": "installed-package",
+    "label": "jsonschema-specifications",
+    "properties": {
+      "version": "2025.9.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:langcodes",
+    "type": "installed-package",
+    "label": "langcodes",
+    "properties": {
+      "version": "3.5.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:lemminflect",
+    "type": "installed-package",
+    "label": "lemminflect",
+    "properties": {
+      "version": "0.2.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:Levenshtein",
+    "type": "installed-package",
+    "label": "Levenshtein",
+    "properties": {
+      "version": "0.27.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:librt",
+    "type": "installed-package",
+    "label": "librt",
+    "properties": {
+      "version": "0.11.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:license-expression",
+    "type": "installed-package",
+    "label": "license-expression",
+    "properties": {
+      "version": "30.4.4",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:limits",
+    "type": "installed-package",
+    "label": "limits",
+    "properties": {
+      "version": "5.8.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:llama_cpp_python",
+    "type": "installed-package",
+    "label": "llama_cpp_python",
+    "properties": {
+      "version": "0.3.31",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:locate",
+    "type": "installed-package",
+    "label": "locate",
+    "properties": {
+      "version": "1.1.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:locust",
+    "type": "installed-package",
+    "label": "locust",
+    "properties": {
+      "version": "2.46.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:lxml",
+    "type": "installed-package",
+    "label": "lxml",
+    "properties": {
+      "version": "6.1.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:lz4",
+    "type": "installed-package",
+    "label": "lz4",
+    "properties": {
+      "version": "4.4.5",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:Mako",
+    "type": "installed-package",
+    "label": "Mako",
+    "properties": {
+      "version": "1.3.12",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:markdown-it-py",
+    "type": "installed-package",
+    "label": "markdown-it-py",
+    "properties": {
+      "version": "4.2.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:MarkupSafe",
+    "type": "installed-package",
+    "label": "MarkupSafe",
+    "properties": {
+      "version": "3.0.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:mdurl",
+    "type": "installed-package",
+    "label": "mdurl",
+    "properties": {
+      "version": "0.1.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:Metaphone",
+    "type": "installed-package",
+    "label": "Metaphone",
+    "properties": {
+      "version": "0.6",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:motor",
+    "type": "installed-package",
+    "label": "motor",
+    "properties": {
+      "version": "3.7.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:mpmath",
+    "type": "installed-package",
+    "label": "mpmath",
+    "properties": {
+      "version": "1.3.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:msgpack",
+    "type": "installed-package",
+    "label": "msgpack",
+    "properties": {
+      "version": "1.1.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:multidict",
+    "type": "installed-package",
+    "label": "multidict",
+    "properties": {
+      "version": "6.7.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:multiprocess",
+    "type": "installed-package",
+    "label": "multiprocess",
+    "properties": {
+      "version": "0.70.19",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:murmurhash",
+    "type": "installed-package",
+    "label": "murmurhash",
+    "properties": {
+      "version": "1.0.15",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:mypy",
+    "type": "installed-package",
+    "label": "mypy",
+    "properties": {
+      "version": "2.1.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:mypy_extensions",
+    "type": "installed-package",
+    "label": "mypy_extensions",
+    "properties": {
+      "version": "1.1.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:narwhals",
+    "type": "installed-package",
+    "label": "narwhals",
+    "properties": {
+      "version": "2.22.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:networkx",
+    "type": "installed-package",
+    "label": "networkx",
+    "properties": {
+      "version": "3.6.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:numpy",
+    "type": "installed-package",
+    "label": "numpy",
+    "properties": {
+      "version": "2.5.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:onnxruntime",
+    "type": "installed-package",
+    "label": "onnxruntime",
+    "properties": {
+      "version": "1.27.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:opencv-python-headless",
+    "type": "installed-package",
+    "label": "opencv-python-headless",
+    "properties": {
+      "version": "4.13.0.92",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:openpyxl",
+    "type": "installed-package",
+    "label": "openpyxl",
+    "properties": {
+      "version": "3.1.5",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:openwakeword",
+    "type": "installed-package",
+    "label": "openwakeword",
+    "properties": {
+      "version": "0.6.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:outcome",
+    "type": "installed-package",
+    "label": "outcome",
+    "properties": {
+      "version": "1.3.0.post0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:packageurl-python",
+    "type": "installed-package",
+    "label": "packageurl-python",
+    "properties": {
+      "version": "0.17.6",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:packaging",
+    "type": "installed-package",
+    "label": "packaging",
+    "properties": {
+      "version": "26.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pandas",
+    "type": "installed-package",
+    "label": "pandas",
+    "properties": {
+      "version": "3.0.5",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:passlib",
+    "type": "installed-package",
+    "label": "passlib",
+    "properties": {
+      "version": "1.7.4",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pathspec",
+    "type": "installed-package",
+    "label": "pathspec",
+    "properties": {
+      "version": "1.1.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pdfminer.six",
+    "type": "installed-package",
+    "label": "pdfminer.six",
+    "properties": {
+      "version": "20251230",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pdfplumber",
+    "type": "installed-package",
+    "label": "pdfplumber",
+    "properties": {
+      "version": "0.11.9",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:peft",
+    "type": "installed-package",
+    "label": "peft",
+    "properties": {
+      "version": "0.19.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:phonetics",
+    "type": "installed-package",
+    "label": "phonetics",
+    "properties": {
+      "version": "1.0.5",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pillow",
+    "type": "installed-package",
+    "label": "pillow",
+    "properties": {
+      "version": "12.2.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pip",
+    "type": "installed-package",
+    "label": "pip",
+    "properties": {
+      "version": "26.1.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pip_audit",
+    "type": "installed-package",
+    "label": "pip_audit",
+    "properties": {
+      "version": "2.10.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pip-api",
+    "type": "installed-package",
+    "label": "pip-api",
+    "properties": {
+      "version": "0.0.34",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pip-requirements-parser",
+    "type": "installed-package",
+    "label": "pip-requirements-parser",
+    "properties": {
+      "version": "32.0.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pip-tools",
+    "type": "installed-package",
+    "label": "pip-tools",
+    "properties": {
+      "version": "7.5.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:platformdirs",
+    "type": "installed-package",
+    "label": "platformdirs",
+    "properties": {
+      "version": "4.10.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:playwright",
+    "type": "installed-package",
+    "label": "playwright",
+    "properties": {
+      "version": "1.61.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:playwright-stealth",
+    "type": "installed-package",
+    "label": "playwright-stealth",
+    "properties": {
+      "version": "2.0.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pluggy",
+    "type": "installed-package",
+    "label": "pluggy",
+    "properties": {
+      "version": "1.6.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:preshed",
+    "type": "installed-package",
+    "label": "preshed",
+    "properties": {
+      "version": "3.0.13",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:prometheus_client",
+    "type": "installed-package",
+    "label": "prometheus_client",
+    "properties": {
+      "version": "0.25.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:propcache",
+    "type": "installed-package",
+    "label": "propcache",
+    "properties": {
+      "version": "0.5.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:protobuf",
+    "type": "installed-package",
+    "label": "protobuf",
+    "properties": {
+      "version": "7.35.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:psutil",
+    "type": "installed-package",
+    "label": "psutil",
+    "properties": {
+      "version": "7.2.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:psycopg",
+    "type": "installed-package",
+    "label": "psycopg",
+    "properties": {
+      "version": "3.3.4",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:psycopg-binary",
+    "type": "installed-package",
+    "label": "psycopg-binary",
+    "properties": {
+      "version": "3.3.4",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:psycopg2-binary",
+    "type": "installed-package",
+    "label": "psycopg2-binary",
+    "properties": {
+      "version": "2.9.12",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pur",
+    "type": "installed-package",
+    "label": "pur",
+    "properties": {
+      "version": "7.4.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pwdlib",
+    "type": "installed-package",
+    "label": "pwdlib",
+    "properties": {
+      "version": "0.3.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:py-serializable",
+    "type": "installed-package",
+    "label": "py-serializable",
+    "properties": {
+      "version": "2.1.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:py-spy",
+    "type": "installed-package",
+    "label": "py-spy",
+    "properties": {
+      "version": "0.4.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pyahocorasick",
+    "type": "installed-package",
+    "label": "pyahocorasick",
+    "properties": {
+      "version": "2.3.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pyarrow",
+    "type": "installed-package",
+    "label": "pyarrow",
+    "properties": {
+      "version": "25.0.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pycodestyle",
+    "type": "installed-package",
+    "label": "pycodestyle",
+    "properties": {
+      "version": "2.14.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pycparser",
+    "type": "installed-package",
+    "label": "pycparser",
+    "properties": {
+      "version": "3.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pydantic",
+    "type": "installed-package",
+    "label": "pydantic",
+    "properties": {
+      "version": "2.13.4",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pydantic_core",
+    "type": "installed-package",
+    "label": "pydantic_core",
+    "properties": {
+      "version": "2.46.4",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pydantic-settings",
+    "type": "installed-package",
+    "label": "pydantic-settings",
+    "properties": {
+      "version": "2.14.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pyee",
+    "type": "installed-package",
+    "label": "pyee",
+    "properties": {
+      "version": "13.0.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:Pygments",
+    "type": "installed-package",
+    "label": "Pygments",
+    "properties": {
+      "version": "2.20.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:PyJWT",
+    "type": "installed-package",
+    "label": "PyJWT",
+    "properties": {
+      "version": "2.13.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pymongo",
+    "type": "installed-package",
+    "label": "pymongo",
+    "properties": {
+      "version": "4.17.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:PyMuPDF",
+    "type": "installed-package",
+    "label": "PyMuPDF",
+    "properties": {
+      "version": "1.27.2.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pyparsing",
+    "type": "installed-package",
+    "label": "pyparsing",
+    "properties": {
+      "version": "3.3.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pypdf",
+    "type": "installed-package",
+    "label": "pypdf",
+    "properties": {
+      "version": "6.12.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pypdfium2",
+    "type": "installed-package",
+    "label": "pypdfium2",
+    "properties": {
+      "version": "5.9.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pypiwin32",
+    "type": "installed-package",
+    "label": "pypiwin32",
+    "properties": {
+      "version": "223",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pyproject_hooks",
+    "type": "installed-package",
+    "label": "pyproject_hooks",
+    "properties": {
+      "version": "1.2.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:PySocks",
+    "type": "installed-package",
+    "label": "PySocks",
+    "properties": {
+      "version": "1.7.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pytesseract",
+    "type": "installed-package",
+    "label": "pytesseract",
+    "properties": {
+      "version": "0.3.13",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pytest",
+    "type": "installed-package",
+    "label": "pytest",
+    "properties": {
+      "version": "9.0.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pytest-asyncio",
+    "type": "installed-package",
+    "label": "pytest-asyncio",
+    "properties": {
+      "version": "1.3.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pytest-cov",
+    "type": "installed-package",
+    "label": "pytest-cov",
+    "properties": {
+      "version": "7.1.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:python-dateutil",
+    "type": "installed-package",
+    "label": "python-dateutil",
+    "properties": {
+      "version": "2.9.0.post0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:python-docx",
+    "type": "installed-package",
+    "label": "python-docx",
+    "properties": {
+      "version": "1.2.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:python-dotenv",
+    "type": "installed-package",
+    "label": "python-dotenv",
+    "properties": {
+      "version": "1.2.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:python-engineio",
+    "type": "installed-package",
+    "label": "python-engineio",
+    "properties": {
+      "version": "4.13.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:python-Levenshtein",
+    "type": "installed-package",
+    "label": "python-Levenshtein",
+    "properties": {
+      "version": "0.27.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:python-magic",
+    "type": "installed-package",
+    "label": "python-magic",
+    "properties": {
+      "version": "0.4.27",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:python-multipart",
+    "type": "installed-package",
+    "label": "python-multipart",
+    "properties": {
+      "version": "0.0.31",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:python-socketio",
+    "type": "installed-package",
+    "label": "python-socketio",
+    "properties": {
+      "version": "5.16.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pyttsx3",
+    "type": "installed-package",
+    "label": "pyttsx3",
+    "properties": {
+      "version": "2.99",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pywin32",
+    "type": "installed-package",
+    "label": "pywin32",
+    "properties": {
+      "version": "312",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:PyYAML",
+    "type": "installed-package",
+    "label": "PyYAML",
+    "properties": {
+      "version": "6.0.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:pyzmq",
+    "type": "installed-package",
+    "label": "pyzmq",
+    "properties": {
+      "version": "27.1.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:rank-bm25",
+    "type": "installed-package",
+    "label": "rank-bm25",
+    "properties": {
+      "version": "0.2.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:RapidFuzz",
+    "type": "installed-package",
+    "label": "RapidFuzz",
+    "properties": {
+      "version": "3.14.5",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:redis",
+    "type": "installed-package",
+    "label": "redis",
+    "properties": {
+      "version": "5.2.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:referencing",
+    "type": "installed-package",
+    "label": "referencing",
+    "properties": {
+      "version": "0.37.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:regex",
+    "type": "installed-package",
+    "label": "regex",
+    "properties": {
+      "version": "2026.5.9",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:reportlab",
+    "type": "installed-package",
+    "label": "reportlab",
+    "properties": {
+      "version": "4.5.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:requests",
+    "type": "installed-package",
+    "label": "requests",
+    "properties": {
+      "version": "2.34.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:rich",
+    "type": "installed-package",
+    "label": "rich",
+    "properties": {
+      "version": "15.0.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:riie-retention",
+    "type": "installed-package",
+    "label": "riie-retention",
+    "properties": {
+      "version": "0.1.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:rpds-py",
+    "type": "installed-package",
+    "label": "rpds-py",
+    "properties": {
+      "version": "2026.5.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:ruamel.yaml",
+    "type": "installed-package",
+    "label": "ruamel.yaml",
+    "properties": {
+      "version": "0.19.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:ruff",
+    "type": "installed-package",
+    "label": "ruff",
+    "properties": {
+      "version": "0.14.4",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:safetensors",
+    "type": "installed-package",
+    "label": "safetensors",
+    "properties": {
+      "version": "0.8.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:scikit-learn",
+    "type": "installed-package",
+    "label": "scikit-learn",
+    "properties": {
+      "version": "1.9.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:scipy",
+    "type": "installed-package",
+    "label": "scipy",
+    "properties": {
+      "version": "1.18.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:selenium",
+    "type": "installed-package",
+    "label": "selenium",
+    "properties": {
+      "version": "4.46.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:sentence-transformers",
+    "type": "installed-package",
+    "label": "sentence-transformers",
+    "properties": {
+      "version": "5.6.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:sentencepiece",
+    "type": "installed-package",
+    "label": "sentencepiece",
+    "properties": {
+      "version": "0.2.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:setuptools",
+    "type": "installed-package",
+    "label": "setuptools",
+    "properties": {
+      "version": "81.0.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:shellingham",
+    "type": "installed-package",
+    "label": "shellingham",
+    "properties": {
+      "version": "1.5.4",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:simple-websocket",
+    "type": "installed-package",
+    "label": "simple-websocket",
+    "properties": {
+      "version": "1.1.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:six",
+    "type": "installed-package",
+    "label": "six",
+    "properties": {
+      "version": "1.17.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:slowapi",
+    "type": "installed-package",
+    "label": "slowapi",
+    "properties": {
+      "version": "0.1.10",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:smart_open",
+    "type": "installed-package",
+    "label": "smart_open",
+    "properties": {
+      "version": "8.0.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:sniffio",
+    "type": "installed-package",
+    "label": "sniffio",
+    "properties": {
+      "version": "1.3.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:sortedcontainers",
+    "type": "installed-package",
+    "label": "sortedcontainers",
+    "properties": {
+      "version": "2.4.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:soupsieve",
+    "type": "installed-package",
+    "label": "soupsieve",
+    "properties": {
+      "version": "2.8.4",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:spacy",
+    "type": "installed-package",
+    "label": "spacy",
+    "properties": {
+      "version": "3.8.13",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:spacy-curated-transformers",
+    "type": "installed-package",
+    "label": "spacy-curated-transformers",
+    "properties": {
+      "version": "0.3.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:spacy-legacy",
+    "type": "installed-package",
+    "label": "spacy-legacy",
+    "properties": {
+      "version": "3.0.12",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:spacy-loggers",
+    "type": "installed-package",
+    "label": "spacy-loggers",
+    "properties": {
+      "version": "1.0.5",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:SQLAlchemy",
+    "type": "installed-package",
+    "label": "SQLAlchemy",
+    "properties": {
+      "version": "2.0.49",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:srsly",
+    "type": "installed-package",
+    "label": "srsly",
+    "properties": {
+      "version": "2.5.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:stanza",
+    "type": "installed-package",
+    "label": "stanza",
+    "properties": {
+      "version": "1.14.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:starlette",
+    "type": "installed-package",
+    "label": "starlette",
+    "properties": {
+      "version": "1.3.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:stevedore",
+    "type": "installed-package",
+    "label": "stevedore",
+    "properties": {
+      "version": "5.8.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:structlog",
+    "type": "installed-package",
+    "label": "structlog",
+    "properties": {
+      "version": "26.1.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:sympy",
+    "type": "installed-package",
+    "label": "sympy",
+    "properties": {
+      "version": "1.14.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:symspellpy",
+    "type": "installed-package",
+    "label": "symspellpy",
+    "properties": {
+      "version": "6.10.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:termcolor",
+    "type": "installed-package",
+    "label": "termcolor",
+    "properties": {
+      "version": "3.3.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:textdistance",
+    "type": "installed-package",
+    "label": "textdistance",
+    "properties": {
+      "version": "4.6.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:thefuzz",
+    "type": "installed-package",
+    "label": "thefuzz",
+    "properties": {
+      "version": "0.22.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:thinc",
+    "type": "installed-package",
+    "label": "thinc",
+    "properties": {
+      "version": "8.3.13",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:threadpoolctl",
+    "type": "installed-package",
+    "label": "threadpoolctl",
+    "properties": {
+      "version": "3.6.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:tiktoken",
+    "type": "installed-package",
+    "label": "tiktoken",
+    "properties": {
+      "version": "0.13.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:tokenizers",
+    "type": "installed-package",
+    "label": "tokenizers",
+    "properties": {
+      "version": "0.22.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:tomli",
+    "type": "installed-package",
+    "label": "tomli",
+    "properties": {
+      "version": "2.4.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:tomli_w",
+    "type": "installed-package",
+    "label": "tomli_w",
+    "properties": {
+      "version": "1.2.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:torch",
+    "type": "installed-package",
+    "label": "torch",
+    "properties": {
+      "version": "2.12.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:tqdm",
+    "type": "installed-package",
+    "label": "tqdm",
+    "properties": {
+      "version": "4.68.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:transformers",
+    "type": "installed-package",
+    "label": "transformers",
+    "properties": {
+      "version": "5.14.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:trio",
+    "type": "installed-package",
+    "label": "trio",
+    "properties": {
+      "version": "0.33.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:trio-websocket",
+    "type": "installed-package",
+    "label": "trio-websocket",
+    "properties": {
+      "version": "0.12.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:typer",
+    "type": "installed-package",
+    "label": "typer",
+    "properties": {
+      "version": "0.25.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:typing_extensions",
+    "type": "installed-package",
+    "label": "typing_extensions",
+    "properties": {
+      "version": "4.15.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:typing-inspection",
+    "type": "installed-package",
+    "label": "typing-inspection",
+    "properties": {
+      "version": "0.4.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:tzdata",
+    "type": "installed-package",
+    "label": "tzdata",
+    "properties": {
+      "version": "2026.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:tzlocal",
+    "type": "installed-package",
+    "label": "tzlocal",
+    "properties": {
+      "version": "5.3.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:udapi",
+    "type": "installed-package",
+    "label": "udapi",
+    "properties": {
+      "version": "0.5.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:udtools",
+    "type": "installed-package",
+    "label": "udtools",
+    "properties": {
+      "version": "0.2.8",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:undetected-chromedriver",
+    "type": "installed-package",
+    "label": "undetected-chromedriver",
+    "properties": {
+      "version": "3.5.5",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:urllib3",
+    "type": "installed-package",
+    "label": "urllib3",
+    "properties": {
+      "version": "2.7.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:uvicorn",
+    "type": "installed-package",
+    "label": "uvicorn",
+    "properties": {
+      "version": "0.32.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:wasabi",
+    "type": "installed-package",
+    "label": "wasabi",
+    "properties": {
+      "version": "1.1.3",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:watchfiles",
+    "type": "installed-package",
+    "label": "watchfiles",
+    "properties": {
+      "version": "1.2.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:wcwidth",
+    "type": "installed-package",
+    "label": "wcwidth",
+    "properties": {
+      "version": "0.8.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:weasel",
+    "type": "installed-package",
+    "label": "weasel",
+    "properties": {
+      "version": "1.0.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:webrtcvad-wheels",
+    "type": "installed-package",
+    "label": "webrtcvad-wheels",
+    "properties": {
+      "version": "2.0.14",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:websocket-client",
+    "type": "installed-package",
+    "label": "websocket-client",
+    "properties": {
+      "version": "1.9.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:websockets",
+    "type": "installed-package",
+    "label": "websockets",
+    "properties": {
+      "version": "16.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:Werkzeug",
+    "type": "installed-package",
+    "label": "Werkzeug",
+    "properties": {
+      "version": "3.1.8",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:wheel",
+    "type": "installed-package",
+    "label": "wheel",
+    "properties": {
+      "version": "0.47.0",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:wordfreq",
+    "type": "installed-package",
+    "label": "wordfreq",
+    "properties": {
+      "version": "3.1.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:wrapt",
+    "type": "installed-package",
+    "label": "wrapt",
+    "properties": {
+      "version": "2.2.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:wsproto",
+    "type": "installed-package",
+    "label": "wsproto",
+    "properties": {
+      "version": "1.3.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:xlsxwriter",
+    "type": "installed-package",
+    "label": "xlsxwriter",
+    "properties": {
+      "version": "3.2.9",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:xxhash",
+    "type": "installed-package",
+    "label": "xxhash",
+    "properties": {
+      "version": "3.8.1",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:yarl",
+    "type": "installed-package",
+    "label": "yarl",
+    "properties": {
+      "version": "1.24.5",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:zope.event",
+    "type": "installed-package",
+    "label": "zope.event",
+    "properties": {
+      "version": "6.2",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "package:python-pip:interpreter:zope.interface",
+    "type": "installed-package",
+    "label": "zope.interface",
+    "properties": {
+      "version": "8.5",
+      "manager": "python-pip",
+      "scope": "interpreter"
+    }
+  },
+  {
+    "id": "policy:1e444ef631e8216e07aa",
+    "type": "policy",
+    "label": "execution and deletion require separate admission",
+    "properties": {}
+  },
+  {
+    "id": "policy:6f578def2ee6b5404543",
+    "type": "policy",
+    "label": "detected-read-only-not-admitted-for-automatic-execution",
+    "properties": {}
+  },
+  {
+    "id": "policy:aaf2b44e50aa23bb9a7d",
+    "type": "policy",
+    "label": "no shell; fixed argument probe; provider keys stripped; invocation requires separate admission",
+    "properties": {}
+  },
+  {
+    "id": "px:orchestration-plane",
+    "type": "orchestration-plane",
+    "label": "Pacify-X orchestration plane",
+    "properties": {
+      "authority": "project-owned capability map"
+    }
+  },
+  {
+    "id": "python-env:a316615cb4be36521f24",
+    "type": "virtual-environment",
+    "label": ".venv-certify",
+    "properties": {
+      "kind": "python-venv",
+      "state": "inactive",
+      "active": false
+    }
+  },
+  {
+    "id": "requirement:11a4a60b518bf24989d4",
+    "type": "requirement",
+    "label": "python",
+    "properties": {}
+  },
+  {
+    "id": "requirement:4be8222450a775cfbd12",
+    "type": "requirement",
+    "label": "python-pip package environment",
+    "properties": {}
+  },
+  {
+    "id": "requirement:545ea538461003efdc8c",
+    "type": "requirement",
+    "label": "node",
+    "properties": {}
+  },
+  {
+    "id": "requirement:59efc32ebf6296e63c75",
+    "type": "requirement",
+    "label": "Docker service/daemon",
+    "properties": {}
+  },
+  {
+    "id": "requirement:d208b626813a15182476",
+    "type": "requirement",
+    "label": "bounded admitted root",
+    "properties": {}
+  },
+  {
+    "id": "requirement:e3973928f364da3f26ec",
+    "type": "requirement",
+    "label": "Loopback Ollama service",
+    "properties": {}
+  },
+  {
+    "id": "root:5bbfdf3c8bf34e567c8e",
+    "type": "admitted-root",
+    "label": "Pacify-X",
+    "properties": {
+      "path": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X"
+    }
+  },
+  {
+    "id": "state:2da7910647a8a703ccb9",
+    "type": "resource-state",
+    "label": "healthy-version-probe",
+    "properties": {}
+  },
+  {
+    "id": "state:5ad38304b535c2987dbd",
+    "type": "resource-state",
+    "label": "absent",
+    "properties": {}
+  },
+  {
+    "id": "state:a51a6c19a1ffc7416827",
+    "type": "resource-state",
+    "label": "installed",
+    "properties": {}
+  },
+  {
+    "id": "state:d1022618b99a974b56ca",
+    "type": "resource-state",
+    "label": "inactive",
+    "properties": {}
+  },
+  {
+    "id": "system-tool:code",
+    "type": "system-tool",
+    "label": "code",
+    "properties": {
+      "available": false,
+      "version": "spawn code ENOENT"
+    }
+  },
+  {
+    "id": "system-tool:conda",
+    "type": "system-tool",
+    "label": "conda",
+    "properties": {
+      "available": false,
+      "version": "spawn conda ENOENT"
+    }
+  },
+  {
+    "id": "system-tool:docker",
+    "type": "system-tool",
+    "label": "docker",
+    "properties": {
+      "available": true,
+      "version": "Docker version 29.4.2, build 055a478"
+    }
+  },
+  {
+    "id": "system-tool:git",
+    "type": "system-tool",
+    "label": "git",
+    "properties": {
+      "available": true,
+      "version": "git version 2.54.0.windows.1"
+    }
+  },
+  {
+    "id": "system-tool:node",
+    "type": "system-tool",
+    "label": "node",
+    "properties": {
+      "available": true,
+      "version": "v24.16.0"
+    }
+  },
+  {
+    "id": "system-tool:npm",
+    "type": "system-tool",
+    "label": "npm",
+    "properties": {
+      "available": false,
+      "version": "spawn npm ENOENT"
+    }
+  },
+  {
+    "id": "system-tool:ollama",
+    "type": "system-tool",
+    "label": "ollama",
+    "properties": {
+      "available": false,
+      "version": "spawn ollama ENOENT"
+    }
+  },
+  {
+    "id": "system-tool:pipx",
+    "type": "system-tool",
+    "label": "pipx",
+    "properties": {
+      "available": false,
+      "version": "spawn pipx ENOENT"
+    }
+  },
+  {
+    "id": "system-tool:pnpm",
+    "type": "system-tool",
+    "label": "pnpm",
+    "properties": {
+      "available": false,
+      "version": "spawn pnpm ENOENT"
+    }
+  },
+  {
+    "id": "system-tool:python",
+    "type": "system-tool",
+    "label": "python",
+    "properties": {
+      "available": true,
+      "version": "Python 3.14.5"
+    }
+  },
+  {
+    "id": "system-tool:uv",
+    "type": "system-tool",
+    "label": "uv",
+    "properties": {
+      "available": false,
+      "version": "spawn uv ENOENT"
+    }
+  },
+  {
+    "id": "system-tool:yarn",
+    "type": "system-tool",
+    "label": "yarn",
+    "properties": {
+      "available": false,
+      "version": "spawn yarn ENOENT"
+    }
+  }
+]

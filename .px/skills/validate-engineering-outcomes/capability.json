@@ -1,0 +1,37 @@
+{
+  "admission_record": "validate-engineering-outcomes",
+  "body_sha256": "f8f5202a618e921ffa1996b197278773449a7a754b77eb76527052e2c725dca1",
+  "contract": {
+    "available": true,
+    "sha256": "b193120ed8933c0ce99a153d3d6b632c7fc84c256cba967c46dbcb091656e1ca",
+    "source": "registry/skill_packages/validate-engineering-outcomes.json"
+  },
+  "description": "Discover repositories, map architecture and contracts, validate calculations and runtime surfaces, test result-aware interfaces, enforce data-readiness and ambient-write gates, validate deployment safety, run focused rebuilds, reconcile evidence, and adapt validation to resource pressure. Use for implementation review, integration testing, or release acceptance.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "validate-engineering-outcomes",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/validate-engineering-outcomes"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "architecture",
+    "testing",
+    "deployment"
+  ],
+  "version": "0.1.0"
+}

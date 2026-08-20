@@ -1,0 +1,27 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_test_profiles.py",
+    "tests/test_test_runner_controls.py",
+    "tests/test_evidence_index.py",
+    "tests/test_cli_commands.py",
+    "tests/test_resource_lifecycle.py",
+    "tests/test_file_lock_contention.py",
+    "tests/test_bytecode_guard.py"
+  ],
+  "cwd": ".",
+  "dependencies": [],
+  "duration_seconds": 12.001845,
+  "exit_code": 0,
+  "input_sha256": "f921b4681a82ce63edfcda76fbe65adda2321f63f44e8f54a175623441cbc605",
+  "passed": true,
+  "receipt_sha256": "8b28d80a0058cf9b950ef5bead4c25e02184b4742afc4c92dd2e57f4e2130ef4",
+  "schema_version": "px.test-section-receipt/1.0",
+  "section": "testing-governance",
+  "timed_out": false
+}

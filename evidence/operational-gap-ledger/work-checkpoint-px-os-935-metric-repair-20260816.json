@@ -1,0 +1,9 @@
+{
+  "active_gap_id": "PX-OS-935",
+  "learned": "The shared metric-card renderer lost the action, role, focusability, inspect cue, and typed modal route while CSS and keyboard code still assumed they existed. The existing showInformationModal provides the required human/machine-readable non-authorizing result.",
+  "next_action": "Restore accessible metric metadata/action markup and route inspectMetric to the existing information modal.",
+  "unresolved_branch_gap_ids": ["PX-OS-935", "PX-OS-933"],
+  "evidence": [
+    {"claim": "Metric interaction gap is registered before repair.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004955"}
+  ]
+}

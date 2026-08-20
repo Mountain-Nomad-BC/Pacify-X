@@ -1,0 +1,34 @@
+{
+  "authoritative_source_sha256": "0c820658e98dafa23b62423c769b6a9ddcad1f2dc9e6c642ec0e2c4b4a8abf75",
+  "authority_and_safety": "Do not trust cached network identity or stale capability claims; require live discovery, bounded canaries, explicit fallback, and human approval for material release effects.",
+  "evidence": [
+    "normalized inputs",
+    "owner and dependency resolution",
+    "structured result",
+    "negative-case result",
+    "content hashes",
+    "verification receipt"
+  ],
+  "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+  "id": "hardware-probe",
+  "implementation_disposition": "namespaced_exact_body",
+  "implementation_target": ".agents/skills/govern-runtime-protocol-deployment/scripts/authoritative_hardware_probe.py",
+  "inputs": {
+    "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+    "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+    "target": "Explicit file, repository, service, record set, or artifact scope."
+  },
+  "kind": "script",
+  "procedure": [
+    "probe-live-capabilities",
+    "validate-contract-and-compatibility",
+    "model-capacity-cost-and-quality",
+    "stage-canary-with-fallback",
+    "observe-decide-and-handoff"
+  ],
+  "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+  "source_paths": [
+    "packs/06-runtime-protocols-deployment_v1.0.0/scripts/hardware_probe.py"
+  ],
+  "trigger": "Use when the requested outcome is hardware probe or when that outcome is a required dependency."
+}

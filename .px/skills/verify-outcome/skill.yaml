@@ -1,0 +1,36 @@
+{
+  "admission_record": "outcome-verifier",
+  "body_sha256": "59041723adc187c93ace1d9e5ec412bea3963b0fd94b6801c733af6a89f22538",
+  "contract": {
+    "available": true,
+    "sha256": "4e937b82fae6fda901c8a82b7dec7af81df805a1885b28d88cf8f5a1b209f4f3",
+    "source": "registry/skills/outcome-verifier.json"
+  },
+  "description": "Independently verify completion claims against declared postconditions and current, valid, task-scoped evidence. Use after implementation, repair, migration, deployment preparation, or any task where an executor claims success and the result must be proven rather than assumed.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "verify-outcome",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/verify-outcome"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "validation",
+    "evidence"
+  ],
+  "version": "0.1.0"
+}

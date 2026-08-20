@@ -1,0 +1,38 @@
+{
+  "admission_record": "evaluate-n8n-fit",
+  "body_sha256": "681a27938f1bf8413bd8d17585aea577a206259794856ba312e90ccca69c1825",
+  "contract": {
+    "available": true,
+    "sha256": "ee38cc5c61703934c5f30753b49cc1cab50022bb5b5d31570d2a8539bc6d580c",
+    "source": "registry/skill_packages/evaluate-n8n-fit.json"
+  },
+  "description": "Evaluate whether n8n fits the workload compared with code, native integrations, or another orchestrator.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "evaluate-n8n-fit",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/evaluate-n8n-fit"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "architecture-fit",
+    "decision-record",
+    "n8n",
+    "tradeoffs"
+  ],
+  "version": "1.0.0"
+}

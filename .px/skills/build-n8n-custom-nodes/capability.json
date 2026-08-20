@@ -1,0 +1,39 @@
+{
+  "admission_record": "build-n8n-custom-nodes",
+  "body_sha256": "f22ee7ccd43b49113ae2087b7212edebaff09e3a0d4ec01612e1a76ca05e3caa",
+  "contract": {
+    "available": true,
+    "sha256": "c09edddbd7187ba08ae10f50689cca43b5f33c6af5ce26cc30bc252caf35af59",
+    "source": "registry/skill_packages/build-n8n-custom-nodes.json"
+  },
+  "description": "Develop custom n8n nodes with typed operations, separate credentials, pagination, errors, tests, and release governance.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "build-n8n-custom-nodes",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/build-n8n-custom-nodes"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "credentials",
+    "custom-node",
+    "n8n",
+    "pagination",
+    "typescript"
+  ],
+  "version": "1.0.0"
+}

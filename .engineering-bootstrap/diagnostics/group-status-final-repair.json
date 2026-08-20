@@ -1,0 +1,119 @@
+﻿{
+  "schema_version": "px.test-group-status/1.0",
+  "valid": false,
+  "required_groups": [
+    "core-a-f",
+    "core-g-m",
+    "core-n-s",
+    "core-t-z",
+    "process-recovery",
+    "exact-installed",
+    "release-build",
+    "release-audit",
+    "derived-integrity",
+    "structural-adversarial"
+  ],
+  "groups": [
+    {
+      "group": "process-recovery",
+      "member_count": 10,
+      "parallel_safe": false,
+      "passed": true,
+      "fresh": true,
+      "current": true,
+      "input_sha256": "79868c40fdaeaa71502d782f91764853d2928872bd5333e50c76e2d2cb37b0a2",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/groups/process-recovery.json"
+    },
+    {
+      "group": "exact-installed",
+      "member_count": 4,
+      "parallel_safe": false,
+      "passed": true,
+      "fresh": false,
+      "current": false,
+      "input_sha256": "bc6e89688945ba8a2e04837f8a48bcfd94f1cf034be0067450fc8ca82b8c4ca9",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/groups/exact-installed.json"
+    },
+    {
+      "group": "release-build",
+      "member_count": 9,
+      "parallel_safe": false,
+      "passed": true,
+      "fresh": false,
+      "current": false,
+      "input_sha256": "e3e6875661e9ac23a4a2fff0398c1144f483890211bc6882bb790b7d6bae476b",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/groups/release-build.json"
+    },
+    {
+      "group": "release-audit",
+      "member_count": 1,
+      "parallel_safe": false,
+      "passed": false,
+      "fresh": false,
+      "current": false,
+      "input_sha256": "0fc3d17be9ac02697d2567c8c07b9fd6862aef155b67991543dab37d2cb638f6",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/groups/release-audit.json"
+    },
+    {
+      "group": "derived-integrity",
+      "member_count": 5,
+      "parallel_safe": false,
+      "passed": true,
+      "fresh": false,
+      "current": false,
+      "input_sha256": "3c29b0d4c4bc3792060d8d8542b2048de307ca87716c747ee7d6981a7f7f0efd",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/groups/derived-integrity.json"
+    },
+    {
+      "group": "structural-adversarial",
+      "member_count": 1,
+      "parallel_safe": false,
+      "passed": true,
+      "fresh": false,
+      "current": false,
+      "input_sha256": "ae4f036e069e0cfb1dbf300657c533b9a72bf73a14f08d09c8a85976171f5ad0",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/groups/structural-adversarial.json"
+    },
+    {
+      "group": "core-a-f",
+      "member_count": 63,
+      "parallel_safe": true,
+      "passed": true,
+      "fresh": false,
+      "current": false,
+      "input_sha256": "981191642e0b3ac267554bb1b10b73a84cfc0b4b10231232d5cc218cee26c36e",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/groups/core-a-f.json"
+    },
+    {
+      "group": "core-g-m",
+      "member_count": 21,
+      "parallel_safe": true,
+      "passed": true,
+      "fresh": true,
+      "current": true,
+      "input_sha256": "3c0f0ff7de18bfc07dd47eb1a7bd7b86ce64b7f62ea4fd5c3669a01aa4c2ef50",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/groups/core-g-m.json"
+    },
+    {
+      "group": "core-n-s",
+      "member_count": 59,
+      "parallel_safe": true,
+      "passed": true,
+      "fresh": true,
+      "current": true,
+      "input_sha256": "d7a6e9e5cc9fd1dbb2724931f2fc1f78aca6dc00e7d152a3a6618e61c1847c0c",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/groups/core-n-s.json"
+    },
+    {
+      "group": "core-t-z",
+      "member_count": 9,
+      "parallel_safe": true,
+      "passed": true,
+      "fresh": true,
+      "current": true,
+      "input_sha256": "266f35c211f1f061ff6edceebc54955a152bd8843684d91b3814c57c7ed4ea49",
+      "receipt": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence/groups/core-t-z.json"
+    }
+  ],
+  "member_count": 182
+}

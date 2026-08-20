@@ -1,0 +1,34 @@
+{
+  "authoritative_source_sha256": "8a6b3da2e5e32c6433af76afc8c7d994086c33d3a88751561d1d322465731b07",
+  "authority_and_safety": "Default to read-only analysis; never widen a patch or infer ownership without traceable repository evidence.",
+  "evidence": [
+    "normalized inputs",
+    "owner and dependency resolution",
+    "structured result",
+    "negative-case result",
+    "content hashes",
+    "verification receipt"
+  ],
+  "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+  "id": "reproduction-scaffold",
+  "implementation_disposition": "namespaced_exact_body",
+  "implementation_target": ".agents/skills/analyze-repository-intelligence/scripts/authoritative_reproduction_scaffold.py",
+  "inputs": {
+    "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+    "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+    "target": "Explicit file, repository, service, record set, or artifact scope."
+  },
+  "kind": "script",
+  "procedure": [
+    "inventory-repository",
+    "trace-relationships",
+    "form-testable-hypotheses",
+    "measure-change-impact",
+    "propose-minimal-safe-action"
+  ],
+  "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+  "source_paths": [
+    "packs/02-repository-intelligence-aci_v1.0.0/scripts/reproduction_scaffold.py"
+  ],
+  "trigger": "Use when the requested outcome is reproduction scaffold or when that outcome is a required dependency."
+}

@@ -4,7 +4,7 @@
   "owner": "independent-bootstrap-runtime",
   "status": "active",
   "provenance": {"type": "clean_room", "basis": ["reviewed orchestration patterns", "local requirements"]},
-  "hash": "7b936b67fe98d777c86cef31de98c6c063e38b60845dd25c0cf0f3cb5f3b1910",
+  "hash": "2220cd06d09506866d402bde72704e875beda8c1d6952c6c9b4157133e19563f",
   "license": "Apache-2.0",
   "provides": ["bounded task lifecycle", "lazy capability activation", "checkpointed verified result"],
   "consumes": ["task request", "policy decision", "runtime handler resolver"],
@@ -17,7 +17,7 @@
   "risk": "R1",
   "validation": {
     "suite": "tests/test_orchestrator.py",
-    "passed": 7,
+    "passed": 8,
     "failed": 0,
     "covers": ["happy path", "late activation", "policy denial", "missing inputs", "failed verification", "failure capture", "checkpoints"]
   },

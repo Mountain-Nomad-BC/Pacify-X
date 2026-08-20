@@ -2,7 +2,7 @@
   "id": "tracer-bullet-planning",
   "version": "1.0.0",
   "status": "active",
-  "body": ".agents/skills/tracer-bullet-planning/SKILL.md",
+  "body": ".px/skills/tracer-bullet-planning/SKILL.md",
   "body_sha256": "f118fb4a174410f7233c89dbce4abdd1cdb768e57dc27854347d8d52049f705b",
   "references": [],
   "capability_tags": [
@@ -21,7 +21,7 @@
       "evidence/integration/pxi-20260804/candidate_disposition_ledger.json",
       "LICENSES/mattpocock-skills-MIT.txt"
     ],
-    "canonical_owner": ".agents/skills/tracer-bullet-planning/SKILL.md"
+    "canonical_owner": ".px/skills/tracer-bullet-planning/SKILL.md"
   },
   "clean_room": false,
   "tests": "tests/test_project_reasoning.py; tests/test_clean_room_capabilities.py",

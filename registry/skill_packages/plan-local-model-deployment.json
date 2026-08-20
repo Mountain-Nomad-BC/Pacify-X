@@ -2,13 +2,13 @@
   "id": "plan-local-model-deployment",
   "version": "0.1.0",
   "status": "active",
-  "body": ".agents/skills/plan-local-model-deployment/SKILL.md",
+  "body": ".px/skills/plan-local-model-deployment/SKILL.md",
   "body_sha256": "ec6b4862e0633512a7d29328a1cfe4b1ff0cf28730b199aff770c6acc28f8792",
   "references": [
-    ".agents/skills/plan-local-model-deployment/references/local-model-planning-contract.md"
+    ".px/skills/plan-local-model-deployment/references/local-model-planning-contract.md"
   ],
   "resources": [
-    ".agents/skills/plan-local-model-deployment/scripts/plan_local_model_deployment.py"
+    ".px/skills/plan-local-model-deployment/scripts/plan_local_model_deployment.py"
   ],
   "capability_tags": [
     "model",

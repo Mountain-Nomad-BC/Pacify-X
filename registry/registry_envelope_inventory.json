@@ -83,6 +83,49 @@
       "schema": "root schema_version plus shared registry-envelope invariant"
     },
     {
+      "builder": "scripts/build_current_evidence_index.py",
+      "collection_key": "records",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "artifact_count",
+      "equals": "vsix",
+      "field": "kind",
+      "path": "registry/current_evidence_index.json",
+      "rule": "filtered",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "scripts/build_current_evidence_index.py",
+      "collection_key": "records",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "required_receipt_count",
+      "equals": "test-receipt",
+      "field": "kind",
+      "path": "registry/current_evidence_index.json",
+      "rule": "filtered",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "scripts/build_current_evidence_index.py",
+      "collection_key": "records",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "current_required_receipt_count",
+      "equals": true,
+      "field": "current",
+      "nested": "receipt_state",
+      "path": "registry/current_evidence_index.json",
+      "rule": "nested_object_filtered",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "scripts/build_current_evidence_index.py",
+      "collection_key": "records",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "record_count",
+      "path": "registry/current_evidence_index.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
       "builder": "runtime/corrective_release.py",
       "collection_key": "cards",
       "consumer": "runtime/registry_envelope.py",
@@ -349,6 +392,28 @@
       "schema": "root schema_version plus shared registry-envelope invariant"
     },
     {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "records",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "rescanned_file_count",
+      "equals": "rescanned",
+      "field": "scan_state",
+      "path": "registry/provider_route_scan.json",
+      "rule": "filtered",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "records",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "reused_file_count",
+      "equals": "reused",
+      "field": "scan_state",
+      "path": "registry/provider_route_scan.json",
+      "rule": "filtered",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
       "builder": "scripts/build_python_surface_ownership.py",
       "collection_key": "records",
       "consumer": "runtime/registry_envelope.py",
@@ -537,6 +602,47 @@
       "consumer": "runtime/registry_envelope.py",
       "count_key": "count",
       "path": "registry/skill_orchestrations.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "files",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "parsed_file_count",
+      "equals": "parsed",
+      "field": "index_state",
+      "path": "registry/test_group_index.json",
+      "rule": "filtered_values",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "files",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "reused_file_count",
+      "equals": "reused",
+      "field": "index_state",
+      "path": "registry/test_group_index.json",
+      "rule": "filtered_values",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "groups",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "test_file_count",
+      "nested": "members",
+      "path": "registry/test_group_index.json",
+      "rule": "nested_length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "collection_key": "files",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "tracked_python_file_count",
+      "path": "registry/test_group_index.json",
       "rule": "length",
       "schema": "root schema_version plus shared registry-envelope invariant"
     },

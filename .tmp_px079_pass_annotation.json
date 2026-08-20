@@ -1,0 +1,44 @@
+{
+  "gap_id": "PX-OS-079",
+  "note": "Current source now performs backend-owned collision-free allocation and immediate allocation-bound revalidation, binds browser and host state to exact allocation proofs, preserves immutable create/replay truth, and closes the modal lifecycle defect exposed by the browser walk. dashboard-extension passed 133/133. studio-memory-graph completed successfully in 168.903265 seconds and retained a valid pass receipt after the outer shell's shorter wait window expired. This is narrow current-source evidence, not installed-host operational closure.",
+  "patch": {
+    "source_refs": [
+      {
+        "path": "runtime/studio_models.py",
+        "symbols": ["allocate_studio_version", "revalidate_studio_version_allocation", "write_versioned_record"]
+      },
+      {
+        "path": "extension/src/studioDraftHost.js",
+        "symbols": ["exactAllocationEnvelope", "sameAllocationBinding", "createStudioDraftFromHost"]
+      },
+      {
+        "path": "extension/src/studioDashboardHost.js",
+        "symbols": ["exactCatalogRevision", "revisionTreeSha256", "validVersion"]
+      },
+      {
+        "path": "extension/media/dashboard/90-controller.js",
+        "symbols": ["validStudioAllocation", "requestStudioVersionAllocation", "closeModal"]
+      }
+    ],
+    "tests_required": [
+      "python -m runtime.cli test-section run dashboard-extension",
+      "python -m runtime.cli test-section run studio-memory-graph",
+      "current-source installed-host open, allocate, save, conflict, reload, and reopen walk"
+    ],
+    "next_action": "Switch to PX-OS-976 and add one behavioral browser-to-extension-to-bridge-to-Python owner for agent, workflow, and physical/external skill allocation, create, conflict, detach, and reopen; then return for current-source installed-host closure. Do not run the full profile."
+  },
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+      "claim": "Current dashboard-extension receipt passed all 133 checks"
+    },
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
+      "claim": "Current Studio/memory/graph receipt completed successfully"
+    },
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005675",
+      "claim": "The late modal interaction failure was classified before repair"
+    }
+  ]
+}

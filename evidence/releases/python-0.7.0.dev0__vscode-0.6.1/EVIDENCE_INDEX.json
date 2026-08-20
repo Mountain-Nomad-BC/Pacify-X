@@ -1,0 +1,58 @@
+{
+  "artifact_count": 1,
+  "authority": "content identities for this exact version namespace; historical evidence is not current",
+  "generated_utc": "2026-08-13T16:05:25.509186Z",
+  "identity": {
+    "extension_version": "0.6.1",
+    "python_version": "0.7.0.dev0"
+  },
+  "limitations": [],
+  "namespace": "python-0.7.0.dev0__vscode-0.6.1",
+  "record_count": 7,
+  "records": [
+    {
+      "bytes": 636,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+      "sha256": "84092fd90c583396f98edd943d411ca95a391dc8130a8edae839fb7cb92a615c"
+    },
+    {
+      "bytes": 722,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/execution-placement.json",
+      "sha256": "e5e06a513442043a750649dcf2f06f40a5a30218048f457718b184230e1dc743"
+    },
+    {
+      "bytes": 600,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/hardware-routing.json",
+      "sha256": "afa0d7d6929ed1da145cf20448f52ef90b06b520fd757c8b5f61fe4f3f8ef27a"
+    },
+    {
+      "bytes": 604,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/learning-promotion.json",
+      "sha256": "fbece2ff643759d4bec0159c8e7c1ff93b2d81b27eb01a5dc6a710e9b347aad2"
+    },
+    {
+      "bytes": 854,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
+      "sha256": "e61f7450f339fe10d87481161cf66517d4eecd7e9ae4675e442fb1a33093a934"
+    },
+    {
+      "bytes": 791,
+      "kind": "test-receipt",
+      "path": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "sha256": "c7e1bf61d9f6a94a1eeae04531d85e6a5e55e4ec6034eaf0a4731e8d97071eaf"
+    },
+    {
+      "bytes": 3953745,
+      "kind": "vsix",
+      "path": ".engineering-bootstrap/quarantine/release-artifacts/vscode/0.6.1/pacify-x-vscode-0.6.1.vsix",
+      "sha256": "34742e7aa7d2d73ade00a95e92b74ce81133cf0aba97a36fd50cece89791d258"
+    }
+  ],
+  "schema_version": "px.current-evidence-index/1.0",
+  "valid": true
+}

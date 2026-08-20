@@ -1,0 +1,43 @@
+{
+  "aggregate": {
+    "absolute_pass_delta": -0.083333,
+    "control_pass_rate": 0.833333,
+    "control_passes": 10,
+    "pacify_pass_rate": 0.75,
+    "pacify_passes": 9,
+    "significance_claimed": false,
+    "task_count": 12
+  },
+  "artifacts": [
+    {
+      "path": "control-job-result",
+      "sha256": "1fcefdc6c1f7a6fff92c50cdc0408c6466c86953106ab92fd3643b0d75da41e9"
+    },
+    {
+      "path": "control-profile",
+      "sha256": "19861d775238a4e6a2b377ae4b08b8563ba28f8e71921789479a47e9871b4ff0"
+    },
+    {
+      "path": "pacify-job-result",
+      "sha256": "61573664f0f21e7dfc54e18be67f769860c4f0bfb6ca79cf63ebdcb74e4ff493"
+    },
+    {
+      "path": "pacify-profile",
+      "sha256": "38c95629f8c1cbf7f8c01d2bc9b103e9e9cf63d315d8eb8d750bf2546e7f1024"
+    },
+    {
+      "path": "pacify-treatment",
+      "sha256": "b68ccd5d46101309bea350215fe17de17b2778316671452bebe38922199b7bfc"
+    },
+    {
+      "path": "preflight-checks",
+      "sha256": "162926e1d1312e65f1be9f4f00f68d604e3fe6f070359105901f9f455db06a88"
+    }
+  ],
+  "benchmark_informed": false,
+  "cold": true,
+  "custody_hash": "ef9e1344c86cece3268c020109787406dda98e8e5da94cd6a5446d9e00ad28dc",
+  "parent_run_id": null,
+  "run_id": "sol-pacify-tbench21-ab12-r1",
+  "sealed": true
+}

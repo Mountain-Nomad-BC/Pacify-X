@@ -1,0 +1,43 @@
+{
+  "schema_version": "px.sidebar-provider-incident/1.0",
+  "findings": ["PXA-051", "PXA-052", "PXA-053"],
+  "observed_at": "2026-08-12T13:57:16Z",
+  "symptom": "There is no data provider registered that can provide view data.",
+  "split_state": {
+    "vscode_main_started_local": "2026-08-12T08:33:40",
+    "installed_0_5_1_local": "2026-08-12T08:46:53",
+    "workspace_extension_host_restarted_local": "2026-08-12T09:35:41",
+    "extension_host_selected_version": "0.5.1",
+    "extension_host_activation_event": "onLanguageModelChatProvider:pacify-local",
+    "extension_host_activation_failed": false,
+    "main_process_contribution_kind": "cached 0.5.0 tree view",
+    "extension_host_provider_kind": "0.5.1 webview provider",
+    "required_reconciliation": "close every VS Code window and start a new main process"
+  },
+  "workspace_less_failure": {
+    "windows": [2, 3],
+    "error": "TypeError: The paths[0] argument must be of type string. Received undefined",
+    "owner": "provideMcpServerDefinitions -> environmentPathsFor(workspaceRoot())",
+    "installed_bundle": "0.5.1"
+  },
+  "status": "0.5.3_installed_and_clean_host_render_certified_pending_live_main_process_restart",
+  "repair": {
+    "version": "0.5.3",
+    "artifact": "extension/dist/pacify-x-vscode-0.5.3.vsix",
+    "sha256": "e32f9af8b96e602d3f85964fe2f12e53ff12b8bc688b5ea6ac310ef729eb91e9",
+    "node_tests": {"passed": 182, "failed": 0},
+    "workspace_less_regression": "passed",
+    "clean_profile_sidebar_opened": true,
+    "clean_profile_sidebar_focused": true,
+    "clean_profile_contribution_type": "webview",
+    "clean_profile_provider_resolved": true,
+    "clean_profile_provider_resolve_count": 1,
+    "clean_profile_webview_html_assigned": true,
+    "clean_profile_process_tree_closed": true,
+    "selected_user_profile_version": "0.5.3",
+    "obsolete_user_profile_versions": ["0.5.0", "0.5.1", "0.5.2"],
+    "live_vscode_main_pid": 19824,
+    "live_vscode_main_started_local": "2026-08-12T08:33:40",
+    "full_application_restart_required": true
+  }
+}

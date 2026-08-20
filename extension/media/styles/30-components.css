@@ -1,0 +1,204 @@
+@layer px.components {
+  .px-component-panel { border: 1px solid var(--px-color-border); border-radius: var(--px-radius-panel); background: var(--px-color-panel); box-shadow: var(--px-shadow-panel); }
+  .px-component-control { min-block-size: 34px; border: 1px solid var(--px-color-border-active); border-radius: var(--px-radius-control); }
+  .studio-guided-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-block: 14px; }
+  .studio-guided-grid label { display: grid; gap: 6px; color: var(--silver); }
+  .studio-guided-grid input { min-height: 36px; border: 1px solid var(--line-bright); border-radius: 6px; background: var(--surface-deep); color: var(--text); padding: 6px 9px; }
+  .studio-machine-editor { border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
+  .studio-machine-editor summary { cursor: pointer; color: var(--silver); font-weight: 700; }
+  .studio-topology { display: grid; gap: 8px; margin-block: 14px; }
+  .studio-topology article { display: grid; grid-template-columns: minmax(120px, .7fr) minmax(180px, 1.3fr) minmax(180px, 1fr); gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 7px; padding: 9px 11px; }
+  .studio-actions { margin-block-start: 14px; }
+  .studio-modal { width: min(1500px, calc(100vw - 36px)); }
+  .studio-editor-tabs { display: flex; gap: 4px; margin-block: 12px 8px; border-bottom: 1px solid var(--line); }
+  .studio-editor-tabs button { min-height: 40px; padding: 8px 14px; border: 1px solid transparent; border-bottom: 0; color: var(--muted); background: transparent; cursor: pointer; }
+  .studio-editor-tabs button[aria-selected="true"] { border-color: var(--line-bright); color: var(--cyan); background: var(--surface-deep); }
+  .workflow-editor-layout { display: grid; grid-template-columns: var(--workflow-editor-columns, 150px minmax(420px, 1fr) minmax(280px, .56fr)); gap: 10px; min-height: 530px; }
+  .workflow-palette { min-width: 0; display: flex; flex-direction: column; gap: 8px; padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-deep); }
+  .workflow-palette > button, .workflow-port-editor button, .workflow-edge-editor button { min-height: 38px; border: 1px solid var(--line); border-radius: 5px; color: var(--silver); background: #0a1722; cursor: pointer; }
+  .workflow-palette p { color: var(--muted); font-size: 9px; line-height: 1.5; }
+  .workflow-editor-canvas { position: relative; min-height: 370px; overflow: auto; border: 1px solid var(--line-bright); border-radius: 8px; background: linear-gradient(rgba(57,216,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(57,216,255,.045) 1px, transparent 1px), #050e17; background-size: 24px 24px; }
+  .workflow-canvas-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin-bottom: 6px; padding: 6px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface-deep); }
+  .workflow-canvas-toolbar button { min-height: 32px; padding: 5px 9px; border: 1px solid var(--line); border-radius: 5px; color: var(--silver); background: #0a1722; cursor: pointer; }
+  .workflow-canvas-toolbar output { min-width: 42px; color: var(--cyan); font: 9px var(--vscode-editor-font-family, Consolas, monospace); text-align: center; }
+  .workflow-editor-canvas:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+  .workflow-editor-node { position: absolute; left: var(--wx); top: var(--wy); width: 210px; min-height: 82px; display: grid; grid-template-columns: 42px minmax(0,1fr) 42px; align-items: stretch; border: 1px solid var(--line-bright); border-left: 3px solid var(--cyan); border-radius: 7px; color: var(--silver); background: #091522; text-align: left; cursor: grab; transform: scale(var(--workflow-scale, 1)); transform-origin: top left; }
+  .workflow-node-body { min-width: 0; display: grid; gap: 4px; padding: 9px 5px; border: 0; color: inherit; background: transparent; text-align: left; cursor: pointer; }
+  .workflow-node-body mark { width: max-content; max-width: 100%; padding: 2px 5px; border-radius: 8px; color: var(--cyan); background: rgba(57,216,255,.1); font-size: 8px; }
+  .workflow-node-ports { display: flex; flex-direction: column; justify-content: space-around; gap: 3px; padding-block: 5px; }
+  .workflow-port-handle { min-width: 0; min-height: 25px; display: flex; align-items: center; gap: 3px; padding: 2px; border: 0; color: var(--muted); background: transparent; cursor: crosshair; }
+  .workflow-port-handle span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .workflow-port-handle i { width: 10px; height: 10px; flex: 0 0 10px; border: 2px solid var(--cyan); border-radius: 50%; background: #06111b; }
+  .workflow-port-handle.output { justify-content: flex-end; }
+  .workflow-port-handle:hover i, .workflow-port-handle:focus-visible i, .workflow-port-handle.connecting i { background: var(--cyan); box-shadow: 0 0 10px rgba(57,216,255,.8); }
+  .workflow-edge-layer { position: absolute; inset: 0; overflow: visible; pointer-events: none; z-index: 0; }
+  .workflow-edge-layer path { fill: none; stroke: rgba(57, 216, 255, .68); stroke-width: 2; }
+  .workflow-edge-layer marker path { fill: var(--cyan); stroke: none; }
+  .workflow-edge-layer text { fill: var(--muted); font-size: 10px; text-anchor: middle; paint-order: stroke; stroke: rgba(2, 9, 15, .95); stroke-width: 4px; }
+  .workflow-editor-node { z-index: 1; }
+  .workflow-editor-node.selected { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(57,216,255,.1); }
+  .workflow-editor-node.kind-validation { border-left-color: #ffd38a; }
+  .workflow-editor-node.kind-approval { border-left-color: #ff7d9c; }
+  .workflow-editor-node.trace-running { box-shadow: 0 0 0 2px rgba(57,216,255,.3), 0 0 20px rgba(57,216,255,.18); }
+  .workflow-editor-node.trace-succeeded { border-color: var(--green); }
+  .workflow-editor-node.trace-failed, .workflow-editor-node.trace-cancelled { border-color: var(--red); }
+  .workflow-editor-node em { color: var(--cyan); font-size: 8px; font-style: normal; letter-spacing: .12em; text-transform: uppercase; }
+  .workflow-editor-node span, .workflow-editor-node small { overflow: hidden; color: var(--muted); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+  .workflow-node-inspector { min-width: 0; display: grid; align-content: start; gap: 9px; padding: 10px; overflow: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-deep); }
+  .workflow-node-inspector label, .skill-text-editor header > div { display: grid; gap: 4px; }
+  .workflow-node-inspector input, .workflow-node-inspector select, .workflow-node-inspector textarea, .workflow-edge-editor input, .workflow-edge-editor select { min-height: 36px; min-width: 0; padding: 6px; border: 1px solid var(--line); border-radius: 5px; color: var(--text); background: #050e17; }
+  .workflow-node-inspector .studio-guided-grid { grid-template-columns: 1fr; margin-block: 0; }
+  .studio-checkbox { display: flex !important; grid-template-columns: auto 1fr; align-items: center; }
+  .workflow-port-editor { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+  .workflow-port-editor section { display: grid; gap: 5px; padding: 8px; border: 1px solid var(--line); }
+  .workflow-port-editor span { color: var(--muted); font: 9px var(--vscode-editor-font-family, Consolas, monospace); }
+  .workflow-port-row { display: grid; grid-template-columns: minmax(70px, 1fr) minmax(72px, .8fr); gap: 5px; padding-block: 5px; border-bottom: 1px solid var(--line); }
+  .workflow-port-row label { display: flex; align-items: center; gap: 4px; font-size: 8px; }
+  .workflow-port-row button { grid-column: 1 / -1; min-height: 30px; }
+  .studio-inline-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+  .studio-inline-actions button { min-height: 38px; flex: 1; padding-inline: 8px; border: 1px solid var(--line); border-radius: 5px; color: var(--silver); background: #0a1722; cursor: pointer; }
+  .workflow-edge-editor { display: grid; gap: 7px; margin-top: 8px; padding: 9px; border: 1px solid var(--line); border-radius: 7px; }
+  .workflow-edge-editor > div { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 5px; }
+  .workflow-edge-editor ol { max-height: 100px; margin: 0; padding-left: 24px; overflow: auto; color: var(--muted); }
+  .workflow-edge-editor li { display: flex; flex-wrap: wrap; gap: 7px; margin-block: 4px; }
+  .workflow-edge-editor li button { min-height: 26px; margin-left: auto; padding: 3px 7px; }
+  .workflow-input-contract { display: grid; gap: 8px; margin-top: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 7px; background: rgba(5, 14, 23, .82); }
+  .workflow-input-contract header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+  .workflow-input-contract header span, .workflow-input-contract li span { color: var(--muted); }
+  .workflow-input-contract ol { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .workflow-input-contract li { display: flex; justify-content: space-between; gap: 10px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 5px; }
+  .workflow-authority-editor { display: grid; gap: 12px; margin-top: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 7px; background: rgba(5, 14, 23, .9); }
+  .workflow-authority-editor > header { display: flex; align-items: start; justify-content: space-between; gap: 18px; }
+  .workflow-authority-editor > header span { color: var(--cyan); font-size: 8px; letter-spacing: .14em; }
+  .workflow-authority-editor > header h3 { margin: 3px 0 0; font-size: 13px; }
+  .workflow-authority-editor > header p { max-width: 520px; margin: 0; color: var(--muted); }
+  .workflow-authority-editor .two-col { align-items: start; }
+  .studio-revision-baseline { display: grid; gap: 4px; margin: 10px 0; padding: 10px 12px; border: 1px solid color-mix(in srgb, var(--cyan) 42%, var(--line)); border-left: 3px solid var(--cyan); border-radius: 6px; background: rgba(4, 23, 36, .88); }
+  .studio-revision-baseline b { color: var(--cyan); font-size: 9px; letter-spacing: .12em; }
+  .studio-revision-baseline span { color: var(--silver); }
+  .punch-ledger-progress { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-bottom: 10px; }
+  .punch-ledger-progress > div { display: grid; gap: 2px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 6px; background: rgba(6, 17, 27, .88); }
+  .punch-ledger-progress span { color: var(--muted); font-size: 8px; letter-spacing: .12em; }
+  .punch-ledger-progress b { color: var(--silver); font-size: 15px; }
+  .punch-ledger-progress small { color: var(--muted); }
+  .punch-ledger-filters { display: grid; grid-template-columns: minmax(220px, 2fr) minmax(130px, 1fr) minmax(120px, 1fr) auto auto auto; gap: 8px; align-items: end; margin: 10px 0; }
+  .punch-ledger-filters label { display: grid; gap: 4px; }
+  .punch-ledger-filters label > span { color: var(--muted); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+  .punch-ledger-filters .policy-switch { align-self: stretch; display: flex; align-items: center; }
+  @media (max-width: 1000px) { .punch-ledger-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .studio-validation { display: grid; gap: 5px; margin-top: 9px; padding: 9px; border: 1px solid var(--line); border-left: 3px solid var(--red); color: var(--muted); }
+  .studio-validation.passed { border-left-color: var(--green); }
+  .studio-validation b { color: var(--silver); }
+  .studio-validation .studio-warning { color: #ffd38a; }
+  .agent-builder-domain { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; margin-bottom: 8px; padding: 9px 11px; border: 1px solid rgba(57,216,255,.34); border-radius: 7px; background: rgba(0,130,174,.08); }
+  .agent-builder-domain strong { color: var(--cyan); font-size: 9px; letter-spacing: .14em; }
+  .agent-builder-domain span { color: var(--muted); font-size: 9px; line-height: 1.45; }
+  .agent-graph-workbench { margin-bottom: 10px; border: 1px solid var(--line-bright); border-radius: 8px; background: #030b13; }
+  .agent-canvas-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 10px; border-bottom: 1px solid var(--line); background: rgba(8,21,34,.94); }
+  .agent-canvas-toolbar > div { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
+  .agent-canvas-toolbar b { color: var(--silver); }
+  .agent-canvas-toolbar button { min-height: 34px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 5px; color: var(--silver); background: #0a1722; }
+  .agent-canvas-toolbar output { min-width: 42px; color: var(--cyan); text-align: center; }
+  .agent-graph-state { padding: 4px 7px; border: 1px solid rgba(255,190,82,.38); border-radius: 999px; color: #ffd38a; font-size: 8px; letter-spacing: .1em; }
+  .agent-graph-state.persisted-verified { border-color: rgba(57,217,138,.42); color: var(--green); }
+  .agent-graph-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(250px, .36fr); min-height: 500px; }
+  .agent-graph-canvas { position: relative; min-width: 0; min-height: 500px; overflow: auto; outline: none; background: radial-gradient(circle at 30% 10%, rgba(57,216,255,.08), transparent 42%), linear-gradient(rgba(57,216,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(57,216,255,.035) 1px, transparent 1px), #030b13; background-size: auto, 24px 24px, 24px 24px, auto; }
+  .agent-graph-canvas:focus-visible { box-shadow: inset 0 0 0 2px var(--cyan); }
+  .agent-graph-scene { position: relative; transform: scale(var(--agent-scale, 1)); transform-origin: 0 0; }
+  .agent-graph-node { position: absolute; z-index: 2; width: 188px; min-height: 96px; display: grid; align-content: center; gap: 4px; padding: 9px 12px; transform: translate(var(--ax), var(--ay)); border: 1px solid var(--line); border-left: 3px solid var(--cyan); border-radius: 7px; color: var(--silver); background: rgba(8,21,34,.97); text-align: left; cursor: grab; }
+  .agent-graph-node:hover, .agent-graph-node:focus-visible, .agent-graph-node.selected { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(57,216,255,.12), 0 8px 24px rgba(0,0,0,.34); }
+  .agent-graph-node:active { cursor: grabbing; }
+  .agent-graph-node.domain-authority { border-left-color: #ffb85c; }
+  .agent-graph-node.domain-tests { border-left-color: #ff7d9c; }
+  .agent-graph-node.domain-candidate { border-color: var(--green); border-left-color: var(--green); }
+  .agent-graph-node > span:first-child { color: var(--cyan); font-size: 8px; letter-spacing: .13em; }
+  .agent-graph-node > strong { overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+  .agent-graph-node > small { overflow: hidden; color: var(--muted); font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+  .agent-node-ports { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; }
+  .agent-node-port { min-width: 0; min-height: 20px; display: inline-flex; align-items: center; gap: 3px; padding: 2px 5px; border: 1px solid transparent; border-radius: 999px; color: var(--muted); background: transparent; font-size: 7px; line-height: 1; cursor: crosshair; }
+  .agent-node-port:hover, .agent-node-port:focus-visible, .agent-node-port.selected { border-color: var(--cyan); color: var(--text); background: rgba(57,216,255,.1); outline: none; }
+  .agent-node-port i { width: 6px; height: 6px; border: 1px solid var(--cyan); border-radius: 50%; background: #03111b; }
+  .agent-node-port.input i { border-color: #ffb85c; }
+  .agent-connection-status { min-height: 34px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 10px; border-bottom: 1px solid var(--line); color: var(--muted); background: rgba(3,11,19,.82); font-size: 9px; }
+  .agent-connection-status button { min-height: 26px; padding: 3px 8px; border: 1px solid var(--line-bright); border-radius: 4px; color: var(--silver); background: #0a1722; }
+  .agent-graph-scene .agent-topology-links { z-index: 1; }
+  .agent-graph-scene .agent-topology-links path { fill: none; stroke: rgba(57,216,255,.5); stroke-width: 1.6; }
+  .agent-graph-minimap { position: sticky; z-index: 4; left: calc(100% - 154px); top: 10px; width: 144px; height: 88px; padding: 0; overflow: hidden; border: 1px solid var(--line-bright); border-radius: 6px; background: rgba(3,10,18,.9); }
+  .agent-graph-minimap i { position: absolute; width: 7px; height: 5px; transform: translate(var(--amx), var(--amy)); border-radius: 2px; background: var(--cyan); }
+  .agent-node-inspector { min-width: 0; padding: 12px; overflow: auto; border-left: 1px solid var(--line); background: var(--surface-deep); }
+  .agent-node-inspector > header { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+  .agent-node-inspector > header span { color: var(--cyan); font-size: 8px; letter-spacing: .13em; }
+  .agent-node-inspector h3 { margin: 3px 0; color: var(--silver); text-transform: capitalize; }
+  .agent-node-inspector small, .agent-node-inspector p { color: var(--muted); font-size: 9px; line-height: 1.5; }
+  .agent-inspector-fields { display: grid; gap: 9px; }
+  .agent-inspector-fields label { display: grid; gap: 5px; color: var(--muted); font-size: 9px; }
+  .agent-inspector-fields input, .agent-inspector-fields textarea, .agent-inspector-fields select { min-width: 0; width: 100%; min-height: 36px; padding: 7px 8px; border: 1px solid var(--line-bright); border-radius: 5px; color: var(--text); background: #030a11; }
+  .agent-inspector-fields textarea { resize: vertical; font: 10px/1.5 var(--vscode-editor-font-family, Consolas, monospace); }
+  .agent-node-inspector .agent-builder-section { padding: 0; border: 0; background: transparent; }
+  .agent-accessible-topology { padding: 8px 11px; border-top: 1px solid var(--line); color: var(--muted); }
+  .agent-accessible-topology ol { max-height: 180px; overflow: auto; }
+  .agent-accessible-topology li { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 4px 0; }
+  .agent-accessible-topology code { color: var(--silver); }
+  .agent-accessible-topology .danger-action { min-height: 26px; margin-left: auto; padding: 3px 7px; }
+  .agent-topology { position: relative; display: grid; grid-template-columns: repeat(4, minmax(145px, 1fr)); gap: 28px 36px; margin-bottom: 10px; padding: 24px; overflow: auto; border: 1px solid var(--line-bright); border-radius: 8px; background: radial-gradient(circle at 30% 10%, rgba(57,216,255,.08), transparent 42%), linear-gradient(rgba(57,216,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(57,216,255,.025) 1px, transparent 1px), #030b13; background-size: auto, 24px 24px, 24px 24px, auto; }
+  .agent-topology-links { position: absolute; inset: 0; z-index: 0; overflow: visible; pointer-events: none; }
+  .agent-topology-links path { fill: none; stroke: rgba(57,216,255,.48); stroke-width: 1.6; }
+  .agent-topology-links marker path { fill: var(--cyan); stroke: none; }
+  .agent-topology-node { position: relative; z-index: 1; min-height: 88px; display: grid; align-content: center; gap: 5px; padding: 9px 10px; border: 1px solid var(--line); border-left: 3px solid var(--cyan); border-radius: 7px; color: var(--silver); background: rgba(8,21,34,.96); text-align: left; cursor: pointer; }
+  .agent-topology-node:hover, .agent-topology-node:focus-visible { border-color: var(--cyan); transform: translateY(-1px); }
+  .agent-topology-node.selected { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(57,216,255,.12), 0 8px 24px rgba(0,0,0,.28); }
+  .agent-topology-node.domain-authority { border-left-color: #ffb85c; }
+  .agent-topology-node.domain-gate { border-left-color: #ff7d9c; }
+  .agent-topology-node.domain-terminal { border-color: var(--green); border-left-color: var(--green); }
+  .agent-topology-node.domain-blocked { border-color: var(--red); border-left-color: var(--red); }
+  .agent-topology-node span { color: var(--cyan); font-size: 8px; letter-spacing: .13em; }
+  .agent-topology-node strong { overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+  .agent-topology-node small { color: var(--muted); font-size: 8px; }
+  .agent-runtime-truth { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 9px; margin-top: 10px; padding: 9px; border: 1px solid rgba(255,190,82,.32); border-radius: 6px; background: rgba(255,190,82,.06); }
+  .agent-runtime-truth b { color: #ffd38a; font-size: 9px; text-transform: uppercase; }
+  .agent-runtime-truth span { color: var(--muted); font-size: 9px; line-height: 1.5; }
+  .agent-builder-pipeline { display: grid; grid-template-columns: repeat(5, minmax(72px, 1fr) auto) minmax(72px, 1fr); gap: 5px; align-items: center; margin-bottom: 9px; padding: 9px; overflow-x: auto; border: 1px solid var(--line); border-radius: 7px; background: #050e17; }
+  .agent-builder-pipeline span { min-height: 34px; display: grid; place-items: center; padding: 6px; border: 1px solid var(--line-bright); border-radius: 5px; color: var(--silver); background: #091522; font-size: 9px; text-align: center; }
+  .agent-builder-pipeline i { color: var(--cyan); font-style: normal; }
+  .agent-builder-layout { display: grid; grid-template-columns: minmax(0, 1fr) var(--agent-builder-side, minmax(260px, .36fr)); gap: 10px; min-height: 570px; }
+  .agent-builder-layout > main { min-width: 0; display: grid; align-content: start; gap: 10px; }
+  .agent-builder-section, .agent-builder-side > section { min-width: 0; padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-deep); }
+  .agent-builder-section > header, .agent-builder-card > header { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 9px; }
+  .agent-builder-section > header span, .agent-builder-card > header span { color: var(--cyan); font-size: 8px; letter-spacing: .14em; }
+  .agent-builder-section h3, .agent-builder-card strong { margin: 2px 0 0; color: var(--silver); font-size: 12px; }
+  .agent-builder-section > header button, .agent-builder-card > header button { min-height: 36px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 5px; color: var(--silver); background: #0a1722; }
+  .agent-builder-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .agent-builder-fields.identity { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .agent-builder-fields label, .agent-instructions, .agent-builder-side label { min-width: 0; display: grid; gap: 5px; color: var(--muted); font-size: 9px; }
+  .agent-builder-fields input, .agent-builder-fields select, .agent-instructions textarea, .agent-builder-side textarea { min-width: 0; min-height: 36px; padding: 7px 8px; border: 1px solid var(--line-bright); border-radius: 5px; color: var(--text); background: #030a11; }
+  .agent-builder-section > .agent-instructions { margin-top: 8px; }
+  .agent-instructions > textarea, .agent-builder-side label > textarea { resize: vertical; font: 10px/1.5 var(--vscode-editor-font-family, Consolas, monospace); }
+  .agent-builder-collection { display: grid; gap: 8px; }
+  .agent-builder-card { padding: 9px; border: 1px solid var(--line); border-left: 3px solid var(--cyan); border-radius: 7px; background: #07121d; }
+  .agent-builder-card.grant { border-left-color: var(--green); }
+  .agent-builder-side { min-width: 0; display: grid; align-content: start; gap: 10px; }
+  .agent-builder-side .studio-validation { margin-top: 0; }
+  .agent-builder-side p, .agent-builder-side li, .agent-builder-side dd, .agent-builder-side dt { color: var(--muted); font-size: 9px; line-height: 1.5; }
+  .agent-builder-side ul { margin: 7px 0 0; padding-left: 18px; }
+  .agent-builder-side dl { display: grid; gap: 6px; margin-bottom: 0; }
+  .agent-builder-side dl div { display: grid; grid-template-columns: 68px minmax(0, 1fr); gap: 7px; }
+  .agent-builder-side dl dd { margin: 0; overflow-wrap: anywhere; color: var(--silver); }
+  .skill-editor-layout { display: grid; grid-template-columns: var(--skill-editor-columns, minmax(190px, .42fr) minmax(420px, 1fr) minmax(250px, .52fr)); gap: 10px; min-height: 560px; }
+  .skill-file-tree { min-width: 0; display: flex; flex-direction: column; gap: 4px; padding: 10px; overflow: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-deep); }
+  .skill-file-tree header, .skill-text-editor header { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .skill-file-tree > button { min-height: 34px; padding: 6px 7px; overflow: hidden; border: 1px solid var(--line); border-radius: 5px; color: var(--silver); background: #0a1722; text-align: left; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+  .skill-file-tree > button.selected { border-color: var(--cyan); color: var(--cyan); }
+  .skill-text-editor { min-width: 0; display: grid; grid-template-rows: auto 1fr; padding: 10px; border: 1px solid var(--line); border-radius: 8px; }
+  .skill-text-editor textarea { width: 100%; min-height: 480px; resize: vertical; padding: 12px; border: 1px solid var(--line-bright); border-radius: 6px; color: var(--text); background: #030a11; font: 11px/1.55 var(--vscode-editor-font-family, Consolas, monospace); tab-size: 2; }
+  .skill-editor-side { min-width: 0; display: grid; align-content: start; gap: 10px; padding: 10px; overflow: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-deep); }
+  .skill-editor-side section { padding: 9px; border: 1px solid var(--line); }
+  .skill-editor-side p, .skill-editor-side span, .skill-editor-side li { color: var(--muted); font-size: 9px; line-height: 1.45; }
+  .skill-history ol { max-height: 190px; margin: 7px 0 0; padding-left: 18px; overflow: auto; }
+  .skill-history li { margin-bottom: 8px; }
+  .skill-history li > * { display: block; }
+  .graph-saved-views { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 15px 10px; padding: 8px; border: 1px solid var(--line); border-radius: 7px; color: var(--muted); background: rgba(3,10,18,.74); }
+  .graph-saved-views > b { margin-right: 5px; color: var(--faint); font-size: 8px; letter-spacing: .12em; }
+  .graph-saved-views select, .graph-saved-views button { min-height: 34px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 5px; color: var(--silver); background: #0a1722; }
+  .graph-saved-view { display: inline-flex; }
+  .graph-saved-view button + button { width: 32px; padding-inline: 0; color: var(--red-soft, #ff6a6a); }
+}

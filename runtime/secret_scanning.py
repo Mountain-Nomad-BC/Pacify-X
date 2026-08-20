@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 from typing import Iterable
@@ -11,13 +12,19 @@ from typing import Iterable
 
 SKIP_DIRECTORIES = {
     ".git",
+    ".engineering-bootstrap",
     ".pytest_cache",
     ".ruff_cache",
+    ".vscode-test",
     ".venv",
+    "PortableGit",
+    "Python",
     "__pycache__",
     "build",
     "dist",
     "node_modules",
+    "preserved-extension-installations",
+    "preserved-skills",
 }
 AWS_ACCESS_KEY = re.compile(r"\bAKIA[0-9A-Z]{16}\b")
 GITHUB_TOKEN = re.compile(r"\bgh[pousr]_[A-Za-z0-9_]{20,}\b")
@@ -130,8 +137,15 @@ def scan_secret_shapes(
     findings: list[dict[str, object]] = []
     files_scanned = 0
     errors: list[dict[str, str]] = []
-    for path in sorted(resolved.rglob("*")):
-        if not path.is_file() or any(part in SKIP_DIRECTORIES for part in path.parts):
+    source_files: list[Path] = []
+    for directory, names, files in os.walk(resolved, topdown=True, followlinks=False):
+        names[:] = sorted(
+            name for name in names
+            if name not in SKIP_DIRECTORIES and not name.startswith(".venv")
+        )
+        source_files.extend(Path(directory) / name for name in sorted(files))
+    for path in source_files:
+        if path.is_symlink() or not path.is_file():
             continue
         try:
             sample = path.read_bytes()
@@ -175,7 +189,8 @@ def scan_secret_shapes(
         errors.append({"file": str(registry_path), "error": "stale_reviews"})
     unreviewed = [item for item in findings if item["classification"] == "unreviewed"]
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
+        "scan_scope": "active-source-tree; generated custody, caches, environments, build outputs, and dependency stores excluded",
         "valid": not unreviewed and not errors,
         "files_scanned": files_scanned,
         "finding_count": len(findings),

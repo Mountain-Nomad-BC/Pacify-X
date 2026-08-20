@@ -7,12 +7,14 @@ from runtime.project_intelligence import (
     build_project_map,
     validate_project_map,
     diff_project_maps,
+    project_map_status,
 )
 from runtime.project_impact import (
     analyze_project_impact,
     validate_project_change_intelligence_orchestration,
 )
 from runtime.project_map_retrieval import query_project_map
+from runtime import project_map_retrieval
 
 
 def test_build_validate_query_and_incremental(tmp_path: Path):
@@ -34,6 +36,43 @@ def test_build_validate_query_and_incremental(tmp_path: Path):
     second = build_project_map(p)
     assert second["incremental_reuse"]["reused"] >= 2
     assert diff_project_maps(Path(first["map_dir"]), Path(second["map_dir"]))["valid"]
+
+
+def test_project_map_status_supports_honest_fast_projection_check(tmp_path: Path):
+    project = tmp_path / "projection-status"
+    project.mkdir()
+    (project / "service.py").write_text("def ready(): return True\n", encoding="utf-8")
+    build_project_map(project)
+
+    quick = project_map_status(project, verify_integrity=False)
+    assert quick["valid"]
+    assert quick["validation_scope"] == "sealed-projection-metadata"
+    assert quick["content_hashes_verified"] is False
+
+    receipt_path = project / ".engineering-bootstrap/project-map/map-receipt.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    receipt["map_revision"] = "forged"
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    rejected = project_map_status(project, verify_integrity=False)
+    assert not rejected["valid"]
+    assert "map receipt hash mismatch" in rejected["errors"]
+
+
+def test_project_map_query_reuses_stat_bound_json_cache(tmp_path: Path):
+    project = tmp_path / "cached-query"
+    project.mkdir()
+    (project / "service.py").write_text(
+        "def health_check(): return True\n", encoding="utf-8"
+    )
+    build_project_map(project)
+    project_map_retrieval._load_json_cached.cache_clear()
+
+    query_project_map(project, "health check")
+    before = project_map_retrieval._load_json_cached.cache_info()
+    query_project_map(project, "health check")
+    after = project_map_retrieval._load_json_cached.cache_info()
+
+    assert after.hits >= before.hits + 2
 
 
 def test_sensitive_sources_are_excluded_before_inventory_and_retrieval(tmp_path: Path):
@@ -76,11 +115,66 @@ def test_sensitive_sources_are_excluded_before_inventory_and_retrieval(tmp_path:
     assert manifest["exclusion_counts"]["sensitive_key_material"] == 1
 
 
+def test_caller_declared_prefixes_are_excluded_and_freshness_is_reproducible(
+    tmp_path: Path,
+):
+    project = tmp_path / "sample"
+    project.mkdir()
+    (project / "app.py").write_text("def run(): return True\n", encoding="utf-8")
+    skipped = project / "external-references"
+    skipped.mkdir()
+    (skipped / "dead-link-placeholder.txt").write_text(
+        "unavailable external reference\n", encoding="utf-8"
+    )
+
+    result = build_project_map(project, exclude_prefixes=["external-references"])
+
+    assert result["valid"]
+    assert validate_project_map(project, check_freshness=True)["valid"]
+    manifest = json.loads(
+        (project / ".engineering-bootstrap/project-map/project-manifest.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert manifest["caller_exclude_prefixes"] == ["external-references"]
+    assert manifest["exclusion_counts"]["caller_declared"] == 1
+    inventory = (
+        project / ".engineering-bootstrap/project-map/file-inventory.jsonl"
+    ).read_text(encoding="utf-8")
+    assert "dead-link-placeholder" not in inventory
+
+
+def test_malformed_url_port_does_not_abort_project_mapping(tmp_path: Path):
+    project = tmp_path / "sample"
+    project.mkdir()
+    (project / "config.py").write_text(
+        'BROKEN_EXAMPLE = "http://localhost:8080;\\\\n"\n', encoding="utf-8"
+    )
+
+    result = build_project_map(project)
+
+    assert result["valid"]
+    assert validate_project_map(project, check_freshness=True)["valid"]
+
+
+def test_list_valued_openapi_named_json_does_not_abort_mapping(tmp_path: Path):
+    project = tmp_path / "sample"
+    project.mkdir()
+    (project / "archived_openapi_examples.json").write_text(
+        '[{"path":"/health"}]\n', encoding="utf-8"
+    )
+
+    result = build_project_map(project)
+
+    assert result["valid"]
+    assert validate_project_map(project, check_freshness=True)["valid"]
+
+
 def test_packaged_skill_tools_execute_against_a_real_map(tmp_path: Path):
     project = tmp_path / "cli-project"
     project.mkdir()
     (project / "service.py").write_text("def health(): return True\n", encoding="utf-8")
-    tools = Path(__file__).parents[1] / ".agents" / "skills"
+    tools = Path(__file__).parents[1] / ".px" / "skills"
     build_tool = tools / "map-project-intelligence" / "scripts" / "build_project_map.py"
     validate_tool = (
         tools / "map-project-intelligence" / "scripts" / "validate_project_map.py"
@@ -95,6 +189,10 @@ def test_packaged_skill_tools_execute_against_a_real_map(tmp_path: Path):
             str(project),
             "--output-dir",
             str(map_output),
+            "--max-bytes",
+            str(16 * 1024 * 1024),
+            "--max-files",
+            "100",
         ],
         check=True,
         capture_output=True,

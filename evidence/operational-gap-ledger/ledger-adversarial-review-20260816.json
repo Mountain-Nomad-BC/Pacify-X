@@ -1,0 +1,22 @@
+{
+  "schema_version": "px.agent-audit-report/1.0",
+  "report_id": "ledger-adversarial-review-20260816",
+  "agent": "ledger_adversarial_review",
+  "mode": "read-only",
+  "findings": [
+    {"finding_id":"LAR-001","priority":"P0","summary":"Concurrent writers can corrupt the hash chain.","source":"runtime/operational_gap_ledger.py:352","gap_ids":["PX-OS-096"]},
+    {"finding_id":"LAR-002","priority":"P0","summary":"A crossing append can write beyond count or byte bounds.","source":"runtime/operational_gap_ledger.py:178","gap_ids":["PX-OS-109"]},
+    {"finding_id":"LAR-003","priority":"P0","summary":"Partial or empty surface coverage can be reported as complete.","source":"runtime/operational_gap_ledger.py:240","gap_ids":["PX-OS-097","PX-OS-102"]},
+    {"finding_id":"LAR-004","priority":"P0","summary":"The total-known-surfaces denominator is tautological.","source":"runtime/operational_gap_ledger.py:329","gap_ids":["PX-OS-107"]},
+    {"finding_id":"LAR-005","priority":"P0","summary":"Present and partial interaction stages can lack evidence.","source":"runtime/operational_gap_ledger.py:105","gap_ids":["PX-OS-110"]},
+    {"finding_id":"LAR-006","priority":"P1","summary":"Annotation patches can invalidate cards and admit placeholder completion evidence.","source":"runtime/operational_gap_ledger.py:276","gap_ids":["PX-OS-111"]},
+    {"finding_id":"LAR-007","priority":"P1","summary":"Ordered transitions do not enforce the operational meaning of states.","source":"runtime/operational_gap_ledger.py:127","gap_ids":["PX-OS-112"]},
+    {"finding_id":"LAR-008","priority":"P1","summary":"Regex-only control inventory is incomplete and misattributes controls.","source":"scripts/bootstrap_operational_gap_ledger.py:22","gap_ids":["PX-OS-113"]},
+    {"finding_id":"LAR-009","priority":"P1","summary":"No canonical child-branch, report-reconciliation, or task-switch checkpoint mechanism exists.","source":"runtime/operational_gap_ledger.py:47","gap_ids":["PX-OS-114"]},
+    {"finding_id":"LAR-010","priority":"P1","summary":"Full replay on every append and dashboard load violates bounded startup.","source":"runtime/operational_gap_ledger.py:357","gap_ids":["PX-OS-115"]},
+    {"finding_id":"LAR-011","priority":"P1","summary":"Dashboard counts become noncanonical after the first 200 cards.","source":"runtime/dashboard_api.py:930","gap_ids":["PX-OS-105"]},
+    {"finding_id":"LAR-012","priority":"P1","summary":"An interrupted append has no authenticated tail recovery.","source":"runtime/operational_gap_ledger.py:187","gap_ids":["PX-OS-116"]},
+    {"finding_id":"LAR-013","priority":"P2","summary":"Snapshot generation is nondeterministic and publication is not fully durable.","source":"runtime/operational_gap_ledger.py:327","gap_ids":["PX-OS-117"]},
+    {"finding_id":"LAR-014","priority":"P2","summary":"Stable ID format, event uniqueness, and allocation are incomplete.","source":"runtime/operational_gap_ledger.py:144","gap_ids":["PX-OS-118"]}
+  ]
+}

@@ -1,0 +1,337 @@
+{
+  "id": "donjayamanne.githistory",
+  "name": "Git History",
+  "version": "0.6.20",
+  "publisher": "donjayamanne",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "keybindings",
+    "menus",
+    "views"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "donjayamanne.githistory",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "donjayamanne.githistory",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "donjayamanne.githistory",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "donjayamanne.githistory",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "donjayamanne.githistory",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "git.commit.cherryPick",
+      "invocation": "vscode.commands.executeCommand('git.commit.cherryPick', ...args)",
+      "title": "Cherrypick into current branch",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.compare",
+      "invocation": "vscode.commands.executeCommand('git.commit.compare', ...args)",
+      "title": "Compare against previously selected Commit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.compare.file.compare",
+      "invocation": "vscode.commands.executeCommand('git.commit.compare.file.compare', ...args)",
+      "title": "Compare",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.compare.selectForComparison",
+      "invocation": "vscode.commands.executeCommand('git.commit.compare.selectForComparison', ...args)",
+      "title": "Select for comparison",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.compare.view.hide",
+      "invocation": "vscode.commands.executeCommand('git.commit.compare.view.hide', ...args)",
+      "title": "Hide Commit Comparison View Explorer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.compare.view.show",
+      "invocation": "vscode.commands.executeCommand('git.commit.compare.view.show', ...args)",
+      "title": "Git: Show Commit Comparison View Explorer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.compare.view.showFilesOnly",
+      "invocation": "vscode.commands.executeCommand('git.commit.compare.view.showFilesOnly', ...args)",
+      "title": "Show files only",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.compare.view.showFolderView",
+      "invocation": "vscode.commands.executeCommand('git.commit.compare.view.showFolderView', ...args)",
+      "title": "Show folder view",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.createBranch",
+      "invocation": "vscode.commands.executeCommand('git.commit.createBranch', ...args)",
+      "title": "Create a branch from this commit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.FileEntry.compare",
+      "invocation": "vscode.commands.executeCommand('git.commit.FileEntry.compare', ...args)",
+      "title": "Compare against previously selected Commit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.FileEntry.CompareAgainstPrevious",
+      "invocation": "vscode.commands.executeCommand('git.commit.FileEntry.CompareAgainstPrevious', ...args)",
+      "title": "Compare against previous version",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.FileEntry.CompareAgainstWorkspace",
+      "invocation": "vscode.commands.executeCommand('git.commit.FileEntry.CompareAgainstWorkspace', ...args)",
+      "title": "Compare against workspace version",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.FileEntry.selectForComparison",
+      "invocation": "vscode.commands.executeCommand('git.commit.FileEntry.selectForComparison', ...args)",
+      "title": "Select for comparison",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.FileEntry.ViewFileContents",
+      "invocation": "vscode.commands.executeCommand('git.commit.FileEntry.ViewFileContents', ...args)",
+      "title": "View File Contents",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.merge",
+      "invocation": "vscode.commands.executeCommand('git.commit.merge', ...args)",
+      "title": "Merge with this commit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.rebase",
+      "invocation": "vscode.commands.executeCommand('git.commit.rebase', ...args)",
+      "title": "Rebase onto this commit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.view.hide",
+      "invocation": "vscode.commands.executeCommand('git.commit.view.hide', ...args)",
+      "title": "Hide Commit View Explorer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.view.show",
+      "invocation": "vscode.commands.executeCommand('git.commit.view.show', ...args)",
+      "title": "Git: Show Commit View Explorer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.view.showFilesOnly",
+      "invocation": "vscode.commands.executeCommand('git.commit.view.showFilesOnly', ...args)",
+      "title": "Show files only",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.view.showFolderView",
+      "invocation": "vscode.commands.executeCommand('git.commit.view.showFolderView', ...args)",
+      "title": "Show folder view",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.commit.ViewChangeLog",
+      "invocation": "vscode.commands.executeCommand('git.commit.ViewChangeLog', ...args)",
+      "title": "View Change log",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.viewFileHistory",
+      "invocation": "vscode.commands.executeCommand('git.viewFileHistory', ...args)",
+      "title": "Git: View File History",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.viewHistory",
+      "invocation": "vscode.commands.executeCommand('git.viewHistory', ...args)",
+      "title": "Git: View History (git log)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git.viewLineHistory",
+      "invocation": "vscode.commands.executeCommand('git.viewLineHistory', ...args)",
+      "title": "Git: View Line History",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "donjayamanne.githistory",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:keybindings",
+      "contribution:menus",
+      "contribution:views"
+    ],
+    "interface": [
+      "git.commit.cherryPick",
+      "git.commit.compare",
+      "git.commit.compare.file.compare",
+      "git.commit.compare.selectForComparison",
+      "git.commit.compare.view.hide",
+      "git.commit.compare.view.show",
+      "git.commit.compare.view.showFilesOnly",
+      "git.commit.compare.view.showFolderView",
+      "git.commit.createBranch",
+      "git.commit.FileEntry.compare",
+      "git.commit.FileEntry.CompareAgainstPrevious",
+      "git.commit.FileEntry.CompareAgainstWorkspace",
+      "git.commit.FileEntry.selectForComparison",
+      "git.commit.FileEntry.ViewFileContents",
+      "git.commit.merge",
+      "git.commit.rebase",
+      "git.commit.view.hide",
+      "git.commit.view.show",
+      "git.commit.view.showFilesOnly",
+      "git.commit.view.showFolderView",
+      "git.commit.ViewChangeLog",
+      "git.viewFileHistory",
+      "git.viewHistory",
+      "git.viewLineHistory"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

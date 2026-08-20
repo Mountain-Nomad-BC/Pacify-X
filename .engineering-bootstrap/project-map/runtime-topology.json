@@ -1,0 +1,232 @@
+{
+  "ci_pipelines": [
+    {
+      "external_actions": [
+        "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+        "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+        "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
+      ],
+      "jobs": [
+        {
+          "line": 4,
+          "name": "pull_request"
+        },
+        {
+          "line": 5,
+          "name": "push"
+        },
+        {
+          "line": 12,
+          "name": "extension"
+        },
+        {
+          "line": 14,
+          "name": "strategy"
+        },
+        {
+          "line": 16,
+          "name": "matrix"
+        },
+        {
+          "line": 46,
+          "name": "platform-matrix"
+        },
+        {
+          "line": 48,
+          "name": "strategy"
+        },
+        {
+          "line": 50,
+          "name": "matrix"
+        },
+        {
+          "line": 70,
+          "name": "assurance-gates"
+        },
+        {
+          "line": 72,
+          "name": "strategy"
+        },
+        {
+          "line": 74,
+          "name": "matrix"
+        },
+        {
+          "line": 98,
+          "name": "governed-gates"
+        }
+      ],
+      "source": ".github/workflows/ci.yml"
+    },
+    {
+      "external_actions": [
+        "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+        "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+        "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
+      ],
+      "jobs": [
+        {
+          "line": 4,
+          "name": "push"
+        },
+        {
+          "line": 5,
+          "name": "tags"
+        },
+        {
+          "line": 7,
+          "name": "workflow_dispatch"
+        },
+        {
+          "line": 8,
+          "name": "inputs"
+        },
+        {
+          "line": 9,
+          "name": "release_tag"
+        },
+        {
+          "line": 22,
+          "name": "certify-and-publish"
+        }
+      ],
+      "source": ".github/workflows/release.yml"
+    },
+    {
+      "external_actions": [
+        "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+        "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97"
+      ],
+      "jobs": [
+        {
+          "line": 4,
+          "name": "schedule"
+        },
+        {
+          "line": 6,
+          "name": "workflow_dispatch"
+        },
+        {
+          "line": 16,
+          "name": "exhaustive-platform-release-environment"
+        },
+        {
+          "line": 17,
+          "name": "strategy"
+        },
+        {
+          "line": 19,
+          "name": "matrix"
+        }
+      ],
+      "source": ".github/workflows/scheduled-assurance.yml"
+    }
+  ],
+  "entrypoints": [
+    {
+      "kind": "npm_script",
+      "name": "build",
+      "source": ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "build:mcp",
+      "source": ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "check",
+      "source": ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "package",
+      "source": ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "test",
+      "source": ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "build",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "build:mcp",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "build:ui-actions",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "check",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "check:ui-actions",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "check:ui-scaffold",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "measure:efficiency",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "package",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "test",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "test:performance",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "test:ui-e2e",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "test:unit",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "test:vscode-host",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "python_console_script",
+      "name": "engineering-bootstrap",
+      "source": "pyproject.toml",
+      "target": "engineering_bootstrap.cli:main"
+    }
+  ],
+  "limitations": [
+    "Runtime topology is static and must be reconciled with deployed evidence for production claims."
+  ],
+  "runtime_markers": {},
+  "schema_version": "1.1",
+  "services": []
+}

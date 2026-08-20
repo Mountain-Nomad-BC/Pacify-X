@@ -9,6 +9,40 @@ permissions:
   contents: read
 
 jobs:
+  extension:
+    name: extension / ${{ matrix.os }} / build-test-package
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: extension/package-lock.json
+      - name: Install exact extension dependencies
+        working-directory: extension
+        run: npm ci --ignore-scripts
+      - name: Test and package exact extension source
+        working-directory: extension
+        run: npm run package
+      - name: Exercise real VS Code extension host
+        if: runner.os == 'Windows'
+        working-directory: extension
+        env:
+          PX_ENGINE_ROOT: ${{ github.workspace }}
+        run: npm run test:vscode-host
+      - name: Retain exact VSIX
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: pacify-x-vsix-${{ runner.os }}
+          path: extension/dist/*.vsix
+          if-no-files-found: error
+
   platform-matrix:
     name: ${{ matrix.os }} / Python ${{ matrix.python }}
     strategy:
@@ -31,7 +65,7 @@ jobs:
         env:
           PYTHONDONTWRITEBYTECODE: "1"
           PYTHONNOUSERSITE: "1"
-        run: python -m pytest -q -p no:cacheprovider tests/test_platform_support.py tests/test_bounded_walk.py tests/test_file_lock_contention.py tests/test_evidence_portability.py
+        run: python -m pytest -q -p no:cacheprovider tests/test_platform_support.py tests/test_bounded_walk.py tests/test_file_lock_contention.py tests/test_evidence_portability.py tests/test_process_supervisor.py tests/test_agent_runtime.py tests/test_workflow_studio.py tests/test_skill_studio.py
 
   assurance-gates:
     name: assurance / ${{ matrix.gate }}

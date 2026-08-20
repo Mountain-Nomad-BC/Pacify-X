@@ -1,0 +1,26 @@
+{
+  "schema_version": "px.full-unittest-timeout/1.0",
+  "command": [
+    "python",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "cwd": ".",
+  "timeout_seconds": 1800,
+  "observed_duration_seconds": 1804,
+  "exit_code": 124,
+  "completion_footer_observed": false,
+  "residual_process": {
+    "pid": 20404,
+    "command_line_matched": true,
+    "descendant_pids": [],
+    "terminated": true,
+    "closure_verified": true
+  },
+  "certification_disposition": "not-passed",
+  "open_finding": "PXA-050"
+}

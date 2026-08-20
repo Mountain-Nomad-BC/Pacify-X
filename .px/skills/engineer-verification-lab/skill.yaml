@@ -1,0 +1,38 @@
+{
+  "admission_record": "engineer-verification-lab",
+  "body_sha256": "dfa4d00acfe7f08912ee652eda9bc06f4befa5b43d4a5bc92cb1392d47be4b79",
+  "contract": {
+    "available": true,
+    "sha256": "927a99c70ccbec619c02c7461b17528baa4afe85109df6c0f0eb2fe48392190a",
+    "source": "registry/skill_packages/engineer-verification-lab.json"
+  },
+  "description": "Design and run unit, integration, contract, differential, property, metamorphic, fuzz, mutation, performance, judge-calibration, trajectory, and long-horizon evaluations. Use when correctness or behavioral quality needs adversarial, independent, or regression-grade evidence.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "engineer-verification-lab",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/engineer-verification-lab"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "engineer",
+    "verification",
+    "lab",
+    "declared-suite"
+  ],
+  "version": "0.2.0"
+}

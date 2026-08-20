@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import math
 import os
 from pathlib import Path
@@ -9,6 +10,7 @@ import time
 
 import pytest
 
+from runtime.resource_lifecycle import ResourceManager, ResourceStatus
 from runtime.test_profiles import resolve_test_profile
 from runtime.test_runner import run_test_command, validate_timeout
 
@@ -57,6 +59,60 @@ def test_timeout_preserves_partial_output() -> None:
     )
     assert result["timed_out"]
     assert "partial-out" in result["stdout"] and "partial-err" in result["stderr"]
+
+
+def test_pytest_uses_registered_isolated_basetemp_and_reclaims_it(
+    tmp_path: Path,
+) -> None:
+    test_file = tmp_path / "test_nested.py"
+    test_file.write_text(
+        "import os\n"
+        "from pathlib import Path\n"
+        "import tempfile\n\n"
+        "def test_uses_bound_temp_roots(tmp_path):\n"
+        "    assert tmp_path.is_dir()\n"
+        "    inherited = Path(tempfile.gettempdir()).resolve()\n"
+        "    assert inherited == Path(os.environ['TEMP']).resolve()\n"
+        "    assert os.environ['TMP'] == os.environ['TEMP'] == os.environ['TMPDIR']\n"
+        "    assert inherited.name == 'process-temp'\n"
+        "    key_root = Path(os.environ['PX_STUDIO_KEY_ROOT']).resolve()\n"
+        "    assert key_root.name == 'authority-keys'\n"
+        "    assert Path.cwd().resolve() not in key_root.parents\n"
+        "    key_root.mkdir()\n"
+        "    (key_root / 'prepared.key').write_text('test-only')\n"
+        "    assert inherited in Path(tempfile.mkdtemp()).resolve().parents\n",
+        encoding="utf-8",
+    )
+    manager = ResourceManager(
+        tmp_path / "ledger.json", receipt_dir=tmp_path / "cleanup-receipts"
+    )
+    result = run_test_command(
+        [sys.executable, "-m", "pytest", "-q", str(test_file)],
+        cwd=ROOT,
+        environment=os.environ,
+        timeout_seconds=30,
+        resource_manager=manager,
+        run_id="nested-pytest",
+    )
+
+    assert result["valid"] is True, json.dumps(result, indent=2, default=str)
+    workspace = result["test_workspace"]
+    assert workspace["kind"] == "managed_pytest_basetemp"
+    assert workspace["reclaimed"] is True
+    assert not Path(workspace["path"]).exists()
+    assert ".pytest_cache" not in result["stderr"]
+    assert "PermissionError" not in result["stdout"]
+    assert workspace["cleanup_id"]
+    record = manager.ledger.get(workspace["resource_id"])
+    assert record.status == ResourceStatus.RECLAIMED.value
+
+
+def test_wrapped_pytest_command_is_detected() -> None:
+    from runtime.test_runner import _is_pytest_command
+
+    assert _is_pytest_command(
+        [sys.executable, "-m", "coverage", "run", "-m", "pytest", "tests"]
+    )
 
 
 def test_fast_profile_excludes_release_duration_tests() -> None:

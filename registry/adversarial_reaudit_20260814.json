@@ -1,0 +1,67 @@
+{
+  "schema_version": "px.adversarial-reaudit-remediation/1.0",
+  "source": {
+    "name": "ADVERSARIAL_AUDIT_REPORT.md",
+    "sha256": "8bbaab888cb217f9e63038078c7f850250dbf440011d7aa273d5b76adf6c4634",
+    "bytes": 25026,
+    "received_date": "2026-08-14"
+  },
+  "denominator": {
+    "total": 34,
+    "severity": {
+      "BLOCKER": 6,
+      "CRITICAL": 1,
+      "HIGH": 15,
+      "MEDIUM": 10,
+      "LOW": 2
+    }
+  },
+  "status_counts": {
+    "open": 0,
+    "in_progress": 0,
+    "fixed_pending_independent_verification": 34,
+    "accepted": 0,
+    "blocked": 0
+  },
+  "release_claim": {
+    "complete": false,
+    "certified": false,
+    "reason": "All 34 findings have source-level repairs and focused evidence, but acceptance remains withheld until the exact built VSIX and final extracted audit bundle pass the independent certification sequence."
+  },
+  "findings": [
+    {"id":"PXA2-001","severity":"BLOCKER","finding":"Certification runs against a different tree than the delivered archive","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-002","severity":"BLOCKER","finding":"Untouched delivered source fails canonical validation","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-003","severity":"BLOCKER","finding":"Embedded receipt-currentness claim is false after delivery","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-004","severity":"BLOCKER","finding":"Agent asynchronous start is false success in the production CLI topology","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-005","severity":"BLOCKER","finding":"Workflow asynchronous start is false success in the production CLI topology","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-006","severity":"BLOCKER","finding":"The exact shipped VSIX rejects lifecycle and Knowledge operations","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-007","severity":"CRITICAL","finding":"Knowledge promotion can silently lose sibling updates","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-008","severity":"HIGH","finding":"Knowledge event and head publication has an unrecoverable crash window","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-009","severity":"HIGH","finding":"Knowledge verification does not bind source content, eligibility, or evidence","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-010","severity":"HIGH","finding":"Skill tests trust a caller-authored passed flag","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-011","severity":"HIGH","finding":"Skill secret and effect scanning is bypassable","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-012","severity":"HIGH","finding":"Workflow editor emits an incompatible edge schema","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-013","severity":"HIGH","finding":"Workflow editor bounds and approval UX diverge from runtime","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-014","severity":"HIGH","finding":"The Skill editor default cannot pass backend validation","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-015","severity":"HIGH","finding":"Gate identities vary across supported Python interpreters","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-016","severity":"HIGH","finding":"The Python ownership map does not authenticate delivered source","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-017","severity":"HIGH","finding":"The delivered structural audit reports missing owned paths and control errors","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-018","severity":"HIGH","finding":"Final VSIX and export manifest bypass classification and sanitation","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-019","severity":"HIGH","finding":"Generated authority families are invalid in the delivered tree","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-020","severity":"HIGH","finding":"Current evidence ignores installed-host smoke limitations","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-021","severity":"HIGH","finding":"The portability gate misses current personal paths","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-022","severity":"HIGH","finding":"Fuzzy graph search is not global","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-023","severity":"MEDIUM","finding":"External Skill source admission is unbounded","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-024","severity":"MEDIUM","finding":"Activity quarantine names collide within one millisecond","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-025","severity":"MEDIUM","finding":"Graph filters can retain a missing selected key","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-026","severity":"MEDIUM","finding":"UI end-to-end and visual evidence is synthetic","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-027","severity":"MEDIUM","finding":"The export records digest is not independently reconstructible","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-028","severity":"MEDIUM","finding":"A 0.6.3 smoke remains in current 0.6.4 evidence","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-029","severity":"MEDIUM","finding":"Project-local HMAC custody is forgeable and nonportable","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-030","severity":"MEDIUM","finding":"CLI approval is caller-asserted","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-031","severity":"MEDIUM","finding":"Doctor integrity language overstates its narrow scope","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-032","severity":"MEDIUM","finding":"Completion projection hides current blockers","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-033","severity":"LOW","finding":"CSS duplication is frozen into the passing baseline","status":"fixed_pending_independent_verification"},
+    {"id":"PXA2-034","severity":"LOW","finding":"Bundled install instructions reference absent paths","status":"fixed_pending_independent_verification"}
+  ]
+}

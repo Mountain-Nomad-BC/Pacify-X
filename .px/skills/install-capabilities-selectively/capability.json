@@ -1,0 +1,39 @@
+{
+  "admission_record": "install-capabilities-selectively",
+  "body_sha256": "74dcdad77386f29e83686e5d49d1f2e0e9ff40bb7bbdcebf5b71d34a42e6cb98",
+  "contract": {
+    "available": true,
+    "sha256": "129c92108bddba7a60fe2a3ef0e40b36932f93d71855e413fe75873f80f76752",
+    "source": "registry/skill_packages/install-capabilities-selectively.json"
+  },
+  "description": "Plan and apply target-specific capability subsets with deterministic",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "install-capabilities-selectively",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/install-capabilities-selectively"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "capabilities",
+    "external-candidate",
+    "install",
+    "installation",
+    "selectively"
+  ],
+  "version": "0.1.0"
+}

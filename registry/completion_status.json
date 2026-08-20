@@ -1,0 +1,433 @@
+{
+  "schema_version": "px.completion-status/1.3",
+  "authority": "generated projection; current operational and instruction ledgers supersede historical audit acceptance as completion authority",
+  "complete": false,
+  "operationally_complete": false,
+  "certified": false,
+  "sources": [
+    {
+      "path": "docs/PX_UNIVERSAL_VISIBILITY_PUNCH_CARDS.md",
+      "sha256": "a996bc379c5975176487012cd2c806f94583c4900082c1c1df3da9dccd354106"
+    },
+    {
+      "path": "registry/adversarial_repair_status.json",
+      "sha256": "35474f524970b83ba86a9ae6f7e7343a6365e5340dc9a793dbcba8b7adda4b24"
+    },
+    {
+      "path": "registry/adversarial_reaudit_20260814.json",
+      "sha256": "017161ecd2480f6bcd1f10138e05b73f643556ccd9a593648cc2b36ad677091c"
+    },
+    {
+      "path": "registry/functional_validation_r2_20260814.json",
+      "sha256": "333f45ee0d12e5b77b65ab4e57233c4b538bb01e30efac4cb35d91f78d1d33b1"
+    },
+    {
+      "path": "registry/operational_validation_r3_20260814.json",
+      "sha256": "2221a4495e2e86d0e6a289d89f9fcaf21b767c02b0854635a33fc2c04985e6d1"
+    },
+    {
+      "path": "registry/independent_operational_audit_r1_20260815.json",
+      "sha256": "69a162f8f0622528181c983c03b90f324cfbf1d4a301f6425a5d2e0290b91f41"
+    },
+    {
+      "path": "registry/operational_surface_audit_20260816.json",
+      "sha256": "bc7f51722177902db3d32818dfb20950d321933cc003c05ff2e7dc9b030ece29"
+    },
+    {
+      "path": "registry/instruction_reconciliation_audit_20260816.json",
+      "sha256": "d5b8c6dfcba6d9834984a0ae46ad4e6fe57cbbf1af2ef40bbc55bfecac09c7f8"
+    },
+    {
+      "path": "registry/current_evidence_index.json",
+      "sha256": "96ddb9adb670777f67a71785f95b291bd49ab9fe970cadb3a3a8ccee321c82e9"
+    }
+  ],
+  "cards_complete": false,
+  "historical_cards_complete": true,
+  "universal_cards": {
+    "authority": "historical provenance; not sufficient for current completion",
+    "count": 81,
+    "counts": {
+      "accepted": 81
+    },
+    "open_ids": []
+  },
+  "adversarial_repairs": {
+    "authority": "historical provenance; not sufficient for current completion",
+    "count": 26,
+    "counts": {
+      "accepted": 26
+    },
+    "open_ids": []
+  },
+  "current_instruction_reconciliation": {
+    "count": 26,
+    "state_counts": {
+      "unknown": 26
+    },
+    "complete": false,
+    "completion_claim": {
+      "complete": false,
+      "fully_operational": false,
+      "certified": false,
+      "perfect": false,
+      "reason": "Forty current findings are open and twenty-seven repairs remain pending live verification."
+    }
+  },
+  "current_adversarial_reaudit": {
+    "count": 34,
+    "status_counts": {
+      "fixed_pending_independent_verification": 34
+    },
+    "open_ids": [],
+    "pending_ids": [
+      "PXA2-001",
+      "PXA2-002",
+      "PXA2-003",
+      "PXA2-004",
+      "PXA2-005",
+      "PXA2-006",
+      "PXA2-007",
+      "PXA2-008",
+      "PXA2-009",
+      "PXA2-010",
+      "PXA2-011",
+      "PXA2-012",
+      "PXA2-013",
+      "PXA2-014",
+      "PXA2-015",
+      "PXA2-016",
+      "PXA2-017",
+      "PXA2-018",
+      "PXA2-019",
+      "PXA2-020",
+      "PXA2-021",
+      "PXA2-022",
+      "PXA2-023",
+      "PXA2-024",
+      "PXA2-025",
+      "PXA2-026",
+      "PXA2-027",
+      "PXA2-028",
+      "PXA2-029",
+      "PXA2-030",
+      "PXA2-031",
+      "PXA2-032",
+      "PXA2-033",
+      "PXA2-034"
+    ]
+  },
+  "current_functional_validation": {
+    "count": 5,
+    "status_counts": {
+      "accepted": 2,
+      "fixed_pending_independent_verification": 2,
+      "improved_residual_debt": 1
+    },
+    "open_ids": [],
+    "pending_ids": [
+      "R2-F001",
+      "R2-F003",
+      "R2-F005"
+    ]
+  },
+  "current_operational_validation": {
+    "count": 2,
+    "status_counts": {
+      "fixed_pending_independent_verification": 2
+    },
+    "open_ids": [],
+    "pending_ids": [
+      "OP-R3-001",
+      "OP-R3-002"
+    ]
+  },
+  "current_independent_operational_audit_r1": {
+    "count": 5,
+    "status_counts": {
+      "fixed_pending_independent_verification": 5
+    },
+    "open_ids": [],
+    "pending_ids": [
+      "PX-R1-001",
+      "PX-R1-002",
+      "PX-R1-003",
+      "PX-R1-004",
+      "PX-R1-005"
+    ]
+  },
+  "current_operational_surface_audit": {
+    "count": 67,
+    "status_counts": {
+      "fixed_pending_live_reload_verification": 1,
+      "fixed_pending_live_verification": 26,
+      "open": 40
+    },
+    "open_ids": [
+      "PX-OS-001",
+      "PX-OS-002",
+      "PX-OS-004",
+      "PX-OS-005",
+      "PX-OS-006",
+      "PX-OS-007",
+      "PX-OS-008",
+      "PX-OS-010",
+      "PX-OS-011",
+      "PX-OS-012",
+      "PX-OS-014",
+      "PX-OS-015",
+      "PX-OS-016",
+      "PX-OS-017",
+      "PX-OS-018",
+      "PX-OS-020",
+      "PX-OS-021",
+      "PX-OS-022",
+      "PX-OS-023",
+      "PX-OS-029",
+      "PX-OS-030",
+      "PX-OS-034",
+      "PX-OS-038",
+      "PX-OS-049",
+      "PX-OS-051",
+      "PX-OS-052",
+      "PX-OS-053",
+      "PX-OS-054",
+      "PX-OS-055",
+      "PX-OS-056",
+      "PX-OS-057",
+      "PX-OS-058",
+      "PX-OS-059",
+      "PX-OS-060",
+      "PX-OS-061",
+      "PX-OS-062",
+      "PX-OS-063",
+      "PX-OS-065",
+      "PX-OS-066",
+      "PX-OS-067"
+    ],
+    "pending_ids": [
+      "PX-OS-001",
+      "PX-OS-002",
+      "PX-OS-003",
+      "PX-OS-004",
+      "PX-OS-005",
+      "PX-OS-006",
+      "PX-OS-007",
+      "PX-OS-008",
+      "PX-OS-009",
+      "PX-OS-010",
+      "PX-OS-011",
+      "PX-OS-012",
+      "PX-OS-013",
+      "PX-OS-014",
+      "PX-OS-015",
+      "PX-OS-016",
+      "PX-OS-017",
+      "PX-OS-018",
+      "PX-OS-019",
+      "PX-OS-020",
+      "PX-OS-021",
+      "PX-OS-022",
+      "PX-OS-023",
+      "PX-OS-024",
+      "PX-OS-025",
+      "PX-OS-026",
+      "PX-OS-027",
+      "PX-OS-028",
+      "PX-OS-029",
+      "PX-OS-030",
+      "PX-OS-031",
+      "PX-OS-032",
+      "PX-OS-033",
+      "PX-OS-034",
+      "PX-OS-035",
+      "PX-OS-036",
+      "PX-OS-037",
+      "PX-OS-038",
+      "PX-OS-039",
+      "PX-OS-040",
+      "PX-OS-041",
+      "PX-OS-042",
+      "PX-OS-043",
+      "PX-OS-044",
+      "PX-OS-045",
+      "PX-OS-046",
+      "PX-OS-047",
+      "PX-OS-048",
+      "PX-OS-049",
+      "PX-OS-050",
+      "PX-OS-051",
+      "PX-OS-052",
+      "PX-OS-053",
+      "PX-OS-054",
+      "PX-OS-055",
+      "PX-OS-056",
+      "PX-OS-057",
+      "PX-OS-058",
+      "PX-OS-059",
+      "PX-OS-060",
+      "PX-OS-061",
+      "PX-OS-062",
+      "PX-OS-063",
+      "PX-OS-064",
+      "PX-OS-065",
+      "PX-OS-066",
+      "PX-OS-067"
+    ],
+    "complete": false
+  },
+  "operational_readiness": {
+    "repairs_complete": false,
+    "open_ids": [
+      "PX-OS-001",
+      "PX-OS-002",
+      "PX-OS-004",
+      "PX-OS-005",
+      "PX-OS-006",
+      "PX-OS-007",
+      "PX-OS-008",
+      "PX-OS-010",
+      "PX-OS-011",
+      "PX-OS-012",
+      "PX-OS-014",
+      "PX-OS-015",
+      "PX-OS-016",
+      "PX-OS-017",
+      "PX-OS-018",
+      "PX-OS-020",
+      "PX-OS-021",
+      "PX-OS-022",
+      "PX-OS-023",
+      "PX-OS-029",
+      "PX-OS-030",
+      "PX-OS-034",
+      "PX-OS-038",
+      "PX-OS-049",
+      "PX-OS-051",
+      "PX-OS-052",
+      "PX-OS-053",
+      "PX-OS-054",
+      "PX-OS-055",
+      "PX-OS-056",
+      "PX-OS-057",
+      "PX-OS-058",
+      "PX-OS-059",
+      "PX-OS-060",
+      "PX-OS-061",
+      "PX-OS-062",
+      "PX-OS-063",
+      "PX-OS-065",
+      "PX-OS-066",
+      "PX-OS-067"
+    ],
+    "unknown_status_ids": []
+  },
+  "live_verification": {
+    "complete": false,
+    "pending_ids": [
+      "PX-OS-003",
+      "PX-OS-009",
+      "PX-OS-013",
+      "PX-OS-019",
+      "PX-OS-024",
+      "PX-OS-025",
+      "PX-OS-026",
+      "PX-OS-027",
+      "PX-OS-028",
+      "PX-OS-031",
+      "PX-OS-032",
+      "PX-OS-033",
+      "PX-OS-035",
+      "PX-OS-036",
+      "PX-OS-037",
+      "PX-OS-039",
+      "PX-OS-040",
+      "PX-OS-041",
+      "PX-OS-042",
+      "PX-OS-043",
+      "PX-OS-044",
+      "PX-OS-045",
+      "PX-OS-046",
+      "PX-OS-047",
+      "PX-OS-048",
+      "PX-OS-050",
+      "PX-OS-064"
+    ],
+    "verified_ids": [],
+    "unknown_status_ids": []
+  },
+  "historical_verification_debt": {
+    "authority": "provenance only; superseded by the current instruction and operational-surface ledgers",
+    "pending_ids": [
+      "OP-R3-001",
+      "OP-R3-002",
+      "PX-R1-001",
+      "PX-R1-002",
+      "PX-R1-003",
+      "PX-R1-004",
+      "PX-R1-005",
+      "PXA2-001",
+      "PXA2-002",
+      "PXA2-003",
+      "PXA2-004",
+      "PXA2-005",
+      "PXA2-006",
+      "PXA2-007",
+      "PXA2-008",
+      "PXA2-009",
+      "PXA2-010",
+      "PXA2-011",
+      "PXA2-012",
+      "PXA2-013",
+      "PXA2-014",
+      "PXA2-015",
+      "PXA2-016",
+      "PXA2-017",
+      "PXA2-018",
+      "PXA2-019",
+      "PXA2-020",
+      "PXA2-021",
+      "PXA2-022",
+      "PXA2-023",
+      "PXA2-024",
+      "PXA2-025",
+      "PXA2-026",
+      "PXA2-027",
+      "PXA2-028",
+      "PXA2-029",
+      "PXA2-030",
+      "PXA2-031",
+      "PXA2-032",
+      "PXA2-033",
+      "PXA2-034",
+      "R2-F001",
+      "R2-F003",
+      "R2-F005"
+    ]
+  },
+  "current_gates": {
+    "valid": true,
+    "blocking_ids": []
+  },
+  "certification_freshness": {
+    "fresh": false,
+    "receipt_current": true,
+    "evidence_identity_current": false,
+    "evidence_identity_evaluated": false,
+    "evidence_receipts_current": true,
+    "failed_receipt_ids": [],
+    "stale_receipt_ids": [],
+    "dependency_stale_receipt_ids": []
+  },
+  "release_certificate": {
+    "valid": false,
+    "errors": [
+      "current product is not certification-eligible"
+    ]
+  },
+  "blocking_reasons": [
+    "the current instruction-reconciliation authority is not complete",
+    "current product-surface audit has 67 operational findings pending repair and verification",
+    "final exact-artifact certification has not been admitted"
+  ]
+}

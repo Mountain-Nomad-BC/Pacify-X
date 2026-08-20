@@ -1,0 +1,39 @@
+{
+  "admission_record": "secure-agent-supply-chain",
+  "body_sha256": "d818a9df088f22044de0cc03707394b7b22a837dcb91cb397a265411d767b4d5",
+  "contract": {
+    "available": true,
+    "sha256": "530b033ee8aa9f07ed2c580ab84bd68b624843cf5e1c99e215244d2278a2f98e",
+    "source": "registry/skill_packages/secure-agent-supply-chain.json"
+  },
+  "description": "Threat-model agent systems, enforce identity and tool authority, scan secrets and injection, design sandboxes and egress controls, generate software and AI bills of materials, prove provenance, reproduce builds, and handle security incidents. Use for security review, external tools, artifacts, models, or data flows.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "secure-agent-supply-chain",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/secure-agent-supply-chain"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "secure",
+    "agent",
+    "supply",
+    "chain",
+    "declared-suite"
+  ],
+  "version": "0.1.0"
+}

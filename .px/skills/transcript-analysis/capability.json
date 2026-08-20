@@ -1,0 +1,39 @@
+{
+  "admission_record": "transcript-analysis",
+  "body_sha256": "173fc8743679546fef3d133d8e86fb68832f723c79a291e04713258d7e33cfb8",
+  "contract": {
+    "available": true,
+    "sha256": "b05c995851c2c7112ea6329071bd5d4e6dff2c32b030291b342652b9c25a2c95",
+    "source": "registry/skill_packages/transcript-analysis.json"
+  },
+  "description": "Ingest, validate, and export source-traceable transcript evidence through queue-scoped adapters. Use for support-call or conversation analysis involving issues, components, actions, outcomes, serials, measurements, lifecycle states, or concise canonical CSV/JSON results.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "transcript-analysis",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/transcript-analysis"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "transcripts",
+    "evidence",
+    "provenance",
+    "nlp",
+    "validation"
+  ],
+  "version": "1.0.0"
+}

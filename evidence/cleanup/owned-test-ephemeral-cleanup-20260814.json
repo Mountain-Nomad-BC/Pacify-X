@@ -1,0 +1,24 @@
+{
+    "schema_version":  "px.owned-test-ephemeral-cleanup/1.0",
+    "created_utc":  "2026-08-14T05:14:04.4943990Z",
+    "authority":  "explicit_user_request_2026-08-13",
+    "hard_delete":  true,
+    "protected_data_touched":  false,
+    "records":  [
+                    {
+                        "path":  "<windows-temp>/pacify-x-vscode-test-cache",
+                        "classification":  "ephemeral",
+                        "owner":  "PACIFY-X test tooling",
+                        "file_count":  1856,
+                        "logical_bytes":  1054721245,
+                        "reparse_points_removed":  0,
+                        "disposition":  "permanently_reclaimed_by_explicit_user_authority"
+                    }
+                ],
+    "target_count":  1,
+    "logical_bytes_reclaimed":  1054721245,
+    "free_bytes_before":  409949483008,
+    "free_bytes_after":  411008405504,
+    "free_bytes_gained":  1058922496,
+    "all_targets_absent":  true
+}

@@ -1,0 +1,38 @@
+{
+  "admission_record": "validate-knowledge-relationships",
+  "body_sha256": "b287f2332cc74c0a1a57c316ca3ca8eb08259543e671aeca1f7045ae8d226126",
+  "contract": {
+    "available": true,
+    "sha256": "dda0a711cfc16f917051517a2783fceba9889959b34e45a9bd1f2819ebe477d0",
+    "source": "registry/skill_packages/validate-knowledge-relationships.json"
+  },
+  "description": "Validate documents, entities, aliases, versions, provenance, units, rules, catalogs, and cross-source relationships using deterministic graph constraints and visible coverage. Use when a knowledge corpus may contain orphans, duplicates, conflicting revisions, invalid references, prohibited cycles, or scope leakage.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "validate-knowledge-relationships",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/validate-knowledge-relationships"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "knowledge",
+    "graph",
+    "integrity",
+    "provenance"
+  ],
+  "version": "0.1.0"
+}

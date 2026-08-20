@@ -9,7 +9,7 @@ ROOT = Path(__file__).parents[1]
 
 
 def load_script(skill: str, name: str):
-    path = ROOT / ".agents" / "skills" / skill / "scripts" / name
+    path = ROOT / ".px" / "skills" / skill / "scripts" / name
     spec = importlib.util.spec_from_file_location(f"test_{skill}_{name}", path)
     module = importlib.util.module_from_spec(spec)
     assert spec and spec.loader

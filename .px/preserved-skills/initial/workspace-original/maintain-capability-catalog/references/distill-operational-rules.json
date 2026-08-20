@@ -1,0 +1,53 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "do not convert context-specific advice into global law",
+    "do not overwrite rule files without review",
+    "retain dissenting or exception evidence"
+  ],
+  "bundle": "maintain-capability-catalog",
+  "category": "rule-governance",
+  "dependencies": [
+    "forge-skills-from-knowledge",
+    "validate-knowledge-relationships",
+    "skill-admission-controller"
+  ],
+  "id": "distill-operational-rules",
+  "keywords": [
+    "rules distill",
+    "cross cutting principles",
+    "always on rules",
+    "rule consolidation"
+  ],
+  "mechanisms": [
+    "cross-skill principle extraction",
+    "contradiction grouping",
+    "scope assignment",
+    "append/revise/create decision",
+    "source trace"
+  ],
+  "owner": "forge-skills-from-knowledge",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "skills/rules-distill/SKILL.md",
+      "commands/rules-distill.md",
+      "rules/common"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "skills/rules-distill/SKILL.md",
+    "commands/rules-distill.md",
+    "rules/common"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Extract repeated cross-cutting constraints from admitted skills and evidence, reconcile contradictions, and propose concise always-on rules with explicit scope and source links.",
+  "title": "Distill Operational Rules",
+  "use_when": [
+    "many skills repeat the same invariant",
+    "always-on rules are drifting from capabilities",
+    "rule bloat needs consolidation"
+  ]
+}

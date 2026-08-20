@@ -1,0 +1,532 @@
+{
+  "schema_version": "px.learned-process-admission/1.0",
+  "valid": true,
+  "generated_utc": "2026-08-14T03:14:46.248566+00:00",
+  "authority": {
+    "learning_direct_write_allowed": false,
+    "promotion_authorized_by": "explicit user repair-and-completion request",
+    "runtime_authority": "Codex host retained"
+  },
+  "evidence_denominator": {
+    "failed_incumbent_receipts": 4,
+    "successful_challenger_receipts": 10,
+    "trials": 10
+  },
+  "observations": [
+    {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "operation_evidence",
+      "operation_id": "cleanup-receipt-1",
+      "task_class": "owned-workspace-reclamation",
+      "outcome": "cleanup_failed",
+      "measurements": {
+        "bytes_reclaimed": 0,
+        "success": 0
+      },
+      "capability_ids": [
+        "manage-resource-lifecycle"
+      ],
+      "environment_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "source_refs": [
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/cleanup-4d8c34e708d84201a826a84078d43356.json"
+      ],
+      "observed_at": "2026-08-14T02:02:18.641868+00:00",
+      "authority_granted": false,
+      "record_sha256": "25840f899e22e9ac070ec6d7899f95ecc61db0e2ef0a74119dcfec0c1240dd2f"
+    },
+    {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "operation_evidence",
+      "operation_id": "cleanup-receipt-2",
+      "task_class": "owned-workspace-reclamation",
+      "outcome": "cleanup_failed",
+      "measurements": {
+        "bytes_reclaimed": 0,
+        "success": 0
+      },
+      "capability_ids": [
+        "manage-resource-lifecycle"
+      ],
+      "environment_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "source_refs": [
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/cleanup-579c95d5e2e44ce4b75071f662433e9a.json"
+      ],
+      "observed_at": "2026-08-14T01:26:40.044080+00:00",
+      "authority_granted": false,
+      "record_sha256": "9789f07fbe27fc9cf4f194af16ce5ceb7800f05e33a81ebc972eb01500a05003"
+    },
+    {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "operation_evidence",
+      "operation_id": "cleanup-receipt-3",
+      "task_class": "owned-workspace-reclamation",
+      "outcome": "cleanup_failed",
+      "measurements": {
+        "bytes_reclaimed": 0,
+        "success": 0
+      },
+      "capability_ids": [
+        "manage-resource-lifecycle"
+      ],
+      "environment_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "source_refs": [
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/cleanup-7ef94b89288047efa18d00dfd85479c5.json"
+      ],
+      "observed_at": "2026-08-14T01:31:57.652982+00:00",
+      "authority_granted": false,
+      "record_sha256": "01a0590bf7469b54dd8f08b97d719c4540063128e1a6f6b220e7993a2f71ac8f"
+    },
+    {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "operation_evidence",
+      "operation_id": "cleanup-receipt-4",
+      "task_class": "owned-workspace-reclamation",
+      "outcome": "cleanup_failed",
+      "measurements": {
+        "bytes_reclaimed": 0,
+        "success": 0
+      },
+      "capability_ids": [
+        "manage-resource-lifecycle"
+      ],
+      "environment_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "source_refs": [
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/cleanup-a4450e0ece334915b15cebaa1393d2b1.json"
+      ],
+      "observed_at": "2026-08-14T02:07:39.643722+00:00",
+      "authority_granted": false,
+      "record_sha256": "eadc1953a77002904204fb71b34c4fd7ca79ad9bf440825cd82c1319a9770cd8"
+    },
+    {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "operation_evidence",
+      "operation_id": "cleanup-receipt-5",
+      "task_class": "owned-workspace-reclamation",
+      "outcome": "passed",
+      "measurements": {
+        "bytes_reclaimed": 6085218625,
+        "success": 1
+      },
+      "capability_ids": [
+        "manage-resource-lifecycle"
+      ],
+      "environment_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "source_refs": [
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/cleanup-2982ae92b34f4930b6360253455d6844.json"
+      ],
+      "observed_at": "2026-08-14T02:33:37.815206+00:00",
+      "authority_granted": false,
+      "record_sha256": "f06ec30222760c08f617cdf00ba41b31e82a33a5b510a7c7b294e646daf7cec5"
+    },
+    {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "operation_evidence",
+      "operation_id": "cleanup-receipt-6",
+      "task_class": "owned-workspace-reclamation",
+      "outcome": "passed",
+      "measurements": {
+        "bytes_reclaimed": 4983367988,
+        "success": 1
+      },
+      "capability_ids": [
+        "manage-resource-lifecycle"
+      ],
+      "environment_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "source_refs": [
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/cleanup-3b1e86d6bf4a441c8eb1a2be05de402a.json"
+      ],
+      "observed_at": "2026-08-14T02:19:30.677093+00:00",
+      "authority_granted": false,
+      "record_sha256": "af602702f5d4fdfa1d213654e479dc24c1113ae4a460a5c4be980d5b32b64099"
+    },
+    {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "operation_evidence",
+      "operation_id": "cleanup-receipt-7",
+      "task_class": "owned-workspace-reclamation",
+      "outcome": "passed",
+      "measurements": {
+        "bytes_reclaimed": 6813697542,
+        "success": 1
+      },
+      "capability_ids": [
+        "manage-resource-lifecycle"
+      ],
+      "environment_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "source_refs": [
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/cleanup-4aa107656c9b47478af613c900006187.json"
+      ],
+      "observed_at": "2026-08-14T02:28:10.422280+00:00",
+      "authority_granted": false,
+      "record_sha256": "60d3dbc0a0e9543a923930722f9ddf72aa492f69a8ee2bf09bec43a7a61a426f"
+    },
+    {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "operation_evidence",
+      "operation_id": "cleanup-receipt-8",
+      "task_class": "owned-workspace-reclamation",
+      "outcome": "passed",
+      "measurements": {
+        "bytes_reclaimed": 6814216036,
+        "success": 1
+      },
+      "capability_ids": [
+        "manage-resource-lifecycle"
+      ],
+      "environment_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "source_refs": [
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/cleanup-675a656efdd24a538e9f0006646d9317.json"
+      ],
+      "observed_at": "2026-08-14T02:52:18.771810+00:00",
+      "authority_granted": false,
+      "record_sha256": "15c75f43162100479f9b3bc36c9db1c002cf311cd3e11437741eb0c39de7ff39"
+    },
+    {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "operation_evidence",
+      "operation_id": "cleanup-receipt-9",
+      "task_class": "owned-workspace-reclamation",
+      "outcome": "passed",
+      "measurements": {
+        "bytes_reclaimed": 0,
+        "success": 1
+      },
+      "capability_ids": [
+        "manage-resource-lifecycle"
+      ],
+      "environment_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "source_refs": [
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/cleanup-7859bbefac344adcb07640b3385dc934.json"
+      ],
+      "observed_at": "2026-08-13T18:59:39.957201+00:00",
+      "authority_granted": false,
+      "record_sha256": "fe49ff53374cddf1e69ae4d0e6c6acfafcc3ee2f252666c9cef6b890d9102b01"
+    },
+    {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "operation_evidence",
+      "operation_id": "cleanup-receipt-10",
+      "task_class": "owned-workspace-reclamation",
+      "outcome": "passed",
+      "measurements": {
+        "bytes_reclaimed": 6085547155,
+        "success": 1
+      },
+      "capability_ids": [
+        "manage-resource-lifecycle"
+      ],
+      "environment_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "source_refs": [
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/cleanup-8ec644d8cbea4ca6affee6bc32183f9e.json"
+      ],
+      "observed_at": "2026-08-14T02:57:45.941417+00:00",
+      "authority_granted": false,
+      "record_sha256": "1af8e3fecd4e7ae5e55efbb0dd5572eaf4896f7f8e06fb13117080aab74f1ef3"
+    },
+    {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "operation_evidence",
+      "operation_id": "cleanup-receipt-11",
+      "task_class": "owned-workspace-reclamation",
+      "outcome": "passed",
+      "measurements": {
+        "bytes_reclaimed": 4983583302,
+        "success": 1
+      },
+      "capability_ids": [
+        "manage-resource-lifecycle"
+      ],
+      "environment_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "source_refs": [
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/cleanup-902c7637f6d344d6a5fea0707319c98c.json"
+      ],
+      "observed_at": "2026-08-14T02:19:18.930502+00:00",
+      "authority_granted": false,
+      "record_sha256": "ffdc8191df0f4d19894db0e76fd4883dcb6df62c94efd2c30d419270ed365ade"
+    },
+    {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "operation_evidence",
+      "operation_id": "cleanup-receipt-12",
+      "task_class": "owned-workspace-reclamation",
+      "outcome": "passed",
+      "measurements": {
+        "bytes_reclaimed": 6813132817,
+        "success": 1
+      },
+      "capability_ids": [
+        "manage-resource-lifecycle"
+      ],
+      "environment_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "source_refs": [
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/cleanup-a72c552579a940c2a17471b7505e6e93.json"
+      ],
+      "observed_at": "2026-08-14T02:19:49.479180+00:00",
+      "authority_granted": false,
+      "record_sha256": "5266dcd0a5a7fb20f815fe41533a49798a2180d9bedaa3c701b482253ad8a9b2"
+    },
+    {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "operation_evidence",
+      "operation_id": "cleanup-receipt-13",
+      "task_class": "owned-workspace-reclamation",
+      "outcome": "passed",
+      "measurements": {
+        "bytes_reclaimed": 6813464362,
+        "success": 1
+      },
+      "capability_ids": [
+        "manage-resource-lifecycle"
+      ],
+      "environment_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "source_refs": [
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/cleanup-bc55429c4c0f4a36a5c95f2ea72d7af7.json"
+      ],
+      "observed_at": "2026-08-14T02:19:06.872691+00:00",
+      "authority_granted": false,
+      "record_sha256": "5eec503c7a13b6ac4dca11abf2cd09c345b4db8de0bdf569ae7cc595f62df100"
+    },
+    {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "operation_evidence",
+      "operation_id": "cleanup-receipt-14",
+      "task_class": "owned-workspace-reclamation",
+      "outcome": "passed",
+      "measurements": {
+        "bytes_reclaimed": 0,
+        "success": 1
+      },
+      "capability_ids": [
+        "manage-resource-lifecycle"
+      ],
+      "environment_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "source_refs": [
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/cleanup-dcdd6dbaa86b4b8ea7cd357a179acbc2.json"
+      ],
+      "observed_at": "2026-08-13T18:59:40.012085+00:00",
+      "authority_granted": false,
+      "record_sha256": "277054fb1a91beb5f5acaf28a62cef53e3c5a1ccc809e606a4597f584b165d15"
+    }
+  ],
+  "incumbent": {
+    "schema_version": "px.learning-promotion/1.0",
+    "record_type": "frozen_revision",
+    "unit_id": "process.owned-workspace-reclamation",
+    "kind": "process",
+    "artifact_sha256": "811461c7a6728fc93cc3578301279f912322ea8792ab9d519e7bb30e517beda2",
+    "dependency_sha256": {
+      "lifecycle_policy": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "resource_lifecycle_runtime": "c76185c3e89e8a105998ca9d91aedc5801246a9cdebbb51403cf15079dc271a1"
+    },
+    "parent_revision_sha256": null,
+    "tier": 1,
+    "revision_sha256": "c75dafe26ede0af1a949a2862cf30dcc66799694f372858432edcb6068a8e73b",
+    "state": "candidate",
+    "artifact": {
+      "strategy": "single-attempt",
+      "read_only_recovery": false,
+      "transient_lock_retry": false
+    },
+    "evidence_sha256": [
+      "01a0590bf7469b54dd8f08b97d719c4540063128e1a6f6b220e7993a2f71ac8f",
+      "15c75f43162100479f9b3bc36c9db1c002cf311cd3e11437741eb0c39de7ff39",
+      "1af8e3fecd4e7ae5e55efbb0dd5572eaf4896f7f8e06fb13117080aab74f1ef3",
+      "25840f899e22e9ac070ec6d7899f95ecc61db0e2ef0a74119dcfec0c1240dd2f",
+      "277054fb1a91beb5f5acaf28a62cef53e3c5a1ccc809e606a4597f584b165d15",
+      "5266dcd0a5a7fb20f815fe41533a49798a2180d9bedaa3c701b482253ad8a9b2",
+      "5eec503c7a13b6ac4dca11abf2cd09c345b4db8de0bdf569ae7cc595f62df100",
+      "60d3dbc0a0e9543a923930722f9ddf72aa492f69a8ee2bf09bec43a7a61a426f",
+      "9789f07fbe27fc9cf4f194af16ce5ceb7800f05e33a81ebc972eb01500a05003",
+      "af602702f5d4fdfa1d213654e479dc24c1113ae4a460a5c4be980d5b32b64099",
+      "eadc1953a77002904204fb71b34c4fd7ca79ad9bf440825cd82c1319a9770cd8",
+      "f06ec30222760c08f617cdf00ba41b31e82a33a5b510a7c7b294e646daf7cec5",
+      "fe49ff53374cddf1e69ae4d0e6c6acfafcc3ee2f252666c9cef6b890d9102b01",
+      "ffdc8191df0f4d19894db0e76fd4883dcb6df62c94efd2c30d419270ed365ade"
+    ],
+    "immutable": true,
+    "canonical": false,
+    "record_sha256": "50e4fcd50daefa39315f69d743b941ec4fa415210d500b0da1178111289baa90"
+  },
+  "challenger": {
+    "schema_version": "px.learning-promotion/1.0",
+    "record_type": "frozen_revision",
+    "unit_id": "process.owned-workspace-reclamation",
+    "kind": "process",
+    "artifact_sha256": "1943159f6219c029060c4642343dce584611bda851515de62e6cd65fc345c2ad",
+    "dependency_sha256": {
+      "lifecycle_policy": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+      "resource_lifecycle_runtime": "c76185c3e89e8a105998ca9d91aedc5801246a9cdebbb51403cf15079dc271a1"
+    },
+    "parent_revision_sha256": "c75dafe26ede0af1a949a2862cf30dcc66799694f372858432edcb6068a8e73b",
+    "tier": 2,
+    "revision_sha256": "227645a7aefe122e938208cec2cf1562285e979c60a76e179a3c986a4b5470de",
+    "state": "shadow",
+    "artifact": {
+      "strategy": "bounded-retry",
+      "retry_delays_seconds": [
+        0.0,
+        0.05,
+        0.15,
+        0.35
+      ],
+      "read_only_recovery": "exact failed child only",
+      "scope": "already-admitted owned target",
+      "failure_mode": "retain-and-receipt"
+    },
+    "evidence_sha256": [
+      "01a0590bf7469b54dd8f08b97d719c4540063128e1a6f6b220e7993a2f71ac8f",
+      "15c75f43162100479f9b3bc36c9db1c002cf311cd3e11437741eb0c39de7ff39",
+      "1af8e3fecd4e7ae5e55efbb0dd5572eaf4896f7f8e06fb13117080aab74f1ef3",
+      "25840f899e22e9ac070ec6d7899f95ecc61db0e2ef0a74119dcfec0c1240dd2f",
+      "277054fb1a91beb5f5acaf28a62cef53e3c5a1ccc809e606a4597f584b165d15",
+      "5266dcd0a5a7fb20f815fe41533a49798a2180d9bedaa3c701b482253ad8a9b2",
+      "5eec503c7a13b6ac4dca11abf2cd09c345b4db8de0bdf569ae7cc595f62df100",
+      "60d3dbc0a0e9543a923930722f9ddf72aa492f69a8ee2bf09bec43a7a61a426f",
+      "9789f07fbe27fc9cf4f194af16ce5ceb7800f05e33a81ebc972eb01500a05003",
+      "af602702f5d4fdfa1d213654e479dc24c1113ae4a460a5c4be980d5b32b64099",
+      "eadc1953a77002904204fb71b34c4fd7ca79ad9bf440825cd82c1319a9770cd8",
+      "f06ec30222760c08f617cdf00ba41b31e82a33a5b510a7c7b294e646daf7cec5",
+      "fe49ff53374cddf1e69ae4d0e6c6acfafcc3ee2f252666c9cef6b890d9102b01",
+      "ffdc8191df0f4d19894db0e76fd4883dcb6df62c94efd2c30d419270ed365ade"
+    ],
+    "immutable": true,
+    "canonical": false,
+    "record_sha256": "8c8459cefbc979ff7f6d5bd6fee480724e28ca5414ba7326c1e892732e60b334"
+  },
+  "confidence": {
+    "schema_version": "px.learning-promotion/1.0",
+    "record_type": "confidence_gate",
+    "wins": 10,
+    "losses": 0,
+    "ties": 0,
+    "trials": 10,
+    "minimum_trials": 6,
+    "confidence_z": 1.96,
+    "win_rate": 1.0,
+    "wilson_lower_bound": 0.722459831,
+    "passed": true,
+    "reason": "candidate advantage clears the confidence boundary",
+    "record_sha256": "1f3f73ab8fd0410b0b83c9b0e3aa8d63a59762a5ef982b2a9dcbde22d8118046"
+  },
+  "comparison": {
+    "schema_version": "px.learning-promotion/1.0",
+    "record_type": "ab_comparison",
+    "incumbent_revision_sha256": "c75dafe26ede0af1a949a2862cf30dcc66799694f372858432edcb6068a8e73b",
+    "challenger_revision_sha256": "227645a7aefe122e938208cec2cf1562285e979c60a76e179a3c986a4b5470de",
+    "trial_evidence_sha256": [
+      "15c75f43162100479f9b3bc36c9db1c002cf311cd3e11437741eb0c39de7ff39",
+      "1af8e3fecd4e7ae5e55efbb0dd5572eaf4896f7f8e06fb13117080aab74f1ef3",
+      "277054fb1a91beb5f5acaf28a62cef53e3c5a1ccc809e606a4597f584b165d15",
+      "5266dcd0a5a7fb20f815fe41533a49798a2180d9bedaa3c701b482253ad8a9b2",
+      "5eec503c7a13b6ac4dca11abf2cd09c345b4db8de0bdf569ae7cc595f62df100",
+      "60d3dbc0a0e9543a923930722f9ddf72aa492f69a8ee2bf09bec43a7a61a426f",
+      "af602702f5d4fdfa1d213654e479dc24c1113ae4a460a5c4be980d5b32b64099",
+      "f06ec30222760c08f617cdf00ba41b31e82a33a5b510a7c7b294e646daf7cec5",
+      "fe49ff53374cddf1e69ae4d0e6c6acfafcc3ee2f252666c9cef6b890d9102b01",
+      "ffdc8191df0f4d19894db0e76fd4883dcb6df62c94efd2c30d419270ed365ade"
+    ],
+    "gate": {
+      "schema_version": "px.learning-promotion/1.0",
+      "record_type": "confidence_gate",
+      "wins": 10,
+      "losses": 0,
+      "ties": 0,
+      "trials": 10,
+      "minimum_trials": 6,
+      "confidence_z": 1.96,
+      "win_rate": 1.0,
+      "wilson_lower_bound": 0.722459831,
+      "passed": true,
+      "reason": "candidate advantage clears the confidence boundary",
+      "record_sha256": "1f3f73ab8fd0410b0b83c9b0e3aa8d63a59762a5ef982b2a9dcbde22d8118046"
+    },
+    "passed": true,
+    "loser_retention_required": true,
+    "record_sha256": "994d24f2c6e403c01e21377ea56e1db25db23d7953c367c7eac3f58da239662f"
+  },
+  "research": {
+    "schema_version": "px.learning-promotion/1.0",
+    "record_type": "research_validation",
+    "question": "Does bounded retry improve owned Windows cleanup without widening deletion authority?",
+    "references": [
+      {
+        "uri": "audit:PACIFY_X_CLEAN_FULL_ADVERSARIAL_REAUDIT_20260813.md",
+        "evidence_sha256": "028fa0d95abc9dde8c4491212995d5dff93e8de4b073ee909237ade3d43cd78c",
+        "independent": true
+      },
+      {
+        "uri": "policy:manage-resource-lifecycle/lifecycle-policy.md",
+        "evidence_sha256": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+        "independent": false
+      }
+    ],
+    "better_alternative_found": false,
+    "conclusion": "Bounded retry after the unchanged reclamation gate resolves the observed transient/read-only failure class while retaining fail-closed scope.",
+    "passed": true,
+    "record_sha256": "7ac83ed72d3aee65ad1c19b8d3b567f9b18367191770e196370499e79f9eb9d2"
+  },
+  "promotion": {
+    "schema_version": "px.learning-promotion/1.0",
+    "record_type": "promotion_decision",
+    "passed": true,
+    "checks": {
+      "frozen_revision": true,
+      "confidence_gate": true,
+      "ab_gate": true,
+      "research_gate": true,
+      "final_validation": true,
+      "dependencies_current": true
+    },
+    "canonical_corpus_sha256": "76d90bf7b7e109707443ff089514d46d39b96ba505377616b096320714d423dc",
+    "canonical_identity": {
+      "unit_id": "process.owned-workspace-reclamation",
+      "kind": "process",
+      "revision_sha256": "227645a7aefe122e938208cec2cf1562285e979c60a76e179a3c986a4b5470de",
+      "artifact_sha256": "1943159f6219c029060c4642343dce584611bda851515de62e6cd65fc345c2ad",
+      "partial_units": [
+        "runtime.resource_lifecycle._remove_owned_target"
+      ],
+      "dependency_sha256": {
+        "lifecycle_policy": "673ea100c13931dc600de0810ce0084367f9f10fb18e49c76592d8fc6651c317",
+        "resource_lifecycle_runtime": "c76185c3e89e8a105998ca9d91aedc5801246a9cdebbb51403cf15079dc271a1"
+      }
+    },
+    "state": "canonical",
+    "source_gate_sha256": [
+      "1f3f73ab8fd0410b0b83c9b0e3aa8d63a59762a5ef982b2a9dcbde22d8118046",
+      "7ac83ed72d3aee65ad1c19b8d3b567f9b18367191770e196370499e79f9eb9d2",
+      "86386acf7df2cdbda5f53aa76975ce64d297974125a81cd117fa7df2ca5ad67d",
+      "994d24f2c6e403c01e21377ea56e1db25db23d7953c367c7eac3f58da239662f",
+      "d6326d15c71b06f9fb58ab670e656394999353d6f9d8c25de8ed815dcd34cba0"
+    ],
+    "learning_direct_write_allowed": false,
+    "loser_retention_required": true,
+    "rollback_revision_sha256": "c75dafe26ede0af1a949a2862cf30dcc66799694f372858432edcb6068a8e73b",
+    "record_sha256": "3370b70dbb710e9277d6e8dfb528d9cd4855c8ccfce8eb8ddc9a1e743b482511"
+  },
+  "reuse": {
+    "schema_version": "px.learning-promotion/1.0",
+    "record_type": "reuse_measurement",
+    "promotion_sha256": "3370b70dbb710e9277d6e8dfb528d9cd4855c8ccfce8eb8ddc9a1e743b482511",
+    "uses": 10,
+    "successes": 10,
+    "regressions": 0,
+    "success_rate": 1.0,
+    "record_sha256": "b0795aac68e9884b3a7e3f86aa0399204ec0f9bd1826cea2e816dd0efcfe5dbe"
+  },
+  "decay": {
+    "schema_version": "px.learning-promotion/1.0",
+    "record_type": "decay_decision",
+    "measurement_sha256": "b0795aac68e9884b3a7e3f86aa0399204ec0f9bd1826cea2e816dd0efcfe5dbe",
+    "enough_evidence": true,
+    "decay": false,
+    "next_state": "canonical",
+    "automatic_delete_allowed": false,
+    "record_sha256": "dd0254a08a3bf1c9dd37d22c1dd9cfa99cc880f6bb4aeca7aaed84d9975631d9"
+  },
+  "rollback": {
+    "available": true,
+    "revision_sha256": "c75dafe26ede0af1a949a2862cf30dcc66799694f372858432edcb6068a8e73b",
+    "automatic_delete_allowed": false
+  }
+}

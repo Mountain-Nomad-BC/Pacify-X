@@ -1,0 +1,76 @@
+{
+  "schema_version": "px.live-extension-repair/1.0",
+  "incident_id": "PXA-049",
+  "status": "superseded_by_0.5.2_after_post_reload_findings",
+  "root_cause": [
+    "the user profile retained obsolete 0.5.0 bytes under the same version as repaired source",
+    "the obsolete artifact activated on startup and accessed the prohibited testObserver proposal",
+    "the canonical contribution omitted type=webview while registering a WebviewViewProvider"
+  ],
+  "repair": {
+    "version": "0.5.1",
+    "control_center_type": "webview",
+    "activation_events": [
+      "onLanguageModelChat:pacify-local",
+      "onCommand:pacifyX.openDashboard",
+      "onView:pacifyX.controlCenter"
+    ],
+    "startup_activation_removed": true,
+    "smoke_default_derives_manifest_version": true
+  },
+  "artifact": {
+    "path": "extension/dist/pacify-x-vscode-0.5.1.vsix",
+    "sha256": "9a3c313fd32d70f01f40aa4a56117b63887b46a02244aee7b620fc516d77d0b2",
+    "entries": 91,
+    "missing_required_entries": 0,
+    "bytes_unchanged_through_clean_install": true
+  },
+  "validation": {
+    "node_tests": {"passed": 181, "failed": 0},
+    "browser_sidebar_widths": [260, 300, 340],
+    "clean_profile_vscode": "1.132.1",
+    "clean_profile_extension_version": "0.5.1",
+    "control_center_opened": true,
+    "control_center_focused": true,
+    "control_center_contributed_type": "webview",
+    "activation_ms": 3.902,
+    "startup_subprocesses": 0,
+    "startup_discovery": false,
+    "startup_project_writes": 0,
+    "runtime_connected": true,
+    "canonical_counts_match": true,
+    "process_tree_closed": true,
+    "receipt": "extension/evidence/installed-vsix-smoke.json"
+  },
+  "preservation": {
+    "receipt": ".px/preserved-extension-installations/initial/backup-receipt.json",
+    "original_files": 50,
+    "original_bytes": 5081942,
+    "original_tree_sha256": "437164b6ee0b205009a638bce50f96ff2d045869790828e9e982b915e3fc9271",
+    "exact_match": true
+  },
+  "user_profile_install": {
+    "reported_extension": "mountain-nomad-bc.pacify-x-vscode@0.5.1",
+    "installed_files": 90,
+    "installed_bytes": 6617932,
+    "package_main": "./src/extension.bundle.js",
+    "missing_required_files": 0,
+    "active_window_reload_required": true,
+    "reason": "the open extension host already cached the failed 0.5.0 activation"
+  },
+  "repository_validation": {
+    "runtime_cli_validate": {"valid": true, "active_count": 6, "errors": []},
+    "raw_unittest": {
+      "command": "python -m unittest discover -s tests -v",
+      "result": "timeout_no_completion_footer",
+      "outer_timeout_seconds": 904,
+      "residual_process_detected": true,
+      "residual_identity_verified": true,
+      "unexpected_children": 0,
+      "residual_process_terminated": true,
+      "exit_verified": true,
+      "disposition": "A08 remains open; use the managed full profile with lifecycle custody"
+    }
+  },
+  "superseded_by": "evidence/planning/px-sidebar-provider-split-state-20260812.json"
+}

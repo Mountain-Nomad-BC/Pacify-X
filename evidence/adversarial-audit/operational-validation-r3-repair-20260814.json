@@ -1,0 +1,73 @@
+{
+  "schema_version": "px.operational-validation-repair-evidence/1.0",
+  "evidence_id": "evidence:operational-validation-r3-repair:20260814",
+  "task_id": "repair:PACIFY_X_R3_OPERATIONAL_ADVERSARIAL_VALIDATION_20260814",
+  "created_utc": "2026-08-14T18:32:45.094Z",
+  "sensitivity": "internal-sanitized",
+  "status": "supports_repair_pending_independent_verification",
+  "source": {
+    "report": "OPERATIONAL_VALIDATION_R3_REPORT.md",
+    "report_sha256": "da0abff6c9c0f61eb5a7cd34de96e6e620ac83842a71aa70009a3b84d39f794c",
+    "findings_sha256": "80855ed9cfe34e3717116a47e53f3eead6295d108473b958c9a5e6b82cbf43c0",
+    "matrix_sha256": "4b179c9b9a185ae254ac435d07cb73f801096a49dafaced355ba30e591b1965e",
+    "checksum_manifest_entries": 23,
+    "checksum_manifest_valid": true
+  },
+  "claims": [
+    {
+      "id": "OP-R3-001",
+      "relationship": "supports",
+      "postcondition": "Valid JSON edge payloads retain one exact signed UTF-8 representation from the extension host through Python authorization and operation execution.",
+      "result": "passed_focused_and_governed",
+      "vectors": ["1e-6", "1e-7", "1e20", "1e21", "negative-zero", "escaped-unicode", "BMP-astral-key-order"]
+    },
+    {
+      "id": "OP-R3-002",
+      "relationship": "supports",
+      "postcondition": "Cancellation publishes terminal state only after owned session resources close; repeated completion is idempotent; immediate successor runs finish with zero active resources; failures retain bounded message and correlation context.",
+      "result": "passed_focused_and_governed",
+      "stress_cycles": 15,
+      "active_resource_failures": 0
+    }
+  ],
+  "focused_results": {
+    "python_authority_workflow_resource": "34 passed",
+    "host_to_python_bridge": "10 passed",
+    "cross_runtime_vectors": "7/7 passed through the real Node-host-to-Python boundary",
+    "escape_heavy_transport_bound": "near-256-KiB valid payload remains below the explicit 528-KiB envelope bound",
+    "cancel_immediate_successor_stress": "15/15 cycles passed with zero active run resources",
+    "static_python": "ruff passed",
+    "static_extension": "npm check passed"
+  },
+  "governed_receipts": [
+    {
+      "section": "testing-governance",
+      "passed": true,
+      "tests": "64 passed, 9 subtests passed",
+      "receipt_sha256": "f96b4f80ca42b10580e26c8716f4553e816c56746db868bde4f5f6ebb712d928"
+    },
+    {
+      "section": "studio-memory-graph",
+      "passed": true,
+      "tests": "134 passed",
+      "receipt_sha256": "55409585f6f58349192b5952f8140e536ff93643a60a160f44a9bf889f3eab83"
+    },
+    {
+      "section": "dashboard-extension",
+      "passed": true,
+      "tests": "39 passed including bridge integration and browser lanes",
+      "receipt_sha256": "227d767ea5f90021e518be8c223513dd6bef71290d0f23715c55b3f6737c8b3f"
+    }
+  ],
+  "decision": {
+    "operational_blockers_repaired": true,
+    "independently_verified_from_new_archive": false,
+    "certified": false,
+    "reason": "The affected owned gates pass against current source, but the new repair artifact has not yet undergone independent audit and the deliberately deferred full certification profile has not run."
+  },
+  "limitations": [
+    "R3 explicitly excluded cyber/security assessment.",
+    "Same-file CSS duplication remains tracked non-blocking debt.",
+    "Executor-produced repair evidence is not independent certification."
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "do not reduce people to positive or negative labels",
+    "avoid punitive ranking",
+    "support correction and deletion where policy requires"
+  ],
+  "bundle": "adapt-human-learning-loop",
+  "category": "event-history",
+  "dependencies": [
+    "long-horizon-progress-ledger",
+    "evidence-assembler",
+    "maintain-learner-profile-boundary"
+  ],
+  "id": "maintain-behavior-event-ledger",
+  "keywords": [
+    "behavior history",
+    "event ledger",
+    "progress history",
+    "observer comments"
+  ],
+  "mechanisms": [
+    "append-only event record",
+    "typed event",
+    "observer comment",
+    "activity linkage",
+    "chronological history",
+    "correction record"
+  ],
+  "owner": "long-horizon-progress-ledger",
+  "provenance": {
+    "derivation": "clean-room mechanism abstraction",
+    "source": "hyperlearning-clean-room",
+    "source_refs": [
+      "Manual de usuario e instalación.pdf sections 2.5 and 2.7",
+      "src/Historial.java",
+      "src/Comportamientos.java"
+    ]
+  },
+  "source": "hyperlearning-clean-room",
+  "source_refs": [
+    "Manual de usuario e instalación.pdf sections 2.5 and 2.7",
+    "src/Historial.java",
+    "src/Comportamientos.java"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Record append-only, contextualized behavior or performance events with date, type, description, observer comments, source activity, and correction history.",
+  "title": "Maintain Behavior Event Ledger",
+  "use_when": [
+    "progress must be reviewed over time",
+    "human observations need traceable context",
+    "reward changes require supporting events"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "gap_id": "PX-OS-936",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004965",
+  "authority": "The registered source/browser contract drift authorizes correction of exactly two test assertions.",
+  "effect": "write",
+  "scope": ["extension/tests/extension-contract.test.js", "extension/tests/dashboard-e2e.test.js"],
+  "expected_effect": "Test the actual catalog tab state without colliding with valid shortcuts and assert the current typed relationship-inspector source contract.",
+  "rollback": "Two test assertion edits only; revert through explicit patch if the product contract changes.",
+  "evidence": [
+    {"claim": "Immediate annotated contract-drift checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004965"}
+  ]
+}

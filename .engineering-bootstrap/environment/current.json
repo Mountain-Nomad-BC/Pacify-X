@@ -1,0 +1,160 @@
+{
+  "schema_version": "px.environment-capability-map/2.0",
+  "authority": "Pacify-X extension read-only environment discovery",
+  "boundaries": {
+    "arbitrary_extension_activation": false,
+    "credential_values_persisted": false,
+    "weak_secret_fingerprints": false,
+    "network_installs": false,
+    "billable_calls": false,
+    "mutation": false,
+    "admitted_roots_only": true
+  },
+  "ontology": {
+    "canonical_chain": [
+      "resource",
+      "capabilities",
+      "interface",
+      "requirements",
+      "effects",
+      "conflicts",
+      "policy",
+      "state"
+    ],
+    "node_types": [
+      "orchestration-plane",
+      "admitted-root",
+      "consumer-file",
+      "vscode-extension",
+      "vscode-extension-reference",
+      "vscode-contribution-point",
+      "vscode-command",
+      "system-tool",
+      "installed-package",
+      "virtual-environment",
+      "environment-file",
+      "environment-variable-schema",
+      "capability",
+      "interface",
+      "requirement",
+      "effect",
+      "conflict",
+      "policy",
+      "resource-state"
+    ],
+    "predicates": [
+      "has-capability",
+      "has-interface",
+      "requires",
+      "may-effect",
+      "conflicts-with",
+      "governed-by",
+      "has-state",
+      "available-to",
+      "contributes",
+      "contributes-command",
+      "depends-on",
+      "installed-by",
+      "owned-by-root",
+      "uses-tool",
+      "declares-variable",
+      "consumes-variable"
+    ]
+  },
+  "summary": {
+    "extensions": 0,
+    "active_extensions": 0,
+    "system_tools": 12,
+    "available_tools": 4,
+    "python_packages": 269,
+    "npm_global_packages": 0,
+    "npm_project_packages": 0,
+    "virtual_environments": 1,
+    "active_virtual_environments": 0,
+    "environment_files": 1,
+    "environment_variables": 15,
+    "environment_scan_capped": false,
+    "admitted_roots": 1,
+    "graph_nodes": 342,
+    "graph_edges": 2245
+  },
+  "storage": {
+    "mode": "compact-index-with-hash-verified-lazy-shards",
+    "snapshot_directory": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e",
+    "per_extension_contracts": true
+  },
+  "datasets": {
+    "extensions": {
+      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/extensions-index.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "records": 0
+    },
+    "tools": {
+      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/system-tools.json",
+      "sha256": "990b274cf6ed05246646c52f8813f97f58b43963c385935e69cf95eaf388c076",
+      "records": 12
+    },
+    "python": {
+      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/python-packages.json",
+      "sha256": "7384cef46b498aa527e5989e02ccedf5c2803d4a9a89eab24f8b0d487cca128e",
+      "records": 269
+    },
+    "npm_global": {
+      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/npm-global-packages.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "records": 0
+    },
+    "npm_project": {
+      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/npm-project-packages.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "records": 0
+    },
+    "environments": {
+      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/virtual-environments.json",
+      "sha256": "4c32170f41c2064a55744983f45a96094e10e53a524edf37f855aacb9552604f",
+      "records": 1
+    },
+    "environment_files": {
+      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/environment-files.json",
+      "sha256": "f263652382bea6628303220df092416f1222de2e5fe9e819da15c0f19ba2266d",
+      "records": 1
+    },
+    "graph_nodes": {
+      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/graph-nodes.json",
+      "sha256": "42d6557ddd2a8106c7b1c6ce26d400c1eec1182794a6f75f712a66f72530caf7",
+      "records": 342
+    },
+    "graph_edges": {
+      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/graph-edges.json",
+      "sha256": "bf22b23423f88daef62d2a91167bf997cee2396e21874e798ea70c08c039a100",
+      "records": 2245
+    }
+  },
+  "content_hash": "908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e",
+  "discovery": {
+    "completeness": "complete",
+    "scanned_entries": 2424,
+    "capped": false,
+    "entry_limit": 20000,
+    "max_depth": 7,
+    "admitted_roots": [
+      {
+        "requested_root": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X",
+        "resolved_root": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X",
+        "state": "available"
+      }
+    ],
+    "failures": [],
+    "ambiguities": [],
+    "symbolic_links_skipped": 0,
+    "generation": 1,
+    "captured_utc": "2026-08-15T02:20:21.800Z",
+    "expires_utc": "2026-08-15T02:25:21.800Z",
+    "ttl_seconds": 300,
+    "content_fingerprint": "908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e",
+    "previous_snapshot_hash": "2f1fbc489c2e09e18c9cb25878205e07ede476e8d052f43753f41adc432ba83d",
+    "changed_from_previous": true
+  },
+  "generated_utc": "2026-08-15T02:20:21.759Z",
+  "snapshot_hash": "6657c790eb5aab79aae1fa364fc4ccb6153b83f1b5a2143c1df35c11736587a1"
+}

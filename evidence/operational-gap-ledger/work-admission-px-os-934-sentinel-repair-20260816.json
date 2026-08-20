@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-934",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004949",
+  "authority": "The exact adversarial cache failure authorizes bounded correction of the watch-stamp blind spot.",
+  "effect": "write",
+  "scope": ["extension/src/pxBridge.js", "extension/tests/px-bridge-cache.test.js"],
+  "expected_effect": "Detect same-metadata rewrites of direct watched control files on the next refresh with at most 4 MiB of sentinel reads, while avoiding directory-child content reads until full recomputation is required.",
+  "rollback": "Isolated fingerprint helper/test edit; revert through explicit patch if boundedness or cache correctness regresses.",
+  "evidence": [
+    {
+      "claim": "Immediate same-metadata failure checkpoint.",
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004949"
+    }
+  ]
+}

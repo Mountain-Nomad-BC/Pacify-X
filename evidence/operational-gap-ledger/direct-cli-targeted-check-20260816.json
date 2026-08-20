@@ -1,0 +1,21 @@
+{
+  "schema_version": "px.targeted-check-receipt/1.0",
+  "gap_id": "PX-OS-123",
+  "scope": "Operational ledger direct and module entry points only",
+  "commands": [
+    "python scripts/operational_gap_ledger.py validate",
+    "python -m scripts.operational_gap_ledger validate"
+  ],
+  "results": [
+    {"command_index": 0, "exit_code": 0, "valid": true},
+    {"command_index": 1, "exit_code": 0, "valid": true}
+  ],
+  "observed_event_count": 586,
+  "observed_head_event_sha256": "13f2e0e5dc1d54a778043dc45b3a19241df823086e1d07c1ad8857cf088638df",
+  "implementation": {
+    "path": "scripts/operational_gap_ledger.py",
+    "sha256": "28e719232dbae6904684aef00a75c34d0b093935cbac24aaa2b379e405e67846",
+    "size": 3788
+  },
+  "limits": "This receipt verifies only import/bootstrap compatibility. It does not verify product surfaces or broad certification."
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gate Model Data Lifecycle"
+  short_description: "Check model-data provenance, leakage, privacy, and rights"
+  default_prompt: "Use -model-data-lifecycle to review dataset and artifact metadata before any training, conversion, model load, or promotion."

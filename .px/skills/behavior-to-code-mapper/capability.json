@@ -1,0 +1,39 @@
+{
+  "admission_record": "behavior-to-code-mapper",
+  "body_sha256": "5accb85afc143ea3e5f0ad732ac4c93cc39e37d49a5523669f04d9586f2554f5",
+  "contract": {
+    "available": true,
+    "sha256": "4df5f600129eade78f9ebcc8aabed8b09a0238d4dcf956d9388271487fd2949e",
+    "source": "registry/skill_packages/behavior-to-code-mapper.json"
+  },
+  "description": "Map runtime behaviors to code, states, tools, policies, tests, telemetry, and dependencies. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "behavior-to-code-mapper",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/behavior-to-code-mapper"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "behavior",
+    "code",
+    "engineering",
+    "mapper",
+    "to"
+  ],
+  "version": "0.1.0"
+}

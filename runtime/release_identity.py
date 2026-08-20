@@ -11,7 +11,7 @@ from typing import Any
 
 
 EXPECTED_REPOSITORY = "Mountain-Nomad-BC/Pacify-X"
-VERSION_PATTERN = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
+VERSION_PATTERN = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+(?:\.dev[0-9]+)?$")
 
 
 def authoritative_version(root: Path) -> str:
@@ -23,7 +23,7 @@ def authoritative_version(root: Path) -> str:
     else:
         value = importlib.metadata.version("engineering-loop-bootstrap")
     if not VERSION_PATTERN.fullmatch(value):
-        raise ValueError("pyproject project.version must be an exact semantic version")
+        raise ValueError("pyproject project.version must be a stable or explicit .dev package version")
     return value
 
 
@@ -45,9 +45,10 @@ def validate_version_surfaces(
         r"(?m)^\*\*Current release:\*\* v([0-9]+\.[0-9]+\.[0-9]+)(?:\s|$)", readme
     )
     readme_version = readme_match.group(1) if readme_match else None
-    if readme_version != version:
+    development = ".dev" in version
+    if (not development and readme_version != version) or (development and readme_version == version):
         errors.append(
-            f"README current release={readme_version!r}, pyproject.toml={version!r}"
+            f"README signed release={readme_version!r} conflicts with package tree={version!r}"
         )
     if asserted is not None and asserted != version:
         errors.append(f"asserted release={asserted!r}, pyproject.toml={version!r}")
@@ -58,6 +59,7 @@ def validate_version_surfaces(
         "runtime_version": runtime_version,
         "readme_version": readme_version,
         "asserted_version": asserted,
+        "release_channel": "development" if development else "stable",
         "errors": errors,
     }
 

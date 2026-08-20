@@ -1,0 +1,38 @@
+{
+  "admission_record": "supervise-contained-execution",
+  "body_sha256": "18ec489a204669e2eb2392caa73e00432813b88c665e5150688b94fc433eb91e",
+  "contract": {
+    "available": true,
+    "sha256": "6ad111ef3a75915837567937721ad133efcb0ad03e5036f3b44c772a23050b61",
+    "source": "registry/skill_packages/supervise-contained-execution.json"
+  },
+  "description": "Authorize, block, or escalate a proposed action against declared effects, owned paths, resource budgets, policy, and human approvals. Use before installations, network access, services, migrations, destructive operations, load tests, chaos, or red-team activity.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "supervise-contained-execution",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/supervise-contained-execution"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "containment",
+    "authorization",
+    "scope",
+    "safety"
+  ],
+  "version": "0.1.0"
+}

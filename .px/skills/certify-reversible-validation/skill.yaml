@@ -1,0 +1,38 @@
+{
+  "admission_record": "certify-reversible-validation",
+  "body_sha256": "9503b0a9b26cad46ed756614d709eed63920f017e13d44f931a09637591509fb",
+  "contract": {
+    "available": true,
+    "sha256": "4284c24f6cb66415001c5c32985dac835664407e86909b5d0df13d7b4877ef55",
+    "source": "registry/skill_packages/certify-reversible-validation.json"
+  },
+  "description": "Validate UI, authentication, database, migration, or runtime behavior that requires temporary state changes while proving exact restoration afterward. Use for live or semi-live certification where test setup changes protected state and failures, cancellation, or interruption must not leave residue.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "certify-reversible-validation",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/certify-reversible-validation"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "validation",
+    "recovery",
+    "ui",
+    "reversible"
+  ],
+  "version": "0.1.0"
+}

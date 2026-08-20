@@ -217,7 +217,7 @@ def test_specialist_skill_wrapper_and_orchestration_are_executable() -> None:
         sys.executable,
         str(
             ROOT
-            / ".agents"
+            / ".px"
             / "skills"
             / "route-specialist-agents"
             / "scripts"

@@ -1,0 +1,38 @@
+{
+  "admission_record": "repair-corrupted-text",
+  "body_sha256": "226ddc1e8bcb13403c99047cccd043e9c02ac1a2c5a95f54243564bc2771a9a0",
+  "contract": {
+    "available": true,
+    "sha256": "5d0bcb968c45a82c0ba43f1812450029ff1739574bde059fcc15c1b413a35821",
+    "source": "registry/skill_packages/repair-corrupted-text.json"
+  },
+  "description": "Detect, repair, and verify OCR/PDF/encoding corruption with deterministic mappings, bounded heuristics, provenance, and reversible outputs before indexing or model ingestion. Use for garbled text, repeated-character artifacts, broken tokens, encoding substitutions, or large corpora where unconstrained generative correction is unsafe.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "repair-corrupted-text",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/repair-corrupted-text"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "text",
+    "ocr",
+    "repair",
+    "provenance"
+  ],
+  "version": "0.1.0"
+}

@@ -1,0 +1,40 @@
+{
+  "admission_record": "govern-knowledge-refinery",
+  "body_sha256": "0ec8432bc2dc73a44254aac390f6ce24f91410dad0a457b0f2b402f00b806e3c",
+  "contract": {
+    "available": true,
+    "sha256": "fba34752b60a653aa13c127a668628aca9d76b476f11d2dc972a8c4894a10637",
+    "source": "registry/skill_packages/govern-knowledge-refinery.json"
+  },
+  "description": "Inventory and admit untrusted knowledge sources, classify semantic novelty, plan non-destructive merges, audit graph coherence, simulate retrieval, and stage approval-bound proposals without writing canon. Use when adding or reconciling knowledge, skills, workflows, formulas, registries, or research corpora.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-knowledge-refinery",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-knowledge-refinery"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "admission",
+    "graph-coherence",
+    "knowledge",
+    "novelty",
+    "ranking",
+    "retrieval"
+  ],
+  "version": "1.0.0"
+}

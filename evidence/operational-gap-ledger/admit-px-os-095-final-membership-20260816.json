@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-095",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005013",
+  "effect": "write",
+  "scope": ["registry/test_profiles.json", "tests/test_test_profiles.py"],
+  "authority": "The reopened governed-membership card and repository contract require exact ownership for every changed control-plane source and regression.",
+  "expected_effect": "dashboard-extension owns the CSS canonicalizer and selector regression; studio-memory-graph owns the terminal observer; tests prevent future membership drift.",
+  "rollback": "Membership-only edits; revert explicitly if section resolution or intended command ownership is incorrect.",
+  "evidence": [{"claim": "Immediate current-membership checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005013"}]
+}

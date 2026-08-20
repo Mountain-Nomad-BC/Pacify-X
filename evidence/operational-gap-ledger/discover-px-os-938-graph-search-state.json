@@ -1,0 +1,43 @@
+{
+  "gap_id": "PX-OS-938",
+  "feature": "knowledge-graph-search-state-preservation",
+  "parent_surface": "knowledge-graph",
+  "control_action": "submit graph search with Enter",
+  "severity": "high",
+  "classification": "editor",
+  "observed_behavior": "Submitting a graph search preserves focus but immediately replaces the input with an empty value and resets its selection to 0 before/after the result arrives.",
+  "expected_behavior": "The submitted query remains visible and selected-caret state is restored across the pending and result renders.",
+  "operational_impact": "Users lose the query they just submitted, cannot refine it reliably, and the UI visually disconnects loaded results from their initiating search.",
+  "discovered_at": "2026-08-16T20:42:00Z",
+  "discovered_by": "codex-host:focused-dashboard-browser-walk",
+  "discovery_source": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004976",
+  "discovery_evidence": [
+    {"claim": "The browser retained focus but observed empty value and zero selection after submitting contradiction.", "reference": "extension/tests/dashboard-e2e.test.js:183-187; gap-event:PX-OPERATIONAL-GAPS-20260816:000000004976"},
+    {"claim": "The input renders from graphData.requested_query while the submit path clears graphData before its preservation render.", "reference": "extension/media/dashboard/48-graph-surface.js:115; extension/media/dashboard/90-controller.js:1589"}
+  ],
+  "source_refs": [
+    {"path": "extension/media/dashboard/90-controller.js", "symbols": ["renderPreservingControl", "requestGraph", "runGraphSearch", "graphResult"]},
+    {"path": "extension/media/dashboard/48-graph-surface.js", "symbols": ["render"]}
+  ],
+  "assigned_owner": "codex-primary",
+  "dependencies": [],
+  "blockers": [],
+  "next_action": "Make the in-flight graph request the authoritative query source during pending renders and restore the bounded value/caret across both submit and result renders.",
+  "tests_required": ["extension/tests/dashboard-e2e.test.js", "python -m runtime.cli test-section run dashboard-extension"],
+  "completion_evidence": [],
+  "interaction_chain": {
+    "open_load": {"state": "present", "detail": "Knowledge Graph and search input open.", "evidence": ["extension/tests/dashboard-e2e.test.js:183-184"]},
+    "display": {"state": "partial", "detail": "Results display but their submitted query disappears.", "evidence": ["extension/tests/dashboard-e2e.test.js:187-189"]},
+    "user_edit_action": {"state": "present", "detail": "The input accepts the query and Enter.", "evidence": ["extension/tests/dashboard-e2e.test.js:184-185"]},
+    "input_validation": {"state": "partial", "detail": "The bounded text is dispatched but not preserved.", "evidence": ["extension/media/dashboard/90-controller.js:1589"]},
+    "authorization": {"state": "not_applicable", "detail": "Read-only graph query.", "evidence": []},
+    "backend_dispatch": {"state": "present", "detail": "requestGraph dispatches a typed query.", "evidence": ["extension/media/dashboard/90-controller.js:1036-1046"]},
+    "runtime_effect": {"state": "partial", "detail": "Results load, but UI request state is lost.", "evidence": ["extension/tests/dashboard-e2e.test.js:188-189"]},
+    "progress_reporting": {"state": "present", "detail": "Pending graph state renders.", "evidence": ["extension/media/dashboard/48-graph-surface.js:90"]},
+    "result_acknowledgement": {"state": "partial", "detail": "Result render restores focus but not the submitted value.", "evidence": ["extension/media/dashboard/90-controller.js:1882"]},
+    "failure_handling": {"state": "missing", "detail": "No invariant prevents the query from being replaced with empty state.", "evidence": ["extension/media/dashboard/90-controller.js:1589"]},
+    "persistence": {"state": "not_applicable", "detail": "An ad hoc search need not persist across reload.", "evidence": []},
+    "reload_reopen": {"state": "not_applicable", "detail": "The defect occurs within the active interaction.", "evidence": []},
+    "recovery_rollback": {"state": "missing", "detail": "The user must retype the lost query.", "evidence": ["extension/tests/dashboard-e2e.test.js:187"]}
+  }
+}

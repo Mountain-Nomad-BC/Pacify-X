@@ -1,0 +1,66 @@
+{
+  "dependencies": [
+    "analyze-engineering-intelligence"
+  ],
+  "domain": "reasoning-kernel",
+  "failure_modes": [
+    "false certainty",
+    "evidence double counting",
+    "premature convergence",
+    "scope or timestamp collapse"
+  ],
+  "formula_refs": [
+    "average-treatment-effect",
+    "counterfactual-delta",
+    "backdoor-adjustment-reference"
+  ],
+  "id": "causal-reasoning-planner",
+  "inputs": [
+    "claims/evidence",
+    "task context",
+    "scope and time metadata"
+  ],
+  "invariants": [
+    "Unknowns are never silently converted to facts.",
+    "Confidence changes require evidence lineage.",
+    "High-impact uncertainty triggers testing, abstention, or escalation."
+  ],
+  "outputs": [
+    "machine-readable reasoning artifact",
+    "uncertainty and provenance record",
+    "decision or next-test recommendation"
+  ],
+  "procedure": [
+    "Normalize inputs and scope.",
+    "Separate observations, inferences, assumptions, unknowns, and policy choices.",
+    "Apply the referenced method with visible component values.",
+    "Test alternatives, contradictions, and failure conditions.",
+    "Emit a bounded result with provenance and residual uncertainty."
+  ],
+  "safety": {
+    "destructive_default": false,
+    "network_required": false,
+    "private_chain_of_thought_required": false
+  },
+  "semantic_effects": {
+    "confidence": [
+      "may adjust only through declared evidence and method"
+    ],
+    "knowledge": [
+      "may add or revise typed records only with provenance"
+    ],
+    "memory": [
+      "no persistent memory write unless explicitly contracted and scope-bound"
+    ],
+    "registry": [
+      "may propose changes; canonical mutation requires admission and evidence"
+    ],
+    "runtime": [
+      "bounded by target orchestration, permissions, containment, and rollback"
+    ]
+  },
+  "summary": "Separate correlation, mechanism, intervention, and counterfactual claims; expose confounders, mediators, colliders, and identification assumptions.",
+  "title": "Causal Reasoning Planner",
+  "version": "1.0.0",
+  "when_to_use": "Use whenever a task asks what caused an outcome or what an intervention will change."
+}

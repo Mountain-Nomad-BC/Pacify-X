@@ -1,0 +1,39 @@
+{
+  "admission_record": "govern-runtime-protocol-deployment",
+  "body_sha256": "5718a6c60791ca0ffe47d9794abb9abe6b09a00628aee877fdc9ef9111a98484",
+  "contract": {
+    "available": true,
+    "sha256": "cb6db446c7118dc17ac0cb5f40210eaa70e8040f9de3bbba660d98417e94d564",
+    "source": "registry/skill_packages/govern-runtime-protocol-deployment.json"
+  },
+  "description": "Probe hardware and serving backends, plan capacity and cost, validate model and protocol compatibility, import governed tools, route models, manage caches and batching, compare canaries, degrade safely, and package human handoffs. Use for runtime selection, protocol integration, or deployment decisions.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-runtime-protocol-deployment",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-runtime-protocol-deployment"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "govern",
+    "runtime",
+    "protocol",
+    "deployment",
+    "declared-suite"
+  ],
+  "version": "0.1.0"
+}

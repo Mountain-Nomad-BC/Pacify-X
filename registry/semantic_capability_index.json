@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "loading_rule": "metadata_only",
-  "revision": "f5f24d9b4ba8bb9f31fee3c45195bbd81f78d2dae5838604005ec4cd5fd46a49",
-  "record_count": 173,
+  "revision": "17f84f09040fff323f7ff609ed7c45dd98387d91e17d41728fd328d62b658d5a",
+  "record_count": 177,
   "records": [
     {
       "id": "acquire-install-n8n",
@@ -1047,6 +1047,40 @@
       "body_sha256": "2fa7268a2870e550c02103ab0bf38b583f945bec75c4b5a3c9a4a3a6cf3187b6"
     },
     {
+      "id": "data-sort-dry-run-picker",
+      "kind": "skill",
+      "status": "active",
+      "description": "Benchmark and select a correct bulk-data sorting strategy without mutating source data. Use for JSON, JSONL, NDJSON, CSV, or line-oriented datasets when a sort must be chosen from measured evidence, especially when the full input is too large for an in-memory experiment.",
+      "domains": [
+        "benchmark",
+        "bulk-data",
+        "correctness-trace",
+        "dry-run",
+        "sorting"
+      ],
+      "intents": [],
+      "concepts": [
+        "benchmark",
+        "bulk-data",
+        "correctness-trace",
+        "data",
+        "dry",
+        "dry-run",
+        "picker",
+        "run",
+        "sort",
+        "sorting"
+      ],
+      "synonyms": [
+        "data sort dry run picker"
+      ],
+      "tools": [],
+      "relations": [
+        "data-sort-dry-run-selection"
+      ],
+      "body_sha256": "5e5453117178f57ea88a4c51aea18349d9c3530c390ae953605d8e125a50ab41"
+    },
+    {
       "id": "decision-wayfinding",
       "kind": "skill",
       "status": "active",
@@ -1867,7 +1901,9 @@
         "evidence assembler"
       ],
       "tools": [],
-      "relations": [],
+      "relations": [
+        "data-sort-dry-run-selection"
+      ],
       "body_sha256": "199a3fc7747232bef216b05961d7ac994dd97098c98b1fdb6d0fcc04c4dd24e1"
     },
     {
@@ -1923,6 +1959,41 @@
         "agency-specialist-routing"
       ],
       "body_sha256": "8cf2f0511b2c1a4362448deb12945f79c6d38618b02a89751b77869b1ea86214"
+    },
+    {
+      "id": "execution-placement-decision",
+      "kind": "skill",
+      "status": "active",
+      "description": "Decide whether a bounded workload should keep its current language/runtime, deployment/platform, or database/storage placement. Use when comparing migrations, sidecars, native workers, services, accelerators, hosting classes, or primary-plus-secondary storage patterns using baselines, total boundary cost, rollback, benchmarks, and promotion evidence.",
+      "domains": [
+        "a-b",
+        "baseline",
+        "database",
+        "deployment",
+        "placement",
+        "promotion",
+        "rollback",
+        "runtime"
+      ],
+      "intents": [],
+      "concepts": [
+        "a-b",
+        "baseline",
+        "database",
+        "decision",
+        "deployment",
+        "execution",
+        "placement",
+        "promotion",
+        "rollback",
+        "runtime"
+      ],
+      "synonyms": [
+        "execution placement decision"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "db11b84c5df0a5ae8bd306a80efdbc4e450793c9c27ce5a80791ed01db4908e6"
     },
     {
       "id": "experience-reconstructor",
@@ -2202,7 +2273,8 @@
       ],
       "tools": [],
       "relations": [
-        "distributed-runtime"
+        "distributed-runtime",
+        "px-team-fabric-recovery"
       ],
       "body_sha256": "517e85cf43256df8065156efd124f6a5a0aa4bcd2a7f5768b56a259e796c2293"
     },
@@ -3131,7 +3203,8 @@
       ],
       "tools": [],
       "relations": [
-        "clean-room-capability-controls"
+        "clean-room-capability-controls",
+        "px-team-fabric-recovery"
       ],
       "body_sha256": "1ee9fb15339afb2e8353de1aa598dd8fbc9fcedcccd571510468452bfb40af7a"
     },
@@ -3373,7 +3446,8 @@
         "validate_project_map"
       ],
       "relations": [
-        "project-change-intelligence"
+        "project-change-intelligence",
+        "px-lean-engineering-gate"
       ],
       "body_sha256": "be4d0fdd32ead5ac6917a465045f44359ee63b518b5ce3f3960352e1c3b0e06a"
     },
@@ -4043,6 +4117,66 @@
       "body_sha256": "ceac102c75f849394636149588855b05acde19f806e1b8c5c1ba077cb7969125"
     },
     {
+      "id": "px-lean-engineering",
+      "kind": "skill",
+      "status": "active",
+      "description": "Apply a Pacify-X-native lean engineering gate before coding, designing, refactoring, adding dependencies, or creating abstractions. Use to trace the real flow, query repository intelligence and canonical capability owners, prefer native or existing mechanisms, minimize the correct change, and retain evidence without weakening security, validation, accessibility, recovery, or explicit requirements.",
+      "domains": [
+        "lean-engineering",
+        "repository-intelligence",
+        "reuse",
+        "verification"
+      ],
+      "intents": [],
+      "concepts": [
+        "engineering",
+        "lean",
+        "lean-engineering",
+        "px",
+        "repository-intelligence",
+        "reuse",
+        "verification"
+      ],
+      "synonyms": [
+        "px lean engineering"
+      ],
+      "tools": [],
+      "relations": [
+        "px-lean-engineering-gate"
+      ],
+      "body_sha256": "0c42680c0cef12eaf65ba37eee1b4f864fc3e6a69348c07465571155f93458e7"
+    },
+    {
+      "id": "px-work-stop-diagnostics",
+      "kind": "skill",
+      "status": "active",
+      "description": "Diagnose why Pacify-X parallel, agent, or cross-IDE work stopped before restarting it. Use when a task stalls, a worker disappears, a claim expires, a budget blocks execution, a provider changes, a worktree moves, a dependency remains incomplete, or a resume packet becomes stale.",
+      "domains": [
+        "coordination",
+        "diagnostics",
+        "leases",
+        "recovery"
+      ],
+      "intents": [],
+      "concepts": [
+        "coordination",
+        "diagnostics",
+        "leases",
+        "px",
+        "recovery",
+        "stop",
+        "work"
+      ],
+      "synonyms": [
+        "px work stop diagnostics"
+      ],
+      "tools": [],
+      "relations": [
+        "px-team-fabric-recovery"
+      ],
+      "body_sha256": "9c9f40e3d521fadaf63b59bc435e61febaf98403a927a9acf29afeeb6501000b"
+    },
+    {
       "id": "quarantine-external-tools",
       "kind": "skill",
       "status": "active",
@@ -4101,7 +4235,8 @@
         "query_project_map"
       ],
       "relations": [
-        "project-change-intelligence"
+        "project-change-intelligence",
+        "px-lean-engineering-gate"
       ],
       "body_sha256": "8086bdba63af752d58ab14ae65d9fafe546d88dd912aeae021c37c738a343eca"
     },
@@ -5295,7 +5430,9 @@
         "validate contract boundaries"
       ],
       "tools": [],
-      "relations": [],
+      "relations": [
+        "px-lean-engineering-gate"
+      ],
       "body_sha256": "12e41b4b444f396dd69d0f3a7c3a05b09b63ea01bbc49e79a9f2492cf1ac505c"
     },
     {
@@ -5326,8 +5463,11 @@
       "relations": [
         "agency-specialist-routing",
         "cybersecurity-capability-operations",
+        "data-sort-dry-run-selection",
         "hardware-aware-execution-routing",
         "local-model-planning",
+        "px-lean-engineering-gate",
+        "px-team-fabric-recovery",
         "resource-lifecycle-reconciliation",
         "transcript-evidence-extraction"
       ],

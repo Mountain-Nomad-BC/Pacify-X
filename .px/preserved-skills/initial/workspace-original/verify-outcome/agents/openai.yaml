@@ -1,0 +1,4 @@
+interface:
+  display_name: "Outcome Verification"
+  short_description: "Verify task claims with current evidence"
+  default_prompt: "Use $verify-outcome to independently verify this task's completion claims."

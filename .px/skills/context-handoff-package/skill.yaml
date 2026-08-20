@@ -1,0 +1,38 @@
+{
+  "admission_record": "context-handoff-package",
+  "body_sha256": "9b33e508ea92d590b854f69134596e53febe87fe086e34a1a06f5650cb9658b4",
+  "contract": {
+    "available": true,
+    "sha256": "e8cef54df36feba8ce1b07a659e7763886d8b621298ec10cb30b647b24bd9e75",
+    "source": "registry/skill_packages/context-handoff-package.json"
+  },
+  "description": "Produce a compact, evidence-linked state transfer that lets another agent continue without reconstructing the project.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "context-handoff-package",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/context-handoff-package"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "context",
+    "engineering-reasoning",
+    "handoff",
+    "package"
+  ],
+  "version": "1.0.0"
+}

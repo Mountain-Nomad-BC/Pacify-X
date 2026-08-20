@@ -1,0 +1,22 @@
+{
+  "id": "verify-outcome",
+  "version": "0.1.0",
+  "status": "active",
+  "body": ".px/skills/verify-outcome/SKILL.md",
+  "body_sha256": "59041723adc187c93ace1d9e5ec412bea3963b0fd94b6801c733af6a89f22538",
+  "references": [
+    ".px/skills/verify-outcome/agents/openai.yaml",
+    ".px/skills/verify-outcome/contracts/manifest.json",
+    ".px/skills/verify-outcome/references/evidence-contract.md",
+    ".px/skills/verify-outcome/resources/index.json",
+    ".px/skills/verify-outcome/tests/validation.json"
+  ],
+  "capability_tags": ["validation", "evidence"],
+  "effects": ["read_local"],
+  "provenance": {"adapted": false, "source": ".px/preserved-skills/initial/workspace-original/verify-outcome", "type": "preserved_workspace_original", "basis": [".px/preserved-skills/initial/workspace-original/verify-outcome"]},
+  "clean_room": false,
+  "tests": "tests/test_native_skills.py",
+  "evidence": "tests/test_native_skills.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 32768
+}

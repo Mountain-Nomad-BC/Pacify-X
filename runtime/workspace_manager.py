@@ -38,6 +38,7 @@ from .project_stream_controls import (
     authorize_context,
 )
 from .paths import framework_root
+from .work_admission import RuntimeWorkPlane
 
 
 def _project_stream_api():
@@ -451,7 +452,28 @@ def _verified_session(
     return expected
 
 
-def _active_sessions(paths: WorkspacePaths) -> tuple[dict[str, object], ...]:
+def _lease_expiry(session: Mapping[str, object]) -> datetime:
+    """Return a normalized UTC lease expiry or fail closed on malformed data."""
+    try:
+        expiry = datetime.fromisoformat(str(session["expires_utc"]))
+    except (KeyError, TypeError, ValueError) as error:
+        raise ValueError("active session expiry is invalid") from error
+    if expiry.tzinfo is None:
+        raise ValueError("active session expiry must be timezone-aware")
+    return expiry.astimezone(timezone.utc)
+
+
+def _session_lease_is_current(
+    session: Mapping[str, object], *, observed_utc: datetime | None = None
+) -> bool:
+    if session.get("status") != "active":
+        return False
+    return _lease_expiry(session) > (observed_utc or datetime.now(timezone.utc))
+
+
+def _projected_active_sessions(
+    paths: WorkspacePaths,
+) -> tuple[dict[str, object], ...]:
     expected = _session_projections_from_events(paths)
     actual_names = (
         {path.stem for path in paths.sessions.glob("*.json")}
@@ -467,6 +489,16 @@ def _active_sessions(paths: WorkspacePaths) -> tuple[dict[str, object], ...]:
         value
         for value in values
         if value is not None and value.get("status") == "active"
+    )
+
+
+def _active_sessions(paths: WorkspacePaths) -> tuple[dict[str, object], ...]:
+    """Return only active projections whose lease is valid at observation time."""
+    observed_utc = datetime.now(timezone.utc)
+    return tuple(
+        value
+        for value in _projected_active_sessions(paths)
+        if _session_lease_is_current(value, observed_utc=observed_utc)
     )
 
 
@@ -696,7 +728,7 @@ def initialize_workspace(
 
 
 @_locked_when_apply
-def discover_projects(
+def _discover_projects_direct(
     root: Path, *, source_root: Path, apply: bool = False, max_files: int = 100_000
 ) -> dict[str, object]:
     paths = workspace_paths(root)
@@ -860,6 +892,50 @@ def discover_projects(
     }
 
 
+def discover_projects(
+    root: Path, *, source_root: Path, apply: bool = False, max_files: int = 100_000
+) -> dict[str, object]:
+    """Discover projects through the bounded work plane.
+
+    The runtime plane owns admission and duplicate suppression. The existing
+    workspace mutation lock inside ``_discover_projects_direct`` remains the
+    authoritative owner of any apply operation.
+    """
+    paths = workspace_paths(root)
+    fingerprint = {
+        "workspace": paths.root.as_posix(),
+        "source_root": source_root.resolve().as_posix(),
+        "apply": apply,
+        "max_files": max_files,
+        "registry_mtime_ns": (
+            paths.registry.stat().st_mtime_ns if paths.registry.is_file() else None
+        ),
+        "projects_mtime_ns": (
+            paths.projects.stat().st_mtime_ns if paths.projects.is_dir() else None
+        ),
+    }
+    admitted = RuntimeWorkPlane(paths.root).execute(
+        "workspace.discovery",
+        lambda: _discover_projects_direct(
+            paths.root,
+            source_root=source_root,
+            apply=apply,
+            max_files=max_files,
+        ),
+        reason=(
+            "explicit workspace discovery and admission"
+            if apply
+            else "explicit workspace discovery preview"
+        ),
+        input_fingerprint=fingerprint,
+        domains=("workspace", "projects"),
+        lane="heavy",
+        timeout_seconds=120.0,
+        authoritative=apply,
+    )
+    return admitted["result"]
+
+
 def create_project(
     root: Path, name: str, *, source_root: Path, apply: bool = False
 ) -> dict[str, object]:
@@ -956,7 +1032,7 @@ def activate_project(
     previous = _verified_session(paths, session_id)
     if (
         previous
-        and previous.get("status") == "active"
+        and _session_lease_is_current(previous)
         and previous.get("project_id") == project_id
     ):
         return {
@@ -965,6 +1041,37 @@ def activate_project(
             "already_active": True,
             "session": previous,
         }
+    if previous and previous.get("status") == "active" and not _session_lease_is_current(
+        previous
+    ):
+        expired_utc = _now()
+        expired = {
+            **previous,
+            "status": "expired",
+            "expired_utc": expired_utc,
+        }
+        old_scope = ScopeEnvelope(**previous["scope"])
+        history_path = (
+            paths.project_state
+            / old_scope.project_id
+            / "leases"
+            / f"{old_scope.lease_id}-expired.json"
+        )
+        _write_json_new(history_path, expired)
+        append_event(
+            _event_ledger(paths),
+            "session-expired",
+            {
+                "project_id": old_scope.project_id,
+                "session_id": old_scope.session_id,
+                "lease_id": old_scope.lease_id,
+                "status_time": expired_utc,
+                "status_time_field": "expired_utc",
+                "reason": "lease-expired-before-reactivation",
+            },
+        )
+        _snapshot_and_replace(paths, session_path, expired)
+        previous = None
     new_scope = _new_scope(
         str(config["workspace_id"]),
         project_id,
@@ -1211,10 +1318,19 @@ def current_project(
     paths = workspace_paths(root)
     config = _load_config(paths)
     active = _verified_session(paths, session_id)
+    current = bool(active and _session_lease_is_current(active))
     return {
         "valid": True,
         "workspace_id": config["workspace_id"],
-        "active": active if active and active.get("status") == "active" else None,
+        "active": active if current else None,
+        "lease_state": "current"
+        if current
+        else "expired"
+        if active and active.get("status") == "active"
+        else "inactive",
+        "expired": active
+        if active and active.get("status") == "active" and not current
+        else None,
     }
 
 
@@ -1263,6 +1379,8 @@ def renew_project(
         raise ValueError("no active project session")
     if active.get("status") != "active":
         raise ValueError("no active project session")
+    if not _session_lease_is_current(active):
+        raise ValueError("active project lease expired; reacquire the project lease")
     prior_expiry = active["expires_utc"]
     activated = datetime.fromisoformat(str(active["created_utc"]))
     requested_expiry = datetime.now(timezone.utc) + timedelta(minutes=minutes)
@@ -1755,6 +1873,131 @@ def search_memory(
             }
         ),
         "rejected": list(recall.rejected),
+    }
+
+
+def browse_canonical_memory(
+    root: Path,
+    query: str,
+    *,
+    offset: int = 0,
+    limit: int = 60,
+    status: str = "",
+    project_id: str = "",
+    source: str = "",
+) -> dict[str, object]:
+    """Search active lease-bound canonical vaults and return inspectable sealed records."""
+    from .memory_intelligence import MemoryCaller, rank_memories
+
+    paths = workspace_paths(root)
+    config = _load_config(paths)
+    active_sessions = _active_sessions(paths)
+    bounded_limit = max(1, min(100, int(limit)))
+    bounded_offset = max(0, min(10_000, int(offset)))
+    ranking_bound = min(500, bounded_offset + bounded_limit)
+    records: list[dict[str, object]] = []
+    rejected: list[object] = []
+    for active in active_sessions:
+        scope = active["scope"]
+        project_id = str(active["project_id"])
+        actor_id = str(scope["agent_id"])
+        vault = _vault(paths, str(config["workspace_id"]), project_id)
+        caller = MemoryCaller(
+            project_id,
+            actor_id,
+            actor_id,
+            team_id=str(scope["team_id"]) if scope.get("team_id") else None,
+            user_id=str(scope["user_id"]) if scope.get("user_id") else None,
+            task_id=str(scope["intent_id"]) if scope.get("intent_id") else None,
+        )
+        ranked = rank_memories(
+            query,
+            vault.retrieval_records(actor_id=actor_id),
+            caller=caller,
+            max_items=ranking_bound,
+        )
+        for selected in ranked.selected:
+            detail = vault.inspect_record(selected.record.memory_id)
+            records.append(
+                {
+                    **detail,
+                    "score": selected.score,
+                    "selection_reasons": list(selected.reasons),
+                    "session_id": scope["session_id"],
+                    "agent_id": actor_id,
+                }
+            )
+        rejected.extend(ranked.rejected)
+    records.sort(
+        key=lambda row: (
+            -float(row["score"]),
+            str(row["project_id"]),
+            str(row["memory_id"]),
+        )
+    )
+    wanted_status = status.strip().casefold()
+    wanted_project = project_id.strip().casefold()
+    wanted_source = source.strip().casefold()
+    if wanted_status:
+        records = [
+            row
+            for row in records
+            if str(row.get("lifecycle_state") or row.get("status") or "").casefold()
+            == wanted_status
+        ]
+    if wanted_project:
+        records = [
+            row
+            for row in records
+            if str(row.get("project_id") or "").casefold() == wanted_project
+        ]
+    if wanted_source:
+        records = [
+            row
+            for row in records
+            if wanted_source
+            in str(
+                (row.get("source") or {}).get("path")
+                if isinstance(row.get("source"), Mapping)
+                else row.get("source_artifact") or ""
+            ).casefold()
+        ]
+    selected = records[bounded_offset : bounded_offset + bounded_limit]
+    return {
+        "schema_version": "px.canonical-memory-browser/1.0",
+        "valid": True,
+        "authority": "canonical workspace memory vault",
+        "workspace_id": config["workspace_id"],
+        "active_session_count": len(active_sessions),
+        "query": query,
+        "matched_count": len(records),
+        "returned_count": len(selected),
+        "offset": bounded_offset,
+        "limit": bounded_limit,
+        "has_more": bounded_offset + bounded_limit < len(records),
+        "filters": {"status": status, "project_id": project_id, "source": source},
+        "records": selected,
+        "rejected": rejected[:100],
+        "selection_receipt_sha256": _stable(
+            {
+                "workspace_id": config["workspace_id"],
+                "query_sha256": hashlib.sha256(query.encode()).hexdigest(),
+                "selected": [
+                    (
+                        row["project_id"],
+                        row["memory_id"],
+                        row["revision"],
+                        row["record_sha256"],
+                    )
+                    for row in selected
+                ],
+            }
+        ),
+        "limitations": []
+        if active_sessions
+        else [
+            "No active project lease; canonical records are not exposed without an active scope."
+        ],
     }
 
 
@@ -2376,14 +2619,18 @@ def workspace_status(
                 {"project_id": project_id, "valid": False, "error": str(error)}
             )
     try:
-        active_sessions = _active_sessions(paths)
+        projected_active_sessions = _projected_active_sessions(paths)
+        active_sessions = tuple(
+            item for item in projected_active_sessions if _session_lease_is_current(item)
+        )
     except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
         errors.append(f"session_projection_invalid:{error}")
+        projected_active_sessions = ()
         active_sessions = ()
     active_registry = [
         item for item in registry["projects"] if item.get("state") == "active"
     ]
-    for active in active_sessions:
+    for active in projected_active_sessions:
         if active.get("project_id") not in seen_ids:
             errors.append("active_session_project_not_registered")
         else:
@@ -2394,11 +2641,12 @@ def workspace_status(
             ):
                 errors.append("active_session_root_binding_drift")
             try:
-                if datetime.fromisoformat(str(active["expires_utc"])) <= datetime.now(
-                    timezone.utc
-                ):
-                    errors.append("active_session_lease_expired")
-            except (KeyError, ValueError):
+                if not _session_lease_is_current(active):
+                    errors.append(
+                        "active_session_lease_expired:"
+                        + str(active.get("scope", {}).get("session_id", "unknown"))
+                    )
+            except (TypeError, ValueError):
                 errors.append("active_session_expiry_invalid")
     active_project_ids = {str(item.get("project_id")) for item in active_sessions}
     registry_active_ids = {str(item.get("project_id")) for item in active_registry}
@@ -2423,7 +2671,21 @@ def workspace_status(
         "tracking": paths.tracking.as_posix(),
         "registered_count": len(registry["projects"]),
         "active_session_count": len(active_sessions),
+        "projected_active_session_count": len(projected_active_sessions),
         "active_project_ids": sorted(active_project_ids),
+        "active_session_expiries": [
+            {
+                "session_id": str(item.get("scope", {}).get("session_id", "")),
+                "project_id": str(item.get("project_id", "")),
+                "expires_utc": str(item.get("expires_utc", "")),
+            }
+            for item in active_sessions
+        ],
+        "expired_session_ids": sorted(
+            str(item.get("scope", {}).get("session_id", ""))
+            for item in projected_active_sessions
+            if not _session_lease_is_current(item)
+        ),
         "pending_operation_ids": list(pending_operations),
         "active_project_id": next(iter(active_project_ids))
         if len(active_project_ids) == 1
@@ -2446,31 +2708,88 @@ def workspace_monitor(root: Path, *, source_root: Path) -> dict[str, object]:
         }
     config = _load_config(paths)
     registry = _load_registry(paths)
+    from collections import Counter
+    from .memory_intelligence import PersistentWriteQueue
+
     memory = []
+    memory_errors: list[str] = []
     for record in registry["projects"]:
         project_id = str(record["project_id"])
         vault = _vault(paths, str(config["workspace_id"]), project_id)
-        records = vault.latest_records()
-        memory.append(
-            {
-                "project_id": project_id,
-                "record_count": len(records),
-                "bytes": sum(
-                    path.stat().st_size
-                    for path in vault.root.rglob("*")
-                    if path.is_file()
-                ),
-                "index": vault.reconcile_indexes(),
-            }
-        )
+        try:
+            records = vault.latest_records()
+            lifecycle_counts = Counter(
+                vault.lifecycle_state(item.memory_id) for item in records
+            )
+            index = vault.reconcile_indexes()
+            write_queue = PersistentWriteQueue(vault.root, project_id).health()
+            memory.append(
+                {
+                    "project_id": project_id,
+                    "status": "healthy"
+                    if not index["orphan_generations"] and write_queue["valid"]
+                    else "degraded",
+                    "record_count": len(records),
+                    "eligible_record_count": sum(
+                        lifecycle_counts[state] for state in ("certified", "trusted")
+                    ),
+                    "bytes": sum(
+                        path.stat().st_size
+                        for path in vault.root.rglob("*")
+                        if path.is_file()
+                    ),
+                    "layer_counts": dict(
+                        sorted(Counter(item.layer for item in records).items())
+                    ),
+                    "lifecycle_counts": dict(sorted(lifecycle_counts.items())),
+                    "latest_effective_utc": max(
+                        (item.effective_at.isoformat() for item in records),
+                        default=None,
+                    ),
+                    "source_count": len(
+                        {item.source_sha256 for item in records if item.source_sha256}
+                    ),
+                    "index": index,
+                    "write_queue": write_queue,
+                    "integrity": {
+                        "valid": True,
+                        "record_validation": "passed",
+                        "lifecycle_validation": "passed",
+                    },
+                }
+            )
+        except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
+            memory_errors.append(f"{project_id}: {type(error).__name__}: {error}")
+            memory.append(
+                {
+                    "project_id": project_id,
+                    "status": "invalid",
+                    "record_count": None,
+                    "eligible_record_count": None,
+                    "bytes": None,
+                    "layer_counts": {},
+                    "lifecycle_counts": {},
+                    "latest_effective_utc": None,
+                    "source_count": None,
+                    "index": None,
+                    "write_queue": None,
+                    "integrity": {
+                        "valid": False,
+                        "error": f"{type(error).__name__}: {error}",
+                    },
+                }
+            )
     integrations = validate_integrations(source_root, smoke=True)
+    memory_valid = not memory_errors and all(
+        item["status"] == "healthy" for item in memory
+    )
     return {
-        "valid": status["valid"]
-        and integrations["valid"]
-        and all(not item["index"]["orphan_generations"] for item in memory),
+        "valid": status["valid"] and integrations["valid"] and memory_valid,
         "workspace": status,
         "lease_policy": dict(config["leases"]),
+        "memory_valid": memory_valid,
         "memory": memory,
+        "memory_errors": memory_errors,
         "integrations": integrations,
         "recovery": "run workspace rebuild --apply only after reviewing any projection or operation-journal drift",
     }

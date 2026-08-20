@@ -27,6 +27,69 @@ LEGACY_PATTERN = re.compile(
     + rb"(?!_system_with_deterministic_rails))"
 )
 EXCLUDED_DIRECTORIES = {".git"}
+BINARY_SUFFIXES = {
+    ".7z",
+    ".avi",
+    ".bmp",
+    ".dll",
+    ".exe",
+    ".gif",
+    ".gz",
+    ".ico",
+    ".jpeg",
+    ".jpg",
+    ".mov",
+    ".mp3",
+    ".mp4",
+    ".pdf",
+    ".png",
+    ".tar",
+    ".vsix",
+    ".webp",
+    ".woff",
+    ".woff2",
+    ".zip",
+}
+TEXT_SUFFIXES = {
+    ".css",
+    ".csv",
+    ".html",
+    ".ini",
+    ".js",
+    ".json",
+    ".jsonl",
+    ".md",
+    ".mjs",
+    ".ps1",
+    ".py",
+    ".rst",
+    ".sh",
+    ".svg",
+    ".toml",
+    ".ts",
+    ".tsv",
+    ".txt",
+    ".xml",
+    ".yaml",
+    ".yml",
+}
+
+
+def _is_admitted_text(path: Path) -> bool:
+    """Classify content before applying text-only identifier patterns."""
+    suffix = path.suffix.casefold()
+    if suffix in BINARY_SUFFIXES:
+        return False
+    if suffix in TEXT_SUFFIXES or path.name in {"LICENSE", "NOTICE"}:
+        return True
+    try:
+        with path.open("r", encoding="utf-8", errors="strict", newline="") as handle:
+            chunk = handle.read(1024 * 1024)
+            while chunk:
+                chunk = handle.read(1024 * 1024)
+    except (OSError, UnicodeDecodeError):
+        return False
+    return True
 
 
 def audit(
@@ -74,6 +137,9 @@ def audit(
                 }
             )
         try:
+            if not _is_admitted_text(path):
+                bytes_scanned += path.stat().st_size
+                continue
             overlap = b""
             offset = 0
             with path.open("rb") as handle:
@@ -185,6 +251,15 @@ def audit(
             "License and provenance review requires a separate admitted control.",
         ),
     }
+    scoped_valid = (
+        not identifier_hits
+        and not legacy_placeholder_hits
+        and not zip_paths
+        and not errors
+    )
+    not_run = sorted(
+        name for name, value in gates.items() if value["status"] == "not_run"
+    )
     return {
         "schema_version": "1.0",
         "root": ".",
@@ -200,10 +275,11 @@ def audit(
         "error_count": len(errors),
         "errors": errors,
         "gates": gates,
-        "valid": not identifier_hits
-        and not legacy_placeholder_hits
-        and not zip_paths
-        and not errors,
+        "scoped_valid": scoped_valid,
+        "valid": scoped_valid and not not_run,
+        "limitations": [f"Required comprehensive gates not run: {', '.join(not_run)}"]
+        if not_run
+        else [],
     }
 
 

@@ -1,0 +1,857 @@
+{
+  "id": "ms-azuretools.vscode-azurefunctions",
+  "name": "Azure Functions",
+  "version": "1.22.0",
+  "publisher": "ms-azuretools",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "jsonValidation",
+    "menus",
+    "problemMatchers",
+    "problemPatterns",
+    "submenus",
+    "taskDefinitions",
+    "views",
+    "walkthroughs",
+    "x-azResources"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-azuretools.vscode-azurefunctions",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-azuretools.vscode-azurefunctions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "ms-azuretools.vscode-azurefunctions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-azuretools.vscode-azurefunctions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:problemMatchers",
+      "kind": "problemMatchers",
+      "provider": "ms-azuretools.vscode-azurefunctions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:problemPatterns",
+      "kind": "problemPatterns",
+      "provider": "ms-azuretools.vscode-azurefunctions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "ms-azuretools.vscode-azurefunctions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:taskDefinitions",
+      "kind": "taskDefinitions",
+      "provider": "ms-azuretools.vscode-azurefunctions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "ms-azuretools.vscode-azurefunctions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "ms-azuretools.vscode-azurefunctions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:x-azResources",
+      "kind": "x-azResources",
+      "provider": "ms-azuretools.vscode-azurefunctions",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "azureFunctions.addBinding",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.addBinding', ...args)",
+      "title": "Add binding...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.addLocalMIConnections",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.addLocalMIConnections', ...args)",
+      "title": "Add Local Project Identity Connections...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.addRemoteMIConnections",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.addRemoteMIConnections', ...args)",
+      "title": "Add Function App Identity Connections...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.appSettings.add",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.appSettings.add', ...args)",
+      "title": "Add New Setting...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.appSettings.decrypt",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.appSettings.decrypt', ...args)",
+      "title": "Decrypt Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.appSettings.delete",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.appSettings.delete', ...args)",
+      "title": "Delete Setting...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.appSettings.download",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.appSettings.download', ...args)",
+      "title": "Download Remote Settings...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.appSettings.edit",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.appSettings.edit', ...args)",
+      "title": "Edit Setting...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.appSettings.encrypt",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.appSettings.encrypt', ...args)",
+      "title": "Encrypt Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.appSettings.rename",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.appSettings.rename', ...args)",
+      "title": "Rename Setting...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.appSettings.toggleSlotSetting",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.appSettings.toggleSlotSetting', ...args)",
+      "title": "Toggle as Slot Setting",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.appSettings.upload",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.appSettings.upload', ...args)",
+      "title": "Upload Local Settings...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.assignManagedIdentity",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.assignManagedIdentity', ...args)",
+      "title": "Assign Managed Identity to Function App...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.browseWebsite",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.browseWebsite', ...args)",
+      "title": "Browse Website",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.configureDeploymentSource",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.configureDeploymentSource', ...args)",
+      "title": "Configure Deployment Source...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.connectToGitHub",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.connectToGitHub', ...args)",
+      "title": "Connect to GitHub Repository...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.copyFunctionUrl",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.copyFunctionUrl', ...args)",
+      "title": "Copy Function Url",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.createFunction",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.createFunction', ...args)",
+      "title": "Create Function...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.createFunctionApp",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.createFunctionApp', ...args)",
+      "title": "Create Function App in Azure...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.createFunctionAppAdvanced",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.createFunctionAppAdvanced', ...args)",
+      "title": "Create Function App in Azure... (Advanced)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.createNewProject",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.createNewProject', ...args)",
+      "title": "Create New Project...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.createNewProjectWithDockerfile",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.createNewProjectWithDockerfile', ...args)",
+      "title": "Create New Containerized Project...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.createSlot",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.createSlot', ...args)",
+      "title": "Create Slot...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.deleteFunction",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.deleteFunction', ...args)",
+      "title": "Delete Function...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.deleteFunctionApp",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.deleteFunctionApp', ...args)",
+      "title": "Delete Function App...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.deleteSlot",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.deleteSlot', ...args)",
+      "title": "Delete Slot...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.deploy",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.deploy', ...args)",
+      "title": "Deploy to Function App...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.deployByFunctionAppId",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.deployByFunctionAppId', ...args)",
+      "title": "Deploy to Function App by ID...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.deployProject",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.deployProject', ...args)",
+      "title": "Deploy to Azure...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.deploySlot",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.deploySlot', ...args)",
+      "title": "Deploy to Slot...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.disableFunction",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.disableFunction', ...args)",
+      "title": "Disable Function",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.disconnectRepo",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.disconnectRepo', ...args)",
+      "title": "Disconnect from Repo...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.durableTaskScheduler.copyEmulatorConnectionString",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.durableTaskScheduler.copyEmulatorConnectionString', ...args)",
+      "title": "Copy Connection String",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.durableTaskScheduler.copySchedulerConnectionString",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.durableTaskScheduler.copySchedulerConnectionString', ...args)",
+      "title": "Copy Connection String",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.durableTaskScheduler.copySchedulerEndpoint",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.durableTaskScheduler.copySchedulerEndpoint', ...args)",
+      "title": "Copy Endpoint",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.durableTaskScheduler.createScheduler",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.durableTaskScheduler.createScheduler', ...args)",
+      "title": "Create Durable Task Scheduler...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.durableTaskScheduler.createTaskHub",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.durableTaskScheduler.createTaskHub', ...args)",
+      "title": "Create Task Hub...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.durableTaskScheduler.deleteScheduler",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.durableTaskScheduler.deleteScheduler', ...args)",
+      "title": "Delete Scheduler...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.durableTaskScheduler.deleteTaskHub",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.durableTaskScheduler.deleteTaskHub', ...args)",
+      "title": "Delete Task Hub...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.durableTaskScheduler.openTaskHubDashboard",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.durableTaskScheduler.openTaskHubDashboard', ...args)",
+      "title": "Open in Dashboard",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.durableTaskScheduler.startEmulator",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.durableTaskScheduler.startEmulator', ...args)",
+      "title": "Start Durable Task Emulator",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.durableTaskScheduler.stopEmulator",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.durableTaskScheduler.stopEmulator', ...args)",
+      "title": "Stop Emulator",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.enableFunction",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.enableFunction', ...args)",
+      "title": "Enable Function",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.enableSystemIdentity",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.enableSystemIdentity', ...args)",
+      "title": "Enable System Assigned Identity",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.eventGrid.sendMockRequest",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.eventGrid.sendMockRequest', ...args)",
+      "title": "Save and execute...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.executeFunction",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.executeFunction', ...args)",
+      "title": "Execute Function Now...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.funcHostDebug.askCopilot",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.funcHostDebug.askCopilot', ...args)",
+      "title": "Ask Copilot",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.funcHostDebug.clearStoppedSessions",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.funcHostDebug.clearStoppedSessions', ...args)",
+      "title": "Clear Stopped Sessions",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.funcHostDebug.copyRecentLogs",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.funcHostDebug.copyRecentLogs', ...args)",
+      "title": "Copy Recent Host Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.funcHostDebug.refresh",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.funcHostDebug.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.funcHostDebug.showRecentLogs",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.funcHostDebug.showRecentLogs', ...args)",
+      "title": "Show Recent Host Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.getMcpHostKey",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.getMcpHostKey', ...args)",
+      "title": "Retrieve the MCP host key for the Function App specified by the resource ID.",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.initProjectForVSCode",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.initProjectForVSCode', ...args)",
+      "title": "Initialize Project for Use with VS Code...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.installOrUpdateFuncCoreTools",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.installOrUpdateFuncCoreTools', ...args)",
+      "title": "Install or Update Azure Functions Core Tools",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.openInPortal",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.openInPortal', ...args)",
+      "title": "Open in Portal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.openWalkthrough",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.openWalkthrough', ...args)",
+      "title": "Open Azure Functions Extension Walkthrough",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.pickProcess",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.pickProcess', ...args)",
+      "title": "Pick Process",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.redeploy",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.redeploy', ...args)",
+      "title": "Redeploy",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.reportIssue",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.reportIssue', ...args)",
+      "title": "Report Issue...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.restartFunctionApp",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.restartFunctionApp', ...args)",
+      "title": "Restart",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.setAzureWebJobsStorage",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.setAzureWebJobsStorage', ...args)",
+      "title": "Set AzureWebJobsStorage...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.startFunctionApp",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.startFunctionApp', ...args)",
+      "title": "Start",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.startJavaRemoteDebug",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.startJavaRemoteDebug', ...args)",
+      "title": "Attach Debugger",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.startRemoteDebug",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.startRemoteDebug', ...args)",
+      "title": "Start Remote Debugging",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.startStreamingLogs",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.startStreamingLogs', ...args)",
+      "title": "Start Streaming Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.stopFunctionApp",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.stopFunctionApp', ...args)",
+      "title": "Stop",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.stopStreamingLogs",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.stopStreamingLogs', ...args)",
+      "title": "Stop Streaming Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.swapSlot",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.swapSlot', ...args)",
+      "title": "Swap Slot...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.toggleAppSettingVisibility",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.toggleAppSettingVisibility', ...args)",
+      "title": "Toggle App Setting Visibility.",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.unassignManagedIdentity",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.unassignManagedIdentity', ...args)",
+      "title": "Unassign Managed Identity from Function App...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.uninstallFuncCoreTools",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.uninstallFuncCoreTools', ...args)",
+      "title": "Uninstall Azure Functions Core Tools",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "azureFunctions.viewCommitInGitHub",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.viewCommitInGitHub', ...args)",
+      "title": "View Commit in GitHub",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.viewDeploymentLogs",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.viewDeploymentLogs', ...args)",
+      "title": "View Deployment Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFunctions.viewProperties",
+      "invocation": "vscode.commands.executeCommand('azureFunctions.viewProperties', ...args)",
+      "title": "View Properties",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "ms-azuretools.vscode-azureresourcegroups"
+  ],
+  "activation_events": [
+    "onDebugInitialConfigurations",
+    "onFileSystem:vscode-azurefunctions-static-content",
+    "onUri",
+    "onView:azureWorkspace",
+    "workspaceContains:**/host.json"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "limited",
+      "description": "In virtual workspaces, creating a new function project, deploying, and debugging are not supported."
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-azuretools.vscode-azurefunctions",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:jsonValidation",
+      "contribution:menus",
+      "contribution:problemMatchers",
+      "contribution:problemPatterns",
+      "contribution:submenus",
+      "contribution:taskDefinitions",
+      "contribution:views",
+      "contribution:walkthroughs",
+      "contribution:x-azResources"
+    ],
+    "interface": [
+      "azureFunctions.addBinding",
+      "azureFunctions.addLocalMIConnections",
+      "azureFunctions.addRemoteMIConnections",
+      "azureFunctions.appSettings.add",
+      "azureFunctions.appSettings.decrypt",
+      "azureFunctions.appSettings.delete",
+      "azureFunctions.appSettings.download",
+      "azureFunctions.appSettings.edit",
+      "azureFunctions.appSettings.encrypt",
+      "azureFunctions.appSettings.rename",
+      "azureFunctions.appSettings.toggleSlotSetting",
+      "azureFunctions.appSettings.upload",
+      "azureFunctions.assignManagedIdentity",
+      "azureFunctions.browseWebsite",
+      "azureFunctions.configureDeploymentSource",
+      "azureFunctions.connectToGitHub",
+      "azureFunctions.copyFunctionUrl",
+      "azureFunctions.createFunction",
+      "azureFunctions.createFunctionApp",
+      "azureFunctions.createFunctionAppAdvanced",
+      "azureFunctions.createNewProject",
+      "azureFunctions.createNewProjectWithDockerfile",
+      "azureFunctions.createSlot",
+      "azureFunctions.deleteFunction",
+      "azureFunctions.deleteFunctionApp",
+      "azureFunctions.deleteSlot",
+      "azureFunctions.deploy",
+      "azureFunctions.deployByFunctionAppId",
+      "azureFunctions.deployProject",
+      "azureFunctions.deploySlot",
+      "azureFunctions.disableFunction",
+      "azureFunctions.disconnectRepo",
+      "azureFunctions.durableTaskScheduler.copyEmulatorConnectionString",
+      "azureFunctions.durableTaskScheduler.copySchedulerConnectionString",
+      "azureFunctions.durableTaskScheduler.copySchedulerEndpoint",
+      "azureFunctions.durableTaskScheduler.createScheduler",
+      "azureFunctions.durableTaskScheduler.createTaskHub",
+      "azureFunctions.durableTaskScheduler.deleteScheduler",
+      "azureFunctions.durableTaskScheduler.deleteTaskHub",
+      "azureFunctions.durableTaskScheduler.openTaskHubDashboard",
+      "azureFunctions.durableTaskScheduler.startEmulator",
+      "azureFunctions.durableTaskScheduler.stopEmulator",
+      "azureFunctions.enableFunction",
+      "azureFunctions.enableSystemIdentity",
+      "azureFunctions.eventGrid.sendMockRequest",
+      "azureFunctions.executeFunction",
+      "azureFunctions.funcHostDebug.askCopilot",
+      "azureFunctions.funcHostDebug.clearStoppedSessions",
+      "azureFunctions.funcHostDebug.copyRecentLogs",
+      "azureFunctions.funcHostDebug.refresh",
+      "azureFunctions.funcHostDebug.showRecentLogs",
+      "azureFunctions.getMcpHostKey",
+      "azureFunctions.initProjectForVSCode",
+      "azureFunctions.installOrUpdateFuncCoreTools",
+      "azureFunctions.openInPortal",
+      "azureFunctions.openWalkthrough",
+      "azureFunctions.pickProcess",
+      "azureFunctions.redeploy",
+      "azureFunctions.reportIssue",
+      "azureFunctions.restartFunctionApp",
+      "azureFunctions.setAzureWebJobsStorage",
+      "azureFunctions.startFunctionApp",
+      "azureFunctions.startJavaRemoteDebug",
+      "azureFunctions.startRemoteDebug",
+      "azureFunctions.startStreamingLogs",
+      "azureFunctions.stopFunctionApp",
+      "azureFunctions.stopStreamingLogs",
+      "azureFunctions.swapSlot",
+      "azureFunctions.toggleAppSettingVisibility",
+      "azureFunctions.unassignManagedIdentity",
+      "azureFunctions.uninstallFuncCoreTools",
+      "azureFunctions.viewCommitInGitHub",
+      "azureFunctions.viewDeploymentLogs",
+      "azureFunctions.viewProperties"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "limited",
+        "description": "In virtual workspaces, creating a new function project, deploying, and debugging are not supported."
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

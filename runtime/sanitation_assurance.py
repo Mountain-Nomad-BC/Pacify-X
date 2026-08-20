@@ -15,6 +15,24 @@ from .secret_scanning import scan_secret_shapes
 EMAIL_PATTERN = re.compile(
     rb"(?<!\\)\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"
 )
+SANITATION_MAX_BYTES = 2 * 1024 * 1024 * 1024
+EXCLUDED_TREE_NAMES = {
+    ".engineering-bootstrap",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".vscode-test",
+    "PortableGit",
+    "Python",
+    "__pycache__",
+    "build",
+    "dist",
+    "node_modules",
+}
+EXCLUDED_CUSTODY_PREFIXES = (
+    ".px/preserved-extension-installations",
+    ".px/preserved-skills",
+)
 
 
 def _gate(
@@ -51,17 +69,36 @@ def build_sanitation_summary(
     negative_fixture_paths = {"tests/test_sanitation_assurance.py"}
     excluded = [
         ".git/",
+        ".engineering-bootstrap/ (generated control state)",
+        ".venv*/ (generated Python environments)",
+        "PortableGit/, Python/, build/, dist/, node_modules/ (generated or dependency stores)",
         "evidence/bundles/",
+        ".px/preserved-extension-installations/ (preserved user custody)",
+        ".px/preserved-skills/ (preserved user custody)",
         "tests/test_sanitation_assurance.py (deliberate negative scanner fixtures only)",
     ]
     walk = bounded_walk(
         root,
-        limits=WalkLimits(max_files=30_000, max_depth=80, max_bytes=1024 * 1024 * 1024),
+        limits=WalkLimits(
+            max_files=30_000,
+            max_depth=80,
+            max_bytes=SANITATION_MAX_BYTES,
+        ),
         symlink_policy="reject",
-        exclude=lambda relative: relative == ".git"
-        or relative.startswith(".git/")
-        or relative == "evidence/bundles"
-        or relative.startswith("evidence/bundles/"),
+        exclude=lambda relative: (
+            relative == ".git"
+            or relative.startswith(".git/")
+            or relative == "evidence/bundles"
+            or relative.startswith("evidence/bundles/")
+            or any(
+                part in EXCLUDED_TREE_NAMES or part.startswith(".venv")
+                for part in relative.split("/")
+            )
+            or any(
+                relative == prefix or relative.startswith(prefix + "/")
+                for prefix in EXCLUDED_CUSTODY_PREFIXES
+            )
+        ),
     )
     records: list[tuple[str, int, str]] = []
     pii_findings: list[dict[str, Any]] = []
@@ -85,7 +122,19 @@ def build_sanitation_summary(
         data = entry.path.read_bytes()
         digest = hashlib.sha256(data).hexdigest()
         records.append((entry.relative, len(data), digest))
-        if entry.relative not in negative_fixture_paths:
+        expected_magic = binary_types.get(entry.path.suffix.casefold())
+        declared_binary = expected_magic is not None and data.startswith(
+            expected_magic
+        )
+        nul_bearing = b"\x00" in data[:8192]
+        # Pattern matching compressed/archive bytes creates random false PII
+        # positives.  Classify admitted binary formats first; unknown binary
+        # payloads remain fail-closed under the binary review below.
+        if (
+            entry.relative not in negative_fixture_paths
+            and not declared_binary
+            and not nul_bearing
+        ):
             for match in EMAIL_PATTERN.finditer(data):
                 value = match.group(0).decode("ascii", errors="ignore").casefold()
                 domain = value.rsplit("@", 1)[-1]
@@ -105,9 +154,8 @@ def build_sanitation_summary(
                         "value_sha256": hashlib.sha256(value.encode()).hexdigest(),
                     }
                 )
-        if b"\x00" in data[:8192]:
-            expected_magic = binary_types.get(entry.path.suffix.casefold())
-            if expected_magic is None or not data.startswith(expected_magic):
+        if nul_bearing:
+            if not declared_binary:
                 binary_findings.append(
                     {
                         "path": entry.relative,

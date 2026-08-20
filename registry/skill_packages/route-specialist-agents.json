@@ -2,13 +2,13 @@
   "id": "route-specialist-agents",
   "version": "1.0.0",
   "status": "active",
-  "body": ".agents/skills/route-specialist-agents/SKILL.md",
+  "body": ".px/skills/route-specialist-agents/SKILL.md",
   "body_sha256": "44126f3f611b82304114c8e21a0a5820471648223f4084b99de50f4c52657a20",
   "references": [
-    ".agents/skills/route-specialist-agents/references/runtime-contract.md"
+    ".px/skills/route-specialist-agents/references/runtime-contract.md"
   ],
   "resources": [
-    ".agents/skills/route-specialist-agents/scripts/route_specialist_agents.py"
+    ".px/skills/route-specialist-agents/scripts/route_specialist_agents.py"
   ],
   "capability_tags": [
     "agents",

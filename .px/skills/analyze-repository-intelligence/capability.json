@@ -1,0 +1,38 @@
+{
+  "admission_record": "analyze-repository-intelligence",
+  "body_sha256": "abee2ceeb4486f5fea39402fb7cd1f3223c2d09260c98bcecfc46384de282341",
+  "contract": {
+    "available": true,
+    "sha256": "cbb7f7e3efca2189a5958cc6551f19a76dc9011875cf6669f0cdd95d3030fe94",
+    "source": "registry/skill_packages/analyze-repository-intelligence.json"
+  },
+  "description": "Map repositories, symbols, dependencies, configuration, runtime paths, ownership, change impact, reproductions, migrations, and test scope. Use before modifying an unfamiliar codebase or when a defect or change crosses files, services, or configuration layers.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "analyze-repository-intelligence",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/analyze-repository-intelligence"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "analyze",
+    "repository",
+    "intelligence",
+    "declared-suite"
+  ],
+  "version": "0.1.0"
+}

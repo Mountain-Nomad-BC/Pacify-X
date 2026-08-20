@@ -1,0 +1,119 @@
+{
+  "schema_version": "px.control-chain-walker-upgrade/1.0",
+  "report_id": "control-chain-walker-upgrade-20260816",
+  "generated_utc": "2026-08-16T18:47:44.6153509Z",
+  "active_card": "PX-OS-851",
+  "mode": "bounded walker evidence implementation; no live host run and no product UI change",
+  "admission_timeline": {
+    "pre_admission_edit_disclosure": "The helper was first created at filesystem UTC 2026-08-16T18:41:41 and the walker was initially edited before the parent reported the new PX active-card admission requirement. The agent stopped immediately when that message arrived, disclosed the two touched source files to the parent, and made no further edits while paused.",
+    "pause_boundary": "Read-only source/inventory tracing only; no live host run, product UI edit, ledger append, or report write occurred while paused.",
+    "resumption_authority": "The parent then confirmed PX-OS-851 active and admitted for the exact inventory/walker files. All subsequent helper/walker changes and this evidence report were completed within PX-OS-851.",
+    "interpretation": "The pre-admission timing is retained as an exception/failure-history fact; later admission does not retroactively erase it."
+  },
+  "objective": "Join the current typed operational-surface inventory losslessly and emit exactly one terminal record per stable control across the required thirteen interaction-chain stages without exercising unadmitted effects.",
+  "implemented": [
+    "The helper reads and SHA-256 binds registry/operational_surface_inventory.json before the walker attaches to a live host.",
+    "It rejects invalid schema/identity, empty inventory, duplicate surfaces, duplicate control IDs, per-surface count drift, or per-surface stable-ID hash drift without hard-coding a surface or control count.",
+    "It follows the current predecessor-bound inventory authority dynamically; the current input contains twenty surfaces and 845 stable controls.",
+    "Every current stable control receives one sorted terminal record and exactly thirteen timestamped stage records: open/load, display, user edit/action, input validation, authorization, backend dispatch, runtime effect, progress reporting, result acknowledgement, persistence, reload/reopen, failure handling, and recovery/rollback.",
+    "Potentially mutating controls conservatively receive exact run authority, an effect-specific reason, and a machine-checkable return condition. No skipped control is silently omitted.",
+    "The walker records exact attempted navigation/toggle stable IDs and rejects any attempted ID absent from the inventory.",
+    "The native pacifyX.openDashboard bootstrap command now has a stable inventory ID and is recorded as attempted after the dashboard materializes.",
+    "Agent and Workflow builder automation is disabled until its individual controls have pre-state, post-state, cleanup, and stable-ID evidence; the prior aggregate builder delta cannot be misreported as per-control verification.",
+    "Installed/source identity mismatch is detected before surface traversal. It blocks all further navigation and builder interaction while still emitting a terminal blocked record for every inventory control.",
+    "Runtime action observations now retain bounded data-* variant attributes so row, kind, scope, tab, direction, and lifecycle variants can be resolved without collapsing identity to data-action alone."
+  ],
+  "chain_stages": [
+    "open_load",
+    "display",
+    "user_edit_action",
+    "input_validation",
+    "authorization",
+    "backend_dispatch",
+    "runtime_effect",
+    "progress_reporting",
+    "result_acknowledgement",
+    "persistence",
+    "reload_reopen",
+    "failure_handling",
+    "recovery_rollback"
+  ],
+  "changed_files": [
+    {
+      "path": "extension/scripts/operational-ui-control-records.js",
+      "sha256": "c5d286075ba5217678b64441163f1ef918a7428e534facfe0dabf158c34da2d2",
+      "role": "bounded inventory admission, per-control terminal records, effect classification, exact resolver, and aggregate reconciliation"
+    },
+    {
+      "path": "extension/scripts/run-operational-ui-walk.js",
+      "sha256": "f640a5c8bed104579a1ec7ae59783ad6a8e5de586f3978fbd5f88b18817ae811",
+      "role": "live-walker integration, fail-closed host/source boundary, exact attempted-control list, and receipt emission"
+    }
+  ],
+  "current_inventory_observation": {
+    "path": "registry/operational_surface_inventory.json",
+    "sha256": "e8d10469ee114d06108fc65f4cde382bf30d8bb5805bf3f0b04fc667461c8cf6",
+    "declared_inventory_id": "pacify-x-typed-surfaces-20260816-r4",
+    "surface_count": 20,
+    "control_count": 845,
+    "previous_observed_control_count": 827,
+    "interpretation": "The predecessor-bound r4 authority contains the six missing Agent topology selection variants and all twelve native pacifyX.* contributed commands."
+  },
+  "targeted_validation": {
+    "live_host_executed": false,
+    "broad_test_or_certification_executed": false,
+    "checks": [
+      {
+        "command": "node --check extension/scripts/operational-ui-control-records.js",
+        "result": "passed"
+      },
+      {
+        "command": "node --check extension/scripts/run-operational-ui-walk.js",
+        "result": "passed"
+      },
+      {
+        "command": "bounded pure-helper reconciliation against current inventory",
+        "result": "passed",
+        "observations": {
+          "surface_count": 20,
+          "control_count": 845,
+          "unique_control_ids": 845,
+          "stage_records_per_control": 13,
+          "host_mismatch_terminal_records": 845,
+          "conservatively_potentially_mutating_controls": 435,
+          "synthetic_exact_attempt_recorded": "pxui.dashboard-control-plane.action.navigate.activity",
+          "bootstrap_command_attempt_recorded": "pxui.dashboard-control-plane.command.pacifyX.openDashboard",
+          "unknown_attempted_control_rejected": true,
+          "complete_interaction_chains_claimed": 0
+        }
+      }
+    ]
+  },
+  "resolved_findings": [
+    {
+      "finding_id": "PX-CHAIN-WALK-001",
+      "resolution": "The inventory is predecessor-revised as pacify-x-typed-surfaces-20260816-r4 at 845 controls."
+    },
+    {
+      "finding_id": "PX-CHAIN-WALK-002",
+      "resolution": "All twelve contributed pacifyX.* command IDs are inventoried, and the walker records pacifyX.openDashboard as its bootstrap attempt."
+    }
+  ],
+  "open_findings": [
+    {
+      "finding_id": "PX-CHAIN-WALK-003",
+      "severity": "high",
+      "finding": "No current receipt proves a complete interaction chain for any control. The helper deliberately reports complete_interaction_chains=0; presence, navigation, and unsaved UI deltas remain partial evidence.",
+      "required_disposition": "Exercise profile-specific stages only in an admitted current-source host and isolated target, with pre/post digests, typed request/result correlation, cleanup, reload, and recovery evidence."
+    }
+  ],
+  "safety_boundary": {
+    "product_ui_modified": false,
+    "live_host_run_executed": false,
+    "network_used": false,
+    "builder_controls_exercised": false,
+    "write_or_lifecycle_controls_exercised": false,
+    "certification_or_export_executed": false,
+    "completion_claim": "No control or surface is claimed operationally complete by this report."
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "admission_record": "workflow-orchestrator",
+  "body_sha256": "677b5d3a75054b902e701bb212c1b769a81f5a8425983eaf45ca8309e0b39003",
+  "contract": {
+    "available": true,
+    "sha256": "fca43988a48ddb9e435948c86dab83bf05d2352c16bdcc55c7654a12cd4e3ab9",
+    "source": "registry/skills/workflow-orchestrator.json"
+  },
+  "description": "Route and execute a bounded engineering task through admitted capabilities, explicit effects, checkpoints, evidence assembly, independent verification, and unload. Use for multi-step repository work that must be planned, governed, resumed safely, or proven complete without loading every skill at startup.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "orchestrate-engineering-loop",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/orchestrate-engineering-loop"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "orchestration",
+    "workflow"
+  ],
+  "version": "0.1.0"
+}

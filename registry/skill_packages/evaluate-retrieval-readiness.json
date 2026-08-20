@@ -2,14 +2,14 @@
   "id": "evaluate-retrieval-readiness",
   "version": "0.1.0",
   "status": "active",
-  "body": ".agents/skills/evaluate-retrieval-readiness/SKILL.md",
+  "body": ".px/skills/evaluate-retrieval-readiness/SKILL.md",
   "body_sha256": "6a252addc62a76f46d9518eda00d1f4a60bc61cba829e3d593b245b4f06428d9",
   "references": [
-    ".agents/skills/evaluate-retrieval-readiness/references/retrieval-evaluation-contract.md",
-    ".agents/skills/evaluate-retrieval-readiness/references/compressed-index-evaluation.md"
+    ".px/skills/evaluate-retrieval-readiness/references/retrieval-evaluation-contract.md",
+    ".px/skills/evaluate-retrieval-readiness/references/compressed-index-evaluation.md"
   ],
   "resources": [
-    ".agents/skills/evaluate-retrieval-readiness/scripts/evaluate_retrieval_strategy.py"
+    ".px/skills/evaluate-retrieval-readiness/scripts/evaluate_retrieval_strategy.py"
   ],
   "capability_tags": [
     "retrieval",

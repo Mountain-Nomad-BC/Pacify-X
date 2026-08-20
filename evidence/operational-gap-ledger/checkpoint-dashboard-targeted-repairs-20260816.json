@@ -1,0 +1,11 @@
+{
+  "active_gap_id": "PX-OS-938",
+  "learned": "The graph request is now the render source for the submitted query; unspecified agent drafts now select the valid deterministic route; and the three stale checks match current product contracts. The CSS ownership failure remains separately open and is intentionally excluded from this targeted run.",
+  "next_action": "Run syntax plus only the five repaired editor/source/browser interactions.",
+  "unresolved_branch_gap_ids": ["PX-OS-938", "PX-OS-939", "PX-OS-937", "PX-OS-936", "PX-OS-062"],
+  "evidence": [
+    {"claim": "Graph query repair implemented under admission 4982.", "reference": "extension/media/dashboard/48-graph-surface.js"},
+    {"claim": "Agent default route repair implemented under admission 4984.", "reference": "extension/media/dashboard/49-studio-editors.js"},
+    {"claim": "Stale contract assertions corrected under admission 4986.", "reference": "extension/tests/extension-contract.test.js; extension/tests/ui-scaffold.test.js"}
+  ]
+}

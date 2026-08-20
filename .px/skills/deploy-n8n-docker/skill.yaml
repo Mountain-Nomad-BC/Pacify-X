@@ -1,0 +1,39 @@
+{
+  "admission_record": "deploy-n8n-docker",
+  "body_sha256": "65d98e5a78333ba2c993c9f9047c5899ee2866579827ac1252c624bf1b2fa464",
+  "contract": {
+    "available": true,
+    "sha256": "e289b0a2c6e8f081e408dfc1e2f12ef63902ba2673161812da1bbb2b21eedb7a",
+    "source": "registry/skill_packages/deploy-n8n-docker.json"
+  },
+  "description": "Deploy a durable single-main n8n instance with Docker or Compose, TLS boundaries, health checks, and backup hooks.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "deploy-n8n-docker",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/deploy-n8n-docker"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "docker-compose",
+    "n8n",
+    "persistence",
+    "postgres",
+    "tls"
+  ],
+  "version": "1.0.0"
+}

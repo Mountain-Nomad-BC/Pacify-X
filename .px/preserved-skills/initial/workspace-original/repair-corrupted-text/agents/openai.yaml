@@ -1,0 +1,4 @@
+interface:
+  display_name: "Repair Corrupted Text"
+  short_description: "Repair OCR corruption deterministically"
+  default_prompt: "Use $repair-corrupted-text to perform this workflow with explicit evidence and safety boundaries."

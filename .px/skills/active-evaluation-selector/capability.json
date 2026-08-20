@@ -1,0 +1,37 @@
+{
+  "admission_record": "active-evaluation-selector",
+  "body_sha256": "4ae28d38833be838da409fd01ea4c45cdeb6b47e21ca20d469fe45fd5a34faa4",
+  "contract": {
+    "available": true,
+    "sha256": "19d1ebfa06e9a4783a491f3bfa6888a3bfd876f0f2d0c394534527645af7afa0",
+    "source": "registry/skill_packages/active-evaluation-selector.json"
+  },
+  "description": "Choose the most informative evaluation cases under fixed time, compute, or review budget. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "active-evaluation-selector",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/active-evaluation-selector"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "active",
+    "evaluation",
+    "selector"
+  ],
+  "version": "0.1.0"
+}

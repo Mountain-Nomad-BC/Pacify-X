@@ -1,0 +1,52 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "never compact away unresolved decisions or evidence links",
+    "never load the full catalog merely to estimate it"
+  ],
+  "bundle": "optimize-agent-harness",
+  "category": "context-management",
+  "dependencies": [
+    "context-compactor",
+    "skill-navigator"
+  ],
+  "id": "manage-harness-context-budget",
+  "keywords": [
+    "context budget",
+    "strategic compact",
+    "token budget",
+    "lazy load",
+    "minimal hydration"
+  ],
+  "mechanisms": [
+    "metadata-only startup",
+    "phase-boundary compaction",
+    "token cost inventory",
+    "redundancy detection",
+    "minimal hydration"
+  ],
+  "owner": "context-compactor",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "skills/context-budget/SKILL.md",
+      "skills/strategic-compact/SKILL.md",
+      "docs/token-optimization.md"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "skills/context-budget/SKILL.md",
+    "skills/strategic-compact/SKILL.md",
+    "docs/token-optimization.md"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Measure startup and runtime context load, identify redundant skills/rules/MCP metadata, and compact at phase boundaries without erasing evidence or task state.",
+  "title": "Manage Harness Context Budget",
+  "use_when": [
+    "context is bloated",
+    "skills compete for startup budget",
+    "long tasks lose critical state after compaction"
+  ]
+}

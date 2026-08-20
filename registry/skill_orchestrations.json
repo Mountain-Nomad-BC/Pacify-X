@@ -1,5 +1,5 @@
 {
-  "count": 31,
+  "count": 34,
   "loading_rule": "Load workflow and skill metadata first; hydrate one selected skill body at a time.",
   "schema_version": "1.0",
   "workflows": [
@@ -1245,6 +1245,43 @@
         {"id": "route", "skill": "hardware-aware-execution-routing", "depends_on": ["discover"]},
         {"id": "execute", "skill": "govern-runtime-protocol-deployment", "depends_on": ["route"]},
         {"id": "validate", "skill": "validate-engineering-outcomes", "depends_on": ["execute"]}
+      ]
+    },
+    {
+      "id": "data-sort-dry-run-selection",
+      "purpose": "Measure a bulk dataset, choose a bounded representative dry-run section, pilot compatible sorts, benchmark the three fastest correct candidates, and retain a selection receipt before any full-data write.",
+      "failure_policy": "Fail closed on unreadable input, missing or mixed keys, unbounded samples, non-deterministic sampling, correctness or stability disagreement, missing fingerprints, memory-fit ambiguity, or no passing candidate.",
+      "steps": [
+        {"id": "classify-size", "skill": "data-sort-dry-run-picker", "depends_on": []},
+        {"id": "sample", "skill": "data-sort-dry-run-picker", "depends_on": ["classify-size"]},
+        {"id": "pilot", "skill": "data-sort-dry-run-picker", "depends_on": ["sample"]},
+        {"id": "benchmark-top-three", "skill": "data-sort-dry-run-picker", "depends_on": ["pilot"]},
+        {"id": "verify-select", "skill": "validate-engineering-outcomes", "depends_on": ["benchmark-top-three"]},
+        {"id": "retain-receipt", "skill": "evidence-assembler", "depends_on": ["verify-select"]}
+      ]
+    },
+    {
+      "id": "px-lean-engineering-gate",
+      "purpose": "Trace current owners, minimize a correct change, preserve safety boundaries, and retain measured delta and verification evidence.",
+      "failure_policy": "Block new owners, dependencies, or abstractions when current ownership has not been queried, necessity is unproven, safety would be weakened, or runnable evidence is absent.",
+      "steps": [
+        {"id": "map-current-flow", "skill": "map-project-intelligence", "depends_on": []},
+        {"id": "query-owners", "skill": "query-project-map", "depends_on": ["map-current-flow"]},
+        {"id": "lean-gate", "skill": "px-lean-engineering", "depends_on": ["query-owners"]},
+        {"id": "trace-impact", "skill": "validate-contract-boundaries", "depends_on": ["lean-gate"]},
+        {"id": "verify", "skill": "validate-engineering-outcomes", "depends_on": ["trace-impact"]}
+      ]
+    },
+    {
+      "id": "px-team-fabric-recovery",
+      "purpose": "Classify stopped cross-IDE work, reconcile task/worker/lease/fencing/budget/workspace boundaries, and resume without blind retry or duplicate authority.",
+      "failure_policy": "Keep work stopped on stale fencing, ambiguous authority, dirty or unpushed work, unresolved dependencies, hard budget stop, invalid resume state, missing evidence, or unknown unblock ownership.",
+      "steps": [
+        {"id": "inspect-session", "skill": "manage-agent-session-fabric", "depends_on": []},
+        {"id": "diagnose-stop", "skill": "px-work-stop-diagnostics", "depends_on": ["inspect-session"]},
+        {"id": "coordinate-recovery", "skill": "govern-distributed-work-runtime", "depends_on": ["diagnose-stop"]},
+        {"id": "reconcile-work", "skill": "govern-distributed-work-runtime", "depends_on": ["coordinate-recovery"]},
+        {"id": "verify-resume", "skill": "validate-engineering-outcomes", "depends_on": ["reconcile-work"]}
       ]
     }
   ]

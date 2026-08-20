@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    :root { --vscode-font-family: Segoe UI,sans-serif; --vscode-font-size: 13px; --vscode-foreground:#dbe8f4; --vscode-descriptionForeground:#8fa5b9; --vscode-sideBar-background:#0c1722; --vscode-focusBorder:#22b5ef; --vscode-testing-iconPassed:#56d89b; --vscode-list-warningForeground:#ffc857; --vscode-list-errorForeground:#ff6b81; --vscode-disabledForeground:#627384; --vscode-sideBarSectionHeader-border:#203547; --vscode-list-hoverBackground:#172b3c; --vscode-progressBar-background:#22b5ef; --vscode-button-secondaryBackground:#1b3447; --vscode-inputValidation-errorBackground:#3b1720; --vscode-inputValidation-errorForeground:#fff; }
+  </style>
+  <link rel="stylesheet" href="../media/sidebar.css"><title>Sidebar fixture</title>
+</head><body>
+  <main id="sidebar" aria-label="Pacify-X live operations console">
+    <section id="header" data-component="header"></section><div id="operational-scroll">
+      <section id="connection" data-component="connection"></section><section id="execution" data-component="execution"></section>
+      <section id="waves" data-component="waves"></section><section id="punch" data-component="punch"></section>
+      <section id="agents" data-component="agents"></section><section id="orchestrations" data-component="orchestrations"></section>
+      <section id="recent" data-component="recent"></section><section id="attention" data-component="attention"></section>
+    </div><section id="providers" data-component="providers"></section><div id="contract-error" role="alert" hidden></div>
+  </main>
+  <script>
+    window.__sidebarMessages=[]; window.acquireVsCodeApi=()=>({postMessage:m=>window.__sidebarMessages.push(m),getState:()=>null,setState:()=>{}});
+  </script><script src="../media/sidebar.js"></script>
+</body></html>

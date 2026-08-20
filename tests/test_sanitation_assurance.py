@@ -109,6 +109,21 @@ def test_undeclared_binary_and_unreviewed_email_fail_closed() -> None:
         assert result["gates"]["pii_review"]["status"] == "failed"
 
 
+def test_declared_binary_bytes_are_not_regex_scanned_as_text_pii() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        root = Path(directory)
+        _fixture(root)
+        (root / "binary-email.png").write_bytes(
+            bytes.fromhex("89504e470d0a1a0a") + b"private@real.example\x00"
+        )
+        result = build_sanitation_summary(
+            root, _identifier_audit(), {"valid": True, "errors": []}
+        )
+        assert result["valid"], result["errors"]
+        assert result["gates"]["pii_review"]["findings"] == []
+        assert result["gates"]["binary_review"]["findings"] == []
+
+
 def test_secret_review_survives_formatting_only_line_movement() -> None:
     with tempfile.TemporaryDirectory() as directory:
         root = Path(directory)
@@ -133,3 +148,33 @@ def test_secret_review_survives_formatting_only_line_movement() -> None:
         moved = scan_secret_shapes(root)
         assert moved["valid"], moved["errors"]
         assert moved["findings"][0]["line"] == 3
+
+
+def test_preserved_user_custody_is_excluded_from_release_sanitation() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        root = Path(directory)
+        _fixture(root)
+        preserved = root / ".px/preserved-skills/initial/user-original"
+        preserved.mkdir(parents=True)
+        preserved.joinpath("private.txt").write_text(
+            "private@real.example\n", encoding="utf-8"
+        )
+        for relative in (
+            ".venv-certify/third-party.txt",
+            "Python/runtime.txt",
+            "node_modules/dependency.txt",
+            ".engineering-bootstrap/state.txt",
+        ):
+            generated = root / relative
+            generated.parent.mkdir(parents=True, exist_ok=True)
+            generated.write_text("private@real.example\n", encoding="utf-8")
+        result = build_sanitation_summary(
+            root, _identifier_audit(), {"valid": True, "errors": []}
+        )
+        assert result["valid"], result["errors"]
+        assert all(
+            "preserved-skills" not in finding.get("path", "")
+            for gate in result["gates"].values()
+            for finding in gate["findings"]
+            if isinstance(finding, dict)
+        )

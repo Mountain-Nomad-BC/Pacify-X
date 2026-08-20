@@ -22,7 +22,7 @@ def load_script(relative: str):
 class SkillSupportScriptTests(unittest.TestCase):
     def test_build_manifest_recovery_ledger_executes_with_bounded_inputs(self) -> None:
         module = load_script(
-            ".agents/skills/audit-source-capabilities/scripts/build_manifest_recovery_ledger.py"
+            ".px/skills/audit-source-capabilities/scripts/build_manifest_recovery_ledger.py"
         )
         with tempfile.TemporaryDirectory() as directory:
             temp = Path(directory)
@@ -64,7 +64,7 @@ class SkillSupportScriptTests(unittest.TestCase):
 
     def test_declared_suite_certifier_executes_current_operational_checks(self) -> None:
         module = load_script(
-            ".agents/skills/audit-source-capabilities/scripts/certify_declared_suite_reconstruction.py"
+            ".px/skills/audit-source-capabilities/scripts/certify_declared_suite_reconstruction.py"
         )
         outcomes, errors = module.validate_operational(ROOT)
         self.assertFalse(errors)
@@ -75,7 +75,7 @@ class SkillSupportScriptTests(unittest.TestCase):
         self,
     ) -> None:
         module = load_script(
-            ".agents/skills/audit-source-capabilities/scripts/validate_planning_card_coverage.py"
+            ".px/skills/audit-source-capabilities/scripts/validate_planning_card_coverage.py"
         )
         with tempfile.TemporaryDirectory() as directory:
             temp = Path(directory)
@@ -104,7 +104,7 @@ class SkillSupportScriptTests(unittest.TestCase):
         self,
     ) -> None:
         module = load_script(
-            ".agents/skills/validate-engineering-outcomes/scripts/audit_bootstrap.py"
+            ".px/skills/validate-engineering-outcomes/scripts/audit_bootstrap.py"
         )
         report = {
             "valid": False,

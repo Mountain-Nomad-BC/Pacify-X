@@ -11,11 +11,16 @@ import tomllib
 from .config import load_startup_config
 from .skill_navigator import CapabilitySummary
 from .admission_controller import KNOWN_EFFECTS
+from .authoritative_json import load_state_classifications
 from .graphs import validate_orchestration
 from .system_graph import build_system_graph
 from .contracts import validate_contract_corpus
 from .source_coverage import validate_source_coverage
 from .integration_registry import validate_integrations
+from .operational_visibility import validate_route_registry
+from .operational_observers import validate_observer_registry
+from .provider_gateway import load_provider_registry, scan_direct_provider_routes
+from .provider_budget import load_budget_policy
 from .graph_registry import validate_graph_artifacts
 from .capability_assimilation import validate_capability_assimilation
 from .semantic_index import load_semantic_index, validate_semantic_index
@@ -376,6 +381,36 @@ def validate_registry(root: Path) -> dict:
         )
     except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
         errors.append(f"integration registry unavailable: {error}")
+    try:
+        visibility_result = validate_route_registry(root)
+        errors.extend(
+            f"operation route registry: {error}"
+            for error in visibility_result["errors"]
+        )
+    except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
+        errors.append(f"operation route registry unavailable: {error}")
+    try:
+        observer_result = validate_observer_registry(root)
+        errors.extend(
+            f"OS observer registry: {error}" for error in observer_result["errors"]
+        )
+    except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
+        errors.append(f"OS observer registry unavailable: {error}")
+    try:
+        load_provider_registry(root)
+        load_budget_policy(root)
+        provider_routes = scan_direct_provider_routes(root)
+        errors.extend(
+            "provider invocation bypass: "
+            f"{row['path']}:{row['line']} {row['kind']} {row['detail']}"
+            for row in provider_routes["violations"]
+        )
+    except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
+        errors.append(f"provider control registry unavailable: {error}")
+    try:
+        load_state_classifications(root)
+    except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
+        errors.append(f"state artifact classification unavailable: {error}")
     try:
         graph_result = validate_graph_artifacts(root)
         errors.extend(f"graph registry: {error}" for error in graph_result["errors"])

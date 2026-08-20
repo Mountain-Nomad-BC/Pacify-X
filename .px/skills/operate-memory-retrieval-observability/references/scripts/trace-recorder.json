@@ -1,0 +1,34 @@
+{
+  "authoritative_source_sha256": "9c16d4ebfd1ddec0a20e3cc5909abec58b68364ff9c26b7143dfe742246a04f0",
+  "authority_and_safety": "Never cross project or subject scope, promote unverified observations, or purge without an auditable scope and recovery policy.",
+  "evidence": [
+    "normalized inputs",
+    "owner and dependency resolution",
+    "structured result",
+    "negative-case result",
+    "content hashes",
+    "verification receipt"
+  ],
+  "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
+  "id": "trace-recorder",
+  "implementation_disposition": "namespaced_exact_body",
+  "implementation_target": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_trace_recorder.py",
+  "inputs": {
+    "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
+    "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",
+    "target": "Explicit file, repository, service, record set, or artifact scope."
+  },
+  "kind": "script",
+  "procedure": [
+    "bind-project-and-subject-scope",
+    "validate-ingestion-and-provenance",
+    "retrieve-and-budget-context",
+    "record-trace-and-quality",
+    "retain-promote-or-purge-by-policy"
+  ],
+  "recovery": "Resume from the last hash-bound checkpoint after revalidating inputs and affected dependencies; quarantine suspect generated artifacts instead of deleting them.",
+  "source_paths": [
+    "packs/04-memory-retrieval-observability_v1.0.0/scripts/trace_recorder.py"
+  ],
+  "trigger": "Use when the requested outcome is trace recorder or when that outcome is a required dependency."
+}

@@ -1,0 +1,39 @@
+{
+  "admission_record": "develop-supabase-locally",
+  "body_sha256": "a39628d128198f8a104601e2df2b1be7035a400a7da13cba33debabe6e1bfdcd",
+  "contract": {
+    "available": true,
+    "sha256": "861df76ca9e81c177b50cff94c179fe6eba81ccf05cc4338436f2c210cac536d",
+    "source": "registry/skill_packages/develop-supabase-locally.json"
+  },
+  "description": "Run Supabase locally with reproducible config, migrations, seeds, tests, and clean reset behavior.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "develop-supabase-locally",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/develop-supabase-locally"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "docker",
+    "local-development",
+    "migrations",
+    "seed",
+    "supabase"
+  ],
+  "version": "1.0.0"
+}

@@ -1,0 +1,45 @@
+{
+  "admission_record": "govern-memory-fabric",
+  "body_sha256": "5e1015a29fda6bc4ec90d5500e5346eb32900babe5f04c32bdbcbe4b2ead126b",
+  "contract": {
+    "available": true,
+    "sha256": "facf083608bca84eddf860d2418982036180e09dc13ff7297c7c57f7b3e1b7fc",
+    "source": "registry/skill_packages/govern-memory-fabric.json"
+  },
+  "description": "Govern project-scoped memory from sanitized evidence capture through layered distillation, conflict resolution, promotion, scoped loadouts, hybrid retrieval, bounded context assembly, reversible offload, evaluation, repair, and provider isolation. Use when ingesting, retrieving, assigning, compacting, repairing, transferring, or certifying memory and derived indexes.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-memory-fabric",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-memory-fabric"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "memory",
+    "provenance",
+    "isolation",
+    "sharding",
+    "repair",
+    "capture",
+    "layered-memory",
+    "loadout",
+    "context-assembly",
+    "offload",
+    "evaluation"
+  ],
+  "version": "0.2.0"
+}

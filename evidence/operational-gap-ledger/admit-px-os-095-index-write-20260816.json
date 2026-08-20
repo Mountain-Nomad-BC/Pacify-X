@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-095",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005015",
+  "effect": "write",
+  "scope": ["registry/test_group_index.json"],
+  "authority": "The deterministic group-index builder owns this derived registry output.",
+  "expected_effect": "Publish the current exhaustive test/import membership index only.",
+  "rollback": "Derived output can be regenerated from corrected sources; do not hand-edit it.",
+  "evidence": [{"claim": "Immediate current-membership checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005015"}]
+}

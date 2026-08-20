@@ -1,0 +1,61 @@
+{
+  "activation": "candidate_only",
+  "boundaries": [
+    "hooks may not silently broaden permissions",
+    "failing hooks must degrade predictably",
+    "no fragile inline shell when a script boundary is safer"
+  ],
+  "bundle": "govern-hooked-execution",
+  "category": "hooks",
+  "dependencies": [
+    "supervise-contained-execution",
+    "enforce-governance-controls",
+    "tool-loop-circuit-breaker"
+  ],
+  "id": "govern-agent-hook-lifecycle",
+  "keywords": [
+    "hooks",
+    "pre tool use",
+    "post tool use",
+    "quality gate",
+    "config protection",
+    "no verify"
+  ],
+  "mechanisms": [
+    "hook profiles",
+    "disabled-hook allowlist",
+    "re-entrancy guard",
+    "config protection",
+    "preflight quality checks",
+    "post-action logging",
+    "health validation"
+  ],
+  "owner": "supervise-contained-execution",
+  "provenance": {
+    "derivation": "MIT adaptation",
+    "source": "everything-claude-code",
+    "source_refs": [
+      "hooks/hooks.json",
+      "scripts/lib/hook-flags.js",
+      "scripts/hooks/config-protection.js",
+      "scripts/hooks/quality-gate.js",
+      "scripts/ci/validate-hooks.js"
+    ]
+  },
+  "source": "everything-claude-code",
+  "source_refs": [
+    "hooks/hooks.json",
+    "scripts/lib/hook-flags.js",
+    "scripts/hooks/config-protection.js",
+    "scripts/hooks/quality-gate.js",
+    "scripts/ci/validate-hooks.js"
+  ],
+  "status": "mapped_deferred",
+  "summary": "Register, profile, disable, validate, and observe pre/post action hooks as governed runtime controls rather than loose shell snippets.",
+  "title": "Govern Agent Hook Lifecycle",
+  "use_when": [
+    "tool calls need policy enforcement",
+    "format/type/test checks should run automatically",
+    "hook failures or loops are destabilizing sessions"
+  ]
+}

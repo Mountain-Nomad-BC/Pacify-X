@@ -1,0 +1,53 @@
+{
+  "schema_version": "px.acceptance-evidence/1.0",
+  "card": "A05-PX-NATIVE-SKILLS",
+  "status": "accepted",
+  "observed_utc": "2026-08-12T00:00:00Z",
+  "architecture": {
+    "codex_facades": 16,
+    "native_px_packages": 176,
+    "index_records": 202,
+    "domains": {
+      "px-standard": 176,
+      "microsoft-vendor": 6,
+      "enterprise-restricted": 20,
+      "user-preserved": 0
+    },
+    "maximum_query_candidates": 3,
+    "maximum_hydrated_bodies": 1,
+    "default_domains": ["px-standard"],
+    "skills_ui_tabs": ["PX Native", "Preserved Originals", "Microsoft / Vendor", "Enterprise Restricted", "Tools"]
+  },
+  "custody": {
+    "retention": "user-owned evidence; never auto-purged",
+    "workspace_original": {"files": 850, "bytes": 4296638, "tree_sha256": "151520cdc46c1ce21b009a812ed6324929a8a832bd77e42253324e19018825f0"},
+    "workspace_verified_copy": {"files": 850, "bytes": 4296638, "tree_sha256": "151520cdc46c1ce21b009a812ed6324929a8a832bd77e42253324e19018825f0"},
+    "user_original": {"files": 184, "bytes": 1151682, "tree_sha256": "122b5843bf28f768c3f28b4042b43842afc7e7224e3260e5b9bc94b72b587da1"},
+    "per_file_inventory_records": 1884,
+    "live_restore_verified": true,
+    "external_user_original_modified": false
+  },
+  "policy": {
+    "default_cross_domain_bleed": false,
+    "vendor_visibility_requires": "explicit microsoft-vendor domain plus allow-microsoft-vendor grant",
+    "enterprise_visibility_requires": "explicit enterprise-restricted domain plus allow-enterprise-restricted grant",
+    "preserved_unadmitted_hydration": "denied",
+    "adaptation": "new provenance-bound candidate only; originals remain immutable"
+  },
+  "validation": {
+    "facade_quick_validation": {"passed": 16, "failed": 0},
+    "native_skill_unittests": {"passed": 6, "failed": 0},
+    "legacy_skill_unittests": {"passed": 13, "failed": 0},
+    "dashboard_unittests": {"passed": 20, "failed": 0},
+    "semantic_and_packaging_pytests": {"passed": 8, "failed": 0},
+    "extension_contract_tests": {"passed": 13, "failed": 0},
+    "ruff": "passed",
+    "full_repository_certification_deferred_to": "A08"
+  },
+  "source_sha256": {
+    "runtime/native_skills.py": "ae5d085d6bbb4c8347246e19c2aaa7094e1f6a04049305d5fb31ace5e0b15be6",
+    "scripts/migrate_px_skills.py": "4ed80aa69980f9ae328ac14ce67c3acaaefab449bf41b7986d54824f0be03da1",
+    ".px/skill-index.json": "208957827567266b95140240923b3fda45205319ee8c5c99471910ddd8a3914a",
+    ".px/preserved-skills/initial/manifest.json": "369a7eaca630251a33be7125cd91672fcc75a84b8a26e1e62ae5acd47aa012e0"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-062",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005021",
+  "effect": "execute",
+  "scope": ["python -m runtime.cli test-section run dashboard-extension"],
+  "authority": "AGENTS.md requires the affected governed section after current testing-governance and focused repairs.",
+  "expected_effect": "Run exactly dashboard-extension once against current inputs; no Studio section, full profile, or certification in this operation.",
+  "rollback": "The runner owns timeout/process closure; retain exact failure evidence and repair only a newly exposed dashboard defect.",
+  "evidence": [{"claim": "Immediate current dashboard checkpoint.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005021"}]
+}

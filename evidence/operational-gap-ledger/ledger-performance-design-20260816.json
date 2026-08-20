@@ -1,0 +1,280 @@
+{
+  "schema_version": "px.operational-gap-ledger-performance-design/1.0",
+  "report_id": "px-os-115-ledger-performance-design-20260816",
+  "gap_id": "PX-OS-115",
+  "actor": "codex-subagent:ledger_performance_design",
+  "timestamp": "2026-08-16T17:52:15.6364020Z",
+  "scope": {
+    "mode": "read-only design audit",
+    "product_files_modified": false,
+    "ledger_modified": false,
+    "primary_source": "runtime/operational_gap_ledger.py",
+    "dashboard_source": "runtime/dashboard_api.py",
+    "test_source": "tests/test_operational_gap_ledger.py"
+  },
+  "measurements": {
+    "environment": "Windows local workspace; warm filesystem cache; observational timings are evidence, not portable certification thresholds.",
+    "ledger_event_count": 475,
+    "ledger_bytes": 795172,
+    "snapshot_bytes": 938552,
+    "samples_per_operation": 7,
+    "raw_snapshot_json_parse_median_ms": 2.557,
+    "read_snapshot_median_ms": 44.644,
+    "dashboard_punch_projection_median_ms": 37.441,
+    "pre_snapshot_fast_path_baseline": {
+      "read_events_median_ms": 35.483,
+      "project_events_median_ms": 18.095,
+      "dashboard_projection_median_ms": 52.690
+    },
+    "interpretation": "The snapshot removes normal dashboard replay work, but exclusive FileLock lease writes and fsyncs dominate the cached read. Append still retains full-stream and whole-file work."
+  },
+  "findings": [
+    {
+      "id": "ledger-perf-001",
+      "severity": "high",
+      "title": "Append remains full-stream and whole-file",
+      "evidence": [
+        "runtime/operational_gap_ledger.py:799",
+        "runtime/operational_gap_ledger.py:800",
+        "runtime/operational_gap_ledger.py:841",
+        "runtime/operational_gap_ledger.py:842",
+        "runtime/operational_gap_ledger.py:846",
+        "runtime/operational_gap_ledger.py:849"
+      ],
+      "observation": "Every append reads all events, projects the current stream, projects the stream plus the candidate again, reads all existing ledger bytes, and atomically rewrites the complete JSONL.",
+      "impact": "Sequential imports are quadratic in accumulated ledger size and append latency grows continuously."
+    },
+    {
+      "id": "ledger-perf-002",
+      "severity": "high",
+      "title": "Snapshot reads take the mutating exclusive lock",
+      "evidence": [
+        "runtime/operational_gap_ledger.py:722",
+        "runtime/operational_gap_ledger.py:727",
+        "runtime/file_lock.py:178",
+        "runtime/file_lock.py:375"
+      ],
+      "observation": "read_snapshot acquires FileLock, whose lease acquisition and release write and fsync lock metadata.",
+      "impact": "Dashboard reads contend with writers and pay control-plane write latency even though snapshot publication is atomic."
+    },
+    {
+      "id": "ledger-perf-003",
+      "severity": "high",
+      "title": "Compact snapshot check is not full-chain verification",
+      "evidence": [
+        "runtime/operational_gap_ledger.py:734",
+        "runtime/operational_gap_ledger.py:739",
+        "runtime/operational_gap_ledger.py:741",
+        "runtime/operational_gap_ledger.py:745"
+      ],
+      "observation": "The cached path checks a snapshot self-hash, ledger size, and final event. A same-length corruption in an earlier event can leave all three unchanged.",
+      "impact": "The cached result must be represented as checkpoint-bound, not fully replay-verified, and must not seed mutation without a verified checkpoint and unchanged ledger fingerprint."
+    },
+    {
+      "id": "ledger-perf-004",
+      "severity": "medium",
+      "title": "Snapshot write bound is enforced only on read",
+      "evidence": [
+        "runtime/operational_gap_ledger.py:686",
+        "runtime/operational_gap_ledger.py:693",
+        "runtime/operational_gap_ledger.py:729"
+      ],
+      "observation": "The writer does not reject an encoded snapshot larger than MAX_SNAPSHOT_BYTES before publication; the next reader rejects it.",
+      "impact": "A successful append can publish a snapshot that makes the dashboard fail closed immediately afterward."
+    },
+    {
+      "id": "ledger-perf-005",
+      "severity": "medium",
+      "title": "Automatic ID allocation scans the full stream",
+      "evidence": [
+        "runtime/operational_gap_ledger.py:750",
+        "runtime/operational_gap_ledger.py:808"
+      ],
+      "observation": "AUTO gap allocation scans all discovered-card events for every new card.",
+      "impact": "Automatic allocation adds avoidable linear work and should use checkpointed maximum ordinal state."
+    },
+    {
+      "id": "ledger-perf-006",
+      "severity": "medium",
+      "title": "Current concurrency evidence is thread-only",
+      "evidence": [
+        "tests/test_operational_gap_ledger.py:137"
+      ],
+      "observation": "The current test uses ThreadPoolExecutor, so it does not exercise independent process leases, process death, or Windows cross-process byte locks.",
+      "impact": "The multi-process safety claim is not yet independently demonstrated."
+    },
+    {
+      "id": "ledger-perf-007",
+      "severity": "medium",
+      "title": "Default dashboard projection still hydrates the full detailed snapshot",
+      "evidence": [
+        "runtime/dashboard_api.py:936",
+        "runtime/dashboard_api.py:940",
+        "runtime/dashboard_api.py:953"
+      ],
+      "observation": "Although rows are paginated after loading, the default dashboard parses all detailed cards, histories, surfaces, reports, and evidence.",
+      "impact": "Startup cost remains proportional to the full derived state instead of the requested first page and compact progress metadata."
+    },
+    {
+      "id": "ledger-perf-008",
+      "severity": "high",
+      "title": "True append requires explicit torn-tail recovery",
+      "evidence": [
+        "runtime/operational_gap_ledger.py:250",
+        "runtime/operational_gap_ledger.py:849"
+      ],
+      "observation": "The current whole-file atomic replace avoids torn append records. Replacing it with direct append without a receipt-bound tail recovery protocol would weaken crash behavior.",
+      "impact": "Performance repair must preserve complete valid events, quarantine invalid suffix bytes, and truncate only proven uncommitted bytes."
+    }
+  ],
+  "architecture_recommendations": {
+    "authoritative_boundary": "Keep registry/operational_gap_ledger.jsonl as the sole authority. Snapshot and head files remain deterministic, derived, bounded, and rebuildable.",
+    "shared_reducer": [
+      "Refactor project_events around one ProjectionState reducer with empty, restore-from-checkpoint, apply-event, and render operations.",
+      "Use the same reducer for full replay, incremental append, batch append, and recovery so semantic validation cannot drift between paths.",
+      "Render incremental and full-replay snapshots byte-identically after sealing metadata is normalized."
+    ],
+    "compact_head_checkpoint": {
+      "required_fields": [
+        "ledger_id",
+        "event_count",
+        "head_event_sha256",
+        "committed_ledger_bytes",
+        "ledger_file_identity",
+        "ledger_size_bytes",
+        "ledger_mtime_ns",
+        "snapshot_sha256",
+        "snapshot_size_bytes",
+        "maximum_gap_ordinal",
+        "created_utc",
+        "status_counts",
+        "progress",
+        "bounded_default_dashboard_page",
+        "verification_basis",
+        "checkpoint_sha256"
+      ],
+      "admission_rule": "A checkpoint may seed mutation only if it originated from a full verified replay and its file identity, metadata, committed offset, tail sequence, and tail hash still match. Any mismatch requires replay or explicit recovery.",
+      "trust_boundary": "A project-local self-hash is hash binding, not protection from an attacker who can rewrite every project file. Stronger authentication requires an external signing or OS-protected trust anchor."
+    },
+    "append_path": [
+      "Acquire the existing cross-process FileLock exactly once.",
+      "Load an admitted checkpoint or perform full replay/recovery.",
+      "Prepare and validate the candidate against the shared reducer before persistence.",
+      "Enforce fixed event and total-ledger byte bounds before writing.",
+      "Append only the encoded event through an exact-write loop, then flush and fsync the ledger.",
+      "Apply the event once to in-memory state.",
+      "Atomically publish the deterministic full snapshot.",
+      "Publish the compact head last as the coherent checkpoint commit marker."
+    ],
+    "batch_path": [
+      "Add append_events or a bounded ledger session that acquires one lock, loads or replays once, validates events sequentially, appends them in order, and publishes one final snapshot/head.",
+      "Use the batch path for initialization, report imports, reconciliation, and multi-transition updates.",
+      "Complete hash-valid events remain authoritative if checkpoint publication fails; the next recovery incorporates them exactly once."
+    ],
+    "dashboard_path": [
+      "Do not acquire the mutating exclusive lease for ordinary dashboard reads.",
+      "Use a bounded optimistic read: head A, bounded referenced data and ledger metadata/tail checks, head B; accept only when A and B match.",
+      "Serve the unfiltered startup page and progress counts directly from the compact head.",
+      "Load the full snapshot only for explicit filters, inventory detail, or card detail.",
+      "Return checkpoint_stale or recovery_required on disagreement; never label stale cached data current and never run full replay in foreground dashboard startup."
+    ],
+    "recovery_path": [
+      "Start from the last admitted committed byte offset and head hash.",
+      "Accept only complete, sequential, content-hash-valid and previous-hash-valid tail events.",
+      "Before truncating a torn or invalid suffix, preserve its exact bytes or content hash in a recovery artifact and fsync a receipt.",
+      "Never discard a complete valid event and never silently repair authoritative bytes.",
+      "After recovery, rebuild the deterministic snapshot and publish a new compact head."
+    ],
+    "explicit_non_recommendations": [
+      "Do not introduce SQLite or event-directory sharding for this repair; the shared reducer, real append, checkpoint, and bounded dashboard page are the smaller sufficient seam.",
+      "Do not maintain a separate permissive fast-path validator; it would create semantic drift.",
+      "Do not call a self-hashed project-local snapshot externally authenticated."
+    ]
+  },
+  "targeted_tests": [
+    {
+      "id": "ledger-perf-test-001",
+      "purpose": "Reducer equivalence",
+      "assertion": "After every supported event type, incremental output is byte-identical to a full replay snapshot after normalization of seal metadata."
+    },
+    {
+      "id": "ledger-perf-test-002",
+      "purpose": "Warm append complexity",
+      "assertion": "A warm admitted append does not call _read_events_unlocked or project_events and does not read existing ledger bytes."
+    },
+    {
+      "id": "ledger-perf-test-003",
+      "purpose": "Physical append",
+      "assertion": "The ledger grows by exactly the encoded event length and preexisting bytes remain byte-identical."
+    },
+    {
+      "id": "ledger-perf-test-004",
+      "purpose": "Batch complexity",
+      "assertion": "A bounded multi-event append loads or replays once and publishes one coherent checkpoint."
+    },
+    {
+      "id": "ledger-perf-test-005",
+      "purpose": "Earlier corruption detection",
+      "assertion": "A same-length earlier-event mutation invalidates checkpoint admission, and full validation rejects the event hash or chain."
+    },
+    {
+      "id": "ledger-perf-test-006",
+      "purpose": "Checkpoint tamper and staleness",
+      "assertion": "Snapshot tampering, head tampering, stale size, stale fingerprint, and head/snapshot disagreement all fail closed."
+    },
+    {
+      "id": "ledger-perf-test-007",
+      "purpose": "Crash after authoritative append",
+      "assertion": "Failure after ledger fsync but before snapshot/head publication preserves the complete event and incorporates it exactly once during recovery."
+    },
+    {
+      "id": "ledger-perf-test-008",
+      "purpose": "Torn-tail recovery",
+      "assertion": "Recovery quarantines the exact invalid suffix, produces a hash-bound receipt, truncates only uncommitted bytes, and preserves the previous head."
+    },
+    {
+      "id": "ledger-perf-test-009",
+      "purpose": "True multi-process serialization",
+      "assertion": "Independent subprocess writers produce contiguous sequences, continuous previous hashes, no event loss, and a replay-equal snapshot."
+    },
+    {
+      "id": "ledger-perf-test-010",
+      "purpose": "Reader/writer race",
+      "assertion": "A dashboard read concurrent with append returns either the old complete checkpoint or the new complete checkpoint, never a hybrid."
+    },
+    {
+      "id": "ledger-perf-test-011",
+      "purpose": "Bounded dashboard startup",
+      "assertion": "The unfiltered startup request reads only the bounded compact head/page, never replays the ledger, and respects the declared size and latency budget."
+    },
+    {
+      "id": "ledger-perf-test-012",
+      "purpose": "Prepublication limits",
+      "assertion": "Oversized event, ledger, full snapshot, compact head, and recovery delta fail before unsafe publication."
+    },
+    {
+      "id": "ledger-perf-test-013",
+      "purpose": "Stable automatic IDs",
+      "assertion": "AUTO allocation uses checkpointed maximum ordinal state and remains identical after replay and recovery."
+    },
+    {
+      "id": "ledger-perf-test-014",
+      "purpose": "Deterministic persistence",
+      "assertion": "Repeated checkpoint construction and replay/incremental construction produce identical snapshot and compact-head bytes."
+    }
+  ],
+  "gpu_parallel_disposition": {
+    "gpu": "not_applicable",
+    "parallel_projection": "rejected",
+    "reason": "Ledger mutation, hash-chain ordering, filesystem durability, cleanup, and recovery are CPU-authoritative ordered control-plane work. GPU setup or parallel mutation would add transfer, synchronization, and correctness risk without useful acceleration.",
+    "safe_concurrency": [
+      "Parallelize independent evidence collection before ordered event admission.",
+      "Serialize admitted event publication under the cross-process lock.",
+      "Use batching and incremental reduction, not unordered parallel projection, for throughput."
+    ]
+  },
+  "completion_disposition": {
+    "px_os_115_ready_to_close": false,
+    "reason": "The current partial snapshot fast path improves dashboard replay cost but append remains quadratic, reads remain lock/fsync-heavy, checkpoint trust is incomplete, and crash-safe true append is not implemented."
+  }
+}

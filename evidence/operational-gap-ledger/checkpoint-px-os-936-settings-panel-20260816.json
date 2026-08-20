@@ -1,0 +1,7 @@
+{
+  "active_gap_id": "PX-OS-936",
+  "learned": "The containment helper is correct; its parent selector was not specific to the policy switch's own panel.",
+  "next_action": "Scope the parent selector to the panel that has the policy switch.",
+  "unresolved_branch_gap_ids": ["PX-OS-936"],
+  "evidence": [{"claim": "The cross-panel targeting error was annotated.", "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000005002"}]
+}

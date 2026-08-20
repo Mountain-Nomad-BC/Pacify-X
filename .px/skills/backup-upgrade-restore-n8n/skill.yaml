@@ -1,0 +1,40 @@
+{
+  "admission_record": "backup-upgrade-restore-n8n",
+  "body_sha256": "8e3ebcf27c0aeb717b4ebf8e2791cb90a789128e63fd2484759e44a3b7c622e3",
+  "contract": {
+    "available": true,
+    "sha256": "65ce795f4b91f48971fde5f3ff077e20811748e0b7a72d42e491a8a6ee89c2c2",
+    "source": "registry/skill_packages/backup-upgrade-restore-n8n.json"
+  },
+  "description": "Back up, upgrade, roll back, and restore n8n with version-aware compatibility and recovery evidence.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "backup-upgrade-restore-n8n",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/backup-upgrade-restore-n8n"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "backup",
+    "n8n",
+    "restore",
+    "rpo",
+    "rto",
+    "upgrade"
+  ],
+  "version": "1.0.0"
+}

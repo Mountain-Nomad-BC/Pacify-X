@@ -1,0 +1,38 @@
+{
+  "admission_record": "px-lean-engineering",
+  "body_sha256": "0c42680c0cef12eaf65ba37eee1b4f864fc3e6a69348c07465571155f93458e7",
+  "contract": {
+    "available": true,
+    "sha256": "525a165e38b088d22c6dab6da01594925b6cdf2ff65010605dcbbb64dd66ef3c",
+    "source": "registry/skill_packages/px-lean-engineering.json"
+  },
+  "description": "Apply a Pacify-X-native lean engineering gate before coding, designing, refactoring, adding dependencies, or creating abstractions. Use to trace the real flow, query repository intelligence and canonical capability owners, prefer native or existing mechanisms, minimize the correct change, and retain evidence without weakening security, validation, accessibility, recovery, or explicit requirements.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "px-lean-engineering",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/px-lean-engineering"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "lean-engineering",
+    "repository-intelligence",
+    "reuse",
+    "verification"
+  ],
+  "version": "1.0.0"
+}

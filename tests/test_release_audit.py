@@ -10,6 +10,27 @@ from runtime.registry_envelope import discover_count_fields
 ROOT = Path(__file__).parents[1]
 
 
+def _ignore_local_environments(_directory: str, names: list[str]) -> set[str]:
+    if Path(_directory).name == "evidence":
+        # Keep only the content-addressed custody evidence required by the
+        # composed audit; mutation fixtures do not need historical UI/log data.
+        return {
+            name for name in names
+            if name not in {"bundles", "externalized-payload-index.json"}
+        }
+    derived_fixture_exclusions = {
+        ".git", "Python", "node_modules", ".vscode-test", "__pycache__", ".pytest_cache",
+        "quarantine", "diagnostics", "environment", "operation-bus",
+        "preserved-extension-installations", "preserved-skills",
+        "project-map", "project-map-history", "project-map-lock-history",
+    }
+    return {
+        name for name in names
+        if name in derived_fixture_exclusions
+        or name.startswith(".venv")
+    }
+
+
 class ReleaseAuditTests(unittest.TestCase):
     def test_live_composed_audit_passes_without_fixed_component_counts(self) -> None:
         result = audit_framework(ROOT, require_external_manifests=True)
@@ -31,7 +52,7 @@ class ReleaseAuditTests(unittest.TestCase):
             shutil.copytree(
                 ROOT,
                 clone,
-                ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache"),
+                ignore=_ignore_local_environments,
             )
             cache = clone / "runtime" / "__pycache__"
             cache.mkdir()
@@ -49,13 +70,40 @@ class ReleaseAuditTests(unittest.TestCase):
             self.assertTrue(any(".ruff_cache" in item for item in hygiene["evidence"]))
             self.assertTrue(any("__pycache__" in item for item in hygiene["evidence"]))
 
+    def test_quarantined_cache_is_retained_but_not_active(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            clone = Path(directory) / "framework"
+            shutil.copytree(
+                ROOT,
+                clone,
+                ignore=_ignore_local_environments,
+            )
+            cache = (
+                clone
+                / ".engineering-bootstrap"
+                / "quarantine"
+                / "disposable-cache"
+                / "retained"
+                / "runtime"
+                / "__pycache__"
+            )
+            cache.mkdir(parents=True, exist_ok=True)
+            (cache / "module.pyc").write_bytes(b"retained")
+            result = audit_framework(clone)
+            hygiene = next(
+                item
+                for item in result["checks"]
+                if item["id"] == "generated-artifact-hygiene"
+            )
+            self.assertTrue(hygiene["passed"], hygiene)
+
     def test_stale_python_ownership_hash_fails_audit(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             clone = Path(directory) / "framework"
             shutil.copytree(
                 ROOT,
                 clone,
-                ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache"),
+                ignore=_ignore_local_environments,
             )
             (clone / "runtime" / "release_audit.py").write_text(
                 "# mutation\n", encoding="utf-8"
@@ -74,7 +122,7 @@ class ReleaseAuditTests(unittest.TestCase):
             shutil.copytree(
                 ROOT,
                 clone,
-                ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache"),
+                ignore=_ignore_local_environments,
             )
             (clone / "integrations").mkdir()
             result = audit_framework(clone)

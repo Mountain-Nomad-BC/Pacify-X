@@ -1,0 +1,9 @@
+{
+  "active_gap_id": "PX-OS-936",
+  "learned": "The catalog state locator now targets only the catalog tab group, and the graph source contract now requires both the relationship-inspector class and its accessible selected-record description.",
+  "next_action": "Run only the extension source contract and dashboard Playwright walk once.",
+  "unresolved_branch_gap_ids": ["PX-OS-936", "PX-OS-935", "PX-OS-933"],
+  "evidence": [
+    {"claim": "Two exact assertion corrections completed under admission 4966.", "reference": "extension/tests/extension-contract.test.js; extension/tests/dashboard-e2e.test.js"}
+  ]
+}

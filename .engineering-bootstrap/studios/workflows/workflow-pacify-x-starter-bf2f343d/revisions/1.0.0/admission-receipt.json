@@ -1,0 +1,30 @@
+{
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "4420f41efea6f3cd0febff1170ebc44fd757d52296cbf14d48c623ef5e8e8fe9",
+    "payload_sha256": "d2c01ef88853e418b5e9dae9b7813b9f47d7fdf45a05b9efcd7071f2303e129a",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "authority_record_hashes": {
+    "binding:binding:pacify-x-workflow": "00510d93c102a723e1bb30e841fdfd09272ec9f5ce58ec56f04a80ece66688dd",
+    "executor:binding:pacify-x-workflow": "ce5b05734b04128de12c23cb300e518936f2a5d155e113941f244804c454aba0",
+    "grant:grant:pacify-x-workflow": "9b18c17c7ed1814cd831bb9e3924f8c1de155658a7d1a8cf40b5e1181ff9ab41"
+  },
+  "binding_state": "complete",
+  "decision": "admitted",
+  "definition_state": "valid",
+  "nonce": "4a0259c70fc1499984898bd729537ab6",
+  "reasons": [],
+  "revision_sha256": "c900c66f6cdfae46e797bf73c234eb350da7ab9e9ad0c5f48fa2bc5307b683e4",
+  "run_state": "never_run",
+  "runnable_state": "runnable",
+  "schema_version": "px.workflow-admission-receipt/1.1",
+  "status": "admitted",
+  "topological_order": [
+    "step:identity"
+  ],
+  "validated_utc": "2026-08-20T19:20:25.489Z",
+  "version": "1.0.0",
+  "workflow_id": "workflow:pacify-x-starter"
+}

@@ -1,0 +1,38 @@
+{
+  "admission_record": "harden-container-boundaries",
+  "body_sha256": "f5814185400bb02296f582e49521cf67ca14f59b3e9fac94b58cec1c3799e0ed",
+  "contract": {
+    "available": true,
+    "sha256": "3756cb3ddd731c393613c7ff4aa03876ff1b3570d2415afa0fcb013b92f7bfcc",
+    "source": "registry/skill_packages/harden-container-boundaries.json"
+  },
+  "description": "Design or audit container images and service definitions for non-root execution, explicit Linux capabilities, immutable filesystems, isolated networks, bounded resources, health checks, and minimal build context. Use when editing Dockerfiles, Compose files, Kubernetes workloads, or container security baselines.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "harden-container-boundaries",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/harden-container-boundaries"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "container",
+    "database",
+    "isolation",
+    "least-privilege"
+  ],
+  "version": "0.1.0"
+}

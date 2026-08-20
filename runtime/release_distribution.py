@@ -127,7 +127,7 @@ def _artifact_class(source_path: str) -> tuple[str, str]:
         return "release-testkit", "release-certification"
     if top == "scripts":
         return "release-build-control", "release-certification"
-    if top == ".agents":
+    if top == ".px":
         return (
             "skill-tool" if "/scripts/" in f"/{source_path}" else "skill-resource",
             "skill-orchestration",
@@ -209,7 +209,7 @@ def _manifest_sources(root: Path, manifest_path: Path) -> set[Path]:
 def commissioned_skill_sources(root: Path) -> dict[str, dict[str, object]]:
     """Inventory every regular commissioned skill-owned source file."""
     records: dict[str, dict[str, object]] = {}
-    skills = root / ".agents/skills"
+    skills = root / ".px/skills"
     for path in sorted(skills.rglob("*"), key=lambda item: item.as_posix().casefold()):
         relative = path.relative_to(root)
         if (
@@ -244,7 +244,13 @@ def verify_commissioned_skill_projection(
     for record in manifest.get("records", ()):
         source_path = str(record.get("source_path", ""))
         target = str(record.get("package_target", ""))
-        if source_path.startswith(".agents/skills/") and target in projected:
+        source_parts = Path(source_path).parts
+        if (
+            source_path.startswith(".px/skills/")
+            and target in projected
+            and "__pycache__" not in source_parts
+            and Path(source_path).suffix.casefold() not in SKILL_EXCLUDED_SUFFIXES
+        ):
             projected[target].setdefault(source_path, []).append(record)
     errors: list[str] = []
     for path, record in source.items():
@@ -322,6 +328,42 @@ def generate_artifact_manifest(root: Path) -> dict[str, Any]:
             installed = package.replace(".", "/") + "/" + source.name
             records.append(_record(root, source, installed, "wheel"))
             wheel_sources.add(source.resolve(strict=True))
+
+    declared_packages = {str(package) for package in setuptools.get("packages", ())}
+    for package, patterns in setuptools.get("package-data", {}).items():
+        package = str(package)
+        if package not in declared_packages:
+            errors.append(f"package-data targets undeclared package: {package}")
+            continue
+        candidates = [
+            key
+            for key in package_dirs
+            if package == key or package.startswith(key + ".")
+        ]
+        if not candidates:
+            errors.append(f"package-data package {package} has no source directory")
+            continue
+        prefix = max(candidates, key=len)
+        suffix = package.removeprefix(prefix).lstrip(".").replace(".", "/")
+        source_dir = root / package_dirs[prefix] / suffix
+        for pattern in patterns:
+            matches = sorted(
+                (
+                    path
+                    for path in source_dir.glob(str(pattern))
+                    if path.is_file() and not path.is_symlink()
+                ),
+                key=lambda item: item.as_posix().casefold(),
+            )
+            if not matches:
+                errors.append(
+                    f"required package-data pattern matched no files: {package}:{pattern}"
+                )
+            for source in matches:
+                relative = source.relative_to(source_dir).as_posix()
+                installed = f"{package.replace('.', '/')}/{relative}"
+                records.append(_record(root, source, installed, "wheel"))
+                wheel_sources.add(source.resolve(strict=True))
 
     data_prefix = f"{distribution}-{version}.data/data"
     for target, patterns in setuptools.get("data-files", {}).items():

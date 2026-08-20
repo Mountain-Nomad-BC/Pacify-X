@@ -1,0 +1,13 @@
+{
+  "schema_version": "px.external-extension-verification/1.0",
+  "card_id": "H03",
+  "extension_root": "portable-sources/Pacify-X_Extension",
+  "verified_at": "2026-08-11T00:00:00Z",
+  "artifacts": {
+    "src/cleanupManager.js": "ad84339f59575237b6e22f02a3b6103b1b5e600beeec4f51db5fe340ac0415b9",
+    "tests/cleanup-manager.test.js": "d96a72d3cf6f0a4106bcd6d20953e8c0515ad848d144bb2625cf53aa035c9a39"
+  },
+  "verification": "node --test tests/cleanup-manager.test.js tests/extension-contract.test.js",
+  "result": "27 passed",
+  "boundary": "Recycle-bin placement remains adapter-reported; same-filesystem atomic staging, identity revalidation, and uncertainty receipts prevent false success."
+}

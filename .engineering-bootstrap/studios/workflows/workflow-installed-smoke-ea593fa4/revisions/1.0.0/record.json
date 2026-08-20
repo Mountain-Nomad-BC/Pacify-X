@@ -1,0 +1,38 @@
+{
+  "record": {
+    "edges": [],
+    "lifecycle": "draft",
+    "nodes": [
+      {
+        "approval_required": false,
+        "effect_grant_ids": [
+          "grant:one"
+        ],
+        "executor_binding_id": "binding:one",
+        "failure_policy": "fail-closed",
+        "inputs": [
+          {
+            "data_type": "string",
+            "name": "value",
+            "required": true
+          }
+        ],
+        "node_id": "node:one",
+        "outputs": [
+          {
+            "data_type": "string",
+            "name": "value",
+            "required": true
+          }
+        ],
+        "retry_limit": 0,
+        "timeout_seconds": 5
+      }
+    ],
+    "owner": "human:certifier",
+    "version": "1.0.0",
+    "workflow_id": "workflow:installed-smoke"
+  },
+  "schema_version": "px.workflowdefinition/1.0",
+  "sha256": "896862b7853ce002746fc5c7cb4ef01fe6d4d6ebb4e9137d60f3ee2674168bf8"
+}

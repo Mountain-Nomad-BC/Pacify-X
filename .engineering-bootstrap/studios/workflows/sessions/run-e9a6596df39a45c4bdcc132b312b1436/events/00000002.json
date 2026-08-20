@@ -1,0 +1,44 @@
+{
+  "actor": "human:vscode-local-user",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "398721545ab20c38363abd98b10113ebe973fed409f3f077316a031f975095e6",
+    "payload_sha256": "1923dd8ec564698dfbd8ccf7d2b527b7696985143a2d668931f313e8a31a447c",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "event_sha256": "e152553a1f63a2059b2281023b33de0add1470d6ad3826ffb6104b042cb416c1",
+  "operation": "workflow.start",
+  "previous_event_sha256": "8d030209e75a4046b2c913f82a82d39375cb66c0536cbf93381b2780b112b9b3",
+  "recorded_utc": "2026-08-20T19:20:26.391Z",
+  "run_id": "run-e9a6596df39a45c4bdcc132b312b1436",
+  "schema_version": "px.studio-durable-run-event/1.0",
+  "sequence": 2,
+  "state": {
+    "authority_state": "codex-host-retained",
+    "checkpoint": {
+      "completed_nodes": [],
+      "next_node": "step:identity",
+      "node_receipts": [],
+      "ready_nodes": [
+        "step:identity"
+      ],
+      "results": {}
+    },
+    "created_utc": "2026-08-20T19:20:26.345Z",
+    "failure": null,
+    "heartbeat_utc": "2026-08-20T19:20:26.391Z",
+    "kind": "workflow",
+    "owner": "human:vscode-local-user",
+    "request_sha256": "d2a3d234fb0aea931110ab8a527b4acffa590996b624a0ecff299e2352739ee9",
+    "resume_count": 0,
+    "revision_sha256": "c900c66f6cdfae46e797bf73c234eb350da7ab9e9ad0c5f48fa2bc5307b683e4",
+    "run_id": "run-e9a6596df39a45c4bdcc132b312b1436",
+    "schema_version": "px.studio-durable-run/1.0",
+    "sequence": 2,
+    "state": "running",
+    "subject_id": "workflow:pacify-x-starter",
+    "updated_utc": "2026-08-20T19:20:26.391Z",
+    "version": "1.0.0"
+  }
+}

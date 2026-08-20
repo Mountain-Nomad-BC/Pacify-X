@@ -2,7 +2,7 @@
 
 ## Intake identity
 
-- Source: `C:\Users\Ben\Music\pacify x adds`
+- Source: externally supplied `pacify x adds` intake (host path intentionally omitted)
 - Snapshot A: 99 files, 258,490 bytes, SHA-256 `2ca4a76d04bce0fdc3f1890b7a4067ca14986c903695abcc15515a92733aad22`
 - Snapshot B: 99 files, 258,490 bytes, SHA-256 `2ca4a76d04bce0fdc3f1890b7a4067ca14986c903695abcc15515a92733aad22`
 - Source handling: read-only evidence; no source file was executed, copied wholesale, moved, or deleted.

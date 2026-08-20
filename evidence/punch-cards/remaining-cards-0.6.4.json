@@ -1,0 +1,74 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "PX-REMAINING-CARDS-0.6.4",
+  "card_ids": [
+    "L05",
+    "L06",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S08",
+    "S09",
+    "S10",
+    "S11",
+    "S12",
+    "H07",
+    "H08",
+    "H10",
+    "U05",
+    "U06",
+    "R02",
+    "R05",
+    "R06",
+    "R07",
+    "R08",
+    "R12"
+  ],
+  "status": "accepted",
+  "recorded_at": "2026-08-19T00:31:28.652873+00:00",
+  "authority": "Current acceptance evidence; final certification remains owned by governed current section/group receipts, one full profile, and one validate operation.",
+  "artifacts": [
+    {
+      "path": "docs/PX_UNIVERSAL_VISIBILITY_PUNCH_CARDS.md",
+      "sha256": "a996bc379c5975176487012cd2c806f94583c4900082c1c1df3da9dccd354106"
+    },
+    {
+      "path": "evidence/learning/owned-workspace-reclamation-promotion-20260813.json",
+      "sha256": "3336bd94ebace34d1f8ba5f3839fc5c9ccffc0a8c51563c5c3c2b2fab33d6755"
+    },
+    {
+      "path": "extension/resources/ui/action-inventory.json",
+      "sha256": "2a1485f2528cce764945222c7f2fa277ba2f7e073e98f5922c085e738c90c2f6"
+    },
+    {
+      "path": "extension/resources/ui/css-audit-baseline.json",
+      "sha256": "60d993672fcd4df694d04e629323bdcd2399b7d9cd1ec318678c1c35ac72f197"
+    },
+    {
+      "path": "extension/evidence/browser-matrix.json",
+      "sha256": "e36b8689a6134b7f154d346b7fb50ec1d77c4983ba67ed892af631b2cd3d9817"
+    },
+    {
+      "path": "extension/evidence/installed-vsix-smoke.json",
+      "sha256": "cf4849ea20e9042975fac7cf1219b2021b774f7875e01361177febb1ab2b6810"
+    },
+    {
+      "path": "extension/evidence/installed-vsix-smoke-linux.json",
+      "sha256": "38022f04caff663e6cd3df55e7c8ef872469e69ded46a237dd789330dbabe89b"
+    },
+    {
+      "path": "extension/evidence/runtime-efficiency-load.json",
+      "sha256": "c691c7b53c0f66c1edc3979c676b27174676a58f7814fbf3988dfa3db9828539"
+    },
+    {
+      "path": "evidence/fault-campaign/release-fault-campaign-20260813.json",
+      "sha256": "cbdf779c2e43724e6d4cec66929f69cccf42df6a9e913f5822b784e6d8b0d4f2"
+    },
+    {
+      "path": "registry/completion_status.json",
+      "sha256": "6698dfb4a64d909e45ad49a7aebabd35386fef43d686134be11337c8ec55b4ff"
+    }
+  ]
+}

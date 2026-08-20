@@ -1,0 +1,39 @@
+{
+  "admission_record": "trace-to-skill-compiler",
+  "body_sha256": "609452f65cb671be3d8efab56dd3c14843b438de5b731618aaa15495ea9605c1",
+  "contract": {
+    "available": true,
+    "sha256": "2536cdba329c69c74096d03230f8fce6972f061dec7a4774212a08d9304b9aff",
+    "source": "registry/skill_packages/trace-to-skill-compiler.json"
+  },
+  "description": "Convert repeated verified trajectories into candidate governed skill packages. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "trace-to-skill-compiler",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/trace-to-skill-compiler"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "compiler",
+    "improvement",
+    "skill",
+    "to",
+    "trace"
+  ],
+  "version": "0.1.0"
+}

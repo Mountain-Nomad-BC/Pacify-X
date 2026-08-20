@@ -1,0 +1,29 @@
+{
+  "action_id": "workflow-run-e9a6596df39a45c4bdcc132b312b1436-step:identity-1",
+  "audit_record_hash": "f512a048a42592a331a695f74f1721883dece9cd4d6542dd0d608a40e925ed59",
+  "duration_seconds": 0.3181879000039771,
+  "ended_at": "2026-08-20T19:20:26.783Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-769d61d527504665a87ccf7cf72d9835",
+  "resource_id": "process-5a99aa8d544643c78b72caffe41b3e98",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-08-20T19:20:26.465Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 506,
+    "total_bytes": 506,
+    "truncated": false
+  },
+  "tree_closed": true
+}

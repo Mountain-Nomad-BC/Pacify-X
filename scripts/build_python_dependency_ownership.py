@@ -9,7 +9,7 @@ from pathlib import Path
 import sys
 
 
-LOCAL = {"runtime", "builders", "scripts", "engineering_bootstrap"}
+LOCAL = {"runtime", "builders", "scripts", "engineering_bootstrap", "tests"}
 TEST_ONLY = {"pytest": "pytest", "yaml": "PyYAML"}
 OPTIONAL_GATED = {"yaml": "PyYAML"}
 

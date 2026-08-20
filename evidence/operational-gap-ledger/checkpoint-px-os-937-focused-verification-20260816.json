@@ -1,0 +1,10 @@
+{
+  "active_gap_id": "PX-OS-937",
+  "learned": "Candidate preparation now synchronizes valid default and loaded package identities, while malformed JSON remains intact for visible fail-closed editing. The last stale graph-help assertion now targets current product copy.",
+  "next_action": "Run syntax, Studio editor unit interactions, extension source contracts, and the focused browser walk only.",
+  "unresolved_branch_gap_ids": ["PX-OS-937", "PX-OS-936", "PX-OS-933", "PX-OS-935"],
+  "evidence": [
+    {"claim": "Skill candidate preparation repair implemented under admission 4972.", "reference": "extension/media/dashboard/49-studio-editors.js; extension/media/dashboard/90-controller.js; extension/tests/ui-scaffold.test.js"},
+    {"claim": "Graph-help assertion corrected under admission 4974.", "reference": "extension/tests/extension-contract.test.js"}
+  ]
+}

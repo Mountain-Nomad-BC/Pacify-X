@@ -1,0 +1,39 @@
+{
+  "admission_record": "manage-supabase-migrations",
+  "body_sha256": "532eef79602b517be9a097573045a293d55e754082345ce018a4045fed1ea30c",
+  "contract": {
+    "available": true,
+    "sha256": "db0676d9633b0bd9aa02ed2a43dfd07500c33a6574badd7a4272f9e3be4051ca",
+    "source": "registry/skill_packages/manage-supabase-migrations.json"
+  },
+  "description": "Create, review, test, deploy, reconcile, and roll back Supabase migrations without dashboard drift.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "manage-supabase-migrations",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/manage-supabase-migrations"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "backfill",
+    "expand-contract",
+    "migrations",
+    "schema-drift",
+    "supabase"
+  ],
+  "version": "1.0.0"
+}

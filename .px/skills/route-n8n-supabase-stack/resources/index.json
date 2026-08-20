@@ -1,0 +1,21 @@
+{
+  "resources": [
+    "agents/openai.yaml",
+    "contracts/manifest.json",
+    "references/knowledge/cross-stack/00-architecture.md",
+    "references/knowledge/cross-stack/01-suggestion-decision-matrix.md",
+    "references/knowledge/n8n/00-capability-map.md",
+    "references/knowledge/n8n/01-install-deploy-operate.md",
+    "references/knowledge/n8n/02-workflow-engineering.md",
+    "references/knowledge/n8n/03-security-extensions-ai-mcp.md",
+    "references/knowledge/n8n/04-native-source-findings.md",
+    "references/knowledge/supabase/00-capability-map.md",
+    "references/knowledge/supabase/01-cli-local-environments.md",
+    "references/knowledge/supabase/02-postgres-rls-auth.md",
+    "references/knowledge/supabase/03-storage-realtime-functions.md",
+    "references/knowledge/supabase/04-vectors-ai-tools.md",
+    "SKILL.md",
+    "tests/validation.json"
+  ],
+  "schema_version": "px.skill-resources/1.0"
+}

@@ -1,0 +1,40 @@
+{
+  "record": {
+    "edges": [],
+    "lifecycle": "draft",
+    "nodes": [
+      {
+        "approval_required": false,
+        "config": {},
+        "effect_grant_ids": [
+          "grant:pacify-x-workflow"
+        ],
+        "executor_binding_id": "binding:pacify-x-workflow",
+        "failure_policy": "fail-closed",
+        "inputs": [
+          {
+            "data_type": "string",
+            "name": "value",
+            "required": true
+          }
+        ],
+        "kind": "task",
+        "node_id": "step:identity",
+        "outputs": [
+          {
+            "data_type": "string",
+            "name": "value",
+            "required": true
+          }
+        ],
+        "retry_limit": 0,
+        "timeout_seconds": 30
+      }
+    ],
+    "owner": "human:vscode-local-user",
+    "version": "1.0.0",
+    "workflow_id": "workflow:pacify-x-starter"
+  },
+  "schema_version": "px.workflowdefinition/1.0",
+  "sha256": "07a7aae9176ff6bf12d6759161b81e13978147c56cbfe631ebcaccd2a8131d8b"
+}

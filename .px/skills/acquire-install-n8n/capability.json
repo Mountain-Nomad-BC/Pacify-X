@@ -1,0 +1,39 @@
+{
+  "admission_record": "acquire-install-n8n",
+  "body_sha256": "30b739e07091695f59d196f840527c2d8ddca3e80165d50e35c0294dc20db974",
+  "contract": {
+    "available": true,
+    "sha256": "328ccd99c40bd9092528a94563a67c15b3909f22ad5d593403863bbda284a905",
+    "source": "registry/skill_packages/acquire-install-n8n.json"
+  },
+  "description": "Acquire and install n8n through a supported, pinned, reversible channel.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "acquire-install-n8n",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/acquire-install-n8n"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "docker",
+    "installation",
+    "n8n",
+    "npm",
+    "version-pinning"
+  ],
+  "version": "1.0.0"
+}

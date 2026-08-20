@@ -1,0 +1,138 @@
+{
+  "count": 22,
+  "records": [
+    {
+      "id": "agent-identity-authentication",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/agent-identity-authentication.json",
+      "sha256": "35d4e08e0168c40bf70a364ef3d6d222ff395ff954f2710770d1355facbde322",
+      "trigger": "Use when the requested outcome is agent identity authentication or when that outcome is a required dependency."
+    },
+    {
+      "id": "agent-red-teaming",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/agent-red-teaming.json",
+      "sha256": "34513784bcd6d23721e66e2553f688eb47077722e435b9acd72f4cd8ad2236a8",
+      "trigger": "Use when the requested outcome is agent red teaming or when that outcome is a required dependency."
+    },
+    {
+      "id": "ai-bom-generator",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/ai-bom-generator.json",
+      "sha256": "12d8c3303f3cb4ac55b91d117f057fdc66c7b8d45a7b5b4c8e3d52d3f8934003",
+      "trigger": "Use when the requested outcome is ai bom generator or when that outcome is a required dependency."
+    },
+    {
+      "id": "ai-threat-modeling",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/ai-threat-modeling.json",
+      "sha256": "5b95d633cd8adef294383fd5b49dfbe7d37a214e8030af1ca774a060f0394406",
+      "trigger": "Use when the requested outcome is ai threat modeling or when that outcome is a required dependency."
+    },
+    {
+      "id": "artifact-signer-verifier",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/artifact-signer-verifier.json",
+      "sha256": "63af75a065d75e0a9052d23b03305d057f2365f0470a8f937026242301b0e1e4",
+      "trigger": "Use when the requested outcome is artifact signer verifier or when that outcome is a required dependency."
+    },
+    {
+      "id": "authorization-policy",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/authorization-policy.json",
+      "sha256": "6cd2d779510b1a661a024150c22a66f09d470af71637b9c169cc1fb1f3bad4e0",
+      "trigger": "Use when the requested outcome is authorization policy or when that outcome is a required dependency."
+    },
+    {
+      "id": "control-mapping",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/control-mapping.json",
+      "sha256": "7ab84a9e61f42e2bccf033c67d7f5c9a62a12f037b658367219eb7904b6cc8f3",
+      "trigger": "Use when the requested outcome is control mapping or when that outcome is a required dependency."
+    },
+    {
+      "id": "data-classification",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/data-classification.json",
+      "sha256": "a96d27c58b56b0c19278ed25af7ac437570ce0d9029cf2191a393b1db96306c8",
+      "trigger": "Use when the requested outcome is data classification or when that outcome is a required dependency."
+    },
+    {
+      "id": "dependency-risk-scorer",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/dependency-risk-scorer.json",
+      "sha256": "d2b31e7fcb31eba67dc0fdc705f67bba8335149e9306679cabcf3857584a4a85",
+      "trigger": "Use when the requested outcome is dependency risk scorer or when that outcome is a required dependency."
+    },
+    {
+      "id": "egress-policy-enforcer",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/egress-policy-enforcer.json",
+      "sha256": "3f93afc5731cfed614e2b2e8930a14560753bb2690eecfc3c90fd58773a9f69b",
+      "trigger": "Use when the requested outcome is egress policy enforcer or when that outcome is a required dependency."
+    },
+    {
+      "id": "license-compliance",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/license-compliance.json",
+      "sha256": "62b81797ec4c0e998b8a51d6fd358faadd26ce94f29a5844d91035cc4ad8fc8b",
+      "trigger": "Use when the requested outcome is license compliance or when that outcome is a required dependency."
+    },
+    {
+      "id": "memory-poisoning-defense",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/memory-poisoning-defense.json",
+      "sha256": "b571408afadf1b0a6d52599055efa4445ef690a7f284a812195811110a1c2c52",
+      "trigger": "Use when the requested outcome is memory poisoning defense or when that outcome is a required dependency."
+    },
+    {
+      "id": "output-sanitization",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/output-sanitization.json",
+      "sha256": "6fe1671f19fa51f6dbb59f45cd05074a967a2f8d055119f4ffc112fc6168b5b8",
+      "trigger": "Use when the requested outcome is output sanitization or when that outcome is a required dependency."
+    },
+    {
+      "id": "privacy-impact-analysis",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/privacy-impact-analysis.json",
+      "sha256": "824688a59fefc776eae0130932c6046210cac45a3a286549d4472d3b31962207",
+      "trigger": "Use when the requested outcome is privacy impact analysis or when that outcome is a required dependency."
+    },
+    {
+      "id": "prompt-injection-defense",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/prompt-injection-defense.json",
+      "sha256": "dbff5e3ceb2bab1e805fc9bb44a6aa0494e955c37ad956f276384338cb7afd55",
+      "trigger": "Use when the requested outcome is prompt injection defense or when that outcome is a required dependency."
+    },
+    {
+      "id": "provenance-generator",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/provenance-generator.json",
+      "sha256": "0fa0f847130df1cb9c76dcdaf1a3cf0e524335f6d9a706eb334c71ed38c65a03",
+      "trigger": "Use when the requested outcome is provenance generator or when that outcome is a required dependency."
+    },
+    {
+      "id": "reproducible-build-validator",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/reproducible-build-validator.json",
+      "sha256": "a08cac6801ff005f558d8332895f337044d5bcae739dcebf1354b198858dc043",
+      "trigger": "Use when the requested outcome is reproducible build validator or when that outcome is a required dependency."
+    },
+    {
+      "id": "sandbox-profile-designer",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/sandbox-profile-designer.json",
+      "sha256": "184b18ee8b889e849a216db51014c25b7d4bca96af8940b579cf2f99ad05d0be",
+      "trigger": "Use when the requested outcome is sandbox profile designer or when that outcome is a required dependency."
+    },
+    {
+      "id": "sbom-generator",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/sbom-generator.json",
+      "sha256": "bf36ee5005fcc0d9bd12e43a6ac9d0d124808caed3eea70d1e6de746470ea8e0",
+      "trigger": "Use when the requested outcome is sbom generator or when that outcome is a required dependency."
+    },
+    {
+      "id": "secret-handling",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/secret-handling.json",
+      "sha256": "bfdbde0bd7f9549e8759666a601aeaacc5e0d9226ffafb779d52d158ea6d8509",
+      "trigger": "Use when the requested outcome is secret handling or when that outcome is a required dependency."
+    },
+    {
+      "id": "security-incident-response",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/security-incident-response.json",
+      "sha256": "0eedabbfeea2f3378ad770b5b8ffe72402423275416f955fe48fb827c8cc5372",
+      "trigger": "Use when the requested outcome is security incident response or when that outcome is a required dependency."
+    },
+    {
+      "id": "tool-abuse-defense",
+      "path": ".px/skills/secure-agent-supply-chain/references/capabilities/tool-abuse-defense.json",
+      "sha256": "fd10d3e79b725adb0482ac07dec13a2000f267c555efa2b89e83666e0c805160",
+      "trigger": "Use when the requested outcome is tool abuse defense or when that outcome is a required dependency."
+    }
+  ],
+  "schema_version": "1.0"
+}

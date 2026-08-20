@@ -1,0 +1,66 @@
+{
+  "schema_version": "px.live-extension-incident/1.0",
+  "incident_id": "PXA-049",
+  "observed_at": "2026-08-12T12:40:37.0992273Z",
+  "status": "repaired_and_installed_pending_active_window_reload",
+  "host": {
+    "product": "Visual Studio Code",
+    "version": "1.132.1",
+    "commit": "c2d1b13fdc4a77628e5f3bb70173351c8f2fbad1",
+    "architecture": "x64"
+  },
+  "canonical_source": {
+    "root": "extension",
+    "declared_version": "0.5.0",
+    "bounded_file_count": 142,
+    "control_center_view_type": null,
+    "activation_events": [
+      "onLanguageModelChat:pacify-local",
+      "onCommand:pacifyX.openDashboard",
+      "onView:pacifyX.controlCenter"
+    ]
+  },
+  "installed_artifact": {
+    "extension_id": "mountain-nomad-bc.pacify-x-vscode",
+    "declared_version": "0.5.0",
+    "file_count": 50,
+    "missing_current_files": 93,
+    "changed_shared_files": 18,
+    "activation_events": [
+      "onStartupFinished",
+      "onLanguageModelChat:pacify-local",
+      "onCommand:pacifyX.openDashboard",
+      "onView:pacifyX.controlCenter"
+    ]
+  },
+  "failure": {
+    "activation_event": "onStartupFinished",
+    "error": "Extension 'mountain-nomad-bc.pacify-x-vscode' CANNOT use API proposal: testObserver.",
+    "installed_stack_owner": "src/extension.js registerActivityHooks -> activate",
+    "manifest_boundary_error": "pacifyX.controlCenter omitted type=webview while source registers a WebviewViewProvider"
+  },
+  "missing_current_file_sample": [
+    "media/sidebar.css",
+    "media/sidebar.js",
+    "src/sidebarView.js",
+    "src/sidebarProjection.js",
+    "src/sidebarMessages.js",
+    "src/activationTransaction.js",
+    "src/activityObservability.js",
+    "src/canonicalEventPublisher.js",
+    "src/operationAuthority.js",
+    "src/workGovernor.js",
+    "src/runtimeRevisions.js",
+    "src/environmentLifecycleManager.js"
+  ],
+  "reopened_cards": ["A03", "A04", "A07", "A08", "O04", "H09"],
+  "repair_requirements": [
+    "declare the contributed control-center view as type webview",
+    "make the repair version-distinct from the stale 0.5.0 installation",
+    "preserve the exact installed original before replacement",
+    "test and inspect one exact VSIX",
+    "certify clean-profile installation and activation on VS Code 1.132.1",
+    "install and verify the same VSIX in the user profile"
+  ],
+  "repair_receipt": "evidence/planning/px-live-extension-repair-20260812.json"
+}

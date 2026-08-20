@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "run_id": "sol-pacify-tbench21-ab12-20260808",
+  "lane": "cold",
+  "benchmark": {
+    "name": "terminal-bench/terminal-bench-2-1",
+    "version": "latest-resolved-2026-08-08",
+    "dataset_hash": "877715d907a8c65397fd53ad7be906f41ab20b28cee4061db3d66abbe8feeab4",
+    "task_count": 12
+  },
+  "agent": {
+    "name": "codex",
+    "version": "0.147.0"
+  },
+  "model": {
+    "id": "gpt-5.6-sol",
+    "provider": "openai",
+    "reasoning": "high",
+    "web_search": "disabled"
+  },
+  "pacify_x": {
+    "enabled": true,
+    "version": "0.6.3",
+    "sha": "98470f6d70fb6b2c52530136004485407f5caa6b",
+    "capabilities": [
+      "benchmark-and-route-agents",
+      "evaluation-budget-allocator",
+      "tool-loop-circuit-breaker"
+    ]
+  },
+  "limits": {
+    "agent_timeout_seconds_per_task": 900,
+    "attempts": 1,
+    "concurrency": 2,
+    "tasks": 12
+  },
+  "permissions": {
+    "network": true,
+    "writes": "isolated_task_containers_and_registered_evidence_workspace",
+    "tools": ["harbor", "docker", "codex", "official_verifier"]
+  },
+  "retry_policy": {
+    "max_retries": 0,
+    "retryable_classes": []
+  },
+  "environment": {
+    "container": "official-task-images-by-content-reference",
+    "memory": "ephemeral_empty",
+    "cache": "empty",
+    "hardware_fingerprint": "b66efdd7e2097275f5910429ce123f61bdf39f15d15dd9b4adf60a45358e9b71"
+  },
+  "hardware_route": {
+    "device": "cpu",
+    "logical_cores": 28,
+    "system_ram_bytes": 68233236480
+  },
+  "adapter_hashes": {
+    "harbor_version": "0.20.0",
+    "treatment_instruction_sha256": "b68ccd5d46101309bea350215fe17de17b2778316671452bebe38922199b7bfc"
+  }
+}

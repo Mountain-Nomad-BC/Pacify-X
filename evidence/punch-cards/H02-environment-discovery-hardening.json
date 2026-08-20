@@ -1,0 +1,19 @@
+{
+  "schema_version": "px.punch-card-evidence/1.0",
+  "card_id": "H02",
+  "status": "accepted",
+  "recorded_at": "2026-08-12T06:53:13.263182+00:00",
+  "claim": "Environment discovery retains generation, TTL, fingerprints, completeness, failures, root ambiguity, semantic additions/removals, and stale-evidence degradation.",
+  "artifacts": [
+    {
+      "path": "evidence/extension-verification/H02-O12-O13-O14-environment-discovery.json",
+      "sha256": "70547c6872ce39df3fb907aa62478274810a7f88c8ca2c64503a69d892cca616"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --test tests/discovery-manager.test.js tests/environment-lifecycle-manager.test.js",
+      "result": "14 passed"
+    }
+  ]
+}

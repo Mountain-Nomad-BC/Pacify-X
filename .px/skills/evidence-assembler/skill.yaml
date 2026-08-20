@@ -1,0 +1,37 @@
+{
+  "admission_record": "evidence-assembler",
+  "body_sha256": "199a3fc7747232bef216b05961d7ac994dd97098c98b1fdb6d0fcc04c4dd24e1",
+  "contract": {
+    "available": true,
+    "sha256": "32596308dd4666dcd7b6c3f6ecb4890a95ac32223a96ba72f8f0c355539ec4fd",
+    "source": "registry/skill_packages/evidence-assembler.json"
+  },
+  "description": "Build a typed evidence package distinguishing measurement, source text, tool output, inference, assumption, and precedent. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "evidence-assembler",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/evidence-assembler"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "assembler",
+    "assurance",
+    "evidence"
+  ],
+  "version": "0.1.0"
+}

@@ -1,5 +1,5 @@
 {
-  "body": ".agents/skills/govern-runtime-protocol-deployment/SKILL.md",
+  "body": ".px/skills/govern-runtime-protocol-deployment/SKILL.md",
   "body_sha256": "5718a6c60791ca0ffe47d9794abb9abe6b09a00628aee877fdc9ef9111a98484",
   "capability_tags": [
     "authoritative",
@@ -27,8 +27,8 @@
     "unsafe_body_policy": "shell execution and hard deletion bodies rejected in favor of tested bounded replacements"
   },
   "references": [
-    ".agents/skills/govern-runtime-protocol-deployment/references/capabilities-index.json",
-    ".agents/skills/govern-runtime-protocol-deployment/references/scripts-index.json"
+    ".px/skills/govern-runtime-protocol-deployment/references/capabilities-index.json",
+    ".px/skills/govern-runtime-protocol-deployment/references/scripts-index.json"
   ],
   "status": "active",
   "tests": "tests/test_rel008_assimilation.py",

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hardware-Aware Execution Routing"
+  short_description: "Route workloads using measured hardware evidence"
+  default_prompt: "Use $hardware-aware-execution-routing to select a safe CPU, CUDA, WSL2, or container execution target."

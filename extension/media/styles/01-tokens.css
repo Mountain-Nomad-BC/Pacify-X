@@ -1,0 +1,53 @@
+@layer px.tokens {
+  :root {
+    color-scheme: dark;
+    --bg: #07111b;
+    --bg-deep: #030912;
+    --rail: #07111b;
+    --panel: rgba(11, 22, 34, .94);
+    --panel-strong: #101c29;
+    --line: rgba(35, 64, 87, .86);
+    --line-bright: rgba(22, 156, 255, .6);
+    --text: #e8f2fa;
+    --muted: #a8bac8;
+    --faint: #8fa4b5;
+    --blue: #169cff;
+    --cyan: #39d8ff;
+    --red: #ff2a2a;
+    --green: #6dff9b;
+    --amber: #ffd166;
+    --silver: #cbd9e5;
+    --shadow: 0 20px 55px rgba(0, 0, 0, .35), inset 0 1px rgba(255, 255, 255, .018);
+    --glass-surface: rgba(9, 19, 30, .82);
+    --glass-surface-strong: rgba(8, 18, 29, .94);
+    --glass-highlight: rgba(210, 240, 255, .055);
+    --glass-edge: rgba(98, 185, 235, .22);
+    --glass-edge-hot: rgba(57, 216, 255, .46);
+    --ambient-blue: rgba(21, 141, 224, .11);
+    --ambient-violet: rgba(116, 84, 214, .055);
+    --px-color-canvas: #05080d;
+    --px-color-canvas-deep: #020407;
+    --px-color-panel: rgba(13, 20, 29, .88);
+    --px-color-panel-strong: #101925;
+    --px-color-border: rgba(142, 174, 206, .16);
+    --px-color-border-active: rgba(42, 170, 255, .42);
+    --px-color-text: #e8f0f8;
+    --px-color-text-muted: #a8bac8;
+    --px-color-text-faint: #8fa4b5;
+    --px-color-accent: #23a9ff;
+    --px-color-accent-bright: #39e0ff;
+    --px-color-danger: #ff343f;
+    --px-color-success: #39d98a;
+    --px-color-warning: #ffb84d;
+    --px-space-1: 4px;
+    --px-space-2: 8px;
+    --px-space-3: 12px;
+    --px-space-4: 16px;
+    --px-space-5: 24px;
+    --px-radius-control: 6px;
+    --px-radius-panel: 10px;
+    --px-shadow-panel: 0 18px 50px rgba(0, 0, 0, .28);
+    --px-motion-fast: 120ms;
+    --px-motion-standard: 180ms;
+  }
+}

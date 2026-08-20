@@ -1,0 +1,17 @@
+{
+  "gap_id": "PX-OS-027",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004935",
+  "authority": "Exact workflow test corrections require one bounded focused rerun before any additional implementation.",
+  "effect": "execute",
+  "scope": [
+    "python -m pytest -vv -p no:cacheprovider tests/test_workflow_studio.py::test_workflow_condition_never_does_not_propagate_and_failed_run_is_durable tests/test_workflow_studio.py::test_workflow_pause_resume_cancel_and_checkpoint_recovery tests/test_workflow_studio.py::test_independent_ready_nodes_use_bounded_deterministic_parallel_batch"
+  ],
+  "expected_effect": "Confirm durable skip and claim-safe parallel behavior and expose the exact pause-state defect if unresolved.",
+  "rollback": "Read-only focused execution; retain exact output and do not broaden the run.",
+  "evidence": [
+    {
+      "claim": "Immediate corrected-contract checkpoint.",
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000004935"
+    }
+  ]
+}

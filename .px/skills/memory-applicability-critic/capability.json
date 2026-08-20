@@ -1,0 +1,37 @@
+{
+  "admission_record": "memory-applicability-critic",
+  "body_sha256": "3cccbe70c81d6e174e8e835e3af2d0f6df7e20c0cd609f2f96fa8d16891968bb",
+  "contract": {
+    "available": true,
+    "sha256": "b0ae2007f785955a486499089e215ae60e50bc553258df16fc346ee68da330b6",
+    "source": "registry/skill_packages/memory-applicability-critic.json"
+  },
+  "description": "Determine which parts of a retrieved case apply now and which must be rejected. Use when the task requires this bounded operational control; keep it inactive otherwise.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "memory-applicability-critic",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/memory-applicability-critic"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "applicability",
+    "critic",
+    "memory"
+  ],
+  "version": "0.1.0"
+}
