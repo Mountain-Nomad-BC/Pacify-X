@@ -10,6 +10,7 @@ import pytest
 
 from runtime.operational_gap_ledger import (
     PRIMARY_STATES,
+    _validate_card,
     append_event,
     append_events,
     append_transition_admission_backfill,
@@ -268,6 +269,28 @@ def test_new_cards_cannot_pollute_missing_source_symbols_progress(tmp_path: Path
     with pytest.raises(ValueError, match="source_refs"):
         append_event(tmp_path, "card_discovered", value, actor="test")
     assert read_snapshot(tmp_path)["progress"]["cards_missing_source_symbols"] == []
+
+
+def test_legacy_card_replay_allows_symbol_correction_without_weakening_new_appends(
+    tmp_path: Path,
+) -> None:
+    value = card()
+    value["discovered_at"] = "2026-08-20T00:00:00Z"
+    value["discovered_by"] = "legacy-import"
+    value["discovery_source"] = "historical-audit-report.md"
+    value["source_refs"] = [{"path": "runtime/owner.py", "symbols": []}]
+
+    with pytest.raises(ValueError, match="source_refs"):
+        _validate_card(value)
+    replayed = _validate_card(value, allow_local_discovery_empty_symbols=True)
+    assert replayed["source_refs"] == value["source_refs"]
+
+    initialize(tmp_path)
+    new_value = card()
+    new_value["discovery_source"] = "historical-audit-report.md"
+    new_value["source_refs"] = [{"path": "runtime/owner.py", "symbols": []}]
+    with pytest.raises(ValueError, match="source_refs"):
+        append_event(tmp_path, "card_discovered", new_value, actor="test")
 
 
 def test_non_visible_path_resolves_without_fabricating_a_ui_control(tmp_path: Path) -> None:

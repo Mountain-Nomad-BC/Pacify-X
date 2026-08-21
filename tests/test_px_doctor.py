@@ -143,7 +143,10 @@ def test_live_doctor_covers_full_stack_without_writing() -> None:
     assert set(report["sections"]) == set(_sections("healthy"))
     assert report["sections"]["coverage"]["details"]["route_count"] >= 1
     assert "recovery" in report["sections"]["transactions_wal"]["details"]
-    assert report["sections"]["providers_budgets"]["details"]["default_deny"] is True
+    provider_details = report["sections"]["providers_budgets"]["details"]
+    assert provider_details["default_deny"] is False
+    assert provider_details["ready_adapter_count"] >= 1
+    assert provider_details["enabled_budget_count"] >= 1
     git_details = report["sections"]["git"]["details"]
     if (ROOT / ".git").exists():
         assert git_details["untracked_files_examined"] is True

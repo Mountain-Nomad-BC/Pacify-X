@@ -31,25 +31,74 @@ ROUTES = (
     (
         "provider.remote-model",
         "mediator",
-        "evidence/punch-cards/O08-provider-invocation-gateway.json",
+        "registry/provider_adapters.json",
     ),
     (
         "provider.local-model",
         "mediator",
-        "evidence/punch-cards/O08-provider-invocation-gateway.json",
+        ".engineering-bootstrap/provider-budget/ledger.json",
     ),
     (
         "runtime.package-environment",
         "observer",
-        "evidence/punch-cards/O12-system-tool-inventory.json",
+        ".engineering-bootstrap/environment/current.json",
     ),
 )
 
 
-def _receipt_health(route_id: str, payload: object) -> tuple[str, str | None]:
+def _receipt_health(root: Path, route_id: str, payload: object) -> tuple[str, str | None]:
     """Derive route health from receipt claims; receipt presence is not health."""
+    if route_id == "provider.remote-model":
+        adapters = payload.get("adapters", []) if isinstance(payload, dict) else []
+        ready = any(
+            isinstance(row, dict)
+            and row.get("provider_id") == "openai"
+            and row.get("admitted") is True
+            and row.get("status") == "ready"
+            for row in adapters
+        )
+        return ("healthy", None) if ready else ("unconfigured", "remote provider remains default-off")
+    if route_id == "provider.local-model":
+        try:
+            adapters = json.loads((root / "registry/provider_adapters.json").read_text(encoding="utf-8"))["adapters"]
+            budgets = json.loads((root / "registry/provider_budget_policy.json").read_text(encoding="utf-8"))["budgets"]
+        except (OSError, KeyError, TypeError, json.JSONDecodeError):
+            return "unknown", "local provider authority is unreadable"
+        adapter_ready = any(
+            isinstance(row, dict)
+            and row.get("provider_id") == "ollama"
+            and row.get("admitted") is True
+            and row.get("status") == "ready"
+            for row in adapters
+        )
+        budget_ready = any(
+            isinstance(row, dict)
+            and row.get("provider_id") == "ollama"
+            and row.get("enabled") is True
+            for row in budgets
+        )
+        invocations = payload.get("invocations", {}) if isinstance(payload, dict) else {}
+        exercised = any(
+            isinstance(row, dict)
+            and row.get("provider_id") == "ollama"
+            and row.get("state") == "settled"
+            and isinstance(row.get("settlement"), dict)
+            and row["settlement"].get("outcome") == "success"
+            and row["settlement"].get("policy_overrun") is False
+            for row in invocations.values()
+        ) if isinstance(invocations, dict) else False
+        ready = adapter_ready and budget_ready and exercised
+        return ("healthy", None) if ready else ("unconfigured", "local adapter, budget, or successful smoke is absent")
+    if route_id == "runtime.package-environment":
+        ready = (
+            isinstance(payload, dict)
+            and payload.get("schema_version") == "px.environment-capability-map/2.0"
+            and isinstance(payload.get("snapshot_hash"), str)
+            and payload.get("boundaries", {}).get("credential_values_persisted") is False
+        )
+        return ("healthy", None) if ready else ("unknown", "canonical environment inventory is invalid")
     if route_id != "extension.vscode-listener":
-        return "healthy", None
+        return "unknown", "route health authority is unavailable"
     if not isinstance(payload, dict):
         return "unknown", "listener receipt is not an object"
     listener = payload.get("listener_health")
@@ -136,7 +185,7 @@ def build(root: Path) -> dict[str, object]:
             payload = json.loads(receipt.read_text(encoding="utf-8"))
         except (OSError, UnicodeError, json.JSONDecodeError):
             payload = None
-        health, limitation = _receipt_health(route_id, payload)
+        health, limitation = _receipt_health(root, route_id, payload)
         states.append(
             {
                 "route_id": route_id,

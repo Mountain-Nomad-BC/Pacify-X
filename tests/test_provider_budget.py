@@ -399,11 +399,19 @@ def test_gateway_budget_exhaustion_and_duplicate_stop_before_adapter(
     assert duplicate.calls == 0
 
 
-def test_shipped_policy_and_adapters_are_default_deny() -> None:
-    assert load_budget_policy(ROOT)["budgets"] == []
+def test_shipped_policy_admits_only_the_zero_cost_local_provider() -> None:
+    budgets = load_budget_policy(ROOT)["budgets"]
+    assert len(budgets) == 1
+    assert budgets[0]["provider_id"] == "ollama"
+    assert budgets[0]["enabled"] is True
+    assert budgets[0]["hard_limit_microunits"] == 0
+    assert budgets[0]["max_charge_per_request_microunits"] == 0
+    assert budgets[0]["unknown_billing"] == "deny"
     adapters = json.loads(
         (ROOT / "registry/provider_adapters.json").read_text(encoding="utf-8")
     )["adapters"]
-    assert adapters
-    assert all(row["admitted"] is False for row in adapters)
-    assert all(row["status"] == "unconfigured" for row in adapters)
+    local = next(row for row in adapters if row["provider_id"] == "ollama")
+    remote = next(row for row in adapters if row["provider_id"] == "openai")
+    assert local["admitted"] is True and local["status"] == "ready"
+    assert local["billing_state"] == "local_non_billable"
+    assert remote["admitted"] is False and remote["status"] == "unconfigured"

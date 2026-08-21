@@ -1,0 +1,95 @@
+{
+  "id": "ms-vscode-remote.remote-ssh-edit",
+  "name": "Remote - SSH: Editing Configuration Files",
+  "version": "0.87.0",
+  "publisher": "ms-vscode-remote",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [
+    "ui"
+  ],
+  "contribution_points": [
+    "grammars",
+    "languages"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:grammars",
+      "kind": "grammars",
+      "provider": "ms-vscode-remote.remote-ssh-edit",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languages",
+      "kind": "languages",
+      "provider": "ms-vscode-remote.remote-ssh-edit",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [],
+  "permissions_resources": {
+    "extension_kind": [
+      "ui"
+    ],
+    "workspace_trust": {
+      "supported": true
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-vscode-remote.remote-ssh-edit",
+    "capabilities": [
+      "contribution:grammars",
+      "contribution:languages"
+    ],
+    "interface": [],
+    "requirements": {
+      "extension_kind": [
+        "ui"
+      ],
+      "workspace_trust": {
+        "supported": true
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

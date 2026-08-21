@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from scripts.build_operation_health_snapshot import (
     INSTALLED_LISTENER_RECEIPT,
     _extension_health_claim,
@@ -7,14 +9,16 @@ from scripts.build_operation_health_snapshot import (
 )
 
 
-def test_current_platform_listener_receipt_is_retained() -> None:
-    from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
 
+
+def test_current_platform_listener_receipt_is_retained() -> None:
     assert Path(INSTALLED_LISTENER_RECEIPT).is_file()
 
 
 def test_listener_receipt_presence_does_not_fabricate_healthy_coverage() -> None:
     health, limitation = _receipt_health(
+        ROOT,
         "extension.vscode-listener",
         {"listener_health": {"status": "partial", "coverage_complete": False}},
     )
@@ -24,6 +28,7 @@ def test_listener_receipt_presence_does_not_fabricate_healthy_coverage() -> None
 
 def test_listener_receipt_requires_healthy_complete_claim() -> None:
     health, limitation = _receipt_health(
+        ROOT,
         "extension.vscode-listener",
         {"listener_health": {"status": "healthy", "coverage_complete": True}},
     )
@@ -33,6 +38,7 @@ def test_listener_receipt_requires_healthy_complete_claim() -> None:
 
 def test_installed_receipt_reads_listener_claim_from_host_envelope() -> None:
     health, limitation = _receipt_health(
+        ROOT,
         "extension.vscode-listener",
         {
             "schema_version": "px.installed-vsix-certification/1.0",
@@ -42,6 +48,30 @@ def test_installed_receipt_reads_listener_claim_from_host_envelope() -> None:
                     "coverage_complete": True,
                 }
             },
+        },
+    )
+    assert health == "healthy"
+    assert limitation is None
+
+
+def test_remote_provider_is_not_reported_healthy_from_static_acceptance_evidence() -> None:
+    health, limitation = _receipt_health(
+        ROOT,
+        "provider.remote-model",
+        {"adapters": [{"provider_id": "openai", "admitted": False, "status": "unconfigured"}]},
+    )
+    assert health == "unconfigured"
+    assert "default-off" in str(limitation)
+
+
+def test_canonical_environment_requires_secret_safe_current_inventory() -> None:
+    health, limitation = _receipt_health(
+        ROOT,
+        "runtime.package-environment",
+        {
+            "schema_version": "px.environment-capability-map/2.0",
+            "snapshot_hash": "a" * 64,
+            "boundaries": {"credential_values_persisted": False},
         },
     )
     assert health == "healthy"

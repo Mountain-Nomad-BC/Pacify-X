@@ -1,0 +1,264 @@
+{
+  "id": "openai.chatgpt",
+  "name": "Codex – OpenAI’s coding agent",
+  "version": "26.721.41059",
+  "publisher": "openai",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "chatSessions",
+    "commands",
+    "configuration",
+    "customEditors",
+    "grammars",
+    "keybindings",
+    "languages",
+    "menus",
+    "views",
+    "viewsContainers"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:chatSessions",
+      "kind": "chatSessions",
+      "provider": "openai.chatgpt",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "openai.chatgpt",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "openai.chatgpt",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:customEditors",
+      "kind": "customEditors",
+      "provider": "openai.chatgpt",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:grammars",
+      "kind": "grammars",
+      "provider": "openai.chatgpt",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "openai.chatgpt",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languages",
+      "kind": "languages",
+      "provider": "openai.chatgpt",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "openai.chatgpt",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "openai.chatgpt",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "openai.chatgpt",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "chatgpt.addFileToThread",
+      "invocation": "vscode.commands.executeCommand('chatgpt.addFileToThread', ...args)",
+      "title": "Add File to Codex Thread",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "chatgpt.addToThread",
+      "invocation": "vscode.commands.executeCommand('chatgpt.addToThread', ...args)",
+      "title": "Add to Codex Thread",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "chatgpt.dumpNuxState",
+      "invocation": "vscode.commands.executeCommand('chatgpt.dumpNuxState', ...args)",
+      "title": "Debug: print NUX state to console",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "chatgpt.sidebarView.visible"
+    },
+    {
+      "id": "chatgpt.implementTodo",
+      "invocation": "vscode.commands.executeCommand('chatgpt.implementTodo', ...args)",
+      "title": "Implement with Codex",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "false"
+    },
+    {
+      "id": "chatgpt.newChat",
+      "invocation": "vscode.commands.executeCommand('chatgpt.newChat', ...args)",
+      "title": "New Chat in ChatGPT Sidebar",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "chatgpt.newCodexPanel",
+      "invocation": "vscode.commands.executeCommand('chatgpt.newCodexPanel', ...args)",
+      "title": "New Codex Agent",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "chatgpt.openCommandMenu",
+      "invocation": "vscode.commands.executeCommand('chatgpt.openCommandMenu', ...args)",
+      "title": "Open Codex Command Menu",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "chatgpt.openSidebar",
+      "invocation": "vscode.commands.executeCommand('chatgpt.openSidebar', ...args)",
+      "title": "Open Codex Sidebar",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "chatgpt.resetNuxState",
+      "invocation": "vscode.commands.executeCommand('chatgpt.resetNuxState', ...args)",
+      "title": "Debug: reset NUX state",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "chatgpt.sidebarView.visible"
+    },
+    {
+      "id": "chatgpt.showLspMcpCliArgs",
+      "invocation": "vscode.commands.executeCommand('chatgpt.showLspMcpCliArgs', ...args)",
+      "title": "Copy Codex CLI args for LSP MCP",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onStartupFinished",
+    "onUri"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "openai.chatgpt",
+    "capabilities": [
+      "contribution:chatSessions",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:customEditors",
+      "contribution:grammars",
+      "contribution:keybindings",
+      "contribution:languages",
+      "contribution:menus",
+      "contribution:views",
+      "contribution:viewsContainers"
+    ],
+    "interface": [
+      "chatgpt.addFileToThread",
+      "chatgpt.addToThread",
+      "chatgpt.dumpNuxState",
+      "chatgpt.implementTodo",
+      "chatgpt.newChat",
+      "chatgpt.newCodexPanel",
+      "chatgpt.openCommandMenu",
+      "chatgpt.openSidebar",
+      "chatgpt.resetNuxState",
+      "chatgpt.showLspMcpCliArgs"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

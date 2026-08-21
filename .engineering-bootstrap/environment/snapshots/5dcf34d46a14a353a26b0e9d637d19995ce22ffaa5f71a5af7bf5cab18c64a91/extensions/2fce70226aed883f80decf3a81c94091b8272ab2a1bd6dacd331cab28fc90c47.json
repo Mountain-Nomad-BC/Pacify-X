@@ -1,0 +1,346 @@
+{
+  "id": "vscjava.vscode-java-debug",
+  "name": "Debugger for Java",
+  "version": "0.59.0",
+  "publisher": "vscjava",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "breakpoints",
+    "commands",
+    "configuration",
+    "debuggers",
+    "javaExtensions",
+    "languageModelTools",
+    "menus"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:breakpoints",
+      "kind": "breakpoints",
+      "provider": "vscjava.vscode-java-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "vscjava.vscode-java-debug",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "vscjava.vscode-java-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:debuggers",
+      "kind": "debuggers",
+      "provider": "vscjava.vscode-java-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:javaExtensions",
+      "kind": "javaExtensions",
+      "provider": "vscjava.vscode-java-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languageModelTools",
+      "kind": "languageModelTools",
+      "provider": "vscjava.vscode-java-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "vscjava.vscode-java-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "java.debug.breakpoints.exceptionTypes",
+      "invocation": "vscode.commands.executeCommand('java.debug.breakpoints.exceptionTypes', ...args)",
+      "title": "Manage Java Breakpoint Exception Types",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.continueAll",
+      "invocation": "vscode.commands.executeCommand('java.debug.continueAll', ...args)",
+      "title": "Continue All",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.continueOthers",
+      "invocation": "vscode.commands.executeCommand('java.debug.continueOthers', ...args)",
+      "title": "Continue Others",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.debugFromProjectView",
+      "invocation": "vscode.commands.executeCommand('java.debug.debugFromProjectView', ...args)",
+      "title": "Debug",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.debugJavaFile",
+      "invocation": "vscode.commands.executeCommand('java.debug.debugJavaFile', ...args)",
+      "title": "Debug Java",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.hotCodeReplace",
+      "invocation": "vscode.commands.executeCommand('java.debug.hotCodeReplace', ...args)",
+      "title": "Hot Code Replace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.pauseAll",
+      "invocation": "vscode.commands.executeCommand('java.debug.pauseAll', ...args)",
+      "title": "Pause All",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.pauseOthers",
+      "invocation": "vscode.commands.executeCommand('java.debug.pauseOthers', ...args)",
+      "title": "Pause Others",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.runFromProjectView",
+      "invocation": "vscode.commands.executeCommand('java.debug.runFromProjectView', ...args)",
+      "title": "Run",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.runJavaFile",
+      "invocation": "vscode.commands.executeCommand('java.debug.runJavaFile', ...args)",
+      "title": "Run Java",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.variables.autoExpandLazyVariables",
+      "invocation": "vscode.commands.executeCommand('java.debug.variables.autoExpandLazyVariables', ...args)",
+      "title": "Auto Expand Lazy Variables",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.variables.manualExpandLazyVariables",
+      "invocation": "vscode.commands.executeCommand('java.debug.variables.manualExpandLazyVariables', ...args)",
+      "title": "Manual Expand Lazy Variables",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.variables.notShowHex",
+      "invocation": "vscode.commands.executeCommand('java.debug.variables.notShowHex', ...args)",
+      "title": "Show as Dec",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.variables.notShowLogicalStructure",
+      "invocation": "vscode.commands.executeCommand('java.debug.variables.notShowLogicalStructure', ...args)",
+      "title": "Disable Logical Structure View",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.variables.notShowQualifiedNames",
+      "invocation": "vscode.commands.executeCommand('java.debug.variables.notShowQualifiedNames', ...args)",
+      "title": "Show Simple Names",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.variables.notShowStaticVariables",
+      "invocation": "vscode.commands.executeCommand('java.debug.variables.notShowStaticVariables', ...args)",
+      "title": "Hide Static Variables",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.variables.notShowToString",
+      "invocation": "vscode.commands.executeCommand('java.debug.variables.notShowToString', ...args)",
+      "title": "Disable 'toString()' Object View",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.variables.showHex",
+      "invocation": "vscode.commands.executeCommand('java.debug.variables.showHex', ...args)",
+      "title": "Show as Hex",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.variables.showLogicalStructure",
+      "invocation": "vscode.commands.executeCommand('java.debug.variables.showLogicalStructure', ...args)",
+      "title": "Enable Logical Structure View",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.variables.showQualifiedNames",
+      "invocation": "vscode.commands.executeCommand('java.debug.variables.showQualifiedNames', ...args)",
+      "title": "Show Qualified Names",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.variables.showStaticVariables",
+      "invocation": "vscode.commands.executeCommand('java.debug.variables.showStaticVariables', ...args)",
+      "title": "Show Static Variables",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.debug.variables.showToString",
+      "invocation": "vscode.commands.executeCommand('java.debug.variables.showToString', ...args)",
+      "title": "Enable 'toString()' Object View",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:JavaDebug.PickJavaProcess",
+    "onCommand:JavaDebug.SpecifyProgramArgs",
+    "onDebugInitialConfigurations",
+    "onDebugResolve:java",
+    "onLanguage:java",
+    "onLanguageModelTool:debug_java_application"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "vscjava.vscode-java-debug",
+    "capabilities": [
+      "contribution:breakpoints",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:debuggers",
+      "contribution:javaExtensions",
+      "contribution:languageModelTools",
+      "contribution:menus"
+    ],
+    "interface": [
+      "java.debug.breakpoints.exceptionTypes",
+      "java.debug.continueAll",
+      "java.debug.continueOthers",
+      "java.debug.debugFromProjectView",
+      "java.debug.debugJavaFile",
+      "java.debug.hotCodeReplace",
+      "java.debug.pauseAll",
+      "java.debug.pauseOthers",
+      "java.debug.runFromProjectView",
+      "java.debug.runJavaFile",
+      "java.debug.variables.autoExpandLazyVariables",
+      "java.debug.variables.manualExpandLazyVariables",
+      "java.debug.variables.notShowHex",
+      "java.debug.variables.notShowLogicalStructure",
+      "java.debug.variables.notShowQualifiedNames",
+      "java.debug.variables.notShowStaticVariables",
+      "java.debug.variables.notShowToString",
+      "java.debug.variables.showHex",
+      "java.debug.variables.showLogicalStructure",
+      "java.debug.variables.showQualifiedNames",
+      "java.debug.variables.showStaticVariables",
+      "java.debug.variables.showToString"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

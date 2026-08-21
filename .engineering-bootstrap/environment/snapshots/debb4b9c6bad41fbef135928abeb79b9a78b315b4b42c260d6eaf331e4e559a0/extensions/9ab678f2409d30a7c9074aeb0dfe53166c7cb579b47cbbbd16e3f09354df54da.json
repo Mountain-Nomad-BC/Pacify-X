@@ -1,0 +1,289 @@
+{
+  "id": "vscjava.vscode-java-pack",
+  "name": "Extension Pack for Java",
+  "version": "0.31.1",
+  "publisher": "vscjava",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "customEditors",
+    "javaShortcuts",
+    "keybindings",
+    "menus",
+    "walkthroughs"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "vscjava.vscode-java-pack",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "vscjava.vscode-java-pack",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:customEditors",
+      "kind": "customEditors",
+      "provider": "vscjava.vscode-java-pack",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:javaShortcuts",
+      "kind": "javaShortcuts",
+      "provider": "vscjava.vscode-java-pack",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "vscjava.vscode-java-pack",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "vscjava.vscode-java-pack",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "vscjava.vscode-java-pack",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "java.classpathConfiguration",
+      "invocation": "vscode.commands.executeCommand('java.classpathConfiguration', ...args)",
+      "title": "Configure Classpath",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.extGuide",
+      "invocation": "vscode.commands.executeCommand('java.extGuide', ...args)",
+      "title": "Extensions Guide",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.formatterSettings",
+      "invocation": "vscode.commands.executeCommand('java.formatterSettings', ...args)",
+      "title": "Open Java Formatter Settings with Preview",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.formatterSettings.showTextEditor",
+      "invocation": "vscode.commands.executeCommand('java.formatterSettings.showTextEditor', ...args)",
+      "title": "Open Text Editor",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.gettingStarted",
+      "invocation": "vscode.commands.executeCommand('java.gettingStarted', ...args)",
+      "title": "Tips for Beginners",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.installJdk",
+      "invocation": "vscode.commands.executeCommand('java.installJdk', ...args)",
+      "title": "Install New JDK",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.installJdk.fromWalkthrough",
+      "invocation": "vscode.commands.executeCommand('java.installJdk.fromWalkthrough', ...args)",
+      "title": "Install New JDK",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.overview",
+      "invocation": "vscode.commands.executeCommand('java.overview', ...args)",
+      "title": "Overview",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.projectSettings",
+      "invocation": "vscode.commands.executeCommand('java.projectSettings', ...args)",
+      "title": "Open Project Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.runtime",
+      "invocation": "vscode.commands.executeCommand('java.runtime', ...args)",
+      "title": "Configure Java Runtime",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.showReleaseNotes",
+      "invocation": "vscode.commands.executeCommand('java.showReleaseNotes', ...args)",
+      "title": "Show Release Notes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.welcome",
+      "invocation": "vscode.commands.executeCommand('java.welcome', ...args)",
+      "title": "Help Center",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.welcome.fromWalkthrough",
+      "invocation": "vscode.commands.executeCommand('java.welcome.fromWalkthrough', ...args)",
+      "title": "Help Center",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:java.classpathConfiguration",
+    "onCommand:java.extGuide",
+    "onCommand:java.formatterSettings",
+    "onCommand:java.gettingStarted",
+    "onCommand:java.installJdk",
+    "onCommand:java.overview",
+    "onCommand:java.projectSettings",
+    "onCommand:java.runtime",
+    "onCommand:java.showReleaseNotes",
+    "onCommand:java.welcome",
+    "onLanguage:java",
+    "onWalkthrough:javaWelcome",
+    "onWebviewPanel:java.extGuide",
+    "onWebviewPanel:java.gettingStarted",
+    "onWebviewPanel:java.installJdk",
+    "onWebviewPanel:java.overview",
+    "onWebviewPanel:java.projectSettings",
+    "onWebviewPanel:java.welcome",
+    "workspaceContains:*/.classpath",
+    "workspaceContains:*/build.gradle",
+    "workspaceContains:*/build.gradle.kts",
+    "workspaceContains:*/pom.xml",
+    "workspaceContains:*/settings.gradle",
+    "workspaceContains:*/settings.gradle.kts",
+    "workspaceContains:.classpath",
+    "workspaceContains:build.gradle",
+    "workspaceContains:build.gradle.kts",
+    "workspaceContains:pom.xml",
+    "workspaceContains:settings.gradle",
+    "workspaceContains:settings.gradle.kts"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "vscjava.vscode-java-pack",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:customEditors",
+      "contribution:javaShortcuts",
+      "contribution:keybindings",
+      "contribution:menus",
+      "contribution:walkthroughs"
+    ],
+    "interface": [
+      "java.classpathConfiguration",
+      "java.extGuide",
+      "java.formatterSettings",
+      "java.formatterSettings.showTextEditor",
+      "java.gettingStarted",
+      "java.installJdk",
+      "java.installJdk.fromWalkthrough",
+      "java.overview",
+      "java.projectSettings",
+      "java.runtime",
+      "java.showReleaseNotes",
+      "java.welcome",
+      "java.welcome.fromWalkthrough"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

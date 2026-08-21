@@ -1,0 +1,747 @@
+{
+  "id": "ms-vscode.remote-repositories",
+  "name": "%displayName%",
+  "version": "0.42.0",
+  "publisher": "ms-vscode",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [
+    "ui",
+    "workspace"
+  ],
+  "contribution_points": [
+    "colors",
+    "commands",
+    "configuration",
+    "continueEditSession",
+    "fileSystemProviders",
+    "jsonValidation",
+    "menus",
+    "remoteHelp",
+    "resourceLabelFormatters",
+    "submenus",
+    "views",
+    "viewsWelcome",
+    "walkthroughs"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:colors",
+      "kind": "colors",
+      "provider": "ms-vscode.remote-repositories",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-vscode.remote-repositories",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-vscode.remote-repositories",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:continueEditSession",
+      "kind": "continueEditSession",
+      "provider": "ms-vscode.remote-repositories",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:fileSystemProviders",
+      "kind": "fileSystemProviders",
+      "provider": "ms-vscode.remote-repositories",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "ms-vscode.remote-repositories",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-vscode.remote-repositories",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:remoteHelp",
+      "kind": "remoteHelp",
+      "provider": "ms-vscode.remote-repositories",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:resourceLabelFormatters",
+      "kind": "resourceLabelFormatters",
+      "provider": "ms-vscode.remote-repositories",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "ms-vscode.remote-repositories",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "ms-vscode.remote-repositories",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "ms-vscode.remote-repositories",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "ms-vscode.remote-repositories",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "remoteHub.addRepositoryToWorkspace",
+      "invocation": "vscode.commands.executeCommand('remoteHub.addRepositoryToWorkspace', ...args)",
+      "title": "%commands.addRepositoryToWorkspace%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.applyPatch",
+      "invocation": "vscode.commands.executeCommand('remoteHub.applyPatch', ...args)",
+      "title": "%commands.applyPatch%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.clone",
+      "invocation": "vscode.commands.executeCommand('remoteHub.clone', ...args)",
+      "title": "%commands.clone%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.commit",
+      "invocation": "vscode.commands.executeCommand('remoteHub.commit', ...args)",
+      "title": "%commands.commit%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.commitEmpty",
+      "invocation": "vscode.commands.executeCommand('remoteHub.commitEmpty', ...args)",
+      "title": "%commands.commitEmpty%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.configureIndexingAllowedRepos",
+      "invocation": "vscode.commands.executeCommand('remoteHub.configureIndexingAllowedRepos', ...args)",
+      "title": "%commands.configureIndexingAllowedRepos%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "gitHub:enabledSomeSearchIndexes"
+    },
+    {
+      "id": "remoteHub.continueEditSession.openOnWeb",
+      "invocation": "vscode.commands.executeCommand('remoteHub.continueEditSession.openOnWeb', ...args)",
+      "title": "%commands.continueEditSession.openOnWeb%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.continueOn",
+      "invocation": "vscode.commands.executeCommand('remoteHub.continueOn', ...args)",
+      "title": "%commands.continueOn%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.continueOn.addRepositoryToWorkspace",
+      "invocation": "vscode.commands.executeCommand('remoteHub.continueOn.addRepositoryToWorkspace', ...args)",
+      "title": "%commands.continueOn.addRepositoryToWorkspace%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.continueOn.openRepository",
+      "invocation": "vscode.commands.executeCommand('remoteHub.continueOn.openRepository', ...args)",
+      "title": "%commands.continueOn.openRepository%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.copyVscodeDevLink",
+      "invocation": "vscode.commands.executeCommand('remoteHub.copyVscodeDevLink', ...args)",
+      "title": "%commands.copyVscodeDevLink%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.copyVscodeDevLinkFile",
+      "invocation": "vscode.commands.executeCommand('remoteHub.copyVscodeDevLinkFile', ...args)",
+      "title": "%commands.copyVscodeDevLink%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.copyVscodeDevLinkWithoutRange",
+      "invocation": "vscode.commands.executeCommand('remoteHub.copyVscodeDevLinkWithoutRange', ...args)",
+      "title": "%commands.copyVscodeDevLink%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.createBranch",
+      "invocation": "vscode.commands.executeCommand('remoteHub.createBranch', ...args)",
+      "title": "%commands.createBranch%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.createBranchFrom",
+      "invocation": "vscode.commands.executeCommand('remoteHub.createBranchFrom', ...args)",
+      "title": "%commands.createBranchFrom%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.createDraftPullRequest",
+      "invocation": "vscode.commands.executeCommand('remoteHub.createDraftPullRequest', ...args)",
+      "title": "%commands.createDraftPullRequest%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.createPullRequest",
+      "invocation": "vscode.commands.executeCommand('remoteHub.createPullRequest', ...args)",
+      "title": "%commands.createPullRequest%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.deleteAllLocalRepositoryData",
+      "invocation": "vscode.commands.executeCommand('remoteHub.deleteAllLocalRepositoryData', ...args)",
+      "title": "%commands.deleteAllLocalRepositoryData%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.deleteLocalRepositoryData",
+      "invocation": "vscode.commands.executeCommand('remoteHub.deleteLocalRepositoryData', ...args)",
+      "title": "%commands.deleteLocalRepositoryData%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "gitHub:hasSearchIndexes"
+    },
+    {
+      "id": "remoteHub.disableIndexingForSession",
+      "invocation": "vscode.commands.executeCommand('remoteHub.disableIndexingForSession', ...args)",
+      "title": "%commands.disableIndexingForSession%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.discardAllChanges",
+      "invocation": "vscode.commands.executeCommand('remoteHub.discardAllChanges', ...args)",
+      "title": "%commands.discardAllChanges%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.discardChanges",
+      "invocation": "vscode.commands.executeCommand('remoteHub.discardChanges', ...args)",
+      "title": "%commands.discardChanges%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.enableIndexing",
+      "invocation": "vscode.commands.executeCommand('remoteHub.enableIndexing', ...args)",
+      "title": "%commands.enableIndexing%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!gitHub:enabledAllSearchIndexes"
+    },
+    {
+      "id": "remoteHub.exportDebugInfo",
+      "invocation": "vscode.commands.executeCommand('remoteHub.exportDebugInfo', ...args)",
+      "title": "%commands.exportDebugInfo%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.exportPatch",
+      "invocation": "vscode.commands.executeCommand('remoteHub.exportPatch', ...args)",
+      "title": "%commands.exportPatch%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.fetch",
+      "invocation": "vscode.commands.executeCommand('remoteHub.fetch', ...args)",
+      "title": "%commands.fetch%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.goToRepository",
+      "invocation": "vscode.commands.executeCommand('remoteHub.goToRepository', ...args)",
+      "title": "%commands.goToRepository%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.keepChanges",
+      "invocation": "vscode.commands.executeCommand('remoteHub.keepChanges', ...args)",
+      "title": "%commands.keepChanges%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.notebook.continueOn",
+      "invocation": "vscode.commands.executeCommand('remoteHub.notebook.continueOn', ...args)",
+      "title": "%commands.notebook.continueOn%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.openChanges",
+      "invocation": "vscode.commands.executeCommand('remoteHub.openChanges', ...args)",
+      "title": "%commands.openChanges%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.openFile",
+      "invocation": "vscode.commands.executeCommand('remoteHub.openFile', ...args)",
+      "title": "%commands.openFile%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.openOnDesktop",
+      "invocation": "vscode.commands.executeCommand('remoteHub.openOnDesktop', ...args)",
+      "title": "%commands.openOnDesktop%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.openOnRemote",
+      "invocation": "vscode.commands.executeCommand('remoteHub.openOnRemote', ...args)",
+      "title": "%commands.openOnRemote%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.openOnWeb",
+      "invocation": "vscode.commands.executeCommand('remoteHub.openOnWeb', ...args)",
+      "title": "%commands.openOnWeb%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.openRepository",
+      "invocation": "vscode.commands.executeCommand('remoteHub.openRepository', ...args)",
+      "title": "%commands.openRepository%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.pull",
+      "invocation": "vscode.commands.executeCommand('remoteHub.pull', ...args)",
+      "title": "%commands.pull%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.refresh",
+      "invocation": "vscode.commands.executeCommand('remoteHub.refresh', ...args)",
+      "title": "%commands.refresh%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.remoteHelp.getStarted",
+      "invocation": "vscode.commands.executeCommand('remoteHub.remoteHelp.getStarted', ...args)",
+      "title": "%commands.remoteHelp.getStarted%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.stageAllChanges",
+      "invocation": "vscode.commands.executeCommand('remoteHub.stageAllChanges', ...args)",
+      "title": "%commands.stageAllChanges%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.stageChanges",
+      "invocation": "vscode.commands.executeCommand('remoteHub.stageChanges', ...args)",
+      "title": "%commands.stageChanges%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.switchToBranch",
+      "invocation": "vscode.commands.executeCommand('remoteHub.switchToBranch', ...args)",
+      "title": "%commands.switchToBranch%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.sync",
+      "invocation": "vscode.commands.executeCommand('remoteHub.sync', ...args)",
+      "title": "%commands.sync%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.timeline.compareWithSelected",
+      "invocation": "vscode.commands.executeCommand('remoteHub.timeline.compareWithSelected', ...args)",
+      "title": "%commands.timeline.compareWithSelected%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.timeline.copyCommitId",
+      "invocation": "vscode.commands.executeCommand('remoteHub.timeline.copyCommitId', ...args)",
+      "title": "%commands.timeline.copyCommitId%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.timeline.copyCommitMessage",
+      "invocation": "vscode.commands.executeCommand('remoteHub.timeline.copyCommitMessage', ...args)",
+      "title": "%commands.timeline.copyCommitMessage%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.timeline.openDiff",
+      "invocation": "vscode.commands.executeCommand('remoteHub.timeline.openDiff', ...args)",
+      "title": "%commands.timeline.openDiff%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.timeline.openOnAzureRepos",
+      "invocation": "vscode.commands.executeCommand('remoteHub.timeline.openOnAzureRepos', ...args)",
+      "title": "%commands.timeline.openOnAzureRepos%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.timeline.openOnGitHub",
+      "invocation": "vscode.commands.executeCommand('remoteHub.timeline.openOnGitHub', ...args)",
+      "title": "%commands.timeline.openOnGitHub%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.timeline.selectForCompare",
+      "invocation": "vscode.commands.executeCommand('remoteHub.timeline.selectForCompare', ...args)",
+      "title": "%commands.timeline.selectForCompare%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.unstageAllChanges",
+      "invocation": "vscode.commands.executeCommand('remoteHub.unstageAllChanges', ...args)",
+      "title": "%commands.unstageAllChanges%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.unstageChanges",
+      "invocation": "vscode.commands.executeCommand('remoteHub.unstageChanges', ...args)",
+      "title": "%commands.unstageChanges%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.views.workspaceRepositories.applyAllChanges",
+      "invocation": "vscode.commands.executeCommand('remoteHub.views.workspaceRepositories.applyAllChanges', ...args)",
+      "title": "%commands.views.workspaceRepositories.applyAllChanges%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.views.workspaceRepositories.applyChanges",
+      "invocation": "vscode.commands.executeCommand('remoteHub.views.workspaceRepositories.applyChanges', ...args)",
+      "title": "%commands.views.workspaceRepositories.applyChanges%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.views.workspaceRepositories.open",
+      "invocation": "vscode.commands.executeCommand('remoteHub.views.workspaceRepositories.open', ...args)",
+      "title": "%commands.views.workspaceRepositories.open%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.views.workspaceRepositories.openChanges",
+      "invocation": "vscode.commands.executeCommand('remoteHub.views.workspaceRepositories.openChanges', ...args)",
+      "title": "%commands.views.workspaceRepositories.openChanges%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.views.workspaceRepositories.openFile",
+      "invocation": "vscode.commands.executeCommand('remoteHub.views.workspaceRepositories.openFile', ...args)",
+      "title": "%commands.views.workspaceRepositories.openFile%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.views.workspaceRepositories.openInNewWindow",
+      "invocation": "vscode.commands.executeCommand('remoteHub.views.workspaceRepositories.openInNewWindow', ...args)",
+      "title": "%commands.views.workspaceRepositories.openInNewWindow%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.views.workspaceRepositories.refresh",
+      "invocation": "vscode.commands.executeCommand('remoteHub.views.workspaceRepositories.refresh', ...args)",
+      "title": "%commands.refresh%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remoteHub.views.workspaceRepositories.remove",
+      "invocation": "vscode.commands.executeCommand('remoteHub.views.workspaceRepositories.remove', ...args)",
+      "title": "%commands.views.workspaceRepositories.remove%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onAuthenticationRequest:azurerepos",
+    "onCommand:remoteHub.api.getRepositoryContext",
+    "onEditSession:vscode-vfs",
+    "onFileSystem:azurerepos",
+    "onFileSystem:github",
+    "onFileSystem:vsck-fs",
+    "onFileSystem:vscode-vfs",
+    "onSearch:vscode-vfs",
+    "onUri"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "ui",
+      "workspace"
+    ],
+    "workspace_trust": {
+      "supported": true
+    },
+    "virtual_workspaces": true,
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-vscode.remote-repositories",
+    "capabilities": [
+      "contribution:colors",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:continueEditSession",
+      "contribution:fileSystemProviders",
+      "contribution:jsonValidation",
+      "contribution:menus",
+      "contribution:remoteHelp",
+      "contribution:resourceLabelFormatters",
+      "contribution:submenus",
+      "contribution:views",
+      "contribution:viewsWelcome",
+      "contribution:walkthroughs"
+    ],
+    "interface": [
+      "remoteHub.addRepositoryToWorkspace",
+      "remoteHub.applyPatch",
+      "remoteHub.clone",
+      "remoteHub.commit",
+      "remoteHub.commitEmpty",
+      "remoteHub.configureIndexingAllowedRepos",
+      "remoteHub.continueEditSession.openOnWeb",
+      "remoteHub.continueOn",
+      "remoteHub.continueOn.addRepositoryToWorkspace",
+      "remoteHub.continueOn.openRepository",
+      "remoteHub.copyVscodeDevLink",
+      "remoteHub.copyVscodeDevLinkFile",
+      "remoteHub.copyVscodeDevLinkWithoutRange",
+      "remoteHub.createBranch",
+      "remoteHub.createBranchFrom",
+      "remoteHub.createDraftPullRequest",
+      "remoteHub.createPullRequest",
+      "remoteHub.deleteAllLocalRepositoryData",
+      "remoteHub.deleteLocalRepositoryData",
+      "remoteHub.disableIndexingForSession",
+      "remoteHub.discardAllChanges",
+      "remoteHub.discardChanges",
+      "remoteHub.enableIndexing",
+      "remoteHub.exportDebugInfo",
+      "remoteHub.exportPatch",
+      "remoteHub.fetch",
+      "remoteHub.goToRepository",
+      "remoteHub.keepChanges",
+      "remoteHub.notebook.continueOn",
+      "remoteHub.openChanges",
+      "remoteHub.openFile",
+      "remoteHub.openOnDesktop",
+      "remoteHub.openOnRemote",
+      "remoteHub.openOnWeb",
+      "remoteHub.openRepository",
+      "remoteHub.pull",
+      "remoteHub.refresh",
+      "remoteHub.remoteHelp.getStarted",
+      "remoteHub.stageAllChanges",
+      "remoteHub.stageChanges",
+      "remoteHub.switchToBranch",
+      "remoteHub.sync",
+      "remoteHub.timeline.compareWithSelected",
+      "remoteHub.timeline.copyCommitId",
+      "remoteHub.timeline.copyCommitMessage",
+      "remoteHub.timeline.openDiff",
+      "remoteHub.timeline.openOnAzureRepos",
+      "remoteHub.timeline.openOnGitHub",
+      "remoteHub.timeline.selectForCompare",
+      "remoteHub.unstageAllChanges",
+      "remoteHub.unstageChanges",
+      "remoteHub.views.workspaceRepositories.applyAllChanges",
+      "remoteHub.views.workspaceRepositories.applyChanges",
+      "remoteHub.views.workspaceRepositories.open",
+      "remoteHub.views.workspaceRepositories.openChanges",
+      "remoteHub.views.workspaceRepositories.openFile",
+      "remoteHub.views.workspaceRepositories.openInNewWindow",
+      "remoteHub.views.workspaceRepositories.refresh",
+      "remoteHub.views.workspaceRepositories.remove"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "ui",
+        "workspace"
+      ],
+      "workspace_trust": {
+        "supported": true
+      },
+      "virtual_workspaces": true,
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

@@ -1,0 +1,404 @@
+{
+  "id": "ms-azuretools.vscode-azurestaticwebapps",
+  "name": "Azure Static Web Apps",
+  "version": "0.13.3",
+  "publisher": "ms-azuretools",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "debuggers",
+    "jsonValidation",
+    "menus",
+    "problemMatchers",
+    "submenus",
+    "x-azResources"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-azuretools.vscode-azurestaticwebapps",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-azuretools.vscode-azurestaticwebapps",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:debuggers",
+      "kind": "debuggers",
+      "provider": "ms-azuretools.vscode-azurestaticwebapps",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "ms-azuretools.vscode-azurestaticwebapps",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-azuretools.vscode-azurestaticwebapps",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:problemMatchers",
+      "kind": "problemMatchers",
+      "provider": "ms-azuretools.vscode-azurestaticwebapps",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "ms-azuretools.vscode-azurestaticwebapps",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:x-azResources",
+      "kind": "x-azResources",
+      "provider": "ms-azuretools.vscode-azurestaticwebapps",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "staticWebApps.action.cancel",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.action.cancel', ...args)",
+      "title": "%staticWebApps.action.cancel%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.action.rerun",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.action.rerun', ...args)",
+      "title": "%staticWebApps.action.rerun%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.appSettings.add",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.appSettings.add', ...args)",
+      "title": "%staticWebApps.appSettings.add%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.appSettings.delete",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.appSettings.delete', ...args)",
+      "title": "%staticWebApps.appSettings.delete%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.appSettings.download",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.appSettings.download', ...args)",
+      "title": "%staticWebApps.appSettings.download%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isWeb"
+    },
+    {
+      "id": "staticWebApps.appSettings.edit",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.appSettings.edit', ...args)",
+      "title": "%staticWebApps.appSettings.edit%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.appSettings.rename",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.appSettings.rename', ...args)",
+      "title": "%staticWebApps.appSettings.rename%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.appSettings.upload",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.appSettings.upload', ...args)",
+      "title": "%staticWebApps.appSettings.upload%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isWeb"
+    },
+    {
+      "id": "staticWebApps.browse",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.browse', ...args)",
+      "title": "%staticWebApps.browse%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.cloneRepo",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.cloneRepo', ...args)",
+      "title": "%staticWebApps.cloneRepo%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isWeb"
+    },
+    {
+      "id": "staticWebApps.createHttpFunction",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.createHttpFunction', ...args)",
+      "title": "%staticWebApps.createHttpFunction%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "staticWebApps.createStaticWebApp",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.createStaticWebApp', ...args)",
+      "title": "%staticWebApps.createStaticWebApp%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.createStaticWebAppAdvanced",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.createStaticWebAppAdvanced', ...args)",
+      "title": "%staticWebApps.createStaticWebAppAdvanced%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.createSwaConfigFile",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.createSwaConfigFile', ...args)",
+      "title": "%staticWebApps.createSwaConfigFile%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!isWeb"
+    },
+    {
+      "id": "staticWebApps.deleteEnvironment",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.deleteEnvironment', ...args)",
+      "title": "%staticWebApps.deleteEnvironment%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.deleteStaticWebApp",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.deleteStaticWebApp', ...args)",
+      "title": "%staticWebApps.deleteStaticWebApp%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.installOrUpdateStaticWebAppsCli",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.installOrUpdateStaticWebAppsCli', ...args)",
+      "title": "%staticWebApps.installOrUpdateStaticWebAppsCli%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "staticWebApps.openGitHubLog",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.openGitHubLog', ...args)",
+      "title": "%staticWebApps.openGitHubLog%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.openGitHubRepo",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.openGitHubRepo', ...args)",
+      "title": "%staticWebApps.openGitHubRepo%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.openInPortal",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.openInPortal', ...args)",
+      "title": "%staticWebApps.openInPortal%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.openYAMLConfigFile",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.openYAMLConfigFile', ...args)",
+      "title": "%staticWebApps.openYAMLConfigFile%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.reportIssue",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.reportIssue', ...args)",
+      "title": "%staticWebApps.reportIssue%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.showActions",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.showActions', ...args)",
+      "title": "%staticWebApps.showActions%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.showDocumentation",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.showDocumentation', ...args)",
+      "title": "%staticWebApps.showDocumentation%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.toggleAppSettingVisibility",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.toggleAppSettingVisibility', ...args)",
+      "title": "%staticWebApps.toggleAppSettingVisibility%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "staticWebApps.uninstallStaticWebAppsCli",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.uninstallStaticWebAppsCli', ...args)",
+      "title": "%staticWebApps.uninstallStaticWebAppsCli%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!virtualWorkspace"
+    },
+    {
+      "id": "staticWebApps.viewProperties",
+      "invocation": "vscode.commands.executeCommand('staticWebApps.viewProperties', ...args)",
+      "title": "%staticWebApps.viewProperties%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "ms-azuretools.vscode-azureresourcegroups"
+  ],
+  "activation_events": [
+    "onDebugDynamicConfigurations",
+    "onDebugInitialConfigurations",
+    "onDebugResolve:pwa-chrome",
+    "workspaceContains:**/staticwebapp.config.json",
+    "workspaceContains:**/swa-cli.config.json"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "limited",
+      "description": "Some features are not supported in virtual workspaces."
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-azuretools.vscode-azurestaticwebapps",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:debuggers",
+      "contribution:jsonValidation",
+      "contribution:menus",
+      "contribution:problemMatchers",
+      "contribution:submenus",
+      "contribution:x-azResources"
+    ],
+    "interface": [
+      "staticWebApps.action.cancel",
+      "staticWebApps.action.rerun",
+      "staticWebApps.appSettings.add",
+      "staticWebApps.appSettings.delete",
+      "staticWebApps.appSettings.download",
+      "staticWebApps.appSettings.edit",
+      "staticWebApps.appSettings.rename",
+      "staticWebApps.appSettings.upload",
+      "staticWebApps.browse",
+      "staticWebApps.cloneRepo",
+      "staticWebApps.createHttpFunction",
+      "staticWebApps.createStaticWebApp",
+      "staticWebApps.createStaticWebAppAdvanced",
+      "staticWebApps.createSwaConfigFile",
+      "staticWebApps.deleteEnvironment",
+      "staticWebApps.deleteStaticWebApp",
+      "staticWebApps.installOrUpdateStaticWebAppsCli",
+      "staticWebApps.openGitHubLog",
+      "staticWebApps.openGitHubRepo",
+      "staticWebApps.openInPortal",
+      "staticWebApps.openYAMLConfigFile",
+      "staticWebApps.reportIssue",
+      "staticWebApps.showActions",
+      "staticWebApps.showDocumentation",
+      "staticWebApps.toggleAppSettingVisibility",
+      "staticWebApps.uninstallStaticWebAppsCli",
+      "staticWebApps.viewProperties"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "limited",
+        "description": "Some features are not supported in virtual workspaces."
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

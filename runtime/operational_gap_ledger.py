@@ -435,11 +435,12 @@ def _validate_card(
         raise ValueError("source_refs must contain at least one source reference")
     discovery_source = str(card.get("discovery_source") or "").strip()
     for ref in card["source_refs"]:
-        allow_empty_symbols = (
-            allow_local_discovery_empty_symbols
-            and bool(discovery_source)
-            and str(ref.get("path") or "").strip() == discovery_source
-        )
+        # Historical discovery events predate symbol-bound source references.
+        # Replay must preserve those events long enough for a later annotation
+        # to repair them.  New appends remain fail-closed in
+        # ``_prepare_event`` below, which permits an empty symbol list only for
+        # the exact hash-bound local discovery source.
+        allow_empty_symbols = allow_local_discovery_empty_symbols
         if (
             not isinstance(ref, Mapping)
             or not str(ref.get("path") or "").strip()
@@ -465,7 +466,14 @@ def _validate_card(
 def _validate_current_card(card: Mapping[str, Any]) -> None:
     """Revalidate every mutable card field after an annotation patch."""
 
-    _validate_card({field: card[field] for field in CARD_REQUIRED})
+    # A non-source annotation on a legacy card must not make the entire ledger
+    # unreplayable before a later source-reference correction can be applied.
+    # Append-time validation still rejects newly introduced empty symbols, and
+    # the progress projection keeps every remaining legacy omission visible.
+    _validate_card(
+        {field: card[field] for field in CARD_REQUIRED},
+        allow_local_discovery_empty_symbols=True,
+    )
 
 
 def _resolved_evidence_path(root: Path, reference: str) -> Path | None:

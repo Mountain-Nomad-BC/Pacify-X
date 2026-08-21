@@ -1,0 +1,20 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007333",
+  "effect": "write",
+  "scope": [
+    "repository-complete-current-tree-and-git-index",
+    "git-ref:main"
+  ],
+  "authority": "The user previously requested committing and merging the complete repair to GitHub and now authorized everything necessary for full intended operation; Codex retains repository authority.",
+  "expected_effect": "Stage the complete reviewed repair tree and create a reversible local commit on main so the exact clean tree can enter certification.",
+  "rollback": "Before publication, restore the prior main ref through Git history without deleting the repair commit; after publication use a new revert commit.",
+  "evidence": [
+    {
+      "reference": "AGENTS.md",
+      "artifact_sha256": "f9763711bb3503acb4ac8fd09fc335f0b0ccfc543cccb0e70f37138b3b006cf6",
+      "artifact_size": 2612,
+      "claim": "Repository engineering contract requires a clean exact tree for certification readiness."
+    }
+  ]
+}

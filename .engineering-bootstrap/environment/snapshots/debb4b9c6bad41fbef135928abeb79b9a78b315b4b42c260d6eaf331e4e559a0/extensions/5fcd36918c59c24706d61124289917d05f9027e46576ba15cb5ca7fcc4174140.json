@@ -1,0 +1,554 @@
+{
+  "id": "vscjava.vscode-gradle",
+  "name": "Gradle for Java",
+  "version": "3.18.0",
+  "publisher": "vscjava",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "grammars",
+    "javaExtensions",
+    "jsonValidation",
+    "languages",
+    "menus",
+    "problemMatchers",
+    "submenus",
+    "taskDefinitions",
+    "views",
+    "viewsContainers"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "vscjava.vscode-gradle",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "vscjava.vscode-gradle",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:grammars",
+      "kind": "grammars",
+      "provider": "vscjava.vscode-gradle",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:javaExtensions",
+      "kind": "javaExtensions",
+      "provider": "vscjava.vscode-gradle",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "vscjava.vscode-gradle",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languages",
+      "kind": "languages",
+      "provider": "vscjava.vscode-gradle",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "vscjava.vscode-gradle",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:problemMatchers",
+      "kind": "problemMatchers",
+      "provider": "vscjava.vscode-gradle",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "vscjava.vscode-gradle",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:taskDefinitions",
+      "kind": "taskDefinitions",
+      "provider": "vscjava.vscode-gradle",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "vscjava.vscode-gradle",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "vscjava.vscode-gradle",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "gradle.cancelBuild",
+      "invocation": "vscode.commands.executeCommand('gradle.cancelBuild', ...args)",
+      "title": "Cancel Task",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.cancelDependencyLoading",
+      "invocation": "vscode.commands.executeCommand('gradle.cancelDependencyLoading', ...args)",
+      "title": "Cancel Loading Dependencies",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.cancellingTreeItemTask",
+      "invocation": "vscode.commands.executeCommand('gradle.cancellingTreeItemTask', ...args)",
+      "title": "Cancelling Task",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.cancelTreeItemTask",
+      "invocation": "vscode.commands.executeCommand('gradle.cancelTreeItemTask', ...args)",
+      "title": "Cancel Task",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.clearAllRecentTasks",
+      "invocation": "vscode.commands.executeCommand('gradle.clearAllRecentTasks', ...args)",
+      "title": "Clear Recent Tasks",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.closeAllTaskTerminals",
+      "invocation": "vscode.commands.executeCommand('gradle.closeAllTaskTerminals', ...args)",
+      "title": "Close All Terminals",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.closeTaskTerminals",
+      "invocation": "vscode.commands.executeCommand('gradle.closeTaskTerminals', ...args)",
+      "title": "Close Terminal/s",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.createProject",
+      "invocation": "vscode.commands.executeCommand('gradle.createProject', ...args)",
+      "title": "Create a Gradle Java Project...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.createProjectAdvanced",
+      "invocation": "vscode.commands.executeCommand('gradle.createProjectAdvanced', ...args)",
+      "title": "Create a Gradle Java Project... (Advanced)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.debugTask",
+      "invocation": "vscode.commands.executeCommand('gradle.debugTask', ...args)",
+      "title": "Debug Task",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.debugTaskWithArgs",
+      "invocation": "vscode.commands.executeCommand('gradle.debugTaskWithArgs', ...args)",
+      "title": "Debug Task With Args",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.dependency.reveal",
+      "invocation": "vscode.commands.executeCommand('gradle.dependency.reveal', ...args)",
+      "title": "Go to Dependency",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.explorerFlat",
+      "invocation": "vscode.commands.executeCommand('gradle.explorerFlat', ...args)",
+      "title": "Show Flat Tasks",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.explorerTree",
+      "invocation": "vscode.commands.executeCommand('gradle.explorerTree', ...args)",
+      "title": "Show Hierarchical Tasks",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.findTask",
+      "invocation": "vscode.commands.executeCommand('gradle.findTask', ...args)",
+      "title": "Find Gradle Task",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.hideStoppedDaemons",
+      "invocation": "vscode.commands.executeCommand('gradle.hideStoppedDaemons', ...args)",
+      "title": "Hide Stopped Daemons",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.java.projectConfiguration.update",
+      "invocation": "vscode.commands.executeCommand('gradle.java.projectConfiguration.update', ...args)",
+      "title": "Reload All Gradle Projects",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.openBuildFile",
+      "invocation": "vscode.commands.executeCommand('gradle.openBuildFile', ...args)",
+      "title": "Open Build File",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.openSettings",
+      "invocation": "vscode.commands.executeCommand('gradle.openSettings', ...args)",
+      "title": "Open Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.pinTask",
+      "invocation": "vscode.commands.executeCommand('gradle.pinTask', ...args)",
+      "title": "Pin Task",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.pinTaskWithArgs",
+      "invocation": "vscode.commands.executeCommand('gradle.pinTaskWithArgs', ...args)",
+      "title": "Pin Task With Args",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.refresh",
+      "invocation": "vscode.commands.executeCommand('gradle.refresh', ...args)",
+      "title": "Refresh Gradle Projects View",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.refreshDaemonStatus",
+      "invocation": "vscode.commands.executeCommand('gradle.refreshDaemonStatus', ...args)",
+      "title": "Refresh Daemon Status",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.reloadDependencies",
+      "invocation": "vscode.commands.executeCommand('gradle.reloadDependencies', ...args)",
+      "title": "Reload Dependencies",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.removeRecentTask",
+      "invocation": "vscode.commands.executeCommand('gradle.removeRecentTask', ...args)",
+      "title": "Remove Recent Task",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.restartTask",
+      "invocation": "vscode.commands.executeCommand('gradle.restartTask', ...args)",
+      "title": "Restart Task",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.runBuild",
+      "invocation": "vscode.commands.executeCommand('gradle.runBuild', ...args)",
+      "title": "Run a Gradle Build",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.runTask",
+      "invocation": "vscode.commands.executeCommand('gradle.runTask', ...args)",
+      "title": "Run Task",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.runTasks",
+      "invocation": "vscode.commands.executeCommand('gradle.runTasks', ...args)",
+      "title": "Run Gradle Tasks...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.runTaskWithArgs",
+      "invocation": "vscode.commands.executeCommand('gradle.runTaskWithArgs', ...args)",
+      "title": "Run Task With Args",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.showLogs",
+      "invocation": "vscode.commands.executeCommand('gradle.showLogs', ...args)",
+      "title": "Show logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.showProcessMessage",
+      "invocation": "vscode.commands.executeCommand('gradle.showProcessMessage', ...args)",
+      "title": "Show Gradle process information message box",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.showStoppedDaemons",
+      "invocation": "vscode.commands.executeCommand('gradle.showStoppedDaemons', ...args)",
+      "title": "Show Stopped Daemons",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.showTasks",
+      "invocation": "vscode.commands.executeCommand('gradle.showTasks', ...args)",
+      "title": "Show Gradle Tasks",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.showTaskTerminal",
+      "invocation": "vscode.commands.executeCommand('gradle.showTaskTerminal', ...args)",
+      "title": "Show Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.stopDaemon",
+      "invocation": "vscode.commands.executeCommand('gradle.stopDaemon', ...args)",
+      "title": "Stop Daemon",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.stopDaemons",
+      "invocation": "vscode.commands.executeCommand('gradle.stopDaemons', ...args)",
+      "title": "Stop Daemons",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "gradle:hasValidDaemons"
+    },
+    {
+      "id": "gradle.unpinAllTasks",
+      "invocation": "vscode.commands.executeCommand('gradle.unpinAllTasks', ...args)",
+      "title": "Unpin all Tasks",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "gradle.unpinTask",
+      "invocation": "vscode.commands.executeCommand('gradle.unpinTask', ...args)",
+      "title": "Unpin Task",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:_gradle.onWillImporterConnect",
+    "workspaceContains:**/build.gradle",
+    "workspaceContains:**/build.gradle.kts",
+    "workspaceContains:**/gradlew",
+    "workspaceContains:**/gradlew.bat",
+    "workspaceContains:**/settings.gradle",
+    "workspaceContains:**/settings.gradle.kts",
+    "workspaceContains:build.gradle",
+    "workspaceContains:build.gradle.kts",
+    "workspaceContains:settings.gradle",
+    "workspaceContains:settings.gradle.kts"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "vscjava.vscode-gradle",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:grammars",
+      "contribution:javaExtensions",
+      "contribution:jsonValidation",
+      "contribution:languages",
+      "contribution:menus",
+      "contribution:problemMatchers",
+      "contribution:submenus",
+      "contribution:taskDefinitions",
+      "contribution:views",
+      "contribution:viewsContainers"
+    ],
+    "interface": [
+      "gradle.cancelBuild",
+      "gradle.cancelDependencyLoading",
+      "gradle.cancellingTreeItemTask",
+      "gradle.cancelTreeItemTask",
+      "gradle.clearAllRecentTasks",
+      "gradle.closeAllTaskTerminals",
+      "gradle.closeTaskTerminals",
+      "gradle.createProject",
+      "gradle.createProjectAdvanced",
+      "gradle.debugTask",
+      "gradle.debugTaskWithArgs",
+      "gradle.dependency.reveal",
+      "gradle.explorerFlat",
+      "gradle.explorerTree",
+      "gradle.findTask",
+      "gradle.hideStoppedDaemons",
+      "gradle.java.projectConfiguration.update",
+      "gradle.openBuildFile",
+      "gradle.openSettings",
+      "gradle.pinTask",
+      "gradle.pinTaskWithArgs",
+      "gradle.refresh",
+      "gradle.refreshDaemonStatus",
+      "gradle.reloadDependencies",
+      "gradle.removeRecentTask",
+      "gradle.restartTask",
+      "gradle.runBuild",
+      "gradle.runTask",
+      "gradle.runTasks",
+      "gradle.runTaskWithArgs",
+      "gradle.showLogs",
+      "gradle.showProcessMessage",
+      "gradle.showStoppedDaemons",
+      "gradle.showTasks",
+      "gradle.showTaskTerminal",
+      "gradle.stopDaemon",
+      "gradle.stopDaemons",
+      "gradle.unpinAllTasks",
+      "gradle.unpinTask"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

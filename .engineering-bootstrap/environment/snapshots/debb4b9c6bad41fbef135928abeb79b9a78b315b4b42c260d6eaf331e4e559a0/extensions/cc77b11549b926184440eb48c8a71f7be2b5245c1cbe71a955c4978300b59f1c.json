@@ -1,0 +1,620 @@
+{
+  "id": "vscjava.vscode-java-dependency",
+  "name": "Project Manager for Java",
+  "version": "0.27.6",
+  "publisher": "vscjava",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "chatInstructions",
+    "chatSkills",
+    "commands",
+    "configuration",
+    "javaExtensions",
+    "keybindings",
+    "languageModelTools",
+    "menus",
+    "submenus",
+    "taskDefinitions",
+    "views",
+    "viewsWelcome"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:chatInstructions",
+      "kind": "chatInstructions",
+      "provider": "vscjava.vscode-java-dependency",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:chatSkills",
+      "kind": "chatSkills",
+      "provider": "vscjava.vscode-java-dependency",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "vscjava.vscode-java-dependency",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "vscjava.vscode-java-dependency",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:javaExtensions",
+      "kind": "javaExtensions",
+      "provider": "vscjava.vscode-java-dependency",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "vscjava.vscode-java-dependency",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languageModelTools",
+      "kind": "languageModelTools",
+      "provider": "vscjava.vscode-java-dependency",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "vscjava.vscode-java-dependency",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "vscjava.vscode-java-dependency",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:taskDefinitions",
+      "kind": "taskDefinitions",
+      "provider": "vscjava.vscode-java-dependency",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "vscjava.vscode-java-dependency",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "vscjava.vscode-java-dependency",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "_java.project.create.from.fileexplorer.menu",
+      "invocation": "vscode.commands.executeCommand('_java.project.create.from.fileexplorer.menu', ...args)",
+      "title": "%contributes.commands.java.project.new%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "_java.project.create.from.fileexplorer.welcome",
+      "invocation": "vscode.commands.executeCommand('_java.project.create.from.fileexplorer.welcome', ...args)",
+      "title": "%contributes.commands.java.project.create%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "_java.project.create.from.javaprojectexplorer",
+      "invocation": "vscode.commands.executeCommand('_java.project.create.from.javaprojectexplorer', ...args)",
+      "title": "%contributes.commands.java.project.create%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "_java.project.create.from.javaprojectexplorer.welcome",
+      "invocation": "vscode.commands.executeCommand('_java.project.create.from.javaprojectexplorer.welcome', ...args)",
+      "title": "%contributes.commands.java.project.create%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "_java.project.create.from.menus.file",
+      "invocation": "vscode.commands.executeCommand('_java.project.create.from.menus.file', ...args)",
+      "title": "%contributes.commands.java.project.new%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "_java.upgradeWithCopilot",
+      "invocation": "vscode.commands.executeCommand('_java.upgradeWithCopilot', ...args)",
+      "title": "%contributes.commands.java.upgradeWithCopilot%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "_java.view.modernizeJavaProject",
+      "invocation": "vscode.commands.executeCommand('_java.view.modernizeJavaProject', ...args)",
+      "title": "%contributes.commands.java.view.modernizeJavaProject%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.project.addLibraries",
+      "invocation": "vscode.commands.executeCommand('java.project.addLibraries', ...args)",
+      "title": "%contributes.commands.java.project.addLibraries%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.project.addLibraryFolders",
+      "invocation": "vscode.commands.executeCommand('java.project.addLibraryFolders', ...args)",
+      "title": "%contributes.commands.java.project.addLibraryFolders%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.project.build.project",
+      "invocation": "vscode.commands.executeCommand('java.project.build.project', ...args)",
+      "title": "%contributes.commands.java.project.build.project%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.project.build.workspace",
+      "invocation": "vscode.commands.executeCommand('java.project.build.workspace', ...args)",
+      "title": "%contributes.commands.java.project.build.workspace%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.project.clean.workspace",
+      "invocation": "vscode.commands.executeCommand('java.project.clean.workspace', ...args)",
+      "title": "%contributes.commands.java.project.clean.workspace%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.project.create",
+      "invocation": "vscode.commands.executeCommand('java.project.create', ...args)",
+      "title": "%contributes.commands.java.project.create%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.project.explorer.hideNonJavaResources",
+      "invocation": "vscode.commands.executeCommand('java.project.explorer.hideNonJavaResources', ...args)",
+      "title": "%contributes.commands.java.project.explorer.hideNonJavaResources%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.project.explorer.showNonJavaResources",
+      "invocation": "vscode.commands.executeCommand('java.project.explorer.showNonJavaResources', ...args)",
+      "title": "%contributes.commands.java.project.explorer.showNonJavaResources%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.project.rebuild",
+      "invocation": "vscode.commands.executeCommand('java.project.rebuild', ...args)",
+      "title": "%contributes.commands.java.project.rebuild%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.project.rebuild.workspace",
+      "invocation": "vscode.commands.executeCommand('java.project.rebuild.workspace', ...args)",
+      "title": "%contributes.commands.java.project.rebuild.workspace%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.project.refreshLibraries",
+      "invocation": "vscode.commands.executeCommand('java.project.refreshLibraries', ...args)",
+      "title": "%contributes.commands.java.view.package.refresh%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.project.reloadProjectFromActiveFile",
+      "invocation": "vscode.commands.executeCommand('java.project.reloadProjectFromActiveFile', ...args)",
+      "title": "%contributes.commands.java.project.reloadProjectFromActiveFile%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.project.removeLibrary",
+      "invocation": "vscode.commands.executeCommand('java.project.removeLibrary', ...args)",
+      "title": "%contributes.commands.java.project.removeLibrary%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.project.update",
+      "invocation": "vscode.commands.executeCommand('java.project.update', ...args)",
+      "title": "%contributes.commands.java.project.update%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.fileExplorer.newPackage",
+      "invocation": "vscode.commands.executeCommand('java.view.fileExplorer.newPackage', ...args)",
+      "title": "%contributes.commands.java.view.fileExplorer.newPackage%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.menus.file.newJavaClass",
+      "invocation": "vscode.commands.executeCommand('java.view.menus.file.newJavaClass', ...args)",
+      "title": "%contributes.commands.java.view.menus.file.newJavaClass%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.changeToFlatPackageView",
+      "invocation": "vscode.commands.executeCommand('java.view.package.changeToFlatPackageView', ...args)",
+      "title": "%contributes.commands.java.view.package.changeToFlatPackageView%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.changeToHierarchicalPackageView",
+      "invocation": "vscode.commands.executeCommand('java.view.package.changeToHierarchicalPackageView', ...args)",
+      "title": "%contributes.commands.java.view.package.changeToHierarchicalPackageView%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.copyFilePath",
+      "invocation": "vscode.commands.executeCommand('java.view.package.copyFilePath', ...args)",
+      "title": "%contributes.commands.java.view.package.copyFilePath%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.copyRelativeFilePath",
+      "invocation": "vscode.commands.executeCommand('java.view.package.copyRelativeFilePath', ...args)",
+      "title": "%contributes.commands.java.view.package.copyRelativeFilePath%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.deleteFilePermanently",
+      "invocation": "vscode.commands.executeCommand('java.view.package.deleteFilePermanently', ...args)",
+      "title": "%contributes.commands.java.view.package.deleteFilePermanently%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.exportJar",
+      "invocation": "vscode.commands.executeCommand('java.view.package.exportJar', ...args)",
+      "title": "%contributes.commands.java.view.package.exportJar%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.linkWithFolderExplorer",
+      "invocation": "vscode.commands.executeCommand('java.view.package.linkWithFolderExplorer', ...args)",
+      "title": "%contributes.commands.java.view.package.linkWithFolderExplorer%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.moveFileToTrash",
+      "invocation": "vscode.commands.executeCommand('java.view.package.moveFileToTrash', ...args)",
+      "title": "%contributes.commands.java.view.package.moveFileToTrash%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.new",
+      "invocation": "vscode.commands.executeCommand('java.view.package.new', ...args)",
+      "title": "%contributes.commands.java.view.package.new%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.newFile",
+      "invocation": "vscode.commands.executeCommand('java.view.package.newFile', ...args)",
+      "title": "%contributes.commands.java.view.package.newFile%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.newFolder",
+      "invocation": "vscode.commands.executeCommand('java.view.package.newFolder', ...args)",
+      "title": "%contributes.commands.java.view.package.newFolder%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.newJavaAbstractClass",
+      "invocation": "vscode.commands.executeCommand('java.view.package.newJavaAbstractClass', ...args)",
+      "title": "%contributes.commands.java.view.package.newJavaAbstractClass%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.newJavaAnnotation",
+      "invocation": "vscode.commands.executeCommand('java.view.package.newJavaAnnotation', ...args)",
+      "title": "%contributes.commands.java.view.package.newJavaAnnotation%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.newJavaClass",
+      "invocation": "vscode.commands.executeCommand('java.view.package.newJavaClass', ...args)",
+      "title": "%contributes.commands.java.view.package.newJavaClass%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.newJavaEnum",
+      "invocation": "vscode.commands.executeCommand('java.view.package.newJavaEnum', ...args)",
+      "title": "%contributes.commands.java.view.package.newJavaEnum%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.newJavaInterface",
+      "invocation": "vscode.commands.executeCommand('java.view.package.newJavaInterface', ...args)",
+      "title": "%contributes.commands.java.view.package.newJavaInterface%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.newJavaRecord",
+      "invocation": "vscode.commands.executeCommand('java.view.package.newJavaRecord', ...args)",
+      "title": "%contributes.commands.java.view.package.newJavaRecord%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.newPackage",
+      "invocation": "vscode.commands.executeCommand('java.view.package.newPackage', ...args)",
+      "title": "%contributes.commands.java.view.package.newPackage%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.refresh",
+      "invocation": "vscode.commands.executeCommand('java.view.package.refresh', ...args)",
+      "title": "%contributes.commands.java.view.package.refresh%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.renameFile",
+      "invocation": "vscode.commands.executeCommand('java.view.package.renameFile', ...args)",
+      "title": "%contributes.commands.java.view.package.renameFile%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.revealFileInOS",
+      "invocation": "vscode.commands.executeCommand('java.view.package.revealFileInOS', ...args)",
+      "title": "%contributes.commands.java.view.package.revealFileInOS%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.revealInProjectExplorer",
+      "invocation": "vscode.commands.executeCommand('java.view.package.revealInProjectExplorer', ...args)",
+      "title": "%contributes.commands.java.view.package.revealInProjectExplorer%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.view.package.unlinkWithFolderExplorer",
+      "invocation": "vscode.commands.executeCommand('java.view.package.unlinkWithFolderExplorer', ...args)",
+      "title": "%contributes.commands.java.view.package.unlinkWithFolderExplorer%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:_java.project.open",
+    "onLanguage:java",
+    "workspaceContains:*/.classpath",
+    "workspaceContains:*/build.gradle",
+    "workspaceContains:*/build.gradle.kts",
+    "workspaceContains:*/pom.xml",
+    "workspaceContains:*/settings.gradle",
+    "workspaceContains:*/settings.gradle.kts",
+    "workspaceContains:.classpath",
+    "workspaceContains:build.gradle",
+    "workspaceContains:build.gradle.kts",
+    "workspaceContains:pom.xml",
+    "workspaceContains:settings.gradle",
+    "workspaceContains:settings.gradle.kts"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": false
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "vscjava.vscode-java-dependency",
+    "capabilities": [
+      "contribution:chatInstructions",
+      "contribution:chatSkills",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:javaExtensions",
+      "contribution:keybindings",
+      "contribution:languageModelTools",
+      "contribution:menus",
+      "contribution:submenus",
+      "contribution:taskDefinitions",
+      "contribution:views",
+      "contribution:viewsWelcome"
+    ],
+    "interface": [
+      "_java.project.create.from.fileexplorer.menu",
+      "_java.project.create.from.fileexplorer.welcome",
+      "_java.project.create.from.javaprojectexplorer",
+      "_java.project.create.from.javaprojectexplorer.welcome",
+      "_java.project.create.from.menus.file",
+      "_java.upgradeWithCopilot",
+      "_java.view.modernizeJavaProject",
+      "java.project.addLibraries",
+      "java.project.addLibraryFolders",
+      "java.project.build.project",
+      "java.project.build.workspace",
+      "java.project.clean.workspace",
+      "java.project.create",
+      "java.project.explorer.hideNonJavaResources",
+      "java.project.explorer.showNonJavaResources",
+      "java.project.rebuild",
+      "java.project.rebuild.workspace",
+      "java.project.refreshLibraries",
+      "java.project.reloadProjectFromActiveFile",
+      "java.project.removeLibrary",
+      "java.project.update",
+      "java.view.fileExplorer.newPackage",
+      "java.view.menus.file.newJavaClass",
+      "java.view.package.changeToFlatPackageView",
+      "java.view.package.changeToHierarchicalPackageView",
+      "java.view.package.copyFilePath",
+      "java.view.package.copyRelativeFilePath",
+      "java.view.package.deleteFilePermanently",
+      "java.view.package.exportJar",
+      "java.view.package.linkWithFolderExplorer",
+      "java.view.package.moveFileToTrash",
+      "java.view.package.new",
+      "java.view.package.newFile",
+      "java.view.package.newFolder",
+      "java.view.package.newJavaAbstractClass",
+      "java.view.package.newJavaAnnotation",
+      "java.view.package.newJavaClass",
+      "java.view.package.newJavaEnum",
+      "java.view.package.newJavaInterface",
+      "java.view.package.newJavaRecord",
+      "java.view.package.newPackage",
+      "java.view.package.refresh",
+      "java.view.package.renameFile",
+      "java.view.package.revealFileInOS",
+      "java.view.package.revealInProjectExplorer",
+      "java.view.package.unlinkWithFolderExplorer"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": false
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

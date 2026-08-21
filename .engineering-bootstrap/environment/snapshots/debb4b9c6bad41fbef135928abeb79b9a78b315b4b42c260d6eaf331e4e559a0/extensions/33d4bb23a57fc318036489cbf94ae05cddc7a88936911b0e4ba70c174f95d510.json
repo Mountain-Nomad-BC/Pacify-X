@@ -1,0 +1,199 @@
+{
+  "id": "mhutchie.git-graph",
+  "name": "Git Graph",
+  "version": "1.30.0",
+  "publisher": "mhutchie",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [
+    "workspace"
+  ],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "menus"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "mhutchie.git-graph",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "mhutchie.git-graph",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "mhutchie.git-graph",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "git-graph.addGitRepository",
+      "invocation": "vscode.commands.executeCommand('git-graph.addGitRepository', ...args)",
+      "title": "Add Git Repository...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git-graph.clearAvatarCache",
+      "invocation": "vscode.commands.executeCommand('git-graph.clearAvatarCache', ...args)",
+      "title": "Clear Avatar Cache",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git-graph.endAllWorkspaceCodeReviews",
+      "invocation": "vscode.commands.executeCommand('git-graph.endAllWorkspaceCodeReviews', ...args)",
+      "title": "End All Code Reviews in Workspace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git-graph.endSpecificWorkspaceCodeReview",
+      "invocation": "vscode.commands.executeCommand('git-graph.endSpecificWorkspaceCodeReview', ...args)",
+      "title": "End a specific Code Review in Workspace...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git-graph.fetch",
+      "invocation": "vscode.commands.executeCommand('git-graph.fetch', ...args)",
+      "title": "Fetch from Remote(s)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git-graph.openFile",
+      "invocation": "vscode.commands.executeCommand('git-graph.openFile', ...args)",
+      "title": "Open File",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "isInDiffEditor && resourceScheme == git-graph && git-graph:codiconsSupported"
+    },
+    {
+      "id": "git-graph.removeGitRepository",
+      "invocation": "vscode.commands.executeCommand('git-graph.removeGitRepository', ...args)",
+      "title": "Remove Git Repository...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git-graph.resumeWorkspaceCodeReview",
+      "invocation": "vscode.commands.executeCommand('git-graph.resumeWorkspaceCodeReview', ...args)",
+      "title": "Resume a specific Code Review in Workspace...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git-graph.version",
+      "invocation": "vscode.commands.executeCommand('git-graph.version', ...args)",
+      "title": "Get Version Information",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "git-graph.view",
+      "invocation": "vscode.commands.executeCommand('git-graph.view', ...args)",
+      "title": "View Git Graph (git log)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "*"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "workspace"
+    ],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "mhutchie.git-graph",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:menus"
+    ],
+    "interface": [
+      "git-graph.addGitRepository",
+      "git-graph.clearAvatarCache",
+      "git-graph.endAllWorkspaceCodeReviews",
+      "git-graph.endSpecificWorkspaceCodeReview",
+      "git-graph.fetch",
+      "git-graph.openFile",
+      "git-graph.removeGitRepository",
+      "git-graph.resumeWorkspaceCodeReview",
+      "git-graph.version",
+      "git-graph.view"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "workspace"
+      ],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

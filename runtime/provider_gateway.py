@@ -9,6 +9,8 @@ import hashlib
 import json
 from pathlib import Path
 from typing import Callable, Mapping, Protocol
+from urllib.parse import urlsplit
+from urllib.request import ProxyHandler, Request, build_opener
 
 from .contracts import ContractValidationError, validate_instance
 from .instrumentation_sdk import SDK_VERSION, build_operation_event
@@ -80,6 +82,98 @@ class ProviderRequest:
     budget_id: str | None = None
     max_input_tokens: int = 0
     max_output_tokens: int = 0
+
+
+class OllamaHttpAdapter:
+    """Bounded loopback-only Ollama adapter for the governed gateway."""
+
+    adapter_id = "ollama-http"
+
+    def __init__(
+        self,
+        base_url: str = "http://127.0.0.1:11434",
+        *,
+        timeout_seconds: float = 120.0,
+        opener: object | None = None,
+    ) -> None:
+        parsed = urlsplit(base_url)
+        if (
+            parsed.scheme != "http"
+            or parsed.hostname not in {"127.0.0.1", "::1"}
+            or parsed.username is not None
+            or parsed.password is not None
+            or parsed.query
+            or parsed.fragment
+            or parsed.path not in {"", "/"}
+        ):
+            raise ValueError("Ollama adapter requires a literal loopback HTTP origin")
+        if not 1 <= timeout_seconds <= 300:
+            raise ValueError("Ollama timeout must be between 1 and 300 seconds")
+        self.base_url = base_url.rstrip("/")
+        self.timeout_seconds = float(timeout_seconds)
+        # Ignore ambient proxy configuration so a local model request cannot be
+        # redirected through a network proxy.
+        self._opener = opener or build_opener(ProxyHandler({}))
+
+    def invoke(
+        self, model_id: str, payload: Mapping[str, object]
+    ) -> ProviderResponse:
+        model = model_id.strip()
+        if not model or len(model) > 160 or any(character.isspace() for character in model):
+            raise ValueError("Ollama model identity is invalid")
+        if "model" in payload or "stream" in payload:
+            raise ValueError("Ollama model and stream mode are gateway-owned")
+        has_messages = isinstance(payload.get("messages"), list)
+        has_prompt = isinstance(payload.get("prompt"), str)
+        if has_messages == has_prompt:
+            raise ValueError("Ollama payload requires exactly one prompt or messages input")
+        request_payload = dict(payload)
+        request_payload.update({"model": model, "stream": False})
+        encoded = _canonical(request_payload, limit=MAX_REQUEST_BYTES)
+        endpoint = "/api/chat" if has_messages else "/api/generate"
+        request = Request(
+            f"{self.base_url}{endpoint}",
+            data=encoded,
+            headers={"Content-Type": "application/json", "Accept": "application/json"},
+            method="POST",
+        )
+        with self._opener.open(request, timeout=self.timeout_seconds) as response:
+            raw = response.read(MAX_RESPONSE_BYTES + 1)
+        if len(raw) > MAX_RESPONSE_BYTES:
+            raise ValueError("Ollama response exceeds the configured byte bound")
+        try:
+            result = json.loads(raw.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as error:
+            raise ValueError("Ollama returned invalid JSON") from error
+        if not isinstance(result, dict) or result.get("error"):
+            raise ValueError("Ollama returned an invalid terminal response")
+        value = (
+            result.get("message", {}).get("content")
+            if has_messages and isinstance(result.get("message"), dict)
+            else result.get("response")
+        )
+        if not isinstance(value, str):
+            raise ValueError("Ollama terminal response omitted model output")
+        input_tokens = result.get("prompt_eval_count", 0)
+        output_tokens = result.get("eval_count", 0)
+        if (
+            not isinstance(input_tokens, int)
+            or isinstance(input_tokens, bool)
+            or input_tokens < 0
+            or not isinstance(output_tokens, int)
+            or isinstance(output_tokens, bool)
+            or output_tokens < 0
+        ):
+            raise ValueError("Ollama terminal response has invalid usage metadata")
+        return ProviderResponse(
+            value=value,
+            usage=ProviderUsage(
+                billing_state="local_non_billable",
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+                charge_microunits=0,
+            ),
+        )
 
 
 def _canonical(value: object, *, limit: int) -> bytes:

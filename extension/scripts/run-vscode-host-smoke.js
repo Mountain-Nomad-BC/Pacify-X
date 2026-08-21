@@ -50,10 +50,22 @@ function prepare(temporaryRoot, engineRoot) {
   return config;
 }
 
+function makeReceiptPortable(value, engineRoot) {
+  if (Array.isArray(value)) return value.map((item) => makeReceiptPortable(item, engineRoot));
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [key, makeReceiptPortable(item, engineRoot)]),
+    );
+  }
+  if (typeof value === 'string' && path.resolve(value) === path.resolve(engineRoot)) return '.';
+  return value;
+}
+
 async function main() {
+  const engineRoot = process.env.PX_ENGINE_ROOT ? path.resolve(process.env.PX_ENGINE_ROOT) : null;
+  assert.ok(engineRoot, 'PX_ENGINE_ROOT is required; set it to the repository root before running the host smoke test');
   const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'pacify-x-o04-vscode-'));
   markOwnedHostWorkspace(temporaryRoot, 'development-host-smoke');
-  const engineRoot = process.env.PX_ENGINE_ROOT ? path.resolve(process.env.PX_ENGINE_ROOT) : null;
   const config = prepare(temporaryRoot, engineRoot);
   const configPath = path.join(temporaryRoot, 'host-config.json');
   fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, 'utf8');
@@ -70,7 +82,8 @@ async function main() {
     const parsed = JSON.parse(fs.readFileSync(config.receipt, 'utf8'));
     parsed.process_lifecycle = run.receipt;
     fs.mkdirSync(path.dirname(retainedReceipt), { recursive: true });
-    fs.writeFileSync(retainedReceipt, `${JSON.stringify(parsed, null, 2)}\n`, 'utf8');
+    const portableReceipt = makeReceiptPortable(parsed, engineRoot);
+    fs.writeFileSync(retainedReceipt, `${JSON.stringify(portableReceipt, null, 2)}\n`, 'utf8');
     process.stdout.write(`${JSON.stringify(parsed, null, 2)}\n`);
   } finally {
     if (lifecycle) {
@@ -83,4 +96,5 @@ async function main() {
 }
 
 if (process.argv[2] === CHILD_FLAG) childMain(process.argv[3]).then(code => { process.exitCode = code; }).catch(error => { process.stderr.write(`${error.stack || error.message}\n`); process.exitCode = 1; });
+else if (process.argv.includes('--help')) process.stdout.write('Usage: set PX_ENGINE_ROOT=<repository-root> && node scripts/run-vscode-host-smoke.js\n');
 else main().catch(error => { process.stderr.write(`${error.stack || error.message}\n`); process.exitCode = 1; });

@@ -726,7 +726,7 @@
         "typing"
       ],
       "index_state": "reused",
-      "sha256": "7564a8f037c1f04c998e64d381bb176037c346ca34b933da042f44218a6a1985"
+      "sha256": "1217468bcfecce3518890988e0b62feb1f96a7568b73cd0ba8e7566f8d266644"
     },
     "runtime/durable_state.py": {
       "imports": [
@@ -1606,7 +1606,7 @@
         "uuid"
       ],
       "index_state": "reused",
-      "sha256": "1376058eb8429bcd89a6f0285e7b5209038067a98c1b0b795ad21bcff7fcce39"
+      "sha256": "27496135ce056006e6fbba27825e98df7732c506ab4e06d8ad75c6377af894d2"
     },
     "runtime/operational_observers.py": {
       "imports": [
@@ -1917,10 +1917,12 @@
         "hashlib",
         "json",
         "pathlib",
-        "typing"
+        "typing",
+        "urllib.parse",
+        "urllib.request"
       ],
       "index_state": "reused",
-      "sha256": "34c64e2afc36a38846e001ce9a2ddf9e647153538483ce07f41b2e26ff244fbd"
+      "sha256": "ec89f482fe61707af2f09818276b1377091fef3e0997838ebfb33df07323fad6"
     },
     "runtime/px_doctor.py": {
       "imports": [
@@ -3012,7 +3014,7 @@
         "sys"
       ],
       "index_state": "reused",
-      "sha256": "53f0a9ea6179d31a6ec7687a1c3936fcb7387e6782b31f7ce9d59bbb1e9ddf73"
+      "sha256": "2fe36d26eb748c6a99dd78ae4754a36078b2d8e75d24f335b633029ab3244ac0"
     },
     "scripts/build_profile_projections.py": {
       "imports": [
@@ -3716,7 +3718,7 @@
         "sys"
       ],
       "index_state": "reused",
-      "sha256": "1f3c1d220e2c10c51e8c760fe95ab919e2912461d77ea1dbe3a5fef4eee91cae"
+      "sha256": "8d466f07216cc6269c6e06a3c655669febeaa1d5cc332876953abf1ea99bbad3"
     },
     "scripts/register_card_control_resolution_review.py": {
       "imports": [
@@ -4353,7 +4355,7 @@
         "unittest.mock"
       ],
       "index_state": "reused",
-      "sha256": "82896a06319c1b00fbb59cef1298ad43d6576b10a8ca613b69120e961f481360"
+      "sha256": "8355b952a2c6fb5bbaf1f653e6c22e779f775265e90d46701046bc7ee18c6627"
     },
     "tests/test_declared_capability_recovery.py": {
       "imports": [
@@ -4414,7 +4416,7 @@
         "scripts.build_python_dependency_ownership"
       ],
       "index_state": "reused",
-      "sha256": "2f4c1e5252f883261e1e3d702f620ebe85be930ca1d5892317b8d193fa3c1c04"
+      "sha256": "ea061c6d701546dbd2bb690667d62da4fb00f097105c52b3569a31c766438806"
     },
     "tests/test_drop_in_bootstrap.py": {
       "imports": [
@@ -4777,7 +4779,7 @@
         "unittest"
       ],
       "index_state": "reused",
-      "sha256": "05e9b47655e0ff4a4a882ed8a0a410487260b005ec6197b90e475b81b1a67525"
+      "sha256": "7ef5b371e0190c3a0a916bb9827233c12869edd729c0d9f807ace6ed604e6131"
     },
     "tests/test_instrumentation_sdk.py": {
       "imports": [
@@ -5046,7 +5048,7 @@
         "scripts.build_operation_health_snapshot"
       ],
       "index_state": "reused",
-      "sha256": "1a1b8e88d7b52990b5f2128aae14752040b2d151e8505941b57197cf112f7fd0"
+      "sha256": "b7f3dc5f683d6cf6c13bd36ed0d9a5e02321e1cf06b6a21915be6eae11b73cde"
     },
     "tests/test_operational_controls.py": {
       "imports": [
@@ -5086,7 +5088,7 @@
         "time"
       ],
       "index_state": "reused",
-      "sha256": "255b2c536c0916a5c64ab3d12740e570eca67a93ae2f8fa8d5034c6983c90b35"
+      "sha256": "43c5d926a68847cef581869fd604ff46e7cb41a7e76aff4cb875b0a972f3a314"
     },
     "tests/test_operational_observers.py": {
       "imports": [
@@ -5311,7 +5313,7 @@
         "shutil"
       ],
       "index_state": "reused",
-      "sha256": "ae3e9f42743ea6d74849ae0f916cf11ae769ec63aa8e4aab0dbe02415008ac25"
+      "sha256": "48eb3f95d41d74697dfc05b26166908af983a9161a92eb7dc3278960edc3d10a"
     },
     "tests/test_provider_certification.py": {
       "imports": [
@@ -5339,7 +5341,7 @@
         "tempfile"
       ],
       "index_state": "reused",
-      "sha256": "a65064f37540b35e0a44261d7b1d240e2353081ff364322ea43d64880d089373"
+      "sha256": "d45e2ec344c21f95c377108bd056b427b316932746688c46d04459d46a4b14d3"
     },
     "tests/test_public_repository_surface.py": {
       "imports": [
@@ -5374,7 +5376,7 @@
         "runtime.wal_transaction"
       ],
       "index_state": "reused",
-      "sha256": "91327e3017322097e26954902d257ad38f4330189c39234dc12545a54364cc30"
+      "sha256": "fab46860d3ec3e879251bdd94603a8e031fdaf10aa47f3f2c09a10b4ae28bc07"
     },
     "tests/test_python_surface_boundaries.py": {
       "imports": [
@@ -6320,7 +6322,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "5e5f459cbe4f4884b270e506198f54465f763c63d9d07d0a40fa8103599ee58d",
+      "input_sha256": "4ac84653eaec09f96634434bce50f3ee010e38de1cfa7dd46242eb9acf5cb843",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6395,7 +6397,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "310fbff6d211fa00acd76c870ba56d29867b2cdfc4b6311b8f7a36de9617bc5e",
+      "input_sha256": "533b0eba7eec1501e40f197367e3e7e7e98dda6d2154a7a02bc459b1ba7348b1",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6463,7 +6465,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "562b66463e4bb17a6fa54d7c668209c4a8e5e64f0f7f95f97615846ea7173b60",
+      "input_sha256": "45bb12e78807d3debff6f43ce74db617d45f82b5ca8478d1bb0bd7bd0ed6316a",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6508,7 +6510,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "eb858cef489bc6af923e03025ad862ac77107f0066913eacedcbc57ec99b0329",
+      "input_sha256": "4728d69e57ccb5159cf0a1d04440c2b3d63648d1de8953da302765d3f40611ea",
       "inputs": [
         ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/media/dashboard.js",
         ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/src/activityManager.js",
@@ -6814,6 +6816,7 @@
         "extension/scripts/owned-host-runner.js",
         "extension/scripts/owned-vscode-test-cache.js",
         "extension/scripts/package-vsix.js",
+        "extension/scripts/refresh-environment-inventory.js",
         "extension/scripts/run-installed-vsix-smoke.js",
         "extension/scripts/run-isolated-current-source-walk.js",
         "extension/scripts/run-operational-ui-walk.js",
@@ -7716,6 +7719,7 @@
         "extension/scripts/owned-host-runner.js",
         "extension/scripts/owned-vscode-test-cache.js",
         "extension/scripts/package-vsix.js",
+        "extension/scripts/refresh-environment-inventory.js",
         "extension/scripts/run-installed-vsix-smoke.js",
         "extension/scripts/run-isolated-current-source-walk.js",
         "extension/scripts/run-operational-ui-walk.js",
@@ -8342,7 +8346,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "220933ea4a9f3fc6f7df9200ac781051c7b152e42e54acac183dfc353de0523a",
+      "input_sha256": "58044111706b3433c02cd72c3d0b5d484cf649afbafc2cb6066718d8d52123f4",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -8577,7 +8581,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin A through F; this lane shares canonical registry state with core-n-s and must not overlap it.",
       "group": "core-a-f",
-      "input_sha256": "b591ef7aa4174923d3f7bf55a9fbde21aeb011fb87c0a67534a7c2e4b533b157",
+      "input_sha256": "6438b80a3ced2709e75a22339f1e64511c5c19afae0d3f073de2df67717d2103",
       "inputs": [
         "builders/declared_suite_builder.py",
         "builders/declared_suite_support_builder.py",
@@ -9153,7 +9157,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
       "group": "core-n-s",
-      "input_sha256": "7f2e9372303796d06508db655d421e9f0b521ba28aaafc3f9504793af5ceb3e1",
+      "input_sha256": "9d0c15e13dbb831b390282241048b030def9a9b91cefaba6f9f8f17ac0823d0a",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",

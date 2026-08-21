@@ -1,0 +1,812 @@
+{
+  "id": "streetsidesoftware.code-spell-checker",
+  "name": "Code Spell Checker",
+  "version": "4.5.6",
+  "publisher": "streetsidesoftware",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [
+    "workspace"
+  ],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "configurationDefaults",
+    "icons",
+    "jsonValidation",
+    "languages",
+    "menus",
+    "submenus",
+    "terminal",
+    "views",
+    "viewsContainers",
+    "viewsWelcome"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "streetsidesoftware.code-spell-checker",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "streetsidesoftware.code-spell-checker",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configurationDefaults",
+      "kind": "configurationDefaults",
+      "provider": "streetsidesoftware.code-spell-checker",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:icons",
+      "kind": "icons",
+      "provider": "streetsidesoftware.code-spell-checker",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "streetsidesoftware.code-spell-checker",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languages",
+      "kind": "languages",
+      "provider": "streetsidesoftware.code-spell-checker",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "streetsidesoftware.code-spell-checker",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "streetsidesoftware.code-spell-checker",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:terminal",
+      "kind": "terminal",
+      "provider": "streetsidesoftware.code-spell-checker",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "streetsidesoftware.code-spell-checker",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "streetsidesoftware.code-spell-checker",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "streetsidesoftware.code-spell-checker",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "cSpell.about",
+      "invocation": "vscode.commands.executeCommand('cSpell.about', ...args)",
+      "title": "About the Spell Checker",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.cSpell.command.about"
+    },
+    {
+      "id": "cSpell.addIgnoreWord",
+      "invocation": "vscode.commands.executeCommand('cSpell.addIgnoreWord', ...args)",
+      "title": "Ignore Words",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.addIgnoreWordsToFolder",
+      "invocation": "vscode.commands.executeCommand('cSpell.addIgnoreWordsToFolder', ...args)",
+      "title": "Ignore Word in Folder Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.addIgnoreWordsToUser",
+      "invocation": "vscode.commands.executeCommand('cSpell.addIgnoreWordsToUser', ...args)",
+      "title": "Ignore Words in User Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.addIgnoreWordsToWorkspace",
+      "invocation": "vscode.commands.executeCommand('cSpell.addIgnoreWordsToWorkspace', ...args)",
+      "title": "Ignore Words in Workspace Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.addIssuesToDictionary",
+      "invocation": "vscode.commands.executeCommand('cSpell.addIssuesToDictionary', ...args)",
+      "title": "Add All Spelling Issues to Dictionary",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.addWordToCSpellConfig",
+      "invocation": "vscode.commands.executeCommand('cSpell.addWordToCSpellConfig', ...args)",
+      "title": "Add Words to CSpell Configuration",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.addWordToDictionary",
+      "invocation": "vscode.commands.executeCommand('cSpell.addWordToDictionary', ...args)",
+      "title": "Add Words to Dictionary",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.addWordToFolderDictionary",
+      "invocation": "vscode.commands.executeCommand('cSpell.addWordToFolderDictionary', ...args)",
+      "title": "Add Words to Folder Dictionary",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.addWordToFolderSettings",
+      "invocation": "vscode.commands.executeCommand('cSpell.addWordToFolderSettings', ...args)",
+      "title": "Add Words to Folder Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.addWordToUserDictionary",
+      "invocation": "vscode.commands.executeCommand('cSpell.addWordToUserDictionary', ...args)",
+      "title": "Add Words to User Dictionary",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.addWordToUserSettings",
+      "invocation": "vscode.commands.executeCommand('cSpell.addWordToUserSettings', ...args)",
+      "title": "Add Words to User Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.addWordToWorkspaceDictionary",
+      "invocation": "vscode.commands.executeCommand('cSpell.addWordToWorkspaceDictionary', ...args)",
+      "title": "Add Words to Workspace Dictionary",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.addWordToWorkspaceSettings",
+      "invocation": "vscode.commands.executeCommand('cSpell.addWordToWorkspaceSettings', ...args)",
+      "title": "Add Words to Workspace Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.autoFixSpellingIssues",
+      "invocation": "vscode.commands.executeCommand('cSpell.autoFixSpellingIssues', ...args)",
+      "title": "Fix all issues with a preferred suggestion in the current document.",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.createCSpellConfig",
+      "invocation": "vscode.commands.executeCommand('cSpell.createCSpellConfig', ...args)",
+      "title": "Create a CSpell Configuration File.",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.createCSpellTerminal",
+      "invocation": "vscode.commands.executeCommand('cSpell.createCSpellTerminal', ...args)",
+      "title": "Open a new CSpell REPL Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.createCustomDictionary",
+      "invocation": "vscode.commands.executeCommand('cSpell.createCustomDictionary', ...args)",
+      "title": "Create a Custom Dictionary File.",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.disableCurrentFileType",
+      "invocation": "vscode.commands.executeCommand('cSpell.disableCurrentFileType', ...args)",
+      "title": "Disable Spell Checking File Type",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.disableCurrentLanguage",
+      "invocation": "vscode.commands.executeCommand('cSpell.disableCurrentLanguage', ...args)",
+      "title": "Disable Spell Checking Document Type",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.disableForGlobal",
+      "invocation": "vscode.commands.executeCommand('cSpell.disableForGlobal', ...args)",
+      "title": "Disable Spell Checking by Default",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.disableForWorkspace",
+      "invocation": "vscode.commands.executeCommand('cSpell.disableForWorkspace', ...args)",
+      "title": "Disable Spell Checking For Workspace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.displayCSpellInfo",
+      "invocation": "vscode.commands.executeCommand('cSpell.displayCSpellInfo', ...args)",
+      "title": "Show Spell Checker Configuration Info",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.enableCurrentFileType",
+      "invocation": "vscode.commands.executeCommand('cSpell.enableCurrentFileType', ...args)",
+      "title": "Enable Spell Checking File Type",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.enableCurrentLanguage",
+      "invocation": "vscode.commands.executeCommand('cSpell.enableCurrentLanguage', ...args)",
+      "title": "Enable Spell Checking Document Type",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.enableForGlobal",
+      "invocation": "vscode.commands.executeCommand('cSpell.enableForGlobal', ...args)",
+      "title": "Enable Spell Checking by Default",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.enableForWorkspace",
+      "invocation": "vscode.commands.executeCommand('cSpell.enableForWorkspace', ...args)",
+      "title": "Enable Spell Checking For Workspace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.experimental.executeDocumentSymbolProvider",
+      "invocation": "vscode.commands.executeCommand('cSpell.experimental.executeDocumentSymbolProvider', ...args)",
+      "title": "Execute Document Symbol Provider on the current document.",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.cSpell.experimental.symbols"
+    },
+    {
+      "id": "cSpell.goToNextSpellingIssue",
+      "invocation": "vscode.commands.executeCommand('cSpell.goToNextSpellingIssue', ...args)",
+      "title": "Go to Next Spelling Issue",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.goToNextSpellingIssueAndSuggest",
+      "invocation": "vscode.commands.executeCommand('cSpell.goToNextSpellingIssueAndSuggest', ...args)",
+      "title": "Go to Next Spelling Issue and Suggest",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.goToPreviousSpellingIssue",
+      "invocation": "vscode.commands.executeCommand('cSpell.goToPreviousSpellingIssue', ...args)",
+      "title": "Go to Previous Spelling Issue",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.goToPreviousSpellingIssueAndSuggest",
+      "invocation": "vscode.commands.executeCommand('cSpell.goToPreviousSpellingIssueAndSuggest', ...args)",
+      "title": "Go to Previous Spelling Issue and Suggest",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.hide",
+      "invocation": "vscode.commands.executeCommand('cSpell.hide', ...args)",
+      "title": "Hide Spelling Issues",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.hideCSpellInfo",
+      "invocation": "vscode.commands.executeCommand('cSpell.hideCSpellInfo', ...args)",
+      "title": "Hide Spell Checker Configuration Info",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.insertDisableLineDirective",
+      "invocation": "vscode.commands.executeCommand('cSpell.insertDisableLineDirective', ...args)",
+      "title": "Insert Disable Current Line Directive",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.insertDisableNextLineDirective",
+      "invocation": "vscode.commands.executeCommand('cSpell.insertDisableNextLineDirective', ...args)",
+      "title": "Insert Disable Next Line Directive",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.insertIgnoreWordsDirective",
+      "invocation": "vscode.commands.executeCommand('cSpell.insertIgnoreWordsDirective', ...args)",
+      "title": "Insert Ignore Words Directive",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.insertWordsDirective",
+      "invocation": "vscode.commands.executeCommand('cSpell.insertWordsDirective', ...args)",
+      "title": "Insert Words Directive",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.issuesViewByFile.item.addWordToDictionary",
+      "invocation": "vscode.commands.executeCommand('cSpell.issuesViewByFile.item.addWordToDictionary', ...args)",
+      "title": "Add Word to Dictionary",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == cSpellIssuesViewByFile"
+    },
+    {
+      "id": "cSpell.issuesViewByFile.item.autoFixSpellingIssues",
+      "invocation": "vscode.commands.executeCommand('cSpell.issuesViewByFile.item.autoFixSpellingIssues', ...args)",
+      "title": "Fix issue with preferred suggestion in the current document.",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == cSpellIssuesViewByFile"
+    },
+    {
+      "id": "cSpell.issueViewer.item.addWordToDictionary",
+      "invocation": "vscode.commands.executeCommand('cSpell.issueViewer.item.addWordToDictionary', ...args)",
+      "title": "Add Word to Dictionary",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == cSpellIssuesViewByIssue"
+    },
+    {
+      "id": "cSpell.issueViewer.item.autoFixSpellingIssues",
+      "invocation": "vscode.commands.executeCommand('cSpell.issueViewer.item.autoFixSpellingIssues', ...args)",
+      "title": "Fix issue with preferred suggestion in the current document.",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == cSpellIssuesViewByIssue"
+    },
+    {
+      "id": "cSpell.issueViewer.item.openSuggestionsForIssue",
+      "invocation": "vscode.commands.executeCommand('cSpell.issueViewer.item.openSuggestionsForIssue', ...args)",
+      "title": "Show Suggestions",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == cSpellIssuesViewByIssue"
+    },
+    {
+      "id": "cSpell.logPerfTimeline",
+      "invocation": "vscode.commands.executeCommand('cSpell.logPerfTimeline', ...args)",
+      "title": "Log CSpell performance times to console",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.openFileInfoView",
+      "invocation": "vscode.commands.executeCommand('cSpell.openFileInfoView', ...args)",
+      "title": "Open Spell Checker File Information View",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.openIssuesPanel",
+      "invocation": "vscode.commands.executeCommand('cSpell.openIssuesPanel', ...args)",
+      "title": "Open Spell Checker Issues Panel",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.openSettings",
+      "invocation": "vscode.commands.executeCommand('cSpell.openSettings', ...args)",
+      "title": "Open Spell Checker Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.rateTheSpellChecker",
+      "invocation": "vscode.commands.executeCommand('cSpell.rateTheSpellChecker', ...args)",
+      "title": "Rate the Spell Checker",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.releaseNotes",
+      "invocation": "vscode.commands.executeCommand('cSpell.releaseNotes', ...args)",
+      "title": "Show Spell Checker Release Notes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.cSpell.command.releaseNotes"
+    },
+    {
+      "id": "cSpell.reload",
+      "invocation": "vscode.commands.executeCommand('cSpell.reload', ...args)",
+      "title": "Reload Spell Checker Configuration and Dictionaries",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.removeWordFromFolderDictionary",
+      "invocation": "vscode.commands.executeCommand('cSpell.removeWordFromFolderDictionary', ...args)",
+      "title": "Remove Words from the Folder Dictionary",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.removeWordFromUserDictionary",
+      "invocation": "vscode.commands.executeCommand('cSpell.removeWordFromUserDictionary', ...args)",
+      "title": "Remove Words from the Global Dictionary",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.removeWordFromWorkspaceDictionary",
+      "invocation": "vscode.commands.executeCommand('cSpell.removeWordFromWorkspaceDictionary', ...args)",
+      "title": "Remove Words from the Workspace Dictionaries",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.reportIssue",
+      "invocation": "vscode.commands.executeCommand('cSpell.reportIssue', ...args)",
+      "title": "Report an Issue with the Spell Checker",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.cSpell.command.reportIssue"
+    },
+    {
+      "id": "cSpell.restart",
+      "invocation": "vscode.commands.executeCommand('cSpell.restart', ...args)",
+      "title": "Restart Spell Checker Server",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.show",
+      "invocation": "vscode.commands.executeCommand('cSpell.show', ...args)",
+      "title": "Show Spelling Issues",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cspell.showActionsMenu",
+      "invocation": "vscode.commands.executeCommand('cspell.showActionsMenu', ...args)",
+      "title": "Show Spell Checker Actions Menu",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.sponsor",
+      "invocation": "vscode.commands.executeCommand('cSpell.sponsor', ...args)",
+      "title": "Sponsor the Spell Checker",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.cSpell.command.sponsor"
+    },
+    {
+      "id": "cSpell.suggestSpellingCorrections",
+      "invocation": "vscode.commands.executeCommand('cSpell.suggestSpellingCorrections', ...args)",
+      "title": "Spelling Suggestions...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "editorTextFocus && cSpell.editorMenuContext.showSuggestions"
+    },
+    {
+      "id": "cSpell.supportRequest",
+      "invocation": "vscode.commands.executeCommand('cSpell.supportRequest', ...args)",
+      "title": "Request Support with the Spell Checker",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.cSpell.command.enableSupportRequest"
+    },
+    {
+      "id": "cSpell.toggleEnableForGlobal",
+      "invocation": "vscode.commands.executeCommand('cSpell.toggleEnableForGlobal', ...args)",
+      "title": "Toggle Spell Checking in User Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.toggleEnableForWorkspace",
+      "invocation": "vscode.commands.executeCommand('cSpell.toggleEnableForWorkspace', ...args)",
+      "title": "Toggle Spell Checking for Workspace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.toggleEnableSpellChecker",
+      "invocation": "vscode.commands.executeCommand('cSpell.toggleEnableSpellChecker', ...args)",
+      "title": "Toggle Spell Checking",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.toggleTraceMode",
+      "invocation": "vscode.commands.executeCommand('cSpell.toggleTraceMode', ...args)",
+      "title": "Toggle Trace Mode",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpell.toggleVisible",
+      "invocation": "vscode.commands.executeCommand('cSpell.toggleVisible', ...args)",
+      "title": "Toggle Show Spelling Issues",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "cSpellRegExpTester.editRegExp",
+      "invocation": "vscode.commands.executeCommand('cSpellRegExpTester.editRegExp', ...args)",
+      "title": "Edit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.cSpell.experimental.enableRegexpView"
+    },
+    {
+      "id": "cSpellRegExpTester.testRegExp",
+      "invocation": "vscode.commands.executeCommand('cSpellRegExpTester.testRegExp', ...args)",
+      "title": "Test a Regular Expression on the current document.",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.cSpell.experimental.enableRegexpView"
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onStartupFinished"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "workspace"
+    ],
+    "workspace_trust": {
+      "supported": "limited",
+      "description": "JavaScript configuration files will NOT be loaded.",
+      "restrictedConfigurations": [
+        "cSpell.trustedWorkspace"
+      ]
+    },
+    "virtual_workspaces": {
+      "supported": "limited",
+      "description": "In virtual workspaces, it is not possible to load the CSpell configuration from a JavaScript file. The configuration must be in a JSON, JSONC, or YAML file. Any configuration that relies upon `node_modules` will not be loaded."
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "streetsidesoftware.code-spell-checker",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:configurationDefaults",
+      "contribution:icons",
+      "contribution:jsonValidation",
+      "contribution:languages",
+      "contribution:menus",
+      "contribution:submenus",
+      "contribution:terminal",
+      "contribution:views",
+      "contribution:viewsContainers",
+      "contribution:viewsWelcome"
+    ],
+    "interface": [
+      "cSpell.about",
+      "cSpell.addIgnoreWord",
+      "cSpell.addIgnoreWordsToFolder",
+      "cSpell.addIgnoreWordsToUser",
+      "cSpell.addIgnoreWordsToWorkspace",
+      "cSpell.addIssuesToDictionary",
+      "cSpell.addWordToCSpellConfig",
+      "cSpell.addWordToDictionary",
+      "cSpell.addWordToFolderDictionary",
+      "cSpell.addWordToFolderSettings",
+      "cSpell.addWordToUserDictionary",
+      "cSpell.addWordToUserSettings",
+      "cSpell.addWordToWorkspaceDictionary",
+      "cSpell.addWordToWorkspaceSettings",
+      "cSpell.autoFixSpellingIssues",
+      "cSpell.createCSpellConfig",
+      "cSpell.createCSpellTerminal",
+      "cSpell.createCustomDictionary",
+      "cSpell.disableCurrentFileType",
+      "cSpell.disableCurrentLanguage",
+      "cSpell.disableForGlobal",
+      "cSpell.disableForWorkspace",
+      "cSpell.displayCSpellInfo",
+      "cSpell.enableCurrentFileType",
+      "cSpell.enableCurrentLanguage",
+      "cSpell.enableForGlobal",
+      "cSpell.enableForWorkspace",
+      "cSpell.experimental.executeDocumentSymbolProvider",
+      "cSpell.goToNextSpellingIssue",
+      "cSpell.goToNextSpellingIssueAndSuggest",
+      "cSpell.goToPreviousSpellingIssue",
+      "cSpell.goToPreviousSpellingIssueAndSuggest",
+      "cSpell.hide",
+      "cSpell.hideCSpellInfo",
+      "cSpell.insertDisableLineDirective",
+      "cSpell.insertDisableNextLineDirective",
+      "cSpell.insertIgnoreWordsDirective",
+      "cSpell.insertWordsDirective",
+      "cSpell.issuesViewByFile.item.addWordToDictionary",
+      "cSpell.issuesViewByFile.item.autoFixSpellingIssues",
+      "cSpell.issueViewer.item.addWordToDictionary",
+      "cSpell.issueViewer.item.autoFixSpellingIssues",
+      "cSpell.issueViewer.item.openSuggestionsForIssue",
+      "cSpell.logPerfTimeline",
+      "cSpell.openFileInfoView",
+      "cSpell.openIssuesPanel",
+      "cSpell.openSettings",
+      "cSpell.rateTheSpellChecker",
+      "cSpell.releaseNotes",
+      "cSpell.reload",
+      "cSpell.removeWordFromFolderDictionary",
+      "cSpell.removeWordFromUserDictionary",
+      "cSpell.removeWordFromWorkspaceDictionary",
+      "cSpell.reportIssue",
+      "cSpell.restart",
+      "cSpell.show",
+      "cspell.showActionsMenu",
+      "cSpell.sponsor",
+      "cSpell.suggestSpellingCorrections",
+      "cSpell.supportRequest",
+      "cSpell.toggleEnableForGlobal",
+      "cSpell.toggleEnableForWorkspace",
+      "cSpell.toggleEnableSpellChecker",
+      "cSpell.toggleTraceMode",
+      "cSpell.toggleVisible",
+      "cSpellRegExpTester.editRegExp",
+      "cSpellRegExpTester.testRegExp"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "workspace"
+      ],
+      "workspace_trust": {
+        "supported": "limited",
+        "description": "JavaScript configuration files will NOT be loaded.",
+        "restrictedConfigurations": [
+          "cSpell.trustedWorkspace"
+        ]
+      },
+      "virtual_workspaces": {
+        "supported": "limited",
+        "description": "In virtual workspaces, it is not possible to load the CSpell configuration from a JavaScript file. The configuration must be in a JSON, JSONC, or YAML file. Any configuration that relies upon `node_modules` will not be loaded."
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "id": "ms-azure-load-testing.microsoft-testing",
+  "name": "Azure Load Testing",
+  "version": "0.2.0",
+  "publisher": "ms-azure-load-testing",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "chatParticipants",
+    "commands",
+    "configuration",
+    "languageModelTools",
+    "walkthroughs"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:chatParticipants",
+      "kind": "chatParticipants",
+      "provider": "ms-azure-load-testing.microsoft-testing",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-azure-load-testing.microsoft-testing",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-azure-load-testing.microsoft-testing",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languageModelTools",
+      "kind": "languageModelTools",
+      "provider": "ms-azure-load-testing.microsoft-testing",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "ms-azure-load-testing.microsoft-testing",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "testing.load.copilot.createLoadTest",
+      "invocation": "vscode.commands.executeCommand('testing.load.copilot.createLoadTest', ...args)",
+      "title": "Load Testing: Create load test",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "testing.load.openWalkthrough",
+      "invocation": "vscode.commands.executeCommand('testing.load.openWalkthrough', ...args)",
+      "title": "Load Testing: Open Walkthrough",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "testing.load.runLoadTestInAzure",
+      "invocation": "vscode.commands.executeCommand('testing.load.runLoadTestInAzure', ...args)",
+      "title": "Load Testing: Run load test (Azure Load Testing)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "testing.load.runLoadTestLocally",
+      "invocation": "vscode.commands.executeCommand('testing.load.runLoadTestLocally', ...args)",
+      "title": "Load Testing: Run load test (local)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "testing.load.viewLoadTestRuns",
+      "invocation": "vscode.commands.executeCommand('testing.load.viewLoadTestRuns', ...args)",
+      "title": "Load Testing: View load test runs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "github.copilot-chat"
+  ],
+  "activation_events": [
+    "onView:ms-azure-load-testing.microsoft-testing#getting-started"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-azure-load-testing.microsoft-testing",
+    "capabilities": [
+      "contribution:chatParticipants",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:languageModelTools",
+      "contribution:walkthroughs"
+    ],
+    "interface": [
+      "testing.load.copilot.createLoadTest",
+      "testing.load.openWalkthrough",
+      "testing.load.runLoadTestInAzure",
+      "testing.load.runLoadTestLocally",
+      "testing.load.viewLoadTestRuns"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

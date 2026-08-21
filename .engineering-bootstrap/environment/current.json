@@ -62,10 +62,10 @@
     ]
   },
   "summary": {
-    "extensions": 0,
+    "extensions": 64,
     "active_extensions": 0,
     "system_tools": 12,
-    "available_tools": 4,
+    "available_tools": 5,
     "python_packages": 269,
     "npm_global_packages": 0,
     "npm_project_packages": 0,
@@ -75,65 +75,65 @@
     "environment_variables": 15,
     "environment_scan_capped": false,
     "admitted_roots": 1,
-    "graph_nodes": 342,
-    "graph_edges": 2245
+    "graph_nodes": 5766,
+    "graph_edges": 11553
   },
   "storage": {
     "mode": "compact-index-with-hash-verified-lazy-shards",
-    "snapshot_directory": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e",
+    "snapshot_directory": "snapshots/5dcf34d46a14a353a26b0e9d637d19995ce22ffaa5f71a5af7bf5cab18c64a91",
     "per_extension_contracts": true
   },
   "datasets": {
     "extensions": {
-      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/extensions-index.json",
-      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
-      "records": 0
+      "path": "snapshots/5dcf34d46a14a353a26b0e9d637d19995ce22ffaa5f71a5af7bf5cab18c64a91/extensions-index.json",
+      "sha256": "3a79932ac624178241d39a04ecd0b98a008d0d86aaf1cf54a7c9b4bf7b43e54d",
+      "records": 64
     },
     "tools": {
-      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/system-tools.json",
-      "sha256": "990b274cf6ed05246646c52f8813f97f58b43963c385935e69cf95eaf388c076",
+      "path": "snapshots/5dcf34d46a14a353a26b0e9d637d19995ce22ffaa5f71a5af7bf5cab18c64a91/system-tools.json",
+      "sha256": "33b33ff5a4a873202d37567083f66194312eb6369d53b6089c1168f731c050db",
       "records": 12
     },
     "python": {
-      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/python-packages.json",
+      "path": "snapshots/5dcf34d46a14a353a26b0e9d637d19995ce22ffaa5f71a5af7bf5cab18c64a91/python-packages.json",
       "sha256": "7384cef46b498aa527e5989e02ccedf5c2803d4a9a89eab24f8b0d487cca128e",
       "records": 269
     },
     "npm_global": {
-      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/npm-global-packages.json",
+      "path": "snapshots/5dcf34d46a14a353a26b0e9d637d19995ce22ffaa5f71a5af7bf5cab18c64a91/npm-global-packages.json",
       "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
       "records": 0
     },
     "npm_project": {
-      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/npm-project-packages.json",
+      "path": "snapshots/5dcf34d46a14a353a26b0e9d637d19995ce22ffaa5f71a5af7bf5cab18c64a91/npm-project-packages.json",
       "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
       "records": 0
     },
     "environments": {
-      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/virtual-environments.json",
-      "sha256": "4c32170f41c2064a55744983f45a96094e10e53a524edf37f855aacb9552604f",
+      "path": "snapshots/5dcf34d46a14a353a26b0e9d637d19995ce22ffaa5f71a5af7bf5cab18c64a91/virtual-environments.json",
+      "sha256": "dd3fe869caadc879d3d8dcdc267f72f54dd5c9ca10af1f29f9136a9e36a57226",
       "records": 1
     },
     "environment_files": {
-      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/environment-files.json",
+      "path": "snapshots/5dcf34d46a14a353a26b0e9d637d19995ce22ffaa5f71a5af7bf5cab18c64a91/environment-files.json",
       "sha256": "f263652382bea6628303220df092416f1222de2e5fe9e819da15c0f19ba2266d",
       "records": 1
     },
     "graph_nodes": {
-      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/graph-nodes.json",
-      "sha256": "42d6557ddd2a8106c7b1c6ce26d400c1eec1182794a6f75f712a66f72530caf7",
-      "records": 342
+      "path": "snapshots/5dcf34d46a14a353a26b0e9d637d19995ce22ffaa5f71a5af7bf5cab18c64a91/graph-nodes.json",
+      "sha256": "e963ecb73539d37dfb8cc7eed5d26a738fb1bdf7652d5d26e98f5e4acb3e9354",
+      "records": 5766
     },
     "graph_edges": {
-      "path": "snapshots/908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e/graph-edges.json",
-      "sha256": "bf22b23423f88daef62d2a91167bf997cee2396e21874e798ea70c08c039a100",
-      "records": 2245
+      "path": "snapshots/5dcf34d46a14a353a26b0e9d637d19995ce22ffaa5f71a5af7bf5cab18c64a91/graph-edges.json",
+      "sha256": "c3604bdd5d45eb3f07150d148990435c07676b95f1ee4094cb9ec973f991f720",
+      "records": 11553
     }
   },
-  "content_hash": "908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e",
+  "content_hash": "5dcf34d46a14a353a26b0e9d637d19995ce22ffaa5f71a5af7bf5cab18c64a91",
   "discovery": {
     "completeness": "complete",
-    "scanned_entries": 2424,
+    "scanned_entries": 5167,
     "capped": false,
     "entry_limit": 20000,
     "max_depth": 7,
@@ -147,14 +147,14 @@
     "failures": [],
     "ambiguities": [],
     "symbolic_links_skipped": 0,
-    "generation": 1,
-    "captured_utc": "2026-08-15T02:20:21.800Z",
-    "expires_utc": "2026-08-15T02:25:21.800Z",
+    "generation": 3,
+    "captured_utc": "2026-08-21T01:25:24.861Z",
+    "expires_utc": "2026-08-21T01:30:24.861Z",
     "ttl_seconds": 300,
-    "content_fingerprint": "908c898b6da6909601b325b2d7ed246ea6bb8b9b791b7db05a2b4df7d2089d9e",
-    "previous_snapshot_hash": "2f1fbc489c2e09e18c9cb25878205e07ede476e8d052f43753f41adc432ba83d",
+    "content_fingerprint": "5dcf34d46a14a353a26b0e9d637d19995ce22ffaa5f71a5af7bf5cab18c64a91",
+    "previous_snapshot_hash": "1cce65d350e76cc668beb8264833c039c67a3bd9429dad9ddc05f70aad19c93d",
     "changed_from_previous": true
   },
-  "generated_utc": "2026-08-15T02:20:21.759Z",
-  "snapshot_hash": "6657c790eb5aab79aae1fa364fc4ccb6153b83f1b5a2143c1df35c11736587a1"
+  "generated_utc": "2026-08-21T01:25:24.702Z",
+  "snapshot_hash": "dd857088f0051e043fb3a08c06354d9d51d0e521bd3a1c116c19fe491787dd37"
 }

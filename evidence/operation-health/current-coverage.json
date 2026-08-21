@@ -1,0 +1,297 @@
+{
+  "schema_version": "px.operation-coverage-report/1.0",
+  "valid": true,
+  "certifiable": true,
+  "route_registry_sha256": "d659d220e286f37d4d0959c90b5931497f09dbc56e5129b4ab4b24d8aff0aba1",
+  "health_snapshot_sha256": "d677f8cb41c3ae6bae051b782d5363b9b17674213e1afaf3754f92c806aafbb5",
+  "route_count": 14,
+  "classified_route_count": 14,
+  "tiers": {
+    "A": 2,
+    "B": 4,
+    "C": 6,
+    "D": 2
+  },
+  "acceptance_cards_loaded": [
+    "D05",
+    "D06",
+    "D07",
+    "H01",
+    "H02",
+    "H03",
+    "H05",
+    "H06",
+    "O03",
+    "O04",
+    "O05",
+    "O06",
+    "O07",
+    "O08",
+    "O09",
+    "O10",
+    "O11",
+    "O12",
+    "O13",
+    "O14",
+    "R01",
+    "R11",
+    "S01"
+  ],
+  "blind_spots": [
+    {
+      "route_id": "os.macos.endpoint-security",
+      "state": "unsupported"
+    },
+    {
+      "route_id": "runtime.environment-maintenance",
+      "state": "unobserved"
+    }
+  ],
+  "routes": [
+    {
+      "route_id": "runtime.cli",
+      "tier": "C",
+      "declared": true,
+      "advertised": true,
+      "certifiable": true,
+      "required_acceptance_cards": [
+        "O03"
+      ],
+      "owner_evidence": {
+        "mode": "local_file",
+        "owner": "runtime/cli.py",
+        "owner_sha256": "68c7c2fd467cf673635875e9c58010c0d43da44b5c119dacdc9ff40c1d6defbe"
+      },
+      "health_state_present": false,
+      "blockers": []
+    },
+    {
+      "route_id": "runtime.project-control-plane",
+      "tier": "C",
+      "declared": true,
+      "advertised": true,
+      "certifiable": true,
+      "required_acceptance_cards": [
+        "O03"
+      ],
+      "owner_evidence": {
+        "mode": "local_file",
+        "owner": "runtime/project_control_plane.py",
+        "owner_sha256": "ba2b8ee1ccdb5f32a340ea8b33557308b716705901f46ee4afcd01cfb127d644"
+      },
+      "health_state_present": false,
+      "blockers": []
+    },
+    {
+      "route_id": "runtime.workflow",
+      "tier": "C",
+      "declared": true,
+      "advertised": true,
+      "certifiable": true,
+      "required_acceptance_cards": [
+        "O03"
+      ],
+      "owner_evidence": {
+        "mode": "local_file",
+        "owner": "runtime/runtime_lifecycle.py",
+        "owner_sha256": "4651cb80392c877b741e844a48a340bc45159302b4b07e96a358048a3e7f0434"
+      },
+      "health_state_present": false,
+      "blockers": []
+    },
+    {
+      "route_id": "runtime.agent",
+      "tier": "C",
+      "declared": true,
+      "advertised": true,
+      "certifiable": true,
+      "required_acceptance_cards": [
+        "O07"
+      ],
+      "owner_evidence": {
+        "mode": "local_file",
+        "owner": "runtime/agent_fleet_controls.py",
+        "owner_sha256": "9533d0367ccd8b1a322c849c77c82bb7080664862d552be595864ad4ce080f39"
+      },
+      "health_state_present": false,
+      "blockers": []
+    },
+    {
+      "route_id": "extension.command",
+      "tier": "C",
+      "declared": true,
+      "advertised": true,
+      "certifiable": true,
+      "required_acceptance_cards": [
+        "O04"
+      ],
+      "owner_evidence": {
+        "mode": "local_file",
+        "owner": "extension/src/extension.js",
+        "owner_sha256": "e2a4c0fdf3e5cca7a991d676f8464c3adf4cdf1ae150fb386420790cae15b9c9"
+      },
+      "health_state_present": false,
+      "blockers": []
+    },
+    {
+      "route_id": "extension.vscode-listener",
+      "tier": "B",
+      "declared": true,
+      "advertised": true,
+      "certifiable": true,
+      "required_acceptance_cards": [
+        "O04"
+      ],
+      "owner_evidence": {
+        "mode": "local_file",
+        "owner": "extension/src/activityObservability.js",
+        "owner_sha256": "f6d2819508a160bd6f0ed1b6cd07d5175fd582a299afec1452c6bc3ff8b3d5e5"
+      },
+      "health_state_present": true,
+      "blockers": []
+    },
+    {
+      "route_id": "mcp.tool",
+      "tier": "C",
+      "declared": true,
+      "advertised": true,
+      "certifiable": true,
+      "required_acceptance_cards": [
+        "O05"
+      ],
+      "owner_evidence": {
+        "mode": "local_file",
+        "owner": "extension/src/mcpActivityIntegration.js",
+        "owner_sha256": "de4ca9d7c3db1b532b983fcaf98efc459a7d6fef039ca33aebf2e5d6c4e25e50"
+      },
+      "health_state_present": false,
+      "blockers": []
+    },
+    {
+      "route_id": "provider.remote-model",
+      "tier": "A",
+      "declared": true,
+      "advertised": false,
+      "certifiable": true,
+      "required_acceptance_cards": [
+        "O08",
+        "O09"
+      ],
+      "owner_evidence": {
+        "mode": "local_file",
+        "owner": "runtime/provider_gateway.py",
+        "owner_sha256": "ec89f482fe61707af2f09818276b1377091fef3e0997838ebfb33df07323fad6"
+      },
+      "health_state_present": true,
+      "blockers": []
+    },
+    {
+      "route_id": "provider.local-model",
+      "tier": "A",
+      "declared": true,
+      "advertised": true,
+      "certifiable": true,
+      "required_acceptance_cards": [
+        "O08",
+        "O09"
+      ],
+      "owner_evidence": {
+        "mode": "local_file",
+        "owner": "runtime/provider_gateway.py",
+        "owner_sha256": "ec89f482fe61707af2f09818276b1377091fef3e0997838ebfb33df07323fad6"
+      },
+      "health_state_present": true,
+      "blockers": []
+    },
+    {
+      "route_id": "os.windows.etw",
+      "tier": "B",
+      "declared": true,
+      "advertised": false,
+      "certifiable": true,
+      "required_acceptance_cards": [
+        "O10"
+      ],
+      "owner_evidence": {
+        "mode": "local_file",
+        "owner": "runtime/operational_observers.py",
+        "owner_sha256": "6da9dd927c97b96c40f3b1d4e7f3fd2821c23d9ac6267f1d637427145b15028b"
+      },
+      "health_state_present": false,
+      "blockers": []
+    },
+    {
+      "route_id": "os.linux.audit",
+      "tier": "B",
+      "declared": true,
+      "advertised": false,
+      "certifiable": true,
+      "required_acceptance_cards": [
+        "O10"
+      ],
+      "owner_evidence": {
+        "mode": "local_file",
+        "owner": "runtime/operational_observers.py",
+        "owner_sha256": "6da9dd927c97b96c40f3b1d4e7f3fd2821c23d9ac6267f1d637427145b15028b"
+      },
+      "health_state_present": false,
+      "blockers": []
+    },
+    {
+      "route_id": "os.macos.endpoint-security",
+      "tier": "D",
+      "declared": true,
+      "advertised": false,
+      "certifiable": true,
+      "required_acceptance_cards": [
+        "O10"
+      ],
+      "owner_evidence": {
+        "mode": "local_file",
+        "owner": "runtime/operational_observers.py",
+        "owner_sha256": "6da9dd927c97b96c40f3b1d4e7f3fd2821c23d9ac6267f1d637427145b15028b"
+      },
+      "health_state_present": false,
+      "blockers": []
+    },
+    {
+      "route_id": "runtime.package-environment",
+      "tier": "B",
+      "declared": true,
+      "advertised": true,
+      "certifiable": true,
+      "required_acceptance_cards": [
+        "O12",
+        "O13",
+        "O14"
+      ],
+      "owner_evidence": {
+        "mode": "local_file",
+        "owner": "extension/src/discoveryManager.js",
+        "owner_sha256": "709ecf80c97c09f029990ce33f82a1e3e84fd8f673fb811a2fd5b1e78c00a714"
+      },
+      "health_state_present": true,
+      "blockers": []
+    },
+    {
+      "route_id": "runtime.environment-maintenance",
+      "tier": "D",
+      "declared": true,
+      "advertised": false,
+      "certifiable": true,
+      "required_acceptance_cards": [
+        "H07",
+        "H08"
+      ],
+      "owner_evidence": {
+        "mode": "local_file",
+        "owner": "runtime/resource_lifecycle.py",
+        "owner_sha256": "109c09ae1bf0b964dcaf2bfa4af815fe3b8d99a21e1bcba1c2f605d8cf4e7313"
+      },
+      "health_state_present": false,
+      "blockers": []
+    }
+  ],
+  "blockers": [],
+  "errors": []
+}

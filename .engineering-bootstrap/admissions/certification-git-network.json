@@ -1,0 +1,21 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007333",
+  "effect": "network",
+  "scope": [
+    "git-remote:origin",
+    "github-repository:Mountain-Nomad-BC/Pacify-X",
+    "branch:main"
+  ],
+  "authority": "The user explicitly requested merging all completed work to the linked GitHub repository and completed GitHub authentication; Codex retains bounded Git network authority.",
+  "expected_effect": "Fetch origin/main, preserve remote history, and publish the certified main commit without force-pushing.",
+  "rollback": "Fetch is read-only; reverse any published repair only with a new revert commit unless the user separately authorizes history rewriting.",
+  "evidence": [
+    {
+      "reference": "AGENTS.md",
+      "artifact_sha256": "f9763711bb3503acb4ac8fd09fc335f0b0ccfc543cccb0e70f37138b3b006cf6",
+      "artifact_size": 2612,
+      "claim": "Repository contract requires retained release evidence and non-destructive reconciliation."
+    }
+  ]
+}

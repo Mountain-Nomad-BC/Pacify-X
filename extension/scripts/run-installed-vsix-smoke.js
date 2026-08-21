@@ -159,4 +159,5 @@ async function main() {
 }
 
 if (process.argv[2] === CHILD_FLAG) childMain(process.argv[3]).then(code => { process.exitCode = code; }).catch(error => { process.stderr.write(`${error.stack || error.message}\n`); process.exitCode = 1; });
+else if (process.argv.includes('--help')) process.stdout.write('Usage: node scripts/run-installed-vsix-smoke.js --engine-root <path> --vsix <path> [--expected-sha256 <sha256>]\n');
 else main().catch(error => { process.stderr.write(`${error.stack || error.message}\n`); process.exitCode = 1; });

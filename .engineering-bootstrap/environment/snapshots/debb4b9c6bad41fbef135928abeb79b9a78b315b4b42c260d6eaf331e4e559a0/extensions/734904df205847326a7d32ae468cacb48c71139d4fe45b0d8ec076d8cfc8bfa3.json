@@ -1,0 +1,212 @@
+{
+  "id": "ms-azuretools.vscode-azurevirtualmachines",
+  "name": "Azure Virtual Machines",
+  "version": "0.6.11",
+  "publisher": "ms-azuretools",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [
+    "ui",
+    "workspace"
+  ],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "menus",
+    "x-azResources"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-azuretools.vscode-azurevirtualmachines",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-azuretools.vscode-azurevirtualmachines",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-azuretools.vscode-azurevirtualmachines",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:x-azResources",
+      "kind": "x-azResources",
+      "provider": "ms-azuretools.vscode-azurevirtualmachines",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "azureVirtualMachines.addSshKey",
+      "invocation": "vscode.commands.executeCommand('azureVirtualMachines.addSshKey', ...args)",
+      "title": "%azureVirtualMachines.addSshKey%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureVirtualMachines.copyIpAddress",
+      "invocation": "vscode.commands.executeCommand('azureVirtualMachines.copyIpAddress', ...args)",
+      "title": "%azureVirtualMachines.copyIpAddress%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureVirtualMachines.createVirtualMachine",
+      "invocation": "vscode.commands.executeCommand('azureVirtualMachines.createVirtualMachine', ...args)",
+      "title": "%azureVirtualMachines.createVirtualMachine%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureVirtualMachines.createVirtualMachineAdvanced",
+      "invocation": "vscode.commands.executeCommand('azureVirtualMachines.createVirtualMachineAdvanced', ...args)",
+      "title": "%azureVirtualMachines.createVirtualMachineAdvanced%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureVirtualMachines.deleteVirtualMachine",
+      "invocation": "vscode.commands.executeCommand('azureVirtualMachines.deleteVirtualMachine', ...args)",
+      "title": "%azureVirtualMachines.deleteVirtualMachine%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureVirtualMachines.openInRemoteSsh",
+      "invocation": "vscode.commands.executeCommand('azureVirtualMachines.openInRemoteSsh', ...args)",
+      "title": "%azureVirtualMachines.openInRemoteSsh%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureVirtualMachines.reportIssue",
+      "invocation": "vscode.commands.executeCommand('azureVirtualMachines.reportIssue', ...args)",
+      "title": "%azureVirtualMachines.reportIssue%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureVirtualMachines.restartVirtualMachine",
+      "invocation": "vscode.commands.executeCommand('azureVirtualMachines.restartVirtualMachine', ...args)",
+      "title": "%azureVirtualMachines.restartVirtualMachine%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureVirtualMachines.startVirtualMachine",
+      "invocation": "vscode.commands.executeCommand('azureVirtualMachines.startVirtualMachine', ...args)",
+      "title": "%azureVirtualMachines.startVirtualMachine%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureVirtualMachines.stopVirtualMachine",
+      "invocation": "vscode.commands.executeCommand('azureVirtualMachines.stopVirtualMachine', ...args)",
+      "title": "%azureVirtualMachines.stopVirtualMachine%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "ms-azuretools.vscode-azureresourcegroups"
+  ],
+  "activation_events": [],
+  "permissions_resources": {
+    "extension_kind": [
+      "ui",
+      "workspace"
+    ],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-azuretools.vscode-azurevirtualmachines",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:menus",
+      "contribution:x-azResources"
+    ],
+    "interface": [
+      "azureVirtualMachines.addSshKey",
+      "azureVirtualMachines.copyIpAddress",
+      "azureVirtualMachines.createVirtualMachine",
+      "azureVirtualMachines.createVirtualMachineAdvanced",
+      "azureVirtualMachines.deleteVirtualMachine",
+      "azureVirtualMachines.openInRemoteSsh",
+      "azureVirtualMachines.reportIssue",
+      "azureVirtualMachines.restartVirtualMachine",
+      "azureVirtualMachines.startVirtualMachine",
+      "azureVirtualMachines.stopVirtualMachine"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "ui",
+        "workspace"
+      ],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

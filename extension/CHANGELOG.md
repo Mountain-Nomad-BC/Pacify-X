@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.26
+
+- Synchronize the exact current-source UI control denominator and retain typed current-host observations for every attempted control.
+- Refresh the release toolchain to vulnerability-free, hash-pinned Python dependencies.
+- Strengthen operational-ledger replay compatibility without weakening validation of newly appended discoveries.
+
 ## 0.6.25
 
 - Expose the same bounded Studio setup flow as a normal VS Code command and confirmation-gated extension URI so the installed host uses its real SecretStorage signing identity.

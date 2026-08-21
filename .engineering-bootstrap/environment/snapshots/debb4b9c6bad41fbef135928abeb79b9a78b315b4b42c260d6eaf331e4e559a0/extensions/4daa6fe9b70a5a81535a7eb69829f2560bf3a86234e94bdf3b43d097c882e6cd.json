@@ -1,0 +1,507 @@
+{
+  "id": "ms-azuretools.vscode-azurestorage",
+  "name": "Azure Storage",
+  "version": "0.17.2",
+  "publisher": "ms-azuretools",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "menus",
+    "submenus",
+    "x-azResources"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-azuretools.vscode-azurestorage",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-azuretools.vscode-azurestorage",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-azuretools.vscode-azurestorage",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "ms-azuretools.vscode-azurestorage",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:x-azResources",
+      "kind": "x-azResources",
+      "provider": "ms-azuretools.vscode-azurestorage",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "azureStorage.attachStorageAccount",
+      "invocation": "vscode.commands.executeCommand('azureStorage.attachStorageAccount', ...args)",
+      "title": "Attach Storage Account...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.browseStaticWebsite",
+      "invocation": "vscode.commands.executeCommand('azureStorage.browseStaticWebsite', ...args)",
+      "title": "Browse Static Website",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.configureStaticWebsite",
+      "invocation": "vscode.commands.executeCommand('azureStorage.configureStaticWebsite', ...args)",
+      "title": "Configure Static Website...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.copyConnectionString",
+      "invocation": "vscode.commands.executeCommand('azureStorage.copyConnectionString', ...args)",
+      "title": "Copy Connection String",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.copyPrimaryKey",
+      "invocation": "vscode.commands.executeCommand('azureStorage.copyPrimaryKey', ...args)",
+      "title": "Copy Primary Key",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.copyUrl",
+      "invocation": "vscode.commands.executeCommand('azureStorage.copyUrl', ...args)",
+      "title": "Copy URL",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.createBlobContainer",
+      "invocation": "vscode.commands.executeCommand('azureStorage.createBlobContainer', ...args)",
+      "title": "Create Blob Container...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.createBlockBlob",
+      "invocation": "vscode.commands.executeCommand('azureStorage.createBlockBlob', ...args)",
+      "title": "Create Empty Blob...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.createDirectory",
+      "invocation": "vscode.commands.executeCommand('azureStorage.createDirectory', ...args)",
+      "title": "Create Directory...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.createFile",
+      "invocation": "vscode.commands.executeCommand('azureStorage.createFile', ...args)",
+      "title": "Create Empty File...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.createFileShare",
+      "invocation": "vscode.commands.executeCommand('azureStorage.createFileShare', ...args)",
+      "title": "Create File Share...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.createGpv2Account",
+      "invocation": "vscode.commands.executeCommand('azureStorage.createGpv2Account', ...args)",
+      "title": "Create Storage Account...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.createGpv2AccountAdvanced",
+      "invocation": "vscode.commands.executeCommand('azureStorage.createGpv2AccountAdvanced', ...args)",
+      "title": "Create Storage Account... (Advanced)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.createQueue",
+      "invocation": "vscode.commands.executeCommand('azureStorage.createQueue', ...args)",
+      "title": "Create Queue...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.createSubdirectory",
+      "invocation": "vscode.commands.executeCommand('azureStorage.createSubdirectory', ...args)",
+      "title": "Create Subdirectory...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.createTable",
+      "invocation": "vscode.commands.executeCommand('azureStorage.createTable', ...args)",
+      "title": "Create Table...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.deleteBlobContainer",
+      "invocation": "vscode.commands.executeCommand('azureStorage.deleteBlobContainer', ...args)",
+      "title": "Delete Blob Container...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.deleteDirectory",
+      "invocation": "vscode.commands.executeCommand('azureStorage.deleteDirectory', ...args)",
+      "title": "Delete...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.deleteFile",
+      "invocation": "vscode.commands.executeCommand('azureStorage.deleteFile', ...args)",
+      "title": "Delete...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.deleteFileShare",
+      "invocation": "vscode.commands.executeCommand('azureStorage.deleteFileShare', ...args)",
+      "title": "Delete File Share...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.deleteQueue",
+      "invocation": "vscode.commands.executeCommand('azureStorage.deleteQueue', ...args)",
+      "title": "Delete Queue...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.deleteStorageAccount",
+      "invocation": "vscode.commands.executeCommand('azureStorage.deleteStorageAccount', ...args)",
+      "title": "Delete Storage Account...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.deleteTable",
+      "invocation": "vscode.commands.executeCommand('azureStorage.deleteTable', ...args)",
+      "title": "Delete Table...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.deployStaticWebsite",
+      "invocation": "vscode.commands.executeCommand('azureStorage.deployStaticWebsite', ...args)",
+      "title": "Deploy to Static Website via Azure Storage...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.detachStorageAccount",
+      "invocation": "vscode.commands.executeCommand('azureStorage.detachStorageAccount', ...args)",
+      "title": "Detach Storage Account",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.disableStaticWebsite",
+      "invocation": "vscode.commands.executeCommand('azureStorage.disableStaticWebsite', ...args)",
+      "title": "Disable Static Website",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.downloadSasUrl",
+      "invocation": "vscode.commands.executeCommand('azureStorage.downloadSasUrl', ...args)",
+      "title": "Download by SAS Url...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.downloadTreeItems",
+      "invocation": "vscode.commands.executeCommand('azureStorage.downloadTreeItems', ...args)",
+      "title": "Download...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.generateSasUrl",
+      "invocation": "vscode.commands.executeCommand('azureStorage.generateSasUrl', ...args)",
+      "title": "Generate & Copy SAS Token and URL",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.openBlobContainer",
+      "invocation": "vscode.commands.executeCommand('azureStorage.openBlobContainer', ...args)",
+      "title": "Open in Storage Explorer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.openFileShare",
+      "invocation": "vscode.commands.executeCommand('azureStorage.openFileShare', ...args)",
+      "title": "Open in Storage Explorer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.openInFileExplorer",
+      "invocation": "vscode.commands.executeCommand('azureStorage.openInFileExplorer', ...args)",
+      "title": "Open in Explorer...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.openQueue",
+      "invocation": "vscode.commands.executeCommand('azureStorage.openQueue', ...args)",
+      "title": "Open in Storage Explorer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.openStorageAccount",
+      "invocation": "vscode.commands.executeCommand('azureStorage.openStorageAccount', ...args)",
+      "title": "Open in Storage Explorer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.openTable",
+      "invocation": "vscode.commands.executeCommand('azureStorage.openTable', ...args)",
+      "title": "Open in Storage Explorer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.refresh",
+      "invocation": "vscode.commands.executeCommand('azureStorage.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.reportIssue",
+      "invocation": "vscode.commands.executeCommand('azureStorage.reportIssue', ...args)",
+      "title": "Report Issue...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.startBlobEmulator",
+      "invocation": "vscode.commands.executeCommand('azureStorage.startBlobEmulator', ...args)",
+      "title": "Start Blob Emulator",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.startQueueEmulator",
+      "invocation": "vscode.commands.executeCommand('azureStorage.startQueueEmulator', ...args)",
+      "title": "Start Queue Emulator",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.uploadFiles",
+      "invocation": "vscode.commands.executeCommand('azureStorage.uploadFiles', ...args)",
+      "title": "Upload Files...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.uploadFolder",
+      "invocation": "vscode.commands.executeCommand('azureStorage.uploadFolder', ...args)",
+      "title": "Upload Folder...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureStorage.uploadToAzureStorage",
+      "invocation": "vscode.commands.executeCommand('azureStorage.uploadToAzureStorage', ...args)",
+      "title": "Upload to Azure Storage...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "ms-azuretools.vscode-azureresourcegroups"
+  ],
+  "activation_events": [
+    "onFileSystem:azurestorage",
+    "onFileSystem:azurestorageblob",
+    "onView:azureWorkspace"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "limited",
+      "description": "In virtual workspaces, uploading files or folders to Azure Storage is not supported."
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-azuretools.vscode-azurestorage",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:menus",
+      "contribution:submenus",
+      "contribution:x-azResources"
+    ],
+    "interface": [
+      "azureStorage.attachStorageAccount",
+      "azureStorage.browseStaticWebsite",
+      "azureStorage.configureStaticWebsite",
+      "azureStorage.copyConnectionString",
+      "azureStorage.copyPrimaryKey",
+      "azureStorage.copyUrl",
+      "azureStorage.createBlobContainer",
+      "azureStorage.createBlockBlob",
+      "azureStorage.createDirectory",
+      "azureStorage.createFile",
+      "azureStorage.createFileShare",
+      "azureStorage.createGpv2Account",
+      "azureStorage.createGpv2AccountAdvanced",
+      "azureStorage.createQueue",
+      "azureStorage.createSubdirectory",
+      "azureStorage.createTable",
+      "azureStorage.deleteBlobContainer",
+      "azureStorage.deleteDirectory",
+      "azureStorage.deleteFile",
+      "azureStorage.deleteFileShare",
+      "azureStorage.deleteQueue",
+      "azureStorage.deleteStorageAccount",
+      "azureStorage.deleteTable",
+      "azureStorage.deployStaticWebsite",
+      "azureStorage.detachStorageAccount",
+      "azureStorage.disableStaticWebsite",
+      "azureStorage.downloadSasUrl",
+      "azureStorage.downloadTreeItems",
+      "azureStorage.generateSasUrl",
+      "azureStorage.openBlobContainer",
+      "azureStorage.openFileShare",
+      "azureStorage.openInFileExplorer",
+      "azureStorage.openQueue",
+      "azureStorage.openStorageAccount",
+      "azureStorage.openTable",
+      "azureStorage.refresh",
+      "azureStorage.reportIssue",
+      "azureStorage.startBlobEmulator",
+      "azureStorage.startQueueEmulator",
+      "azureStorage.uploadFiles",
+      "azureStorage.uploadFolder",
+      "azureStorage.uploadToAzureStorage"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "limited",
+        "description": "In virtual workspaces, uploading files or folders to Azure Storage is not supported."
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

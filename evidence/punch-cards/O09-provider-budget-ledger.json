@@ -2,7 +2,7 @@
   "schema_version": "px.punch-card-evidence/1.0",
   "card_id": "O09",
   "status": "accepted",
-  "recorded_at": "2026-08-14T01:09:20.375773+00:00",
+  "recorded_at": "2026-08-21T00:16:34.498879+00:00",
   "refreshed_utc": "2026-08-14T23:55:00Z",
   "claim": "Every admitted provider invocation requires a durable identity-bound reservation; request, token, and cost limits are deterministic; known, estimated, unknown, and local non-billable usage settle conservatively; and policy-controlled fallbacks cannot bypass budget authority.",
   "artifacts": [
@@ -12,15 +12,15 @@
     },
     {
       "path": "runtime/provider_gateway.py",
-      "sha256": "34c64e2afc36a38846e001ce9a2ddf9e647153538483ce07f41b2e26ff244fbd"
+      "sha256": "ec89f482fe61707af2f09818276b1377091fef3e0997838ebfb33df07323fad6"
     },
     {
       "path": "tests/test_provider_budget.py",
-      "sha256": "ae3e9f42743ea6d74849ae0f916cf11ae769ec63aa8e4aab0dbe02415008ac25"
+      "sha256": "48eb3f95d41d74697dfc05b26166908af983a9161a92eb7dc3278960edc3d10a"
     },
     {
       "path": "tests/test_provider_gateway.py",
-      "sha256": "a65064f37540b35e0a44261d7b1d240e2353081ff364322ea43d64880d089373"
+      "sha256": "d45e2ec344c21f95c377108bd056b427b316932746688c46d04459d46a4b14d3"
     },
     {
       "path": "contracts/operations/provider-budget-policy.schema.json",
@@ -28,7 +28,7 @@
     },
     {
       "path": "registry/provider_budget_policy.json",
-      "sha256": "5c1555a3cd5161fb38670ca8ff221b518b64f75f8248ee169cfce3b8c7ab022b"
+      "sha256": "64b7d60184a6c4907006903df7ee01464ec26c4b21114eb4392eaeda4c95c10b"
     }
   ],
   "verification": [

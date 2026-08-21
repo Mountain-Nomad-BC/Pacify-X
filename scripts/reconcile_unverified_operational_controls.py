@@ -245,6 +245,11 @@ def main() -> int:
     args = parser.parse_args()
     root = args.root.resolve(strict=True)
     snapshot = read_snapshot(root)
+    receipt: dict[str, object] | None = None
+    receipt_reference = LIVE_WALK
+    if args.walk_receipt:
+        receipt, receipt_reference = _load_walk_receipt(root, args.walk_receipt)
+    proof_reference = receipt_reference if receipt is not None else LIVE_WALK
     maximum = max((_ordinal(gap_id) for gap_id in snapshot["cards"]), default=0)
     existing_by_control = {
         str(card.get("control_action")): gap_id
@@ -285,8 +290,8 @@ def main() -> int:
                             "with explicit evidence for non-applicable boundaries."
                         ),
                         "observed_behavior": (
-                            "Only source inventory evidence exists. The available live walk used installed assets that differ "
-                            "from current source, so no current operational behavior can be admitted."
+                            "The typed source inventory declares this control, but no exact attempted observation has yet been "
+                            "attached to its predecessor-bound disposition."
                         ),
                         "interaction_chain": _chain(control_id),
                         "classification": _classification(str(record["kind"])),
@@ -296,7 +301,7 @@ def main() -> int:
                             "effect, acknowledgement, persistence, reload, failure, and recovery behavior."
                         ),
                         "dependencies": ["PX-OS-085"],
-                        "blockers": ["Exact current-source host identity is not available in the existing live-walk receipt."],
+                        "blockers": ["An exact attempted current-source observation has not yet completed every applicable stage."],
                         "assigned_owner": "unassigned",
                         "tests_required": [
                             f"Exercise {control_id} through every applicable interaction-chain stage in an isolated current-source host.",
@@ -308,8 +313,8 @@ def main() -> int:
                             "reference": INVENTORY,
                             "claim": f"The typed inventory declares {control_id} on {surface_id} as {record['kind']}.",
                         }, {
-                            "reference": LIVE_WALK,
-                            "claim": "The retained live walk reports host-assets-differ-from-source, so it cannot establish current-source operation.",
+                            "reference": proof_reference,
+                            "claim": "The retained walk is the selected host observation authority; a typed attempted observation must still be attached before promotion.",
                         }],
                     },
                 })
@@ -334,8 +339,8 @@ def main() -> int:
                 "disposition": "gap",
                 "gap_ids": [gap_id],
                 "evidence": [{
-                    "reference": LIVE_WALK,
-                    "claim": "Current-source operation is unproven because the installed-host asset identity differs from source.",
+                    "reference": proof_reference,
+                    "claim": "Operation remains a gap until an exact attempted observation completes every applicable chain stage.",
                 }, {
                     "reference": INVENTORY,
                     "claim": "The exact control remains retained in the typed inventory and is not skipped.",
@@ -348,9 +353,23 @@ def main() -> int:
 
     observation_events: list[dict[str, object]] = []
     attempted_controls = 0
-    if args.walk_receipt:
-        active = read_snapshot(root) if not args.check else snapshot
-        receipt, receipt_reference = _load_walk_receipt(root, args.walk_receipt)
+    if receipt is not None:
+        active = read_snapshot(root) if not args.check else json.loads(json.dumps(snapshot))
+        if args.check:
+            # Dry-run the exact post-initialization state so --check can validate
+            # a receipt that attempts controls first discovered by this run.
+            for event in disposition_events:
+                payload = event["payload"]
+                active["surfaces"][payload["surface_id"]]["control_dispositions"][payload["control_id"]] = {
+                    "disposition": "gap",
+                    "gap_ids": list(payload["gap_ids"]),
+                    "evidence": list(payload["evidence"]),
+                    "observation": None,
+                    "proof_status": "legacy_unbound",
+                    "timestamp": timestamp,
+                    "actor": ACTOR,
+                    "history": [],
+                }
         observation_events, attempted_controls = plan_observation_revisions(
             active, receipt, receipt_reference
         )

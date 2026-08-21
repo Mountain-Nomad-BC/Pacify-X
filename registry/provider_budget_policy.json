@@ -1,5 +1,22 @@
 {
   "schema_version": "px.provider-budget-policy/1.0",
   "policy": "Provider execution is default-deny. A caller, budget, and provider tuple must be explicitly enabled before a gateway reservation can be created. Confidence never changes deterministic limits.",
-  "budgets": []
+  "budgets": [
+    {
+      "budget_id": "local-development",
+      "actor_id": "pacify-x-local",
+      "provider_id": "ollama",
+      "currency": "USD",
+      "enabled": true,
+      "hard_limit_microunits": 0,
+      "warning_threshold_microunits": 0,
+      "max_requests": 1000,
+      "max_input_tokens": 8192000,
+      "max_output_tokens": 2048000,
+      "max_charge_per_request_microunits": 0,
+      "unknown_billing": "deny",
+      "unknown_charge_microunits": 0,
+      "fallback_adapter_ids": []
+    }
+  ]
 }

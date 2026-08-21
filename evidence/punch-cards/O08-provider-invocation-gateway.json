@@ -2,17 +2,17 @@
   "schema_version": "px.punch-card-evidence/1.0",
   "card_id": "O08",
   "status": "accepted",
-  "recorded_at": "2026-08-14T01:09:20.374647+00:00",
+  "recorded_at": "2026-08-21T00:04:00.419715+00:00",
   "refreshed_utc": "2026-08-14T23:55:00Z",
   "claim": "Every admitted model invocation is mediated by one fail-closed gateway, produces metadata-only correlated lifecycle events and durable receipts, and is rejected when its adapter is absent, disabled, unready, or identity-mismatched.",
   "artifacts": [
     {
       "path": "runtime/provider_gateway.py",
-      "sha256": "34c64e2afc36a38846e001ce9a2ddf9e647153538483ce07f41b2e26ff244fbd"
+      "sha256": "ec89f482fe61707af2f09818276b1377091fef3e0997838ebfb33df07323fad6"
     },
     {
       "path": "tests/test_provider_gateway.py",
-      "sha256": "a65064f37540b35e0a44261d7b1d240e2353081ff364322ea43d64880d089373"
+      "sha256": "d45e2ec344c21f95c377108bd056b427b316932746688c46d04459d46a4b14d3"
     },
     {
       "path": "contracts/operations/provider-adapter-registry.schema.json",
@@ -20,11 +20,11 @@
     },
     {
       "path": "registry/provider_adapters.json",
-      "sha256": "67358d69704a57df9068e730b093eb886807e430586dc7ea9662423ca61c66f4"
+      "sha256": "48c536236ca9ce60273803d9b9455c2c09230d1bb62d6a0011fcf448000162f8"
     },
     {
       "path": "registry/operation_route_registry.json",
-      "sha256": "4fde6be2ebba2143a55beefd7eb401148aad68df5ebe2e8439fdca90388beea1"
+      "sha256": "d659d220e286f37d4d0959c90b5931497f09dbc56e5129b4ab4b24d8aff0aba1"
     }
   ],
   "verification": [

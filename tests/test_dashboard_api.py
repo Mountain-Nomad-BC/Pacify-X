@@ -511,10 +511,15 @@ class DashboardApiTests(unittest.TestCase):
             len(enterprise["workflows"]),
         )
 
-    def test_provider_activity_is_empty_without_an_enabled_budget(self) -> None:
-        self.assertEqual(_provider_activity(ROOT), [])
+    def test_provider_activity_projects_the_enabled_non_billable_local_budget(self) -> None:
+        activity = _provider_activity(ROOT)
+        self.assertEqual(len(activity), 1)
+        self.assertEqual(activity[0]["providerName"], "ollama")
+        self.assertEqual(activity[0]["providerClass"], "local")
+        self.assertFalse(activity[0]["billingEnabled"])
+        self.assertEqual(activity[0]["spendCurrent"], 0.0)
         snapshot = build_snapshot(ROOT)
-        self.assertEqual(snapshot["providerActivity"], [])
+        self.assertEqual(snapshot["providerActivity"], activity)
         self.assertEqual(snapshot["provenance"]["providerActivity"]["class"], "LIVE")
 
     def test_provider_activity_projects_active_budget_without_secrets(self) -> None:

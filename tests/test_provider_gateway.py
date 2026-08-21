@@ -11,6 +11,7 @@ import pytest
 from runtime.operational_event_bus import OperationalEventBus
 from runtime.provider_budget import ProviderBudgetLedger, ProviderUsage
 from runtime.provider_gateway import (
+    OllamaHttpAdapter,
     ProviderInvocationError,
     ProviderInvocationGateway,
     ProviderRequest,
@@ -48,6 +49,66 @@ class FakeAdapter:
             {"model": model_id, "answer": payload["prompt"]},
             ProviderUsage(self.billing_state, 2, 3, charge, "provider-request-secret"),
         )
+
+
+class _FakeHttpResponse:
+    def __init__(self, value: object) -> None:
+        self.body = json.dumps(value).encode("utf-8")
+
+    def __enter__(self) -> "_FakeHttpResponse":
+        return self
+
+    def __exit__(self, *_args: object) -> None:
+        return None
+
+    def read(self, limit: int) -> bytes:
+        return self.body[:limit]
+
+
+class _FakeOpener:
+    def __init__(self, value: object) -> None:
+        self.value = value
+        self.requests: list[object] = []
+
+    def open(self, request: object, *, timeout: float) -> _FakeHttpResponse:
+        self.requests.append((request, timeout))
+        return _FakeHttpResponse(self.value)
+
+
+def test_ollama_adapter_is_loopback_only_bounded_and_usage_explicit() -> None:
+    with pytest.raises(ValueError, match="literal loopback"):
+        OllamaHttpAdapter("http://localhost:11434")
+    with pytest.raises(ValueError, match="literal loopback"):
+        OllamaHttpAdapter("https://127.0.0.1:11434")
+    opener = _FakeOpener({
+        "response": "ready",
+        "prompt_eval_count": 4,
+        "eval_count": 2,
+    })
+    adapter = OllamaHttpAdapter(opener=opener)
+    result = adapter.invoke("qwen2.5-coder:3b", {"prompt": "reply ready"})
+    assert result.value == "ready"
+    assert result.usage == ProviderUsage("local_non_billable", 4, 2, 0)
+    request, timeout = opener.requests[0]
+    assert request.full_url == "http://127.0.0.1:11434/api/generate"
+    assert json.loads(request.data) == {
+        "model": "qwen2.5-coder:3b",
+        "prompt": "reply ready",
+        "stream": False,
+    }
+    assert timeout == 120.0
+
+
+def test_ollama_adapter_rejects_gateway_owned_and_malformed_results() -> None:
+    adapter = OllamaHttpAdapter(opener=_FakeOpener({"response": "ok"}))
+    with pytest.raises(ValueError, match="gateway-owned"):
+        adapter.invoke("model", {"prompt": "x", "stream": True})
+    with pytest.raises(ValueError, match="exactly one"):
+        adapter.invoke("model", {"prompt": "x", "messages": []})
+    malformed = OllamaHttpAdapter(opener=_FakeOpener({"error": "secret provider detail"}))
+    with pytest.raises(ValueError, match="invalid terminal") as raised:
+        malformed.invoke("model", {"prompt": "x"})
+    assert "secret provider detail" not in str(raised.value)
 
 
 def _project(directory: str, *, mode: str, billing_state: str) -> Path:

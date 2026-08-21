@@ -1,0 +1,334 @@
+{
+  "id": "ThunderCompute.thunder-compute",
+  "name": "Thunder Compute",
+  "version": "0.5.8",
+  "publisher": "ThunderCompute",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [
+    "workspace",
+    "ui"
+  ],
+  "contribution_points": [
+    "commands",
+    "keybindings",
+    "menus",
+    "views",
+    "viewsContainers",
+    "viewsWelcome"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ThunderCompute.thunder-compute",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "ThunderCompute.thunder-compute",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ThunderCompute.thunder-compute",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "ThunderCompute.thunder-compute",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "ThunderCompute.thunder-compute",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "ThunderCompute.thunder-compute",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "thunder.addPort",
+      "invocation": "vscode.commands.executeCommand('thunder.addPort', ...args)",
+      "title": "Forward Port",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.connectingToInstance",
+      "invocation": "vscode.commands.executeCommand('thunder.connectingToInstance', ...args)",
+      "title": "Connecting...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.connectToFolder",
+      "invocation": "vscode.commands.executeCommand('thunder.connectToFolder', ...args)",
+      "title": "Connect to Folder",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.connectToInstance",
+      "invocation": "vscode.commands.executeCommand('thunder.connectToInstance', ...args)",
+      "title": "Connect to Instance",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.copyPortUrl",
+      "invocation": "vscode.commands.executeCommand('thunder.copyPortUrl', ...args)",
+      "title": "Copy URL",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.createInstance",
+      "invocation": "vscode.commands.executeCommand('thunder.createInstance', ...args)",
+      "title": "Create Instance",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.createInstanceFromSnapshot",
+      "invocation": "vscode.commands.executeCommand('thunder.createInstanceFromSnapshot', ...args)",
+      "title": "Create Instance from Snapshot",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.createSnapshot",
+      "invocation": "vscode.commands.executeCommand('thunder.createSnapshot', ...args)",
+      "title": "Create Snapshot",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.deleteInstance",
+      "invocation": "vscode.commands.executeCommand('thunder.deleteInstance', ...args)",
+      "title": "Delete Instance",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.deleteSnapshot",
+      "invocation": "vscode.commands.executeCommand('thunder.deleteSnapshot', ...args)",
+      "title": "Delete Snapshot",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.getApiToken",
+      "invocation": "vscode.commands.executeCommand('thunder.getApiToken', ...args)",
+      "title": "Get API Token",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.login",
+      "invocation": "vscode.commands.executeCommand('thunder.login', ...args)",
+      "title": "Login",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.loginWithToken",
+      "invocation": "vscode.commands.executeCommand('thunder.loginWithToken', ...args)",
+      "title": "Log in with token (API key)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.logout",
+      "invocation": "vscode.commands.executeCommand('thunder.logout', ...args)",
+      "title": "Logout",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.modifyInstance",
+      "invocation": "vscode.commands.executeCommand('thunder.modifyInstance', ...args)",
+      "title": "Modify Instance",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.openPort",
+      "invocation": "vscode.commands.executeCommand('thunder.openPort', ...args)",
+      "title": "Open in Browser",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.refreshInstances",
+      "invocation": "vscode.commands.executeCommand('thunder.refreshInstances', ...args)",
+      "title": "Refresh Instances",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.refreshSnapshots",
+      "invocation": "vscode.commands.executeCommand('thunder.refreshSnapshots', ...args)",
+      "title": "Refresh Snapshots",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.removePort",
+      "invocation": "vscode.commands.executeCommand('thunder.removePort', ...args)",
+      "title": "Remove Forwarded Port",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "thunder.startInstance",
+      "invocation": "vscode.commands.executeCommand('thunder.startInstance', ...args)",
+      "title": "Start Instance",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:thunder.connectToFolder",
+    "onCommand:thunder.connectToInstance",
+    "onCommand:thunder.connectingToInstance",
+    "onCommand:thunder.createInstance",
+    "onCommand:thunder.deleteInstance",
+    "onCommand:thunder.getApiToken",
+    "onCommand:thunder.login",
+    "onCommand:thunder.loginWithOAuth",
+    "onCommand:thunder.loginWithToken",
+    "onCommand:thunder.logout",
+    "onCommand:thunder.refreshInstances",
+    "onCommand:thunder.startInstance",
+    "onView:thunder-explorer"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "workspace",
+      "ui"
+    ],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ThunderCompute.thunder-compute",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:keybindings",
+      "contribution:menus",
+      "contribution:views",
+      "contribution:viewsContainers",
+      "contribution:viewsWelcome"
+    ],
+    "interface": [
+      "thunder.addPort",
+      "thunder.connectingToInstance",
+      "thunder.connectToFolder",
+      "thunder.connectToInstance",
+      "thunder.copyPortUrl",
+      "thunder.createInstance",
+      "thunder.createInstanceFromSnapshot",
+      "thunder.createSnapshot",
+      "thunder.deleteInstance",
+      "thunder.deleteSnapshot",
+      "thunder.getApiToken",
+      "thunder.login",
+      "thunder.loginWithToken",
+      "thunder.logout",
+      "thunder.modifyInstance",
+      "thunder.openPort",
+      "thunder.refreshInstances",
+      "thunder.refreshSnapshots",
+      "thunder.removePort",
+      "thunder.startInstance"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "workspace",
+        "ui"
+      ],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

@@ -1,0 +1,502 @@
+[
+  {
+    "id": "python",
+    "command": "python.exe",
+    "executable": "C:\\Python314\\python.exe",
+    "available": true,
+    "version": "Python 3.14.5",
+    "probe": "--version",
+    "install_source": "path-discovered",
+    "capabilities": [
+      "python-runtime",
+      "package-management"
+    ],
+    "project_requirements": [],
+    "dependencies": [],
+    "environment_requirements": [],
+    "health": "healthy-version-probe",
+    "last_verified_utc": "2026-08-21T00:02:32.868Z",
+    "update": {
+      "available": "unknown",
+      "reason": "Network update checks are outside read-only discovery."
+    },
+    "conflicts": [],
+    "trust": {
+      "state": "detected-not-admitted",
+      "invocation_authorized": false
+    },
+    "resource_contract": {
+      "resource": "python",
+      "capabilities": [
+        "python-runtime",
+        "package-management"
+      ],
+      "interface": "python.exe --version",
+      "requirements": [],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped; invocation requires separate admission",
+      "state": "healthy-version-probe"
+    }
+  },
+  {
+    "id": "node",
+    "command": "node",
+    "executable": "C:\\Program Files\\nodejs\\node.exe",
+    "available": true,
+    "version": "v24.16.0",
+    "probe": "--version",
+    "install_source": "system-installer",
+    "capabilities": [
+      "javascript-runtime"
+    ],
+    "project_requirements": [],
+    "dependencies": [],
+    "environment_requirements": [],
+    "health": "healthy-version-probe",
+    "last_verified_utc": "2026-08-21T00:02:32.873Z",
+    "update": {
+      "available": "unknown",
+      "reason": "Network update checks are outside read-only discovery."
+    },
+    "conflicts": [],
+    "trust": {
+      "state": "detected-not-admitted",
+      "invocation_authorized": false
+    },
+    "resource_contract": {
+      "resource": "node",
+      "capabilities": [
+        "javascript-runtime"
+      ],
+      "interface": "node --version",
+      "requirements": [],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped; invocation requires separate admission",
+      "state": "healthy-version-probe"
+    }
+  },
+  {
+    "id": "npm",
+    "command": "npm",
+    "executable": "C:\\Program Files\\nodejs\\npm",
+    "available": false,
+    "version": "spawn npm ENOENT",
+    "probe": "--version",
+    "install_source": "system-installer",
+    "capabilities": [
+      "javascript-package-management"
+    ],
+    "project_requirements": [],
+    "dependencies": [
+      "node"
+    ],
+    "environment_requirements": [],
+    "health": "unavailable",
+    "last_verified_utc": "2026-08-21T00:02:32.922Z",
+    "update": {
+      "available": "unknown",
+      "reason": "Network update checks are outside read-only discovery."
+    },
+    "conflicts": [],
+    "trust": {
+      "state": "detected-not-admitted",
+      "invocation_authorized": false
+    },
+    "resource_contract": {
+      "resource": "npm",
+      "capabilities": [
+        "javascript-package-management"
+      ],
+      "interface": "npm --version",
+      "requirements": [
+        "node"
+      ],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped; invocation requires separate admission",
+      "state": "absent"
+    }
+  },
+  {
+    "id": "git",
+    "command": "git",
+    "executable": "C:\\Program Files\\Git\\cmd\\git.exe",
+    "available": true,
+    "version": "git version 2.54.0.windows.1",
+    "probe": "--version",
+    "install_source": "system-installer",
+    "capabilities": [
+      "source-control"
+    ],
+    "project_requirements": [],
+    "dependencies": [],
+    "environment_requirements": [],
+    "health": "healthy-version-probe",
+    "last_verified_utc": "2026-08-21T00:02:32.931Z",
+    "update": {
+      "available": "unknown",
+      "reason": "Network update checks are outside read-only discovery."
+    },
+    "conflicts": [],
+    "trust": {
+      "state": "detected-not-admitted",
+      "invocation_authorized": false
+    },
+    "resource_contract": {
+      "resource": "git",
+      "capabilities": [
+        "source-control"
+      ],
+      "interface": "git --version",
+      "requirements": [],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped; invocation requires separate admission",
+      "state": "healthy-version-probe"
+    }
+  },
+  {
+    "id": "docker",
+    "command": "docker",
+    "executable": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker",
+    "available": true,
+    "version": "Docker version 29.4.2, build 055a478",
+    "probe": "--version",
+    "install_source": "system-installer",
+    "capabilities": [
+      "container-runtime"
+    ],
+    "project_requirements": [],
+    "dependencies": [],
+    "environment_requirements": [
+      "Docker service/daemon"
+    ],
+    "health": "healthy-version-probe",
+    "last_verified_utc": "2026-08-21T00:02:33.016Z",
+    "update": {
+      "available": "unknown",
+      "reason": "Network update checks are outside read-only discovery."
+    },
+    "conflicts": [],
+    "trust": {
+      "state": "detected-not-admitted",
+      "invocation_authorized": false
+    },
+    "resource_contract": {
+      "resource": "docker",
+      "capabilities": [
+        "container-runtime"
+      ],
+      "interface": "docker --version",
+      "requirements": [
+        "Docker service/daemon"
+      ],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped; invocation requires separate admission",
+      "state": "healthy-version-probe"
+    }
+  },
+  {
+    "id": "ollama",
+    "command": "ollama",
+    "executable": "C:\\Users\\Ben\\AppData\\Local\\Programs\\Ollama\\ollama.exe",
+    "available": true,
+    "version": "ollama version is 0.32.5",
+    "probe": "--version",
+    "install_source": "user-local",
+    "capabilities": [
+      "local-model-runtime"
+    ],
+    "project_requirements": [],
+    "dependencies": [],
+    "environment_requirements": [
+      "Loopback Ollama service"
+    ],
+    "health": "healthy-version-probe",
+    "last_verified_utc": "2026-08-21T00:02:32.985Z",
+    "update": {
+      "available": "unknown",
+      "reason": "Network update checks are outside read-only discovery."
+    },
+    "conflicts": [],
+    "trust": {
+      "state": "detected-not-admitted",
+      "invocation_authorized": false
+    },
+    "resource_contract": {
+      "resource": "ollama",
+      "capabilities": [
+        "local-model-runtime"
+      ],
+      "interface": "ollama --version",
+      "requirements": [
+        "Loopback Ollama service"
+      ],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped; invocation requires separate admission",
+      "state": "healthy-version-probe"
+    }
+  },
+  {
+    "id": "uv",
+    "command": "uv",
+    "executable": null,
+    "available": false,
+    "version": "spawn uv ENOENT",
+    "probe": "--version",
+    "install_source": "unresolved-path",
+    "capabilities": [
+      "python-environment-management"
+    ],
+    "project_requirements": [],
+    "dependencies": [],
+    "environment_requirements": [],
+    "health": "unavailable",
+    "last_verified_utc": "2026-08-21T00:02:33.032Z",
+    "update": {
+      "available": "unknown",
+      "reason": "Network update checks are outside read-only discovery."
+    },
+    "conflicts": [],
+    "trust": {
+      "state": "detected-not-admitted",
+      "invocation_authorized": false
+    },
+    "resource_contract": {
+      "resource": "uv",
+      "capabilities": [
+        "python-environment-management"
+      ],
+      "interface": "uv --version",
+      "requirements": [],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped; invocation requires separate admission",
+      "state": "absent"
+    }
+  },
+  {
+    "id": "code",
+    "command": "code",
+    "executable": "C:\\Users\\Ben\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\code",
+    "available": false,
+    "version": "spawn code ENOENT",
+    "probe": "--version",
+    "install_source": "user-local",
+    "capabilities": [
+      "vscode-cli"
+    ],
+    "project_requirements": [],
+    "dependencies": [],
+    "environment_requirements": [],
+    "health": "unavailable",
+    "last_verified_utc": "2026-08-21T00:02:33.066Z",
+    "update": {
+      "available": "unknown",
+      "reason": "Network update checks are outside read-only discovery."
+    },
+    "conflicts": [],
+    "trust": {
+      "state": "detected-not-admitted",
+      "invocation_authorized": false
+    },
+    "resource_contract": {
+      "resource": "code",
+      "capabilities": [
+        "vscode-cli"
+      ],
+      "interface": "code --version",
+      "requirements": [],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped; invocation requires separate admission",
+      "state": "absent"
+    }
+  },
+  {
+    "id": "conda",
+    "command": "conda",
+    "executable": null,
+    "available": false,
+    "version": "spawn conda ENOENT",
+    "probe": "--version",
+    "install_source": "unresolved-path",
+    "capabilities": [
+      "python-environment-management",
+      "package-management"
+    ],
+    "project_requirements": [],
+    "dependencies": [],
+    "environment_requirements": [],
+    "health": "unavailable",
+    "last_verified_utc": "2026-08-21T00:02:33.084Z",
+    "update": {
+      "available": "unknown",
+      "reason": "Network update checks are outside read-only discovery."
+    },
+    "conflicts": [],
+    "trust": {
+      "state": "detected-not-admitted",
+      "invocation_authorized": false
+    },
+    "resource_contract": {
+      "resource": "conda",
+      "capabilities": [
+        "python-environment-management",
+        "package-management"
+      ],
+      "interface": "conda --version",
+      "requirements": [],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped; invocation requires separate admission",
+      "state": "absent"
+    }
+  },
+  {
+    "id": "pipx",
+    "command": "pipx",
+    "executable": null,
+    "available": false,
+    "version": "spawn pipx ENOENT",
+    "probe": "--version",
+    "install_source": "unresolved-path",
+    "capabilities": [
+      "isolated-python-application-management"
+    ],
+    "project_requirements": [],
+    "dependencies": [
+      "python"
+    ],
+    "environment_requirements": [],
+    "health": "unavailable",
+    "last_verified_utc": "2026-08-21T00:02:33.119Z",
+    "update": {
+      "available": "unknown",
+      "reason": "Network update checks are outside read-only discovery."
+    },
+    "conflicts": [],
+    "trust": {
+      "state": "detected-not-admitted",
+      "invocation_authorized": false
+    },
+    "resource_contract": {
+      "resource": "pipx",
+      "capabilities": [
+        "isolated-python-application-management"
+      ],
+      "interface": "pipx --version",
+      "requirements": [
+        "python"
+      ],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped; invocation requires separate admission",
+      "state": "absent"
+    }
+  },
+  {
+    "id": "pnpm",
+    "command": "pnpm",
+    "executable": null,
+    "available": false,
+    "version": "spawn pnpm ENOENT",
+    "probe": "--version",
+    "install_source": "unresolved-path",
+    "capabilities": [
+      "javascript-package-management"
+    ],
+    "project_requirements": [],
+    "dependencies": [],
+    "environment_requirements": [],
+    "health": "unavailable",
+    "last_verified_utc": "2026-08-21T00:02:33.135Z",
+    "update": {
+      "available": "unknown",
+      "reason": "Network update checks are outside read-only discovery."
+    },
+    "conflicts": [],
+    "trust": {
+      "state": "detected-not-admitted",
+      "invocation_authorized": false
+    },
+    "resource_contract": {
+      "resource": "pnpm",
+      "capabilities": [
+        "javascript-package-management"
+      ],
+      "interface": "pnpm --version",
+      "requirements": [],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped; invocation requires separate admission",
+      "state": "absent"
+    }
+  },
+  {
+    "id": "yarn",
+    "command": "yarn",
+    "executable": null,
+    "available": false,
+    "version": "spawn yarn ENOENT",
+    "probe": "--version",
+    "install_source": "unresolved-path",
+    "capabilities": [
+      "javascript-package-management"
+    ],
+    "project_requirements": [],
+    "dependencies": [],
+    "environment_requirements": [],
+    "health": "unavailable",
+    "last_verified_utc": "2026-08-21T00:02:33.170Z",
+    "update": {
+      "available": "unknown",
+      "reason": "Network update checks are outside read-only discovery."
+    },
+    "conflicts": [],
+    "trust": {
+      "state": "detected-not-admitted",
+      "invocation_authorized": false
+    },
+    "resource_contract": {
+      "resource": "yarn",
+      "capabilities": [
+        "javascript-package-management"
+      ],
+      "interface": "yarn --version",
+      "requirements": [],
+      "effects": [
+        "probe-read-only"
+      ],
+      "conflicts": [],
+      "policy": "no shell; fixed argument probe; provider keys stripped; invocation requires separate admission",
+      "state": "absent"
+    }
+  }
+]

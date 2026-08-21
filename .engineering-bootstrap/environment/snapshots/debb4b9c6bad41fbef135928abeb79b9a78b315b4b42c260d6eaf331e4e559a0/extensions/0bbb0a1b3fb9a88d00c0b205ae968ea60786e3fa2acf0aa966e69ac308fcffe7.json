@@ -1,0 +1,572 @@
+{
+  "id": "ms-azuretools.vscode-azureresourcegroups",
+  "name": "Azure Resources",
+  "version": "0.12.7",
+  "publisher": "ms-azuretools",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "chatParticipants",
+    "commands",
+    "configuration",
+    "keybindings",
+    "languageModelTools",
+    "menus",
+    "submenus",
+    "terminal",
+    "views",
+    "viewsContainers",
+    "viewsWelcome",
+    "walkthroughs",
+    "x-azResources"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:chatParticipants",
+      "kind": "chatParticipants",
+      "provider": "ms-azuretools.vscode-azureresourcegroups",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-azuretools.vscode-azureresourcegroups",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-azuretools.vscode-azureresourcegroups",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "ms-azuretools.vscode-azureresourcegroups",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languageModelTools",
+      "kind": "languageModelTools",
+      "provider": "ms-azuretools.vscode-azureresourcegroups",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-azuretools.vscode-azureresourcegroups",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "ms-azuretools.vscode-azureresourcegroups",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:terminal",
+      "kind": "terminal",
+      "provider": "ms-azuretools.vscode-azureresourcegroups",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "ms-azuretools.vscode-azureresourcegroups",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "ms-azuretools.vscode-azureresourcegroups",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "ms-azuretools.vscode-azureresourcegroups",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "ms-azuretools.vscode-azureresourcegroups",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:x-azResources",
+      "kind": "x-azResources",
+      "provider": "ms-azuretools.vscode-azureresourcegroups",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "azureFocusView.refresh",
+      "invocation": "vscode.commands.executeCommand('azureFocusView.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureFocusView.refreshTree",
+      "invocation": "vscode.commands.executeCommand('azureFocusView.refreshTree', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.askAgentAboutActivityLog",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.askAgentAboutActivityLog', ...args)",
+      "title": "%azureResourceGroups.askAgentAboutActivityLog%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.askAgentAboutActivityLogItem",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.askAgentAboutActivityLogItem', ...args)",
+      "title": "%azureResourceGroups.askAgentAboutActivityLogItem%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.askAgentAboutResource",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.askAgentAboutResource', ...args)",
+      "title": "%azureResourceGroups.askAzure%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.askAzure",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.askAzure', ...args)",
+      "title": "%azureResourceGroups.askAzure%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.clearActivities",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.clearActivities', ...args)",
+      "title": "%azureResourceGroups.clearActivities%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.createResource",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.createResource', ...args)",
+      "title": "Create Resource...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.createResourceGroup",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.createResourceGroup', ...args)",
+      "title": "%azureResourceGroups.createResourceGroup%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.deleteResourceGroupV2",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.deleteResourceGroupV2', ...args)",
+      "title": "%azureResourceGroups.deleteResourceGroup%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.editTags",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.editTags', ...args)",
+      "title": "%azureResourceGroups.editTags%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.focusGroup",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.focusGroup', ...args)",
+      "title": "%azureResourceGroups.focusGroup%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.groupBy.armTag",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.groupBy.armTag', ...args)",
+      "title": "%azureResourceGroups.groupBy.armTag%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.groupBy.location",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.groupBy.location', ...args)",
+      "title": "%azureResourceGroups.groupBy.location%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.groupBy.resourceGroup",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.groupBy.resourceGroup', ...args)",
+      "title": "%azureResourceGroups.groupBy.resourceGroup%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.groupBy.resourceType",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.groupBy.resourceType', ...args)",
+      "title": "%azureResourceGroups.groupBy.resourceType%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.installExtension",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.installExtension', ...args)",
+      "title": "Install Azure extension",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.loadAllSubscriptionRoleAssignments",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.loadAllSubscriptionRoleAssignments', ...args)",
+      "title": "%azureResourceGroups.loadAllSubscriptionRoleAssignments%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.loadMore",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.loadMore', ...args)",
+      "title": "%azureResourceGroups.loadMore%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.logIn",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.logIn', ...args)",
+      "title": "%azureResourceGroups.logIn%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.openInPortal",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.openInPortal', ...args)",
+      "title": "%azureResourceGroups.openInPortal%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.refresh",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.refresh', ...args)",
+      "title": "%azureResourceGroups.refresh%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.refreshTree",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.refreshTree', ...args)",
+      "title": "%azureResourceGroups.refresh%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.reportIssue",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.reportIssue', ...args)",
+      "title": "%azureResourceGroups.reportIssue%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.revealResource",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.revealResource', ...args)",
+      "title": "%azureResourceGroups.revealResource%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.selectSubscriptions",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.selectSubscriptions', ...args)",
+      "title": "%azureResourceGroups.selectSubscriptions%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.showGroupOptions",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.showGroupOptions', ...args)",
+      "title": "%azureResourceGroups.showGroupOptions%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.signInToTenant",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.signInToTenant', ...args)",
+      "title": "%azureResourceGroups.signInToTenant%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.unfocusGroup",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.unfocusGroup', ...args)",
+      "title": "%azureResourceGroups.unfocusGroup%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.uploadFileCloudConsole",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.uploadFileCloudConsole', ...args)",
+      "title": "%azureResourceGroups.uploadToCloudShell%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureResourceGroups.viewProperties",
+      "invocation": "vscode.commands.executeCommand('azureResourceGroups.viewProperties', ...args)",
+      "title": "%azureResourceGroups.viewProperties%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureTenantsView.addAccount",
+      "invocation": "vscode.commands.executeCommand('azureTenantsView.addAccount', ...args)",
+      "title": "%azureTenantsView.addAccount%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureTenantsView.configureSovereignCloud",
+      "invocation": "vscode.commands.executeCommand('azureTenantsView.configureSovereignCloud', ...args)",
+      "title": "%azureTenantsView.configureSovereignCloud%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureTenantsView.refresh",
+      "invocation": "vscode.commands.executeCommand('azureTenantsView.refresh', ...args)",
+      "title": "%azureResourceGroups.refresh%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureTenantsView.refreshTree",
+      "invocation": "vscode.commands.executeCommand('azureTenantsView.refreshTree', ...args)",
+      "title": "%azureResourceGroups.refresh%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureTenantsView.signInToTenant",
+      "invocation": "vscode.commands.executeCommand('azureTenantsView.signInToTenant', ...args)",
+      "title": "%azureTenantsView.signInToTenant%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureWorkspace.refresh",
+      "invocation": "vscode.commands.executeCommand('azureWorkspace.refresh', ...args)",
+      "title": "%azureResourceGroups.refresh%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azureWorkspace.refreshTree",
+      "invocation": "vscode.commands.executeCommand('azureWorkspace.refreshTree', ...args)",
+      "title": "%azureResourceGroups.refresh%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ms-azuretools.getStarted",
+      "invocation": "vscode.commands.executeCommand('ms-azuretools.getStarted', ...args)",
+      "title": "%ms-azuretools.getStarted%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ms-azuretools.reportIssue",
+      "invocation": "vscode.commands.executeCommand('ms-azuretools.reportIssue', ...args)",
+      "title": "%ms-azuretools.reportIssue%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ms-azuretools.reviewIssues",
+      "invocation": "vscode.commands.executeCommand('ms-azuretools.reviewIssues', ...args)",
+      "title": "%ms-azuretools.reviewIssues%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onFileSystem:azureResourceGroups"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-azuretools.vscode-azureresourcegroups",
+    "capabilities": [
+      "contribution:chatParticipants",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:keybindings",
+      "contribution:languageModelTools",
+      "contribution:menus",
+      "contribution:submenus",
+      "contribution:terminal",
+      "contribution:views",
+      "contribution:viewsContainers",
+      "contribution:viewsWelcome",
+      "contribution:walkthroughs",
+      "contribution:x-azResources"
+    ],
+    "interface": [
+      "azureFocusView.refresh",
+      "azureFocusView.refreshTree",
+      "azureResourceGroups.askAgentAboutActivityLog",
+      "azureResourceGroups.askAgentAboutActivityLogItem",
+      "azureResourceGroups.askAgentAboutResource",
+      "azureResourceGroups.askAzure",
+      "azureResourceGroups.clearActivities",
+      "azureResourceGroups.createResource",
+      "azureResourceGroups.createResourceGroup",
+      "azureResourceGroups.deleteResourceGroupV2",
+      "azureResourceGroups.editTags",
+      "azureResourceGroups.focusGroup",
+      "azureResourceGroups.groupBy.armTag",
+      "azureResourceGroups.groupBy.location",
+      "azureResourceGroups.groupBy.resourceGroup",
+      "azureResourceGroups.groupBy.resourceType",
+      "azureResourceGroups.installExtension",
+      "azureResourceGroups.loadAllSubscriptionRoleAssignments",
+      "azureResourceGroups.loadMore",
+      "azureResourceGroups.logIn",
+      "azureResourceGroups.openInPortal",
+      "azureResourceGroups.refresh",
+      "azureResourceGroups.refreshTree",
+      "azureResourceGroups.reportIssue",
+      "azureResourceGroups.revealResource",
+      "azureResourceGroups.selectSubscriptions",
+      "azureResourceGroups.showGroupOptions",
+      "azureResourceGroups.signInToTenant",
+      "azureResourceGroups.unfocusGroup",
+      "azureResourceGroups.uploadFileCloudConsole",
+      "azureResourceGroups.viewProperties",
+      "azureTenantsView.addAccount",
+      "azureTenantsView.configureSovereignCloud",
+      "azureTenantsView.refresh",
+      "azureTenantsView.refreshTree",
+      "azureTenantsView.signInToTenant",
+      "azureWorkspace.refresh",
+      "azureWorkspace.refreshTree",
+      "ms-azuretools.getStarted",
+      "ms-azuretools.reportIssue",
+      "ms-azuretools.reviewIssues"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

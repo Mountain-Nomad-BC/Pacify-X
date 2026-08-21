@@ -476,6 +476,8 @@ if (require.main === module) {
       process.stderr.write(`${error.stack || error.message}\n`);
       process.exitCode = 1;
     });
+  } else if (process.argv.includes('--help')) {
+    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--vsix <path>] [--report-dir <path>]\n');
   } else {
     main().catch(error => {
       process.stderr.write(`${error.stack || error.message}\n`);

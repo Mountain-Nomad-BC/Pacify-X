@@ -5,33 +5,37 @@
       "route_id": "extension.vscode-listener",
       "kind": "observer",
       "health": "healthy",
-      "observed_at": "2026-08-12T08:29:34.419060+00:00",
-      "receipt_path": "extension/evidence/vscode-host-listener-smoke.json",
-      "receipt_sha256": "a4520b74037b14602d205f919f42fd4be74ada5b55e87e1aa4cc0eacdcbbdc03"
+      "observed_at": "2026-08-21T01:36:18.976210+00:00",
+      "receipt_path": "extension/evidence/installed-vsix-smoke.json",
+      "receipt_sha256": "65fffc02ee6740c74af2160337e5b1a2bc434b3086172685b043765680bc1a47",
+      "limitation": null
     },
     {
       "route_id": "provider.remote-model",
       "kind": "mediator",
-      "health": "healthy",
-      "observed_at": "2026-08-12T08:29:34.419060+00:00",
-      "receipt_path": "evidence/punch-cards/O08-provider-invocation-gateway.json",
-      "receipt_sha256": "ef4f9135c4fc101809dbd894e546f757a8df81f21cbb4d4eac4ea8b6bbd6ed42"
+      "health": "unconfigured",
+      "observed_at": "2026-08-21T01:36:18.976210+00:00",
+      "receipt_path": "registry/provider_adapters.json",
+      "receipt_sha256": "48c536236ca9ce60273803d9b9455c2c09230d1bb62d6a0011fcf448000162f8",
+      "limitation": "remote provider remains default-off"
     },
     {
       "route_id": "provider.local-model",
       "kind": "mediator",
       "health": "healthy",
-      "observed_at": "2026-08-12T08:29:34.419060+00:00",
-      "receipt_path": "evidence/punch-cards/O08-provider-invocation-gateway.json",
-      "receipt_sha256": "ef4f9135c4fc101809dbd894e546f757a8df81f21cbb4d4eac4ea8b6bbd6ed42"
+      "observed_at": "2026-08-21T01:36:18.976210+00:00",
+      "receipt_path": ".engineering-bootstrap/provider-budget/ledger.json",
+      "receipt_sha256": "3342315046d5214887012a30ef6ab1b3ff564caeef5724df2b5c75bf3258e8de",
+      "limitation": null
     },
     {
       "route_id": "runtime.package-environment",
       "kind": "observer",
       "health": "healthy",
-      "observed_at": "2026-08-12T08:29:34.419060+00:00",
-      "receipt_path": "evidence/punch-cards/O12-system-tool-inventory.json",
-      "receipt_sha256": "b79e323a8114abea402668c42348a309b1f50c8139ba8dee41990292f9603895"
+      "observed_at": "2026-08-21T01:36:18.976210+00:00",
+      "receipt_path": ".engineering-bootstrap/environment/current.json",
+      "receipt_sha256": "8c79d664ba35df77bc90dce3ed88f08ac7bc6f853a3e3b450d25cf1adb719d21",
+      "limitation": null
     }
   ]
 }
