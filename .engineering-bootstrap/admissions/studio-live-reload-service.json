@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007361",
+  "effect": "service",
+  "scope": ["vscode:user-profile-live-studio-post-reload-walk"],
+  "authority": "The user explicitly reloaded VS Code and instructed Codex to run what remains.",
+  "expected_effect": "Exercise Pacify-X commands and Studio navigation in the already-running user-profile VS Code host without closing the host or replacing its profile.",
+  "rollback": "Only Pacify-X panels/editors opened by the walk may be closed; the existing VS Code process tree and user profile remain intact.",
+  "evidence": [{"reference": "user instruction 2026-08-21", "claim": "Explicit post-reload runtime-walk authority."}]
+}

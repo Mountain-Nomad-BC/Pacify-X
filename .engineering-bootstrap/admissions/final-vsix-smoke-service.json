@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+  "effect": "service",
+  "scope": ["service:isolated-installed-vsix-smoke-0.6.29"],
+  "authority": "The user requested the remaining work be run and proven after reload; the exact packaged extension must be exercised before installation.",
+  "expected_effect": "Create registered isolated VS Code user/extensions roots, install the exact SHA-bound 0.6.29 VSIX, exercise packaged Agent/Workflow/Skill Studio lifecycle behavior, retain receipts, and reconcile the owned process tree and temporary workspace.",
+  "rollback": "Terminate only the registered isolated host process tree and reclaim only its registered owned temporary workspace; retain failure evidence.",
+  "evidence": [{"reference": "extension/dist/pacify-x-vscode-0.6.29.vsix", "claim": "Exact immutable artifact selected for installed-host proof."}]
+}

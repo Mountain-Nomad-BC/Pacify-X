@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007366",
+  "effect": "execute",
+  "scope": ["verification:studio-starter-hotfix-focused-tests", "verification:extension-package-campaign-0629", "verification:dashboard-extension-section", "verification:runtime-cli-validate"],
+  "authority": "The user explicitly requested the remaining repair be run and proven.",
+  "expected_effect": "Run focused cross-version tests, the complete extension package campaign, the governed dashboard section, and final runtime validation.",
+  "rollback": "Test processes and temporary workspaces remain owner-supervised and reconciled; failures retain diagnostics without source rollback.",
+  "evidence": [{"reference": "extension/tests/studio-bootstrap.test.js", "claim": "Focused real-boundary regression owner."}]
+}

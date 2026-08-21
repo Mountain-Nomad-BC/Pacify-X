@@ -1,0 +1,17 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007373",
+  "effect": "execute",
+  "scope": [
+    "verification:resource-ledger-read-lock-focused",
+    "verification:studio-memory-graph-section",
+    "verification:dashboard-extension-section",
+    "verification:all-section-receipt-status",
+    "verification:single-owned-full-profile-post-hotfix",
+    "verification:runtime-cli-validate"
+  ],
+  "authority": "The user requested completion, validation, and proof of all remaining defects.",
+  "expected_effect": "Run the deterministic lock regression, the previously failing workflow lifecycle test, affected governed sections, all-section freshness, one post-repair full profile, and validation.",
+  "rollback": "Test execution changes only governed receipts and registered owned temporary/process state; failures retain diagnostics.",
+  "evidence": [{"reference": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json", "claim": "Failed governed section selected for repair verification."}]
+}

@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007361",
+  "effect": "execute",
+  "scope": ["px-skill-query:live-reloaded-vscode-studio-verification"],
+  "authority": "The user explicitly asked to run everything remaining after reloading VS Code.",
+  "expected_effect": "Select and hydrate one admitted PX verification capability for the post-reload Studio walk.",
+  "rollback": "Capability selection is bounded and does not modify the user's VS Code profile.",
+  "evidence": [{"reference": ".agents/skills/px-test-verify/SKILL.md", "claim": "Verification routing contract."}]
+}

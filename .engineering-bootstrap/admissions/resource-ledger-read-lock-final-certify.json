@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007373",
+  "effect": "execute",
+  "scope": [
+    "verification:testing-governance-section",
+    "verification:all-section-receipt-status",
+    "verification:single-owned-full-profile-post-hotfix",
+    "verification:runtime-cli-validate"
+  ],
+  "authority": "The user requested all remaining validation; the deterministic projection refresh made only the testing-governance section stale.",
+  "expected_effect": "Refresh testing-governance, require all six sections current, run exactly one owned post-hotfix full profile, and validate the runtime.",
+  "rollback": "Governed verification retains receipts and reconciles owned test resources; failures retain diagnostics.",
+  "evidence": [{"reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json", "claim": "Only non-current section identified by the all-section status gate."}]
+}

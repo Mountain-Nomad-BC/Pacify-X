@@ -5,7 +5,7 @@ const test = require('node:test');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { setupStudio, STARTER_AGENT, STARTER_WORKFLOW } = require('../src/studioBootstrap');
+const { setupStudio, STARTER_BUNDLE_VERSION, STARTER_AGENT, STARTER_WORKFLOW } = require('../src/studioBootstrap');
 const { PxBridge, exactStudioVersionConflictError } = require('../src/pxBridge');
 const { generateApprovalKey } = require('../src/studioApprovalHost');
 const { createStudioDraftFromHost } = require('../src/studioDraftHost');
@@ -39,6 +39,8 @@ test('Studio setup creates, admits, and runs editable starter agent and workflow
   assert.equal(calls.filter(call => call[0] === 'operate').length, 10);
   assert.equal(STARTER_AGENT.agent_id, 'agent:pacify-x-starter');
   assert.equal(STARTER_WORKFLOW.workflow_id, 'workflow:pacify-x-starter');
+  assert.equal(STARTER_AGENT.version, STARTER_BUNDLE_VERSION);
+  assert.equal(STARTER_WORKFLOW.version, STARTER_BUNDLE_VERSION);
 });
 
 test('Studio setup stops immediately when agent admission is not admitted', async () => {
@@ -55,6 +57,42 @@ test('Studio setup stops immediately when agent admission is not admitted', asyn
   await assert.rejects(setupStudio(bridge), /agent-admission-failed/);
   assert.equal(operations.includes('agent:run'), false);
   assert.equal(operations.some(value => value.startsWith('workflow:')), false);
+});
+
+test('Studio setup allocates the new immutable bundle version from an occupied 1.0.0 predecessor', async () => {
+  const creates = [];
+  const bridge = {
+    async issueStudioApproval(_kind, _operation, payload) { return { approval_capability: { payload } }; },
+    async studioIdentityAbsence(kind, identity) { return { kind, identity, absent: false }; },
+    async nextStudioVersion(kind, identity, sourceVersion) {
+      return { kind, identity, source_version: sourceVersion, candidate_version: STARTER_BUNDLE_VERSION };
+    },
+    async studioOperation(kind, operation, payload) {
+      const exact = payload.approval_capability?.payload || payload;
+      if (operation === 'create') {
+        creates.push([kind, exact]);
+        if (!exact.version_allocation) {
+          const error = Object.assign(new Error('studio-version-conflict:initial-version-invalid'), {
+            code: 'STUDIO_VERSION_CONFLICT', reason: 'initial-version-invalid'
+          });
+          throw error;
+        }
+        return { created: true };
+      }
+      if (kind === 'agent' && operation === 'test') return { passed: true };
+      if (operation === 'admit' || (kind === 'workflow' && operation === 'validate')) return { decision: 'admitted' };
+      if (kind === 'agent' && operation === 'run') return { run_id: 'run:agent-upgrade', run_outcome: 'succeeded' };
+      if (kind === 'workflow' && operation === 'dry-run') return { effects_executed: false };
+      if (kind === 'workflow' && operation === 'run') return { run_id: 'run:workflow-upgrade', run_state: 'succeeded' };
+      return {};
+    }
+  };
+  const result = await setupStudio(bridge);
+  assert.equal(result.ready, true);
+  assert.equal(result.agent.version, STARTER_BUNDLE_VERSION);
+  assert.equal(result.workflow.version, STARTER_BUNDLE_VERSION);
+  assert.equal(creates.length, 4);
+  assert.equal(creates.filter(([, payload]) => payload.version_allocation).length, 2);
 });
 
 test('Studio setup crosses the real host-to-Python boundary and leaves reopenable runnable revisions', { timeout: 120000 }, async t => {
@@ -87,10 +125,23 @@ test('Studio setup crosses the real host-to-Python boundary and leaves reopenabl
   assert.equal(result.agent.run_outcome, 'succeeded');
   assert.equal(result.workflow.run_state, 'succeeded');
 
+  const replayProgress = [];
+  let replay;
+  try {
+    replay = await setupStudio(bridge, { progress: step => replayProgress.push(step) });
+  } catch (error) {
+    assert.fail(`second setup failed after ${replayProgress.at(-1) || 'no-step'}: ${error.message}`);
+  }
+  assert.equal(replay.ready, true);
+  assert.equal(replay.agent.version, STARTER_BUNDLE_VERSION);
+  assert.equal(replay.workflow.version, STARTER_BUNDLE_VERSION);
+  assert.equal(replay.agent.run_outcome, 'succeeded');
+  assert.equal(replay.workflow.run_state, 'succeeded');
+
   const agents = await bridge.catalog({ kind: 'agents', query: STARTER_AGENT.agent_id, status: '', offset: 0, limit: 20, sort: 'id' });
   const workflows = await bridge.catalog({ kind: 'workflows', query: STARTER_WORKFLOW.workflow_id, status: '', offset: 0, limit: 20, sort: 'id' });
-  const agent = agents.items.find(item => item.kind === 'studio-agent-revision' && item.details?.agent_id === STARTER_AGENT.agent_id);
-  const workflow = workflows.items.find(item => item.kind === 'studio-workflow-revision' && item.details?.workflow_id === STARTER_WORKFLOW.workflow_id);
+  const agent = agents.items.find(item => item.kind === 'studio-agent-revision' && item.details?.agent_id === STARTER_AGENT.agent_id && item.details?.version === STARTER_BUNDLE_VERSION);
+  const workflow = workflows.items.find(item => item.kind === 'studio-workflow-revision' && item.details?.workflow_id === STARTER_WORKFLOW.workflow_id && item.details?.version === STARTER_BUNDLE_VERSION);
   assert.equal(agent?.details?.lifecycle_authentication?.authenticated, true);
   assert.equal(agent?.details?.builder_graph_state, 'content-bound');
   assert.equal(workflow?.details?.lifecycle_authentication?.authenticated, true);

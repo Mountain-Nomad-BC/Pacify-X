@@ -1,0 +1,20 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007366",
+  "effect": "write",
+  "scope": [
+    "registry/python_surface_ownership.json",
+    "registry/python_dependency_ownership.json",
+    "registry/registry_envelope_inventory.json",
+    "registry/test_group_index.json"
+  ],
+  "authority": "The governed exact-installed gate proved that Python and test ownership projections became stale after the admitted runtime and regression-test repair.",
+  "expected_effect": "Regenerate only the canonical ownership, envelope, and test-index projections required to bind the changed Python surfaces and tests into certification.",
+  "rollback": "All projections are deterministic generated artifacts and can be regenerated from the retained source tree.",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/groups/exact-installed.json",
+      "claim": "Current failed receipt identifies the stale Python ownership projection."
+    }
+  ]
+}

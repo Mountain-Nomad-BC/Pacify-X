@@ -187,6 +187,19 @@ def test_next_version_is_read_only_prerelease_aware_and_create_revalidates_it(tm
         _authorized(tmp_path, "agent", "create", allocated),
     )
     assert replay["created"] is False and replay["idempotent_replay"] is True
+    replay_without_stale_allocation = studio_operation(
+        tmp_path,
+        "agent",
+        "create",
+        _authorized(
+            tmp_path,
+            "agent",
+            "create",
+            {key: item for key, item in allocated.items() if key != "version_allocation"},
+        ),
+    )
+    assert replay_without_stale_allocation["created"] is False
+    assert replay_without_stale_allocation["idempotent_replay"] is True
     assert (tmp_path / str(created["builder_graph_path"])).with_name("record.json").read_bytes() == original
 
 
@@ -236,6 +249,19 @@ def test_workflow_next_version_authenticates_physical_predecessor_and_revalidate
         _authorized(tmp_path, "workflow", "create", candidate),
     )
     assert replay["created"] is False and replay["idempotent_replay"] is True
+    replay_without_stale_allocation = studio_operation(
+        tmp_path,
+        "workflow",
+        "create",
+        _authorized(
+            tmp_path,
+            "workflow",
+            "create",
+            {key: item for key, item in candidate.items() if key != "version_allocation"},
+        ),
+    )
+    assert replay_without_stale_allocation["created"] is False
+    assert replay_without_stale_allocation["idempotent_replay"] is True
     assert created_record.read_bytes() == preserved
 
 

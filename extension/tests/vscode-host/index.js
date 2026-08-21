@@ -121,8 +121,8 @@ async function run() {
     studioSetup = await installedStudioBootstrap.setupStudio(installedBridge);
     const agents = await installedBridge.catalog({ kind: 'agents', query: installedStudioBootstrap.STARTER_AGENT.agent_id, status: '', offset: 0, limit: 20, sort: 'id' });
     const workflows = await installedBridge.catalog({ kind: 'workflows', query: installedStudioBootstrap.STARTER_WORKFLOW.workflow_id, status: '', offset: 0, limit: 20, sort: 'id' });
-    installedAgent = agents.items.find(item => item.kind === 'studio-agent-revision' && item.details?.agent_id === installedStudioBootstrap.STARTER_AGENT.agent_id);
-    installedWorkflow = workflows.items.find(item => item.kind === 'studio-workflow-revision' && item.details?.workflow_id === installedStudioBootstrap.STARTER_WORKFLOW.workflow_id);
+    installedAgent = agents.items.find(item => item.kind === 'studio-agent-revision' && item.details?.agent_id === installedStudioBootstrap.STARTER_AGENT.agent_id && item.details?.version === installedStudioBootstrap.STARTER_BUNDLE_VERSION);
+    installedWorkflow = workflows.items.find(item => item.kind === 'studio-workflow-revision' && item.details?.workflow_id === installedStudioBootstrap.STARTER_WORKFLOW.workflow_id && item.details?.version === installedStudioBootstrap.STARTER_BUNDLE_VERSION);
     const skillId = 'skill:pacify-x-installed-starter';
     const skillVersion = '1.0.0';
     const skillPayload = {

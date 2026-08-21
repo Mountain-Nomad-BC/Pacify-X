@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007373",
+  "effect": "write",
+  "scope": [
+    "registry/python_surface_ownership.json",
+    "registry/python_dependency_ownership.json",
+    "registry/registry_envelope_inventory.json",
+    "registry/test_group_index.json"
+  ],
+  "authority": "The admitted ResourceLedger source and regression-test change must be rebound into the repository's deterministic ownership and certification projections.",
+  "expected_effect": "Regenerate only the Python ownership, dependency, test-index, and registry-envelope projections after the lifecycle repair.",
+  "rollback": "All four files are deterministic generated projections and can be rebuilt from retained source.",
+  "evidence": [{"reference": "tests/test_resource_lifecycle.py", "claim": "New ownership-bound regression surface."}]
+}

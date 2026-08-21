@@ -1,0 +1,14 @@
+{
+  "active_gap_id": "PX-OS-1053",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007366",
+  "learned": "The governed studio-memory-graph section passed six of seven chunks but reproduced a Windows PermissionError when a workflow observer read resources.json concurrently with a worker mutation. ResourceLedger writes hold the cross-process FileLock, while load only holds an instance-local RLock and therefore does not honor the writer exclusion boundary.",
+  "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-004", "PX-OS-007", "PX-OS-029", "PX-OS-056", "PX-OS-058", "PX-OS-059"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
+      "claim": "Governed receipt captures the concurrent Windows PermissionError in workflow lifecycle observation."
+    }
+  ]
+}

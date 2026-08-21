@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007388",
+  "effect": "network",
+  "scope": ["github:Mountain-Nomad-BC/Pacify-X:push-main-studio-hotfix-0.6.29"],
+  "authority": "The user explicitly requested committing and merging all completed repairs to the named GitHub repository.",
+  "expected_effect": "Push the new fast-forward main commit to origin without force or history rewrite.",
+  "rollback": "If a remote correction is needed, create an explicit follow-up revert commit; do not rewrite shared history.",
+  "evidence": [{"reference": "extension/dist/pacify-x-vscode-0.6.29.vsix", "claim": "Immutable release artifact represented by the commit."}]
+}

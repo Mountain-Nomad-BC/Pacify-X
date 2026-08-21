@@ -294289,7 +294289,7 @@
     }
   },
   "created_utc": "2026-08-16T17:14:48.634100Z",
-  "event_count": 7360,
+  "event_count": 7390,
   "expected_inventory": {
     "inventory_id": "pacify-x-typed-surfaces-20260820-r14",
     "source": "registry/operational_surface_inventory.json",
@@ -295804,10 +295804,10 @@
       "timestamp": "2026-08-17T05:08:03.574875Z"
     }
   ],
-  "generated_utc": "2026-08-21T04:17:50.249174Z",
-  "head_event_sha256": "397f7aeab83aac8eb5cc4b038c1449fd2aba34fa0b1cdbaf51d0f263725f1e0f",
+  "generated_utc": "2026-08-21T15:15:01.026670Z",
+  "head_event_sha256": "2e62c7a25cd6d773384120321970dd153955d0b9edd779f314558eb3e8bc1578",
   "ledger_id": "PX-OPERATIONAL-GAPS-20260816",
-  "ledger_size_bytes": 15311906,
+  "ledger_size_bytes": 15352790,
   "progress": {
     "aggregate_parent_cards": 25,
     "approved": 0,
@@ -296204,7 +296204,7 @@
     ],
     "unreconciled_report_findings": []
   },
-  "projection_sha256": "6d597537d10e69203609e1357e745f987417de5627a1bd700996b6d199870740",
+  "projection_sha256": "51b4d8f875d80a2cf4a624c726fd07773b26e9e350dd5551282ab04f1acf8250",
   "reports": {
     "agent-builder-operational-trace-20260816": {
       "evidence": [
@@ -371123,6 +371123,614 @@
         "github:Mountain-Nomad-BC/Pacify-X:push-main"
       ],
       "timestamp": "2026-08-21T04:17:50.249174Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user explicitly asked to run everything remaining after reloading VS Code.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007361",
+      "effect": "execute",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007362",
+      "event_sha256": "4c58e036960ec859b08761f2646342b76f4aaeae5a746fcd647f4df275e0e8ad",
+      "evidence": [
+        {
+          "artifact_sha256": "8914d4849df8bcca5f83634af09aab0c917b7353fd0b9b33ce2930b3cacfc8b0",
+          "artifact_size": 528,
+          "claim": "Verification routing contract.",
+          "reference": ".agents/skills/px-test-verify/SKILL.md"
+        }
+      ],
+      "expected_effect": "Select and hydrate one admitted PX verification capability for the post-reload Studio walk.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "Capability selection is bounded and does not modify the user's VS Code profile.",
+      "scope": [
+        "px-skill-query:live-reloaded-vscode-studio-verification"
+      ],
+      "timestamp": "2026-08-21T13:08:49.309309Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user explicitly reloaded VS Code and instructed Codex to run what remains.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007361",
+      "effect": "service",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007363",
+      "event_sha256": "82cf4e68b946d5278f35313435885d4c09fb8577c93f375bb58f41406c9f858b",
+      "evidence": [
+        {
+          "claim": "Explicit post-reload runtime-walk authority.",
+          "reference": "user instruction 2026-08-21"
+        }
+      ],
+      "expected_effect": "Exercise Pacify-X commands and Studio navigation in the already-running user-profile VS Code host without closing the host or replacing its profile.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "Only Pacify-X panels/editors opened by the walk may be closed; the existing VS Code process tree and user profile remain intact.",
+      "scope": [
+        "vscode:user-profile-live-studio-post-reload-walk"
+      ],
+      "timestamp": "2026-08-21T13:08:50.760693Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user requested completion and proof of remaining post-reload behavior.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007361",
+      "effect": "write",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007364",
+      "event_sha256": "120189861c804db4565243229c9c04cf5e23f5e59feced0647f1dffbce67b4be",
+      "evidence": [
+        {
+          "artifact_sha256": "3d88fd0e5a6945ca3d0448697ca0bfc788a8e3927645a9fe67a5a0de3ec143f9",
+          "artifact_size": 20491,
+          "claim": "Pre-reload exact-installed baseline to correlate with the live reload.",
+          "reference": "extension/evidence/installed-vsix-smoke.json"
+        }
+      ],
+      "expected_effect": "Retain a bounded post-reload activation and Studio interaction receipt under repository evidence.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "The additive evidence file is Git-reversible and contains no secrets or user-authored source content.",
+      "scope": [
+        "evidence:live-reloaded-vscode-studio-walk"
+      ],
+      "timestamp": "2026-08-21T13:08:52.212666Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user explicitly asked to run everything remaining after reloading VS Code.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007361",
+      "effect": "execute",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007365",
+      "event_sha256": "a83ca07177945d0c7debb984c866b45bc97f4b61f61f69347cf02ea3f27aec5f",
+      "evidence": [
+        {
+          "artifact_sha256": "682b7b35d26df419d480059f7a1d00d41636ace690206f4b5dbcf8430b05d9cc",
+          "artifact_size": 552950,
+          "claim": "Live post-reload control plane after bounded Studio setup.",
+          "reference": "evidence/live-reloaded-vscode-studio-walk-20260821/03-setup-result.png"
+        }
+      ],
+      "expected_effect": "Resolve the exact Agent and Workflow revisions and bounded run evidence produced by the live Studio setup, then validate the resulting repository state.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "Verification commands are read-only except for governed validation evidence and registered temporary/process state, all of which are reconciled by their owners.",
+      "scope": [
+        "verification:live-studio-catalog-and-run-receipts",
+        "verification:post-reload-runtime-cli-validate"
+      ],
+      "timestamp": "2026-08-21T13:14:15.223638Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user explicitly instructed Codex to run and complete everything remaining after reload.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007366",
+      "effect": "execute",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007367",
+      "event_sha256": "53df5ff04bc380fe6605bb80d4cf021671ae19deee2385fa946874c905c1c690",
+      "evidence": [
+        {
+          "artifact_sha256": "af333d5015f7685202a709a93939fb7d34645d650cb624669919f2186e033e48",
+          "artifact_size": 545,
+          "claim": "Repair routing contract.",
+          "reference": ".agents/skills/px-debug-repair/SKILL.md"
+        }
+      ],
+      "expected_effect": "Select and hydrate one admitted repair capability for the exact immutable starter revision conflict.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "The query is bounded and source-neutral.",
+      "scope": [
+        "px-skill-query:studio-starter-immutable-version-conflict-repair"
+      ],
+      "timestamp": "2026-08-21T13:16:03.726587Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user explicitly requested completion of all remaining operational repairs.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007366",
+      "effect": "write",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007368",
+      "event_sha256": "4b6676a40ccadbbee186ebc34265bfd6f941be5e3fe36da5c2a90b04cdcf73e8",
+      "evidence": [
+        {
+          "artifact_sha256": "417fc7ff1a21b86f59df9e09b1da9ad75b737be107721ef4d09f3664f43a6c5f",
+          "artifact_size": 5697,
+          "claim": "Canonical starter bundle owner.",
+          "reference": "extension/src/studioBootstrap.js"
+        }
+      ],
+      "expected_effect": "Publish a new immutable starter bundle revision, bind tests to its exact identity/version, bump the extension package, and retain focused evidence.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "Source edits are Git-reversible; published 1.0.0 Studio data remains untouched and the new version is additive.",
+      "scope": [
+        "repository:studio-starter-immutable-version-hotfix-0629",
+        "tests:studio-starter-cross-version-idempotency",
+        "evidence:post-reload-hotfix-receipts"
+      ],
+      "timestamp": "2026-08-21T13:16:05.238873Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user explicitly requested the remaining repair be run and proven.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007366",
+      "effect": "execute",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007369",
+      "event_sha256": "83bf420587d996b33f5fa77a44316604e9d0743e546c6ba20c0add189c3c87ff",
+      "evidence": [
+        {
+          "artifact_sha256": "5405680ddc6d7cfebe110d0d11862b2285401e5d622647e8b2ecb48bda00dae0",
+          "artifact_size": 9130,
+          "claim": "Focused real-boundary regression owner.",
+          "reference": "extension/tests/studio-bootstrap.test.js"
+        }
+      ],
+      "expected_effect": "Run focused cross-version tests, the complete extension package campaign, the governed dashboard section, and final runtime validation.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "Test processes and temporary workspaces remain owner-supervised and reconciled; failures retain diagnostics without source rollback.",
+      "scope": [
+        "verification:studio-starter-hotfix-focused-tests",
+        "verification:extension-package-campaign-0629",
+        "verification:dashboard-extension-section",
+        "verification:runtime-cli-validate"
+      ],
+      "timestamp": "2026-08-21T13:16:06.793741Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user explicitly requested running the completed remaining hotfix in VS Code.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007366",
+      "effect": "install",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007370",
+      "event_sha256": "c7e7e72611ab07462c41b53cc46161e62def7d6424c9928843915a43aa5b583b",
+      "evidence": [
+        {
+          "artifact_sha256": "fab79c8d367285a0d1366b4d3e62722770325611f2f9cfbf001337c0c8d9e211",
+          "artifact_size": 4210486,
+          "claim": "Retained rollback package.",
+          "reference": "extension/dist/pacify-x-vscode-0.6.28.vsix"
+        }
+      ],
+      "expected_effect": "Install the immutable 0.6.29 VSIX into the user's VS Code profile without closing the current window.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "The prior 0.6.28 VSIX remains retained and can be reinstalled explicitly.",
+      "scope": [
+        "vscode:user-profile:pacify-x-vscode-0.6.29"
+      ],
+      "timestamp": "2026-08-21T13:16:08.367072Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user explicitly requested that every remaining repair and proof step be run after reload.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007366",
+      "effect": "execute",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007371",
+      "event_sha256": "a7aee208bf88e21a72ed6d0883001dcf289a9e9b63ecf38ad912fea4f3bcbb31",
+      "evidence": [
+        {
+          "artifact_sha256": "27b16a6c6227061fdb09e255f3f2422bc5691202e4dcccdaa94f57d4c6826c72",
+          "artifact_size": 4211523,
+          "claim": "Immutable packaged artifact selected for exact-installed verification.",
+          "reference": "extension/dist/pacify-x-vscode-0.6.29.vsix"
+        }
+      ],
+      "expected_effect": "Exercise the exact packaged 0.6.29 extension in an isolated installed host, refresh affected governed sections, require every section current, then execute one owned post-hotfix full profile and runtime validation.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "Verification writes only governed receipts and registered temporary/process state; failed runs retain diagnostics and owned processes are reconciled.",
+      "scope": [
+        "verification:exact-installed-vsix-0629",
+        "verification:studio-memory-graph-section",
+        "verification:dashboard-extension-section",
+        "verification:all-section-receipt-status",
+        "verification:single-owned-full-profile-post-hotfix",
+        "verification:runtime-cli-validate"
+      ],
+      "timestamp": "2026-08-21T13:28:15.237850Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The governed exact-installed gate proved that Python and test ownership projections became stale after the admitted runtime and regression-test repair.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007366",
+      "effect": "write",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007372",
+      "event_sha256": "100aa0260b3f21e5aa8d4accf7d4020b0f08f79f9e0fa57789c51182015dd364",
+      "evidence": [
+        {
+          "artifact_sha256": "2946cf3a597a63167c1e64ee1c6b910b75fe1cd790b931a89d3b3dce39e6c774",
+          "artifact_size": 923,
+          "claim": "Current failed receipt identifies the stale Python ownership projection.",
+          "reference": ".engineering-bootstrap/test-evidence/groups/exact-installed.json"
+        }
+      ],
+      "expected_effect": "Regenerate only the canonical ownership, envelope, and test-index projections required to bind the changed Python surfaces and tests into certification.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "All projections are deterministic generated artifacts and can be regenerated from the retained source tree.",
+      "scope": [
+        "registry/python_surface_ownership.json",
+        "registry/python_dependency_ownership.json",
+        "registry/registry_envelope_inventory.json",
+        "registry/test_group_index.json"
+      ],
+      "timestamp": "2026-08-21T13:32:37.734796Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user requested completion of all defects exposed by the operational walk and certification gates.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007373",
+      "effect": "write",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007374",
+      "event_sha256": "40cf3541809cfde414d77e5b19fd298e4e0f10fb8b1d130d5d82a79f5ae5f968",
+      "evidence": [
+        {
+          "artifact_sha256": "109c09ae1bf0b964dcaf2bfa4af815fe3b8d99a21e1bcba1c2f605d8cf4e7313",
+          "artifact_size": 53149,
+          "claim": "Canonical resource ledger owner.",
+          "reference": "runtime/resource_lifecycle.py"
+        }
+      ],
+      "expected_effect": "Serialize ResourceLedger readers with cross-process writers and add a deterministic regression proving a second ledger instance cannot read through an active mutation.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "The two-file source and test patch is Git-reversible; no user data is changed.",
+      "scope": [
+        "runtime/resource_lifecycle.py",
+        "tests/test_resource_lifecycle.py"
+      ],
+      "timestamp": "2026-08-21T13:39:51.837437Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user requested completion, validation, and proof of all remaining defects.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007373",
+      "effect": "execute",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007375",
+      "event_sha256": "23e4bc306b855341c1106d9c53961ba063f75d623b67ee1931817fbef8050742",
+      "evidence": [
+        {
+          "artifact_sha256": "c4a15280986e90eb06b815a790fb47bcf267f4317237ef7ba5101a4ffd2e97af",
+          "artifact_size": 3649,
+          "claim": "Failed governed section selected for repair verification.",
+          "reference": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json"
+        }
+      ],
+      "expected_effect": "Run the deterministic lock regression, the previously failing workflow lifecycle test, affected governed sections, all-section freshness, one post-repair full profile, and validation.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "Test execution changes only governed receipts and registered owned temporary/process state; failures retain diagnostics.",
+      "scope": [
+        "verification:resource-ledger-read-lock-focused",
+        "verification:studio-memory-graph-section",
+        "verification:dashboard-extension-section",
+        "verification:all-section-receipt-status",
+        "verification:single-owned-full-profile-post-hotfix",
+        "verification:runtime-cli-validate"
+      ],
+      "timestamp": "2026-08-21T13:39:53.145951Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The admitted ResourceLedger source and regression-test change must be rebound into the repository's deterministic ownership and certification projections.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007373",
+      "effect": "write",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007376",
+      "event_sha256": "ec1446f7b371189c9d3016c0970e24294ff5aacd72105ecb86eb9df40ea3179c",
+      "evidence": [
+        {
+          "artifact_sha256": "12a928b9a3c7aff14f4df04a98d4890dd5d5bcadff7204594895c07ac685c4a2",
+          "artifact_size": 18559,
+          "claim": "New ownership-bound regression surface.",
+          "reference": "tests/test_resource_lifecycle.py"
+        }
+      ],
+      "expected_effect": "Regenerate only the Python ownership, dependency, test-index, and registry-envelope projections after the lifecycle repair.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "All four files are deterministic generated projections and can be rebuilt from retained source.",
+      "scope": [
+        "registry/python_surface_ownership.json",
+        "registry/python_dependency_ownership.json",
+        "registry/registry_envelope_inventory.json",
+        "registry/test_group_index.json"
+      ],
+      "timestamp": "2026-08-21T13:41:13.806289Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user requested all remaining validation; the deterministic projection refresh made only the testing-governance section stale.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007373",
+      "effect": "execute",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007377",
+      "event_sha256": "4507d0e1e8f97738b756b95602e60b0db4f36e15b8ee1e83ef74e4e577749eeb",
+      "evidence": [
+        {
+          "artifact_sha256": "220056e5ae0107c8135fa115898056e99a3ba47c1580434d2e5489585aff3d85",
+          "artifact_size": 900,
+          "claim": "Only non-current section identified by the all-section status gate.",
+          "reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json"
+        }
+      ],
+      "expected_effect": "Refresh testing-governance, require all six sections current, run exactly one owned post-hotfix full profile, and validate the runtime.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "Governed verification retains receipts and reconciles owned test resources; failures retain diagnostics.",
+      "scope": [
+        "verification:testing-governance-section",
+        "verification:all-section-receipt-status",
+        "verification:single-owned-full-profile-post-hotfix",
+        "verification:runtime-cli-validate"
+      ],
+      "timestamp": "2026-08-21T13:44:14.805586Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The owned full-profile admission gate identified nine stale group receipts after the runtime repair and deterministic projection refresh.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007373",
+      "effect": "execute",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007378",
+      "event_sha256": "7181d629b160426c6b820d74000bfc5e8e3bc08f9f80ed0102035a64af023476",
+      "evidence": [
+        {
+          "artifact_sha256": "982548c2051174b62728e05d12a8755dcb7759f3b89612ee718f7d86f6c21fca",
+          "artifact_size": 15262,
+          "claim": "Canonical governed group and full-profile owner.",
+          "reference": "registry/test_profiles.json"
+        }
+      ],
+      "expected_effect": "Run only non-current governed test groups in dependency-safe order so the single owned full-profile certification can start.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "Group execution updates governed receipts and registered owned test resources only; failures retain exact diagnostics.",
+      "scope": [
+        "verification:stale-test-groups-post-hotfix"
+      ],
+      "timestamp": "2026-08-21T13:45:48.200972Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The governed certification sweep and composed release audit identified these exact deterministic projections as stale.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+      "effect": "write",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007380",
+      "event_sha256": "85d566f5fec52fd00122880d61e7705d73257469f978e71255fb6342a1f70d68",
+      "evidence": [
+        {
+          "artifact_sha256": "76fab7d0b00f3cc51ca13351d773e82e17c58bfde5c878b8f67c99db5a58ef7f",
+          "artifact_size": 791,
+          "claim": "Causal failed receipt.",
+          "reference": ".engineering-bootstrap/test-evidence/groups/release-audit.json"
+        }
+      ],
+      "expected_effect": "Regenerate the provider route, artifact reachability, effect ownership, and dependent registry-envelope projections from canonical source.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "All four outputs are deterministic generated artifacts and can be rebuilt from retained source.",
+      "scope": [
+        "registry/provider_route_scan.json",
+        "registry/artifact_reachability.json",
+        "registry/effect_surface_ownership.json",
+        "registry/registry_envelope_inventory.json"
+      ],
+      "timestamp": "2026-08-21T14:27:03.918305Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The release audit classifies this generated Python cache as a forbidden active artifact; it is PACIFY-X-owned disposable output from the current diagnostic interpreter.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+      "effect": "destructive",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007381",
+      "event_sha256": "4d636e871b49f88f1855ad57e5e0ceffefae68aa01278c68491c72caffc0cbec",
+      "evidence": [
+        {
+          "artifact_sha256": "3dab12b3067a3757be5fd7334cdce7b11127d44bfb451785faeebf6ba2618fa1",
+          "artifact_size": 6078,
+          "claim": "Bounded recoverable cache-quarantine owner.",
+          "reference": "scripts/cleanup_python_caches.py"
+        }
+      ],
+      "expected_effect": "Inventory and move the exact runtime/__pycache__ directory into the bounded recoverable disposable-cache quarantine with a verified receipt; perform no hard delete.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "Restore each receipt-recorded cache file from the quarantine destination to its exact original relative path.",
+      "scope": [
+        "runtime/__pycache__"
+      ],
+      "timestamp": "2026-08-21T14:27:05.408936Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user requested execution of all remaining repair and certification work.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+      "effect": "execute",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007382",
+      "event_sha256": "e4c099d58d94ab4ab7d25d43e326daf7b8217c160292827455723c9542634da7",
+      "evidence": [
+        {
+          "artifact_sha256": "cbd448713d245de88da12ed9de47becd045b5d73023a353ec805b8aa68585dc3",
+          "artifact_size": 15086,
+          "claim": "Composed causal verification owner.",
+          "reference": "runtime/release_audit.py"
+        }
+      ],
+      "expected_effect": "Validate the repaired projections and cache state, rerun the causal release audit, refresh only remaining stale groups, then execute one admitted full profile and runtime validation.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "Verification updates governed receipts and registered owned test resources only; failures retain exact diagnostics.",
+      "scope": [
+        "verification:projection-and-cache-repair",
+        "verification:release-audit-focused",
+        "verification:remaining-stale-groups",
+        "verification:single-owned-full-profile-post-hotfix",
+        "verification:runtime-cli-validate"
+      ],
+      "timestamp": "2026-08-21T14:27:06.901132Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The governed stale-group owner failed closed because exact-installed's indexed inputs changed after the admitted reachability and effect projection repair.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+      "effect": "write",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007383",
+      "event_sha256": "15d454428e18a3ac6f5582aedf254c6aea1e7c6872b0904e9072869ffc10f6b7",
+      "evidence": [
+        {
+          "artifact_sha256": "bef7df45a78fc007ffe76262b0c7978d02b55fb330d9fb3190f04217bfdb6ad5",
+          "artifact_size": 345796,
+          "claim": "Canonical group-input projection identified by the fail-closed owner.",
+          "reference": "registry/test_group_index.json"
+        }
+      ],
+      "expected_effect": "Regenerate the test-group index from current exact inputs and then refresh its registry envelope.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "Both files are deterministic generated projections and can be rebuilt from retained source.",
+      "scope": [
+        "registry/test_group_index.json",
+        "registry/registry_envelope_inventory.json"
+      ],
+      "timestamp": "2026-08-21T14:30:27.598448Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The final group sweep is green and the section status gate identifies testing-governance as the only receipt invalidated by the test-index refresh.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+      "effect": "execute",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007384",
+      "event_sha256": "c297faba15dec7f7db3282ec523100b23f0f79538bc49fde964249b4822a72e5",
+      "evidence": [
+        {
+          "artifact_sha256": "f1357bdc400d7c9a14ed3270696111ea5364b52d66af3b1ac34322e15ba9623b",
+          "artifact_size": 900,
+          "claim": "Only stale section receipt.",
+          "reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json"
+        }
+      ],
+      "expected_effect": "Refresh the testing-governance section against the final index and require all six governed sections current.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "The section owner updates only governed receipts and registered owned test resources.",
+      "scope": [
+        "verification:testing-governance-section-final",
+        "verification:all-section-receipts-final"
+      ],
+      "timestamp": "2026-08-21T15:08:29.088721Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user requested the remaining work be run and proven after reload; the exact packaged extension must be exercised before installation.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+      "effect": "service",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007385",
+      "event_sha256": "f1e6233d38a3e4b93f2fd6f0b80e159b666d6d228af8fe4e611d5dee7b2466f2",
+      "evidence": [
+        {
+          "artifact_sha256": "27b16a6c6227061fdb09e255f3f2422bc5691202e4dcccdaa94f57d4c6826c72",
+          "artifact_size": 4211523,
+          "claim": "Exact immutable artifact selected for installed-host proof.",
+          "reference": "extension/dist/pacify-x-vscode-0.6.29.vsix"
+        }
+      ],
+      "expected_effect": "Create registered isolated VS Code user/extensions roots, install the exact SHA-bound 0.6.29 VSIX, exercise packaged Agent/Workflow/Skill Studio lifecycle behavior, retain receipts, and reconcile the owned process tree and temporary workspace.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "Terminate only the registered isolated host process tree and reclaim only its registered owned temporary workspace; retain failure evidence.",
+      "scope": [
+        "service:isolated-installed-vsix-smoke-0.6.29"
+      ],
+      "timestamp": "2026-08-21T15:11:35.296110Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user explicitly requested running and completing the repaired extension in their current VS Code user profile.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+      "effect": "install",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007386",
+      "event_sha256": "3b1dde27b3bbafeb8c86894fa6a334b26eec43858c836f500dcccf02737f5d4c",
+      "evidence": [
+        {
+          "artifact_sha256": "27b16a6c6227061fdb09e255f3f2422bc5691202e4dcccdaa94f57d4c6826c72",
+          "artifact_size": 4211523,
+          "claim": "Certified installation artifact.",
+          "reference": "extension/dist/pacify-x-vscode-0.6.29.vsix"
+        }
+      ],
+      "expected_effect": "Install the exact certified 0.6.29 VSIX into the user's VS Code profile without forcing the active window to reload.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "The retained 0.6.28 VSIX can be reinstalled explicitly.",
+      "scope": [
+        "vscode:user-profile:pacify-x-vscode-0.6.29"
+      ],
+      "timestamp": "2026-08-21T15:11:36.800373Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user requested complete walking, validation, and proof of the Studio repair.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+      "effect": "write",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007387",
+      "event_sha256": "c97845b7be6b06221039d3a14cb50564ac125ff8f690e01f21d4607daffc834c",
+      "evidence": [
+        {
+          "artifact_sha256": "f7f73412b701338f79d7105ce6fd735a0ed784cde8eb5d9ae5aace3e6ad90ddc",
+          "artifact_size": 325589,
+          "claim": "Visible pre-failure setup confirmation from the reloaded 0.6.28 host.",
+          "reference": "evidence/live-reloaded-vscode-studio-walk-20260821/02-setup-studio.png"
+        }
+      ],
+      "expected_effect": "Retain a sanitized receipt distinguishing the observed 0.6.28 live failure, repaired 0.6.29 isolated-host proof, certification receipts, and unsupported coordinate attempts.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "The additive evidence receipt is Git-reversible and contains no credentials or machine-secret values.",
+      "scope": [
+        "evidence/live-reloaded-vscode-studio-walk-20260821/receipt.json"
+      ],
+      "timestamp": "2026-08-21T15:11:38.334850Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user explicitly requested committing and merging all completed repairs to GitHub.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007388",
+      "effect": "write",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007389",
+      "event_sha256": "c3bdf2c4e55d4a617dd742691b74cb6302f039b4ce048899165f4f1be265d3c4",
+      "evidence": [
+        {
+          "artifact_sha256": "bbd368072c7cdfdee6f5a9b235b6a73444bfbe9652f197bfc4fbf46fb9170756",
+          "artifact_size": 20463,
+          "claim": "Exact installed-artifact acceptance proof.",
+          "reference": "extension/evidence/installed-vsix-smoke.json"
+        }
+      ],
+      "expected_effect": "Create one Git commit containing the 0.6.29 Studio replay repair, ResourceLedger concurrency repair, generated projections, governed receipts, and sanitized evidence.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "The commit remains locally reversible with a later explicit revert; no history rewrite is performed.",
+      "scope": [
+        "git:commit-studio-runtime-hotfix-0.6.29"
+      ],
+      "timestamp": "2026-08-21T15:14:59.524300Z"
+    },
+    {
+      "actor": "codex-host",
+      "authority": "The user explicitly requested committing and merging all completed repairs to the named GitHub repository.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007388",
+      "effect": "network",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007390",
+      "event_sha256": "2e62c7a25cd6d773384120321970dd153955d0b9edd779f314558eb3e8bc1578",
+      "evidence": [
+        {
+          "artifact_sha256": "27b16a6c6227061fdb09e255f3f2422bc5691202e4dcccdaa94f57d4c6826c72",
+          "artifact_size": 4211523,
+          "claim": "Immutable release artifact represented by the commit.",
+          "reference": "extension/dist/pacify-x-vscode-0.6.29.vsix"
+        }
+      ],
+      "expected_effect": "Push the new fast-forward main commit to origin without force or history rewrite.",
+      "gap_id": "PX-OS-1053",
+      "rollback": "If a remote correction is needed, create an explicit follow-up revert commit; do not rewrite shared history.",
+      "scope": [
+        "github:Mountain-Nomad-BC/Pacify-X:push-main-studio-hotfix-0.6.29"
+      ],
+      "timestamp": "2026-08-21T15:15:01.026670Z"
     }
   ],
   "work_checkpoints": [
@@ -442826,6 +443434,170 @@
       "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007347",
       "sequence": 7357,
       "timestamp": "2026-08-21T04:17:33.175153Z",
+      "unresolved_branch_gap_ids": [
+        "PX-OS-004",
+        "PX-OS-007",
+        "PX-OS-029",
+        "PX-OS-056",
+        "PX-OS-058",
+        "PX-OS-059"
+      ]
+    },
+    {
+      "active_gap_id": "PX-OS-1053",
+      "actor": "codex-host",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007361",
+      "event_sha256": "9529e527238b683f98047806a1477c43f1bcf91ea7c89442f52b34eb6addd4ad",
+      "evidence": [
+        {
+          "artifact_sha256": "fab79c8d367285a0d1366b4d3e62722770325611f2f9cfbf001337c0c8d9e211",
+          "artifact_size": 4210486,
+          "claim": "The installed package under post-reload verification.",
+          "reference": "extension/dist/pacify-x-vscode-0.6.28.vsix"
+        }
+      ],
+      "learned": "GitHub main contains the certified Studio repairs at commit 3b72f0b5, the user reloaded VS Code, and the user-profile extension host log records Pacify-X activation after that reload at 2026-08-21 09:04:42 local time.",
+      "newly_discovered_gap_ids": [],
+      "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+      "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007357",
+      "sequence": 7361,
+      "timestamp": "2026-08-21T13:08:39.923822Z",
+      "unresolved_branch_gap_ids": [
+        "PX-OS-004",
+        "PX-OS-007",
+        "PX-OS-029",
+        "PX-OS-056",
+        "PX-OS-058",
+        "PX-OS-059"
+      ]
+    },
+    {
+      "active_gap_id": "PX-OS-1053",
+      "actor": "codex-host",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007366",
+      "event_sha256": "76a5ee349835a3d7b22e4f8971bfc23f04b48c07940771df934340563e707bd6",
+      "evidence": [
+        {
+          "artifact_sha256": "45889b1c0249ac38242715a6d7dfb11b998f88fe087e62ec576a5a6729ead0be",
+          "artifact_size": 734,
+          "claim": "Live host consumed an authenticated agent:create approval immediately before the immutable revision conflict.",
+          "reference": ".engineering-bootstrap/studios/authority/operation-approval-consumption/5266203f8292f82dc68a7ffb23e3e2328f5d47277e2e1d39ac0fbea90182c193.json"
+        },
+        {
+          "artifact_sha256": "f7f73412b701338f79d7105ce6fd735a0ed784cde8eb5d9ae5aace3e6ad90ddc",
+          "artifact_size": 325589,
+          "claim": "Visible live-host setup confirmation before the failed operation.",
+          "reference": "evidence/live-reloaded-vscode-studio-walk-20260821/02-setup-studio.png"
+        }
+      ],
+      "learned": "The post-reload live Setup Studio command activated extension 0.6.28 but failed at agent create with studio-version-conflict:immutable-agent-revision-differs because the starter constants still claim immutable version 1.0.0 while the current normalized definition differs from the already-published 1.0.0. The failure was independently confirmed by extension-host logs and exact approval-consumption evidence.",
+      "newly_discovered_gap_ids": [],
+      "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+      "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007361",
+      "sequence": 7366,
+      "timestamp": "2026-08-21T13:15:50.609219Z",
+      "unresolved_branch_gap_ids": [
+        "PX-OS-004",
+        "PX-OS-007",
+        "PX-OS-029",
+        "PX-OS-056",
+        "PX-OS-058",
+        "PX-OS-059"
+      ]
+    },
+    {
+      "active_gap_id": "PX-OS-1053",
+      "actor": "codex-host",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007373",
+      "event_sha256": "f8f0e221f6f8c4e88707d56006adac3a808618fe0eefe0dee43a84c8ad834ed8",
+      "evidence": [
+        {
+          "artifact_sha256": "c4a15280986e90eb06b815a790fb47bcf267f4317237ef7ba5101a4ffd2e97af",
+          "artifact_size": 3649,
+          "claim": "Governed receipt captures the concurrent Windows PermissionError in workflow lifecycle observation.",
+          "reference": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json"
+        }
+      ],
+      "learned": "The governed studio-memory-graph section passed six of seven chunks but reproduced a Windows PermissionError when a workflow observer read resources.json concurrently with a worker mutation. ResourceLedger writes hold the cross-process FileLock, while load only holds an instance-local RLock and therefore does not honor the writer exclusion boundary.",
+      "newly_discovered_gap_ids": [],
+      "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+      "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007366",
+      "sequence": 7373,
+      "timestamp": "2026-08-21T13:39:42.329950Z",
+      "unresolved_branch_gap_ids": [
+        "PX-OS-004",
+        "PX-OS-007",
+        "PX-OS-029",
+        "PX-OS-056",
+        "PX-OS-058",
+        "PX-OS-059"
+      ]
+    },
+    {
+      "active_gap_id": "PX-OS-1053",
+      "actor": "codex-host",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+      "event_sha256": "349ec353c6fe5da7de0a2ed18644f6f384031443c487b79cc7ffb49235e57e4c",
+      "evidence": [
+        {
+          "artifact_sha256": "76fab7d0b00f3cc51ca13351d773e82e17c58bfde5c878b8f67c99db5a58ef7f",
+          "artifact_size": 791,
+          "claim": "Release audit failure is the first causal certification receipt.",
+          "reference": ".engineering-bootstrap/test-evidence/groups/release-audit.json"
+        },
+        {
+          "artifact_sha256": "a89af96c372d7934a4f70b93904bdd18aa6400492d6b57ec5bdf8dd2ad62eb79",
+          "artifact_size": 886,
+          "claim": "Structural failure is consistent with stale reachability and generated projections.",
+          "reference": ".engineering-bootstrap/test-evidence/groups/structural-adversarial.json"
+        }
+      ],
+      "learned": "The stale-group sweep isolated one shared certification cause: provider_route_scan, artifact_reachability, and effect_surface_ownership projections are stale after the admitted runtime repair; registry envelopes depend on those outputs. A diagnostic interpreter also created runtime/__pycache__, which the release audit correctly rejects. The provider route builder was invoked with --help but does not implement argparse and regenerated its projection while reporting 294 files and zero violations.",
+      "newly_discovered_gap_ids": [],
+      "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+      "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007373",
+      "sequence": 7379,
+      "timestamp": "2026-08-21T14:26:52.509131Z",
+      "unresolved_branch_gap_ids": [
+        "PX-OS-004",
+        "PX-OS-007",
+        "PX-OS-029",
+        "PX-OS-056",
+        "PX-OS-058",
+        "PX-OS-059"
+      ]
+    },
+    {
+      "active_gap_id": "PX-OS-1053",
+      "actor": "codex-host",
+      "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007388",
+      "event_sha256": "a66e2db02086b6c70fa0f19dc47331cb4939c7da448a7a4ccc0cae16921a35a2",
+      "evidence": [
+        {
+          "artifact_sha256": "bbd368072c7cdfdee6f5a9b235b6a73444bfbe9652f197bfc4fbf46fb9170756",
+          "artifact_size": 20463,
+          "claim": "Exact installed 0.6.29 Studio lifecycle and process-closure proof.",
+          "reference": "extension/evidence/installed-vsix-smoke.json"
+        },
+        {
+          "artifact_sha256": "3dff123c4da0920f08d49e93e1fb1e1985e21fbcf0fcb928693d2fb19165c808",
+          "artifact_size": 3517,
+          "claim": "Sanitized live-failure-to-repair correlation receipt.",
+          "reference": "evidence/live-reloaded-vscode-studio-walk-20260821/receipt.json"
+        },
+        {
+          "artifact_sha256": "511e422f19ccd12c1279711b1af92861ec23f3853cba35657dbf350edecd37f7",
+          "artifact_size": 3640,
+          "claim": "Current governed Studio/runtime section receipt.",
+          "reference": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json"
+        }
+      ],
+      "learned": "Extension 0.6.29 now allocates the changed starter definitions as immutable 1.0.1 descendants of 1.0.0, permits exact Agent replay with only bounded owned run receipts, and serializes ResourceLedger readers with writers on Windows. The exact SHA-bound installed VSIX completed Agent, Workflow, and Skill Studio lifecycle proof; all ten test groups and six sections are current, the single owned full profile passed, runtime validation passed, and 0.6.29 is installed in the user profile pending active-window reload.",
+      "newly_discovered_gap_ids": [],
+      "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+      "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+      "sequence": 7388,
+      "timestamp": "2026-08-21T15:14:48.644972Z",
       "unresolved_branch_gap_ids": [
         "PX-OS-004",
         "PX-OS-007",

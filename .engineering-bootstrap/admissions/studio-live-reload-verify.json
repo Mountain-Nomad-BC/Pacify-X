@@ -1,0 +1,13 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007361",
+  "effect": "execute",
+  "scope": [
+    "verification:live-studio-catalog-and-run-receipts",
+    "verification:post-reload-runtime-cli-validate"
+  ],
+  "authority": "The user explicitly asked to run everything remaining after reloading VS Code.",
+  "expected_effect": "Resolve the exact Agent and Workflow revisions and bounded run evidence produced by the live Studio setup, then validate the resulting repository state.",
+  "rollback": "Verification commands are read-only except for governed validation evidence and registered temporary/process state, all of which are reconciled by their owners.",
+  "evidence": [{"reference": "evidence/live-reloaded-vscode-studio-walk-20260821/03-setup-result.png", "claim": "Live post-reload control plane after bounded Studio setup."}]
+}

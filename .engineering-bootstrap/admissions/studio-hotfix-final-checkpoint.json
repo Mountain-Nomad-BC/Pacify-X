@@ -1,0 +1,13 @@
+{
+  "active_gap_id": "PX-OS-1053",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+  "learned": "Extension 0.6.29 now allocates the changed starter definitions as immutable 1.0.1 descendants of 1.0.0, permits exact Agent replay with only bounded owned run receipts, and serializes ResourceLedger readers with writers on Windows. The exact SHA-bound installed VSIX completed Agent, Workflow, and Skill Studio lifecycle proof; all ten test groups and six sections are current, the single owned full profile passed, runtime validation passed, and 0.6.29 is installed in the user profile pending active-window reload.",
+  "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-004", "PX-OS-007", "PX-OS-029", "PX-OS-056", "PX-OS-058", "PX-OS-059"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {"reference": "extension/evidence/installed-vsix-smoke.json", "claim": "Exact installed 0.6.29 Studio lifecycle and process-closure proof."},
+    {"reference": "evidence/live-reloaded-vscode-studio-walk-20260821/receipt.json", "claim": "Sanitized live-failure-to-repair correlation receipt."},
+    {"reference": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json", "claim": "Current governed Studio/runtime section receipt."}
+  ]
+}

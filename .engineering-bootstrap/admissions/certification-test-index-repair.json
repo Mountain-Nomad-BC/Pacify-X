@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+  "effect": "write",
+  "scope": ["registry/test_group_index.json", "registry/registry_envelope_inventory.json"],
+  "authority": "The governed stale-group owner failed closed because exact-installed's indexed inputs changed after the admitted reachability and effect projection repair.",
+  "expected_effect": "Regenerate the test-group index from current exact inputs and then refresh its registry envelope.",
+  "rollback": "Both files are deterministic generated projections and can be rebuilt from retained source.",
+  "evidence": [{"reference": "registry/test_group_index.json", "claim": "Canonical group-input projection identified by the fail-closed owner."}]
+}

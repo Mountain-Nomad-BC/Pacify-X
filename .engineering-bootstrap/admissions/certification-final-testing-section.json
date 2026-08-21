@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+  "effect": "execute",
+  "scope": ["verification:testing-governance-section-final", "verification:all-section-receipts-final"],
+  "authority": "The final group sweep is green and the section status gate identifies testing-governance as the only receipt invalidated by the test-index refresh.",
+  "expected_effect": "Refresh the testing-governance section against the final index and require all six governed sections current.",
+  "rollback": "The section owner updates only governed receipts and registered owned test resources.",
+  "evidence": [{"reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json", "claim": "Only stale section receipt."}]
+}

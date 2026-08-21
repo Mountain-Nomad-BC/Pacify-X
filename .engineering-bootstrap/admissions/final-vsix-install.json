@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+  "effect": "install",
+  "scope": ["vscode:user-profile:pacify-x-vscode-0.6.29"],
+  "authority": "The user explicitly requested running and completing the repaired extension in their current VS Code user profile.",
+  "expected_effect": "Install the exact certified 0.6.29 VSIX into the user's VS Code profile without forcing the active window to reload.",
+  "rollback": "The retained 0.6.28 VSIX can be reinstalled explicitly.",
+  "evidence": [{"reference": "extension/dist/pacify-x-vscode-0.6.29.vsix", "claim": "Certified installation artifact."}]
+}

@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+  "effect": "write",
+  "scope": [
+    "registry/provider_route_scan.json",
+    "registry/artifact_reachability.json",
+    "registry/effect_surface_ownership.json",
+    "registry/registry_envelope_inventory.json"
+  ],
+  "authority": "The governed certification sweep and composed release audit identified these exact deterministic projections as stale.",
+  "expected_effect": "Regenerate the provider route, artifact reachability, effect ownership, and dependent registry-envelope projections from canonical source.",
+  "rollback": "All four outputs are deterministic generated artifacts and can be rebuilt from retained source.",
+  "evidence": [{"reference": ".engineering-bootstrap/test-evidence/groups/release-audit.json", "claim": "Causal failed receipt."}]
+}

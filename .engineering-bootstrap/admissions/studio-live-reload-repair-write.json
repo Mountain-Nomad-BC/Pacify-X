@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007366",
+  "effect": "write",
+  "scope": ["repository:studio-starter-immutable-version-hotfix-0629", "tests:studio-starter-cross-version-idempotency", "evidence:post-reload-hotfix-receipts"],
+  "authority": "The user explicitly requested completion of all remaining operational repairs.",
+  "expected_effect": "Publish a new immutable starter bundle revision, bind tests to its exact identity/version, bump the extension package, and retain focused evidence.",
+  "rollback": "Source edits are Git-reversible; published 1.0.0 Studio data remains untouched and the new version is additive.",
+  "evidence": [{"reference": "extension/src/studioBootstrap.js", "claim": "Canonical starter bundle owner."}]
+}

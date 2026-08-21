@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007361",
+  "effect": "write",
+  "scope": ["evidence:live-reloaded-vscode-studio-walk"],
+  "authority": "The user requested completion and proof of remaining post-reload behavior.",
+  "expected_effect": "Retain a bounded post-reload activation and Studio interaction receipt under repository evidence.",
+  "rollback": "The additive evidence file is Git-reversible and contains no secrets or user-authored source content.",
+  "evidence": [{"reference": "extension/evidence/installed-vsix-smoke.json", "claim": "Pre-reload exact-installed baseline to correlate with the live reload."}]
+}

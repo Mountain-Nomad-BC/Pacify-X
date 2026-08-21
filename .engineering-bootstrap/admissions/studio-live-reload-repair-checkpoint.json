@@ -1,0 +1,12 @@
+{
+  "active_gap_id": "PX-OS-1053",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007361",
+  "learned": "The post-reload live Setup Studio command activated extension 0.6.28 but failed at agent create with studio-version-conflict:immutable-agent-revision-differs because the starter constants still claim immutable version 1.0.0 while the current normalized definition differs from the already-published 1.0.0. The failure was independently confirmed by extension-host logs and exact approval-consumption evidence.",
+  "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-004", "PX-OS-007", "PX-OS-029", "PX-OS-056", "PX-OS-058", "PX-OS-059"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {"reference": ".engineering-bootstrap/studios/authority/operation-approval-consumption/5266203f8292f82dc68a7ffb23e3e2328f5d47277e2e1d39ac0fbea90182c193.json", "claim": "Live host consumed an authenticated agent:create approval immediately before the immutable revision conflict."},
+    {"reference": "evidence/live-reloaded-vscode-studio-walk-20260821/02-setup-studio.png", "claim": "Visible live-host setup confirmation before the failed operation."}
+  ]
+}

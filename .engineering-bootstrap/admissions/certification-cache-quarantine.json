@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+  "effect": "destructive",
+  "scope": ["runtime/__pycache__"],
+  "authority": "The release audit classifies this generated Python cache as a forbidden active artifact; it is PACIFY-X-owned disposable output from the current diagnostic interpreter.",
+  "expected_effect": "Inventory and move the exact runtime/__pycache__ directory into the bounded recoverable disposable-cache quarantine with a verified receipt; perform no hard delete.",
+  "rollback": "Restore each receipt-recorded cache file from the quarantine destination to its exact original relative path.",
+  "evidence": [{"reference": "scripts/cleanup_python_caches.py", "claim": "Bounded recoverable cache-quarantine owner."}]
+}

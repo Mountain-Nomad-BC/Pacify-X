@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+  "effect": "execute",
+  "scope": ["verification:projection-and-cache-repair", "verification:release-audit-focused", "verification:remaining-stale-groups", "verification:single-owned-full-profile-post-hotfix", "verification:runtime-cli-validate"],
+  "authority": "The user requested execution of all remaining repair and certification work.",
+  "expected_effect": "Validate the repaired projections and cache state, rerun the causal release audit, refresh only remaining stale groups, then execute one admitted full profile and runtime validation.",
+  "rollback": "Verification updates governed receipts and registered owned test resources only; failures retain exact diagnostics.",
+  "evidence": [{"reference": "runtime/release_audit.py", "claim": "Composed causal verification owner."}]
+}

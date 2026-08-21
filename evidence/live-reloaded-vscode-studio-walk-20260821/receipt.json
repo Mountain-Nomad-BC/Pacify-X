@@ -1,0 +1,73 @@
+{
+  "schema_version": "px.live-reloaded-studio-repair/1.0",
+  "observed_host": {
+    "extension_version": "0.6.28",
+    "activation_utc": "2026-08-21T13:04:42.014Z",
+    "control_plane_opened": true,
+    "setup_studio_confirmed": true,
+    "setup_studio_completed": false,
+    "failure": "studio-version-conflict:immutable-agent-revision-differs",
+    "failure_stage": "agent_create",
+    "authenticated_approval_consumed": true
+  },
+  "root_causes": [
+    "The starter definition changed while still claiming the already-published immutable 1.0.0 revision.",
+    "A correct 1.0.1 replay was then rejected because Agent-owned run receipts under the immutable revision's bounded runs directory were treated as foreign definition content.",
+    "A governed section subsequently exposed that ResourceLedger readers did not participate in the cross-process writer lock on Windows."
+  ],
+  "repair": {
+    "extension_version": "0.6.29",
+    "starter_initial_version": "1.0.0",
+    "starter_current_version": "1.0.1",
+    "allocation": "1.0.1 is allocated from the immutable 1.0.0 predecessor when required and exact replay remains idempotent.",
+    "agent_runtime_receipts": "Only bounded, physical, non-link Agent-owned run receipt names are accepted during exact revision replay; every other extra entry remains rejected.",
+    "resource_ledger": "Readers and writers now share the existing cross-process FileLock boundary."
+  },
+  "installed_artifact": {
+    "name": "pacify-x-vscode-0.6.29.vsix",
+    "sha256": "27b16a6c6227061fdb09e255f3f2422bc5691202e4dcccdaa94f57d4c6826c72",
+    "user_profile_installed": true,
+    "active_window_reload_required": true
+  },
+  "isolated_installed_host": {
+    "receipt": "extension/evidence/installed-vsix-smoke.json",
+    "vscode_version": "1.132.1",
+    "extension_version": "0.6.29",
+    "artifact_unchanged": true,
+    "engine_connected": true,
+    "process_tree_closed_verified": true,
+    "studio_setup_completed": true,
+    "completed_steps": [
+      "agent_create",
+      "agent_test",
+      "agent_authority",
+      "agent_admit",
+      "agent_run",
+      "workflow_create",
+      "workflow_authority",
+      "workflow_validate",
+      "workflow_dry_run",
+      "workflow_run"
+    ],
+    "agent_editor": "authenticated reopen; content-bound builder graph",
+    "workflow_editor": "authenticated reopen; content-bound editor layout",
+    "skill_editor": "editable save created a candidate project-studio skill"
+  },
+  "certification": {
+    "governed_test_groups": "10/10 current and passing; 191 test files bound",
+    "governed_sections": "6/6 current and passing",
+    "full_profile": "valid; 36 passed; 191 discovered test files; owned process and workspace reconciled",
+    "runtime_validate": "valid; 6 active capabilities; 0 errors",
+    "focused_repair_tests": "Agent/Studio focused suite passed; deterministic resource-ledger exclusion and workflow lifecycle tests passed"
+  },
+  "visual_evidence": {
+    "supported": [
+      "01-control-plane.png shows the live 0.6.28 control plane after reload.",
+      "02-setup-studio.png shows the explicit Setup Studio confirmation before the observed failure."
+    ],
+    "unsupported": [
+      "Coordinate and command-URI attempts in screenshots 03 through 11 did not reliably activate the intended webview surface and are retained only as negative diagnostic evidence.",
+      "No screenshot from the failed 0.6.28 live session is treated as proof that Agent, Workflow, or Skill editors opened successfully."
+    ]
+  }
+}

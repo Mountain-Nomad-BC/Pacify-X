@@ -471,15 +471,20 @@ def studio_identity_absence(
 def require_initial_studio_identity(
     root: Path, kind: str, identity: str, version: str
 ) -> None:
-    """Admit only a real first revision or an exact 1.0.0 idempotent replay."""
+    """Admit only a real first revision or an exact existing-version replay."""
     root = root.resolve(strict=True)
     singular, _ = _studio_kind(kind)
     canonical_identity = _identity(identity, f"{singular} identity")
     canonical_version = _version(version)
     occupied = _occupied_versions(root, singular, canonical_identity)
+    if canonical_version in occupied:
+        # The revision owner performs a full content/receipt comparison before
+        # accepting this as an idempotent replay. No allocation can be reused
+        # safely after later versions occupy the identity.
+        return
     if canonical_version != "1.0.0":
         raise StudioVersionConflict("initial-version-invalid")
-    if not occupied or occupied == ("1.0.0",):
+    if not occupied:
         return
     raise StudioVersionConflict("initial-identity-occupied")
 

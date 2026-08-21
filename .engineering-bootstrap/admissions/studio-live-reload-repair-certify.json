@@ -1,0 +1,22 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007366",
+  "effect": "execute",
+  "scope": [
+    "verification:exact-installed-vsix-0629",
+    "verification:studio-memory-graph-section",
+    "verification:dashboard-extension-section",
+    "verification:all-section-receipt-status",
+    "verification:single-owned-full-profile-post-hotfix",
+    "verification:runtime-cli-validate"
+  ],
+  "authority": "The user explicitly requested that every remaining repair and proof step be run after reload.",
+  "expected_effect": "Exercise the exact packaged 0.6.29 extension in an isolated installed host, refresh affected governed sections, require every section current, then execute one owned post-hotfix full profile and runtime validation.",
+  "rollback": "Verification writes only governed receipts and registered temporary/process state; failed runs retain diagnostics and owned processes are reconciled.",
+  "evidence": [
+    {
+      "reference": "extension/dist/pacify-x-vscode-0.6.29.vsix",
+      "claim": "Immutable packaged artifact selected for exact-installed verification."
+    }
+  ]
+}

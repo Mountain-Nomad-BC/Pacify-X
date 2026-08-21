@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007366",
+  "effect": "execute",
+  "scope": ["px-skill-query:studio-starter-immutable-version-conflict-repair"],
+  "authority": "The user explicitly instructed Codex to run and complete everything remaining after reload.",
+  "expected_effect": "Select and hydrate one admitted repair capability for the exact immutable starter revision conflict.",
+  "rollback": "The query is bounded and source-neutral.",
+  "evidence": [{"reference": ".agents/skills/px-debug-repair/SKILL.md", "claim": "Repair routing contract."}]
+}

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.29
+
+- Publish Agent and Workflow Studio starters as immutable bundle revision 1.0.1 so Setup Studio preserves older 1.0.0 definitions instead of colliding with them.
+- Exercise real-boundary setup twice and require installed-host catalog selection to match the exact starter bundle version.
+
 ## 0.6.28
 
 - Opens Agent, Workflow, and Skill Studio navigation directly in their editable authoring workspaces.

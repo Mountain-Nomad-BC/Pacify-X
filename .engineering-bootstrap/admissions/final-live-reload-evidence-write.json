@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007379",
+  "effect": "write",
+  "scope": ["evidence/live-reloaded-vscode-studio-walk-20260821/receipt.json"],
+  "authority": "The user requested complete walking, validation, and proof of the Studio repair.",
+  "expected_effect": "Retain a sanitized receipt distinguishing the observed 0.6.28 live failure, repaired 0.6.29 isolated-host proof, certification receipts, and unsupported coordinate attempts.",
+  "rollback": "The additive evidence receipt is Git-reversible and contains no credentials or machine-secret values.",
+  "evidence": [{"reference": "evidence/live-reloaded-vscode-studio-walk-20260821/02-setup-studio.png", "claim": "Visible pre-failure setup confirmation from the reloaded 0.6.28 host."}]
+}

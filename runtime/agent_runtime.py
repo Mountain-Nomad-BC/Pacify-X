@@ -24,6 +24,8 @@ from .process_supervisor import ProcessSupervisor
 from .resource_lifecycle import ResourceManager, RunState
 from .studio_filesystem import (
     assert_exact_tree,
+    bounded_directory_entries,
+    is_link_or_reparse,
     publish_directory_no_replace,
     read_bounded_regular_file,
 )
@@ -61,6 +63,10 @@ def _now() -> str:
 _MAX_CREATE_CLEANUP_WARNINGS = 8
 _MAX_CREATE_CLEANUP_WARNING_CHARS = 240
 _MAX_AGENT_REVISION_FILE_BYTES = 4 * 1024 * 1024
+_MAX_AGENT_RUN_RECEIPTS = 256
+_AGENT_RUN_RECEIPT_NAME = re.compile(
+    r"run-[0-9a-f]{32}(?:-prepared|-resume-[0-9]+)?\.json"
+)
 
 
 def _bounded_cleanup_warnings(errors: Sequence[object]) -> list[str]:
@@ -84,6 +90,37 @@ def _read_revision_bytes(path: Path) -> bytes:
 
 def _read_revision_json(path: Path) -> object:
     return json.loads(_read_revision_bytes(path).decode("utf-8"))
+
+
+def _agent_revision_runtime_entries(
+    revision: Path,
+) -> tuple[set[str], set[str]]:
+    """Return the one bounded mutable subtree owned by Agent execution."""
+
+    runs = revision / "runs"
+    if not os.path.lexists(runs):
+        return set(), set()
+    conflict = lambda: StudioVersionConflict("immutable-agent-revision-differs")
+    try:
+        if is_link_or_reparse(runs) or not runs.is_dir():
+            raise conflict()
+        entries = bounded_directory_entries(runs, _MAX_AGENT_RUN_RECEIPTS, conflict)
+    except OSError as error:
+        raise conflict() from error
+    files: set[str] = set()
+    for entry in entries:
+        try:
+            if (
+                is_link_or_reparse(entry)
+                or not entry.is_file()
+                or _AGENT_RUN_RECEIPT_NAME.fullmatch(entry.name) is None
+            ):
+                raise conflict()
+            read_bounded_regular_file(entry, _MAX_AGENT_REVISION_FILE_BYTES, conflict)
+        except OSError as error:
+            raise conflict() from error
+        files.add(f"runs/{entry.name}")
+    return files, {"runs"}
 
 
 def _validate_agent_creation_receipt(
@@ -410,6 +447,9 @@ class AgentRuntimeController:
                 for name in optional_names
                 if (revision / name).exists() or (revision / name).is_symlink()
             }
+            runtime_files, runtime_directories = _agent_revision_runtime_entries(
+                revision
+            )
             assert_exact_tree(
                 revision,
                 {
@@ -417,9 +457,10 @@ class AgentRuntimeController:
                     "instructions.md",
                     "creation-receipt.json",
                     *present_optional,
+                    *runtime_files,
                 },
-                set(),
-                9,
+                runtime_directories,
+                10 + len(runtime_files),
                 lambda: StudioVersionConflict(
                     "immutable-agent-revision-differs"
                 ),

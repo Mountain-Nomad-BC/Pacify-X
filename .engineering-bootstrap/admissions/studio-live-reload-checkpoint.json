@@ -1,0 +1,11 @@
+{
+  "active_gap_id": "PX-OS-1053",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007357",
+  "learned": "GitHub main contains the certified Studio repairs at commit 3b72f0b5, the user reloaded VS Code, and the user-profile extension host log records Pacify-X activation after that reload at 2026-08-21 09:04:42 local time.",
+  "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-004", "PX-OS-007", "PX-OS-029", "PX-OS-056", "PX-OS-058", "PX-OS-059"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {"reference": "extension/dist/pacify-x-vscode-0.6.28.vsix", "claim": "The installed package under post-reload verification."}
+  ]
+}

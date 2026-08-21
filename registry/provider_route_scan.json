@@ -57,11 +57,11 @@
       "violations": []
     },
     {
-      "bytes": 76701,
-      "cache_hint_mtime_ns": 1786994668050765100,
+      "bytes": 78176,
+      "cache_hint_mtime_ns": 1787318634589822500,
       "path": "runtime/agent_runtime.py",
       "scan_state": "reused",
-      "sha256": "0a80f03572830f2c755caf01a04d50912ec603d938e491bc4d264bfc7bd2938b",
+      "sha256": "ea8507b75538b4b0790f84279e51255cca3e724ed2bad30c7d4639c29ef1fadf",
       "violations": []
     },
     {
@@ -1036,7 +1036,7 @@
       "bytes": 133314,
       "cache_hint_mtime_ns": 1787277515354925400,
       "path": "runtime/operational_gap_ledger.py",
-      "scan_state": "rescanned",
+      "scan_state": "reused",
       "sha256": "cbe8d6e62b2175d0a13eb98c0aa55108311a1a8fda8fe8e31b6ba201184039cb",
       "violations": []
     },
@@ -1377,11 +1377,11 @@
       "violations": []
     },
     {
-      "bytes": 53149,
-      "cache_hint_mtime_ns": 1786814044018612300,
+      "bytes": 53209,
+      "cache_hint_mtime_ns": 1787319610523557000,
       "path": "runtime/resource_lifecycle.py",
       "scan_state": "reused",
-      "sha256": "109c09ae1bf0b964dcaf2bfa4af815fe3b8d99a21e1bcba1c2f605d8cf4e7313",
+      "sha256": "8ae4f336af45d2f2d6871fb4218f140b3580fcd3f4a0dc228f5c3348404e9710",
       "violations": []
     },
     {
@@ -1529,11 +1529,11 @@
       "violations": []
     },
     {
-      "bytes": 47372,
-      "cache_hint_mtime_ns": 1786958890935762700,
+      "bytes": 47615,
+      "cache_hint_mtime_ns": 1787318370277878200,
       "path": "runtime/studio_models.py",
       "scan_state": "reused",
-      "sha256": "8cd25dbc1dac73909458d291c0b4cd0abf80c9bd4fe6c9eefc8a99205b9e99e7",
+      "sha256": "87a20451b6ab1cc02eb6ce24abe3d7255a0a5d96e535a8168a19a9737b8bc7cd",
       "violations": []
     },
     {
@@ -1884,7 +1884,7 @@
       "bytes": 9698,
       "cache_hint_mtime_ns": 1787277247362063700,
       "path": "scripts/build_operational_control_proof_matrix.py",
-      "scan_state": "rescanned",
+      "scan_state": "reused",
       "sha256": "9b207e7f568d09827a71fbcc8635ab19a27eb26fdeb0baae93e7804e44202a2f",
       "violations": []
     },
@@ -1932,7 +1932,7 @@
       "bytes": 14263,
       "cache_hint_mtime_ns": 1787283090553384300,
       "path": "scripts/build_registry_envelope_inventory.py",
-      "scan_state": "rescanned",
+      "scan_state": "reused",
       "sha256": "2e17f39fb07b52341602285c6df41d045bd0c25570425d1db9839188df7f863a",
       "violations": []
     },
@@ -2364,7 +2364,7 @@
     "violation_count": 0,
     "violations": []
   },
-  "rescanned_file_count": 3,
-  "reused_file_count": 291,
+  "rescanned_file_count": 0,
+  "reused_file_count": 294,
   "schema_version": "px.provider-route-index/1.2"
 }

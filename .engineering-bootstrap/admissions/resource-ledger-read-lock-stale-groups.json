@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007373",
+  "effect": "execute",
+  "scope": ["verification:stale-test-groups-post-hotfix"],
+  "authority": "The owned full-profile admission gate identified nine stale group receipts after the runtime repair and deterministic projection refresh.",
+  "expected_effect": "Run only non-current governed test groups in dependency-safe order so the single owned full-profile certification can start.",
+  "rollback": "Group execution updates governed receipts and registered owned test resources only; failures retain exact diagnostics.",
+  "evidence": [{"reference": "registry/test_profiles.json", "claim": "Canonical governed group and full-profile owner."}]
+}

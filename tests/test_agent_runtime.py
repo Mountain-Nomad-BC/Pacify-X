@@ -259,6 +259,24 @@ def test_agent_exact_replay_rejects_undeclared_revision_topology(
     assert refused.value.reason == "immutable-agent-revision-differs"
 
 
+def test_agent_exact_replay_allows_only_bounded_owned_run_receipts(tmp_path) -> None:
+    body = "Runtime evidence stays separate from the immutable definition.\n"
+    spec, _, _ = fixtures(body)
+    controller = AgentRuntimeController(tmp_path)
+    created = controller.create_candidate(spec, body)
+    revision = (tmp_path / created["builder_graph_path"]).parent
+    runs = revision / "runs"
+    runs.mkdir()
+    (runs / f"run-{'a' * 32}.json").write_text("{}", encoding="utf-8")
+    replay = controller.create_candidate(spec, body)
+    assert replay["created"] is False and replay["idempotent_replay"] is True
+
+    (runs / "rogue.txt").write_text("{}", encoding="utf-8")
+    with pytest.raises(StudioVersionConflict) as refused:
+        controller.create_candidate(spec, body)
+    assert refused.value.reason == "immutable-agent-revision-differs"
+
+
 def test_legacy_agent_revision_reopens_without_graph_backfill(tmp_path) -> None:
     body = "Legacy bounded.\n"
     spec, _, _ = fixtures(body)

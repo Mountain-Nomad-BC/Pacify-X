@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import unittest
 from unittest import mock
@@ -66,6 +67,32 @@ class ResourceLifecycleTests(unittest.TestCase):
 
         stored = {record.resource_id for record in self.manager.ledger.load()}
         self.assertEqual(stored, resource_ids)
+
+    def test_load_waits_for_cross_instance_mutation(self) -> None:
+        self._workspace("seed")
+        writer = self.manager.ledger
+        reader = ResourceManager(writer.path).ledger
+        write_entered = threading.Event()
+        release_write = threading.Event()
+        original_write = writer._write_unlocked
+
+        def delayed_write(records):
+            write_entered.set()
+            self.assertTrue(release_write.wait(timeout=5.0))
+            original_write(records)
+
+        with mock.patch.object(writer, "_write_unlocked", side_effect=delayed_write):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                write_future = pool.submit(self._workspace, "locked-write")
+                self.assertTrue(write_entered.wait(timeout=5.0))
+                read_future = pool.submit(reader.load)
+                time.sleep(0.05)
+                self.assertFalse(read_future.done())
+                release_write.set()
+                write_future.result(timeout=5.0)
+                records = read_future.result(timeout=5.0)
+
+        self.assertEqual({record.run_id for record in records}, {"seed", "locked-write"})
 
     def test_current_process_completion_is_idempotent_for_terminal_races(self) -> None:
         now = "2026-08-14T00:00:00+00:00"

@@ -229,10 +229,10 @@ class ResourceLedger:
         return tuple(ResourceRecord(**item) for item in payload.get("resources", ()))
 
     def load(self) -> tuple[ResourceRecord, ...]:
-        # Atomic replacement makes an unlocked cross-process read see either
-        # the complete predecessor or successor. Mutating transactions take
-        # the OS lock below so no successor can discard another writer.
-        with self._lock:
+        # Readers participate in the same cross-process exclusion boundary as
+        # writers.  Atomic replacement protects content integrity, but Windows
+        # can transiently deny an open while another process replaces the file.
+        with self._lock, FileLock(self.lock_path, timeout_seconds=30.0):
             return self._load_unlocked()
 
     def _write_unlocked(self, records: Sequence[ResourceRecord]) -> None:

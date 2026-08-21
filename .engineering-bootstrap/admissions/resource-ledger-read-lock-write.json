@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007373",
+  "effect": "write",
+  "scope": ["runtime/resource_lifecycle.py", "tests/test_resource_lifecycle.py"],
+  "authority": "The user requested completion of all defects exposed by the operational walk and certification gates.",
+  "expected_effect": "Serialize ResourceLedger readers with cross-process writers and add a deterministic regression proving a second ledger instance cannot read through an active mutation.",
+  "rollback": "The two-file source and test patch is Git-reversible; no user data is changed.",
+  "evidence": [{"reference": "runtime/resource_lifecycle.py", "claim": "Canonical resource ledger owner."}]
+}

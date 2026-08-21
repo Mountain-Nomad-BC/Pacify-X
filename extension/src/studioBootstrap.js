@@ -1,8 +1,14 @@
 'use strict';
 
+// Starter definitions are immutable published artifacts. Increment this bundle
+// version whenever their normalized definition or generated editor artifacts
+// change; reusing an older version must continue to fail closed.
+const STARTER_BUNDLE_VERSION = '1.0.1';
+const STARTER_INITIAL_VERSION = '1.0.0';
+
 const STARTER_AGENT = Object.freeze({
   agent_id: 'agent:pacify-x-starter',
-  version: '1.0.0',
+  version: STARTER_BUNDLE_VERSION,
   project_id: 'project:current',
   owner: 'human:vscode-local-user',
   harness_id: 'harness:px',
@@ -26,7 +32,7 @@ const STARTER_AGENT = Object.freeze({
 
 const STARTER_WORKFLOW = Object.freeze({
   workflow_id: 'workflow:pacify-x-starter',
-  version: '1.0.0',
+  version: STARTER_BUNDLE_VERSION,
   owner: 'human:vscode-local-user',
   nodes: [{
     node_id: 'step:identity', kind: 'task', config: {},
@@ -62,12 +68,37 @@ async function approvedOperation(bridge, kind, operation, payload) {
   return bridge.studioOperation(kind, operation, { ...exact, approval_capability: capability.approval_capability });
 }
 
+function isInitialVersionConflict(error) {
+  return error instanceof Error
+    && error.code === 'STUDIO_VERSION_CONFLICT'
+    && ['initial-version-invalid', 'initial-identity-occupied'].includes(error.reason);
+}
+
+async function createStarterRevision(bridge, kind, candidate) {
+  const identity = kind === 'agent' ? candidate.agent_id : candidate.workflow_id;
+  try {
+    return { candidate, receipt: await approvedOperation(bridge, kind, 'create', candidate) };
+  } catch (error) {
+    if (!isInitialVersionConflict(error)) throw error;
+    if (typeof bridge.studioIdentityAbsence !== 'function' || typeof bridge.nextStudioVersion !== 'function') throw error;
+    const absence = await bridge.studioIdentityAbsence(kind, identity);
+    if (absence?.absent === true) {
+      const initial = { ...candidate, version: STARTER_INITIAL_VERSION };
+      await approvedOperation(bridge, kind, 'create', initial);
+    }
+    const allocation = await bridge.nextStudioVersion(kind, identity, STARTER_INITIAL_VERSION, 'studio-physical');
+    if (allocation?.candidate_version !== candidate.version) throw new Error(`studio-setup-${kind}-bundle-version-allocation-mismatch`);
+    const allocated = { ...candidate, version_allocation: allocation };
+    return { candidate: allocated, receipt: await approvedOperation(bridge, kind, 'create', allocated) };
+  }
+}
+
 async function setupStudio(bridge, { progress = () => {} } = {}) {
   if (!bridge || typeof bridge.issueStudioApproval !== 'function' || typeof bridge.studioOperation !== 'function') {
     throw new TypeError('studio-setup-bridge-invalid');
   }
-  const agent = clone(STARTER_AGENT);
-  const workflow = clone(STARTER_WORKFLOW);
+  let agent = clone(STARTER_AGENT);
+  let workflow = clone(STARTER_WORKFLOW);
   const receipts = {};
   const step = async (id, kind, operation, payload, approved = true) => {
     progress(id);
@@ -78,7 +109,8 @@ async function setupStudio(bridge, { progress = () => {} } = {}) {
     return result;
   };
 
-  await step('agent_create', 'agent', 'create', agent);
+  progress('agent_create');
+  ({ candidate: agent, receipt: receipts.agent_create } = await createStarterRevision(bridge, 'agent', agent));
   const agentTest = await step('agent_test', 'agent', 'test', agent);
   if (agentTest?.passed !== true) throw new Error('studio-setup-agent-tests-failed');
   await step('agent_authority', 'agent', 'register-authority', agent);
@@ -87,7 +119,8 @@ async function setupStudio(bridge, { progress = () => {} } = {}) {
   const agentRun = await step('agent_run', 'agent', 'run', { ...agent, task: { objective: 'Verify the local Studio agent execution path.' } });
   if (agentRun?.run_outcome !== 'succeeded') throw new Error('studio-setup-agent-run-failed');
 
-  await step('workflow_create', 'workflow', 'create', workflow);
+  progress('workflow_create');
+  ({ candidate: workflow, receipt: receipts.workflow_create } = await createStarterRevision(bridge, 'workflow', workflow));
   await step('workflow_authority', 'workflow', 'register-authority', workflow);
   const workflowAdmission = await step('workflow_validate', 'workflow', 'validate', workflow);
   if (workflowAdmission?.decision !== 'admitted') throw new Error('studio-setup-workflow-admission-failed');
@@ -105,4 +138,4 @@ async function setupStudio(bridge, { progress = () => {} } = {}) {
   };
 }
 
-module.exports = { STARTER_AGENT, STARTER_WORKFLOW, approvedOperation, setupStudio };
+module.exports = { STARTER_BUNDLE_VERSION, STARTER_INITIAL_VERSION, STARTER_AGENT, STARTER_WORKFLOW, approvedOperation, createStarterRevision, setupStudio };

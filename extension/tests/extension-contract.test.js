@@ -66,9 +66,9 @@ test('declares exactly sixteen primary and two governed advanced dashboard surfa
   assert.match(dashboard, /advancedVisible && state\.advancedOpen/);
 });
 
-test('0.6.28 surfaces operational Studio setup, interactive graphs, JSON inspectors, telemetry, plugins, memory and activity observability, readiness, agent models, and the complete logo', () => {
+test('0.6.29 surfaces operational Studio setup, interactive graphs, JSON inspectors, telemetry, plugins, memory and activity observability, readiness, agent models, and the complete logo', () => {
   const surfaceStyles = fs.readFileSync(path.join(root, 'media', 'styles', '40-surfaces.css'), 'utf8');
-  assert.equal(pkg.version, '0.6.28');
+  assert.equal(pkg.version, '0.6.29');
   assert.ok(pkg.activationEvents.includes('onCommand:pacifyX.setupStudio'));
   assert.ok(pkg.activationEvents.includes('onUri'));
   assert.ok(pkg.contributes.commands.some(item => item.command === 'pacifyX.setupStudio'));
