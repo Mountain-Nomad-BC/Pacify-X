@@ -1,0 +1,19 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007337",
+  "effect": "write",
+  "scope": [
+    "repository:operational-walk-harness-tests-and-repairs",
+    "evidence:all-control-stage-receipts-and-claim-evidence-package",
+    "ledger:exact-attempted-control-observations-and-dispositions"
+  ],
+  "authority": "The user explicitly authorized complete implementation and proof of intended operation; Codex retains repository and evidence authorship authority.",
+  "expected_effect": "Implement missing contained walk support, retain immutable receipts, and attach only exact fresh attempted observations to the operational ledger.",
+  "rollback": "Repository changes remain recoverable through Git; append-only ledger events retain predecessors; evidence is additive and promotions fail closed when stages are incomplete.",
+  "evidence": [
+    {
+      "reference": "scripts/reconcile_unverified_operational_controls.py",
+      "claim": "The canonical reconciliation path imports exact attempts without treating inventory enumeration as examination."
+    }
+  ]
+}

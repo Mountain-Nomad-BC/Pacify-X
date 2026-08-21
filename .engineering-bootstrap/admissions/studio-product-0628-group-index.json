@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007347",
+  "effect": "write",
+  "scope": ["registry:test-group-index-refresh"],
+  "authority": "The governed stale-group runner refused because registry/test_group_index.json does not match the current registered test profiles and source inputs.",
+  "expected_effect": "Regenerate only registry/test_group_index.json from the current test profile registry.",
+  "rollback": "Restore the prior generated index if current-source index validation fails; no test definitions are modified.",
+  "evidence": [
+    {
+      "reference": "registry/test_profiles.json",
+      "claim": "Canonical source for regenerated test-group membership and input commitments."
+    }
+  ]
+}

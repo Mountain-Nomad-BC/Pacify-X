@@ -108,6 +108,36 @@ test('Playwright drives every dashboard route and high-risk interaction without 
 
   await page.goto(`${preview}?surface=dashboard`); await settled(page);
   assert.equal(await page.locator('.primary-nav .nav-item').count(), 16);
+  for (const [surface, title, editableSelector] of [
+    ['agent-studio', 'Agent Studio', '[data-agent-root-field="instructions"]'],
+    ['workflow-studio', 'Workflow Studio', '[data-workflow-editor-canvas]'],
+    ['skill-studio', 'Skill Studio', '#studio-skill-file']
+  ]) {
+    await page.locator(`[data-surface="${surface}"]`).click();
+    await page.locator('[role="dialog"]').waitFor({ state: 'visible' });
+    assert.equal(await page.locator('.control-modal h2').textContent(), title);
+    assert.equal(await page.locator(editableSelector).isVisible(), true, `${surface} navigation must open its authoring workspace, not stop at the catalog`);
+    assert.equal(await page.locator('[data-action="submitStudioDraft"]').isVisible(), true);
+    await page.keyboard.press('Escape');
+  }
+  await page.evaluate(() => window.dispatchEvent(new MessageEvent('message', { data: { type: 'deepLink', route: '/control-plane/skill-studio' } })));
+  await page.locator('[role="dialog"]').waitFor({ state: 'visible' });
+  assert.equal(await page.locator('main h1').textContent(), 'Skill Studio');
+  assert.equal(await page.locator('#studio-skill-file').isVisible(), true);
+  await page.keyboard.press('Escape');
+  for (const [surface, rowKind, studioKind, editorSelector] of [
+    ['agents', 'agents', 'agent', '.agent-builder-layout'],
+    ['workflows', 'workflows', 'workflow', '[data-control-id="workflow-canvas"]']
+  ]) {
+    await page.goto(`${preview}?surface=${surface}`); await settled(page);
+    await page.locator(`.catalog-row[data-kind="${rowKind}"]`).nth(1).click();
+    await page.locator(`[data-action="importCatalogDefinition"][data-kind="${studioKind}"]`).click();
+    await page.locator(editorSelector).waitFor({ state: 'visible' });
+    assert.match(await page.locator('.studio-revision-baseline').textContent(), /IMPORTED INTO AN INDEPENDENT STUDIO CANDIDATE/);
+    assert.equal(await page.locator('[data-control-id="studio-save-candidate"]').isVisible(), true);
+    await page.keyboard.press('Escape');
+  }
+  await page.goto(`${preview}?surface=dashboard`); await settled(page);
   await page.locator('[data-action="inspectMetric"]').first().click();
   await page.locator('[role="dialog"]').waitFor();
   await page.locator('[data-tab="machine"]').click();

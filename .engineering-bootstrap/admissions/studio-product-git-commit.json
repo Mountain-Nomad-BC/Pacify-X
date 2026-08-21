@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007357",
+  "effect": "write",
+  "scope": ["git:commit-all-verified-operational-and-studio-repairs"],
+  "authority": "The user explicitly requested committing all completed repairs and proof to GitHub.",
+  "expected_effect": "Stage the complete preserved verified worktree and create one local commit on main without rewriting history.",
+  "rollback": "The commit is additive and can be reverted with a later Git revert; no user changes are discarded or reset.",
+  "evidence": [{"reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json", "claim": "Governed verification evidence exists for the handoff state."}]
+}

@@ -1,0 +1,17 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007341",
+  "effect": "install",
+  "scope": ["vscode-user-profile:pacify-x-vscode-0.6.27-vsix"],
+  "authority": "The user explicitly required the repaired Studios to operate in their VS Code installation, not only in repository source.",
+  "expected_effect": "Install the exact locally built and hash-verified Pacify-X 0.6.27 VSIX into the user VS Code profile; existing 0.6.26 remains identifiable for rollback.",
+  "rollback": "Reinstall the retained 0.6.26 VSIX or select the prior installed extension version; no unrelated extension is changed.",
+  "evidence": [
+    {
+      "reference": "extension/dist/pacify-x-vscode-0.6.27.vsix",
+      "artifact_sha256": "5131241ec82b1296af5e1916a2506f77868b8582f9977c309635c141e2b48c9b",
+      "artifact_size": 4209364,
+      "claim": "Exact locally built VSIX after complete extension test and packaging pass."
+    }
+  ]
+}

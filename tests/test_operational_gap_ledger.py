@@ -11,6 +11,7 @@ import pytest
 from runtime.operational_gap_ledger import (
     PRIMARY_STATES,
     _validate_card,
+    _validate_control_observation,
     append_event,
     append_events,
     append_transition_admission_backfill,
@@ -66,6 +67,34 @@ def control_observation(
         "attempted": attempted,
         "interaction_chain": chain,
     }
+
+
+def semantic_control_observation(kind: str, mode: str) -> dict[str, object]:
+    value = control_observation()
+    value.update({
+        "schema_version": "px.control-observation/2.0",
+        "control_kind": kind,
+        "evidence_mode": mode,
+        "observed": True,
+        "rendered": False,
+    })
+    return value
+
+
+def test_semantic_operational_observation_requires_exact_kind_aware_evidence_not_fake_rendering() -> None:
+    persistence = semantic_control_observation("persistence", "contained_durability")
+    validated = _validate_control_observation(
+        persistence, disposition="operational", expected_kind="persistence"
+    )
+    assert validated["observed"] is True
+    assert validated["rendered"] is False
+    with pytest.raises(ValueError, match="differs from the registered control"):
+        _validate_control_observation(
+            persistence, disposition="operational", expected_kind="action"
+        )
+    visible = semantic_control_observation("action", "contained_ui_interaction")
+    with pytest.raises(ValueError, match="requires rendered evidence"):
+        _validate_control_observation(visible, disposition="operational", expected_kind="action")
 
 
 def card(identifier: str = "PX-GAP-0001") -> dict[str, object]:

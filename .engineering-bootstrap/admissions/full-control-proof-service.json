@@ -1,0 +1,17 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007337",
+  "effect": "service",
+  "scope": [
+    "vscode:isolated-clean-profile-all-control-walk"
+  ],
+  "authority": "The user explicitly requested a complete live walk; Codex retains authority over the isolated local VS Code test host only.",
+  "expected_effect": "Launch the pinned VS Code build with current extension source in a PACIFY-X-owned disposable profile and close the complete process tree after observation.",
+  "rollback": "Terminate the registered host tree, verify closure, and reclaim only the marked PACIFY-X-owned ephemeral root after its evidence is retained.",
+  "evidence": [
+    {
+      "reference": "extension/scripts/run-isolated-current-source-walk.js",
+      "claim": "The launcher isolates workspace, user data, extensions, shared storage, CDP, and cleanup from the user's normal profile."
+    }
+  ]
+}

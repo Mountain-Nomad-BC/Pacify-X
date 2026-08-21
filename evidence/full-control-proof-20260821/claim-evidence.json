@@ -1,0 +1,121 @@
+{
+  "schema_version": "px.claim-evidence-package/1.0",
+  "task_id": "full-control-proof-20260821",
+  "created_utc": "2026-08-21T02:40:00Z",
+  "verdict": "partial",
+  "executor_self_certification_allowed": false,
+  "claims": [
+    {
+      "claim_id": "current-source-live-host-loaded",
+      "claim": "The isolated VS Code host loaded the exact current extension source and exposed every expected operational UI surface without browser or host errors.",
+      "result": "verified",
+      "evidence": [
+        {
+          "relationship": "supports",
+          "kind": "direct_live_measurement",
+          "reference": "evidence/operational-ui-walk-full-proof-baseline-20260821T0148Z/receipt.json",
+          "sha256": "5d98bcf84138ff85279c4b7e839076d9bb5f22f0883463e190d74578a56341a0",
+          "bytes": 5431523,
+          "scope": "current-source isolated VS Code host",
+          "freshness": "current task"
+        }
+      ]
+    },
+    {
+      "claim_id": "complete-denominator-bound",
+      "claim": "Every one of the 938 declared controls has one control-kind-aware proof requirement covering all thirteen interaction stages.",
+      "result": "verified",
+      "evidence": [
+        {
+          "relationship": "supports",
+          "kind": "generated_contract",
+          "reference": "registry/operational_control_proof_matrix.json",
+          "sha256": "3e40903719061a31636c405131a28667bcb339a4be4b48d8ad35b97fe580b06e",
+          "bytes": 1300294,
+          "scope": "938-control canonical inventory",
+          "freshness": "current task"
+        }
+      ]
+    },
+    {
+      "claim_id": "contained-action-measurement",
+      "claim": "The contained current-source browser pass enumerated all 394 action controls and directly attempted 172 with zero browser errors; 201 were not rendered in the prepared states, 19 were validation-blocked, and 2 were not visible.",
+      "result": "verified",
+      "evidence": [
+        {
+          "relationship": "supports",
+          "kind": "contained_browser_measurement",
+          "reference": "evidence/contained-ui-action-walk-20260821T0230Z/receipt.json",
+          "sha256": "7d409820ba32a6a3d356b4a710384fa8daeae9111a8851d0b679e76167a3e5b1",
+          "bytes": 299970,
+          "scope": "synthetic browser UI interaction only; excludes host/runtime/persistence certification",
+          "freshness": "current task"
+        }
+      ]
+    },
+    {
+      "claim_id": "proof-governance-repairs-pass",
+      "claim": "The repaired action resolver, kind-aware observation schema, proof matrix, and contained action walker pass their affected governed gates.",
+      "result": "verified",
+      "evidence": [
+        {
+          "relationship": "supports",
+          "kind": "governed_test_receipt",
+          "reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+          "sha256": "653c475c0007bfa05a78c6a27e3ffc5e969c033261509b44d9724c2ae23fff01",
+          "bytes": 900,
+          "scope": "137 tests plus 9 subtests",
+          "freshness": "current exact inputs"
+        },
+        {
+          "relationship": "supports",
+          "kind": "governed_test_receipt",
+          "reference": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+          "sha256": "30de816e66cd9b054cada00bf1fa994c8d45d518283b07b0122a0992ed8b1845",
+          "bytes": 1123,
+          "scope": "174 dashboard, host, contract, and browser tests",
+          "freshness": "current exact inputs"
+        }
+      ]
+    },
+    {
+      "claim_id": "all-controls-operational",
+      "claim": "All 938 controls are operationally verified.",
+      "result": "failed",
+      "evidence": [
+        {
+          "relationship": "contradicts",
+          "kind": "canonical_ledger_measurement",
+          "reference": "registry/operational_gap_ledger.snapshot.json",
+          "scope": "canonical operational truth",
+          "freshness": "current task",
+          "measurement": {
+            "known_controls": 938,
+            "controls_with_current_observation": 43,
+            "controls_without_current_observation": 895,
+            "operational_controls": 0,
+            "operationally_verified": 0,
+            "surfaces_operationally_proven": 0
+          }
+        }
+      ]
+    },
+    {
+      "claim_id": "one-hundred-percent-correct",
+      "claim": "The complete system is 100% correct in every supported and external environment.",
+      "result": "unsupported",
+      "reason": "Finite tests and contained substitutes cannot prove universal correctness, real provider availability, account-specific authorization, or every destructive/external effect. No certification claim may replace those missing observations."
+    }
+  ],
+  "denominators": {
+    "controls": {"total": 938, "current_observations": 43, "operational": 0},
+    "contained_actions": {"total": 394, "attempted": 172, "not_rendered": 201, "validation_blocked": 19, "not_visible": 2, "interaction_errors": 0},
+    "governed_tests": {"testing_governance": 137, "testing_governance_subtests": 9, "dashboard_extension": 174, "failures": 0}
+  },
+  "unsupported_claims": [
+    "All controls have complete success, rejection, failure, restart, and rollback chains.",
+    "Every destructive or externally owned effect has been executed against a real account or provider.",
+    "The repository is ready for a final full-profile certification run.",
+    "The current repair tree has been committed or pushed."
+  ]
+}

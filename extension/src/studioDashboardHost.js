@@ -100,7 +100,7 @@ function exactCatalogRevision(page, { kind, catalogKind, recordId }) {
   const identity = String(rawIdentity || '').trim().toLowerCase(); const sourceVersion = String(rawVersion || '').trim().toLowerCase();
   const rawRevisionSha256 = details.revision_sha256; const rawContentSha256 = details.source_content_sha256;
   const revisionSha256 = String(rawRevisionSha256 || '').trim().toLowerCase(); const contentSha256 = String(rawContentSha256 || '').trim().toLowerCase();
-  if (rawIdentity !== identity || rawVersion !== sourceVersion || rawRevisionSha256 !== revisionSha256 || rawContentSha256 !== contentSha256 || !IDENTITY.test(identity) || !validVersion(sourceVersion) || !SHA256.test(revisionSha256) || !SHA256.test(contentSha256) || details.lifecycle_authentication?.authenticated !== true) throw new Error('studio-catalog-selection-authentication-invalid');
+  if (rawIdentity !== identity || rawVersion !== sourceVersion || rawRevisionSha256 !== revisionSha256 || rawContentSha256 !== contentSha256 || !IDENTITY.test(identity) || !validVersion(sourceVersion) || !SHA256.test(revisionSha256) || !SHA256.test(contentSha256) || details.studio_revision !== true) throw new Error('studio-catalog-selection-authentication-invalid');
   return Object.freeze({
     kind, catalog_kind: catalogKind, record_id: recordId, identity, source_version: sourceVersion,
     source_revision_sha256: revisionSha256, source_content_sha256: contentSha256,

@@ -21,16 +21,18 @@ test('panel origins never redirect a completed request to a replacement panel', 
   assert.deepEqual(secondMessages, [{ type: 'second-result' }]);
 });
 
-test('exact catalog selection accepts only one authenticated physical Studio record', () => {
+test('exact catalog selection reopens a hash-bound physical candidate without granting lifecycle authority', () => {
   const page = { items: [{
     id: 'studio-agent:agent:demo@1.0.0', kind: 'studio-agent-revision', identity: 'agent:demo', summary: 'Exact', effects: ['read'], tags: ['studio'],
-    details: { agent_id: 'agent:demo', version: '1.0.0', revision_sha256: HASH, source_content_sha256: 'b'.repeat(64), lifecycle_authentication: { authenticated: true } }
+    details: { agent_id: 'agent:demo', version: '1.0.0', studio_revision: true, revision_sha256: HASH, source_content_sha256: 'b'.repeat(64), lifecycle_authentication: { authenticated: true } }
   }] };
   const selected = exactCatalogRevision(page, { kind: 'agent', catalogKind: 'agents', recordId: page.items[0].id });
   assert.equal(selected.identity, 'agent:demo');
   assert.equal(selected.source_content_sha256, 'b'.repeat(64));
   assert.throws(() => exactCatalogRevision({ items: [page.items[0], page.items[0]] }, { kind: 'agent', catalogKind: 'agents', recordId: page.items[0].id }), /stale-or-ambiguous/);
-  assert.throws(() => exactCatalogRevision({ items: [{ ...page.items[0], details: { ...page.items[0].details, lifecycle_authentication: { authenticated: false } } }] }, { kind: 'agent', catalogKind: 'agents', recordId: page.items[0].id }), /authentication-invalid/);
+  const candidate = { ...page.items[0], details: { ...page.items[0].details, studio_revision: true, lifecycle_authentication: { authenticated: false, status: 'candidate' } } };
+  assert.equal(exactCatalogRevision({ items: [candidate] }, { kind: 'agent', catalogKind: 'agents', recordId: candidate.id }).identity, 'agent:demo');
+  assert.throws(() => exactCatalogRevision({ items: [{ ...candidate, details: { ...candidate.details, studio_revision: false } }] }, { kind: 'agent', catalogKind: 'agents', recordId: candidate.id }), /authentication-invalid/);
   assert.throws(() => exactCatalogRevision(page, { kind: 'workflow', catalogKind: 'workflows', recordId: page.items[0].id }), /kind-invalid/);
 });
 

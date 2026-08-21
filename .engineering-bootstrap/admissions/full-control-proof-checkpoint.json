@@ -1,0 +1,24 @@
+{
+  "active_gap_id": "PX-OS-1053",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007333",
+  "learned": "The governed test profile proves the registered certification suites, but the operational ledger still reports 938 known controls, only 43 current attempted observations, zero operationally verified controls, and 24 unexamined surfaces. The retained live walker explicitly limits authority to reversible unsaved UI interactions, so its incomplete denominator cannot support a complete operational claim.",
+  "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+  "unresolved_branch_gap_ids": [
+    "PX-OS-013",
+    "PX-OS-1054",
+    "PX-OS-1055",
+    "PX-OS-1056",
+    "PX-OS-1057"
+  ],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-current-source-20260820T234104Z/receipt.json",
+      "claim": "The current-source live walk retains the complete denominator but attempts only bounded reversible controls and explicitly skips controls requiring broader authority."
+    },
+    {
+      "reference": "registry/operational_gap_ledger.snapshot.json",
+      "claim": "The canonical ledger remains the authority for exact control and surface coverage."
+    }
+  ]
+}

@@ -64,6 +64,21 @@ CHAIN_STAGES = (
 )
 CHAIN_STATES = frozenset({"present", "partial", "missing", "not_applicable", "unknown"})
 CONTROL_OBSERVATION_SCHEMA = "px.control-observation/1.0"
+CONTROL_OBSERVATION_SCHEMA_V2 = "px.control-observation/2.0"
+CONTROL_EVIDENCE_MODES = frozenset(
+    {
+        "live_ui", "contained_ui_interaction", "contained_host_interaction",
+        "contained_sidebar_interaction", "contained_ui_input",
+        "contained_ui_form", "contained_ui_navigation", "contained_ui_editor",
+        "contained_ui_gesture", "live_state_observation",
+        "isolated_host_command", "contained_runtime_lifecycle",
+        "contained_durability", "contained_restart",
+        "contained_fault_injection", "live_acknowledgement",
+    }
+)
+NON_RENDERED_CONTROL_KINDS = frozenset(
+    {"lifecycle", "persistence", "reload_reopen", "failure_recovery", "acknowledgement"}
+)
 CONTROL_OBSERVATION_OUTCOMES = frozenset(
     {
         "operational", "observed_gap", "observed_only",
@@ -201,7 +216,7 @@ def _validate_chain(value: object, *, require_evidence: bool = False) -> dict[st
 
 
 def _validate_control_observation(
-    value: object, *, disposition: str
+    value: object, *, disposition: str, expected_kind: str | None = None
 ) -> dict[str, object]:
     """Validate exact current-host evidence without rewriting legacy events.
 
@@ -212,7 +227,8 @@ def _validate_control_observation(
 
     if not isinstance(value, Mapping):
         raise ValueError("control disposition observation must be an object")
-    if value.get("schema_version") != CONTROL_OBSERVATION_SCHEMA:
+    schema_version = str(value.get("schema_version") or "") if isinstance(value, Mapping) else ""
+    if schema_version not in {CONTROL_OBSERVATION_SCHEMA, CONTROL_OBSERVATION_SCHEMA_V2}:
         raise ValueError("control disposition observation schema is invalid")
     outcome = str(value.get("outcome") or "")
     if outcome not in CONTROL_OBSERVATION_OUTCOMES:
@@ -237,13 +253,35 @@ def _validate_control_observation(
     chain = _validate_chain(value.get("interaction_chain"), require_evidence=True)
     if any(not item["evidence"] for item in chain.values()):
         raise ValueError("control disposition observation requires evidence for every interaction stage")
+    control_kind = str(value.get("control_kind") or "")
+    evidence_mode = str(value.get("evidence_mode") or "")
+    observed = value.get("observed")
+    if schema_version == CONTROL_OBSERVATION_SCHEMA_V2:
+        if control_kind not in CONTROL_KINDS:
+            raise ValueError("control disposition observation control_kind is invalid")
+        if expected_kind is not None and control_kind != expected_kind:
+            raise ValueError("control disposition observation kind differs from the registered control")
+        if evidence_mode not in CONTROL_EVIDENCE_MODES:
+            raise ValueError("control disposition observation evidence_mode is invalid")
+        if not isinstance(observed, bool):
+            raise ValueError("control disposition observation observed flag is invalid")
+    else:
+        observed = rendered
     if disposition == "operational":
         if outcome != "operational":
             raise ValueError("operational disposition requires an operational observation outcome")
         if not source["current_source"] or source["host_source_mismatch"]:
             raise ValueError("operational disposition requires exact current-source host identity")
-        if not rendered or not attempted:
+        if not observed or not attempted:
+            raise ValueError("operational disposition requires an observed and attempted control")
+        if schema_version == CONTROL_OBSERVATION_SCHEMA and not rendered:
             raise ValueError("operational disposition requires a rendered and attempted control")
+        if (
+            schema_version == CONTROL_OBSERVATION_SCHEMA_V2
+            and control_kind not in NON_RENDERED_CONTROL_KINDS
+            and not rendered
+        ):
+            raise ValueError("operational visible control disposition requires rendered evidence")
         unresolved = [
             stage for stage, item in chain.items()
             if item["state"] not in {"present", "not_applicable"}
@@ -258,8 +296,8 @@ def _validate_control_observation(
         raise ValueError(f"{outcome} observation cannot be rendered or attempted")
     if outcome == "skipped_requires_authority" and (not rendered or attempted):
         raise ValueError("skipped control must be rendered and not attempted")
-    return {
-        "schema_version": CONTROL_OBSERVATION_SCHEMA,
+    result = {
+        "schema_version": schema_version,
         "outcome": outcome,
         "authority": str(value["authority"]),
         "observed_at": str(value["observed_at"]),
@@ -273,6 +311,13 @@ def _validate_control_observation(
         "attempted": attempted,
         "interaction_chain": chain,
     }
+    if schema_version == CONTROL_OBSERVATION_SCHEMA_V2:
+        result.update({
+            "control_kind": control_kind,
+            "evidence_mode": evidence_mode,
+            "observed": bool(observed),
+        })
+    return result
 
 
 def blank_interaction_chain(detail: str = "Not yet exercised in the installed host.") -> dict[str, dict[str, object]]:
@@ -991,7 +1036,14 @@ def project_events(
                 raise ValueError("operational control disposition cannot reference gap_ids")
             observation = payload.get("observation")
             validated_observation = (
-                _validate_control_observation(observation, disposition=disposition)
+                _validate_control_observation(
+                    observation,
+                    disposition=disposition,
+                    expected_kind=(
+                        str(surfaces[surface_id]["control_records"][control_id]["kind"])
+                        if control_id in surfaces[surface_id]["control_records"] else None
+                    ),
+                )
                 if observation is not None else None
             )
             surfaces[surface_id]["control_dispositions"][control_id] = {
@@ -1032,7 +1084,14 @@ def project_events(
             normalized_gap_ids = list(map(str, gap_ids))
             observation = payload.get("observation")
             validated_observation = (
-                _validate_control_observation(observation, disposition=after)
+                _validate_control_observation(
+                    observation,
+                    disposition=after,
+                    expected_kind=(
+                        str(surfaces[surface_id]["control_records"][control_id]["kind"])
+                        if control_id in surfaces[surface_id]["control_records"] else None
+                    ),
+                )
                 if observation is not None else None
             )
             if (

@@ -3,8 +3,8 @@
   "errors": [],
   "evidence_association_count": 81,
   "map_current": false,
-  "packaged_file_count": 503,
-  "python_file_count": 587,
+  "packaged_file_count": 504,
+  "python_file_count": 589,
   "records": [
     {
       "bytes": 1275,
@@ -3183,7 +3183,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 130359,
+      "bytes": 133314,
       "evidence": [
         "tests/test_operational_gap_ledger.py"
       ],
@@ -3191,7 +3191,7 @@
       "packaged": true,
       "path": "runtime/operational_gap_ledger.py",
       "role": "installed-runtime",
-      "sha256": "27496135ce056006e6fbba27825e98df7732c506ab4e06d8ad75c6377af894d2",
+      "sha256": "cbe8d6e62b2175d0a13eb98c0aa55108311a1a8fda8fe8e31b6ba201184039cb",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -4653,6 +4653,20 @@
       "validation_level": "source-only-structural"
     },
     {
+      "bytes": 9698,
+      "evidence": [
+        "structural AST validation",
+        "project-management release boundary"
+      ],
+      "owner": "project-release-control",
+      "packaged": false,
+      "path": "scripts/build_operational_control_proof_matrix.py",
+      "role": "source-build-control",
+      "sha256": "9b207e7f568d09827a71fbcc8635ab19a27eb26fdeb0baae93e7804e44202a2f",
+      "syntax_valid": true,
+      "validation_level": "source-only-structural"
+    },
+    {
       "bytes": 2055,
       "evidence": [
         "structural AST validation",
@@ -4723,7 +4737,7 @@
       "validation_level": "source-only-structural"
     },
     {
-      "bytes": 14057,
+      "bytes": 14263,
       "evidence": [
         "structural AST validation",
         "project-management release boundary"
@@ -4732,7 +4746,7 @@
       "packaged": false,
       "path": "scripts/build_registry_envelope_inventory.py",
       "role": "source-build-control",
-      "sha256": "d70bca67c63fdad4c1995811e1cad35978a14d07744f3d2da0eef536eecfa53c",
+      "sha256": "2e17f39fb07b52341602285c6df41d045bd0c25570425d1db9839188df7f863a",
       "syntax_valid": true,
       "validation_level": "source-only-structural"
     },
@@ -6796,6 +6810,19 @@
       "validation_level": "executable-test"
     },
     {
+      "bytes": 1526,
+      "evidence": [
+        "tests/test_operational_control_proof_matrix.py"
+      ],
+      "owner": "release-verification",
+      "packaged": true,
+      "path": "tests/test_operational_control_proof_matrix.py",
+      "role": "release-test",
+      "sha256": "ba68eb4fcecf9fcd3b6df3b783a614699f31a40d0dc4a4d9bcb7850583e9c090",
+      "syntax_valid": true,
+      "validation_level": "executable-test"
+    },
+    {
       "bytes": 5937,
       "evidence": [
         "tests/test_operational_controls.py"
@@ -6822,7 +6849,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 84421,
+      "bytes": 85645,
       "evidence": [
         "tests/test_operational_gap_ledger.py"
       ],
@@ -6830,7 +6857,7 @@
       "packaged": true,
       "path": "tests/test_operational_gap_ledger.py",
       "role": "release-test",
-      "sha256": "43c5d926a68847cef581869fd604ff46e7cb41a7e76aff4cb875b0a972f3a314",
+      "sha256": "2ef90943ae5f8ccd7d2f9c35c3975e9ddbf24a46c3fcc0b60bd2b1438724b7cb",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -7810,7 +7837,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 11096,
+      "bytes": 11240,
       "evidence": [
         "tests/test_test_profiles.py"
       ],
@@ -7818,7 +7845,7 @@
       "packaged": true,
       "path": "tests/test_test_profiles.py",
       "role": "release-test",
-      "sha256": "40fce66fda228e7592fc8f4ff8b5854f33eed9ff18097fd3e7923ff214349f14",
+      "sha256": "8e7369c3440f145feb3122a7acef515fa570189c52286bdda86a6a2c56311950",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -7984,19 +8011,19 @@
     "installed-generator-template": 1,
     "installed-runtime": 211,
     "installed-skill-tool": 89,
-    "release-test": 192,
-    "source-build-control": 83,
+    "release-test": 193,
+    "source-build-control": 84,
     "source-example": 1
   },
   "schema_version": "1.0",
-  "source_only_structural_count": 72,
-  "syntax_valid_count": 587,
+  "source_only_structural_count": 73,
+  "syntax_valid_count": 589,
   "valid": true,
   "validation_counts": {
     "direct-isolated-behavior": 63,
     "evidence-association": 81,
-    "executable-test": 192,
+    "executable-test": 193,
     "full-suite-and-installed-integration": 179,
-    "source-only-structural": 72
+    "source-only-structural": 73
   }
 }

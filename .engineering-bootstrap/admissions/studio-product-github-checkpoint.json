@@ -1,0 +1,18 @@
+{
+  "active_gap_id": "PX-OS-1053",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007347",
+  "learned": "Agent and Workflow catalog entries now open in the same editable Studio used by new definitions; exact installed VSIX lifecycle proof, all ten governed test groups, all six governed sections, the single owned full profile, and runtime validation pass.",
+  "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-004", "PX-OS-007", "PX-OS-029", "PX-OS-056", "PX-OS-058", "PX-OS-059"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "extension/evidence/installed-vsix-smoke.json",
+      "claim": "Installed extension 0.6.28 completed Agent, Workflow, and Skill Studio lifecycle proof."
+    },
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "claim": "Final affected governed section passed before release handoff."
+    }
+  ]
+}

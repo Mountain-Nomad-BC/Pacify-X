@@ -1,0 +1,15 @@
+{
+  "active_gap_id": "PX-OS-1053",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007341",
+  "learned": "The repaired source passes 339 unit tests, two complete browser campaigns, performance validation, and immutable packaging. Version 0.6.28 adds direct Studio navigation, candidate reopen without conflating edit and run authority, catalog definition import into independent Agent and Workflow candidates, and installed-host Agent/Workflow/Skill round-trip coverage.",
+  "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-004", "PX-OS-007", "PX-OS-029", "PX-OS-056", "PX-OS-058", "PX-OS-059"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "extension/dist/pacify-x-vscode-0.6.28.vsix",
+      "artifact_sha256": "fab79c8d367285a0d1366b4d3e62722770325611f2f9cfbf001337c0c8d9e211",
+      "claim": "Immutable package emitted after the complete extension release campaign passed."
+    }
+  ]
+}

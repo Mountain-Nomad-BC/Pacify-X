@@ -5,7 +5,11 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { build, serialized } = require('../scripts/build-ui-action-inventory');
-const { buildCurrentSourceControlManifest } = require('../scripts/operational-ui-control-records');
+const {
+  buildCurrentSourceControlManifest,
+  buildPerControlRecords,
+  loadOperationalSurfaceInventory
+} = require('../scripts/operational-ui-control-records');
 const { HEALTH_DIMENSIONS, createHealthState, healthLabel } = require('../src/healthState');
 
 const root = path.resolve(__dirname, '..');
@@ -132,4 +136,26 @@ test('current-source control manifest rejects a substitute inventory path', () =
     () => buildCurrentSourceControlManifest(path.join(root, 'package.json')),
     /canonical operational surface inventory/
   );
+});
+
+test('operational action resolution treats repeated classes and camel-case row identities as exact', () => {
+  const inventoryPath = path.join(root, '..', 'registry', 'operational_surface_inventory.json');
+  const inventory = loadOperationalSurfaceInventory(inventoryPath);
+  const chains = buildPerControlRecords({
+    inventory,
+    results: [{
+      surface: 'activity',
+      visible_actions: [
+        { action: 'inspectMetric', disabled: false, dataset: { metricLabel: 'FIRST' } },
+        { action: 'inspectMetric', disabled: false, dataset: { metricLabel: 'SECOND' } },
+        { action: 'inspectActivityEvent', disabled: false, dataset: { eventId: 'event:one' } },
+        { action: 'inspectActivityEvent', disabled: false, dataset: { eventId: 'event:two' } }
+      ]
+    }]
+  });
+  const byId = Object.fromEntries(chains.controls.map(control => [control.control_id, control]));
+  assert.equal(byId['pxui.activity.action.inspectMetric'].resolver.status, 'exact');
+  assert.equal(byId['pxui.activity.action.inspectMetric'].resolver.match_count, 2);
+  assert.equal(byId['pxui.activity.action.inspectActivityEvent.row'].resolver.status, 'exact');
+  assert.equal(byId['pxui.activity.action.inspectActivityEvent.row'].resolver.match_count, 2);
 });

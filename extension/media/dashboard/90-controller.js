@@ -913,7 +913,10 @@ function openStudioDraftModal(kind, seed = null) {
   if (kind === 'skill' && draft.package_missing_required_files?.length) editor = `<div class="identity-warning" role="alert"><div><span>ORIGINAL PACKAGE IS INCOMPLETE</span><strong>This source cannot become a PX candidate until its missing native files are explicitly authored.</strong><p>${esc(draft.package_missing_required_files.join(', '))}</p></div></div>${editor}`;
   const predecessorBound = Boolean(studioVersionAllocation);
   showModal(`${kind[0].toUpperCase()}${kind.slice(1)} Studio`, 'GUIDED EDITOR · VERSIONED CANDIDATE · AUTHORITY SEPARATED', `<p>The guided fields and canonical definition describe one immutable revision. Saving never implies admission, activation, promotion, or execution.</p><div class="studio-guided-grid"><label><span>Identity</span><input id="studio-identity" value="${esc(draft[identityKey])}" autocomplete="off" ${predecessorBound ? 'readonly aria-readonly="true"' : ''}></label><label><span>Version</span><input id="studio-version" value="${esc(draft.version)}" autocomplete="off" ${predecessorBound ? 'readonly aria-readonly="true"' : ''}></label><label><span>Owner</span><input id="studio-owner" value="${esc(draft.owner)}" autocomplete="off"></label></div><div class="studio-editor-root">${editor}</div><p class="fine-print">${kind === 'skill' ? 'The host materializes these UTF-8 files only inside the selected project’s governed Studio staging root, then link-checks, attests, copies, and rehashes the package.' : 'Authority records are authenticated separately. Lifecycle controls appear after this revision is saved.'}</p>`, `<button data-action="closeModal">Cancel</button>${predecessorBound ? '<button data-action="forkStudioCandidate">Fork content as independent candidate</button>' : ''}<button class="primary" data-action="submitStudioDraft" data-control-id="studio-save-candidate" data-kind="${esc(kind)}" data-identity-key="${identityKey}">Save immutable candidate</button>`, 'wide-modal studio-modal');
-  if (seed && studioSourceRecord) document.querySelector('.studio-editor-root')?.insertAdjacentHTML('beforebegin', `<div class="studio-revision-baseline" role="status"><b>EDITING AS A NEW IMMUTABLE REVISION</b><span>${esc(studioSourceRecord.label || studioSourceRecord.id || 'authenticated Studio revision')} remains unchanged. Save will publish ${esc(draft[identityKey])} @ ${esc(draft.version)} and preserve the prior revision.</span></div>`);
+  if (seed && studioSourceRecord) {
+    const imported = Boolean(studioSourceRecord.import_adapter);
+    document.querySelector('.studio-editor-root')?.insertAdjacentHTML('beforebegin', `<div class="studio-revision-baseline" role="status"><b>${imported ? 'IMPORTED INTO AN INDEPENDENT STUDIO CANDIDATE' : 'EDITING AS A NEW IMMUTABLE REVISION'}</b><span>${esc(studioSourceRecord.label || studioSourceRecord.id || (imported ? 'source definition' : 'authenticated Studio revision'))} remains unchanged. Save will publish ${esc(draft[identityKey])} @ ${esc(draft.version)}${imported ? ' without claiming predecessor lineage or inherited authority.' : ' and preserve the prior revision.'}</span></div>`);
+  }
   upgradeAgentTopology(document.querySelector('.studio-editor-root'));
   if (kind === 'agent' && !studioModelCatalog.length) vscode.postMessage({ type: 'listHostModels' });
   if (kind === 'workflow') {
@@ -923,6 +926,24 @@ function openStudioDraftModal(kind, seed = null) {
   }
   if (kind === 'agent') updateAgentValidationBox();
   persistWorkingStudioDraft();
+}
+
+function beginStudioAuthoring(kind) {
+  if (!['agent', 'workflow', 'skill'].includes(kind)) return false;
+  studioSourceRecord = null;
+  studioVersionAllocation = null;
+  studioWorkingSourceBinding = null;
+  studioVersionAllocationProof = null;
+  studioAllocationRequest = null;
+  studioSaveRequest = null;
+  studioPackageRequest = null;
+  studioPendingSkillPackage = null;
+  if (!offerWorkingStudioDraft(kind)) openStudioDraftModal(kind);
+  return true;
+}
+
+function studioKindForSurface(surface) {
+  return ({ 'agent-studio': 'agent', 'workflow-studio': 'workflow', 'skill-studio': 'skill' })[surface] || null;
 }
 
 function workflowInputMatches(value, type) {
@@ -1030,6 +1051,44 @@ function exactStudioCatalogPayload(kind, subject, version) {
   const item = catalog?.items?.find(row => row.status === 'admitted' && row.details?.lifecycle_authentication?.authenticated === true && String(row.details?.[kind === 'agent' ? 'agent_id' : 'workflow_id'] || '') === subject && String(row.details?.version || '') === version);
   if (!item) return null;
   return kind === 'agent' ? studioEditors.normalizeAgent(item.details) : studioEditors.normalizeWorkflow(item.details);
+}
+
+function importCatalogDefinitionIntoStudio(kind, record) {
+  const details = record?.details || record || {};
+  const rawIdentity = String(details[kind === 'agent' ? 'agent_id' : 'workflow_id'] || record?.id || `${kind}:imported-definition`).trim().toLowerCase();
+  let identity = rawIdentity.replace(/[^a-z0-9._:-]+/g, '-').replace(/^-+|-+$/g, '');
+  if (!identity.includes(':')) identity = `${kind}:${identity || 'imported-definition'}`;
+  const token = identity.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(-72) || `imported-${kind}`;
+  const owner = String(details.owner || record?.owner || 'human:vscode-local-user');
+  const source = {
+    catalog_kind: String(record?._catalogKind || `${kind}s`), record_id: String(record?._catalogRecordId || record?.id || ''),
+    source_kind: String(record?.kind || details.catalog_kind || 'definition'), source_status: String(record?.status || details.lifecycle_state || 'declared'),
+    source_path: String(record?.path || details.path || ''), imported_as_independent_candidate: true
+  };
+  studioSourceRecord = { ...record, label: record?.label || identity, import_adapter: source };
+  studioVersionAllocation = null; studioWorkingSourceBinding = null; studioVersionAllocationProof = null; studioSaveRequest = null;
+  if (kind === 'agent') {
+    const grantId = `grant:${token}`; const bindingId = `binding:${token}`;
+    openStudioDraftModal('agent', {
+      agent_id: identity, version: '1.0.0', project_id: 'project:current', owner, harness_id: 'harness:px',
+      instructions: String(details.description || record?.summary || `Adapt ${record?.label || identity} into a bounded executable Studio agent.`),
+      capability_binding_ids: [bindingId], effect_grant_ids: [grantId], required_tests: ['identity', 'sandbox'],
+      grants: [{ grant_id: grantId, subject_id: identity, effects: ['read'], scope_roots: ['workspace:current'], approved_by: owner, evidence_refs: ['receipt:studio-import-review'], state: 'admitted' }],
+      bindings: [{ binding_id: bindingId, subject_kind: 'agent', subject_id: identity, capability_id: 'capability:identity', capability_version: '1.0.0', effect_grant_ids: [grantId], credential_namespace: null, cost_policy: 'non-billable', egress_policy: 'deny', state: 'admitted', evidence_refs: ['receipt:studio-import-review'] }],
+      source_definition: structuredClone(details), source_import: source, lifecycle: 'draft'
+    });
+    return;
+  }
+  const grantId = `grant:${token}`; const bindingId = `binding:${token}`;
+  openStudioDraftModal('workflow', {
+    workflow_id: identity, version: '1.0.0', owner,
+    nodes: [{ node_id: 'step:imported-definition', kind: 'task', config: {}, executor_binding_id: bindingId, inputs: [{ name: 'value', data_type: 'string', required: true }], outputs: [{ name: 'value', data_type: 'string', required: true }], effect_grant_ids: [grantId], failure_policy: 'fail-closed', timeout_seconds: 30, retry_limit: 0, approval_required: false, position: { x: 120, y: 160 } }],
+    edges: [],
+    grants: [{ grant_id: grantId, subject_id: identity, effects: ['read'], scope_roots: ['workspace:current'], approved_by: owner, evidence_refs: ['receipt:studio-import-review'], state: 'admitted' }],
+    bindings: [{ binding_id: bindingId, subject_kind: 'workflow', subject_id: identity, capability_id: 'capability:identity', capability_version: '1.0.0', effect_grant_ids: [grantId], credential_namespace: null, cost_policy: 'non-billable', egress_policy: 'deny', state: 'admitted', evidence_refs: ['receipt:studio-import-review'] }],
+    executor_adapters: { [bindingId]: 'identity' }, run_inputs: { 'step:imported-definition.value': 'bounded input' },
+    source_definition: structuredClone(details), source_import: source, lifecycle: 'draft'
+  });
 }
 
 function studioRunsModal(kind, result) {
@@ -1882,6 +1941,8 @@ app.addEventListener('click', event => {
     render();
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     document.getElementById('main-content')?.focus();
+    const studioKind = studioKindForSurface(requested);
+    if (studioKind) beginStudioAuthoring(studioKind);
     return;
   }
   const control = event.target.closest('[data-action]'); const action = control?.dataset.action; if (!action) return;
@@ -1905,7 +1966,7 @@ app.addEventListener('click', event => {
   if (action === 'newParallelPlan') { newParallelPlanModal(); return; }
   if (action === 'submitParallelPlan') { try { vscode.postMessage({ type: 'createParallelPlan', plan: parsePlan() }); closeModal(); } catch (error) { showModal('Plan blocked', 'VALIDATION', `<p>${esc(error.message)}</p>`); } return; }
   if (action === 'capabilityTab') { state.capabilityKind = control.dataset.kind; render(); return; }
-  if (action === 'openStudioDraft') { studioSourceRecord = null; studioVersionAllocation = null; studioWorkingSourceBinding = null; studioVersionAllocationProof = null; studioAllocationRequest = null; studioSaveRequest = null; studioPackageRequest = null; studioPendingSkillPackage = null; if (!offerWorkingStudioDraft(control.dataset.kind)) openStudioDraftModal(control.dataset.kind); return; }
+  if (action === 'openStudioDraft') { beginStudioAuthoring(control.dataset.kind); return; }
   if (action === 'setupStudio') { const requestId = studioAllocationRequestId(); pendingStudioSetup = { requestId }; showModal('Setting up Studio', 'ONE CONFIRMATION · TWO EDITABLE REVISIONS · BOUNDED LOCAL RUNS', '<div class="cleanup-loading"><span class="empty-ring"></span><p>The host will create or reuse a local starter agent and workflow, validate their authority, admit them, and run one bounded check for each.</p></div>'); vscode.postMessage({ type: 'setupStudio', requestId }); return; }
   if (action === 'resumeWorkingStudioDraft') { resumeWorkingStudioDraft(control.dataset.kind); return; }
   if (action === 'discardWorkingStudioDraft') { const kind = control.dataset.kind; studioWorkingSourceBinding = null; clearWorkingStudioDraft(kind); closeModal(); openStudioDraftModal(kind); return; }
@@ -1917,6 +1978,7 @@ app.addEventListener('click', event => {
   if (action === 'compareSkillOriginal') { const skill = String(control.dataset.skillId || ''); if (!/^[a-z0-9][a-z0-9._:-]{1,127}$/.test(skill)) { showModal('Comparison blocked', 'EXACT PX ID REQUIRED', '<p>The selected record does not expose a valid PX-standard skill identity.</p>'); return; } const requestId = `skill-compare-${Date.now()}-${Math.random()}`; pendingSkillComparison = Object.freeze({ requestId, skill }); showModal(`Comparing ${esc(skill)}`, 'VERIFIED PACKAGE TREES · READ ONLY', '<div class="cleanup-loading"><span class="empty-ring"></span><p>Hashing the exact PX package and immutable preserved original. No body is hydrated or changed.</p></div>'); vscode.postMessage({ type: 'skillCompare', requestId, skill }); return; }
   if (action === 'studioRunAction') { const kind = control.dataset.kind; const operation = control.dataset.operation; let payload = operation === 'reconcile' ? { stale_after_seconds: 60 } : { run_id: control.dataset.runId }; if (operation === 'resume') { const subject = control.dataset.subjectId || ''; const version = control.dataset.version || ''; const identityKey = kind === 'agent' ? 'agent_id' : 'workflow_id'; const sessionMatches = studioSession?.kind === kind && String(studioSession.payload?.[identityKey] || '') === subject && String(studioSession.payload?.version || '') === version; if (!sessionMatches) { const exact = exactStudioCatalogPayload(kind, subject, version); if (exact) studioSession = { kind, payload: exact }; } if (!studioSession || studioSession.kind !== kind || String(studioSession.payload?.[identityKey] || '') !== subject || String(studioSession.payload?.version || '') !== version) { showModal('Exact resume context unavailable', 'FAIL CLOSED', `<p>Load the authenticated ${esc(subject)} @ ${esc(version)} revision from its catalog. Resume will not substitute another transient Studio session.</p>`); return; } payload = { ...structuredClone(studioSession.payload), run_id: control.dataset.runId }; } const requestId = studioAllocationRequestId(); pendingStudioRunQuery = { requestId, kind, operation, runId: String(payload.run_id || '') }; vscode.postMessage({ type: 'studioOperation', requestId, kind, operation, payload }); return; }
   if (action === 'openStudioFromCatalog') { const record = studioSourceRecord || modalRecord || {}; const kind = control.dataset.kind; studioVersionAllocation = null; studioWorkingSourceBinding = null; studioVersionAllocationProof = null; studioSaveRequest = null; studioPackageRequest = null; studioPendingSkillPackage = null; closeModal(); requestStudioVersionAllocation(kind, record); return; }
+  if (action === 'importCatalogDefinition') { const record = studioSourceRecord || modalRecord || {}; const kind = control.dataset.kind; if (!['agent', 'workflow'].includes(kind)) return; closeModal(); importCatalogDefinitionIntoStudio(kind, record); return; }
   if (action === 'operateStudioRevision') { const record = studioSourceRecord || modalRecord || {}; const details = record.details || record; const kind = control.dataset.kind; if (!['agent', 'workflow'].includes(kind) || details.lifecycle_authentication?.authenticated !== true || String(record.status || record.identity?.status || '') !== 'admitted') { showModal('Revision is not operable', 'AUTHENTICATED ADMISSION REQUIRED', '<p>Only an exact authenticated admitted Studio revision can be loaded for execution.</p>'); return; } const payload = kind === 'agent' ? studioEditors.normalizeAgent(details) : studioEditors.normalizeWorkflow(details); studioSession = { kind, payload }; const identity = payload[kind === 'agent' ? 'agent_id' : 'workflow_id']; closeModal(); showInformationModal(`${identity} @ ${payload.version}`, 'EXACT AUTHENTICATED REVISION · OPERATIONS READY', payload, `<p>This exact revision is loaded without changing its version. Runtime inputs remain ephemeral.</p>${humanRecord(payload)}<div class="action-grid studio-actions"><button data-action="studioLifecycle" data-kind="${esc(kind)}" data-operation="${kind === 'agent' ? 'preview' : 'dry-run'}">${kind === 'agent' ? 'Preview exact execution' : 'Preview workflow plan'}</button><button class="primary" data-action="studioLifecycle" data-kind="${esc(kind)}" data-operation="start">Start exact revision</button></div>`); return; }
   if (action === 'loadSkillPackageEditor') { const record = studioSourceRecord || modalRecord || {}; const catalogKind = String(record._catalogKind || ''); const recordId = String(record._catalogRecordId || ''); if (catalogKind !== 'skills' || !recordId) { showModal('Skill package unavailable', 'SEPARATE DOMAIN OR UNATTESTED SOURCE', '<p>Only a PX-standard package with an independent full-tree attestation can enter this editor. Preserved originals and Microsoft / Enterprise packages remain read-only here.</p>'); return; } const requestId = studioAllocationRequestId(); studioPackageRequest = Object.freeze({ requestId, catalogKind, recordId, identity: studioRecordIdentity(record, 'skill'), revisionSha256: studioRecordRevisionSha(record), record: structuredClone(record) }); studioPendingSkillPackage = null; studioAllocationRequest = null; studioVersionAllocation = null; studioVersionAllocationProof = null; studioVersionProofRequestId = null; studioSourceProofRequestId = null; showModal('Loading skill package', 'HOST-OWNED CATALOG READ · FULL-TREE ATTESTATION', '<div class="cleanup-loading"><span class="empty-ring"></span><p>Resolving the exact catalog record, package tree, domain, and provenance in the extension host.</p></div>'); vscode.postMessage({ type: 'loadSkillPackageEditor', requestId, catalogKind, recordId }); return; }
   if (action === 'submitStudioDraft') { const input = document.getElementById('studio-draft-json') || document.getElementById('studio-skill-file') || document.querySelector('[data-agent-root-field="instructions"]'); try { const payload = studioEditorPayload(control); const validation = control.dataset.kind === 'agent' ? studioEditors.validateAgent(payload) : control.dataset.kind === 'workflow' ? studioEditors.validateWorkflow(payload) : studioEditors.validateSkill(payload); if (!validation.valid) throw new Error(validation.issues.join(' ')); const requestId = studioAllocationRequestId(); studioSession = { kind: control.dataset.kind, payload }; studioSaveRequest = { requestId, kind: control.dataset.kind }; control.disabled = true; control.textContent = 'Awaiting host approval…'; document.querySelectorAll('[data-action="closeModal"]').forEach(button => { if (!button.classList.contains('modal-close')) button.textContent = 'Detach — save may continue'; button.setAttribute('title', 'Closing stops live updates only. An already authorized host operation may still commit.'); button.setAttribute('aria-label', 'Detach from in-flight save; authorized host work may continue'); }); document.querySelector('[data-studio-validation]')?.insertAdjacentHTML('beforeend', '<span class="studio-warning" data-studio-detach-notice>Closing or pressing Escape now detaches this view; it cannot cancel an already authorized host commit.</span>'); vscode.postMessage({ type: 'createStudioDraft', requestId, kind: control.dataset.kind, payload }); } catch (error) { studioSaveRequest = null; input?.setCustomValidity(`Invalid Studio definition: ${error.message}`); input?.reportValidity(); } return; }
@@ -2081,7 +2143,7 @@ app.addEventListener('click', event => {
     const comparisonAction = ['skills', 'preserved-skills'].includes(kind) && record.backup ? `<button data-action="compareSkillOriginal" data-skill-id="${esc(item.id)}">Compare PX ↔ preserved original</button>` : '';
     const rollbackAction = kind === 'skills' && item.status === 'promoted' && record.lifecycle_authentication?.authenticated === true && record.lifecycle_authentication?.rollback_available === true ? '<button class="danger" data-action="studioLifecycle" data-kind="skill" data-operation="rollback">Rollback to retained prior canonical revision</button>' : '';
     const operateAction = (editableAgent || editableWorkflow) && item.status === 'admitted' && record.lifecycle_authentication?.authenticated === true ? `<button class="primary" data-action="operateStudioRevision" data-kind="${editableAgent ? 'agent' : 'workflow'}">Operate exact admitted revision</button>` : '';
-    const editAction = editableAgent ? `${operateAction}<button data-action="openStudioFromCatalog" data-kind="agent">Edit as new revision</button>` : editableWorkflow ? `${operateAction}<button data-action="openStudioFromCatalog" data-kind="workflow">Edit as new revision</button>` : kind.includes('agent') || kind.includes('workflow') ? '<p class="modal-note">This external/static definition is read-only because Studio cannot losslessly round-trip its complete authority and execution semantics.</p>' : editableSkill ? '<button class="primary" data-action="loadSkillPackageEditor" data-kind="skill">Load authenticated package for new revision</button>' : kind === 'preserved-skills' ? '<p class="modal-note">Preserved originals remain immutable backup evidence. Create an explicitly provenance-linked standard adaptation instead of editing this backup in place.</p>' : kind === 'microsoft-skills' || kind === 'enterprise-skills' ? '<p class="modal-note">This source stays in the separate Microsoft / Enterprise domain and cannot enter the standard Skill Studio create path.</p>' : kind.includes('skill') ? '<p class="modal-note">This package is read-only until an independent full-tree attestation is available; a body hash alone is not enough to preserve an immutable predecessor.</p>' : '';
+    const editAction = editableAgent ? `${operateAction}<button class="primary" data-action="openStudioFromCatalog" data-kind="agent">Open in Agent Studio as new revision</button>` : editableWorkflow ? `${operateAction}<button class="primary" data-action="openStudioFromCatalog" data-kind="workflow">Open in Workflow Studio as new revision</button>` : kind === 'agents' ? '<button class="primary" data-action="importCatalogDefinition" data-kind="agent">Open in Agent Studio</button><p class="modal-note">This source definition is imported into a new independent Studio candidate. The source stays unchanged and grants no runtime authority.</p>' : kind === 'workflows' ? '<button class="primary" data-action="importCatalogDefinition" data-kind="workflow">Open in Workflow Studio</button><p class="modal-note">This source definition is imported into a new independent visual workflow candidate. Review its node semantics and authority before saving.</p>' : editableSkill ? '<button class="primary" data-action="loadSkillPackageEditor" data-kind="skill">Open package in Skill Studio</button>' : kind === 'preserved-skills' ? '<p class="modal-note">Preserved originals remain immutable backup evidence. Create an explicitly provenance-linked standard adaptation instead of editing this backup in place.</p>' : kind === 'microsoft-skills' || kind === 'enterprise-skills' ? '<p class="modal-note">This source stays in the separate Microsoft / Enterprise domain and cannot enter the standard Skill Studio create path.</p>' : kind.includes('skill') ? '<p class="modal-note">This package is read-only until an independent full-tree attestation is available; a body hash alone is not enough to preserve an immutable predecessor.</p>' : '';
     const authorityWarning = ['studio-agent-revision', 'studio-workflow-revision'].includes(item.kind) && record.authority_definition_state === 'not-stored-with-revision' ? '<p class="modal-note">This revision stores authority references, not their original definitions. Explicitly supply and register those definitions before admission or execution.</p>' : '';
     const human = item.agent_model ? `${agentModelHuman(item)}${editAction}${authorityWarning}` : kind.includes('workflow') ? `${workflowHuman(item)}${editAction}` : kind.includes('skill') ? `${skillHuman(item)}<div class="action-grid">${comparisonAction}${rollbackAction}${editAction}</div>` : `<p>${esc(item.summary || 'No summary')}</p><dl class="modal-detail"><div><dt>ID</dt><dd class="mono">${esc(item.id)}</dd></div><div><dt>Owner</dt><dd>${esc(item.owner || 'Not declared')}</dd></div><div><dt>Path</dt><dd class="mono">${esc(item.path || 'Not declared')}</dd></div><div><dt>Effects</dt><dd>${esc(item.effects?.join(', ') || 'None declared')}</dd></div></dl>${editAction}${authorityWarning}`;
     showInformationModal(item.label, `${item.kind.toUpperCase()} · ${item.status}`, record, human); return;
@@ -2541,15 +2603,17 @@ window.addEventListener('message', event => {
     };
     const controlPlaneIndex = parts.indexOf('control-plane');
     const routeKind = controlPlaneIndex >= 0 ? parts[controlPlaneIndex + 1] || null : null;
+    const studioSurface = ['agent-studio', 'workflow-studio', 'skill-studio'].includes(routeKind) ? routeKind : null;
     const suppliedEntity = message.entity && typeof message.entity === 'object' ? message.entity : null;
     const kind = suppliedEntity?.type || (parts.includes('waves') ? 'wave' : parts.includes('tasks') ? 'task' : parts.includes('orchestrations') ? 'orchestration' : parts.includes('providers') ? 'provider' : parts.includes('agents') ? 'agent' : parts.includes('plans') ? 'plan' : routeKind === 'knowledge-graph' ? 'knowledge-graph' : routeKind === 'attention' ? 'attention' : routeKind);
     // The root control-plane route is navigation, not an entity deep link.
     // Treating its final path segment as an entity ID opened a blocking
     // "UNKNOWN control-plane" modal on every normal dashboard launch.
-    const id = suppliedEntity?.id || (routeKind ? decodeRouteId(parts.at(-1)) : null);
-    state.active = kind === 'knowledge-graph' ? 'knowledgeGraph' : kind === 'agent' ? 'agents' : ['plan', 'wave', 'task', 'orchestration'].includes(kind) ? 'workflows' : kind === 'provider' ? (state.settings.showAdvancedSurfaces ? 'runtimeCore' : 'diagnostics') : kind === 'attention' ? 'diagnostics' : 'dashboard';
+    const id = suppliedEntity?.id || (routeKind && !studioSurface ? decodeRouteId(parts.at(-1)) : null);
+    state.active = studioSurface || (kind === 'knowledge-graph' ? 'knowledgeGraph' : kind === 'agent' ? 'agents' : ['plan', 'wave', 'task', 'orchestration'].includes(kind) ? 'workflows' : kind === 'provider' ? (state.settings.showAdvancedSurfaces ? 'runtimeCore' : 'diagnostics') : kind === 'attention' ? 'diagnostics' : 'dashboard');
     persistDashboardState();
     render();
+    if (studioSurface && !suppliedEntity) beginStudioAuthoring(studioKindForSurface(studioSurface));
     const coordination = state.coordination?.state || {}; let record = suppliedEntity?.record && typeof suppliedEntity.record === 'object' ? suppliedEntity.record : null;
     if (!record && kind === 'task') {
       const tasks = [...(coordination.tasks || []), ...(coordination.plans || []).flatMap(item => item.waves || []).flatMap(item => item.tasks || [])];

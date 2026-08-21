@@ -84,9 +84,12 @@ def test_builder_and_trace_control_planes_have_exact_section_owners():
     assert "extension/src/workflowTraceProjection.js" in dashboard["inputs"]
     assert "extension/scripts/deduplicate-legacy-css.js" in dashboard["inputs"]
     assert "tests/ui-scaffold.test.js" in dashboard["command"]
-    assert dashboard["command"][-2:] == [
+    assert dashboard["command"][-5:] == [
         "tests/studio-catalog-agent-builder.test.js",
         "tests/workflow-trace-projection.test.js",
+        "tests/ui-action-inventory.test.js",
+        "tests/operational-walk-status.test.js",
+        "tests/contained-ui-action-walk.test.js",
     ]
 
     studios = resolve_test_section(ROOT, "studio-memory-graph")

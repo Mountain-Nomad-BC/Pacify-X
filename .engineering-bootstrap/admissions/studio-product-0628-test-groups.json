@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007347",
+  "effect": "execute",
+  "scope": ["verification:stale-test-groups-required-by-full-profile"],
+  "authority": "The user requested full validation and proof, and the owned full-profile preflight identified the exact stale prerequisite groups that must be current before certification can execute.",
+  "expected_effect": "Run only stale governed test groups and retain their exact-input receipts so the full-profile owner can evaluate current prerequisites.",
+  "rollback": "Test groups mutate only managed test workspaces and evidence receipts; owned workspaces and processes are reconciled by the test runner.",
+  "evidence": [
+    {
+      "reference": "registry/test_profiles.json",
+      "claim": "The full profile requires current group receipts before it will execute."
+    }
+  ]
+}

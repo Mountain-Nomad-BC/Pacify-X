@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007347",
+  "effect": "write",
+  "scope": ["registry:operational-control-proof-matrix-refresh"],
+  "authority": "The new declared Studio import action changes the canonical UI action inventory, and the governed testing section requires the derived operational proof matrix to bind that current inventory.",
+  "expected_effect": "Regenerate only registry/operational_control_proof_matrix.json from current admitted source inventories and control records.",
+  "rollback": "Restore the prior generated matrix if the current-source equality test does not pass; no authoritative source inventory is changed.",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "claim": "The governed section failed solely because the proof matrix retained the previous 199-action inventory hash while current source contains 200 declared actions."
+    }
+  ]
+}

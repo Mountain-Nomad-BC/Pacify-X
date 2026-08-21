@@ -259,13 +259,21 @@ function actionResolver(control, actionIndex) {
   const [action, ...variants] = String(control.label || '').split('.');
   const matches = actionIndex.get(`${control.surface_id}\u0000${action}`) || [];
   if (!matches.length) return { status: 'not_rendered', matches: [] };
-  if (!variants.length && matches.length === 1) return { status: 'exact', matches };
+  // A typed action without an instance suffix represents the rendered action
+  // class, not a promise that only one DOM instance exists.  Metric cards and
+  // catalog rows legitimately render the same action many times.  Requiring a
+  // singleton made an exact, enumerable class look ambiguous and prevented the
+  // walker from ever examining it.
+  if (!variants.length) return { status: 'exact', matches };
   const exact = matches.filter(match => {
     const dataset = match.dataset || {};
     const values = new Set(Object.values(dataset).map(value => String(value)));
-    return variants.every(variant => variant === 'row' ? Object.keys(dataset).some(key => /id|index|row|key/.test(key)) : values.has(variant));
+    return variants.every(variant => variant === 'row' ? Object.keys(dataset).some(key => /id|index|row|key/i.test(key)) : values.has(variant));
   });
-  return exact.length === 1 ? { status: 'exact', matches: exact } : { status: 'ambiguous', matches };
+  // A `.row` identity is likewise a repeatable control class.  Named variants
+  // remain exact when every match carries the requested dataset identity; the
+  // match count is retained so a proof runner can exercise every instance.
+  return exact.length >= 1 ? { status: 'exact', matches: exact } : { status: 'ambiguous', matches };
 }
 
 function stageRecords({ blocked, rendered, mutating, attempted, observedAt }) {

@@ -26,6 +26,7 @@ def record(
         "registry/external_candidate_graph.json": "scripts/build_external_candidate_registry.py",
         "registry/external_capability_catalog.json": "scripts/build_external_candidate_registry.py",
         "registry/full_repair_ledger.json": "runtime/full_repair.py",
+        "registry/operational_control_proof_matrix.json": "scripts/build_operational_control_proof_matrix.py",
         "registry/graphs/project_stream_dependency_graph.json": "runtime/graph_registry.py",
         "registry/historical_external_references.json": "scripts/build_historical_external_references.py",
         "registry/security_capabilities/native_skill_dispositions.json": "scripts/build_cybersecurity_provider_registry.py",
@@ -115,6 +116,7 @@ def build_inventory() -> dict[str, object]:
         record("registry/external_capability_catalog.json", "record_count", "records"),
         record("registry/external_skill_bundles.json", "package_count", "packages"),
         record("registry/full_repair_ledger.json", "card_count", "cards"),
+        record("registry/operational_control_proof_matrix.json", "control_count", "controls"),
         record(
             "registry/declared_capability_recovery_map.json", "record_count", "records"
         ),

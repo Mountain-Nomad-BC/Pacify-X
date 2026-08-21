@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007341",
+  "effect": "service",
+  "scope": ["vscode:isolated-studio-product-workflow-host"],
+  "authority": "The user explicitly requested end-to-end proof of the actual Studio experience.",
+  "expected_effect": "Launch an isolated VS Code Extension Development Host and exercise create, edit, save, reopen, lifecycle, and run flows.",
+  "rollback": "The isolated profile, extension host, and child processes are registered, bounded, and reconciled after the walk.",
+  "evidence": [{"reference": "AGENTS.md", "artifact_sha256": "f9763711bb3503acb4ac8fd09fc335f0b0ccfc543cccb0e70f37138b3b006cf6", "artifact_size": 2612, "claim": "Repository service lifecycle contract."}]
+}

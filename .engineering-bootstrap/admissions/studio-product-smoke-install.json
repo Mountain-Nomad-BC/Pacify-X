@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007341",
+  "effect": "install",
+  "scope": ["vscode:isolated-clean-profile-pacify-x-0.6.27-smoke"],
+  "authority": "The user explicitly required an end-to-end installed-host proof of the repaired Studio product.",
+  "expected_effect": "Install the exact hash-verified 0.6.27 VSIX into a PACIFY-X-owned disposable VS Code profile and execute the installed-host smoke suite.",
+  "rollback": "The isolated profile and its registered processes are reclaimed after verified closure; the user profile is unaffected by this smoke installation.",
+  "evidence": [{"reference": "extension/dist/pacify-x-vscode-0.6.27.vsix", "artifact_sha256": "5131241ec82b1296af5e1916a2506f77868b8582f9977c309635c141e2b48c9b", "artifact_size": 4209364, "claim": "Exact VSIX under installed-host test."}]
+}

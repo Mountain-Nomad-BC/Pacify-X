@@ -89,25 +89,112 @@ async function run() {
   // checkout or synthetic preview. This catches stale VSIX protocol copies.
   const installedMessages = require(path.join(extension.extensionPath, 'src', 'webviewMessages.js'));
   const installedBridgeModule = require(path.join(extension.extensionPath, 'src', 'pxBridge.js'));
+  const installedStudioBootstrap = require(path.join(extension.extensionPath, 'src', 'studioBootstrap.js'));
+  const installedStudioApprovalHost = require(path.join(extension.extensionPath, 'src', 'studioApprovalHost.js'));
+  const installedStudioDraftHost = require(path.join(extension.extensionPath, 'src', 'studioDraftHost.js'));
+  const installedStudioPackage = require(path.join(extension.extensionPath, 'src', 'studioPackage.js'));
   const protocolCases = [
     { type: 'studioOperation', kind: 'agent', operation: 'start', payload: {} },
     { type: 'studioOperation', requestId: 'installed-smoke:workflow-resume', kind: 'workflow', operation: 'resume', payload: { run_id: 'run:installed-smoke' } },
     { type: 'studioOperation', kind: 'knowledge', operation: 'browse', payload: { query: '', limit: 1 } }
   ];
   for (const message of protocolCases) assert.equal(installedMessages.validateWebviewMessage(message).operation, message.operation);
+  const previousStudioKeyRoot = process.env.PX_STUDIO_KEY_ROOT;
+  process.env.PX_STUDIO_KEY_ROOT = path.join(path.dirname(folder.uri.fsPath), 'studio-approval-keys');
+  const studioApprovalMaterial = installedStudioApprovalHost.generateApprovalKey();
   const installedBridge = new installedBridgeModule.PxBridge({
     pythonPath: process.env.PX_PYTHON_PATH || (process.platform === 'win32' ? 'python' : 'python3'),
     engineRoot,
-    projectRoot: folder.uri.fsPath
+    projectRoot: folder.uri.fsPath,
+    approvalKeyProvider: async request => request?.action === 'find' && request.keyId !== studioApprovalMaterial.keyId
+      ? null
+      : request?.action === 'find' ? studioApprovalMaterial : { active: studioApprovalMaterial, previous: [] }
   });
-  const knowledgeRoundTrip = await installedBridge.studioOperation('knowledge', 'browse', { query: '', limit: 1 });
-  installedBridge.dispose();
+  let knowledgeRoundTrip;
+  let studioSetup;
+  let installedAgent;
+  let installedWorkflow;
+  let installedSkill;
+  let installedSkillOutcome;
+  try {
+    knowledgeRoundTrip = await installedBridge.studioOperation('knowledge', 'browse', { query: '', limit: 1 });
+    studioSetup = await installedStudioBootstrap.setupStudio(installedBridge);
+    const agents = await installedBridge.catalog({ kind: 'agents', query: installedStudioBootstrap.STARTER_AGENT.agent_id, status: '', offset: 0, limit: 20, sort: 'id' });
+    const workflows = await installedBridge.catalog({ kind: 'workflows', query: installedStudioBootstrap.STARTER_WORKFLOW.workflow_id, status: '', offset: 0, limit: 20, sort: 'id' });
+    installedAgent = agents.items.find(item => item.kind === 'studio-agent-revision' && item.details?.agent_id === installedStudioBootstrap.STARTER_AGENT.agent_id);
+    installedWorkflow = workflows.items.find(item => item.kind === 'studio-workflow-revision' && item.details?.workflow_id === installedStudioBootstrap.STARTER_WORKFLOW.workflow_id);
+    const skillId = 'skill:pacify-x-installed-starter';
+    const skillVersion = '1.0.0';
+    const skillPayload = {
+      skill_id: skillId, version: skillVersion, owner: 'human:vscode-local-user', builder_domain: 'px-standard',
+      triggers: ['explicit installed-host request'], non_triggers: ['unrelated task'], permissions: ['read_local'], effects: ['read'],
+      resources: ['resources/README.md'], contracts: ['contracts/input.schema.json'], tests: ['tests/contract.json'],
+      provenance: { source: 'installed-vsix-studio-editor' }, lifecycle: 'draft',
+      editor_files: {
+        'SKILL.md': `---\nname: ${skillId}\ndescription: Installed-host editable Skill Studio round trip.\n---\n\n# Installed Skill Studio\n`,
+        'capability.json': `${JSON.stringify({ schema_version: 'px.skill-capability/1.0', id: skillId, version: skillVersion, domain: 'px-standard', effects: ['read'], permissions: ['read_local'], triggers: ['explicit installed-host request'], non_triggers: ['unrelated task'] }, null, 2)}\n`,
+        'skill.yaml': `schema_version: px.skill-manifest/1.0\nid: ${skillId}\nversion: ${skillVersion}\nentrypoint: SKILL.md\ndomain: px-standard\n`,
+        'contracts/input.schema.json': `${JSON.stringify({ type: 'object', additionalProperties: false, properties: {} }, null, 2)}\n`,
+        'tests/contract.json': `${JSON.stringify({ schema_version: 'px.skill-test/1.1', cases: [{ name: 'required-files', assertion: { kind: 'required-files', paths: ['SKILL.md', 'capability.json', 'skill.yaml'] } }] }, null, 2)}\n`,
+        'resources/README.md': '# Resources\n\nBounded local resources only.\n'
+      }
+    };
+    installedSkillOutcome = await installedStudioDraftHost.createStudioDraftFromHost({ requestId: 'installed-vsix:skill-save', kind: 'skill', payload: skillPayload }, {
+      bridge: installedBridge,
+      postMessage: async () => true,
+      confirmCreate: async () => true,
+      materializeSkillPackage: installedStudioPackage.materializeSkillPackage,
+      assertInitialCreateAbsent: (kind, identity) => installedBridge.studioIdentityAbsence(kind, identity),
+      reclaimSkillPackage: installedStudioPackage.reclaimMaterializedSkillPackage,
+      isVersionConflict: error => Boolean(installedBridgeModule.exactStudioVersionConflictError(error))
+    });
+    const skills = await installedBridge.catalog({ kind: 'skills', query: skillId, status: '', offset: 0, limit: 20, sort: 'id' });
+    installedSkill = skills.items.find(item => item.kind === 'studio-skill-revision' && item.details?.skill_id === skillId);
+  } finally {
+    installedBridge.dispose();
+    if (previousStudioKeyRoot === undefined) delete process.env.PX_STUDIO_KEY_ROOT;
+    else process.env.PX_STUDIO_KEY_ROOT = previousStudioKeyRoot;
+  }
   assert.equal(knowledgeRoundTrip.schema_version, 'px.knowledge-core-control/1.0');
+  assert.equal(studioSetup?.ready, true, 'Installed Studio setup did not complete');
+  assert.equal(studioSetup?.agent?.run_outcome, 'succeeded', 'Installed Agent Studio revision did not run');
+  assert.equal(studioSetup?.workflow?.run_state, 'succeeded', 'Installed Workflow Studio revision did not run');
+  assert.equal(installedAgent?.details?.lifecycle_authentication?.authenticated, true, 'Installed Agent Studio revision did not reopen as authenticated');
+  assert.equal(installedAgent?.details?.builder_graph_state, 'content-bound', 'Installed Agent Studio builder state was not retained');
+  assert.equal(installedWorkflow?.details?.lifecycle_authentication?.authenticated, true, 'Installed Workflow Studio revision did not reopen as authenticated');
+  assert.equal(installedWorkflow?.details?.editor_layout_state, 'content-bound', 'Installed Workflow Studio layout was not retained');
+  assert.equal(installedSkillOutcome?.status, 'created', 'Installed Skill Studio editor payload was not saved');
+  assert.equal(installedSkill?.details?.lifecycle_authentication?.status, 'candidate', 'Installed Skill Studio revision did not reopen as a candidate');
+  assert.equal(installedSkill?.details?.package_scope, 'project-studio', 'Installed Skill Studio revision escaped the project Studio package scope');
+  assert.match(String(installedSkill?.details?.source_content_sha256 || ''), /^[a-f0-9]{64}$/, 'Installed Skill Studio content binding is missing');
   const exactStudioRoundTrips = {
     installed_extension_path: '[installed-extension-root]',
     accepted_operations: protocolCases.map(item => `${item.kind}:${item.operation}`),
     knowledge_ui_bridge_cli_backend: true,
-    knowledge_schema_version: knowledgeRoundTrip.schema_version
+    knowledge_schema_version: knowledgeRoundTrip.schema_version,
+    setup_ready: studioSetup.ready,
+    completed_steps: studioSetup.completed_steps,
+    agent: {
+      identity: studioSetup.agent.identity,
+      admission: studioSetup.agent.decision,
+      run_outcome: studioSetup.agent.run_outcome,
+      reopen_authenticated: installedAgent.details.lifecycle_authentication.authenticated,
+      builder_graph_state: installedAgent.details.builder_graph_state
+    },
+    workflow: {
+      identity: studioSetup.workflow.identity,
+      admission: studioSetup.workflow.decision,
+      run_state: studioSetup.workflow.run_state,
+      reopen_authenticated: installedWorkflow.details.lifecycle_authentication.authenticated,
+      editor_layout_state: installedWorkflow.details.editor_layout_state
+    },
+    skill: {
+      identity: installedSkill.details.skill_id,
+      save_status: installedSkillOutcome.status,
+      lifecycle_status: installedSkill.details.lifecycle_authentication.status,
+      package_scope: installedSkill.details.package_scope,
+      content_bound: /^[a-f0-9]{64}$/.test(String(installedSkill.details.source_content_sha256 || ''))
+    }
   };
 
   const attempts = {};

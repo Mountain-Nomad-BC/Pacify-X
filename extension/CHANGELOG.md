@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.6.28
+
+- Opens Agent, Workflow, and Skill Studio navigation directly in their editable authoring workspaces.
+- Reopens hash-bound Agent and Workflow candidates without incorrectly requiring runtime admission merely to edit them; execution still requires authenticated admission.
+- Allows external Agent and Workflow catalog definitions to open as independent editable Studio candidates without claiming predecessor lineage or inherited authority.
+- Extends installed-VSIX certification through real Agent, Workflow, and Skill create/save/admit/run/reopen boundaries.
+
+## 0.6.27
+
+- Studio navigation and deep links now open the editable Agent, Workflow, or Skill authoring workspace immediately instead of stopping at a catalog surface.
+- Hash-bound physical Agent and Workflow candidates can be reopened for a new revision before lifecycle admission; run authority still requires an authenticated admitted revision.
+- Governed dashboard verification now includes real host-to-Python Agent, Workflow, and Skill creation, persistence, catalog, reopen, and bounded run round trips.
+
 ## 0.6.26
 
 - Synchronize the exact current-source UI control denominator and retain typed current-host observations for every attempted control.

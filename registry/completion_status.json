@@ -408,7 +408,9 @@
   "current_gates": {
     "valid": false,
     "blocking_ids": [
-      "section:dashboard-extension"
+      "section:testing-governance",
+      "group:release-audit",
+      "group:structural-adversarial"
     ]
   },
   "certification_freshness": {
@@ -417,9 +419,14 @@
     "evidence_identity_current": false,
     "evidence_identity_evaluated": false,
     "evidence_receipts_current": true,
-    "failed_receipt_ids": [],
+    "failed_receipt_ids": [
+      "group:release-audit",
+      "group:structural-adversarial"
+    ],
     "stale_receipt_ids": [
-      "section:dashboard-extension"
+      "section:testing-governance",
+      "group:release-audit",
+      "group:structural-adversarial"
     ],
     "dependency_stale_receipt_ids": []
   },
@@ -432,7 +439,7 @@
   "blocking_reasons": [
     "the current instruction-reconciliation authority is not complete",
     "current product-surface audit has 67 operational findings pending repair and verification",
-    "1 required section/group receipts are stale or failed",
+    "3 required section/group receipts are stale or failed",
     "final exact-artifact certification has not been admitted"
   ]
 }

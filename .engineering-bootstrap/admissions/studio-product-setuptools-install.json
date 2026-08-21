@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007347",
+  "effect": "install",
+  "scope": ["python-environment:setuptools-83.0.0"],
+  "authority": "The exact-installed governed test requires the pyproject and release-lock pinned setuptools 83.0.0 toolchain, while the active environment has 81.0.0.",
+  "expected_effect": "Replace setuptools 81.0.0 with the exact pinned 83.0.0 release-build dependency; no other package is changed.",
+  "rollback": "Reinstall setuptools 81.0.0 if rollback is required; pip retains no project source mutation.",
+  "evidence": [{"reference": "pyproject.toml", "claim": "The build-system and release dependency groups both require setuptools 83.0.0."}]
+}

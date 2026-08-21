@@ -7,7 +7,7 @@
     "effect": "none-outside-webview",
     "acknowledgement": "active surface and focus update"
   },
-  "action_count": 199,
+  "action_count": 200,
   "actions": [
     {
       "action": "acceptStudioVersionSuggestion",
@@ -1348,6 +1348,20 @@
       "state_transition": "skillHydrateResult or operationError",
       "acknowledgement": "skillHydrateResult or operationError",
       "receipt": "exactly one selected admitted skill body",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "importCatalogDefinition",
+      "mode": "ui-only",
+      "inbound_schema": null,
+      "authority": "webview presentation state",
+      "effect": "none-outside-webview",
+      "state_transition": "draft-state",
+      "acknowledgement": "immediate visible UI state",
+      "receipt": null,
+      "behavior": "adapt one external agent or workflow definition into an independent editable Studio candidate without predecessor lineage or inherited authority",
       "rendered_in": [
         "media/dashboard/90-controller.js"
       ]

@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007357",
+  "effect": "execute",
+  "scope": ["px-skill-query:release-handoff-commit-push-certification"],
+  "authority": "The user explicitly requested that all completed work be committed and merged to GitHub and requested continuation through proof.",
+  "expected_effect": "Query and hydrate exactly one admitted PX release capability for the verified GitHub handoff.",
+  "rollback": "Capability selection is read-only apart from bounded query evidence; no repository source or remote state is changed.",
+  "evidence": [{"reference": ".agents/skills/px-release/SKILL.md", "claim": "Release routing instructions require one admitted query result and one hydrated body."}]
+}

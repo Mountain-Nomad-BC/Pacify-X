@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007347",
+  "effect": "network",
+  "scope": ["pypi:setuptools-83.0.0-wheel-download"],
+  "authority": "The exact-installed governed test requires the pyproject and release-lock pinned setuptools 83.0.0 toolchain, while the active environment has 81.0.0.",
+  "expected_effect": "Download only the setuptools 83.0.0 distribution selected by pip from the configured Python package index.",
+  "rollback": "The retained environment version is recorded; setuptools 81.0.0 can be reinstalled if the pinned release toolchain must be reverted.",
+  "evidence": [{"reference": "requirements-release.lock", "claim": "Pins setuptools 83.0.0 and its SHA-256 for release builds."}]
+}

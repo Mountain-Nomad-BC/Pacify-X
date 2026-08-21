@@ -1606,7 +1606,7 @@
         "uuid"
       ],
       "index_state": "reused",
-      "sha256": "27496135ce056006e6fbba27825e98df7732c506ab4e06d8ad75c6377af894d2"
+      "sha256": "cbe8d6e62b2175d0a13eb98c0aa55108311a1a8fda8fe8e31b6ba201184039cb"
     },
     "runtime/operational_observers.py": {
       "imports": [
@@ -3016,6 +3016,17 @@
       "index_state": "reused",
       "sha256": "2fe36d26eb748c6a99dd78ae4754a36078b2d8e75d24f335b633029ab3244ac0"
     },
+    "scripts/build_operational_control_proof_matrix.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "hashlib",
+        "json",
+        "pathlib"
+      ],
+      "index_state": "reused",
+      "sha256": "9b207e7f568d09827a71fbcc8635ab19a27eb26fdeb0baae93e7804e44202a2f"
+    },
     "scripts/build_profile_projections.py": {
       "imports": [
         "__future__",
@@ -3085,8 +3096,8 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
-      "sha256": "d70bca67c63fdad4c1995811e1cad35978a14d07744f3d2da0eef536eecfa53c"
+      "index_state": "parsed",
+      "sha256": "2e17f39fb07b52341602285c6df41d045bd0c25570425d1db9839188df7f863a"
     },
     "scripts/build_registry_graphs.py": {
       "imports": [
@@ -5050,6 +5061,16 @@
       "index_state": "reused",
       "sha256": "b7f3dc5f683d6cf6c13bd36ed0d9a5e02321e1cf06b6a21915be6eae11b73cde"
     },
+    "tests/test_operational_control_proof_matrix.py": {
+      "imports": [
+        "__future__",
+        "json",
+        "pathlib",
+        "scripts.build_operational_control_proof_matrix"
+      ],
+      "index_state": "reused",
+      "sha256": "ba68eb4fcecf9fcd3b6df3b783a614699f31a40d0dc4a4d9bcb7850583e9c090"
+    },
     "tests/test_operational_controls.py": {
       "imports": [
         "__future__",
@@ -5088,7 +5109,7 @@
         "time"
       ],
       "index_state": "reused",
-      "sha256": "43c5d926a68847cef581869fd604ff46e7cb41a7e76aff4cb875b0a972f3a314"
+      "sha256": "2ef90943ae5f8ccd7d2f9c35c3975e9ddbf24a46c3fcc0b60bd2b1438724b7cb"
     },
     "tests/test_operational_observers.py": {
       "imports": [
@@ -6038,7 +6059,7 @@
         "sys"
       ],
       "index_state": "reused",
-      "sha256": "40fce66fda228e7592fc8f4ff8b5854f33eed9ff18097fd3e7923ff214349f14"
+      "sha256": "8e7369c3440f145feb3122a7acef515fa570189c52286bdda86a6a2c56311950"
     },
     "tests/test_test_runner_controls.py": {
       "imports": [
@@ -6248,7 +6269,7 @@
       ],
       "description": "Serial process custody, recovery, test-runner, WAL, resource-lifecycle, and workspace mutation tests.",
       "group": "process-recovery",
-      "input_sha256": "ee091341ddbc1b35ebfefbc601d84c1ce2ed5e025f58d9a787b7e60fe8a45bce",
+      "input_sha256": "03bb9def9eb8031042f437b319d1fb7cc95ae399073e4e7bc12b1a940ed2f710",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/commissioning.py",
@@ -6322,7 +6343,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "4ac84653eaec09f96634434bce50f3ee010e38de1cfa7dd46242eb9acf5cb843",
+      "input_sha256": "c975d7f18d2e3823e31f6ba74256ccb742e10aeed6e2e0b69ec51b84f62a5d75",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6397,7 +6418,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "533b0eba7eec1501e40f197367e3e7e7e98dda6d2154a7a02bc459b1ba7348b1",
+      "input_sha256": "143eab176c0c3e9741065b7b62eb0a9c4c4b15d3be66c51ad60a6e3a56e1c30b",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6465,7 +6486,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "45bb12e78807d3debff6f43ce74db617d45f82b5ca8478d1bb0bd7bd0ed6316a",
+      "input_sha256": "2fac15b94fd87e7fb6a8ada41d4e69266fa60762da00ffba82b02e38dab1951c",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6510,7 +6531,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "4728d69e57ccb5159cf0a1d04440c2b3d63648d1de8953da302765d3f40611ea",
+      "input_sha256": "5d0d44c095f1d09f2f50f165303f123892df3864023cff969042d70ec3e7003f",
       "inputs": [
         ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/media/dashboard.js",
         ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/src/activityManager.js",
@@ -6817,6 +6838,7 @@
         "extension/scripts/owned-vscode-test-cache.js",
         "extension/scripts/package-vsix.js",
         "extension/scripts/refresh-environment-inventory.js",
+        "extension/scripts/run-contained-ui-action-walk.js",
         "extension/scripts/run-installed-vsix-smoke.js",
         "extension/scripts/run-isolated-current-source-walk.js",
         "extension/scripts/run-operational-ui-walk.js",
@@ -6869,6 +6891,7 @@
         "extension/tests/browser-lane.js",
         "extension/tests/canonical-event-publisher.test.js",
         "extension/tests/cleanup-manager.test.js",
+        "extension/tests/contained-ui-action-walk.test.js",
         "extension/tests/context-bridge.test.js",
         "extension/tests/coordination-manager.test.js",
         "extension/tests/dashboard-e2e.test.js",
@@ -7156,6 +7179,7 @@
         "scripts/build_historical_external_references.py",
         "scripts/build_integration_disposition.py",
         "scripts/build_operation_health_snapshot.py",
+        "scripts/build_operational_control_proof_matrix.py",
         "scripts/build_profile_projections.py",
         "scripts/build_provider_route_index.py",
         "scripts/build_python_dependency_ownership.py",
@@ -7318,6 +7342,7 @@
         "tests/test_operation_authority.py",
         "tests/test_operation_coverage.py",
         "tests/test_operation_health_snapshot.py",
+        "tests/test_operational_control_proof_matrix.py",
         "tests/test_operational_controls.py",
         "tests/test_operational_event_bus.py",
         "tests/test_operational_gap_ledger.py",
@@ -7720,6 +7745,7 @@
         "extension/scripts/owned-vscode-test-cache.js",
         "extension/scripts/package-vsix.js",
         "extension/scripts/refresh-environment-inventory.js",
+        "extension/scripts/run-contained-ui-action-walk.js",
         "extension/scripts/run-installed-vsix-smoke.js",
         "extension/scripts/run-isolated-current-source-walk.js",
         "extension/scripts/run-operational-ui-walk.js",
@@ -7772,6 +7798,7 @@
         "extension/tests/browser-lane.js",
         "extension/tests/canonical-event-publisher.test.js",
         "extension/tests/cleanup-manager.test.js",
+        "extension/tests/contained-ui-action-walk.test.js",
         "extension/tests/context-bridge.test.js",
         "extension/tests/coordination-manager.test.js",
         "extension/tests/dashboard-e2e.test.js",
@@ -8049,6 +8076,7 @@
         "scripts/build_historical_external_references.py",
         "scripts/build_integration_disposition.py",
         "scripts/build_operation_health_snapshot.py",
+        "scripts/build_operational_control_proof_matrix.py",
         "scripts/build_profile_projections.py",
         "scripts/build_provider_route_index.py",
         "scripts/build_python_dependency_ownership.py",
@@ -8211,6 +8239,7 @@
         "tests/test_operation_authority.py",
         "tests/test_operation_coverage.py",
         "tests/test_operation_health_snapshot.py",
+        "tests/test_operational_control_proof_matrix.py",
         "tests/test_operational_controls.py",
         "tests/test_operational_event_bus.py",
         "tests/test_operational_gap_ledger.py",
@@ -8346,7 +8375,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "58044111706b3433c02cd72c3d0b5d484cf649afbafc2cb6066718d8d52123f4",
+      "input_sha256": "ca82f19b840e6d17881e254adcb0aac66523b8e8fe9760bb821f09efa55753ab",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -8581,7 +8610,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin A through F; this lane shares canonical registry state with core-n-s and must not overlap it.",
       "group": "core-a-f",
-      "input_sha256": "6438b80a3ced2709e75a22339f1e64511c5c19afae0d3f073de2df67717d2103",
+      "input_sha256": "62932547db96ee4c5bfabbf15ab5532f5172b1ba239b792561a036ae27e4ecd7",
       "inputs": [
         "builders/declared_suite_builder.py",
         "builders/declared_suite_support_builder.py",
@@ -8902,7 +8931,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin G through M; this lane reads or mutates shared canonical repository state.",
       "group": "core-g-m",
-      "input_sha256": "8d3d558a69a4f2c56591d9f6ddf4b423886d5f4ebee6372b90ab429024674b0f",
+      "input_sha256": "a6c9ed8e81a18b3bd6df2fe62c929aefc0effc7534163f2b3c77f13bb60c3b9d",
       "inputs": [
         "builders/common.py",
         "builders/orchestration_builder.py",
@@ -9082,6 +9111,7 @@
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
         "scripts/build_operation_health_snapshot.py",
+        "scripts/build_operational_control_proof_matrix.py",
         "scripts/build_reclamation_learning_promotion.py",
         "scripts/cleanup_python_caches.py",
         "scripts/migrate_px_skills.py",
@@ -9095,6 +9125,7 @@
         "tests/test_operation_authority.py",
         "tests/test_operation_coverage.py",
         "tests/test_operation_health_snapshot.py",
+        "tests/test_operational_control_proof_matrix.py",
         "tests/test_operational_controls.py",
         "tests/test_operational_event_bus.py",
         "tests/test_operational_gap_ledger.py",
@@ -9157,7 +9188,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
       "group": "core-n-s",
-      "input_sha256": "9d0c15e13dbb831b390282241048b030def9a9b91cefaba6f9f8f17ac0823d0a",
+      "input_sha256": "80bd96346e8517f10830d5642566ab166927f5177039da21b8750066f044bb32",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",
@@ -9239,6 +9270,7 @@
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
         "scripts/build_operation_health_snapshot.py",
+        "scripts/build_operational_control_proof_matrix.py",
         "scripts/build_reclamation_learning_promotion.py",
         "scripts/cleanup_python_caches.py",
         "scripts/migrate_px_skills.py",
@@ -9252,6 +9284,7 @@
         "tests/test_operation_authority.py",
         "tests/test_operation_coverage.py",
         "tests/test_operation_health_snapshot.py",
+        "tests/test_operational_control_proof_matrix.py",
         "tests/test_operational_controls.py",
         "tests/test_operational_event_bus.py",
         "tests/test_operational_gap_ledger.py",
@@ -9312,12 +9345,13 @@
         "tests/test_studio_run_control.py",
         "tests/test_system_graph.py"
       ],
-      "member_count": 63,
+      "member_count": 64,
       "members": [
         "tests/test_native_skills.py",
         "tests/test_operation_authority.py",
         "tests/test_operation_coverage.py",
         "tests/test_operation_health_snapshot.py",
+        "tests/test_operational_control_proof_matrix.py",
         "tests/test_operational_controls.py",
         "tests/test_operational_event_bus.py",
         "tests/test_operational_gap_ledger.py",
@@ -9434,7 +9468,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin T through Z; this lane reads or mutates shared canonical repository state.",
       "group": "core-t-z",
-      "input_sha256": "ea7e38c321034af7879ab2da9719b0a883a9813edcbfa35e237d43e38e373ece",
+      "input_sha256": "0d0a0b409da59a45fa7133861a11e11dcb5eba17d7f8d0fbc81a26707cec4c04",
       "inputs": [
         "builders/adapter_builder.py",
         "builders/common.py",
@@ -9502,10 +9536,10 @@
       "timeout_seconds": 600.0
     }
   ],
-  "parsed_file_count": 0,
-  "reused_file_count": 493,
+  "parsed_file_count": 1,
+  "reused_file_count": 494,
   "schema_version": "px.test-group-index/1.0",
-  "test_file_count": 190,
+  "test_file_count": 191,
   "topology_sha256": "b5b65e8880f06a175189196aa9e07463f75ee51a792e294a4e649b7a75fe03f1",
-  "tracked_python_file_count": 493
+  "tracked_python_file_count": 495
 }

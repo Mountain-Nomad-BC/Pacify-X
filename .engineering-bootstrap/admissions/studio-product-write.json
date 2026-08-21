@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007341",
+  "effect": "write",
+  "scope": [
+    "repository:agent-skill-workflow-studio-product-repair",
+    "tests:studio-authoring-runtime-lifecycle-regressions",
+    "evidence:studio-product-roundtrip-receipts"
+  ],
+  "authority": "The user explicitly required implementation of everything necessary for the Studios to operate as intended.",
+  "expected_effect": "Replace catalog-first or cosmetic Studio behavior with editable, persistent, reopenable, executable product workflows and truthful runtime semantics.",
+  "rollback": "Source edits remain Git-reversible; new Studio test artifacts are project-owned and no user-authored source revision is overwritten.",
+  "evidence": [{"reference": "AGENTS.md", "artifact_sha256": "f9763711bb3503acb4ac8fd09fc335f0b0ccfc543cccb0e70f37138b3b006cf6", "artifact_size": 2612, "claim": "Repository write and evidence contract."}]
+}

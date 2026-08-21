@@ -1,0 +1,21 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007337",
+  "effect": "execute",
+  "scope": [
+    "operational-walk:all-938-controls-isolated-current-source",
+    "verification:all-control-contracts-success-failure-reload-recovery",
+    "verification:governed-section-gates-and-final-certification"
+  ],
+  "authority": "The user explicitly requested that every control be walked, validated, and proven and previously authorized implementation of everything necessary; Codex retains bounded local execution authority.",
+  "expected_effect": "Exercise the authoritative control denominator in disposable targets, retain exact stage evidence, repair failures, run each affected governed section, then perform the single owned final certification sequence.",
+  "rollback": "All executed targets are PACIFY-X-owned disposable workspaces or supervised repository tests; processes are registered and reconciled, and failed evidence cannot promote a control.",
+  "evidence": [
+    {
+      "reference": "AGENTS.md",
+      "artifact_sha256": "f9763711bb3503acb4ac8fd09fc335f0b0ccfc543cccb0e70f37138b3b006cf6",
+      "artifact_size": 2612,
+      "claim": "The repository contract requires bounded startup, governed section gates, current receipts, and exactly one owned final profile before certification."
+    }
+  ]
+}

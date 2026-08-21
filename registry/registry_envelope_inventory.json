@@ -216,6 +216,15 @@
       "schema": "root schema_version plus shared registry-envelope invariant"
     },
     {
+      "builder": "scripts/build_operational_control_proof_matrix.py",
+      "collection_key": "controls",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "control_count",
+      "path": "registry/operational_control_proof_matrix.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
       "builder": "builders/last_round_assimilation_builder.py",
       "collection_key": "records",
       "consumer": "runtime/registry_envelope.py",

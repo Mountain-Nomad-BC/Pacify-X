@@ -1,6 +1,6 @@
 # Pacify-X Control Plane for VS Code
 
-Pacify-X 0.6.26 is a local-first control, coordination, and activity-observability plane for VS Code-compatible IDEs. It consumes the versioned `runtime.dashboard_api` supplied by Pacify-X, exposes complete paged catalogs, and keeps project-owned coordination, activity, and resume state in the repository so another IDE or agent can continue without relying on private editor storage.
+Pacify-X 0.6.28 is a local-first control, coordination, and activity-observability plane for VS Code-compatible IDEs. It consumes the versioned `runtime.dashboard_api` supplied by Pacify-X, exposes complete paged catalogs, and keeps project-owned coordination, activity, and resume state in the repository so another IDE or agent can continue without relying on private editor storage.
 
 No billable provider API is configured. A loud, default-off policy switch can permit separately configured providers to be evaluated, but it never creates credentials, connects, or spends money. Every proposed billable execution must still pass task/session/day cost caps, token and hardware ceilings, local-first routing, provider allowlisting, confidence, cache/reuse, and explicit-approval gates. Codex handoff uses an existing ChatGPT-authenticated Codex CLI and strips common API-key variables from bridge-owned children. Ollama support is optional, loopback-only, disabled by default, and never installed or started by the extension.
 
@@ -29,11 +29,11 @@ From this directory, install lockfile-exact dependencies, test, package, verify,
 npm ci --ignore-scripts
 npm test
 npm run package
-Get-FileHash .\dist\pacify-x-vscode-0.6.26.vsix -Algorithm SHA256
+Get-FileHash .\dist\pacify-x-vscode-0.6.28.vsix -Algorithm SHA256
 .\Install-PacifyX.ps1
 ```
 
-Or choose **Extensions: Install from VSIX...** and select `dist/pacify-x-vscode-0.6.26.vsix`. Compare its SHA-256 with `SHA256SUMS.txt` first. Reload the VS Code window after installation.
+Or choose **Extensions: Install from VSIX...** and select `dist/pacify-x-vscode-0.6.28.vsix`. Compare its SHA-256 with `SHA256SUMS.txt` first. Reload the VS Code window after installation.
 
 Open a Pacify-X workspace, or set `pacifyX.engineRoot` and `pacifyX.workspaceRoot` to bounded absolute paths. Run `python -m runtime.cli --root <engine-root> doctor --require operable`, then **Pacify-X: Open Control Plane**. If the command is unavailable after installation, run **Developer: Reload Window** and inspect **Output → Pacify-X**. The engine root must contain `runtime/dashboard_api.py`.
 

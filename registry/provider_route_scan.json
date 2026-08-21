@@ -1033,11 +1033,11 @@
       "violations": []
     },
     {
-      "bytes": 130359,
-      "cache_hint_mtime_ns": 1787269219972704700,
+      "bytes": 133314,
+      "cache_hint_mtime_ns": 1787277515354925400,
       "path": "runtime/operational_gap_ledger.py",
-      "scan_state": "reused",
-      "sha256": "27496135ce056006e6fbba27825e98df7732c506ab4e06d8ad75c6377af894d2",
+      "scan_state": "rescanned",
+      "sha256": "cbe8d6e62b2175d0a13eb98c0aa55108311a1a8fda8fe8e31b6ba201184039cb",
       "violations": []
     },
     {
@@ -1876,8 +1876,16 @@
       "bytes": 10819,
       "cache_hint_mtime_ns": 1787270864359658600,
       "path": "scripts/build_operation_health_snapshot.py",
-      "scan_state": "rescanned",
+      "scan_state": "reused",
       "sha256": "2fe36d26eb748c6a99dd78ae4754a36078b2d8e75d24f335b633029ab3244ac0",
+      "violations": []
+    },
+    {
+      "bytes": 9698,
+      "cache_hint_mtime_ns": 1787277247362063700,
+      "path": "scripts/build_operational_control_proof_matrix.py",
+      "scan_state": "rescanned",
+      "sha256": "9b207e7f568d09827a71fbcc8635ab19a27eb26fdeb0baae93e7804e44202a2f",
       "violations": []
     },
     {
@@ -1921,11 +1929,11 @@
       "violations": []
     },
     {
-      "bytes": 14057,
-      "cache_hint_mtime_ns": 1787241580506734000,
+      "bytes": 14263,
+      "cache_hint_mtime_ns": 1787283090553384300,
       "path": "scripts/build_registry_envelope_inventory.py",
-      "scan_state": "reused",
-      "sha256": "d70bca67c63fdad4c1995811e1cad35978a14d07744f3d2da0eef536eecfa53c",
+      "scan_state": "rescanned",
+      "sha256": "2e17f39fb07b52341602285c6df41d045bd0c25570425d1db9839188df7f863a",
       "violations": []
     },
     {
@@ -2356,7 +2364,7 @@
     "violation_count": 0,
     "violations": []
   },
-  "rescanned_file_count": 1,
-  "reused_file_count": 292,
+  "rescanned_file_count": 3,
+  "reused_file_count": 291,
   "schema_version": "px.provider-route-index/1.2"
 }

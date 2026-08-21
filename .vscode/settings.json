@@ -31,5 +31,10 @@
     "**/.venv*/**",
     "**/Python/**",
     "**/node_modules/**"
-  ]
+  ],
+  "pacifyX.activity.captureCommandText": true,
+  "pacifyX.contextInjectionCapTokens": 25000,
+  "pacifyX.glassIntensity": 0.55,
+  "pacifyX.guardrails.cpuCoreCeiling": 12,
+  "pacifyX.guardrails.ramCeilingMb": 24000
 }

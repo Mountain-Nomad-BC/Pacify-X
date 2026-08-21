@@ -1,0 +1,28 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007347",
+  "effect": "write",
+  "scope": [
+    "registry:provider-route-scan-refresh",
+    "registry:python-surface-ownership-refresh",
+    "registry:python-dependency-ownership-refresh",
+    "registry:effect-surface-ownership-refresh",
+    "registry:build-claims-refresh",
+    "documentation:readme-build-claim-counts",
+    "registry:artifact-reachability-refresh",
+    "registry:registry-envelope-inventory-owner-addition"
+  ],
+  "authority": "Fresh governed group receipts and focused assertion traces identify stale canonical generated registries plus one missing count-owner rule as shared blockers across validation, orchestration, integration, release, and structural checks.",
+  "expected_effect": "Run the canonical generators for provider routes, Python ownership/dependencies, effect surfaces, build claims, artifact reachability, and registry envelopes; update only the two exact README count claims and the envelope producer/row for the operational proof matrix.",
+  "rollback": "Generated outputs and the two bounded source edits remain reviewable in Git and can be reverted individually if their equality validators fail.",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/groups/derived-integrity.json",
+      "claim": "Fresh group receipt reports stale generated projection failures."
+    },
+    {
+      "reference": ".engineering-bootstrap/test-evidence/groups/core-n-s.json",
+      "claim": "Fresh core receipt shows provider-route staleness cascading into orchestration and registry consumers."
+    }
+  ]
+}

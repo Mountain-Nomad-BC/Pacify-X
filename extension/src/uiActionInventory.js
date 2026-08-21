@@ -29,6 +29,7 @@ const UI_ONLY = Object.freeze({
   resumeWorkingStudioDraft: ['draft-state', 'resume one bounded webview-local unsaved draft without host authority or persistence outside VS Code view state'],
   discardWorkingStudioDraft: ['draft-state', 'explicitly discard one retained webview-local unsaved draft and open a clean editor'],
   openStudioFromCatalog: ['modal', 'open a supported existing agent or workflow record as a new immutable Studio revision'],
+  importCatalogDefinition: ['draft-state', 'adapt one external agent or workflow definition into an independent editable Studio candidate without predecessor lineage or inherited authority'],
   agentAddTopologyNode: ['draft-state', 'add one optional typed AgentSpec node to the unsaved visual candidate'],
   agentRemoveTopologyNode: ['draft-state', 'remove one optional typed AgentSpec node from the unsaved visual candidate'],
   acceptStudioVersionSuggestion: ['draft-state', 'apply the request-bound host allocation suggestion to the unsaved candidate without saving it'],

@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000007347",
+  "effect": "execute",
+  "scope": ["diagnosis:focused-failing-nodes-from-full-prerequisite-groups"],
+  "authority": "The user requested complete repair and proof, and the governed prerequisite campaign produced fresh failing receipts whose aggregate nodes require exact assertion traces before repairs can be scoped safely.",
+  "expected_effect": "Execute only the reported fast failing test nodes with verbose assertion output to identify canonical stale generators and genuine runtime defects; no certification claim is produced.",
+  "rollback": "Diagnostic pytest workspaces are temporary and non-authoritative; no source mutation is performed by this admission.",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/groups",
+      "claim": "Fresh group receipts enumerate exact failing test nodes after the complete stale-group campaign."
+    }
+  ]
+}
