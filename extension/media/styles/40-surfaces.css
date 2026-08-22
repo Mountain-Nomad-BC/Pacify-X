@@ -138,15 +138,15 @@
   .governed-action-grid article { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 7px 12px; padding: 14px; border: 1px solid var(--line); border-radius: 9px; background: rgba(0, 0, 0, .14); }
   .governed-action-grid article > p, .governed-action-grid article > code, .governed-action-grid article > ul { grid-column: 1 / -1; margin: 0; }
   .governed-action-grid code { overflow-wrap: anywhere; }
-  .experience-pipeline { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr) 18px) minmax(0, 1fr); align-items: stretch; gap: 6px; overflow-x: auto; padding: 4px 0 10px; }
-  .experience-pipeline article { min-width: 142px; display: grid; align-content: start; gap: 6px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: rgba(3, 13, 22, .7); }
+  .experience-pipeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); align-items: stretch; gap: 8px; padding: 4px 0 10px; }
+  .experience-pipeline article { min-width: 0; display: grid; align-content: start; gap: 6px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: rgba(3, 13, 22, .7); }
   .experience-pipeline article.implemented { border-color: rgba(57, 217, 138, .45); }
   .experience-pipeline article.partial { border-color: rgba(57, 216, 255, .45); }
   .experience-pipeline article.blocked { border-color: rgba(255, 176, 64, .42); }
   .experience-pipeline article b { color: var(--silver); font-size: 10px; }
   .experience-pipeline article span { color: var(--text); }
   .experience-pipeline article small { color: var(--faint); }
-  .experience-pipeline > i { align-self: center; color: var(--cyan); font-style: normal; text-align: center; }
+  .experience-pipeline > i { display: none; }
   .learning-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 12px 0; padding: 12px; border: 1px solid rgba(57, 216, 255, .2); border-radius: 8px; background: rgba(4, 15, 24, .66); }
   .learning-toolbar b,
   .learning-toolbar span { display: block; }

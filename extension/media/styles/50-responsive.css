@@ -25,6 +25,7 @@
   }
 
   @media (max-width: 760px) {
+    .surface-knowledgeCore .experience-pipeline { grid-template-columns: minmax(0, 1fr); }
     .surface-knowledgeCore .learning-toolbar { align-items: stretch; flex-direction: column; }
     .surface-knowledgeCore .learning-record-list { grid-template-columns: minmax(0, 1fr); }
     .control-modal .studio-topology article { grid-template-columns: 1fr; }
@@ -64,6 +65,8 @@
   .surface-dashboard .metric-card > .inspect-cue { white-space: nowrap; }
 
   @media (max-width: 520px) {
+    .memory-pagination { grid-template-columns: 1fr 1fr; }
+    .memory-pagination span { grid-column: 1 / -1; grid-row: 1; }
     .cockpit-header { grid-template-columns: minmax(0, 1fr) 40px; }
     .control-button { display: none; }
     .cockpit-actions { grid-template-columns: 40px; }

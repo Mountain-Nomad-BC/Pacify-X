@@ -1,0 +1,50 @@
+{
+  "record": {
+    "bindings": [
+      {
+        "binding_id": "binding:pacify-x-starter",
+        "capability_id": "capability:identity",
+        "capability_version": "1.0.0",
+        "cost_policy": "non-billable",
+        "credential_namespace": null,
+        "effect_grant_ids": [
+          "grant:pacify-x-starter"
+        ],
+        "egress_policy": "deny",
+        "evidence_refs": [
+          "receipt:studio-setup"
+        ],
+        "state": "admitted",
+        "subject_id": "agent:pacify-x-starter",
+        "subject_kind": "agent"
+      }
+    ],
+    "builder_domain": "px-standard",
+    "executor_adapters": {},
+    "grants": [
+      {
+        "approved_by": "human:vscode-local-user",
+        "effects": [
+          "read"
+        ],
+        "evidence_refs": [
+          "receipt:studio-setup"
+        ],
+        "expires_utc": null,
+        "grant_id": "grant:pacify-x-starter",
+        "scope_roots": [
+          "workspace:current"
+        ],
+        "state": "admitted",
+        "subject_id": "agent:pacify-x-starter"
+      }
+    ],
+    "kind": "agent",
+    "run_input_contract": [],
+    "runtime_input_values_stored": false,
+    "schema_version": "px.studio-authority-definition/1.0",
+    "subject_id": "agent:pacify-x-starter",
+    "version": "1.0.4"
+  },
+  "sha256": "58d97d6d13951248ef47f515d0c91eaf6223b4387b150a0dad1caca238f0794f"
+}

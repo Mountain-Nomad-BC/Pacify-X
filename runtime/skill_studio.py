@@ -809,6 +809,8 @@ class SkillStudio:
         files = {str(row["path"]) for row in current}
         declared = set(package.resources + package.contracts + package.tests)
         parse_errors: list[str] = []
+        capability: dict[str, object] | None = None
+        skill_yaml: dict[str, object] | None = None
         try:
             capability = json.loads(
                 (payload / "capability.json").read_text(encoding="utf-8")
@@ -825,6 +827,63 @@ class SkillStudio:
                 raise ValueError("skill YAML is not an object")
         except Exception as error:
             parse_errors.append(f"skill.yaml:{type(error).__name__}")
+        canonical_name = _canonical_name(package.skill_id)
+        native_manifest_valid = (
+            capability is not None
+            and skill_yaml is not None
+            and capability == skill_yaml
+            and capability.get("id") == canonical_name
+            and capability.get("version") == package.version
+            and capability.get("domain") == "px-standard"
+        )
+        if not native_manifest_valid:
+            parse_errors.append("native-manifest:mismatch")
+        contract_manifest_valid = False
+        try:
+            contract_manifest = json.loads(
+                (payload / "contracts/manifest.json").read_text(encoding="utf-8")
+            )
+            contract_manifest_valid = (
+                isinstance(contract_manifest, dict)
+                and contract_manifest.get("schema_version")
+                == "px.skill-contract-links/1.0"
+                and isinstance(contract_manifest.get("contracts"), list)
+            )
+        except Exception as error:
+            parse_errors.append(f"contracts/manifest.json:{type(error).__name__}")
+        resource_index_valid = False
+        try:
+            resource_index = json.loads(
+                (payload / "resources/index.json").read_text(encoding="utf-8")
+            )
+            indexed_resources = resource_index.get("resources")
+            resource_index_valid = (
+                resource_index.get("schema_version") == "px.skill-resources/1.0"
+                and isinstance(indexed_resources, list)
+                and all(
+                    isinstance(relative, str)
+                    and relative in files
+                    and not Path(relative).is_absolute()
+                    and ".." not in Path(relative).parts
+                    for relative in indexed_resources
+                )
+            )
+        except Exception as error:
+            parse_errors.append(f"resources/index.json:{type(error).__name__}")
+        openai_interface_valid = False
+        try:
+            openai_interface = yaml.safe_load(
+                (payload / "agents/openai.yaml").read_text(encoding="utf-8")
+            )
+            interface = openai_interface.get("interface")
+            openai_interface_valid = (
+                isinstance(openai_interface, dict)
+                and isinstance(interface, dict)
+                and bool(str(interface.get("display_name") or "").strip())
+                and bool(str(interface.get("short_description") or "").strip())
+            )
+        except Exception as error:
+            parse_errors.append(f"agents/openai.yaml:{type(error).__name__}")
         behavioral_tests = []
         for test_path in package.tests:
             try:
@@ -896,6 +955,10 @@ class SkillStudio:
             "native_manifest_present": {"capability.json", "skill.yaml"}.issubset(
                 files
             ),
+            "native_manifest_valid": native_manifest_valid,
+            "native_contract_manifest_valid": contract_manifest_valid,
+            "native_resource_index_valid": resource_index_valid,
+            "openai_interface_valid": openai_interface_valid,
             "declared_resources_present": declared.issubset(files),
             "schemas_parse": not parse_errors,
             "tests_executed": bool(behavioral_tests)
@@ -977,20 +1040,65 @@ class SkillStudio:
         """Calculate every projection from an unpublished canonical after-tree."""
         updates: dict[Path, bytes] = {}
         name = _canonical_name(package.skill_id)
+        body_sha = hashlib.sha256((staged_target / "SKILL.md").read_bytes()).hexdigest()
         package_record_path = self.root / "registry" / "skill_packages" / f"{name}.json"
         if package_record_path.parent.exists():
+            provenance = dict(package.provenance)
+            clean_room = str(provenance.pop("clean_room", "false")).casefold() == "true"
+            provenance.setdefault("type", "skill_studio_admitted_source")
+            provenance.setdefault(
+                "basis",
+                [str(package.provenance.get("source") or "authenticated Skill Studio intake")],
+            )
             package_record = {
                 "schema_version": "px.skill-package/1.1",
                 "id": name,
                 "version": package.version,
-                "status": "admitted",
+                "status": "active",
                 "body": f".px/skills/{name}/SKILL.md",
+                "body_sha256": body_sha,
+                "references": [
+                    f".px/skills/{name}/{relative}"
+                    for relative in package.resources
+                    if relative != "resources/index.json"
+                ],
+                "capability_tags": list(package.triggers),
+                "effects": sorted(set(package.permissions)),
+                "provenance": provenance,
+                "clean_room": clean_room,
+                "tests": f".px/skills/{name}/{package.tests[0]}",
+                "evidence": f".px/skills/{name}/{package.tests[0]}",
+                "validation_freshness": "current",
+                "context_budget_bytes": max(
+                    8192, (staged_target / "SKILL.md").stat().st_size
+                ),
                 "manifest": asdict(package),
                 "tree_sha256": _tree_attestation(staged_target)[1],
                 "preserved_original": preserved_original,
             }
             updates[package_record_path] = (
                 json.dumps(package_record, indent=2, sort_keys=True) + "\n"
+            ).encode("utf-8")
+        admission_path = self.root / "registry" / "admission_ledger.json"
+        if admission_path.is_file():
+            admission = json.loads(admission_path.read_text(encoding="utf-8"))
+            records = [
+                row for row in admission.get("records", []) if row.get("id") != name
+            ]
+            records.append(
+                {
+                    "effects": sorted(set(package.permissions)),
+                    "id": name,
+                    "implementation": "skill_studio",
+                    "notes": "Promoted through the authenticated Pacify-X Skill Studio lifecycle.",
+                    "source_disposition": "adopt",
+                    "status": "active",
+                    "validation": {"failed": 0, "passed": 1},
+                }
+            )
+            admission["records"] = sorted(records, key=lambda row: str(row.get("id", "")))
+            updates[admission_path] = (
+                json.dumps(admission, indent=2, sort_keys=True) + "\n"
             ).encode("utf-8")
         catalog_path = self.root / "registry" / "skill_catalog.toml"
         if catalog_path.is_file():
@@ -1040,7 +1148,6 @@ class SkillStudio:
             index = json.loads(index_path.read_text(encoding="utf-8"))
             validate_skill_index(index, require_derived=True)
             records = [row for row in index.get("records", []) if row.get("id") != name]
-            body_sha = hashlib.sha256((staged_target / "SKILL.md").read_bytes()).hexdigest()
             records.append(
                 {
                     "id": name,
@@ -1103,6 +1210,34 @@ class SkillStudio:
                     f"package-only={sorted(package_ids - record_ids)} "
                     f"index-only={sorted(record_ids - package_ids)}"
                 )
+        specialty_path = self.root / "registry" / "specialty_map.json"
+        if specialty_path.is_file():
+            specialty = json.loads(specialty_path.read_text(encoding="utf-8"))
+            candidates = {
+                str(item.get("id")): item
+                for category in specialty.get("categories", ())
+                for item in category.get("specialties", ())
+            }
+            if name in candidates:
+                candidates[name]["state"] = "active"
+                candidates[name]["activation"] = "registry"
+            framework_only = {
+                str(item) for item in specialty.get("framework_only_active", ())
+            }
+            if name not in candidates:
+                framework_only.add(name)
+            specialty["framework_only_active"] = sorted(framework_only)
+            specialty["candidate_count"] = len(candidates)
+            specialty["active_candidate_count"] = sum(
+                item.get("state") == "active" for item in candidates.values()
+            )
+            specialty["deferred_candidate_count"] = sum(
+                item.get("state") == "mapped_deferred"
+                for item in candidates.values()
+            )
+            updates[specialty_path] = (
+                json.dumps(specialty, indent=2, sort_keys=True) + "\n"
+            ).encode("utf-8")
         pyproject = self.root / "pyproject.toml"
         if pyproject.is_file():
             from scripts.migration.sync_skill_packaging import render

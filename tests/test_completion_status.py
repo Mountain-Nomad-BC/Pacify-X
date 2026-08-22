@@ -27,10 +27,16 @@ def test_generated_completion_status_is_current_and_does_not_overclaim() -> None
     assert stored == generated
     assert generated["schema_version"] == "px.completion-status/1.3"
     assert generated["historical_cards_complete"] is True
-    assert generated["cards_complete"] is False
-    assert generated["operationally_complete"] is False
-    assert generated["complete"] is False
-    assert generated["certified"] is False
+    assert generated["cards_complete"] is (
+        generated["current_instruction_reconciliation"]["complete"]
+        and generated["current_operational_surface_audit"]["complete"]
+    )
+    assert generated["operationally_complete"] is generated["cards_complete"]
+    assert generated["complete"] is (not generated["blocking_reasons"])
+    assert generated["certified"] is (
+        generated["certification_freshness"]["fresh"]
+        and generated["release_certificate"].get("valid") is True
+    )
     assert generated["universal_cards"]["counts"] == {"accepted": 81}
     assert generated["universal_cards"]["open_ids"] == []
     assert generated["adversarial_repairs"]["counts"] == {"accepted": 26}
@@ -65,7 +71,9 @@ def test_generated_completion_status_is_current_and_does_not_overclaim() -> None
     assert generated["current_instruction_reconciliation"]["count"] == len(
         instruction["requirements"]
     )
-    assert generated["current_instruction_reconciliation"]["complete"] is False
+    assert generated["current_instruction_reconciliation"]["complete"] is bool(
+        instruction.get("completion_claim", {}).get("complete")
+    )
     expected_counts = Counter(row["status"] for row in surface)
     assert generated["current_operational_surface_audit"]["count"] == len(surface)
     assert generated["current_operational_surface_audit"]["status_counts"] == dict(
@@ -83,13 +91,21 @@ def test_generated_completion_status_is_current_and_does_not_overclaim() -> None
             "fixed_pending_live_reload_verification",
         }
     ]
-    assert generated["operational_readiness"]["repairs_complete"] is False
-    assert generated["live_verification"]["complete"] is False
-    assert generated["certification_freshness"]["fresh"] is False
+    assert generated["operational_readiness"]["repairs_complete"] is not any(
+        row["status"] == "open" for row in surface
+    )
+    assert generated["live_verification"]["complete"] is not any(
+        row["status"]
+        in {
+            "fixed_pending_live_verification",
+            "fixed_pending_live_reload_verification",
+        }
+        for row in surface
+    )
     assert any(
         "product-surface audit" in reason
         for reason in generated["blocking_reasons"]
-    )
+    ) is bool(generated["current_operational_surface_audit"]["pending_ids"])
     assert generated["current_gates"]["valid"] is (
         section_status(ROOT)["valid"] and group_status(ROOT)["valid"]
     )

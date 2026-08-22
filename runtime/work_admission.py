@@ -22,7 +22,7 @@ T = TypeVar("T")
 SCHEMA = "px.runtime-work-plane/1.0"
 POOL_LIMITS = {"interactive": 2, "light": 2, "heavy": 1, "validation": 1}
 PRODUCER_CATALOG = (
-    {"id": "dashboard.snapshot", "class": "dynamic-read", "admission": "legacy-direct"},
+    {"id": "dashboard.snapshot", "class": "dynamic-read", "admission": "runtime-work-plane"},
     {"id": "dashboard.hardware", "class": "sensor", "admission": "runtime-work-plane"},
     {"id": "dashboard.host-startup", "class": "host-log-sensor", "admission": "runtime-work-plane"},
     {"id": "execution-placement", "class": "decision", "admission": "runtime-work-plane"},

@@ -1,0 +1,45 @@
+{
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "7dd87c64b2de07a19f4652396f3d4cfa42b6154be34969e84f90c0ab4d0f4794",
+    "payload_sha256": "9cd86c9322ac270beedafdeca166f92771d7c0767d426354b12ab01c11e5e1ef",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "behavioral_tests": [
+    {
+      "executed": true,
+      "passed": true,
+      "path": "tests/contract.json",
+      "runner": "trusted_declarative_runner"
+    }
+  ],
+  "checks": {
+    "all_content_scannable": true,
+    "declared_resources_present": true,
+    "manifest_current": true,
+    "native_manifest_present": true,
+    "preserved_original_current": true,
+    "schemas_parse": true,
+    "script_effects_declared": true,
+    "secret_scan_clear": true,
+    "skill_body_present": true,
+    "tests_executed": true,
+    "tree_current": true
+  },
+  "independently_derived": true,
+  "manifest_sha256": "42de31614bbc1cd4078aae26437ab63fecc5628ede267b53d892bfebe14e5107",
+  "nonce": "35faa32523b94e61bbaf786ee846c488",
+  "parse_errors": [],
+  "passed": true,
+  "preserved_original": null,
+  "preserved_original_errors": [],
+  "scan_errors": [],
+  "schema_version": "px.skill-validation-receipt/1.1",
+  "script_effect_findings": [],
+  "secret_findings": [],
+  "skill_id": "pacify-x-studio-operator",
+  "source_tree_sha256": "c3deb5d8885c2f24c37fa4329b7f47bb8ecab2e2796deb1f19b7b7db38d6fd90",
+  "validated_utc": "2026-08-22T04:56:18.507Z",
+  "version": "1.0.0"
+}

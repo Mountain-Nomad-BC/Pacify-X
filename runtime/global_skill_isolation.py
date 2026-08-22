@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -27,6 +28,112 @@ def _write_json(path: Path, payload: object) -> None:
         json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
     os.replace(prepared, path)
+
+
+def _write_bytes(path: Path, payload: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    prepared = path.with_name(f".{path.name}.{uuid4().hex}.prepared")
+    prepared.write_bytes(payload)
+    os.replace(prepared, path)
+
+
+def _installer_manifest_path(live: Path) -> Path:
+    return live.parent / ".skill-lock.json"
+
+
+def _isolate_installer_manifest(
+    control: Path,
+    live: Path,
+    operation_id: str,
+) -> dict[str, object]:
+    """Retain installer intent so an updater cannot repopulate an isolated tree."""
+    manifest = _installer_manifest_path(live)
+    if not manifest.is_file():
+        return {"status": "absent", "source": manifest.as_posix()}
+    original = manifest.read_bytes()
+    try:
+        parsed = json.loads(original)
+    except json.JSONDecodeError as error:
+        raise ValueError("global skill installer manifest is invalid JSON") from error
+    if not isinstance(parsed, dict) or not isinstance(parsed.get("skills", {}), dict):
+        raise ValueError("global skill installer manifest contract is invalid")
+    skills = dict(parsed.get("skills", {}))
+    if not skills:
+        return {
+            "status": "already-empty",
+            "source": manifest.as_posix(),
+            "skill_count": 0,
+        }
+    custody = control / "installer-metadata" / f"{operation_id}.skill-lock.json"
+    custody.parent.mkdir(parents=True, exist_ok=True)
+    if custody.exists() and custody.read_bytes() != original:
+        raise RuntimeError("global skill installer custody already exists with different bytes")
+    if not custody.exists():
+        prepared = custody.with_name(f".{custody.name}.{uuid4().hex}.prepared")
+        prepared.write_bytes(original)
+        os.replace(prepared, custody)
+    digest = hashlib.sha256(original).hexdigest()
+    if hashlib.sha256(custody.read_bytes()).hexdigest() != digest:
+        raise RuntimeError("global skill installer custody differs from the live manifest")
+    _write_json(
+        manifest,
+        {
+            "version": parsed.get("version", 3),
+            "skills": {},
+            "dismissed": parsed.get("dismissed", {}),
+        },
+    )
+    replacement = json.loads(manifest.read_text(encoding="utf-8"))
+    if replacement.get("skills") != {}:
+        raise RuntimeError("global skill installer manifest was not neutralized")
+    return {
+        "status": "isolated",
+        "source": manifest.as_posix(),
+        "custody": custody.as_posix(),
+        "sha256": digest,
+        "skill_count": len(skills),
+        "retention": "permanent; exact original bytes retained for explicit restore",
+    }
+
+
+def _restore_installer_manifest(journal: dict[str, Any], live: Path) -> dict[str, object]:
+    records = [
+        *(row.get("installer_manifest", {}) for row in reversed(journal.get("reconciliations", ())) if isinstance(row, dict)),
+        journal.get("installer_manifest", {}),
+    ]
+    retained = next(
+        (
+            row
+            for row in records
+            if isinstance(row, dict)
+            and row.get("status") == "isolated"
+            and row.get("custody")
+        ),
+        None,
+    )
+    if retained is None:
+        return {"status": "no-retained-installer-manifest"}
+    custody = Path(str(retained["custody"])).resolve()
+    if not custody.is_file():
+        raise RuntimeError("retained global skill installer manifest is absent")
+    original = custody.read_bytes()
+    if hashlib.sha256(original).hexdigest() != retained.get("sha256"):
+        raise RuntimeError("retained global skill installer manifest hash changed")
+    manifest = _installer_manifest_path(live)
+    if manifest.exists():
+        try:
+            current = json.loads(manifest.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as error:
+            raise RuntimeError("current global skill installer manifest is not replaceable") from error
+        if not isinstance(current, dict) or current.get("skills") != {}:
+            raise RuntimeError("current global skill installer manifest contains live skill entries")
+    _write_bytes(manifest, original)
+    return {
+        "status": "restored",
+        "source": manifest.as_posix(),
+        "custody": custody.as_posix(),
+        "sha256": retained["sha256"],
+    }
 
 
 def _snapshot(source: Path, identity: str) -> dict[str, Any]:
@@ -210,6 +317,12 @@ def _reconcile_reappeared_skills(
         pending["state"] = "source-relocated"
         _write_json(journal_path, journal)
     if pending["state"] == "source-relocated":
+        pending["installer_manifest"] = _isolate_installer_manifest(
+            control, live, str(pending["operation_id"])
+        )
+        pending["state"] = "installer-manifest-isolated"
+        _write_json(journal_path, journal)
+    if pending["state"] == "installer-manifest-isolated":
         if not destination.is_dir() or tree_hash(inventory_tree(destination)) != expected:
             raise RuntimeError("reconciled global skill custody differs from source")
         if live.exists() and (not live.is_dir() or any(live.iterdir())):
@@ -299,6 +412,7 @@ def preview_global_skill_isolation(
                     "verify two matching snapshots and an immediate pre-move snapshot",
                     "verify or create a permanent byte-identical backup",
                     "move only the reappeared host-visible tree into a new recoverable generation",
+                    "retain the exact installer manifest and clear its active skill entries",
                     "recreate the empty host discovery facade",
                 ],
             }
@@ -363,6 +477,7 @@ def preview_global_skill_isolation(
             "verify or create a byte-identical permanent PX backup",
             "take an immediate pre-move full-tree equality snapshot",
             "move the user-global skills tree into recoverable .px_canonical_skills custody",
+            "retain the exact installer manifest and clear its active skill entries",
             "recreate an empty .agents/skills directory so Codex no longer enumerates the moved bodies",
         ],
         "rollback": "explicit restore verifies custody and moves the original tree back only when the live source is absent or empty",
@@ -471,6 +586,12 @@ def isolate_global_skills(
             if _stop_after_state == "source-relocated":
                 raise RuntimeError("injected isolation stop after source-relocated")
         if journal["state"] == "source-relocated":
+            journal["installer_manifest"] = _isolate_installer_manifest(
+                control, live, str(journal["operation_id"])
+            )
+            journal["state"] = "installer-manifest-isolated"
+            _write_json(journal_path, journal)
+        if journal["state"] == "installer-manifest-isolated":
             if tree_hash(inventory_tree(destination)) != expected:
                 raise RuntimeError("relocated global skill tree differs from source")
             if live.exists():
@@ -515,7 +636,7 @@ def restore_global_skills(
         "source": source.as_posix(),
         "relocated_original": destination.as_posix(),
         "tree_sha256": expected,
-        "effect": "move the verified relocated original back to the global Codex discovery path",
+        "effect": "move the verified relocated original back to the global Codex discovery path and restore its exact retained installer manifest",
     }
     if not apply:
         return preview
@@ -525,7 +646,9 @@ def restore_global_skills(
     os.replace(destination, source)
     if tree_hash(inventory_tree(source)) != expected:
         raise RuntimeError("restored global skill tree failed equality verification")
+    installer_manifest = _restore_installer_manifest(journal, source)
     journal["state"] = "restored"
     journal["restored_at"] = _now()
+    journal["installer_manifest_restore"] = installer_manifest
     _write_json(journal_path, journal)
     return {**preview, "restored": True, "journal": journal}

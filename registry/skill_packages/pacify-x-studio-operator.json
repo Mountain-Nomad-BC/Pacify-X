@@ -1,0 +1,68 @@
+{
+  "body": ".px/skills/pacify-x-studio-operator/SKILL.md",
+  "body_sha256": "26c890b06a5582f6b6a8c1ad56130b67aee6fa915fbe53f93bb14ee90c113479",
+  "capability_tags": [
+    "explicit Pacify-X Studio inspection"
+  ],
+  "clean_room": true,
+  "context_budget_bytes": 8192,
+  "effects": [
+    "read_local"
+  ],
+  "evidence": ".px/skills/pacify-x-studio-operator/tests/validation.json",
+  "id": "pacify-x-studio-operator",
+  "manifest": {
+    "contracts": [
+      "contracts/manifest.json",
+      "contracts/input.schema.json"
+    ],
+    "effects": [
+      "read_local"
+    ],
+    "lifecycle": "draft",
+    "non_triggers": [
+      "mutation",
+      "deployment",
+      "credentialed operation"
+    ],
+    "owner": "human:vscode-local-user",
+    "permissions": [
+      "read_local"
+    ],
+    "provenance": {
+      "basis": "authenticated project-owned intake",
+      "clean_room": "true",
+      "license": "project-owned",
+      "source": "project-owned Skill Studio intake",
+      "type": "project_owned_skill_studio"
+    },
+    "resources": [
+      "resources/index.json",
+      "resources/README.md"
+    ],
+    "skill_id": "pacify-x-studio-operator",
+    "tests": [
+      "tests/validation.json"
+    ],
+    "triggers": [
+      "explicit Pacify-X Studio inspection"
+    ],
+    "version": "1.0.2"
+  },
+  "preserved_original": null,
+  "provenance": {
+    "basis": "authenticated project-owned intake",
+    "license": "project-owned",
+    "source": "project-owned Skill Studio intake",
+    "type": "project_owned_skill_studio"
+  },
+  "references": [
+    ".px/skills/pacify-x-studio-operator/resources/README.md"
+  ],
+  "schema_version": "px.skill-package/1.1",
+  "status": "active",
+  "tests": ".px/skills/pacify-x-studio-operator/tests/validation.json",
+  "tree_sha256": "6d627e482947e4075d508649a71c33ee45fd485f54918f58fbff511861cbca80",
+  "validation_freshness": "current",
+  "version": "1.0.2"
+}

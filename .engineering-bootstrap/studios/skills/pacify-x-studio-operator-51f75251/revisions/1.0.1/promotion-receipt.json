@@ -1,0 +1,36 @@
+{
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "7a6681fe02a3ea7981600568ad243ad67cf7d131e6bc661b703913a9fce96e08",
+    "payload_sha256": "fa5458cb356221aa5105d128fac02a4dbadb236699deb74d6c569f3ccad51617",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "backup_relative": ".px/preserved-skills/pre-promotion/pacify-x-studio-operator-51f75251/c3deb5d8885c2f24c37fa4329b7f47bb8ecab2e2796deb1f19b7b7db38d6fd90",
+  "lifecycle_transaction_relative": ".engineering-bootstrap/studios/skills/lifecycle-transactions/promotion-pacify-x-studio-operator-51f75251-658c054ad82c464eb45ad41b4a26db20",
+  "nonce": "c1bb7238623d477ab2369c038a2d801f",
+  "preserved_original": null,
+  "projection_after_sha256": {
+    ".px/skill-index.json": "7cdb2c7d8070126860c7499a98194458537b8316a2450bf91e25aeae7fa2c212",
+    "pyproject.toml": "ac7c8feb9fe78bdae0b9bbda0bd822662bf3789eb4d6b09ddd51e6a42c14a12d",
+    "registry/admission_ledger.json": "e01d29886ae5db274f9a7759eec401e407cd623f4a31b6ae8196126af98cca83",
+    "registry/skill_catalog.toml": "cf3a109cfcce55a16d5c2b0917b0cd1943df6615b93b75e518bf039995a96a1f",
+    "registry/skill_packages/pacify-x-studio-operator.json": "6d82aa537600d4b76c557f6cad8180000a31f849537b46e4bf5e13c072974e0d"
+  },
+  "projection_transaction_relative": ".engineering-bootstrap/studios/skills/lifecycle-transactions/promotion-pacify-x-studio-operator-51f75251-658c054ad82c464eb45ad41b4a26db20",
+  "projection_updates": [
+    ".px/skill-index.json",
+    "pyproject.toml",
+    "registry/admission_ledger.json",
+    "registry/skill_catalog.toml",
+    "registry/skill_packages/pacify-x-studio-operator.json"
+  ],
+  "promoted_tree_sha256": "05b9a9d92ab0b4ad978f6b39e2977c3f3dfbd82fa5f45a41a1c0c020d6e061fe",
+  "promoted_utc": "2026-08-22T11:53:15.783Z",
+  "retired_relative": ".px/preserved-skills/replaced/pacify-x-studio-operator-51f75251/2026-08-22T11-53-15.616Z-f18922b6220e4847974e101c663cdc53",
+  "rollback_available": true,
+  "schema_version": "px.skill-promotion-receipt/1.3",
+  "skill_id": "pacify-x-studio-operator",
+  "target_relative": ".px/skills/pacify-x-studio-operator",
+  "version": "1.0.1"
+}

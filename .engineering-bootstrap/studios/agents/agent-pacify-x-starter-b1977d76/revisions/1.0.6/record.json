@@ -1,0 +1,43 @@
+{
+  "record": {
+    "agent_id": "agent:pacify-x-starter",
+    "capability_binding_ids": [
+      "binding:pacify-x-starter"
+    ],
+    "effect_grant_ids": [
+      "grant:pacify-x-starter"
+    ],
+    "handoff_agent_ids": [],
+    "harness_id": "harness:px",
+    "input_schema": {
+      "additionalProperties": true,
+      "type": "object"
+    },
+    "instruction_sha256": "41889b551b8288f88d82a271d60c038f5457aae0fa4b95ab2c49ea218b076cf0",
+    "lifecycle": "draft",
+    "memory_binding_ids": [],
+    "model": {
+      "family": "px-bounded-worker",
+      "max_output_tokens": 1024,
+      "model_id": "px-bounded-worker",
+      "provider": "deterministic",
+      "temperature": 0.0,
+      "vendor": "",
+      "version": ""
+    },
+    "output_schema": {
+      "additionalProperties": true,
+      "type": "object"
+    },
+    "owner": "human:vscode-local-user",
+    "project_id": "project:current",
+    "required_tests": [
+      "identity",
+      "sandbox"
+    ],
+    "tool_binding_ids": [],
+    "version": "1.0.6"
+  },
+  "schema_version": "px.agentspec/1.0",
+  "sha256": "88921d084b282622539b42bdd08ef30f66b46503c45f6f76a8ba2e1aa98263ee"
+}

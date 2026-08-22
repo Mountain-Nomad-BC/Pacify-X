@@ -1,0 +1,298 @@
+{
+  "id": "ms-vscode-remote.remote-ssh",
+  "name": "Remote - SSH",
+  "version": "0.123.0",
+  "publisher": "ms-vscode-remote",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [
+    "ui"
+  ],
+  "contribution_points": [
+    "chatParticipants",
+    "commands",
+    "configuration",
+    "menus",
+    "remoteHelp",
+    "resourceLabelFormatters"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:chatParticipants",
+      "kind": "chatParticipants",
+      "provider": "ms-vscode-remote.remote-ssh",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-vscode-remote.remote-ssh",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-vscode-remote.remote-ssh",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-vscode-remote.remote-ssh",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:remoteHelp",
+      "kind": "remoteHelp",
+      "provider": "ms-vscode-remote.remote-ssh",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:resourceLabelFormatters",
+      "kind": "resourceLabelFormatters",
+      "provider": "ms-vscode-remote.remote-ssh",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "opensshremotes.addNewSshHost",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.addNewSshHost', ...args)",
+      "title": "Add New SSH Host...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.cleanCurrentRemoteServer",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.cleanCurrentRemoteServer', ...args)",
+      "title": "Kill Current VS Code Server",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.cleanDevBox",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.cleanDevBox', ...args)",
+      "title": "Uninstall VS Code Server from Host...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.cleanLocalServer",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.cleanLocalServer', ...args)",
+      "title": "Kill Local Connection Server For Host...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.cleanRemoteServer",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.cleanRemoteServer', ...args)",
+      "title": "Kill VS Code Server on Host...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.clearAllSessionHints",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.clearAllSessionHints', ...args)",
+      "title": "Clear previous session metadata (used for enhanced error reporting)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.remote.SSH.experimental.chat"
+    },
+    {
+      "id": "opensshremotes.getHelp",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.getHelp', ...args)",
+      "title": "Help",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.getStarted",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.getStarted', ...args)",
+      "title": "Get Started with SSH",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.openConfigFile",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.openConfigFile', ...args)",
+      "title": "Open SSH Configuration File...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.openEmptyWindow",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.openEmptyWindow', ...args)",
+      "title": "Connect to Host...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.openEmptyWindowInCurrentWindow",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.openEmptyWindowInCurrentWindow', ...args)",
+      "title": "Connect Current Window to Host...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.openEmptyWindowOnCurrentHost",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.openEmptyWindowOnCurrentHost', ...args)",
+      "title": "New Window on Active Host",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.openWebUI",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.openWebUI', ...args)",
+      "title": "Open Web UI",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.provideFeedback",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.provideFeedback', ...args)",
+      "title": "Provide Feedback",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.reportIssue",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.reportIssue', ...args)",
+      "title": "Report Issue...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.settings",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.settings', ...args)",
+      "title": "Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "opensshremotes.showLog",
+      "invocation": "vscode.commands.executeCommand('opensshremotes.showLog', ...args)",
+      "title": "Show Log",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:remote-internal.deleteSshFolderFromHistory",
+    "onCommand:remote-internal.getActiveSshRemote",
+    "onCommand:remote-internal.getConfiguredHostnames",
+    "onCommand:remote-internal.getSshFoldersHistory",
+    "onCommand:remote-internal.openRemoteSshTarget",
+    "onResolveRemoteAuthority:ssh-remote",
+    "onUri"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "ui"
+    ],
+    "workspace_trust": {
+      "supported": true
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-vscode-remote.remote-ssh",
+    "capabilities": [
+      "contribution:chatParticipants",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:menus",
+      "contribution:remoteHelp",
+      "contribution:resourceLabelFormatters"
+    ],
+    "interface": [
+      "opensshremotes.addNewSshHost",
+      "opensshremotes.cleanCurrentRemoteServer",
+      "opensshremotes.cleanDevBox",
+      "opensshremotes.cleanLocalServer",
+      "opensshremotes.cleanRemoteServer",
+      "opensshremotes.clearAllSessionHints",
+      "opensshremotes.getHelp",
+      "opensshremotes.getStarted",
+      "opensshremotes.openConfigFile",
+      "opensshremotes.openEmptyWindow",
+      "opensshremotes.openEmptyWindowInCurrentWindow",
+      "opensshremotes.openEmptyWindowOnCurrentHost",
+      "opensshremotes.openWebUI",
+      "opensshremotes.provideFeedback",
+      "opensshremotes.reportIssue",
+      "opensshremotes.settings",
+      "opensshremotes.showLog"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "ui"
+      ],
+      "workspace_trust": {
+        "supported": true
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

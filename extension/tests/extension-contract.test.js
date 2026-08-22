@@ -46,6 +46,27 @@ test('dashboard restart restoration and predecessor-bound draft recovery have li
   assert.doesNotMatch(dashboard, /studioPendingSkillPackage = null; closeModal\(true\); openStudioDraftModal\(kind, seed\)/);
 });
 
+test('Agent Studio renders the exact model version and preserves spec counts in combined validation', () => {
+  const modelSection = dashboard.match(/function agentModelSectionHtml\(draft\) \{([\s\S]*?)\n\}/)?.[1] || '';
+  assert.match(modelSection, /data-agent-model-field="version"/);
+  assert.match(modelSection, /model\.version/);
+  const combinedValidation = /const validation = \{ \.\.\.specValidation, valid: specValidation\.valid && graphValidation\.valid, issues: \[\.\.\.specValidation\.issues, \.\.\.graphValidation\.issues\] \}/g;
+  assert.equal([...dashboard.matchAll(combinedValidation)].length, 2);
+  assert.match(dashboard, /validation\.counts\?\.bindings/);
+  assert.match(dashboard, /validation\.counts\?\.grants/);
+  assert.match(dashboard, /validation\.counts\?\.tests/);
+});
+
+test('Runtime Core shows separately owned host startup milestones without inventing readiness', () => {
+  const advanced = fs.readFileSync(path.join(root, 'media', 'dashboard', '47-advanced-surfaces.js'), 'utf8');
+  assert.match(advanced, /Host startup attribution/);
+  assert.match(advanced, /runtime\.host_startup/);
+  assert.match(advanced, /CODEX ACTIVATE → ROUTES/);
+  assert.match(advanced, /existing-thread marker; not first tool/);
+  assert.match(advanced, /PX CAUSAL COST/);
+  assert.match(dashboard, /startup: runtime\.host_startup\?\.milestones/);
+});
+
 test('preserved-original skill provenance is host-attested and allocation-bound', () => {
   assert.match(extension, /const declaredBackup = String\(details\.backup/);
   assert.match(extension, /readSkillPackage\(bridge\(\)\.engineRoot, declaredBackup, \{ scope: 'engine' \}\)/);
@@ -66,15 +87,19 @@ test('declares exactly sixteen primary and two governed advanced dashboard surfa
   assert.match(dashboard, /advancedVisible && state\.advancedOpen/);
 });
 
-test('0.6.29 surfaces operational Studio setup, interactive graphs, JSON inspectors, telemetry, plugins, memory and activity observability, readiness, agent models, and the complete logo', () => {
+test('0.6.49 surfaces operational Studio setup, interactive graphs, JSON inspectors, telemetry, plugins, memory and activity observability, readiness, agent models, and the complete logo', () => {
   const surfaceStyles = fs.readFileSync(path.join(root, 'media', 'styles', '40-surfaces.css'), 'utf8');
-  assert.equal(pkg.version, '0.6.29');
+  assert.equal(pkg.version, '0.6.49');
   assert.ok(pkg.activationEvents.includes('onCommand:pacifyX.setupStudio'));
   assert.ok(pkg.activationEvents.includes('onUri'));
   assert.ok(pkg.contributes.commands.some(item => item.command === 'pacifyX.setupStudio'));
   assert.match(extension, /setupStudio\(bridge\(\)/);
   assert.match(dashboard, /studioSetupResult/);
+  assert.match(extension, /case 'setActivityPaused':[\s\S]*acknowledgeHostAction\('completed'[\s\S]*publishSnapshot\(true, dashboardPanel\.webview\)/);
   assert.match(operationalSurfaces, /agents_runnable_revisions/);
+  assert.match(operationalSurfaces, /RUNNABLE REVISIONS/);
+  assert.match(operationalSurfaces, /DURABLE RUNS/);
+  assert.doesNotMatch(operationalSurfaces, /RUNNABLE \/ RUNS/);
   assert.match(extension, /px-shield-128\.png/);
   assert.doesNotMatch(extension, /px-shield-mark-tight\.png/);
   assert.match(dashboard, /Human readable[\s\S]*Machine readable/);
@@ -85,6 +110,8 @@ test('0.6.29 surfaces operational Studio setup, interactive graphs, JSON inspect
   assert.match(dashboard, /exceeded its 12-second bound/);
   assert.match(graphSurface, /relationship-inspector/);
   assert.match(graphSurface, /Selected record and readable relationships/);
+  assert.match(graphSurface, /data-action="graphLoadAll"/);
+  assert.match(dashboard, /action === 'graphLoadAll'/);
   for (const token of ['graphZoomIn', 'graphZoomOut', 'graphFit', 'graphReset', 'graphToggleInspector', 'graphLayout', 'pointerdown', 'pointermove']) assert.match(dashboard, new RegExp(token));
   assert.match(graphSurface, /Ctrl\+wheel or/);
   assert.match(`${coreSurfaces}\n${fs.readFileSync(path.join(root, 'media', 'dashboard', '47-advanced-surfaces.js'), 'utf8')}`, /Thermals & sensors/);
@@ -103,12 +130,28 @@ test('0.6.29 surfaces operational Studio setup, interactive graphs, JSON inspect
   assert.match(observabilitySurfaces, /Canonical memory vault/);
   assert.match(observabilitySurfaces, /Canonical record browser/);
   assert.match(observabilitySurfaces, /configureCanonicalMemory/);
+  assert.match(observabilitySurfaces, /disconnectCanonicalMemory/);
+  assert.match(extension, /case 'configureCanonicalMemory'[\s\S]*ownedReversibleApproval[\s\S]*px-owned-memory-profile/);
+  assert.match(extension, /case 'disconnectCanonicalMemory'[\s\S]*No canonical workspace or project files will be moved or deleted[\s\S]*Detach memory/);
+  assert.match(extension, /disconnectCanonicalMemory'[\s\S]*update\('workspaceRoot', ''[\s\S]*restoredWorkspaceRoot/);
   assert.match(css, /\.memory-record/);
   assert.match(observabilitySurfaces, /METADATA-ONLY OBSERVABILITY/);
   assert.match(observabilitySurfaces, /inspectActivityEvent/);
   assert.match(css, /\.activity-event/);
   const observabilityWiring = `${extension}\n${activityObservability}`;
   for (const token of ['onDidChangeTextDocument', 'createFileSystemWatcher', 'onDidOpenTerminal', 'onDidStartTask', 'onDidStartDebugSession', 'recordActivity']) assert.match(observabilityWiring, new RegExp(token));
+});
+
+test('Studio navigation loads the surface and authoring begins only from an explicit action', () => {
+  assert.doesNotMatch(dashboard, /const studioKind = studioKindForSurface\(requested\);[\s\S]{0,80}beginStudioAuthoring/);
+  assert.doesNotMatch(dashboard, /studioSurface && !suppliedEntity\) beginStudioAuthoring/);
+  assert.match(dashboard, /action === 'openStudioDraft'[\s\S]{0,100}beginStudioAuthoring/);
+});
+
+test('unchanged environment evidence stays current for the bounded daily doctor window', () => {
+  const discovery = fs.readFileSync(path.join(root, 'src', 'discoveryManager.js'), 'utf8');
+  assert.match(discovery, /DEFAULT_DISCOVERY_TTL_MS = 24 \* 60 \* 60 \* 1000/);
+  assert.match(extension, /vscode\.extensions\.onDidChange/);
 });
 
 test('webview uses local CSP, vertical navigation, focus containment, and reduced motion', () => {
@@ -186,6 +229,36 @@ test('billable policy defaults deny and exposes every configurable guardrail', (
   for (const token of ['gpuMemoryCeilingMb', 'cpuCoreCeiling', 'ramCeilingMb', 'escalationConfidenceThreshold', 'cacheReuseAggressiveness']) assert.ok(Object.keys(properties).some(key => key.endsWith(token)), token);
   assert.match(systemSurfaces, /role="switch"/);
   assert.match(extension, /Enable guarded policy/);
+  assert.match(extension, /toggleBillablePolicy[\s\S]*PX_OWNED_VSCODE_HOST === '1'[\s\S]*PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1'[\s\S]*enabled && !ownedReversibleApproval[\s\S]*Enable guarded policy/);
+});
+
+test('Studio setup bypasses its modal only in the double-confirmed owned host', () => {
+  assert.match(extension, /runStudioSetup[\s\S]*PX_OWNED_VSCODE_HOST === '1'[\s\S]*PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1'[\s\S]*if \(!ownedReversibleApproval\)[\s\S]*Set up an operational local Agent Studio and Workflow Studio\?/);
+  assert.match(extension, /if \(approval !== 'Set up and run'\)[\s\S]*Host approval was cancelled/);
+});
+
+test('Studio immutable creation bypasses approval only in the double-confirmed owned host', () => {
+  assert.match(extension, /case 'createStudioDraft'[\s\S]*PX_OWNED_VSCODE_HOST === '1'[\s\S]*PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1'[\s\S]*confirmCreate:[\s\S]*ownedReversibleApproval[\s\S]*showWarningMessage/);
+});
+
+test('Studio lifecycle bypasses approval only in the double-confirmed owned host', () => {
+  assert.match(extension, /case 'studioOperation'[\s\S]*ownedLifecycleApproval = process\.env\.PX_OWNED_VSCODE_HOST === '1'[\s\S]*PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1'[\s\S]*!readOnlyOperations\.has\(message\.operation\)[\s\S]*if \(!ownedLifecycleApproval\)[\s\S]*showWarningMessage/);
+  assert.match(extension, /if \(!readOnlyOperations\.has\(message\.operation\)\)[\s\S]*issueStudioApproval\(message\.kind, message\.operation, message\.payload\)/);
+});
+
+test('exact catalog Skill candidates can resume their lifecycle after reload', () => {
+  assert.match(dashboard, /editableAgent \|\| editableWorkflow \|\| editableSkill[\s\S]*Continue candidate lifecycle/);
+  assert.match(dashboard, /operateStudioRevision[\s\S]*\['agent', 'workflow', 'skill'\][\s\S]*EXACT STUDIO SKILL REQUIRED[\s\S]*normalizeSkill\(details\)/);
+});
+
+test('eligible resolved Agent and Workflow previews expose their exact start action', () => {
+  assert.match(dashboard, /resolvedStudioPreviewModal[\s\S]*safe && eligible[\s\S]*data-action="studioLifecycle"[\s\S]*data-operation="start"[\s\S]*Start exact admitted/);
+});
+
+test('Studio setup remains explicitly available for repair and verification after runnable records exist', () => {
+  assert.match(catalogSurfaces, /const setup = !enterprise \? '<button class="primary" data-action="setupStudio">Set up or verify runnable Agent \+ Workflow<\/button>' : ''/);
+  assert.equal((operationalSurfaces.match(/data-action="setupStudio">Set up or verify runnable Agent \+ Workflow/g) || []).length, 2);
+  assert.doesNotMatch(operationalSurfaces, /runnable_revisions \|\| 0\) < 1 \? '<button class="primary" data-action="setupStudio"/);
 });
 
 test('U02 system surfaces have one renderer owner outside the legacy compatibility renderer', () => {
@@ -303,6 +376,12 @@ test('destructive cleanup remains confirm-gated, hash-revalidated, and receipted
   assert.match(extension, /showWarningMessage[\s\S]*modal: true/);
   assert.match(extension, /case 'executeCleanup'/);
   assert.doesNotMatch(dashboard, /postMessage\(\{ type: ['"]delete/);
+});
+
+test('owned host can approve reversible environment persistence without weakening the user confirmation gate', () => {
+  assert.match(extension, /PX_OWNED_VSCODE_HOST === '1'[\s\S]*PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1'/);
+  assert.match(extension, /ownedReversibleApproval \? 'approved' : 'prompt'/);
+  assert.match(extension, /Refresh and retain the project environment map\?[\s\S]*modal: true[\s\S]*Refresh and retain/);
 });
 
 test('provider context and billing identities remain separate and unguessed', async () => {

@@ -48,7 +48,7 @@ function preservedOriginal(overrides = {}) {
 
 function createReceipt(kind, payload, materialized = null, overrides = {}) {
   if (kind === 'agent') return {
-    schema_version: 'px.agent-creation-receipt/1.1', operation: 'agent.create_candidate', agent_id: payload.agent_id, version: payload.version,
+    schema_version: 'px.agent-creation-receipt/1.1', operation: 'agent.create_candidate', created_utc: '2026-08-17T00:00:00.000Z', agent_id: payload.agent_id, version: payload.version,
     record_sha256: '1'.repeat(64), instruction_sha256: '2'.repeat(64), validation_state: 'structurally_valid', admission_state: 'unadmitted', runtime_state: 'stopped',
     authority_state: 'none', authority_definition_path: null, builder_graph_state: 'content-bound', builder_graph_path: 'agents/demo/builder-graph.json', builder_graph_sha256: '3'.repeat(64),
     editor_layout_path: 'agents/demo/editor-layout.json', editor_layout_sha256: '4'.repeat(64), builder_compiler_receipt_path: 'agents/demo/builder-compiler-receipt.json',

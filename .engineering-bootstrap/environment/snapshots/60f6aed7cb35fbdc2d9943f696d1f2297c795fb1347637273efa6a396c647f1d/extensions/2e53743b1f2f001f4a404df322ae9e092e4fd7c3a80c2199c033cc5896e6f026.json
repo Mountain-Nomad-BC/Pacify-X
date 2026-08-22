@@ -1,0 +1,1874 @@
+{
+  "id": "ms-windows-ai-studio.windows-ai-studio",
+  "name": "Foundry Toolkit for VS Code",
+  "version": "1.6.8",
+  "publisher": "ms-windows-ai-studio",
+  "active": true,
+  "builtin": false,
+  "extension_kind": [
+    "workspace"
+  ],
+  "contribution_points": [
+    "chatAgents",
+    "chatSkills",
+    "commands",
+    "configuration",
+    "customEditors",
+    "languageModelChatProviders",
+    "languageModelTools",
+    "mcpServerDefinitionProviders",
+    "menus",
+    "submenus",
+    "taskDefinitions",
+    "views",
+    "viewsContainers",
+    "walkthroughs",
+    "x-azResources"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:chatAgents",
+      "kind": "chatAgents",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:chatSkills",
+      "kind": "chatSkills",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:customEditors",
+      "kind": "customEditors",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languageModelChatProviders",
+      "kind": "languageModelChatProviders",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languageModelTools",
+      "kind": "languageModelTools",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:mcpServerDefinitionProviders",
+      "kind": "mcpServerDefinitionProviders",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:taskDefinitions",
+      "kind": "taskDefinitions",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:x-azResources",
+      "kind": "x-azResources",
+      "provider": "ms-windows-ai-studio.windows-ai-studio",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "_ai-mlstudio.validateRequirements",
+      "invocation": "vscode.commands.executeCommand('_ai-mlstudio.validateRequirements', ...args)",
+      "title": "Foundry Toolkit: Validate environment prerequisites",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.addRemoteInferenceEndpoint",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.addRemoteInferenceEndpoint', ...args)",
+      "title": "Foundry Toolkit: Add model for remote inference",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.agentBuilder",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.agentBuilder', ...args)",
+      "title": "Open Agent Builder",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.agents.create",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.agents.create', ...args)",
+      "title": "Create Agent",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.askCopilot",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.askCopilot', ...args)",
+      "title": "Foundry Toolkit: Ask Copilot",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.command.submitEvaluation",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.command.submitEvaluation', ...args)",
+      "title": "Submit Evaluation to Microsoft Foundry",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.addRemoteInferenceEndpoint",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.addRemoteInferenceEndpoint', ...args)",
+      "title": "Foundry Toolkit: Add model for remote inference",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.clearDefault",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.clearDefault', ...args)",
+      "title": "Clear Default Project",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.createMultiAgentWorkflow",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.createMultiAgentWorkflow', ...args)",
+      "title": "Create new Hosted Agent",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.createProject",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.createProject', ...args)",
+      "title": "Create Project",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.deleteThread",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.deleteThread', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.deployWorkflow",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.deployWorkflow', ...args)",
+      "title": "Deploy Hosted Agent",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.llmDeploy",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.llmDeploy', ...args)",
+      "title": "Deploy a new AI model",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.model.copyApiKey",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.model.copyApiKey', ...args)",
+      "title": "Copy Model API Key",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.model.copyEndpoint",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.model.copyEndpoint', ...args)",
+      "title": "Copy Model Endpoint",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.model.delete",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.model.delete', ...args)",
+      "title": "Delete Model Deployment",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.model.edit",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.model.edit', ...args)",
+      "title": "Edit Model Deployment",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.openAgentCodeFile",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.openAgentCodeFile', ...args)",
+      "title": "Open Agent Code File",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.openCatalog",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.openCatalog', ...args)",
+      "title": "Open Model Catalog",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.openModelCodeFile",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.openModelCodeFile', ...args)",
+      "title": "Open Model Code File",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.project.copyApiKey",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.project.copyApiKey', ...args)",
+      "title": "Copy Default Project API Key",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.project.copyEndpoint",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.project.copyEndpoint', ...args)",
+      "title": "Copy Default Project Endpoint",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.runAgent",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.runAgent', ...args)",
+      "title": "Open Playground",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.runInContainerAgentPlayground",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.runInContainerAgentPlayground', ...args)",
+      "title": "Open Container Agent Playground Locally",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.setDefault",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.setDefault', ...args)",
+      "title": "Set Default Project",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.stopMultiAgentVisualizer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.stopMultiAgentVisualizer', ...args)",
+      "title": "Stop OTLP gRPC Receiver",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.commandPalette.visualizeWorkflow",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.commandPalette.visualizeWorkflow', ...args)",
+      "title": "Open Visualizer for Hosted Agents",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.copyGHAccessToken",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.copyGHAccessToken', ...args)",
+      "title": "Foundry Toolkit: Copy the GitHub access token to the clipboard",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.createNewAgent",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.createNewAgent', ...args)",
+      "title": "Create new Agent",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.deleteInferenceModel",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.deleteInferenceModel', ...args)",
+      "title": "Foundry Toolkit: Delete an existing inference model",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.deployInference",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.deployInference', ...args)",
+      "title": "Foundry Toolkit: Deploy for inference",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "ai-mlstudio.enableRemote"
+    },
+    {
+      "id": "ai-mlstudio.downloadInferenceModel",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.downloadInferenceModel', ...args)",
+      "title": "Foundry Toolkit: Download an inference model",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.editorTitle.deployPromptAgent",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.editorTitle.deployPromptAgent', ...args)",
+      "title": "Deploy",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.editorTitle.deployYamlWorkflow",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.editorTitle.deployYamlWorkflow', ...args)",
+      "title": "Deploy",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.editorTitle.openAgentDesigner",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.editorTitle.openAgentDesigner', ...args)",
+      "title": "Open Agent Designer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.editSecret",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.editSecret', ...args)",
+      "title": "Foundry Toolkit: Add Azure Container Apps Job secret for fine-tuning",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "ai-mlstudio.enableRemote"
+    },
+    {
+      "id": "ai-mlstudio.encryptCustomModelValue",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.encryptCustomModelValue', ...args)",
+      "title": "Foundry Toolkit: Encrypt a value for custom model",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "false"
+    },
+    {
+      "id": "ai-mlstudio.evaluation.analyzeResults",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.evaluation.analyzeResults', ...args)",
+      "title": "Analyze Evaluation Results",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.evaluation.downloadRemoteResult",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.evaluation.downloadRemoteResult', ...args)",
+      "title": "Download Evaluation Result",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.evaluation.generateTestCases",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.evaluation.generateTestCases', ...args)",
+      "title": "Generate Test Cases with Copilot",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.evaluation.openDataset",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.evaluation.openDataset', ...args)",
+      "title": "Open Dataset",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.evaluation.refreshAgentEvals",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.evaluation.refreshAgentEvals', ...args)",
+      "title": "Refresh Agent Evaluations",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.evaluation.refreshRemoteResults",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.evaluation.refreshRemoteResults', ...args)",
+      "title": "Refresh Remote Evaluations",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.explorerContext.openAgentDesigner",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.explorerContext.openAgentDesigner', ...args)",
+      "title": "Open Agent Designer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.installCondaWslLinux",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.installCondaWslLinux', ...args)",
+      "title": "Foundry Toolkit: Install Conda in Linux",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.installCudaWslLinux",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.installCudaWslLinux', ...args)",
+      "title": "Foundry Toolkit: Install CUDA in Linux",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.installFoundrySkill",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.installFoundrySkill', ...args)",
+      "title": "Foundry Toolkit: Install Foundry Skill",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.joinCommunity",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.joinCommunity', ...args)",
+      "title": "Foundry Toolkit: Join Community",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.listModels",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.listModels', ...args)",
+      "title": "List Models",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.addHttpServer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.addHttpServer', ...args)",
+      "title": "Add MCP Server (HTTP)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.addServer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.addServer', ...args)",
+      "title": "Add MCP Server",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.addStdioServer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.addStdioServer', ...args)",
+      "title": "Add MCP Server (stdio)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.cancelServer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.cancelServer', ...args)",
+      "title": "Cancel",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.configureFoundryServer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.configureFoundryServer', ...args)",
+      "title": "Add MCP Server",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.connectToAgent",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.connectToAgent', ...args)",
+      "title": "Connect to Agent",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.createNewServer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.createNewServer', ...args)",
+      "title": "Create New MCP Server",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.editConfiguration",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.editConfiguration', ...args)",
+      "title": "Edit MCP Configuration",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.editFoundryServer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.editFoundryServer', ...args)",
+      "title": "Edit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.openDocumentation",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.openDocumentation', ...args)",
+      "title": "Open MCP Documentation",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.refreshServer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.refreshServer', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.removeAzureAISearchConnection",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.removeAzureAISearchConnection', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.removeBingConnection",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.removeBingConnection', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.removeFoundryServer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.removeFoundryServer', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.removeServer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.removeServer', ...args)",
+      "title": "Remove from Foundry Toolkit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.startServer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.startServer', ...args)",
+      "title": "Start",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.mcp.stopServer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.mcp.stopServer', ...args)",
+      "title": "Stop",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.modelComparison",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.modelComparison', ...args)",
+      "title": "Foundry Toolkit: Open Model Comparison",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.modelLab.generationCompleted",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.modelLab.generationCompleted', ...args)",
+      "title": "Foundry Toolkit: Generation Completed",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.modelPlayground",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.modelPlayground', ...args)",
+      "title": "Foundry Toolkit: Open Model Playground",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.models",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.models', ...args)",
+      "title": "Foundry Toolkit: Show model catalog",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.openAIFoundry",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.openAIFoundry', ...args)",
+      "title": "Open in Microsoft Foundry",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.openDataset",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.openDataset', ...args)",
+      "title": "Foundry Toolkit: Open dataset",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "false"
+    },
+    {
+      "id": "ai-mlstudio.openDataViewer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.openDataViewer', ...args)",
+      "title": "Open in Data Viewer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.openInVSCodeAzure",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.openInVSCodeAzure', ...args)",
+      "title": "Open Sample in vscode.dev/azure",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.openKnowledgeOverview",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.openKnowledgeOverview', ...args)",
+      "title": "Foundry Toolkit: Open Knowledge",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.openModelsOverview",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.openModelsOverview', ...args)",
+      "title": "Foundry Toolkit: Open Models",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.openTestTool",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.openTestTool', ...args)",
+      "title": "Foundry Toolkit: Open Agent Inspector",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.openToolsOverview",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.openToolsOverview', ...args)",
+      "title": "Foundry Toolkit: Open Tools",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.prepareEnvironment",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.prepareEnvironment', ...args)",
+      "title": "Foundry Toolkit: Install environment prerequisites",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.promptBuilder",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.promptBuilder', ...args)",
+      "title": "Foundry Toolkit: Open Agent Builder",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.provision",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.provision', ...args)",
+      "title": "Foundry Toolkit: Provision Azure Container Apps job for fine-tuning",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "ai-mlstudio.enableRemote"
+    },
+    {
+      "id": "ai-mlstudio.provisionInference",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.provisionInference', ...args)",
+      "title": "Foundry Toolkit: Provision Azure Container Apps for inference",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "ai-mlstudio.enableRemote"
+    },
+    {
+      "id": "ai-mlstudio.recentAgents.createInCode",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.recentAgents.createInCode', ...args)",
+      "title": "Create in Code With Template",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.recentAgents.delete",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.recentAgents.delete', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.recentAgents.designWithBuilder",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.recentAgents.designWithBuilder', ...args)",
+      "title": "Design an Agent with Builder",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.resetAllTokens",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.resetAllTokens', ...args)",
+      "title": "Foundry Toolkit: Reset all access tokens",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.run",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.run', ...args)",
+      "title": "Foundry Toolkit: Run fine-tuning",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "ai-mlstudio.enableRemote"
+    },
+    {
+      "id": "ai-mlstudio.setGHAccessToken",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.setGHAccessToken', ...args)",
+      "title": "Foundry Toolkit: Set a GitHub access token",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.setHFAccessToken",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.setHFAccessToken', ...args)",
+      "title": "Foundry Toolkit: Set HuggingFace access token",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.setTreeViewMode",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.setTreeViewMode', ...args)",
+      "title": "Foundry Toolkit: Set Developer Tools View Mode",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.setupAIModel",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.setupAIModel', ...args)",
+      "title": "Setup",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.showOutputChannel",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.showOutputChannel', ...args)",
+      "title": "Foundry Toolkit: Show Output Channel",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.showWhatsNew",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.showWhatsNew', ...args)",
+      "title": "Foundry Toolkit: Show What's New",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.shutdownInferenceAgent",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.shutdownInferenceAgent', ...args)",
+      "title": "Foundry Toolkit: Shutdown Inference Agent",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.streamingLog",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.streamingLog', ...args)",
+      "title": "Foundry Toolkit: Show the running fine-tuning job streaming logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "ai-mlstudio.enableRemote"
+    },
+    {
+      "id": "ai-mlstudio.switchToFunctionalMode",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.switchToFunctionalMode', ...args)",
+      "title": "Group by Resource",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.switchToFunctionalMode.active",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.switchToFunctionalMode.active', ...args)",
+      "title": "✓ Group by Resource",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.switchToLifecycleMode",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.switchToLifecycleMode', ...args)",
+      "title": "Group by Lifecycle",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.switchToLifecycleMode.active",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.switchToLifecycleMode.active', ...args)",
+      "title": "✓ Group by Lifecycle",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.switchTreeViewMode",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.switchTreeViewMode', ...args)",
+      "title": "Foundry Toolkit: Switch Developer Tools View Mode",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.test.happyPath",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.test.happyPath', ...args)",
+      "title": "Foundry Toolkit: A Test Command",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "false"
+    },
+    {
+      "id": "ai-mlstudio.toolbox.scaffold",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.toolbox.scaffold', ...args)",
+      "title": "Create New Toolbox Agent",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.toolbox.viewCodeSnippet",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.toolbox.viewCodeSnippet', ...args)",
+      "title": "View Toolbox Code Snippet",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.toolCatalog",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.toolCatalog', ...args)",
+      "title": "Foundry Toolkit: Show tool catalog",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.tracing.open",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.tracing.open', ...args)",
+      "title": "Foundry Toolkit: Open Tracing",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "aiToolkit.tracingSupported"
+    },
+    {
+      "id": "ai-mlstudio.tracing.openFoundryTrace",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.tracing.openFoundryTrace', ...args)",
+      "title": "Foundry Toolkit: View Foundry Agent Trace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.tracing.showStatus",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.tracing.showStatus', ...args)",
+      "title": "Foundry Toolkit: Show OpenTelemetry Tracing Collector Status",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "aiToolkit.tracingSupported"
+    },
+    {
+      "id": "ai-mlstudio.tracing.startCollector",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.tracing.startCollector', ...args)",
+      "title": "Foundry Toolkit: Start OpenTelemetry Tracing Collector",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "aiToolkit.tracingSupported"
+    },
+    {
+      "id": "ai-mlstudio.tracing.stopCollector",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.tracing.stopCollector', ...args)",
+      "title": "Foundry Toolkit: Stop OpenTelemetry Tracing Collector",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "aiToolkit.tracingSupported"
+    },
+    {
+      "id": "ai-mlstudio.treeView.agents.deleteAgent",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.agents.deleteAgent', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.agents.deleteAgentVersion",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.agents.deleteAgentVersion', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.agents.designWithBuilder",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.agents.designWithBuilder', ...args)",
+      "title": "Design with Builder",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.agents.refreshFoundryAgents",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.agents.refreshFoundryAgents', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.agents.refreshLocalAgents",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.agents.refreshLocalAgents', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.agents.renameAgent",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.agents.renameAgent', ...args)",
+      "title": "Rename",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.agents.renameAgentVersion",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.agents.renameAgentVersion', ...args)",
+      "title": "Rename",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.evaluation.openInDataViewer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.evaluation.openInDataViewer', ...args)",
+      "title": "Open in Data Viewer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.about",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.about', ...args)",
+      "title": "About this Model",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.addRemoteInferenceEndpoint",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.addRemoteInferenceEndpoint', ...args)",
+      "title": "Add model for remote inference",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.cancelDownloading",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.cancelDownloading', ...args)",
+      "title": "Cancel",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!ai-mlstudio.modelLoading"
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.click",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.click', ...args)",
+      "title": "Load in Playground",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.copyEndpoint",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.copyEndpoint', ...args)",
+      "title": "Copy Endpoint",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.copyModelName",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.copyModelName', ...args)",
+      "title": "Copy Model Name",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.createFineTuneProject",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.createFineTuneProject', ...args)",
+      "title": "Create a Fine-Tuning Project",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.delete",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.delete', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!ai-mlstudio.modelLoading"
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.edit",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.edit', ...args)",
+      "title": "Edit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!ai-mlstudio.modelLoading"
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.foundry.selectProject",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.foundry.selectProject', ...args)",
+      "title": "Select Project",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.loadInAgentBuilder",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.loadInAgentBuilder', ...args)",
+      "title": "Load in Agent Builder",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!ai-mlstudio.modelLoading"
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.loadInPlayground",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.loadInPlayground', ...args)",
+      "title": "Load in Playground",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!ai-mlstudio.modelLoading"
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.refresh",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.remoteInferenceInPlaygroundDocs",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.remoteInferenceInPlaygroundDocs', ...args)",
+      "title": "Learn more about remote inference in playground",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.startServer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.startServer', ...args)",
+      "title": "Start Server",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.treeView.models.stopServer",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.treeView.models.stopServer', ...args)",
+      "title": "Stop Server",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.triggerFoundryModelDeployment",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.triggerFoundryModelDeployment', ...args)",
+      "title": "Foundry Toolkit: Trigger Foundry Model Deployment",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.tutorials",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.tutorials', ...args)",
+      "title": "Foundry Toolkit: Open tutorials",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.unloadInferenceModel",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.unloadInferenceModel', ...args)",
+      "title": "Foundry Toolkit: Unload an inference model",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.agent.copyConnectionString",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.agent.copyConnectionString', ...args)",
+      "title": "Copy Agent Connection String",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.agent.copyEndpoint",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.agent.copyEndpoint', ...args)",
+      "title": "Copy Project Endpoint",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.agent.copyEndpoint.loading",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.agent.copyEndpoint.loading', ...args)",
+      "title": "Copy Project Endpoint (Loading...)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "false"
+    },
+    {
+      "id": "ai-mlstudio.viewContext.agent.copyId",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.agent.copyId', ...args)",
+      "title": "Copy Agent ID",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.agent.delete",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.agent.delete', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.createAgent",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.createAgent', ...args)",
+      "title": "Create new agent",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.createBingConnection",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.createBingConnection', ...args)",
+      "title": "Create new Bing Connection",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.createEvaluation",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.createEvaluation', ...args)",
+      "title": "Create evaluation",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.createMultiAgentWorkflow",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.createMultiAgentWorkflow', ...args)",
+      "title": "Create new hosted agents",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.createPromptAgent",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.createPromptAgent', ...args)",
+      "title": "Create new agent",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.createVectorStore",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.createVectorStore', ...args)",
+      "title": "Create new Index",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.deleteHostedAgent",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.deleteHostedAgent', ...args)",
+      "title": "Delete Agent",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.deletePromptAgent",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.deletePromptAgent', ...args)",
+      "title": "Delete Agent",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.deletePromptAgentVersion",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.deletePromptAgentVersion', ...args)",
+      "title": "Delete Agent Version",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.deleteTool",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.deleteTool', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.deleteYamlWorkflow",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.deleteYamlWorkflow', ...args)",
+      "title": "Delete Yaml Workflow",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.deleteYamlWorkflowVersion",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.deleteYamlWorkflowVersion', ...args)",
+      "title": "Delete Yaml Workflow Version",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.llmDeploy",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.llmDeploy', ...args)",
+      "title": "Deploy new AI model",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.loadMoreThreads",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.loadMoreThreads', ...args)",
+      "title": "Load More Threads",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.model.copyApiKey",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.model.copyApiKey', ...args)",
+      "title": "Copy API Key",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.model.copyEndpoint",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.model.copyEndpoint', ...args)",
+      "title": "Copy Endpoint",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.model.delete",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.model.delete', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.model.openInPlayground",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.model.openInPlayground', ...args)",
+      "title": "Open in Playground",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.openAgentCodeFile",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.openAgentCodeFile', ...args)",
+      "title": "View Code",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.openContainerPlayground",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.openContainerPlayground', ...args)",
+      "title": "Open in Playground",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.openEvaluationList",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.openEvaluationList', ...args)",
+      "title": "Evaluations",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.openFoundryPrivateLinkDocs",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.openFoundryPrivateLinkDocs', ...args)",
+      "title": "Learn more",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.openHostedAgentCodeFile",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.openHostedAgentCodeFile', ...args)",
+      "title": "View Code",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.openInFoundryView",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.openInFoundryView', ...args)",
+      "title": "Open in Foundry Toolkit Extension",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.openMCPServerToolCatalog",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.openMCPServerToolCatalog', ...args)",
+      "title": "Create toolbox or connect a tool",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.openModelCodeFile",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.openModelCodeFile', ...args)",
+      "title": "View Code",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.openPromptAgentCodeFile",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.openPromptAgentCodeFile', ...args)",
+      "title": "View Code",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.openYamlBasedWorkflowCodeFile",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.openYamlBasedWorkflowCodeFile', ...args)",
+      "title": "View Code",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.project.copyApiKey",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.project.copyApiKey', ...args)",
+      "title": "Copy Project API Key",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.project.copyApiKey.loading",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.project.copyApiKey.loading', ...args)",
+      "title": "Copy Project API Key (Loading...)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "false"
+    },
+    {
+      "id": "ai-mlstudio.viewContext.project.copyAzureOpenAIEndpoint",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.project.copyAzureOpenAIEndpoint', ...args)",
+      "title": "Copy Azure OpenAI Endpoint",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.project.copyAzureOpenAIEndpoint.loading",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.project.copyAzureOpenAIEndpoint.loading', ...args)",
+      "title": "Copy Azure OpenAI Endpoint (Loading...)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "false"
+    },
+    {
+      "id": "ai-mlstudio.viewContext.refreshNode",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.refreshNode', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.refreshResources",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.refreshResources', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.runRemotePlayground",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.runRemotePlayground', ...args)",
+      "title": "Open Container Agent Playground",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.searchProjectResources.aiToolkitView",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.searchProjectResources.aiToolkitView', ...args)",
+      "title": "Search Project Resources",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.searchProjectResources.explorerView",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.searchProjectResources.explorerView', ...args)",
+      "title": "Search Project Resources",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.switchDefaultProject",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.switchDefaultProject', ...args)",
+      "title": "Switch Default Project",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.viewModel",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.viewModel', ...args)",
+      "title": "Model Details",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "ai-mlstudio.viewContext.viewThreadDetails",
+      "invocation": "vscode.commands.executeCommand('ai-mlstudio.viewContext.viewThreadDetails', ...args)",
+      "title": "View Thread Details",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "ms-azuretools.vscode-azure-mcp-server",
+    "ms-azuretools.vscode-azureresourcegroups"
+  ],
+  "activation_events": [
+    "onLanguage:jsonl",
+    "onLanguage:python",
+    "onLanguageModelChat:aitk-foundry",
+    "onStartupFinished",
+    "onUri",
+    "workspaceContains:**/*.agent.yaml",
+    "workspaceContains:**/*.agent.yml",
+    "workspaceContains:.aitk/*",
+    "workspaceContains:agent.yaml",
+    "workspaceContains:finetuning.workspace.config",
+    "workspaceContains:infra/finetuning.config.json",
+    "workspaceContains:infra/inference.config.json",
+    "workspaceContains:model_lab.workspace.config",
+    "workspaceContains:prompt.aitk.txt"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "workspace"
+    ],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-windows-ai-studio.windows-ai-studio",
+    "capabilities": [
+      "contribution:chatAgents",
+      "contribution:chatSkills",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:customEditors",
+      "contribution:languageModelChatProviders",
+      "contribution:languageModelTools",
+      "contribution:mcpServerDefinitionProviders",
+      "contribution:menus",
+      "contribution:submenus",
+      "contribution:taskDefinitions",
+      "contribution:views",
+      "contribution:viewsContainers",
+      "contribution:walkthroughs",
+      "contribution:x-azResources"
+    ],
+    "interface": [
+      "_ai-mlstudio.validateRequirements",
+      "ai-mlstudio.addRemoteInferenceEndpoint",
+      "ai-mlstudio.agentBuilder",
+      "ai-mlstudio.agents.create",
+      "ai-mlstudio.askCopilot",
+      "ai-mlstudio.command.submitEvaluation",
+      "ai-mlstudio.commandPalette.addRemoteInferenceEndpoint",
+      "ai-mlstudio.commandPalette.clearDefault",
+      "ai-mlstudio.commandPalette.createMultiAgentWorkflow",
+      "ai-mlstudio.commandPalette.createProject",
+      "ai-mlstudio.commandPalette.deleteThread",
+      "ai-mlstudio.commandPalette.deployWorkflow",
+      "ai-mlstudio.commandPalette.llmDeploy",
+      "ai-mlstudio.commandPalette.model.copyApiKey",
+      "ai-mlstudio.commandPalette.model.copyEndpoint",
+      "ai-mlstudio.commandPalette.model.delete",
+      "ai-mlstudio.commandPalette.model.edit",
+      "ai-mlstudio.commandPalette.openAgentCodeFile",
+      "ai-mlstudio.commandPalette.openCatalog",
+      "ai-mlstudio.commandPalette.openModelCodeFile",
+      "ai-mlstudio.commandPalette.project.copyApiKey",
+      "ai-mlstudio.commandPalette.project.copyEndpoint",
+      "ai-mlstudio.commandPalette.runAgent",
+      "ai-mlstudio.commandPalette.runInContainerAgentPlayground",
+      "ai-mlstudio.commandPalette.setDefault",
+      "ai-mlstudio.commandPalette.stopMultiAgentVisualizer",
+      "ai-mlstudio.commandPalette.visualizeWorkflow",
+      "ai-mlstudio.copyGHAccessToken",
+      "ai-mlstudio.createNewAgent",
+      "ai-mlstudio.deleteInferenceModel",
+      "ai-mlstudio.deployInference",
+      "ai-mlstudio.downloadInferenceModel",
+      "ai-mlstudio.editorTitle.deployPromptAgent",
+      "ai-mlstudio.editorTitle.deployYamlWorkflow",
+      "ai-mlstudio.editorTitle.openAgentDesigner",
+      "ai-mlstudio.editSecret",
+      "ai-mlstudio.encryptCustomModelValue",
+      "ai-mlstudio.evaluation.analyzeResults",
+      "ai-mlstudio.evaluation.downloadRemoteResult",
+      "ai-mlstudio.evaluation.generateTestCases",
+      "ai-mlstudio.evaluation.openDataset",
+      "ai-mlstudio.evaluation.refreshAgentEvals",
+      "ai-mlstudio.evaluation.refreshRemoteResults",
+      "ai-mlstudio.explorerContext.openAgentDesigner",
+      "ai-mlstudio.installCondaWslLinux",
+      "ai-mlstudio.installCudaWslLinux",
+      "ai-mlstudio.installFoundrySkill",
+      "ai-mlstudio.joinCommunity",
+      "ai-mlstudio.listModels",
+      "ai-mlstudio.mcp.addHttpServer",
+      "ai-mlstudio.mcp.addServer",
+      "ai-mlstudio.mcp.addStdioServer",
+      "ai-mlstudio.mcp.cancelServer",
+      "ai-mlstudio.mcp.configureFoundryServer",
+      "ai-mlstudio.mcp.connectToAgent",
+      "ai-mlstudio.mcp.createNewServer",
+      "ai-mlstudio.mcp.editConfiguration",
+      "ai-mlstudio.mcp.editFoundryServer",
+      "ai-mlstudio.mcp.openDocumentation",
+      "ai-mlstudio.mcp.refreshServer",
+      "ai-mlstudio.mcp.removeAzureAISearchConnection",
+      "ai-mlstudio.mcp.removeBingConnection",
+      "ai-mlstudio.mcp.removeFoundryServer",
+      "ai-mlstudio.mcp.removeServer",
+      "ai-mlstudio.mcp.startServer",
+      "ai-mlstudio.mcp.stopServer",
+      "ai-mlstudio.modelComparison",
+      "ai-mlstudio.modelLab.generationCompleted",
+      "ai-mlstudio.modelPlayground",
+      "ai-mlstudio.models",
+      "ai-mlstudio.openAIFoundry",
+      "ai-mlstudio.openDataset",
+      "ai-mlstudio.openDataViewer",
+      "ai-mlstudio.openInVSCodeAzure",
+      "ai-mlstudio.openKnowledgeOverview",
+      "ai-mlstudio.openModelsOverview",
+      "ai-mlstudio.openTestTool",
+      "ai-mlstudio.openToolsOverview",
+      "ai-mlstudio.prepareEnvironment",
+      "ai-mlstudio.promptBuilder",
+      "ai-mlstudio.provision",
+      "ai-mlstudio.provisionInference",
+      "ai-mlstudio.recentAgents.createInCode",
+      "ai-mlstudio.recentAgents.delete",
+      "ai-mlstudio.recentAgents.designWithBuilder",
+      "ai-mlstudio.resetAllTokens",
+      "ai-mlstudio.run",
+      "ai-mlstudio.setGHAccessToken",
+      "ai-mlstudio.setHFAccessToken",
+      "ai-mlstudio.setTreeViewMode",
+      "ai-mlstudio.setupAIModel",
+      "ai-mlstudio.showOutputChannel",
+      "ai-mlstudio.showWhatsNew",
+      "ai-mlstudio.shutdownInferenceAgent",
+      "ai-mlstudio.streamingLog",
+      "ai-mlstudio.switchToFunctionalMode",
+      "ai-mlstudio.switchToFunctionalMode.active",
+      "ai-mlstudio.switchToLifecycleMode",
+      "ai-mlstudio.switchToLifecycleMode.active",
+      "ai-mlstudio.switchTreeViewMode",
+      "ai-mlstudio.test.happyPath",
+      "ai-mlstudio.toolbox.scaffold",
+      "ai-mlstudio.toolbox.viewCodeSnippet",
+      "ai-mlstudio.toolCatalog",
+      "ai-mlstudio.tracing.open",
+      "ai-mlstudio.tracing.openFoundryTrace",
+      "ai-mlstudio.tracing.showStatus",
+      "ai-mlstudio.tracing.startCollector",
+      "ai-mlstudio.tracing.stopCollector",
+      "ai-mlstudio.treeView.agents.deleteAgent",
+      "ai-mlstudio.treeView.agents.deleteAgentVersion",
+      "ai-mlstudio.treeView.agents.designWithBuilder",
+      "ai-mlstudio.treeView.agents.refreshFoundryAgents",
+      "ai-mlstudio.treeView.agents.refreshLocalAgents",
+      "ai-mlstudio.treeView.agents.renameAgent",
+      "ai-mlstudio.treeView.agents.renameAgentVersion",
+      "ai-mlstudio.treeView.evaluation.openInDataViewer",
+      "ai-mlstudio.treeView.models.about",
+      "ai-mlstudio.treeView.models.addRemoteInferenceEndpoint",
+      "ai-mlstudio.treeView.models.cancelDownloading",
+      "ai-mlstudio.treeView.models.click",
+      "ai-mlstudio.treeView.models.copyEndpoint",
+      "ai-mlstudio.treeView.models.copyModelName",
+      "ai-mlstudio.treeView.models.createFineTuneProject",
+      "ai-mlstudio.treeView.models.delete",
+      "ai-mlstudio.treeView.models.edit",
+      "ai-mlstudio.treeView.models.foundry.selectProject",
+      "ai-mlstudio.treeView.models.loadInAgentBuilder",
+      "ai-mlstudio.treeView.models.loadInPlayground",
+      "ai-mlstudio.treeView.models.refresh",
+      "ai-mlstudio.treeView.models.remoteInferenceInPlaygroundDocs",
+      "ai-mlstudio.treeView.models.startServer",
+      "ai-mlstudio.treeView.models.stopServer",
+      "ai-mlstudio.triggerFoundryModelDeployment",
+      "ai-mlstudio.tutorials",
+      "ai-mlstudio.unloadInferenceModel",
+      "ai-mlstudio.viewContext.agent.copyConnectionString",
+      "ai-mlstudio.viewContext.agent.copyEndpoint",
+      "ai-mlstudio.viewContext.agent.copyEndpoint.loading",
+      "ai-mlstudio.viewContext.agent.copyId",
+      "ai-mlstudio.viewContext.agent.delete",
+      "ai-mlstudio.viewContext.createAgent",
+      "ai-mlstudio.viewContext.createBingConnection",
+      "ai-mlstudio.viewContext.createEvaluation",
+      "ai-mlstudio.viewContext.createMultiAgentWorkflow",
+      "ai-mlstudio.viewContext.createPromptAgent",
+      "ai-mlstudio.viewContext.createVectorStore",
+      "ai-mlstudio.viewContext.deleteHostedAgent",
+      "ai-mlstudio.viewContext.deletePromptAgent",
+      "ai-mlstudio.viewContext.deletePromptAgentVersion",
+      "ai-mlstudio.viewContext.deleteTool",
+      "ai-mlstudio.viewContext.deleteYamlWorkflow",
+      "ai-mlstudio.viewContext.deleteYamlWorkflowVersion",
+      "ai-mlstudio.viewContext.llmDeploy",
+      "ai-mlstudio.viewContext.loadMoreThreads",
+      "ai-mlstudio.viewContext.model.copyApiKey",
+      "ai-mlstudio.viewContext.model.copyEndpoint",
+      "ai-mlstudio.viewContext.model.delete",
+      "ai-mlstudio.viewContext.model.openInPlayground",
+      "ai-mlstudio.viewContext.openAgentCodeFile",
+      "ai-mlstudio.viewContext.openContainerPlayground",
+      "ai-mlstudio.viewContext.openEvaluationList",
+      "ai-mlstudio.viewContext.openFoundryPrivateLinkDocs",
+      "ai-mlstudio.viewContext.openHostedAgentCodeFile",
+      "ai-mlstudio.viewContext.openInFoundryView",
+      "ai-mlstudio.viewContext.openMCPServerToolCatalog",
+      "ai-mlstudio.viewContext.openModelCodeFile",
+      "ai-mlstudio.viewContext.openPromptAgentCodeFile",
+      "ai-mlstudio.viewContext.openYamlBasedWorkflowCodeFile",
+      "ai-mlstudio.viewContext.project.copyApiKey",
+      "ai-mlstudio.viewContext.project.copyApiKey.loading",
+      "ai-mlstudio.viewContext.project.copyAzureOpenAIEndpoint",
+      "ai-mlstudio.viewContext.project.copyAzureOpenAIEndpoint.loading",
+      "ai-mlstudio.viewContext.refreshNode",
+      "ai-mlstudio.viewContext.refreshResources",
+      "ai-mlstudio.viewContext.runRemotePlayground",
+      "ai-mlstudio.viewContext.searchProjectResources.aiToolkitView",
+      "ai-mlstudio.viewContext.searchProjectResources.explorerView",
+      "ai-mlstudio.viewContext.switchDefaultProject",
+      "ai-mlstudio.viewContext.viewModel",
+      "ai-mlstudio.viewContext.viewThreadDetails"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "workspace"
+      ],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

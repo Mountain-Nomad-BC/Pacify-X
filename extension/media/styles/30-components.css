@@ -183,6 +183,23 @@
   .agent-builder-side dl { display: grid; gap: 6px; margin-bottom: 0; }
   .agent-builder-side dl div { display: grid; grid-template-columns: 68px minmax(0, 1fr); gap: 7px; }
   .agent-builder-side dl dd { margin: 0; overflow-wrap: anywhere; color: var(--silver); }
+  .agent-structural-checks { display: grid; gap: 7px; margin: 7px 0 0; padding: 0; border: 0; }
+  .agent-structural-checks legend { margin-bottom: 6px; color: var(--silver); font-size: 10px; font-weight: 700; }
+  .agent-structural-check { grid-template-columns: auto minmax(0, 1fr) !important; align-items: start; gap: 8px !important; padding: 8px; border: 1px solid var(--line); border-radius: 6px; background: #06111b; cursor: pointer; }
+  .agent-structural-check.selected { border-color: rgba(57,216,255,.48); background: rgba(57,216,255,.07); }
+  .agent-structural-check input { width: 15px !important; min-height: 15px !important; margin: 2px 0 0; accent-color: var(--cyan); }
+  .agent-structural-check > span { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 7px; }
+  .agent-structural-check b { color: var(--silver); font-size: 9px; }
+  .agent-structural-check code { color: var(--cyan); font-size: 8px; }
+  .agent-structural-check small { grid-column: 1 / -1; color: var(--muted); font-size: 8px; line-height: 1.4; }
+  .agent-preflight-results { display: grid; gap: 7px; margin: 12px 0; }
+  .agent-preflight-results > article { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 8px; padding: 9px; border: 1px solid var(--line); border-radius: 6px; background: #06111b; }
+  .agent-preflight-results > article.passed { border-left: 3px solid var(--green); }
+  .agent-preflight-results > article.failed { border-left: 3px solid var(--red); }
+  .agent-preflight-results > article > span { color: var(--silver); font-size: 18px; line-height: 1; }
+  .agent-preflight-results strong { margin-right: 7px; color: var(--silver); }
+  .agent-preflight-results code { color: var(--cyan); font-size: 9px; }
+  .agent-preflight-results p { margin: 4px 0 0; color: var(--muted); font-size: 9px; }
   .skill-editor-layout { display: grid; grid-template-columns: var(--skill-editor-columns, minmax(190px, .42fr) minmax(420px, 1fr) minmax(250px, .52fr)); gap: 10px; min-height: 560px; }
   .skill-file-tree { min-width: 0; display: flex; flex-direction: column; gap: 4px; padding: 10px; overflow: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-deep); }
   .skill-file-tree header, .skill-text-editor header { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }

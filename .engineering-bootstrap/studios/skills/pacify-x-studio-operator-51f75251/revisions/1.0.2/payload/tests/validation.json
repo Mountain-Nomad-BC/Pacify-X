@@ -1,0 +1,21 @@
+{
+  "schema_version": "px.skill-test/1.1",
+  "cases": [
+    {
+      "name": "complete-native-skill-package",
+      "assertion": {
+        "kind": "required-files",
+        "paths": [
+          "SKILL.md",
+          "capability.json",
+          "skill.yaml",
+          "agents/openai.yaml",
+          "contracts/input.schema.json",
+          "contracts/manifest.json",
+          "resources/README.md",
+          "resources/index.json"
+        ]
+      }
+    }
+  ]
+}

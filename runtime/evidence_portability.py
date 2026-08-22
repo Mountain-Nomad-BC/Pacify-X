@@ -23,6 +23,8 @@ STRUCTURED_ROOTS = (
     "extension/evidence",
 )
 EXCLUDED_PATH_PREFIXES = (
+    "evidence/full-control-proof-",
+    "evidence/operational-control-fault-",
     "evidence/operational-ui-walk-",
     "evidence/operational-gap-ledger/",
     "registry/operational_gap_ledger",

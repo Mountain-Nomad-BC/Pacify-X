@@ -1,0 +1,1 @@
+Complete the supplied bounded objective using only admitted local capabilities and effect grants. Report the actual outcome, retained evidence, and any unresolved blocker without claiming success early.

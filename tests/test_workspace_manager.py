@@ -525,12 +525,15 @@ class WorkspaceManagerTests(unittest.TestCase):
                 )
             )
 
-    def test_lease_renewal_cannot_exceed_cumulative_workspace_limit(self) -> None:
+    def test_lease_renewal_uses_a_sliding_idle_expiry(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             workspace = self._workspace_with_projects(Path(directory))
             activate_project(workspace, "prj_alpha")
-            with self.assertRaisesRegex(ValueError, "cumulative active lifetime"):
-                renew_project(workspace, minutes=480)
+            before = datetime.now(timezone.utc)
+            renewed = renew_project(workspace, minutes=1440)
+            expiry = datetime.fromisoformat(str(renewed["expires_utc"]))
+            self.assertGreaterEqual(expiry, before + timedelta(minutes=1439))
+            self.assertLessEqual(expiry, datetime.now(timezone.utc) + timedelta(minutes=1441))
 
     def test_registered_workflow_runs_from_json_with_idempotent_receipt(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -824,12 +827,21 @@ class WorkspaceManagerTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "projection differs"):
                 current_project(workspace)
 
-    def test_session_maximum_lifetime_is_enforced(self) -> None:
+    def test_session_renewal_preserves_creation_identity_across_heartbeats(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             workspace = self._workspace_with_projects(Path(directory))
             activate_project(workspace, "prj_alpha")
-            with self.assertRaisesRegex(ValueError, "cumulative active lifetime"):
-                renew_project(workspace, minutes=480)
+            session = workspace / "projects_tracking/sessions/session_operator.json"
+            created = json.loads(session.read_text(encoding="utf-8"))["created_utc"]
+            first = renew_project(workspace, minutes=1440)
+            second = renew_project(workspace, minutes=1440)
+            active = json.loads(session.read_text(encoding="utf-8"))
+            self.assertEqual(active["created_utc"], created)
+            self.assertEqual(active["expires_utc"], second["expires_utc"])
+            self.assertGreaterEqual(
+                datetime.fromisoformat(str(second["expires_utc"])),
+                datetime.fromisoformat(str(first["expires_utc"])),
+            )
 
     def test_session_projection_rebuild_is_deterministic(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

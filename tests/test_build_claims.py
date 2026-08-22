@@ -26,10 +26,7 @@ def test_checked_in_build_claims_and_readme_are_current() -> None:
     assert report["valid"] is True, report["errors"]
     claims = report["claims"]
     assert claims["version"] == "0.7.0.dev0"
-    assert claims["counts"]["skills"] == 177
-    assert claims["counts"]["agents"] == 270
-    assert claims["counts"]["graph_records"] == 984
-    assert claims["counts"]["graph_edges"] == 1917
+    assert claims == expected_build_claims(ROOT)
 
 
 def test_stored_claim_drift_is_rejected(tmp_path: Path) -> None:

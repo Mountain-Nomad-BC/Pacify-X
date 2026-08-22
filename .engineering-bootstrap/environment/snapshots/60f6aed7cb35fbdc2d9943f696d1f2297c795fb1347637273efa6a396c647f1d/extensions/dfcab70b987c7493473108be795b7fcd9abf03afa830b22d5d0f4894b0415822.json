@@ -1,0 +1,113 @@
+{
+  "id": "aaravb.chrome-extension-developer-tools",
+  "name": "Chrome Extension Developer Tools",
+  "version": "2.1.0",
+  "publisher": "aaravb",
+  "active": true,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "aaravb.chrome-extension-developer-tools",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "chrome-extension-developer-tools.build",
+      "invocation": "vscode.commands.executeCommand('chrome-extension-developer-tools.build', ...args)",
+      "title": "Chrome Extension: Build Files",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "chrome-extension-developer-tools.create",
+      "invocation": "vscode.commands.executeCommand('chrome-extension-developer-tools.create', ...args)",
+      "title": "Chrome Extension: Create New",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "chrome-extension-developer-tools.watch",
+      "invocation": "vscode.commands.executeCommand('chrome-extension-developer-tools.watch', ...args)",
+      "title": "Chrome Extension: Watch Files",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:chrome-extension-developer-tools.build",
+    "onCommand:chrome-extension-developer-tools.create",
+    "onCommand:chrome-extension-developer-tools.watch",
+    "workspaceContains:**/manifest.json"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "aaravb.chrome-extension-developer-tools",
+    "capabilities": [
+      "contribution:commands"
+    ],
+    "interface": [
+      "chrome-extension-developer-tools.build",
+      "chrome-extension-developer-tools.create",
+      "chrome-extension-developer-tools.watch"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

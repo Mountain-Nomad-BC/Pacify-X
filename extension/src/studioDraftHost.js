@@ -318,12 +318,12 @@ function createReceiptDisposition(kind, result, payload, expectedSkillSource = n
   const variantKeys = variant === 'recovered' ? ['idempotent_replay'] : [];
   const optionalKeys = [...variantKeys, ...(result.cleanup_warnings === undefined ? [] : ['cleanup_warnings'])];
   if (kind === 'agent') {
-    const keys = ['admission_state', 'agent_id', 'authority_definition_path', 'authority_granted_by_builder', 'authority_state', 'builder_compiler_receipt_path', 'builder_compiler_receipt_sha256', 'builder_graph_explicit', 'builder_graph_path', 'builder_graph_sha256', 'builder_graph_state', 'created', 'editor_layout_path', 'editor_layout_sha256', 'host_authority_retained', 'instruction_sha256', 'operation', 'record_sha256', 'runtime_state', 'schema_version', 'validation_state', 'version'];
+    const keys = ['admission_state', 'agent_id', 'authority_definition_path', 'authority_granted_by_builder', 'authority_state', 'builder_compiler_receipt_path', 'builder_compiler_receipt_sha256', 'builder_graph_explicit', 'builder_graph_path', 'builder_graph_sha256', 'builder_graph_state', 'created', 'created_utc', 'editor_layout_path', 'editor_layout_sha256', 'host_authority_retained', 'instruction_sha256', 'operation', 'record_sha256', 'runtime_state', 'schema_version', 'validation_state', 'version'];
     return exactKeys(result, keys, optionalKeys)
       && result.schema_version === 'px.agent-creation-receipt/1.1'
       && result.operation === 'agent.create_candidate'
       && result.agent_id === identity && result.version === version
-      && SHA256.test(result.record_sha256) && SHA256.test(result.instruction_sha256)
+      && SHA256.test(result.record_sha256) && SHA256.test(result.instruction_sha256) && validCanonicalUtc(result.created_utc)
       && result.validation_state === 'structurally_valid' && result.admission_state === 'unadmitted' && result.runtime_state === 'stopped'
       && ['defined', 'none'].includes(result.authority_state) && (result.authority_state === 'defined' ? validBoundedRelativePath(result.authority_definition_path) : result.authority_definition_path === null)
       && result.builder_graph_state === 'content-bound' && validBoundedRelativePath(result.builder_graph_path) && SHA256.test(result.builder_graph_sha256)

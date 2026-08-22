@@ -41,6 +41,9 @@ def test_global_skill_isolation_preview_is_read_only(tmp_path: Path) -> None:
 
 def test_global_skill_isolation_recovers_and_restores_exact_tree(tmp_path: Path) -> None:
     source = _source(tmp_path)
+    manifest = source.parent / ".skill-lock.json"
+    original_manifest = b'{"version":3,"skills":{"microsoft-foundry":{"source":"curated"}},"dismissed":{"old":true}}\n'
+    manifest.write_bytes(original_manifest)
     project = tmp_path / "project"
     project.mkdir()
     relocation = tmp_path / "home" / ".px_canonical_skills"
@@ -68,10 +71,15 @@ def test_global_skill_isolation_recovers_and_restores_exact_tree(tmp_path: Path)
     backup = Path(completed["journal"]["permanent_backup"])
     assert tree_hash(inventory_tree(destination)) == original_hash
     assert tree_hash(inventory_tree(backup)) == original_hash
+    neutralized = json.loads(manifest.read_text(encoding="utf-8"))
+    assert neutralized == {"version": 3, "skills": {}, "dismissed": {"old": True}}
+    retained = Path(completed["journal"]["installer_manifest"]["custody"])
+    assert retained.read_bytes() == original_manifest
 
     preview = restore_global_skills(project)
     assert preview["apply"] is False
     restored = restore_global_skills(project, apply=True)
     assert restored["restored"] is True
     assert tree_hash(inventory_tree(source)) == original_hash
+    assert manifest.read_bytes() == original_manifest
     assert backup.is_dir()

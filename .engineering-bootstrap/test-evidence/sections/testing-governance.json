@@ -15,15 +15,16 @@
     "tests/test_file_lock_contention.py",
     "tests/test_bytecode_guard.py",
     "tests/test_operational_gap_ledger.py",
-    "tests/test_operational_control_proof_matrix.py"
+    "tests/test_operational_control_proof_matrix.py",
+    "tests/test_build_installed_probe_control_evidence.py"
   ],
   "cwd": ".",
   "dependencies": [],
-  "duration_seconds": 58.401247,
+  "duration_seconds": 54.169771,
   "exit_code": 0,
-  "input_sha256": "78890abbc9f75baf9c68a5efecaf382e7401c0348fb274d68496ae489419e134",
+  "input_sha256": "e9b3f6814855a5aab805453c0aeb92c5504d31806d4a584840540ae0a434f525",
   "passed": true,
-  "receipt_sha256": "0045de2f438c456e42268d725c484c447b432b098ab9c0e6bb9d6fce31fafb3d",
+  "receipt_sha256": "3e9bc59ecb42080ef87d2330341e885f9fd94b6d64f5ff045fc17d4595e39b40",
   "schema_version": "px.test-section-receipt/1.0",
   "section": "testing-governance",
   "timed_out": false

@@ -5,10 +5,10 @@
   "source_report": "evidence/operational-gap-ledger/agent-studio-control-revision-20260816.json",
   "source_report_sha256": "d978207d763e55f4bf3771b9f7fc8086ca60d768347e45f412451ecec3ab957a",
   "ui_action_inventory": "extension/resources/ui/action-inventory.json",
-  "ui_action_inventory_sha256": "2a1485f2528cce764945222c7f2fa277ba2f7e073e98f5922c085e738c90c2f6",
-  "ui_action_count": 198,
+  "ui_action_inventory_sha256": "ed45d67cf48fafa5e20daa38e8a876bb546786b521b9c52cdb557309c843802b",
+  "ui_action_count": 202,
   "dashboard_controller": "extension/media/dashboard/90-controller.js",
-  "dashboard_controller_sha256": "f7f85b5a99c274ba52ad909dad70a6106f9a218a67697be889d77de29dd781a1",
+  "dashboard_controller_sha256": "a66f76036c90f01dbe60f5b3221da2315fad4596965a9662ddd6f172b824d491",
   "dashboard_navigation_surface_count": 18,
   "surfaces": [
     {
@@ -263,8 +263,8 @@
     {
       "surface_id": "agent-studio",
       "name": "Agent Studio",
-      "expected_control_count": 110,
-      "expected_controls_sha256": "6df1ad19fff67b61320865129ca3a752d2823642dba88b07677f576b962812cf",
+      "expected_control_count": 111,
+      "expected_controls_sha256": "bb5cff2c6a47f2652bc71201bfc669c166be1d81ae46d49bb29c5bf69bb1d2b9",
       "source_files": [
         "extension/media/dashboard/49-studio-editors.js",
         "extension/media/dashboard/90-controller.js",
@@ -646,6 +646,15 @@
           "label": "resumeWorkingStudioDraft",
           "source_refs": [
             "extension/media/dashboard/90-controller.js"
+          ]
+        },
+        {
+          "control_id": "pxui.agent-studio.action.setupStudio",
+          "kind": "action",
+          "label": "setupStudio",
+          "source_refs": [
+            "extension/media/dashboard/43-catalog-surfaces.js",
+            "extension/media/dashboard/44-operational-surfaces.js"
           ]
         },
         {
@@ -1529,8 +1538,8 @@
     {
       "surface_id": "agents",
       "name": "Agents",
-      "expected_control_count": 30,
-      "expected_controls_sha256": "47119f29eb67d6b3361a0866b8f41973e93d786352bacb3db092d2c832d26b07",
+      "expected_control_count": 32,
+      "expected_controls_sha256": "e975842c4a21694e2154ca02c42db64a19d1a1fa6506334942b3df398f3a89af",
       "source_files": [
         "extension/media/dashboard/43-catalog-surfaces.js",
         "extension/media/dashboard/90-controller.js"
@@ -1591,6 +1600,14 @@
           ]
         },
         {
+          "control_id": "pxui.agents.action.importCatalogDefinition.agent",
+          "kind": "action",
+          "label": "importCatalogDefinition.agent",
+          "source_refs": [
+            "extension/media/dashboard/90-controller.js"
+          ]
+        },
+        {
           "control_id": "pxui.agents.action.inspectCatalogItem.row",
           "kind": "action",
           "label": "inspectCatalogItem.row",
@@ -1623,6 +1640,15 @@
             "extension/media/dashboard/43-catalog-surfaces.js",
             "extension/media/dashboard/44-operational-surfaces.js",
             "extension/media/dashboard/90-controller.js"
+          ]
+        },
+        {
+          "control_id": "pxui.agents.action.setupStudio",
+          "kind": "action",
+          "label": "setupStudio",
+          "source_refs": [
+            "extension/media/dashboard/43-catalog-surfaces.js",
+            "extension/media/dashboard/44-operational-surfaces.js"
           ]
         },
         {
@@ -3118,8 +3144,8 @@
     {
       "surface_id": "knowledge-core",
       "name": "Knowledge Core",
-      "expected_control_count": 99,
-      "expected_controls_sha256": "1dffac51f44335437fcba5b00fe735db70fb4e67390040b677c5064fa82c53b7",
+      "expected_control_count": 95,
+      "expected_controls_sha256": "4d56a2645ece8e022acacb736dae3b4d863449456b9bf07eda82d3c18ca8329c",
       "source_files": [
         "extension/media/dashboard/47-advanced-surfaces.js",
         "extension/media/dashboard/90-controller.js"
@@ -3621,16 +3647,6 @@
           ]
         },
         {
-          "control_id": "pxui.knowledge-core.field.learningPipelineId",
-          "kind": "field",
-          "label": "learningPipelineId",
-          "source_refs": [
-            "extension/media/dashboard/47-advanced-surfaces.js:14-65",
-            "extension/media/dashboard/90-controller.js:998-1040",
-            "extension/media/dashboard/90-controller.js:1403-1436"
-          ]
-        },
-        {
           "control_id": "pxui.knowledge-core.field.learningSourceIds",
           "kind": "field",
           "label": "learningSourceIds",
@@ -3744,36 +3760,6 @@
           "control_id": "pxui.knowledge-core.field.rollbackEvidenceRefs",
           "kind": "field",
           "label": "rollbackEvidenceRefs",
-          "source_refs": [
-            "extension/media/dashboard/47-advanced-surfaces.js:14-65",
-            "extension/media/dashboard/90-controller.js:998-1040",
-            "extension/media/dashboard/90-controller.js:1403-1436"
-          ]
-        },
-        {
-          "control_id": "pxui.knowledge-core.field.rollbackExpectedHead",
-          "kind": "field",
-          "label": "rollbackExpectedHead",
-          "source_refs": [
-            "extension/media/dashboard/47-advanced-surfaces.js:14-65",
-            "extension/media/dashboard/90-controller.js:998-1040",
-            "extension/media/dashboard/90-controller.js:1403-1436"
-          ]
-        },
-        {
-          "control_id": "pxui.knowledge-core.field.rollbackRecord",
-          "kind": "field",
-          "label": "rollbackRecord",
-          "source_refs": [
-            "extension/media/dashboard/47-advanced-surfaces.js:14-65",
-            "extension/media/dashboard/90-controller.js:998-1040",
-            "extension/media/dashboard/90-controller.js:1403-1436"
-          ]
-        },
-        {
-          "control_id": "pxui.knowledge-core.field.rollbackTarget",
-          "kind": "field",
-          "label": "rollbackTarget",
           "source_refs": [
             "extension/media/dashboard/47-advanced-surfaces.js:14-65",
             "extension/media/dashboard/90-controller.js:998-1040",
@@ -4070,8 +4056,8 @@
     {
       "surface_id": "knowledge-graph",
       "name": "Knowledge Graph",
-      "expected_control_count": 69,
-      "expected_controls_sha256": "74cfbdc76dad11c9f0c2a42e5496a69a6671994cbd44dc1beb89946f81427010",
+      "expected_control_count": 70,
+      "expected_controls_sha256": "b58e1490aa82b190d66254dbb0207b39278b850804bdccbd28bd881fd6b1160d",
       "source_files": [
         "extension/media/dashboard/48-graph-surface.js",
         "extension/media/dashboard/90-controller.js"
@@ -4193,6 +4179,14 @@
           "control_id": "pxui.knowledge-graph.action.graphLayout.orbit",
           "kind": "action",
           "label": "graphLayout.orbit",
+          "source_refs": [
+            "extension/media/dashboard/48-graph-surface.js"
+          ]
+        },
+        {
+          "control_id": "pxui.knowledge-graph.action.graphLoadAll",
+          "kind": "action",
+          "label": "graphLoadAll",
           "source_refs": [
             "extension/media/dashboard/48-graph-surface.js"
           ]
@@ -4768,8 +4762,8 @@
     {
       "surface_id": "memory",
       "name": "Memory",
-      "expected_control_count": 35,
-      "expected_controls_sha256": "a031d57dadeb6f2005e45571e9deba1cd79fcf4577f7e74a3bf570740faf99a1",
+      "expected_control_count": 36,
+      "expected_controls_sha256": "7acc4efcae57c073633e3fba68312c2e30370746cf6bbff6bc9060a75720f295",
       "source_files": [
         "extension/media/dashboard/46-observability-surfaces.js",
         "extension/media/dashboard/90-controller.js"
@@ -4805,6 +4799,14 @@
             "extension/media/dashboard/46-observability-surfaces.js",
             "extension/media/dashboard/47-advanced-surfaces.js",
             "extension/media/dashboard/90-controller.js"
+          ]
+        },
+        {
+          "control_id": "pxui.memory.action.disconnectCanonicalMemory",
+          "kind": "action",
+          "label": "disconnectCanonicalMemory",
+          "source_refs": [
+            "extension/media/dashboard/46-observability-surfaces.js"
           ]
         },
         {
@@ -5681,8 +5683,8 @@
     {
       "surface_id": "runtime-core",
       "name": "Runtime Core",
-      "expected_control_count": 35,
-      "expected_controls_sha256": "2ad0e2a86a04b21ad44acfd6567af8ccc8af6e6639844d051e4388c49259a8ba",
+      "expected_control_count": 36,
+      "expected_controls_sha256": "d1a880aa3b32308cc1ee756c82d8431d00b86eb14cec1300f57582ae1ac2ce9f",
       "source_files": [
         "extension/media/dashboard/47-advanced-surfaces.js",
         "extension/media/dashboard/90-controller.js"
@@ -5787,6 +5789,14 @@
           "control_id": "pxui.runtime-core.action.inspectRuntimeRecord.providers",
           "kind": "action",
           "label": "inspectRuntimeRecord.providers",
+          "source_refs": [
+            "extension/media/dashboard/47-advanced-surfaces.js"
+          ]
+        },
+        {
+          "control_id": "pxui.runtime-core.action.inspectRuntimeRecord.startup",
+          "kind": "action",
+          "label": "inspectRuntimeRecord.startup",
           "source_refs": [
             "extension/media/dashboard/47-advanced-surfaces.js"
           ]
@@ -6827,8 +6837,8 @@
     {
       "surface_id": "skills-tools",
       "name": "Skills Tools",
-      "expected_control_count": 40,
-      "expected_controls_sha256": "455522b617128aa6f1905b868be47fd6aee639e3a702670a59bdd7d8fb4b365c",
+      "expected_control_count": 39,
+      "expected_controls_sha256": "e0f063a9820bfa710ca916448a89fa787bb7e394e5704fbc97c3b2775b8a6208",
       "source_files": [
         "extension/media/dashboard/43-catalog-surfaces.js",
         "extension/media/dashboard/90-controller.js"
@@ -7020,16 +7030,6 @@
           "control_id": "pxui.skills-tools.field.catalogSort",
           "kind": "field",
           "label": "catalogSort",
-          "source_refs": [
-            "extension/media/dashboard/43-catalog-surfaces.js:32-43",
-            "extension/media/dashboard/90-controller.js:605-621",
-            "extension/media/dashboard/90-controller.js:1060-1064"
-          ]
-        },
-        {
-          "control_id": "pxui.skills-tools.field.fixedSkillDomain",
-          "kind": "field",
-          "label": "fixedSkillDomain",
           "source_refs": [
             "extension/media/dashboard/43-catalog-surfaces.js:32-43",
             "extension/media/dashboard/90-controller.js:605-621",
@@ -8684,8 +8684,8 @@
     {
       "surface_id": "workflows",
       "name": "Workflows",
-      "expected_control_count": 78,
-      "expected_controls_sha256": "d0902c5afc54ea00cb99d0fd70dceb6791a7b03024d82cc7a5cc6a905a1274f0",
+      "expected_control_count": 80,
+      "expected_controls_sha256": "a1863aff599abc5eb4710d16d3447c4e5a6dd5ad502bb5dc8f046eb3734e0806",
       "source_files": [
         "extension/media/dashboard/44-operational-surfaces.js",
         "extension/media/dashboard/90-controller.js"
@@ -8829,6 +8829,14 @@
           ]
         },
         {
+          "control_id": "pxui.workflows.action.importCatalogDefinition.workflow",
+          "kind": "action",
+          "label": "importCatalogDefinition.workflow",
+          "source_refs": [
+            "extension/media/dashboard/90-controller.js"
+          ]
+        },
+        {
           "control_id": "pxui.workflows.action.inspectCatalogItem.row",
           "kind": "action",
           "label": "inspectCatalogItem.row",
@@ -8931,6 +8939,15 @@
           "label": "renewClaim.row",
           "source_refs": [
             "extension/media/dashboard/90-controller.js"
+          ]
+        },
+        {
+          "control_id": "pxui.workflows.action.setupStudio",
+          "kind": "action",
+          "label": "setupStudio",
+          "source_refs": [
+            "extension/media/dashboard/43-catalog-surfaces.js",
+            "extension/media/dashboard/44-operational-surfaces.js"
           ]
         },
         {

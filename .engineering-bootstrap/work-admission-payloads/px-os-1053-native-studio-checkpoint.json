@@ -1,0 +1,18 @@
+{
+  "active_gap_id": "PX-OS-1053",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000008285",
+  "unresolved_branch_gap_ids": [],
+  "newly_discovered_gap_ids": [],
+  "learned": "All six sections and eight of ten current test groups pass. The remaining core failures prove Skill Studio can promote a package that satisfies its Studio manifest while violating the native runtime contract: missing contracts/manifest.json and resources/index.json, non-JSON-equivalent capability/skill manifests, incomplete registry package metadata, and an unreconciled specialty-map framework-only entry. Build-claim count coverage is also fixed at the prior 177-skill denominator.",
+  "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/groups/core-a-f.json",
+      "claim": "Current core-a-f failure is the stale 177-skill build-claim assertion."
+    },
+    {
+      "reference": ".engineering-bootstrap/test-evidence/groups/core-n-s.json",
+      "claim": "Current core-n-s failures identify incomplete native skill manifests, package metadata, and specialty projection."
+    }
+  ]
+}

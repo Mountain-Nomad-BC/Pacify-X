@@ -1,0 +1,21 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000008291",
+  "authority": "User-authorized reversible packaging, isolated installed-host evidence acquisition, and background installation of the repaired extension.",
+  "scope": [
+    "Reconcile the current instruction and operational-surface completion authorities against current installed-host evidence; repair any remaining functional gaps; advance only evidence-proven findings; refresh completion and evidence projections; rerun affected governed sections and groups before a final full profile and validation."
+  ],
+  "expected_effect": "Install Pacify-X 0.6.49 into a registered isolated background VS Code host for exact host evidence, then update the normal user extension installation only after that candidate passes.",
+  "rollback": "Stop and reconcile every owned isolated host, retain its receipts, reclaim only registered PACIFY-X-owned temporary profiles, and reinstall the retained 0.6.48 VSIX if the normal background update fails.",
+  "evidence": [
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000008291",
+      "claim": "Active whole-system repair checkpoint."
+    },
+    {
+      "reference": "evidence/full-control-proof-20260822/current-source-reconciliation-941-r14-full.json",
+      "claim": "Current-source 941-control walk completed with zero probe errors."
+    }
+  ],
+  "effect": "install"
+}

@@ -1,0 +1,29 @@
+{
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "3c6a6880a9d6c866a1c09460056e7b0c54f525c8c92b93c9a810d94554be65c5",
+    "payload_sha256": "58e19e1411b04fef6e717fbd256b8d285e594f51ef944f2621865c6cd2a036e3",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "issued_utc": "2026-08-21T17:46:46.075Z",
+  "nonce": "b9b64620c7ed49ff9e39ee70601adb7f",
+  "record": {
+    "approved_by": "human:vscode-local-user",
+    "effects": [
+      "read"
+    ],
+    "evidence_refs": [
+      "receipt:studio-setup"
+    ],
+    "expires_utc": null,
+    "grant_id": "grant:pacify-x-starter",
+    "scope_roots": [
+      "workspace:current"
+    ],
+    "state": "admitted",
+    "subject_id": "agent:pacify-x-starter"
+  },
+  "record_sha256": "af82eeeb70769673e6dd70ce0645cabb4ba6c5154c685bd3365401a9de76112e",
+  "schema_version": "px.studio-authority-grants/1.0"
+}

@@ -1,0 +1,70 @@
+{
+  "record": {
+    "agent_id": "agent:pacify-x-local",
+    "capability_binding_ids": [
+      "binding:pacify-x-local"
+    ],
+    "effect_grant_ids": [
+      "grant:pacify-x-local"
+    ],
+    "handoff_agent_ids": [],
+    "harness_id": "harness:vscode-lm",
+    "input_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "objective": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "objective"
+      ],
+      "type": "object"
+    },
+    "instruction_sha256": "c8cca7c3b3a5b43f7cac2ce907a373d85f67ee76f10294e410de62f7b6c92b96",
+    "lifecycle": "draft",
+    "memory_binding_ids": [],
+    "model": {
+      "family": "qwen2",
+      "max_output_tokens": 256,
+      "model_id": "qwen2.5-coder:3b",
+      "provider": "pacify-local",
+      "temperature": 0.0,
+      "timeout_seconds": 120,
+      "vendor": "pacify-local",
+      "version": "f72c60cabf6237b07f6e632b2c48d533cef25eda2efbd34bed21c5e9c01e6225"
+    },
+    "output_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "summary"
+      ],
+      "type": "object"
+    },
+    "owner": "human:vscode-local-user",
+    "project_id": "project:current",
+    "required_tests": [
+      "identity",
+      "sandbox",
+      "model-route",
+      "input-contract",
+      "output-contract",
+      "authority-bindings",
+      "tool-bindings",
+      "handoff-topology"
+    ],
+    "tool_binding_ids": [],
+    "version": "1.0.0"
+  },
+  "schema_version": "px.agentspec/1.0",
+  "sha256": "a9fd20d912e97d40b427ef2ad349a27adf718a7897393c9154311432f7566e3a"
+}

@@ -1714,7 +1714,7 @@ def build_readiness(
     }
 
 
-def build_snapshot(
+def _build_snapshot_admitted(
     root: Path,
     *,
     project: Path | None = None,
@@ -1883,6 +1883,7 @@ def build_snapshot(
             _read_json(path, {}).get("state") in {"running", "pause_requested"}
             for path in agent_session_heads
         ),
+        "agent_runs": len(agent_session_heads),
         "project_orchestrations": len(project_flows),
         "skill_orchestrations": len(skill_flows),
         "execution_bindings": len(binding_rows),
@@ -2032,7 +2033,14 @@ def build_snapshot(
             "bottlenecks": {
                 "active_work": len(runtime_core.get("active", {})),
                 "waits": int(runtime_core.get("counters", {}).get("waits", 0)),
-                "failures": int(runtime_core.get("counters", {}).get("failures", 0)),
+                "failures": sum(
+                    1
+                    for operation in runtime_core.get("operations", [])
+                    if operation.get("outcome") == "failed"
+                ),
+                "historical_failures": int(
+                    runtime_core.get("counters", {}).get("failures", 0)
+                ),
                 "legacy_direct_producers": int(
                     runtime_core.get("producer_trace_summary", {}).get(
                         "legacy_direct", 0
@@ -2074,6 +2082,52 @@ def build_snapshot(
             },
         },
     }
+
+
+def build_snapshot(
+    root: Path,
+    *,
+    project: Path | None = None,
+    workspace_root: Path | None = None,
+    refresh_hardware: bool = False,
+) -> dict[str, Any]:
+    """Build one snapshot through the canonical bounded admission owner.
+
+    The composed snapshot may invoke narrower admitted producers (hardware and
+    startup attribution).  It therefore uses the interactive lane while those
+    producers use the light lane, avoiding self-contention and retaining one
+    single-flight identity for concurrent dashboard refreshes.
+    """
+    from .work_admission import RuntimeWorkPlane
+
+    resolved_root = root.resolve()
+    resolved_project = (project or resolved_root).resolve()
+    resolved_workspace = workspace_root.resolve() if workspace_root else None
+    work_plane = RuntimeWorkPlane(resolved_root)
+    work = work_plane.execute(
+        "dashboard.snapshot",
+        lambda: _build_snapshot_admitted(
+            resolved_root,
+            project=resolved_project,
+            workspace_root=resolved_workspace,
+            refresh_hardware=refresh_hardware,
+        ),
+        reason="explicit canonical dashboard snapshot",
+        input_fingerprint={
+            "root": resolved_root.as_posix(),
+            "project": resolved_project.as_posix(),
+            "workspace_root": resolved_workspace.as_posix() if resolved_workspace else None,
+            "refresh_hardware": refresh_hardware,
+        },
+        domains=("dashboard", "runtime"),
+        lane="interactive",
+        cache_seconds=0,
+        timeout_seconds=30.0,
+        authoritative=False,
+    )
+    result = dict(work["result"])
+    result["work_admission"] = work["admission"]
+    return result
 
 
 def _normalize(kind: str, row: Mapping[str, Any], index: int) -> dict[str, Any]:

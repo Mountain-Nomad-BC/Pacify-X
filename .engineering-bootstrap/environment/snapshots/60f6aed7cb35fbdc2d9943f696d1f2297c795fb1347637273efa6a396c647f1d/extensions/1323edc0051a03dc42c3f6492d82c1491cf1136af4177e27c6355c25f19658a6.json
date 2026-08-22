@@ -1,0 +1,319 @@
+{
+  "id": "vscode.references-view",
+  "name": "Reference Search View",
+  "version": "10.0.0",
+  "publisher": "vscode",
+  "active": false,
+  "builtin": true,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "keybindings",
+    "menus",
+    "views",
+    "viewsContainers"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "vscode.references-view",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "vscode.references-view",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "vscode.references-view",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "vscode.references-view",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "vscode.references-view",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "vscode.references-view",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "references-view.clear",
+      "invocation": "vscode.commands.executeCommand('references-view.clear', ...args)",
+      "title": "Clear",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.clearHistory",
+      "invocation": "vscode.commands.executeCommand('references-view.clearHistory', ...args)",
+      "title": "Clear History",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.copy",
+      "invocation": "vscode.commands.executeCommand('references-view.copy', ...args)",
+      "title": "Copy",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.copyAll",
+      "invocation": "vscode.commands.executeCommand('references-view.copyAll', ...args)",
+      "title": "Copy All",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.copyPath",
+      "invocation": "vscode.commands.executeCommand('references-view.copyPath', ...args)",
+      "title": "Copy Path",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.findImplementations",
+      "invocation": "vscode.commands.executeCommand('references-view.findImplementations', ...args)",
+      "title": "Find All Implementations",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.findReferences",
+      "invocation": "vscode.commands.executeCommand('references-view.findReferences', ...args)",
+      "title": "Find All References",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.next",
+      "invocation": "vscode.commands.executeCommand('references-view.next', ...args)",
+      "title": "Go to Next Reference",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "references-view.canNavigate"
+    },
+    {
+      "id": "references-view.pickFromHistory",
+      "invocation": "vscode.commands.executeCommand('references-view.pickFromHistory', ...args)",
+      "title": "Show History",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.prev",
+      "invocation": "vscode.commands.executeCommand('references-view.prev', ...args)",
+      "title": "Go to Previous Reference",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "references-view.canNavigate"
+    },
+    {
+      "id": "references-view.refind",
+      "invocation": "vscode.commands.executeCommand('references-view.refind', ...args)",
+      "title": "Rerun",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.refresh",
+      "invocation": "vscode.commands.executeCommand('references-view.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.removeCallItem",
+      "invocation": "vscode.commands.executeCommand('references-view.removeCallItem', ...args)",
+      "title": "Dismiss",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.removeReferenceItem",
+      "invocation": "vscode.commands.executeCommand('references-view.removeReferenceItem', ...args)",
+      "title": "Dismiss",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.removeTypeItem",
+      "invocation": "vscode.commands.executeCommand('references-view.removeTypeItem', ...args)",
+      "title": "Dismiss",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.showCallHierarchy",
+      "invocation": "vscode.commands.executeCommand('references-view.showCallHierarchy', ...args)",
+      "title": "Show Call Hierarchy",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.showIncomingCalls",
+      "invocation": "vscode.commands.executeCommand('references-view.showIncomingCalls', ...args)",
+      "title": "Show Incoming Calls",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.showOutgoingCalls",
+      "invocation": "vscode.commands.executeCommand('references-view.showOutgoingCalls', ...args)",
+      "title": "Show Outgoing Calls",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.showSubtypes",
+      "invocation": "vscode.commands.executeCommand('references-view.showSubtypes', ...args)",
+      "title": "Show Subtypes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.showSupertypes",
+      "invocation": "vscode.commands.executeCommand('references-view.showSupertypes', ...args)",
+      "title": "Show Supertypes",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "references-view.showTypeHierarchy",
+      "invocation": "vscode.commands.executeCommand('references-view.showTypeHierarchy', ...args)",
+      "title": "Show Type Hierarchy",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:editor.action.showReferences",
+    "onCommand:references-view.find"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": true
+    },
+    "virtual_workspaces": true,
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "vscode.references-view",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:keybindings",
+      "contribution:menus",
+      "contribution:views",
+      "contribution:viewsContainers"
+    ],
+    "interface": [
+      "references-view.clear",
+      "references-view.clearHistory",
+      "references-view.copy",
+      "references-view.copyAll",
+      "references-view.copyPath",
+      "references-view.findImplementations",
+      "references-view.findReferences",
+      "references-view.next",
+      "references-view.pickFromHistory",
+      "references-view.prev",
+      "references-view.refind",
+      "references-view.refresh",
+      "references-view.removeCallItem",
+      "references-view.removeReferenceItem",
+      "references-view.removeTypeItem",
+      "references-view.showCallHierarchy",
+      "references-view.showIncomingCalls",
+      "references-view.showOutgoingCalls",
+      "references-view.showSubtypes",
+      "references-view.showSupertypes",
+      "references-view.showTypeHierarchy"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": true
+      },
+      "virtual_workspaces": true,
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

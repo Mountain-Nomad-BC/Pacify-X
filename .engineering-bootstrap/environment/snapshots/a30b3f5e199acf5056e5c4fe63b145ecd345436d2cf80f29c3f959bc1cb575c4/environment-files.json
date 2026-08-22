@@ -1,0 +1,233 @@
+[
+  {
+    "id": "env-file:72b423e5db99366522f8",
+    "path": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\templates\\service_capabilities\\n8n\\.env.example",
+    "relative_path": "templates/service_capabilities/n8n/.env.example",
+    "owner_root": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X",
+    "kind": "schema-template",
+    "readable": true,
+    "error": null,
+    "size_bytes": 520,
+    "modified_utc": "2026-08-05T19:51:24.703Z",
+    "variable_count": 15,
+    "variables": [
+      {
+        "name": "N8N_HOST",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": false,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      },
+      {
+        "name": "N8N_PROTOCOL",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": false,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      },
+      {
+        "name": "N8N_PORT",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": false,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      },
+      {
+        "name": "N8N_EDITOR_BASE_URL",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": false,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      },
+      {
+        "name": "WEBHOOK_URL",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": false,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      },
+      {
+        "name": "N8N_ENCRYPTION_KEY",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": false,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      },
+      {
+        "name": "DB_TYPE",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": false,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      },
+      {
+        "name": "DB_POSTGRESDB_HOST",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": false,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      },
+      {
+        "name": "DB_POSTGRESDB_PORT",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": false,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      },
+      {
+        "name": "DB_POSTGRESDB_DATABASE",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": false,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      },
+      {
+        "name": "DB_POSTGRESDB_USER",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": false,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      },
+      {
+        "name": "DB_POSTGRESDB_PASSWORD",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": true,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      },
+      {
+        "name": "EXECUTIONS_DATA_PRUNE",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": false,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      },
+      {
+        "name": "EXECUTIONS_DATA_MAX_AGE",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": false,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      },
+      {
+        "name": "N8N_LOG_LEVEL",
+        "required": true,
+        "optional": false,
+        "present": false,
+        "secret_like": false,
+        "provider": null,
+        "provider_relationship": null,
+        "consumers": [],
+        "value_storage": "prohibited",
+        "value_fingerprint": null
+      }
+    ],
+    "exposure": {
+      "status": "ignore-pattern-observed",
+      "pattern": ".env",
+      "method": "bounded-local-pattern-check",
+      "definitive": false
+    },
+    "validation": {
+      "status": "attention",
+      "missing_required": [
+        "DB_POSTGRESDB_DATABASE",
+        "DB_POSTGRESDB_HOST",
+        "DB_POSTGRESDB_PASSWORD",
+        "DB_POSTGRESDB_PORT",
+        "DB_POSTGRESDB_USER",
+        "DB_TYPE",
+        "EXECUTIONS_DATA_MAX_AGE",
+        "EXECUTIONS_DATA_PRUNE",
+        "N8N_EDITOR_BASE_URL",
+        "N8N_ENCRYPTION_KEY",
+        "N8N_HOST",
+        "N8N_LOG_LEVEL",
+        "N8N_PORT",
+        "N8N_PROTOCOL",
+        "WEBHOOK_URL"
+      ],
+      "duplicate_keys": [],
+      "potential_conflicts": []
+    },
+    "change_detection": {
+      "method": "metadata-only",
+      "content_fingerprint": null,
+      "note": "No value or plain secret hash is retained; keyed HMAC requires a separately approved secret key."
+    },
+    "lifecycle": {
+      "maintainable": true,
+      "deletion_requires_explicit_confirmation": true
+    }
+  }
+]

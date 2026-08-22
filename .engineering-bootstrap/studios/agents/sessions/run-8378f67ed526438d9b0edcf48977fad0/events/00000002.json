@@ -1,0 +1,41 @@
+{
+  "actor": "human:vscode-local-user",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "0078662629f180a53b48832d298b29b7b366bc8a68ea4e92f77672fca2a10820",
+    "payload_sha256": "a3835c35f9b57f4ea2b183a0f961d77e04393b31706b040106bd5b2c5a82543a",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "event_sha256": "79b60b11e7449e66440c9041dba64f4f82ef013d00e1ec9c433adb0a30f1a3f8",
+  "operation": "agent.worker.start",
+  "previous_event_sha256": "976fd8ca714ee04ee07a8235b6fde82fb4cb67fcb586f8a1b0f50976dd1652f1",
+  "recorded_utc": "2026-08-21T17:44:55.891Z",
+  "run_id": "run-8378f67ed526438d9b0edcf48977fad0",
+  "schema_version": "px.studio-durable-run-event/1.0",
+  "sequence": 2,
+  "state": {
+    "authority_state": "codex-host-retained",
+    "checkpoint": {
+      "phase": "worker-running",
+      "repeat_safe": true,
+      "resume_strategy": "restart-closed-local-worker",
+      "worker_completed": false
+    },
+    "created_utc": "2026-08-21T17:44:55.823Z",
+    "failure": null,
+    "heartbeat_utc": "2026-08-21T17:44:55.891Z",
+    "kind": "agent",
+    "owner": "human:vscode-local-user",
+    "request_sha256": "a25ac754bb46b9f155197c506b86fb7d47b033dc5e0265fd391a5fb5ae6d62b9",
+    "resume_count": 0,
+    "revision_sha256": "b0f879abeaeccb62a871b594fb0492c2694dadd9eff19575ed5ed6d62437a297",
+    "run_id": "run-8378f67ed526438d9b0edcf48977fad0",
+    "schema_version": "px.studio-durable-run/1.0",
+    "sequence": 2,
+    "state": "running",
+    "subject_id": "agent:pacify-x-starter",
+    "updated_utc": "2026-08-21T17:44:55.891Z",
+    "version": "1.0.2"
+  }
+}

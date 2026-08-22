@@ -1,0 +1,236 @@
+{
+  "id": "ms-vscode.remote-explorer",
+  "name": "Remote Explorer",
+  "version": "0.5.0",
+  "publisher": "ms-vscode",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [
+    "ui"
+  ],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "menus",
+    "views"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-vscode.remote-explorer",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-vscode.remote-explorer",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-vscode.remote-explorer",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "ms-vscode.remote-explorer",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "remote-explorer.add",
+      "invocation": "vscode.commands.executeCommand('remote-explorer.add', ...args)",
+      "title": "New Remote",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-explorer.configureSsh",
+      "invocation": "vscode.commands.executeCommand('remote-explorer.configureSsh', ...args)",
+      "title": "Open SSH Config File",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-explorer.connectToFolderInCurrentWindow",
+      "invocation": "vscode.commands.executeCommand('remote-explorer.connectToFolderInCurrentWindow', ...args)",
+      "title": "Connect in Current Window...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-explorer.connectToFolderInNewWindow",
+      "invocation": "vscode.commands.executeCommand('remote-explorer.connectToFolderInNewWindow', ...args)",
+      "title": "Connect in New Window...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-explorer.connectToRemoteInCurrentWindow",
+      "invocation": "vscode.commands.executeCommand('remote-explorer.connectToRemoteInCurrentWindow', ...args)",
+      "title": "Connect in Current Window...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-explorer.connectToRemoteInNewWindow",
+      "invocation": "vscode.commands.executeCommand('remote-explorer.connectToRemoteInNewWindow', ...args)",
+      "title": "Connect in New Window...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-explorer.connectToWslUsingDistro",
+      "invocation": "vscode.commands.executeCommand('remote-explorer.connectToWslUsingDistro', ...args)",
+      "title": "Connect using Distro in Current Window...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-explorer.connectToWslUsingDistroInNewWindow",
+      "invocation": "vscode.commands.executeCommand('remote-explorer.connectToWslUsingDistroInNewWindow', ...args)",
+      "title": "Connect using Distro in New Window...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-explorer.deleteFolderHistoryItem",
+      "invocation": "vscode.commands.executeCommand('remote-explorer.deleteFolderHistoryItem', ...args)",
+      "title": "Remove from Recent List",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-explorer.refresh",
+      "invocation": "vscode.commands.executeCommand('remote-explorer.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-explorer.signIntoTunnelGithub",
+      "invocation": "vscode.commands.executeCommand('remote-explorer.signIntoTunnelGithub', ...args)",
+      "title": "Sign in with GitHub",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-explorer.signIntoTunnelMicrosoft",
+      "invocation": "vscode.commands.executeCommand('remote-explorer.signIntoTunnelMicrosoft', ...args)",
+      "title": "Sign in with Microsoft",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-explorer.unregisterTunnel",
+      "invocation": "vscode.commands.executeCommand('remote-explorer.unregisterTunnel', ...args)",
+      "title": "Unregister Tunnel",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:remote-internal.setActiveFolders"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "ui"
+    ],
+    "workspace_trust": {
+      "supported": true
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-vscode.remote-explorer",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:menus",
+      "contribution:views"
+    ],
+    "interface": [
+      "remote-explorer.add",
+      "remote-explorer.configureSsh",
+      "remote-explorer.connectToFolderInCurrentWindow",
+      "remote-explorer.connectToFolderInNewWindow",
+      "remote-explorer.connectToRemoteInCurrentWindow",
+      "remote-explorer.connectToRemoteInNewWindow",
+      "remote-explorer.connectToWslUsingDistro",
+      "remote-explorer.connectToWslUsingDistroInNewWindow",
+      "remote-explorer.deleteFolderHistoryItem",
+      "remote-explorer.refresh",
+      "remote-explorer.signIntoTunnelGithub",
+      "remote-explorer.signIntoTunnelMicrosoft",
+      "remote-explorer.unregisterTunnel"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "ui"
+      ],
+      "workspace_trust": {
+        "supported": true
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

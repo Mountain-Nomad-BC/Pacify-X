@@ -21,6 +21,11 @@ def test_local_dependency_installations_are_pruned_at_the_root() -> None:
         ".engineering-bootstrap/operation-bus/wal/committed/operation/after.json"
     )
     assert is_external_environment_relative(".engineering-bootstrap/project-map/index.json")
+    assert is_external_environment_relative(".engineering-bootstrap/studios/agents/revision.json")
+    assert is_external_environment_relative("projects/pacify-x/runtime/cli.py")
+    assert is_external_environment_relative("projects_tracking/project-registry.json")
+    assert is_external_environment_relative("repo_quarantine/prj_demo/receipt.json")
+    assert is_external_environment_relative("shared_capabilities/catalog.json")
     assert is_external_environment_relative(".px/preserved-skills/initial/user-original/tool.py")
     assert is_external_environment_relative(
         ".px/preserved-extension-installations/initial/extension/package.json"
@@ -32,5 +37,11 @@ def test_project_source_boundary_does_not_hide_similar_nested_names(tmp_path: Pa
     assert not is_project_source(tmp_path / "Python" / "x.py", tmp_path)
     assert not is_project_source(tmp_path / ".venv-a" / "x.py", tmp_path)
     assert not is_project_source(tmp_path / ".px" / "preserved-skills" / "x.py", tmp_path)
+    assert not is_project_source(tmp_path / "projects" / "demo" / "runtime.py", tmp_path)
+    assert not is_project_source(tmp_path / "projects_tracking" / "events" / "1.json", tmp_path)
+    assert not is_project_source(
+        tmp_path / ".engineering-bootstrap" / "studios" / "agents" / "run.json",
+        tmp_path,
+    )
     assert is_project_source(tmp_path / "runtime" / "Python" / "x.py", tmp_path)
     assert not is_project_source(tmp_path / "extension" / "node_modules" / "x.js", tmp_path)

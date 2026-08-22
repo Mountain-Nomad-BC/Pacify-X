@@ -1,0 +1,25 @@
+workspace_id = "wsp_pacify-x"
+policy_version = "1.0.0"
+hard_delete_allowed_for_automation = false
+
+[roots]
+projects = "projects"
+tracking = "projects_tracking"
+quarantine = "repo_quarantine"
+shared_capabilities = "shared_capabilities"
+
+[boundaries]
+cross_project_context_default = "deny"
+untagged_context = "deny"
+project_switch_requires_teardown = true
+quarantine_indexing = false
+
+[leases]
+default_minutes = 60
+max_minutes = 1440
+write_requires_intent = true
+
+[memory]
+canonical_format = "markdown"
+address_scheme = "adaptive-minimum-bit-alphabetic-v1"
+integrity_hash = "sha256"

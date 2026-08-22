@@ -1,0 +1,35 @@
+{
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "4981e159d42473c8f83c362ad2a7e14f35248dde390ba0269446916767cc0d33",
+    "payload_sha256": "6a1b724c979b5add37cae027e3911192443f614384b9432e1cde0d634be9c3ff",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "authority_state": "codex-host-retained",
+  "checkpoint": {
+    "phase": "succeeded",
+    "process_receipt": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.engineering-bootstrap\\studios\\agents\\cleanup-receipts\\process-59296aa9033240169a9949eb6daac8bb.json",
+    "process_status": "exited",
+    "repeat_safe": true,
+    "resume_strategy": "restart-closed-local-worker",
+    "task_cleanup_receipt": "cleanup-92db27c61fb441e69b1d5df4f3a12ea5",
+    "worker_completed": true
+  },
+  "created_utc": "2026-08-22T11:47:26.954Z",
+  "failure": null,
+  "heartbeat_utc": "2026-08-22T11:47:27.756Z",
+  "kind": "agent",
+  "last_event_sha256": "f906e0f14f72431180e99aa552dde24721363e50de7dcb5da19e2b38db6f3418",
+  "owner": "human:vscode-local-user",
+  "request_sha256": "a25ac754bb46b9f155197c506b86fb7d47b033dc5e0265fd391a5fb5ae6d62b9",
+  "resume_count": 0,
+  "revision_sha256": "e84577e723d22bbb20b6ab7d2cdbcf5f5d7dd873e063a0d62d9f7014544f4167",
+  "run_id": "run-46230cb6695a439ea241b0256fb83aec",
+  "schema_version": "px.studio-durable-run/1.0",
+  "sequence": 3,
+  "state": "succeeded",
+  "subject_id": "agent:pacify-x-starter",
+  "updated_utc": "2026-08-22T11:47:27.756Z",
+  "version": "1.0.6"
+}

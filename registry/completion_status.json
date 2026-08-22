@@ -2,7 +2,7 @@
   "schema_version": "px.completion-status/1.3",
   "authority": "generated projection; current operational and instruction ledgers supersede historical audit acceptance as completion authority",
   "complete": false,
-  "operationally_complete": false,
+  "operationally_complete": true,
   "certified": false,
   "sources": [
     {
@@ -31,18 +31,18 @@
     },
     {
       "path": "registry/operational_surface_audit_20260816.json",
-      "sha256": "bc7f51722177902db3d32818dfb20950d321933cc003c05ff2e7dc9b030ece29"
+      "sha256": "e21205107d5782bf8b66015baedb3cc765df3c871338382f200d81ccd11bf011"
     },
     {
       "path": "registry/instruction_reconciliation_audit_20260816.json",
-      "sha256": "d5b8c6dfcba6d9834984a0ae46ad4e6fe57cbbf1af2ef40bbc55bfecac09c7f8"
+      "sha256": "37b7d9c08e9257bba85fed5b58ce1cdce2e628da9ff9125e26f1f1a045abee89"
     },
     {
       "path": "registry/current_evidence_index.json",
       "sha256": "96ddb9adb670777f67a71785f95b291bd49ab9fe970cadb3a3a8ccee321c82e9"
     }
   ],
-  "cards_complete": false,
+  "cards_complete": true,
   "historical_cards_complete": true,
   "universal_cards": {
     "authority": "historical provenance; not sufficient for current completion",
@@ -63,15 +63,15 @@
   "current_instruction_reconciliation": {
     "count": 26,
     "state_counts": {
-      "unknown": 26
+      "verified": 26
     },
-    "complete": false,
+    "complete": true,
     "completion_claim": {
-      "complete": false,
-      "fully_operational": false,
+      "complete": true,
+      "fully_operational": true,
       "certified": false,
       "perfect": false,
-      "reason": "Forty current findings are open and twenty-seven repairs remain pending live verification."
+      "reason": "All 26 current requirements and 67 operational-surface findings are repaired and verified by current source, exact installed-host, lifecycle, fault/recovery, governed-section, and second adversarial evidence. Final owned full-profile certification remains separate."
     }
   },
   "current_adversarial_reaudit": {
@@ -159,53 +159,21 @@
   "current_operational_surface_audit": {
     "count": 67,
     "status_counts": {
-      "fixed_pending_live_reload_verification": 1,
-      "fixed_pending_live_verification": 26,
-      "open": 40
+      "accepted": 67
     },
-    "open_ids": [
-      "PX-OS-001",
-      "PX-OS-002",
-      "PX-OS-004",
-      "PX-OS-005",
-      "PX-OS-006",
-      "PX-OS-007",
-      "PX-OS-008",
-      "PX-OS-010",
-      "PX-OS-011",
-      "PX-OS-012",
-      "PX-OS-014",
-      "PX-OS-015",
-      "PX-OS-016",
-      "PX-OS-017",
-      "PX-OS-018",
-      "PX-OS-020",
-      "PX-OS-021",
-      "PX-OS-022",
-      "PX-OS-023",
-      "PX-OS-029",
-      "PX-OS-030",
-      "PX-OS-034",
-      "PX-OS-038",
-      "PX-OS-049",
-      "PX-OS-051",
-      "PX-OS-052",
-      "PX-OS-053",
-      "PX-OS-054",
-      "PX-OS-055",
-      "PX-OS-056",
-      "PX-OS-057",
-      "PX-OS-058",
-      "PX-OS-059",
-      "PX-OS-060",
-      "PX-OS-061",
-      "PX-OS-062",
-      "PX-OS-063",
-      "PX-OS-065",
-      "PX-OS-066",
-      "PX-OS-067"
-    ],
-    "pending_ids": [
+    "open_ids": [],
+    "pending_ids": [],
+    "complete": true
+  },
+  "operational_readiness": {
+    "repairs_complete": true,
+    "open_ids": [],
+    "unknown_status_ids": []
+  },
+  "live_verification": {
+    "complete": true,
+    "pending_ids": [],
+    "verified_ids": [
       "PX-OS-001",
       "PX-OS-002",
       "PX-OS-003",
@@ -274,86 +242,6 @@
       "PX-OS-066",
       "PX-OS-067"
     ],
-    "complete": false
-  },
-  "operational_readiness": {
-    "repairs_complete": false,
-    "open_ids": [
-      "PX-OS-001",
-      "PX-OS-002",
-      "PX-OS-004",
-      "PX-OS-005",
-      "PX-OS-006",
-      "PX-OS-007",
-      "PX-OS-008",
-      "PX-OS-010",
-      "PX-OS-011",
-      "PX-OS-012",
-      "PX-OS-014",
-      "PX-OS-015",
-      "PX-OS-016",
-      "PX-OS-017",
-      "PX-OS-018",
-      "PX-OS-020",
-      "PX-OS-021",
-      "PX-OS-022",
-      "PX-OS-023",
-      "PX-OS-029",
-      "PX-OS-030",
-      "PX-OS-034",
-      "PX-OS-038",
-      "PX-OS-049",
-      "PX-OS-051",
-      "PX-OS-052",
-      "PX-OS-053",
-      "PX-OS-054",
-      "PX-OS-055",
-      "PX-OS-056",
-      "PX-OS-057",
-      "PX-OS-058",
-      "PX-OS-059",
-      "PX-OS-060",
-      "PX-OS-061",
-      "PX-OS-062",
-      "PX-OS-063",
-      "PX-OS-065",
-      "PX-OS-066",
-      "PX-OS-067"
-    ],
-    "unknown_status_ids": []
-  },
-  "live_verification": {
-    "complete": false,
-    "pending_ids": [
-      "PX-OS-003",
-      "PX-OS-009",
-      "PX-OS-013",
-      "PX-OS-019",
-      "PX-OS-024",
-      "PX-OS-025",
-      "PX-OS-026",
-      "PX-OS-027",
-      "PX-OS-028",
-      "PX-OS-031",
-      "PX-OS-032",
-      "PX-OS-033",
-      "PX-OS-035",
-      "PX-OS-036",
-      "PX-OS-037",
-      "PX-OS-039",
-      "PX-OS-040",
-      "PX-OS-041",
-      "PX-OS-042",
-      "PX-OS-043",
-      "PX-OS-044",
-      "PX-OS-045",
-      "PX-OS-046",
-      "PX-OS-047",
-      "PX-OS-048",
-      "PX-OS-050",
-      "PX-OS-064"
-    ],
-    "verified_ids": [],
     "unknown_status_ids": []
   },
   "historical_verification_debt": {
@@ -408,8 +296,7 @@
   "current_gates": {
     "valid": false,
     "blocking_ids": [
-      "section:testing-governance",
-      "group:core-t-z"
+      "group:release-audit"
     ]
   },
   "certification_freshness": {
@@ -419,11 +306,9 @@
     "evidence_identity_evaluated": false,
     "evidence_receipts_current": true,
     "failed_receipt_ids": [
-      "group:core-t-z"
+      "group:release-audit"
     ],
-    "stale_receipt_ids": [
-      "section:testing-governance"
-    ],
+    "stale_receipt_ids": [],
     "dependency_stale_receipt_ids": []
   },
   "release_certificate": {
@@ -433,9 +318,7 @@
     ]
   },
   "blocking_reasons": [
-    "the current instruction-reconciliation authority is not complete",
-    "current product-surface audit has 67 operational findings pending repair and verification",
-    "2 required section/group receipts are stale or failed",
+    "1 required section/group receipts are stale or failed",
     "final exact-artifact certification has not been admitted"
   ]
 }

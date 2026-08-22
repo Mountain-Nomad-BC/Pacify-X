@@ -1,0 +1,29 @@
+{
+  "action_id": "agent-harness-1f9fe5780cfe426185dc6f5dcbcea7eb",
+  "audit_record_hash": "f4e545cb7e6b845c69a13427a4f999813dccfcff6f3b12914279572d9b8d8243",
+  "duration_seconds": 0.33403999998699874,
+  "ended_at": "2026-08-22T11:47:27.408Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-59296aa9033240169a9949eb6daac8bb",
+  "resource_id": "process-c1c4cfdcdf1c4eb68e2a8d73aaa5769f",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-08-22T11:47:27.074Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 465,
+    "total_bytes": 465,
+    "truncated": false
+  },
+  "tree_closed": true
+}

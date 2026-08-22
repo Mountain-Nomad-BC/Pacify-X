@@ -1,0 +1,2528 @@
+{
+  "allowed_dispositions": [
+    "adopt",
+    "merge",
+    "pattern_only",
+    "reference_only",
+    "defer",
+    "reject",
+    "duplicate",
+    "unsafe",
+    "irrelevant"
+  ],
+  "promotion_requirements": [
+    "unique_id",
+    "io_contract",
+    "effect_declaration",
+    "dependency_check",
+    "validation_evidence",
+    "approval"
+  ],
+  "records": [
+    {
+      "effects": [
+        "install_tool",
+        "network",
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "acquire-install-n8n",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "install_tool",
+        "network",
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "acquire-install-supabase",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "active-evaluation-selector",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "adapt-human-learning-loop",
+      "implementation": "candidate_wrapper",
+      "notes": "Inactive external candidate; admission and project-local review are required before hydration.",
+      "source_disposition": "reference_only",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "analyze-engineering-intelligence",
+      "implementation": "clean_room",
+      "notes": "Deterministic Pack 10 analysis with bounded traversal, explicit uncertainty, citation-gated research assimilation, and proposal-only refactoring.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "analyze-repository-intelligence",
+      "implementation": "clean_room",
+      "notes": "Lazy domain owner with direct hash-bound execution certification for every admitted exact tool, positive fixtures, fail-closed security cases, contracts, and orchestration validation.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 5
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "architecture-deepening-audit",
+      "implementation": "sanitized_adaptation",
+      "notes": "Admitted as a lazy engineering-reasoning procedure with deterministic runtime support where applicable.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "audit-ai-runtime-assurance",
+      "implementation": "clean_room",
+      "notes": "Deterministic, lazy, fail-closed assurance control with source-note lineage and no autonomous mutation.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "audit-incomplete-implementations",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "audit-interactive-systems",
+      "implementation": "candidate_wrapper",
+      "notes": "Inactive external candidate; admission and project-local review are required before hydration.",
+      "source_disposition": "reference_only",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "audit-source-capabilities",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "automate-supabase-with-n8n",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "migration",
+        "network",
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "backup-deploy-recover-supabase",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "migration",
+        "network",
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "backup-upgrade-restore-n8n",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "behavior-to-code-mapper",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "benchmark-and-route-agents",
+      "implementation": "candidate_wrapper",
+      "notes": "Inactive external candidate; admission and project-local review are required before hydration.",
+      "source_disposition": "reference_only",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "benchmark-domain-adapter",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "bounded-workflow-topology-selector",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "build-n8n-ai-workflows",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "build-n8n-custom-nodes",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "build-n8n-supabase-rag",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "build-supabase-edge-functions",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "candidate-memory-promoter",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "certify-reversible-validation",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "certify-skeptical-engineering",
+      "implementation": "clean_room",
+      "notes": "Deterministic, lazy, fail-closed assurance control with source-note lineage and no autonomous mutation.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "commission-evidence-first-project",
+      "implementation": "clean_room",
+      "notes": "Deterministic, lazy, fail-closed assurance control with source-note lineage and no autonomous mutation.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "migration",
+        "read_local"
+      ],
+      "id": "configure-n8n",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "connect-n8n-to-supabase",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "context-compactor",
+      "implementation": "clean_room_runtime",
+      "notes": "Active lazy skill backed by deterministic mandatory-record preservation and budget failure tests.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "context-handoff-package",
+      "implementation": "sanitized_adaptation",
+      "notes": "Admitted as a lazy engineering-reasoning procedure with deterministic runtime support where applicable.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "corpus-to-skill-tree-compiler",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "cross-paper-mechanism-fuser",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "data-sort-dry-run-picker",
+      "implementation": "clean_room",
+      "notes": "Deterministic bounded sampling, compatible-candidate pilot, top-three benchmark, correctness trace, and dry-run-only selection receipt for bulk data sorting.",
+      "source_disposition": "adopt",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 3
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "decision-wayfinding",
+      "implementation": "sanitized_adaptation",
+      "notes": "Admitted as a lazy engineering-reasoning procedure with deterministic runtime support where applicable.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "deep-module-design",
+      "implementation": "sanitized_adaptation",
+      "notes": "Admitted as a lazy engineering-reasoning procedure with deterministic runtime support where applicable.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "dependency-impact-tracer",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "deploy-isolated-model-worker",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "install_tool",
+        "network",
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "deploy-n8n-docker",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "design-build-n8n-workflows",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "design-it-twice",
+      "implementation": "sanitized_adaptation",
+      "notes": "Admitted as a lazy engineering-reasoning procedure with deterministic runtime support where applicable.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "design-n8n-supabase-reliability",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "design-n8n-supabase-security-boundaries",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "design-supabase-postgres",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "develop-n8n-monorepo",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "develop-supabase-locally",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "diagnose-python-repair",
+      "implementation": "clean_room",
+      "notes": "Bounded diagnostic guidance; generated repairs remain task-specific and require focused proof.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "discover-environment-safely",
+      "implementation": "clean_room",
+      "notes": "Deterministic, lazy, fail-closed assurance control with source-note lineage and no autonomous mutation.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "domain-language-maintenance",
+      "implementation": "sanitized_adaptation",
+      "notes": "Admitted as a lazy engineering-reasoning procedure with deterministic runtime support where applicable.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "dual-axis-code-review",
+      "implementation": "sanitized_adaptation",
+      "notes": "Admitted as a lazy engineering-reasoning procedure with deterministic runtime support where applicable.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "dynamic-service-discovery",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "dynamic-skill-detonator",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "enforce-governance-controls",
+      "implementation": "clean_room",
+      "notes": "Generalized control patterns only; product-specific source code remains outside active assets.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "enforce-source-import-boundaries",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "engineer-hybrid-retrieval",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "engineer-verification-lab",
+      "implementation": "clean_room",
+      "notes": "Lazy domain owner reconstructed from declared outcomes; positive, negative, deterministic helper, contract, and orchestration validation is current.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "evaluate-n8n-fit",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "evaluate-retrieval-readiness",
+      "implementation": "clean_room",
+      "notes": "Versioned retrieval metrics and forbidden-source exposure gate; performs no indexing or activation.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 1
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "evaluate-supabase-fit",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "evaluation-budget-allocator",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "evidence-assembler",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "evolve-session-learning",
+      "implementation": "candidate_wrapper",
+      "notes": "Inactive external candidate; admission and project-local review are required before hydration.",
+      "source_disposition": "reference_only",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "execution-contract-enforcer",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "experience-reconstructor",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "forge-skills-from-knowledge",
+      "implementation": "clean_room",
+      "notes": "Executable candidate-only knowledge compiler, calculation emitter, skill composer, evolution planner, and certification gate.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 5
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "frontier-questioning",
+      "implementation": "sanitized_adaptation",
+      "notes": "Admitted as a lazy engineering-reasoning procedure with deterministic runtime support where applicable.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "gate-model-data-lifecycle",
+      "implementation": "clean_room",
+      "notes": "Metadata-only rights, privacy, split-leakage, drift, and supply-chain admission before model effects.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "govern-candidate-resolution-pipeline",
+      "implementation": "clean_room",
+      "notes": "Canonical source compilation, resolver-stage invariants, independent scoring, dependency closure, and reasoned package selection.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 3
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "govern-cross-harness-runtime",
+      "implementation": "candidate_wrapper",
+      "notes": "Inactive external candidate; admission and project-local review are required before hydration.",
+      "source_disposition": "reference_only",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "govern-cybersecurity-capabilities",
+      "implementation": "governed_provider_adapter",
+      "notes": "One lazy control skill owns 817 metadata-only candidates; R3/R4 fail closed and provider scripts remain inert.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 16
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "govern-deployment-safety",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "network",
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "govern-distributed-work-runtime",
+      "implementation": "clean_room",
+      "notes": "Project-scoped work, budget, runtime, tool, secret, and job leases with deterministic reconciliation.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "govern-epistemic-skill-evolution",
+      "implementation": "clean_room",
+      "notes": "Bitemporal facts, causal invalidation, and isolated independently judged skill experiments.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "govern-external-capability-intake",
+      "implementation": "clean_room",
+      "notes": "Canonical metadata-first intake control with behavioral validation.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "govern-hooked-execution",
+      "implementation": "candidate_wrapper",
+      "notes": "Inactive external candidate; admission and project-local review are required before hydration.",
+      "source_disposition": "reference_only",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "govern-knowledge-refinery",
+      "implementation": "clean_room",
+      "notes": "Canonical non-destructive knowledge refinery with seven-way novelty, graph, retrieval, and staging controls.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 7
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "govern-memory-fabric",
+      "implementation": "clean_room",
+      "notes": "Canonical scoped memory with sanitized L0 capture, layered distillation, conflict and promotion gates, bounded loadouts, explainable hybrid recall, layer-aware context assembly, reversible offload, durable writes, evaluation, adaptive addressing, repair, and provider isolation.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 18
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "govern-metacognitive-evolution",
+      "implementation": "sanitized_authoritative_runtime",
+      "notes": "Single lazy hydration boundary for 50 typed contracts; composes existing canonical ledgers, graphs, memory, routing, improvement, and certification owners.",
+      "source_disposition": "extend_and_compose",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6,
+        "state": "current"
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "govern-n8n-community-nodes",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "govern-operating-kernel",
+      "implementation": "clean_room",
+      "notes": "Lazy domain owner reconstructed from declared outcomes; positive, negative, deterministic helper, contract, and orchestration validation is current.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "govern-runtime-protocol-deployment",
+      "implementation": "clean_room",
+      "notes": "Lazy domain owner reconstructed from declared outcomes; positive, negative, deterministic helper, contract, and orchestration validation is current.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "govern-visual-runtime-accessibility",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "guided-procedure-wizard",
+      "implementation": "sanitized_adaptation",
+      "notes": "Admitted as a lazy engineering-reasoning procedure with deterministic runtime support where applicable.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "handle-debug-n8n-executions",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "harden-container-boundaries",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "hardware-aware-execution-routing",
+      "implementation": "clean_room",
+      "notes": "Centralized compatibility, free-VRAM, benchmark, correctness, telemetry, and bounded CPU-fallback routing.",
+      "source_disposition": "adopt",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 9
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "human-handoff-state-transfer",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "implement-supabase-auth",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "inspect-live-contracts",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "inspect-llm-architecture",
+      "implementation": "clean_room",
+      "notes": "Normalizes untrusted model configuration and produces deterministic architecture, parameter, KV-cache, and memory evidence without importing model code.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "install-capabilities-selectively",
+      "implementation": "candidate_wrapper",
+      "notes": "Inactive external candidate; admission and project-local review are required before hydration.",
+      "source_disposition": "reference_only",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "integrate-n8n-webhooks-and-apis",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "integrate-supabase-data-api-and-clients",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "intent-preserving-merge-resolution",
+      "implementation": "sanitized_adaptation",
+      "notes": "Admitted as a lazy engineering-reasoning procedure with deterministic runtime support where applicable.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "isolate-project-streams",
+      "implementation": "clean_room",
+      "notes": "Fail-closed project, session, lease, switch, context, and transfer controls.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "long-horizon-progress-ledger",
+      "implementation": "clean_room_runtime",
+      "notes": "Active lazy skill backed by acceptance, continuation-budget, isolation, and repeated-blocker transition tests.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "maintain-capability-catalog",
+      "implementation": "candidate_wrapper",
+      "notes": "Inactive external candidate; admission and project-local review are required before hydration.",
+      "source_disposition": "reference_only",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "manage-agent-session-fabric",
+      "implementation": "clean_room",
+      "notes": "Bounded project-scoped terminal-session planning separates read, attach, execute, and persist authority and performs no process effect.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "manage-mcp-lifecycle",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "manage-n8n-credentials",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace",
+        "destructive"
+      ],
+      "id": "manage-resource-lifecycle",
+      "implementation": "clean_room",
+      "notes": "Fail-closed owned resource ledger, safe reclamation gate, process-tree cancellation, receipts, pressure reporting, and run reconciliation.",
+      "source_disposition": "adopt",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 10
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "manage-revocable-certification",
+      "implementation": "clean_room",
+      "notes": "Lazy domain owner reconstructed from declared outcomes; positive, negative, deterministic helper, contract, and orchestration validation is current.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "manage-supabase-environments",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "migration",
+        "network",
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "manage-supabase-migrations",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "map-project-intelligence",
+      "implementation": "clean_room",
+      "notes": "Deterministic bounded project-map owner with staged promotion, archived prior revisions, secret-value exclusion, freshness validation, and recovery evidence.",
+      "source_disposition": "adopt",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "memory-applicability-critic",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "memory-injection-firewall",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "observe-debug-supabase",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "migration",
+        "read_local"
+      ],
+      "id": "observe-operate-n8n",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "network",
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "operate-engineering-research-engine",
+      "implementation": "clean_room",
+      "notes": "Mechanism-level discovery, repository fingerprinting, cross-source synthesis, drift, and governed capability deltas.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 1
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "operate-memory-retrieval-observability",
+      "implementation": "clean_room",
+      "notes": "Lazy domain owner reconstructed from declared outcomes; positive, negative, deterministic helper, contract, and orchestration validation is current.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "migration",
+        "read_local"
+      ],
+      "id": "operate-n8n-supabase-production",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "migration",
+        "read_local"
+      ],
+      "id": "operate-supabase-vector-search",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "optimize-agent-harness",
+      "implementation": "candidate_wrapper",
+      "notes": "Inactive external candidate; admission and project-local review are required before hydration.",
+      "source_disposition": "reference_only",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "orchestrate-agent-fleets",
+      "implementation": "clean_room",
+      "notes": "Bounded project-scoped fleet readiness, cost, heartbeat, permission, ownership, and isolated inbox controls are implemented and tested.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "orchestrate-capability-scheduling",
+      "implementation": "sanitized_authoritative_observe_only_runtime",
+      "notes": "Single lazy owner for 30 scheduling contracts; actual effects remain governed by canonical execution, lease, evidence, isolation, recovery, and outcome owners.",
+      "source_disposition": "bounded_extension",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6,
+        "state": "current"
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "orchestrate-security-validation",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "outcome-verifier",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "paper-mechanism-extractor",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "permission-diff-auditor",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "plan-local-model-deployment",
+      "implementation": "clean_room",
+      "notes": "Ranks native, quantized, offloaded, streamed, retrieval-backed, smaller-model, and remote strategies against explicit hardware, privacy, transformation, validation, and rollback constraints.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "procedural-memory-compiler",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "productization-gap-analyzer",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "propose-change-intelligence",
+      "implementation": "clean_room",
+      "notes": "Deterministic, lazy, fail-closed assurance control with source-note lineage and no autonomous mutation.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "provenance-signature-verifier",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "px-lean-engineering",
+      "implementation": "clean_room",
+      "notes": "Repository-owner reuse and measured minimal-change gate merged from the audited Team Fabric mechanisms.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "px-work-stop-diagnostics",
+      "implementation": "clean_room",
+      "notes": "Fail-closed cross-IDE work-stop classification for leases, fencing, dependencies, budgets, workspaces, and resumable state.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 9
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "quarantine-external-tools",
+      "implementation": "clean_room",
+      "notes": "Deterministic, lazy, fail-closed assurance control with source-note lineage and no autonomous mutation.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "query-project-map",
+      "implementation": "clean_room",
+      "notes": "Metadata-first project retrieval that returns supporting paths, map revision, explanations, and a bounded source hydration plan.",
+      "source_disposition": "adopt",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "questionnaire-delegation",
+      "implementation": "sanitized_adaptation",
+      "notes": "Admitted as a lazy engineering-reasoning procedure with deterministic runtime support where applicable.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "read-only-speculation-controller",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "reasoning-utility-controller",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "recovery-coordinator",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "repair-corrupted-text",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "research-first-capability-use",
+      "implementation": "candidate_wrapper",
+      "notes": "Inactive external candidate; admission and project-local review are required before hydration.",
+      "source_disposition": "reference_only",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "research-to-capability",
+      "implementation": "clean_room",
+      "notes": "Research creates inert candidates; publication is never treated as production proof.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "research-to-operation-translator",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "route-n8n-capabilities",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "route-n8n-supabase-stack",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "route-specialist-agents",
+      "implementation": "clean_room",
+      "notes": "Metadata-first specialist routing with bounded reviewer composition, hash-checked lazy hydration, project-scoped memory, and no prompt-derived authority.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 14
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "route-supabase-capabilities",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "run-evidence-campaigns",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "run-resilience-drills",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "migration",
+        "read_local"
+      ],
+      "id": "scale-n8n-queue-mode",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "scenario-audit-generator",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "secure-agent-supply-chain",
+      "implementation": "clean_room",
+      "notes": "Lazy domain owner reconstructed from declared outcomes; positive, negative, deterministic helper, contract, and orchestration validation is current.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "secure-n8n",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "secure-supabase-rls",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "install_tool",
+        "network",
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "self-host-supabase",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "skill-admission-controller",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "skill-bundle-resolver",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "skill-coexecution-graph-builder",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "skill-navigator",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "supervise-contained-execution",
+      "implementation": "clean_room",
+      "notes": "Deterministic, lazy, fail-closed assurance control with source-note lineage and no autonomous mutation.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "synchronize-derived-architecture",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "test-n8n-supabase-integrations",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "test-validate-n8n-workflows",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "tool-loop-circuit-breaker",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "trace-to-skill-compiler",
+      "implementation": "source_conversion",
+      "notes": "Admitted after schema validation, deterministic compilation, duplicate comparison, inert activation, project receipt, and negative verification tests. Loading remains lazy and promotion remains separate.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "tracer-bullet-planning",
+      "implementation": "sanitized_adaptation",
+      "notes": "Admitted as a lazy engineering-reasoning procedure with deterministic runtime support where applicable.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 8
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "trajectory-failure-sentinel",
+      "implementation": "source_conversion",
+      "notes": "Bounded deterministic control; source lineage retained in the skill package; activation remains lazy and fail-closed.",
+      "source_disposition": "merge",
+      "status": "mapped_deferred",
+      "validation": {
+        "failed": 0,
+        "passed": 6
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "transcript-analysis",
+      "implementation": "clean_room",
+      "notes": "Portable queue-scoped transcript intake, provenance, canonical record validation, and deterministic export; external adapter execution remains separately authorized.",
+      "source_disposition": "replace",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 9
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "triage-cross-surface-failures",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "use-n8n-expressions-and-data",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "use-n8n-mcp",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "use-supabase-mcp-and-agent-skills",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "use-supabase-realtime",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "use-supabase-storage",
+      "implementation": "clean_room",
+      "notes": "Lazy product capability admitted with policy authorization, security negatives, and outcome verification requirements.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 20
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "validate-contract-boundaries",
+      "implementation": "clean_room",
+      "notes": "Compares supplied provider/consumer metadata; no external source body is copied or executed.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "validate-engineering-outcomes",
+      "implementation": "clean_room",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 4
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "validate-knowledge-relationships",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "write_workspace"
+      ],
+      "id": "validate-physical-media-deliverables",
+      "implementation": "clean_room",
+      "notes": "Fail-closed technical promise and independent-check validation for CAD, manufacturing, robotics, and media artifacts.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 1
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "validate-production-containers",
+      "implementation": "clean_room",
+      "notes": "Bounded clean-room capability with lazy body loading, explicit source disposition, and deterministic validation evidence.",
+      "source_disposition": "pattern_only",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 2
+      }
+    },
+    {
+      "effects": [
+        "read_local",
+        "isolated_compute"
+      ],
+      "id": "execution-placement-decision",
+      "implementation": "adapted_user_supplied_addon",
+      "notes": "Provider-neutral baseline-first placement; decisions and promotion gates do not authorize migration or production.",
+      "source_disposition": "adapt",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 5
+      }
+    },
+    {
+      "effects": [
+        "read_local"
+      ],
+      "id": "workflow-orchestrator",
+      "implementation": "clean_room",
+      "notes": "Resolves at most one handler and only after registry, input, contract, and policy checks.",
+      "source_disposition": "merge",
+      "status": "active",
+      "validation": {
+        "failed": 0,
+        "passed": 7
+      }
+    }
+  ],
+  "schema_version": "1.0"
+}

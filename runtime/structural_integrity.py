@@ -98,6 +98,20 @@ DUPLICATE_CLASSIFICATIONS = {
         "regeneration_command": "python scripts/reconcile_studio_operation_projections.py",
         "equivalence_rule": "byte-for-byte",
     },
+    "global-skill-isolation-reconciliation-snapshots": {
+        "owner": "runtime/global_skill_isolation.py",
+        "rationale": "independent reconciliation campaigns retain matching pre-move and stability snapshots as evidence",
+        "authoritative_source": ".px/global-skill-isolation",
+        "regeneration_command": "python -m runtime.cli skill-host-isolation reconcile",
+        "equivalence_rule": "byte-for-byte matching snapshot evidence",
+    },
+    "bounded-json-loaders": {
+        "owner": "scripts",
+        "rationale": "small evidence assemblers use the same fail-closed JSON object loader contract",
+        "authoritative_source": "each bounded evidence assembler",
+        "regeneration_command": None,
+        "equivalence_rule": "behavioral parity",
+    },
     "native-skill-manifest-aliases": {
         "owner": "runtime/native_skills.py",
         "rationale": "capability.json and skill.yaml are equivalent machine-readable views of one PX-native manifest",
@@ -305,6 +319,13 @@ def _classify_exact_group(paths: list[str]) -> str | None:
         "runtime/studio_operations.json",
     }:
         return "studio-operation-projections"
+    if len(paths) >= 2 and all(
+        path.startswith(".px/global-skill-isolation/reconcile-")
+        and "-snapshot-" in path
+        and path.endswith(".json")
+        for path in paths
+    ):
+        return "global-skill-isolation-reconciliation-snapshots"
     if (
         len(paths) == 2
         and all(
@@ -413,6 +434,11 @@ def _logic_duplicates(root: Path, files: tuple[Path, ...] | None = None) -> tupl
             for path in paths
         ):
             classification = "json-atomic-write"
+        elif names == {"_load"} and set(paths) == {
+            "scripts/assemble_operational_control_evidence.py",
+            "scripts/build_installed_probe_control_evidence.py",
+        }:
+            classification = "bounded-json-loaders"
         elif names == {"_bounded_operational_progress", "_bounded_progress"} and all(
             path.startswith("runtime/") for path in paths
         ):

@@ -1,0 +1,79 @@
+{
+  "agent_id": "agent:pacify-x-local",
+  "agent_revision_sha256": "f9af01c247173db0f57312fd708d4928d41c21a415fe4203487ad34ba7f69357",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "4f394b92275a6b85b61f555bf32b38e21a39a6afc78685a3df72b66d8c1ab2b4",
+    "payload_sha256": "0c5cfed795f6c22d85e4c1a0770e695d840430ff556fca78e9b3aac368a7d6fb",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "checks": {
+    "bindings_declared": true,
+    "effect_grants_declared": true,
+    "handoff_runtime_resolved": true,
+    "host_tool_implementation_attested": true,
+    "instruction_present": true,
+    "memory_runtime_resolved": true,
+    "model_tool_route_compatible": true,
+    "record_sealed": true,
+    "required_tests_executed": true
+  },
+  "evidence_class": "structural_preflight_not_behavioral_certification",
+  "independently_derived": false,
+  "passed": true,
+  "schema_version": "px.agent-preflight-receipt/1.2",
+  "status": "passed",
+  "test_results": [
+    {
+      "known": true,
+      "passed": true,
+      "reason": null,
+      "test_id": "identity"
+    },
+    {
+      "known": true,
+      "passed": true,
+      "reason": null,
+      "test_id": "sandbox"
+    },
+    {
+      "known": true,
+      "passed": true,
+      "reason": null,
+      "test_id": "model-route"
+    },
+    {
+      "known": true,
+      "passed": true,
+      "reason": null,
+      "test_id": "input-contract"
+    },
+    {
+      "known": true,
+      "passed": true,
+      "reason": null,
+      "test_id": "output-contract"
+    },
+    {
+      "known": true,
+      "passed": true,
+      "reason": null,
+      "test_id": "authority-bindings"
+    },
+    {
+      "known": true,
+      "passed": true,
+      "reason": null,
+      "test_id": "tool-bindings"
+    },
+    {
+      "known": true,
+      "passed": true,
+      "reason": null,
+      "test_id": "handoff-topology"
+    }
+  ],
+  "tested_utc": "2026-08-21T18:02:14.151Z",
+  "version": "1.0.0"
+}

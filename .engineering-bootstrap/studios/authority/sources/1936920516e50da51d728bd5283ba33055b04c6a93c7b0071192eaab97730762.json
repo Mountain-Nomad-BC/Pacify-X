@@ -1,0 +1,21 @@
+{
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "6b956ad6feb1f48427f55e5fe1c159723d19daf420c7d80a51e145ae0479fda0",
+    "payload_sha256": "c1b60a64600469b3eeedcae996065b3f1ab1d4c7c2cc1e4a21d4d38b76528185",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "issued_utc": "2026-08-22T04:56:18.087Z",
+  "nonce": "69bcaaba3b6b4c57b3bcc6c82c684a44",
+  "record": {
+    "approved_by": "codex-host:user-authorized",
+    "source": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.engineering-bootstrap\\studios\\skill-intake\\pacify-x-studio-operator",
+    "source_identity": "1585928601211604637:14636698791186800",
+    "state": "admitted",
+    "token": "source:b9478e61c31242f9966ac4503a0e8737",
+    "tree_sha256": "c3deb5d8885c2f24c37fa4329b7f47bb8ecab2e2796deb1f19b7b7db38d6fd90"
+  },
+  "record_sha256": "4c8291c41ed1e463f6e5e33ab6e0f6fc19ebc4ec60c57f637bc527ba841707a1",
+  "schema_version": "px.studio-authority-sources/1.0"
+}

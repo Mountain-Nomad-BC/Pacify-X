@@ -1,0 +1,820 @@
+{
+  "id": "42Crunch.vscode-openapi",
+  "name": "OpenAPI (Swagger) Editor",
+  "version": "5.6.0",
+  "publisher": "42Crunch",
+  "active": true,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "icons",
+    "jsonValidation",
+    "keybindings",
+    "mcpServerDefinitionProviders",
+    "menus",
+    "views",
+    "viewsContainers",
+    "viewsWelcome"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "42Crunch.vscode-openapi",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "42Crunch.vscode-openapi",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:icons",
+      "kind": "icons",
+      "provider": "42Crunch.vscode-openapi",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "42Crunch.vscode-openapi",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "42Crunch.vscode-openapi",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:mcpServerDefinitionProviders",
+      "kind": "mcpServerDefinitionProviders",
+      "provider": "42Crunch.vscode-openapi",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "42Crunch.vscode-openapi",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "42Crunch.vscode-openapi",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "42Crunch.vscode-openapi",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "42Crunch.vscode-openapi",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "openapi.addBasePath",
+      "invocation": "vscode.commands.executeCommand('openapi.addBasePath', ...args)",
+      "title": "Add 'basePath' entry",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.addDefinitionObject",
+      "invocation": "vscode.commands.executeCommand('openapi.addDefinitionObject', ...args)",
+      "title": "Add 'object' definition",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.addHost",
+      "invocation": "vscode.commands.executeCommand('openapi.addHost', ...args)",
+      "title": "Add 'host' entry",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.addInfo",
+      "invocation": "vscode.commands.executeCommand('openapi.addInfo', ...args)",
+      "title": "Add 'info' entry",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.addOperation",
+      "invocation": "vscode.commands.executeCommand('openapi.addOperation', ...args)",
+      "title": "Add operation",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.addParameterBody",
+      "invocation": "vscode.commands.executeCommand('openapi.addParameterBody', ...args)",
+      "title": "Add 'body' parameter",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.addParameterOther",
+      "invocation": "vscode.commands.executeCommand('openapi.addParameterOther', ...args)",
+      "title": "Add 'query', 'header' or 'formData' parameter",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.addParameterPath",
+      "invocation": "vscode.commands.executeCommand('openapi.addParameterPath', ...args)",
+      "title": "Add 'path' parameter",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.addPath",
+      "invocation": "vscode.commands.executeCommand('openapi.addPath', ...args)",
+      "title": "Add path",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.addResponse",
+      "invocation": "vscode.commands.executeCommand('openapi.addResponse', ...args)",
+      "title": "Add response definition",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.addSecurity",
+      "invocation": "vscode.commands.executeCommand('openapi.addSecurity', ...args)",
+      "title": "Add security entry",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.addSecurityDefinitionApiKey",
+      "invocation": "vscode.commands.executeCommand('openapi.addSecurityDefinitionApiKey', ...args)",
+      "title": "Add security scheme 'API Key'",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.addSecurityDefinitionBasic",
+      "invocation": "vscode.commands.executeCommand('openapi.addSecurityDefinitionBasic', ...args)",
+      "title": "Add security scheme 'Basic'",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.addSecurityDefinitionOauth2Access",
+      "invocation": "vscode.commands.executeCommand('openapi.addSecurityDefinitionOauth2Access', ...args)",
+      "title": "Add security scheme 'OAuth2 Authorization Code'",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.copyJsonReference",
+      "invocation": "vscode.commands.executeCommand('openapi.copyJsonReference', ...args)",
+      "title": "OpenAPI: Copy JSON Reference for the element under the cursor",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.copyNodeJsonReference",
+      "invocation": "vscode.commands.executeCommand('openapi.copyNodeJsonReference', ...args)",
+      "title": "Copy JSON Pointer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.createNewThree",
+      "invocation": "vscode.commands.executeCommand('openapi.createNewThree', ...args)",
+      "title": "OpenAPI: Create new OpenAPI v3.0 file",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.createNewThreeOne",
+      "invocation": "vscode.commands.executeCommand('openapi.createNewThreeOne', ...args)",
+      "title": "OpenAPI: Create new OpenAPI v3.1 file",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.createNewThreeOneYaml",
+      "invocation": "vscode.commands.executeCommand('openapi.createNewThreeOneYaml', ...args)",
+      "title": "OpenAPI: Create new OpenAPI v3.1 file (YAML)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.createNewThreeYaml",
+      "invocation": "vscode.commands.executeCommand('openapi.createNewThreeYaml', ...args)",
+      "title": "OpenAPI: Create new OpenAPI v3.0 file (YAML)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.createNewTwo",
+      "invocation": "vscode.commands.executeCommand('openapi.createNewTwo', ...args)",
+      "title": "OpenAPI: Create new OpenAPI v2.0 file",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.createNewTwoYaml",
+      "invocation": "vscode.commands.executeCommand('openapi.createNewTwoYaml', ...args)",
+      "title": "OpenAPI: Create new OpenAPI v2.0 file (YAML)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.deleteOperation",
+      "invocation": "vscode.commands.executeCommand('openapi.deleteOperation', ...args)",
+      "title": "Delete operation",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.deletePath",
+      "invocation": "vscode.commands.executeCommand('openapi.deletePath', ...args)",
+      "title": "Delete path",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.exportAuditReport",
+      "invocation": "vscode.commands.executeCommand('openapi.exportAuditReport', ...args)",
+      "title": "42Crunch: Export Audit Report file for the current OpenAPI file",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.graphql.editorRunFirstOperationScan",
+      "invocation": "vscode.commands.executeCommand('openapi.graphql.editorRunFirstOperationScan', ...args)",
+      "title": "GraphQL: GQL Scan",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "graphqlEnabled"
+    },
+    {
+      "id": "openapi.outline.resetSearch",
+      "invocation": "vscode.commands.executeCommand('openapi.outline.resetSearch', ...args)",
+      "title": "Remove search filter",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline && viewItem == outlineSearch"
+    },
+    {
+      "id": "openapi.outlineSingleOperationAudit",
+      "invocation": "vscode.commands.executeCommand('openapi.outlineSingleOperationAudit', ...args)",
+      "title": "Audit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.outlineSingleOperationScan",
+      "invocation": "vscode.commands.executeCommand('openapi.outlineSingleOperationScan', ...args)",
+      "title": "Scan",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.outlineTryOperation",
+      "invocation": "vscode.commands.executeCommand('openapi.outlineTryOperation', ...args)",
+      "title": "Try it",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.platform.apiRename",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.apiRename', ...args)",
+      "title": "Rename",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem == api"
+    },
+    {
+      "id": "openapi.platform.apisFilter",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.apisFilter', ...args)",
+      "title": "Filter",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem == collection"
+    },
+    {
+      "id": "openapi.platform.apisFilterReset",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.apisFilterReset', ...args)",
+      "title": "Remove filter",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem == apiFilter"
+    },
+    {
+      "id": "openapi.platform.collectionAddToFavorite",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.collectionAddToFavorite', ...args)",
+      "title": "Add to My Favorite Collections",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem == collection"
+    },
+    {
+      "id": "openapi.platform.collectionRemoveFromFavorite",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.collectionRemoveFromFavorite', ...args)",
+      "title": "Remove from Favorite",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem == favoriteCollection"
+    },
+    {
+      "id": "openapi.platform.collectionRename",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.collectionRename', ...args)",
+      "title": "Rename",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem =~ /^collection$|^favoriteCollection$/"
+    },
+    {
+      "id": "openapi.platform.collectionsFilter",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.collectionsFilter', ...args)",
+      "title": "Filter",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem == collections"
+    },
+    {
+      "id": "openapi.platform.collectionsFilterReset",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.collectionsFilterReset', ...args)",
+      "title": "Remove filter",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem == collectionFilter"
+    },
+    {
+      "id": "openapi.platform.createApi",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.createApi', ...args)",
+      "title": "Import API",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem =~ /^collection$|^favoriteCollection$/"
+    },
+    {
+      "id": "openapi.platform.createApiFromUrl",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.createApiFromUrl', ...args)",
+      "title": "Import API from URL",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem =~ /^collection$|^favoriteCollection$/"
+    },
+    {
+      "id": "openapi.platform.createCollection",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.createCollection', ...args)",
+      "title": "Create new collection",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem == collections"
+    },
+    {
+      "id": "openapi.platform.deleteApi",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.deleteApi', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem == api"
+    },
+    {
+      "id": "openapi.platform.deleteCollection",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.deleteCollection', ...args)",
+      "title": "Delete",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem == collection"
+    },
+    {
+      "id": "openapi.platform.editorDataDictionaryBulkUpdateProperties",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.editorDataDictionaryBulkUpdateProperties', ...args)",
+      "title": "42Crunch: Update Data Dictionary properties everywhere in the document",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "openapi.platform.credentials == present"
+    },
+    {
+      "id": "openapi.platform.editorOpenScanconfig",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.editorOpenScanconfig', ...args)",
+      "title": "42Crunch: Open Scan Configuration file for the current OpenAPI file",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.platform.editorReloadApiFromUrl",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.editorReloadApiFromUrl', ...args)",
+      "title": "Reload API from URL",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "resourceScheme == openapi-42crunch"
+    },
+    {
+      "id": "openapi.platform.editorRunFirstOperationScan",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.editorRunFirstOperationScan', ...args)",
+      "title": "OpenAPI: API Scan",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!openapiErrors"
+    },
+    {
+      "id": "openapi.platform.exportScanReport",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.exportScanReport', ...args)",
+      "title": "42Crunch: Export Scan Report file for the current OpenAPI file",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.platform.favoriteApisFilter",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.favoriteApisFilter', ...args)",
+      "title": "Filter",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem == favoriteCollection"
+    },
+    {
+      "id": "openapi.platform.favoriteApisFilterReset",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.favoriteApisFilterReset', ...args)",
+      "title": "Remove filter",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem == favoriteApiFilter"
+    },
+    {
+      "id": "openapi.platform.loadAuditReportFromFile",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.loadAuditReportFromFile', ...args)",
+      "title": "42Crunch: Load Security Audit report from file",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.platform.openInWebUI",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.openInWebUI', ...args)",
+      "title": "Open in Web UI",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer && viewItem =~ /^collection$|^api$|^favoriteCollection$/"
+    },
+    {
+      "id": "openapi.platform.openSignUp",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.openSignUp', ...args)",
+      "title": "42Crunch: Signup for the freemium offering",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.platform.refreshCollections",
+      "invocation": "vscode.commands.executeCommand('openapi.platform.refreshCollections', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == platformExplorer"
+    },
+    {
+      "id": "openapi.preview",
+      "invocation": "vscode.commands.executeCommand('openapi.preview', ...args)",
+      "title": "OpenAPI: show preview using the default renderer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!openapiErrors"
+    },
+    {
+      "id": "openapi.previewRedoc",
+      "invocation": "vscode.commands.executeCommand('openapi.previewRedoc', ...args)",
+      "title": "OpenAPI: show preview using ReDoc",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.previewSwaggerUI",
+      "invocation": "vscode.commands.executeCommand('openapi.previewSwaggerUI', ...args)",
+      "title": "OpenAPI: show preview using Swagger UI",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.searchOutline",
+      "invocation": "vscode.commands.executeCommand('openapi.searchOutline', ...args)",
+      "title": "Search",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.securityAudit",
+      "invocation": "vscode.commands.executeCommand('openapi.securityAudit', ...args)",
+      "title": "OpenAPI: API Audit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!openapiErrors"
+    },
+    {
+      "id": "openapi.securityGqlAudit",
+      "invocation": "vscode.commands.executeCommand('openapi.securityGqlAudit', ...args)",
+      "title": "GraphQl: GQL Audit",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "graphqlEnabled"
+    },
+    {
+      "id": "openapi.showCapture",
+      "invocation": "vscode.commands.executeCommand('openapi.showCapture', ...args)",
+      "title": "42Crunch: Convert Postman or HAR files to OpenAPI",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.showConfiguration",
+      "invocation": "vscode.commands.executeCommand('openapi.showConfiguration', ...args)",
+      "title": "42Crunch: Update platform credentials",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.showSettings",
+      "invocation": "vscode.commands.executeCommand('openapi.showSettings', ...args)",
+      "title": "42Crunch: Open Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "openapi.v3addComponentsParameter",
+      "invocation": "vscode.commands.executeCommand('openapi.v3addComponentsParameter', ...args)",
+      "title": "Add parameter",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.v3addComponentsResponse",
+      "invocation": "vscode.commands.executeCommand('openapi.v3addComponentsResponse', ...args)",
+      "title": "Add response",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.v3addComponentsSchema",
+      "invocation": "vscode.commands.executeCommand('openapi.v3addComponentsSchema', ...args)",
+      "title": "Add 'object' scheme",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.v3addInfo",
+      "invocation": "vscode.commands.executeCommand('openapi.v3addInfo', ...args)",
+      "title": "Add 'info' entry",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.v3addSecuritySchemeApiKey",
+      "invocation": "vscode.commands.executeCommand('openapi.v3addSecuritySchemeApiKey', ...args)",
+      "title": "Add security scheme 'API Key'",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.v3addSecuritySchemeBasic",
+      "invocation": "vscode.commands.executeCommand('openapi.v3addSecuritySchemeBasic', ...args)",
+      "title": "Add security scheme 'Basic'",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.v3addSecuritySchemeJWT",
+      "invocation": "vscode.commands.executeCommand('openapi.v3addSecuritySchemeJWT', ...args)",
+      "title": "Add security scheme 'JWT Bearer'",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.v3addSecuritySchemeOauth2Access",
+      "invocation": "vscode.commands.executeCommand('openapi.v3addSecuritySchemeOauth2Access', ...args)",
+      "title": "Add security scheme 'Oauth2 Authorization Code'",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    },
+    {
+      "id": "openapi.v3addServer",
+      "invocation": "vscode.commands.executeCommand('openapi.v3addServer', ...args)",
+      "title": "Add server",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "view == openapiOutline"
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "redhat.vscode-yaml"
+  ],
+  "activation_events": [
+    "*",
+    "onFileSystem:openapi-42crunch"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": true
+    },
+    "virtual_workspaces": true,
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "42Crunch.vscode-openapi",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:icons",
+      "contribution:jsonValidation",
+      "contribution:keybindings",
+      "contribution:mcpServerDefinitionProviders",
+      "contribution:menus",
+      "contribution:views",
+      "contribution:viewsContainers",
+      "contribution:viewsWelcome"
+    ],
+    "interface": [
+      "openapi.addBasePath",
+      "openapi.addDefinitionObject",
+      "openapi.addHost",
+      "openapi.addInfo",
+      "openapi.addOperation",
+      "openapi.addParameterBody",
+      "openapi.addParameterOther",
+      "openapi.addParameterPath",
+      "openapi.addPath",
+      "openapi.addResponse",
+      "openapi.addSecurity",
+      "openapi.addSecurityDefinitionApiKey",
+      "openapi.addSecurityDefinitionBasic",
+      "openapi.addSecurityDefinitionOauth2Access",
+      "openapi.copyJsonReference",
+      "openapi.copyNodeJsonReference",
+      "openapi.createNewThree",
+      "openapi.createNewThreeOne",
+      "openapi.createNewThreeOneYaml",
+      "openapi.createNewThreeYaml",
+      "openapi.createNewTwo",
+      "openapi.createNewTwoYaml",
+      "openapi.deleteOperation",
+      "openapi.deletePath",
+      "openapi.exportAuditReport",
+      "openapi.graphql.editorRunFirstOperationScan",
+      "openapi.outline.resetSearch",
+      "openapi.outlineSingleOperationAudit",
+      "openapi.outlineSingleOperationScan",
+      "openapi.outlineTryOperation",
+      "openapi.platform.apiRename",
+      "openapi.platform.apisFilter",
+      "openapi.platform.apisFilterReset",
+      "openapi.platform.collectionAddToFavorite",
+      "openapi.platform.collectionRemoveFromFavorite",
+      "openapi.platform.collectionRename",
+      "openapi.platform.collectionsFilter",
+      "openapi.platform.collectionsFilterReset",
+      "openapi.platform.createApi",
+      "openapi.platform.createApiFromUrl",
+      "openapi.platform.createCollection",
+      "openapi.platform.deleteApi",
+      "openapi.platform.deleteCollection",
+      "openapi.platform.editorDataDictionaryBulkUpdateProperties",
+      "openapi.platform.editorOpenScanconfig",
+      "openapi.platform.editorReloadApiFromUrl",
+      "openapi.platform.editorRunFirstOperationScan",
+      "openapi.platform.exportScanReport",
+      "openapi.platform.favoriteApisFilter",
+      "openapi.platform.favoriteApisFilterReset",
+      "openapi.platform.loadAuditReportFromFile",
+      "openapi.platform.openInWebUI",
+      "openapi.platform.openSignUp",
+      "openapi.platform.refreshCollections",
+      "openapi.preview",
+      "openapi.previewRedoc",
+      "openapi.previewSwaggerUI",
+      "openapi.searchOutline",
+      "openapi.securityAudit",
+      "openapi.securityGqlAudit",
+      "openapi.showCapture",
+      "openapi.showConfiguration",
+      "openapi.showSettings",
+      "openapi.v3addComponentsParameter",
+      "openapi.v3addComponentsResponse",
+      "openapi.v3addComponentsSchema",
+      "openapi.v3addInfo",
+      "openapi.v3addSecuritySchemeApiKey",
+      "openapi.v3addSecuritySchemeBasic",
+      "openapi.v3addSecuritySchemeJWT",
+      "openapi.v3addSecuritySchemeOauth2Access",
+      "openapi.v3addServer"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": true
+      },
+      "virtual_workspaces": true,
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

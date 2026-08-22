@@ -693,7 +693,7 @@
         "typing"
       ],
       "index_state": "reused",
-      "sha256": "191bee2799f9de68783348abac137b0405196dd95b8d658df1370be53a4d55b3"
+      "sha256": "7c2ee0f69ac456a2ec924bd3e92fe20b2ba191d684063892537cc80d98e7c0cf"
     },
     "runtime/declared_suite.py": {
       "imports": [
@@ -860,7 +860,7 @@
         "typing"
       ],
       "index_state": "reused",
-      "sha256": "b321c382b0c1c8be9e866c68a42bdd8b37fc4488c447caa26c7e4bd26a8e27db"
+      "sha256": "0f96e5476ae11d288705c0375a6b0c546782a0ade2642ef4970b73c41c6796e5"
     },
     "runtime/exact_tool_certification.py": {
       "imports": [
@@ -1036,6 +1036,7 @@
       "imports": [
         "__future__",
         "datetime",
+        "hashlib",
         "json",
         "os",
         "pathlib",
@@ -1043,7 +1044,7 @@
         "uuid"
       ],
       "index_state": "reused",
-      "sha256": "c6789f03d837dc49ab2bd4f362e7436d2d865260630983cf2b0ab2bc8ba8b897"
+      "sha256": "8410c258df0cbbfddf357eacbfb2622f927725f47ac5633cbef2309dffb65367"
     },
     "runtime/graph_registry.py": {
       "imports": [
@@ -2140,7 +2141,7 @@
         "pathlib"
       ],
       "index_state": "reused",
-      "sha256": "e92744dd003754ceec89669cf6ee49f59250caf964040f505cfa5e5946fa8431"
+      "sha256": "dee94188729d74b8c8e54d160296178716dc846c249766b48376e9812cd8c5c2"
     },
     "runtime/research_assimilation.py": {
       "imports": [
@@ -2295,7 +2296,7 @@
         "yaml"
       ],
       "index_state": "reused",
-      "sha256": "cdd58e235781c8347df0c4c2d45f7aeaea2863e30890aff462f404c5209dda8a"
+      "sha256": "657a42c3f90b33d10b2d0377a225b8a166f49b1abd4aed902e16c16462423903"
     },
     "runtime/source_coverage.py": {
       "imports": [
@@ -2352,7 +2353,7 @@
         "typing"
       ],
       "index_state": "reused",
-      "sha256": "737506e1ea837ee007f6353e7a4b2e890c19fb143b34899ae95507ed568d854b"
+      "sha256": "cf67b9599dd9ea7a91c7bea942306a40b838ed112621a695868d5d23105bcd00"
     },
     "runtime/studio_api.py": {
       "imports": [
@@ -2658,7 +2659,7 @@
         "uuid"
       ],
       "index_state": "reused",
-      "sha256": "9fcf25efcaa201d03c65900c603279b69382e5f7815e92f8b27a51d8ba7da01f"
+      "sha256": "486343405cad51165ac417055b8179ea45dbc9d552bc14477f06dd4e6e44fa02"
     },
     "runtime/workflow_studio.py": {
       "imports": [
@@ -2677,7 +2678,7 @@
         "uuid"
       ],
       "index_state": "reused",
-      "sha256": "b6ce1b81424a8a5250cb3be69d916a4633963328a71ba31a4003763f164eb007"
+      "sha256": "013d2f5e40cbefbe2ea8cd9d45fef719759abd6d2cdb6717f8607a2ca5c820f3"
     },
     "runtime/workflow_worker.py": {
       "imports": [
@@ -2708,7 +2709,7 @@
         "typing"
       ],
       "index_state": "reused",
-      "sha256": "ffd262805a4d84f2439ada4be721bda23e95671ea3202eb0859c9d2a3a6c1dd0"
+      "sha256": "6b320c15dae8bb3d7336b722107ec727fc8d1d99fbb22eaa7e2c1eaa5b5076cc"
     },
     "scripts/apply_typed_control_gap_links.py": {
       "imports": [
@@ -2727,6 +2728,7 @@
       "imports": [
         "__future__",
         "argparse",
+        "concurrent.futures",
         "datetime",
         "hashlib",
         "json",
@@ -2737,7 +2739,7 @@
         "sys"
       ],
       "index_state": "reused",
-      "sha256": "0d08d74756b98695e77d673e15980b23f9a679a3262cdc2cc901715e65713d3f"
+      "sha256": "57ab873b79ddf99a6ae8e4cc4a18898ec71f50c867f457de173f5d393693e65d"
     },
     "scripts/archive_project_map_history.py": {
       "imports": [
@@ -2754,6 +2756,19 @@
       ],
       "index_state": "reused",
       "sha256": "84096e67956df0359d14fd6463508ba9efa20336715c5774b6c6da8ec48658e0"
+    },
+    "scripts/assemble_operational_control_evidence.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "datetime",
+        "hashlib",
+        "json",
+        "pathlib",
+        "typing"
+      ],
+      "index_state": "reused",
+      "sha256": "20ac077a5b6e209ce4119fe2ab7acf6d8fdafdb53ac8346aa926d57cce5899b4"
     },
     "scripts/attest_operational_card_evidence.py": {
       "imports": [
@@ -2990,6 +3005,34 @@
       "index_state": "reused",
       "sha256": "1fa854b81d8bcc167a63feecd0b7f6a6f8d463adc2f67710facba3b6f9b02f0c"
     },
+    "scripts/build_installed_host_control_evidence.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "assemble_operational_control_evidence",
+        "hashlib",
+        "json",
+        "pathlib",
+        "scripts.assemble_operational_control_evidence",
+        "typing"
+      ],
+      "index_state": "reused",
+      "sha256": "38d40babd23a13b918a73ad744ffc8cfd8268615e7be59f2722df8b27fee1909"
+    },
+    "scripts/build_installed_probe_control_evidence.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "assemble_operational_control_evidence",
+        "hashlib",
+        "json",
+        "pathlib",
+        "scripts.assemble_operational_control_evidence",
+        "typing"
+      ],
+      "index_state": "reused",
+      "sha256": "eba5130605ab7de8c64f702bf301cb69da04bc083c9d331df2137d537571da87"
+    },
     "scripts/build_integration_disposition.py": {
       "imports": [
         "__future__",
@@ -3157,7 +3200,7 @@
         "re"
       ],
       "index_state": "reused",
-      "sha256": "efcbeca3c90c9a606f347a1b9aadaa21bc21a9d5142b309e524f6c21e27db0a0"
+      "sha256": "e441a8efc5944a476f0e563edcfbfa158a20593c44834339eea2480219372580"
     },
     "scripts/catalog_corpus.py": {
       "imports": [
@@ -3893,6 +3936,17 @@
       "index_state": "reused",
       "sha256": "0beebfc3aec96cf81166da6e93402b7e4f57b3b2ec76711cdaaa4b5308e6644c"
     },
+    "tests/test_assemble_operational_control_evidence.py": {
+      "imports": [
+        "__future__",
+        "json",
+        "pathlib",
+        "pytest",
+        "scripts.assemble_operational_control_evidence"
+      ],
+      "index_state": "reused",
+      "sha256": "000d15ab41862e5cd3dcd8e6cb6dc185dc4b44381affc2a4d6b3328b81330c59"
+    },
     "tests/test_assurance_controls.py": {
       "imports": [
         "__future__",
@@ -3978,7 +4032,31 @@
         "runtime.build_claims"
       ],
       "index_state": "reused",
-      "sha256": "44731150ac4bfcbf492b3d5a86ecbc55242f1f6424e0377ffae9e787f2ab30b3"
+      "sha256": "7208b3e6cc841422c65aabc97791d7c87e806a7cc7a8ce5017e2f63aa3f28341"
+    },
+    "tests/test_build_installed_host_control_evidence.py": {
+      "imports": [
+        "__future__",
+        "json",
+        "pathlib",
+        "pytest",
+        "scripts.assemble_operational_control_evidence",
+        "scripts.build_installed_host_control_evidence"
+      ],
+      "index_state": "parsed",
+      "sha256": "5e4f95f436bfdf09993decf209d49ab433c10760f1ce9bcf63f81378af4af31b"
+    },
+    "tests/test_build_installed_probe_control_evidence.py": {
+      "imports": [
+        "__future__",
+        "json",
+        "pathlib",
+        "pytest",
+        "scripts.assemble_operational_control_evidence",
+        "scripts.build_installed_probe_control_evidence"
+      ],
+      "index_state": "reused",
+      "sha256": "c8ed6a92d7eeabdc0dff7608798262430fb13c70798fa0c40bd6af361afe1f2e"
     },
     "tests/test_build_support_modules.py": {
       "imports": [
@@ -4271,7 +4349,7 @@
         "scripts.build_completion_status"
       ],
       "index_state": "reused",
-      "sha256": "8a494c102b011ffdc209e2f440543fa447bba435bc28adff639ef04ddc6d9f4f"
+      "sha256": "494d59468aeccd511b374c0967cfd325f5ecc9109b9d7a373cf7352aab2aa4a4"
     },
     "tests/test_config_and_registry.py": {
       "imports": [
@@ -4366,7 +4444,7 @@
         "unittest.mock"
       ],
       "index_state": "reused",
-      "sha256": "8355b952a2c6fb5bbaf1f653e6c22e779f775265e90d46701046bc7ee18c6627"
+      "sha256": "29f6bc43b8161e1c1468692f768b7f19f4a97f204f339ae10a9a54462d82540e"
     },
     "tests/test_declared_capability_recovery.py": {
       "imports": [
@@ -4550,7 +4628,7 @@
         "tempfile"
       ],
       "index_state": "reused",
-      "sha256": "3d954fbdd834415c35dcd07e8c04bfcfd2b239c1693265ab0226f8c62bf7ac2b"
+      "sha256": "d354003d67dfca57aa856ce9a557f38feac727ace98a5897567efe72dd361473"
     },
     "tests/test_exact_tool_certification.py": {
       "imports": [
@@ -4712,7 +4790,7 @@
         "runtime.native_skills"
       ],
       "index_state": "reused",
-      "sha256": "3d26eb0f110acb30bce71c625c100cf6d0fdaf4f6371520252fb0104fd4755dc"
+      "sha256": "29db3992d9a28960c0980a564695ad3dceeb892fb14400567f274d2761d78337"
     },
     "tests/test_graphs_and_orchestrations.py": {
       "imports": [
@@ -5069,7 +5147,7 @@
         "scripts.build_operational_control_proof_matrix"
       ],
       "index_state": "reused",
-      "sha256": "ba68eb4fcecf9fcd3b6df3b783a614699f31a40d0dc4a4d9bcb7850583e9c090"
+      "sha256": "21138d5b18f718ef5a2f9c25a61641ad230964a27661f12f72410627fd9033ff"
     },
     "tests/test_operational_controls.py": {
       "imports": [
@@ -5642,7 +5720,7 @@
         "runtime.repository_scope"
       ],
       "index_state": "reused",
-      "sha256": "21aa594d296a57eeb06a7db9a44115fbbb37144844dcf1aa373903243c5a1b3a"
+      "sha256": "3efbebcb00a02e21d799ffaa0833a84440e89fd50907014324afa9cbbd1de780"
     },
     "tests/test_research_contract_admission.py": {
       "imports": [
@@ -5855,7 +5933,7 @@
         "struct"
       ],
       "index_state": "reused",
-      "sha256": "42c1bc6f688f50f471b3264f67f35eafba6f664fa318992d9e38edd409963fba"
+      "sha256": "022a668797e3a173cf76407e84ac444eceab69ab11464ce61bf1767dd0d5ff6d"
     },
     "tests/test_skill_support_scripts.py": {
       "imports": [
@@ -5997,7 +6075,7 @@
         "runtime.studio_models"
       ],
       "index_state": "reused",
-      "sha256": "b2cd9db4d77717c20fda65ffd2325b07fead2903f07463d540026d4bc95e95ca"
+      "sha256": "b2efd27c62cb338ad2a37fa2ef10c0c7217cc4bb901324ad8b2fe02daaa19dd6"
     },
     "tests/test_studio_models.py": {
       "imports": [
@@ -6060,7 +6138,7 @@
         "sys"
       ],
       "index_state": "reused",
-      "sha256": "8e7369c3440f145feb3122a7acef515fa570189c52286bdda86a6a2c56311950"
+      "sha256": "aed9dfed07b3db3d0a533fcede4d3e928cdb3a0dd6eabb19ad441f887e6490b6"
     },
     "tests/test_test_runner_controls.py": {
       "imports": [
@@ -6146,6 +6224,15 @@
       ],
       "index_state": "reused",
       "sha256": "12320d424ed328e298bd90617a5f86157fb81c57f13ce40d00b0174720da3fb5"
+    },
+    "tests/test_typed_operational_surface_inventory.py": {
+      "imports": [
+        "__future__",
+        "pathlib",
+        "scripts.build_typed_operational_surface_inventory"
+      ],
+      "index_state": "reused",
+      "sha256": "1d4e4ab2580000102d8852b4ab0c954d571550468293d7d26f66d9ae41a52ee4"
     },
     "tests/test_wal_transaction.py": {
       "imports": [
@@ -6238,7 +6325,7 @@
         "unittest.mock"
       ],
       "index_state": "reused",
-      "sha256": "64508b6a681b6f5f5cccfffee8cf531f979b45b3d3bdb7096084d9ad3361de32"
+      "sha256": "8df4f26a231443ea781edbb948fb7f086bdbda3626a9fad64abc973f9edbe4c7"
     }
   },
   "groups": [
@@ -6270,7 +6357,7 @@
       ],
       "description": "Serial process custody, recovery, test-runner, WAL, resource-lifecycle, and workspace mutation tests.",
       "group": "process-recovery",
-      "input_sha256": "51b541fba4f78c511f15c9f258f390422db7a5f765a8fce3485224ba4702377c",
+      "input_sha256": "bb3e1535b3ffe8b2fbf80d289ac7078519f61bc21502fc920173098159bdc3d5",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/commissioning.py",
@@ -6344,7 +6431,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "bdb41ba7b825a547e34eb15ed4dcfbc2cb4893999b29cdbf82f2f5a7f8331506",
+      "input_sha256": "7d69042ec7c81f87f2b527a3737a87cd307faae9c6c0e7c5f016d69a27c60cca",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6419,7 +6506,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "3c0c5d3f26687d091b63027bc53c8e1764ffb115304f15af79bf0af9a6636c25",
+      "input_sha256": "11732cb0fbc5b5641cb986b68141e30373876b6034c3a6f6d6abac98cf2acbd6",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6487,7 +6574,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "eed02ebb56f48d070308c51986642be37ff65ae2e6f1f5d1ceddd6f15989da23",
+      "input_sha256": "755cc67e137881780b52db70f6ecd27aa632038d1597e782438eaad8bb7721a7",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6532,7 +6619,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "96d13c57aa228a56d302c05232a546048591e673dda938444d9ae95da527cebe",
+      "input_sha256": "6a05cb145c7699b93f07c8192fe21d3174e32cb362f16754099af0127e9991d6",
       "inputs": [
         ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/media/dashboard.js",
         ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/src/activityManager.js",
@@ -6840,8 +6927,10 @@
         "extension/scripts/package-vsix.js",
         "extension/scripts/refresh-environment-inventory.js",
         "extension/scripts/run-contained-ui-action-walk.js",
+        "extension/scripts/run-exhaustive-operational-control-walk.js",
         "extension/scripts/run-installed-vsix-smoke.js",
         "extension/scripts/run-isolated-current-source-walk.js",
+        "extension/scripts/run-operational-fault-recovery-walk.js",
         "extension/scripts/run-operational-ui-walk.js",
         "extension/scripts/run-test-profile.js",
         "extension/scripts/run-vscode-host-smoke.js",
@@ -6899,6 +6988,7 @@
         "extension/tests/discovery-manager.test.js",
         "extension/tests/enterprise-manager.test.js",
         "extension/tests/environment-lifecycle-manager.test.js",
+        "extension/tests/exhaustive-operational-control-walk.test.js",
         "extension/tests/extension-contract.test.js",
         "extension/tests/extension-lifecycle-host.test.js",
         "extension/tests/extension-studio-wiring.test.js",
@@ -6909,6 +6999,8 @@
         "extension/tests/mcp-server.test.js",
         "extension/tests/ollama-provider.test.js",
         "extension/tests/operation-authority.test.js",
+        "extension/tests/operational-fault-recovery-walk.test.js",
+        "extension/tests/operational-ui-walk-installed-probe.test.js",
         "extension/tests/operational-walk-bootstrap/index.js",
         "extension/tests/operational-walk-status.test.js",
         "extension/tests/owned-host-runner.test.js",
@@ -7159,6 +7251,7 @@
         "scripts/apply_typed_control_gap_links.py",
         "scripts/archive_committed_wal.py",
         "scripts/archive_project_map_history.py",
+        "scripts/assemble_operational_control_evidence.py",
         "scripts/attest_operational_card_evidence.py",
         "scripts/audit_sanitization.py",
         "scripts/bootstrap_certification.py",
@@ -7178,6 +7271,8 @@
         "scripts/build_engine_identity.py",
         "scripts/build_external_candidate_registry.py",
         "scripts/build_historical_external_references.py",
+        "scripts/build_installed_host_control_evidence.py",
+        "scripts/build_installed_probe_control_evidence.py",
         "scripts/build_integration_disposition.py",
         "scripts/build_operation_health_snapshot.py",
         "scripts/build_operational_control_proof_matrix.py",
@@ -7251,6 +7346,7 @@
         "tests/test_agent_session_coordinator.py",
         "tests/test_archive_catalog_v2.py",
         "tests/test_archive_inventory.py",
+        "tests/test_assemble_operational_control_evidence.py",
         "tests/test_assurance_controls.py",
         "tests/test_authoritative_json.py",
         "tests/test_authoritative_skill_compiler.py",
@@ -7259,6 +7355,8 @@
         "tests/test_bootstrap_cli.py",
         "tests/test_bounded_walk.py",
         "tests/test_build_claims.py",
+        "tests/test_build_installed_host_control_evidence.py",
+        "tests/test_build_installed_probe_control_evidence.py",
         "tests/test_build_support_modules.py",
         "tests/test_bytecode_guard.py",
         "tests/test_cache_quarantine.py",
@@ -7429,6 +7527,7 @@
         "tests/test_tool_registry.py",
         "tests/test_transcript_analysis.py",
         "tests/test_trust_boundaries.py",
+        "tests/test_typed_operational_surface_inventory.py",
         "tests/test_wal_transaction.py",
         "tests/test_wave5_builders.py",
         "tests/test_work_admission.py",
@@ -7747,8 +7846,10 @@
         "extension/scripts/package-vsix.js",
         "extension/scripts/refresh-environment-inventory.js",
         "extension/scripts/run-contained-ui-action-walk.js",
+        "extension/scripts/run-exhaustive-operational-control-walk.js",
         "extension/scripts/run-installed-vsix-smoke.js",
         "extension/scripts/run-isolated-current-source-walk.js",
+        "extension/scripts/run-operational-fault-recovery-walk.js",
         "extension/scripts/run-operational-ui-walk.js",
         "extension/scripts/run-test-profile.js",
         "extension/scripts/run-vscode-host-smoke.js",
@@ -7806,6 +7907,7 @@
         "extension/tests/discovery-manager.test.js",
         "extension/tests/enterprise-manager.test.js",
         "extension/tests/environment-lifecycle-manager.test.js",
+        "extension/tests/exhaustive-operational-control-walk.test.js",
         "extension/tests/extension-contract.test.js",
         "extension/tests/extension-lifecycle-host.test.js",
         "extension/tests/extension-studio-wiring.test.js",
@@ -7816,6 +7918,8 @@
         "extension/tests/mcp-server.test.js",
         "extension/tests/ollama-provider.test.js",
         "extension/tests/operation-authority.test.js",
+        "extension/tests/operational-fault-recovery-walk.test.js",
+        "extension/tests/operational-ui-walk-installed-probe.test.js",
         "extension/tests/operational-walk-bootstrap/index.js",
         "extension/tests/operational-walk-status.test.js",
         "extension/tests/owned-host-runner.test.js",
@@ -8056,6 +8160,7 @@
         "scripts/apply_typed_control_gap_links.py",
         "scripts/archive_committed_wal.py",
         "scripts/archive_project_map_history.py",
+        "scripts/assemble_operational_control_evidence.py",
         "scripts/attest_operational_card_evidence.py",
         "scripts/audit_sanitization.py",
         "scripts/bootstrap_certification.py",
@@ -8075,6 +8180,8 @@
         "scripts/build_engine_identity.py",
         "scripts/build_external_candidate_registry.py",
         "scripts/build_historical_external_references.py",
+        "scripts/build_installed_host_control_evidence.py",
+        "scripts/build_installed_probe_control_evidence.py",
         "scripts/build_integration_disposition.py",
         "scripts/build_operation_health_snapshot.py",
         "scripts/build_operational_control_proof_matrix.py",
@@ -8148,6 +8255,7 @@
         "tests/test_agent_session_coordinator.py",
         "tests/test_archive_catalog_v2.py",
         "tests/test_archive_inventory.py",
+        "tests/test_assemble_operational_control_evidence.py",
         "tests/test_assurance_controls.py",
         "tests/test_authoritative_json.py",
         "tests/test_authoritative_skill_compiler.py",
@@ -8156,6 +8264,8 @@
         "tests/test_bootstrap_cli.py",
         "tests/test_bounded_walk.py",
         "tests/test_build_claims.py",
+        "tests/test_build_installed_host_control_evidence.py",
+        "tests/test_build_installed_probe_control_evidence.py",
         "tests/test_build_support_modules.py",
         "tests/test_bytecode_guard.py",
         "tests/test_cache_quarantine.py",
@@ -8326,6 +8436,7 @@
         "tests/test_tool_registry.py",
         "tests/test_transcript_analysis.py",
         "tests/test_trust_boundaries.py",
+        "tests/test_typed_operational_surface_inventory.py",
         "tests/test_wal_transaction.py",
         "tests/test_wave5_builders.py",
         "tests/test_work_admission.py",
@@ -8376,7 +8487,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "b1d81e63d35bf0fbafec65ce95b9d454af192eb1558e119d57aacdeaa7bbdc36",
+      "input_sha256": "052268b9e3cea652d6c3ede299f1f0dc9260231086fcc0f3c0a62a6a45505743",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -8527,11 +8638,14 @@
         "runtime/work_admission.py",
         "scripts/archive_committed_wal.py",
         "scripts/archive_project_map_history.py",
+        "scripts/assemble_operational_control_evidence.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
         "scripts/build_contract_ownership_registry.py",
         "scripts/build_declared_suite_template_projections.py",
         "scripts/build_domain_tool_projections.py",
+        "scripts/build_installed_host_control_evidence.py",
+        "scripts/build_installed_probe_control_evidence.py",
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
@@ -8552,6 +8666,7 @@
         "tests/test_agent_session_coordinator.py",
         "tests/test_archive_catalog_v2.py",
         "tests/test_archive_inventory.py",
+        "tests/test_assemble_operational_control_evidence.py",
         "tests/test_assurance_controls.py",
         "tests/test_authoritative_json.py",
         "tests/test_authoritative_skill_compiler.py",
@@ -8560,6 +8675,8 @@
         "tests/test_bootstrap_cli.py",
         "tests/test_bounded_walk.py",
         "tests/test_build_claims.py",
+        "tests/test_build_installed_host_control_evidence.py",
+        "tests/test_build_installed_probe_control_evidence.py",
         "tests/test_build_support_modules.py",
         "tests/test_bytecode_guard.py",
         "tests/test_cache_quarantine.py",
@@ -8611,7 +8728,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin A through F; this lane shares canonical registry state with core-n-s and must not overlap it.",
       "group": "core-a-f",
-      "input_sha256": "80531b44bd3af4bd7b75176007611ab216d503a71312a33827340c7a7412d77d",
+      "input_sha256": "52d112e46e73ac0271a449d8f9c2b6aee9badef625ed20c5fcfe933e3e63501d",
       "inputs": [
         "builders/declared_suite_builder.py",
         "builders/declared_suite_support_builder.py",
@@ -8710,11 +8827,14 @@
         "runtime/work_admission.py",
         "scripts/archive_committed_wal.py",
         "scripts/archive_project_map_history.py",
+        "scripts/assemble_operational_control_evidence.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
         "scripts/build_contract_ownership_registry.py",
         "scripts/build_declared_suite_template_projections.py",
         "scripts/build_domain_tool_projections.py",
+        "scripts/build_installed_host_control_evidence.py",
+        "scripts/build_installed_probe_control_evidence.py",
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
@@ -8735,6 +8855,7 @@
         "tests/test_agent_session_coordinator.py",
         "tests/test_archive_catalog_v2.py",
         "tests/test_archive_inventory.py",
+        "tests/test_assemble_operational_control_evidence.py",
         "tests/test_assurance_controls.py",
         "tests/test_authoritative_json.py",
         "tests/test_authoritative_skill_compiler.py",
@@ -8743,6 +8864,8 @@
         "tests/test_bootstrap_cli.py",
         "tests/test_bounded_walk.py",
         "tests/test_build_claims.py",
+        "tests/test_build_installed_host_control_evidence.py",
+        "tests/test_build_installed_probe_control_evidence.py",
         "tests/test_build_support_modules.py",
         "tests/test_bytecode_guard.py",
         "tests/test_cache_quarantine.py",
@@ -8792,7 +8915,7 @@
         "tests/test_extract_structured_text.py",
         "tests/test_foundation_assurance.py"
       ],
-      "member_count": 63,
+      "member_count": 66,
       "members": [
         "tests/test_admission_controller.py",
         "tests/test_agent_builder.py",
@@ -8801,6 +8924,7 @@
         "tests/test_agent_session_coordinator.py",
         "tests/test_archive_catalog_v2.py",
         "tests/test_archive_inventory.py",
+        "tests/test_assemble_operational_control_evidence.py",
         "tests/test_assurance_controls.py",
         "tests/test_authoritative_json.py",
         "tests/test_authoritative_skill_compiler.py",
@@ -8809,6 +8933,8 @@
         "tests/test_bootstrap_cli.py",
         "tests/test_bounded_walk.py",
         "tests/test_build_claims.py",
+        "tests/test_build_installed_host_control_evidence.py",
+        "tests/test_build_installed_probe_control_evidence.py",
         "tests/test_build_support_modules.py",
         "tests/test_bytecode_guard.py",
         "tests/test_cache_quarantine.py",
@@ -8932,7 +9058,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin G through M; this lane reads or mutates shared canonical repository state.",
       "group": "core-g-m",
-      "input_sha256": "a6c9ed8e81a18b3bd6df2fe62c929aefc0effc7534163f2b3c77f13bb60c3b9d",
+      "input_sha256": "416dce42d703a11773e860b776cbf845a5e51a11405b5fd7130e25b7438d2721",
       "inputs": [
         "builders/common.py",
         "builders/orchestration_builder.py",
@@ -9189,7 +9315,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
       "group": "core-n-s",
-      "input_sha256": "23d651e02b22c551c325fb725128492e2702b2a978dec50d3caf102285799692",
+      "input_sha256": "a4ccce1985198e94fb159043491ad6d412b6f288b2b1653a58dcbc67de6690ba",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",
@@ -9455,6 +9581,7 @@
         "runtime/workflow_studio.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
+        "scripts/build_typed_operational_surface_inventory.py",
         "scripts/cleanup_python_caches.py",
         "tests/test_temp2_completeness.py",
         "tests/test_test_profiles.py",
@@ -9463,13 +9590,14 @@
         "tests/test_tool_registry.py",
         "tests/test_transcript_analysis.py",
         "tests/test_trust_boundaries.py",
+        "tests/test_typed_operational_surface_inventory.py",
         "tests/test_wave5_builders.py",
         "tests/test_work_admission.py",
         "tests/test_workflow_studio.py"
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin T through Z; this lane reads or mutates shared canonical repository state.",
       "group": "core-t-z",
-      "input_sha256": "58375ce16f3f93a3def17ec60229444bb0ffbc5b4af74f5c57cf75934e5b6313",
+      "input_sha256": "87b30f8893818b69285fbd642fb7f23834f37007759f230111480118858bf596",
       "inputs": [
         "builders/adapter_builder.py",
         "builders/common.py",
@@ -9507,6 +9635,7 @@
         "runtime/workflow_studio.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
+        "scripts/build_typed_operational_surface_inventory.py",
         "scripts/cleanup_python_caches.py",
         "tests/test_temp2_completeness.py",
         "tests/test_test_profiles.py",
@@ -9515,11 +9644,12 @@
         "tests/test_tool_registry.py",
         "tests/test_transcript_analysis.py",
         "tests/test_trust_boundaries.py",
+        "tests/test_typed_operational_surface_inventory.py",
         "tests/test_wave5_builders.py",
         "tests/test_work_admission.py",
         "tests/test_workflow_studio.py"
       ],
-      "member_count": 10,
+      "member_count": 11,
       "members": [
         "tests/test_temp2_completeness.py",
         "tests/test_test_profiles.py",
@@ -9528,6 +9658,7 @@
         "tests/test_tool_registry.py",
         "tests/test_transcript_analysis.py",
         "tests/test_trust_boundaries.py",
+        "tests/test_typed_operational_surface_inventory.py",
         "tests/test_wave5_builders.py",
         "tests/test_work_admission.py",
         "tests/test_workflow_studio.py"
@@ -9537,10 +9668,10 @@
       "timeout_seconds": 600.0
     }
   ],
-  "parsed_file_count": 0,
-  "reused_file_count": 495,
+  "parsed_file_count": 1,
+  "reused_file_count": 501,
   "schema_version": "px.test-group-index/1.0",
-  "test_file_count": 191,
+  "test_file_count": 195,
   "topology_sha256": "b5b65e8880f06a175189196aa9e07463f75ee51a792e294a4e649b7a75fe03f1",
-  "tracked_python_file_count": 495
+  "tracked_python_file_count": 502
 }

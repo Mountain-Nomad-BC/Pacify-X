@@ -1450,6 +1450,13 @@ class WorkflowStudio:
                         completed_nodes, results, receipt_nodes, next_ready
                     ),
                 )
+                # A lifecycle request can arrive after the last node process
+                # returns but before its batch checkpoint is published.  Re-read
+                # the authoritative head so pause/cancel cannot be skipped by
+                # the success transition at the bottom of the loop.
+                control = self.run_control.read(run_id)
+                if control["state"] in {"pause_requested", "cancel_requested"}:
+                    raise _WorkflowLifecycleSignal(str(control["state"]))
                 if failed_closed:
                     raise RuntimeError(
                         "workflow node failed: " + ", ".join(failed_closed)
@@ -1469,6 +1476,9 @@ class WorkflowStudio:
                     raise RuntimeError(
                         f"workflow worker failed before receipt: {node_id}: {error}"
                     ) from error
+            control = self.run_control.read(run_id)
+            if control["state"] in {"pause_requested", "cancel_requested"}:
+                raise _WorkflowLifecycleSignal(str(control["state"]))
             target = "succeeded"
             published_state = "finalizing" if defer_terminal_publication else target
             receipt.update(

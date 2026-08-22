@@ -19,16 +19,34 @@ from runtime.native_skills import build_skill_index
 from runtime.studio_models import SkillPackage, StudioVersionConflict, allocate_studio_version
 
 
-def source(root, name="source"):
+def source(root, name="source", version="1.0.0"):
     path = root / name
     path.mkdir()
     (path / "contracts").mkdir()
+    (path / "agents").mkdir()
     (path / "tests").mkdir()
     (path / "resources").mkdir()
     (path / "SKILL.md").write_text("# Demo\n", encoding="utf-8")
-    (path / "capability.json").write_text("{}\n", encoding="utf-8")
-    (path / "skill.yaml").write_text("id: demo\n", encoding="utf-8")
-    (path / "contracts/manifest.json").write_text("{}\n", encoding="utf-8")
+    native_manifest = {
+        "schema_version": "px.native-skill-package/1.0",
+        "id": "demo",
+        "version": version,
+        "domain": "px-standard",
+    }
+    manifest_text = json.dumps(native_manifest, indent=2) + "\n"
+    (path / "capability.json").write_text(manifest_text, encoding="utf-8")
+    (path / "skill.yaml").write_text(manifest_text, encoding="utf-8")
+    (path / "agents/openai.yaml").write_text(
+        'interface:\n  display_name: "Demo"\n  short_description: "Demo skill"\n',
+        encoding="utf-8",
+    )
+    (path / "contracts/manifest.json").write_text(
+        json.dumps(
+            {"schema_version": "px.skill-contract-links/1.0", "contracts": []}
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     (path / "tests/validation.json").write_text(
         json.dumps(
             {
@@ -47,7 +65,23 @@ def source(root, name="source"):
         + "\n",
         encoding="utf-8",
     )
-    (path / "resources/index.json").write_text("{}\n", encoding="utf-8")
+    (path / "resources/index.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "px.skill-resources/1.0",
+                "resources": [
+                    "agents/openai.yaml",
+                    "capability.json",
+                    "contracts/manifest.json",
+                    "SKILL.md",
+                    "skill.yaml",
+                    "tests/validation.json",
+                ],
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     return path
 
 
@@ -69,6 +103,17 @@ def package():
 
 def projection_scaffold(root) -> None:
     (root / "registry/skill_packages").mkdir(parents=True)
+    (root / "registry/admission_ledger.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "allowed_dispositions": ["adopt"],
+                "promotion_requirements": [],
+                "records": [],
+            }
+        ),
+        encoding="utf-8",
+    )
     (root / "registry/skill_catalog.toml").write_text(
         'schema_version = "1.0"\n', encoding="utf-8"
     )
@@ -136,7 +181,7 @@ def test_preserved_original_provenance_survives_candidate_admission_and_promotio
     projection_scaffold(tmp_path)
     bound, preserved, exact = provenance_bound_package(tmp_path)
     studio = SkillStudio(tmp_path)
-    candidate = source(tmp_path, "candidate")
+    candidate = source(tmp_path, "candidate", version="1.0.1")
     token = studio.admit_source(candidate, approved_by="human:owner")
 
     draft = studio.stage_draft(bound, candidate, source_token=token)
@@ -163,7 +208,7 @@ def test_preserved_original_provenance_survives_candidate_admission_and_promotio
 def test_preserved_original_substitution_fails_closed_after_admission(tmp_path):
     bound, preserved, _exact = provenance_bound_package(tmp_path)
     studio = SkillStudio(tmp_path)
-    candidate = source(tmp_path, "candidate")
+    candidate = source(tmp_path, "candidate", version="1.0.1")
     token = studio.admit_source(candidate, approved_by="human:owner")
     studio.stage_draft(bound, candidate, source_token=token)
     assert studio.validate(bound)["passed"] is True
@@ -577,6 +622,23 @@ def test_skill_validation_is_idempotent_and_metadata_is_not_promoted(tmp_path):
     )
 
 
+def test_skill_validation_rejects_missing_openai_interface(tmp_path):
+    studio = SkillStudio(tmp_path)
+    draft_source = source(tmp_path, "draft")
+    (draft_source / "agents/openai.yaml").unlink()
+    (draft_source / "agents/README.md").write_text(
+        "Interface metadata intentionally omitted for this negative case.\n",
+        encoding="utf-8",
+    )
+    token = studio.admit_source(draft_source, approved_by="human:owner")
+    studio.stage_draft(package(), draft_source, source_token=token)
+
+    result = studio.validate(package())
+
+    assert result["passed"] is False
+    assert result["checks"]["openai_interface_valid"] is False
+
+
 def test_skill_tamper_after_admission_blocks_promotion(tmp_path):
     studio = SkillStudio(tmp_path)
     draft_source = source(tmp_path, "draft")
@@ -679,9 +741,36 @@ def test_skill_projection_updates_use_an_authenticated_recoverable_transaction(
     receipt = studio.promote(package(), approved=True)
     assert set(receipt["projection_updates"]) == {
         ".px/skill-index.json",
+        "registry/admission_ledger.json",
         "registry/skill_catalog.toml",
         "registry/skill_packages/demo.json",
     }
+    projected = json.loads(
+        (tmp_path / "registry/skill_packages/demo.json").read_text(encoding="utf-8")
+    )
+    assert projected["status"] == "active"
+    assert projected["body_sha256"] == hashlib.sha256(
+        (tmp_path / ".px/skills/demo/SKILL.md").read_bytes()
+    ).hexdigest()
+    assert projected["clean_room"] is False
+    assert projected["validation_freshness"] == "current"
+    assert projected["effects"] == ["read"]
+    assert projected["tests"] == ".px/skills/demo/tests/validation.json"
+    assert projected["provenance"]["type"] == "skill_studio_admitted_source"
+    admission = json.loads(
+        (tmp_path / "registry/admission_ledger.json").read_text(encoding="utf-8")
+    )
+    assert admission["records"] == [
+        {
+            "effects": ["read"],
+            "id": "demo",
+            "implementation": "skill_studio",
+            "notes": "Promoted through the authenticated Pacify-X Skill Studio lifecycle.",
+            "source_disposition": "adopt",
+            "status": "active",
+            "validation": {"failed": 0, "passed": 1},
+        }
+    ]
     manifest_path = next(
         (
             tmp_path / ".engineering-bootstrap/studios/skills/lifecycle-transactions"
@@ -710,12 +799,13 @@ def test_skill_rollback_restores_package_and_every_projection_before_image(tmp_p
     first_target_tree = materialization_attestation(target)[0]
     projection_paths = (
         tmp_path / ".px/skill-index.json",
+        tmp_path / "registry/admission_ledger.json",
         tmp_path / "registry/skill_catalog.toml",
         tmp_path / "registry/skill_packages/demo.json",
     )
     first_projection_bytes = {path: path.read_bytes() for path in projection_paths}
 
-    second_source = source(tmp_path, "second")
+    second_source = source(tmp_path, "second", version="1.1.0")
     (second_source / "SKILL.md").write_text("# Demo revision two\n", encoding="utf-8")
     second_package = replace(first_package, version="1.1.0")
     second_token = studio.admit_source(second_source, approved_by="human:owner")
@@ -796,7 +886,7 @@ def test_rollback_lifecycle_transaction_recovers_after_canonical_publication(
     studio.admit(first, approved=True, approver="human:owner")
     studio.promote(first, approved=True)
     first_tree = _tree_attestation(tmp_path / ".px/skills/demo")[1]
-    second_source = source(tmp_path, "rollback-second")
+    second_source = source(tmp_path, "rollback-second", version="1.1.0")
     (second_source / "SKILL.md").write_text("# Second\n", encoding="utf-8")
     second = replace(first, version="1.1.0")
     token = studio.admit_source(second_source, approved_by="human:owner")

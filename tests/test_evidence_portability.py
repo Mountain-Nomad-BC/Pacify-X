@@ -3,6 +3,7 @@ import shutil
 import tempfile
 
 from runtime.evidence_portability import (
+    discover_historical_references,
     portability_findings,
     rewrite_reference_literals,
     validate_evidence_portability,
@@ -48,6 +49,17 @@ def test_generated_portability_registry_is_not_self_ingested() -> None:
         '{"reference_count":0,"records":[],"note":"../obsolete"}\n', encoding="utf-8"
     )
     assert validate_evidence_portability(root)["valid"]
+
+
+def test_immutable_control_capture_families_are_not_runtime_locators(tmp_path) -> None:
+    full = tmp_path / "evidence/full-control-proof-20260822/capture.json"
+    fault = tmp_path / "evidence/operational-control-fault-20260822/receipt.json"
+    full.parent.mkdir(parents=True)
+    fault.parent.mkdir(parents=True)
+    full.write_text('{"displayed_fixture":"C:\\\\portable\\\\workspace"}\n', encoding="utf-8")
+    fault.write_text('{"displayed_fixture":"C:\\\\portable\\\\workspace"}\n', encoding="utf-8")
+
+    assert discover_historical_references(tmp_path) == []
 
 
 def test_portability_detects_unc_path() -> None:

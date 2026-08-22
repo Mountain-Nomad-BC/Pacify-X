@@ -1,0 +1,495 @@
+{
+  "actor": "codex-host:user-authorized",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "da471403b70ae1a497bc1ee43c2c9ebe52038796d7c6370ee3796bb67ad038dd",
+    "payload_sha256": "c19ace9131b53dc4d3d106b730e3e7c73ff1ac265f8f121354d9b500a7ce8cde",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "event_sha256": "a7f3adaa89eb41b1b888be3dea34859bd9c1e7d99c0d7bd78e452c06dbc0008a",
+  "operation": "validation.final",
+  "pipeline_id": "learning:18f7c6afd4fa4edea4c193cc1a9531cb",
+  "previous_event_sha256": "38400afcd646077ec0f0a98f6d5dd27901d3327edd65da88080a7f73145d39b4",
+  "recorded_utc": "2026-08-22T04:35:06.984Z",
+  "schema_version": "px.learning-pipeline-event/1.0",
+  "sequence": 16,
+  "state": {
+    "aggregation": {
+      "aggregation_identity": null,
+      "canonical": false,
+      "higher_is_better": true,
+      "maximum": 1.0,
+      "mean": 1.0,
+      "metric": "current_state_separation_success",
+      "minimum": 1.0,
+      "record_type": "hashless_aggregation",
+      "samples": 6,
+      "schema_version": "px.learning-aggregation/1.0",
+      "source_evidence_sha256": [
+        "11f8942b841bf095c770bc6ce37b55ac90ac0845cac6520155f3ce8ed67b3a23",
+        "459fbd07fd87067c3d110d14730dd93790303fbc11e04d1f250c21543a6535f7",
+        "67a377d81a42414385d4f5e198dc876ff71641cd2f983da0630b669c362e4244",
+        "711cc20266c24fe82dd0997e841eb254790a9d690e5f5db5df125a0962ab32d5",
+        "a50b70642f4e3f31d43b5bc8822a30958ea715358c496629212b960438bc3440",
+        "f5f7d71f63bf3002cb719741072a09a81880a75e015a0f11359ce491ddc94b83"
+      ],
+      "source_merkle_root": "1650e9779a34e527c3dffb812b571e6d1a6c9819ffd6e342ae782df35dcc8d98",
+      "standard_deviation": 0.0,
+      "task_classes": [
+        "pacify-x-operational-repair"
+      ]
+    },
+    "authority_state": "codex-host-retained",
+    "blocked_reasons": [],
+    "canonical_writes_performed": false,
+    "challenger_revision": {
+      "artifact": {
+        "id": "current-diagnostic-semantics",
+        "implementation": "runtime/dashboard_api.py",
+        "kind": "knowledge",
+        "rule": "Derive current failures from retained failed outcomes and expose cumulative counters only as historical_failures.",
+        "status": "adopted"
+      },
+      "artifact_sha256": "4c4f87bef905189fa440cced6be7edb87abd67e53893c10cc330b5f52549387d",
+      "canonical": false,
+      "dependency_sha256": {
+        "runtime/dashboard_api.py": "6103c3e187e513c5f51f7b69621808dcf3ecf065d7ad8363f6c7bda97cbe0d05",
+        "tests/test_dashboard_api.py": "f64f32cd6a641f873dde83f8da4db79bd783e0f187454001bf81d2c7095bc58c"
+      },
+      "evidence_sha256": [
+        "11f8942b841bf095c770bc6ce37b55ac90ac0845cac6520155f3ce8ed67b3a23",
+        "459fbd07fd87067c3d110d14730dd93790303fbc11e04d1f250c21543a6535f7",
+        "67a377d81a42414385d4f5e198dc876ff71641cd2f983da0630b669c362e4244",
+        "711cc20266c24fe82dd0997e841eb254790a9d690e5f5db5df125a0962ab32d5",
+        "a50b70642f4e3f31d43b5bc8822a30958ea715358c496629212b960438bc3440",
+        "f5f7d71f63bf3002cb719741072a09a81880a75e015a0f11359ce491ddc94b83"
+      ],
+      "immutable": true,
+      "kind": "knowledge",
+      "parent_revision_sha256": "cb8992f99a1ddd1ecdcb18c708777255de17bdc0cacffd4a91558bf3b3708913",
+      "record_sha256": "3ed808a491194b588843af53090fea196cd4e2e3bd8d29c12fb6878163cb96e6",
+      "record_type": "frozen_revision",
+      "revision_sha256": "07861eaf6b811a7150b5ad481bc401f73e2b1f1a8e15f9b4c48cd966606239d2",
+      "schema_version": "px.learning-promotion/1.0",
+      "state": "shadow",
+      "tier": 2,
+      "unit_id": "current-diagnostic-semantics"
+    },
+    "comparison": {
+      "challenger_revision_sha256": "07861eaf6b811a7150b5ad481bc401f73e2b1f1a8e15f9b4c48cd966606239d2",
+      "gate": {
+        "confidence_z": 1.96,
+        "losses": 0,
+        "minimum_trials": 6,
+        "passed": true,
+        "reason": "candidate advantage clears the confidence boundary",
+        "record_sha256": "95d656f72e9260ecdc31331131d9b24886a251a9f0fb7fd2df8cb23025fc893d",
+        "record_type": "confidence_gate",
+        "schema_version": "px.learning-promotion/1.0",
+        "ties": 0,
+        "trials": 6,
+        "wilson_lower_bound": 0.609656966,
+        "win_rate": 1.0,
+        "wins": 6
+      },
+      "incumbent_revision_sha256": "cb8992f99a1ddd1ecdcb18c708777255de17bdc0cacffd4a91558bf3b3708913",
+      "loser_retention_required": true,
+      "passed": true,
+      "record_sha256": "469d2258488eaefe602ace17393192f642876187367b1c8fc09e4e34d8c3339e",
+      "record_type": "ab_comparison",
+      "schema_version": "px.learning-promotion/1.0",
+      "trial_evidence_sha256": [
+        "0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185",
+        "220d590dee6b3e41918d8ef3eeffe391deb58fd912232a4373a0409740319386",
+        "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "b904159506af941389b70e02f450a1759b32e9e0116d23d8936cb7669a3529a9",
+        "de3f9f22815ff194bdd9e20681ed658af35f423e963fd3d82b4646f1c5c2ae6c",
+        "e2bc0baa12fdbefd64e5969bf46eae92758374e3fcd8ad74989027098bc70558"
+      ]
+    },
+    "created_utc": "2026-08-22T04:33:58.515Z",
+    "decay_decision": null,
+    "dependency_sha256": {
+      "runtime/dashboard_api.py": "6103c3e187e513c5f51f7b69621808dcf3ecf065d7ad8363f6c7bda97cbe0d05",
+      "tests/test_dashboard_api.py": "f64f32cd6a641f873dde83f8da4db79bd783e0f187454001bf81d2c7095bc58c"
+    },
+    "final_validation": {
+      "dependency_errors": [],
+      "evidence_ref": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json#sha256=e2bc0baa12fdbefd64e5969bf46eae92758374e3fcd8ad74989027098bc70558",
+      "evidence_sha256": "e2bc0baa12fdbefd64e5969bf46eae92758374e3fcd8ad74989027098bc70558",
+      "schema_version": "px.learning-final-validation/1.0",
+      "validated_by": "codex-host:user-authorized",
+      "validated_utc": "2026-08-22T04:35:06.940Z"
+    },
+    "hypothesis": {
+      "canonical": false,
+      "challenger_revision_sha256": "07861eaf6b811a7150b5ad481bc401f73e2b1f1a8e15f9b4c48cd966606239d2",
+      "claim": "Separating current retained failures from cumulative historical failures removes false live blockers without erasing audit history.",
+      "incumbent_revision_sha256": "cb8992f99a1ddd1ecdcb18c708777255de17bdc0cacffd4a91558bf3b3708913",
+      "pattern_sha256": "928bdeeadf83d08fac8a89c3df2f32654d47e0ac84aabb91e903b820831901d6",
+      "record_sha256": "3dc483d627d3051217e75631b2a754e0064b8284d986d83b5c8fdd83c368ae77",
+      "record_type": "hypothesis_candidate",
+      "schema_version": "px.learning-promotion/1.0",
+      "success_metric": "current_state_separation_success",
+      "validation_required": true
+    },
+    "incumbent_revision": {
+      "artifact": {
+        "id": "current-diagnostic-semantics",
+        "kind": "knowledge",
+        "rule": "Project cumulative runtime failure counters directly as current failures.",
+        "status": "superseded"
+      },
+      "artifact_sha256": "8e4fddb53e99670fea70ccf5a73dcee801f8b55981970dc1cb3e5824c066eeb1",
+      "canonical": false,
+      "dependency_sha256": {
+        "runtime/dashboard_api.py": "6103c3e187e513c5f51f7b69621808dcf3ecf065d7ad8363f6c7bda97cbe0d05",
+        "tests/test_dashboard_api.py": "f64f32cd6a641f873dde83f8da4db79bd783e0f187454001bf81d2c7095bc58c"
+      },
+      "evidence_sha256": [
+        "11f8942b841bf095c770bc6ce37b55ac90ac0845cac6520155f3ce8ed67b3a23",
+        "459fbd07fd87067c3d110d14730dd93790303fbc11e04d1f250c21543a6535f7",
+        "67a377d81a42414385d4f5e198dc876ff71641cd2f983da0630b669c362e4244",
+        "711cc20266c24fe82dd0997e841eb254790a9d690e5f5db5df125a0962ab32d5",
+        "a50b70642f4e3f31d43b5bc8822a30958ea715358c496629212b960438bc3440",
+        "f5f7d71f63bf3002cb719741072a09a81880a75e015a0f11359ce491ddc94b83"
+      ],
+      "immutable": true,
+      "kind": "knowledge",
+      "parent_revision_sha256": null,
+      "record_sha256": "a78dcc5e5c890a83eb17c0cd84a0341eae14bf98f5f277c75caac13ac201bd36",
+      "record_type": "frozen_revision",
+      "revision_sha256": "cb8992f99a1ddd1ecdcb18c708777255de17bdc0cacffd4a91558bf3b3708913",
+      "schema_version": "px.learning-promotion/1.0",
+      "state": "candidate",
+      "tier": 1,
+      "unit_id": "current-diagnostic-semantics"
+    },
+    "knowledge_proposal_id": null,
+    "learning_direct_write_allowed": false,
+    "operation_evidence": [
+      {
+        "authority_granted": false,
+        "capability_ids": [
+          "memory.canonicalize"
+        ],
+        "environment_sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "measurements": {
+          "current_state_separation_success": 1
+        },
+        "observed_at": "2026-08-22T04:33:58.515544+00:00",
+        "operation_id": "canonical-memory-restored",
+        "outcome": "succeeded",
+        "record_sha256": "11f8942b841bf095c770bc6ce37b55ac90ac0845cac6520155f3ce8ed67b3a23",
+        "record_type": "operation_evidence",
+        "schema_version": "px.learning-promotion/1.0",
+        "source_refs": [
+          "extension/dist/pacify-x-vscode-0.6.33.vsix#sha256=de3f9f22815ff194bdd9e20681ed658af35f423e963fd3d82b4646f1c5c2ae6c"
+        ],
+        "task_class": "pacify-x-operational-repair"
+      },
+      {
+        "authority_granted": false,
+        "capability_ids": [
+          "dashboard.owner-gate"
+        ],
+        "environment_sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "measurements": {
+          "current_state_separation_success": 1
+        },
+        "observed_at": "2026-08-22T04:33:58.544944+00:00",
+        "operation_id": "dashboard-owner-current",
+        "outcome": "succeeded",
+        "record_sha256": "459fbd07fd87067c3d110d14730dd93790303fbc11e04d1f250c21543a6535f7",
+        "record_type": "operation_evidence",
+        "schema_version": "px.learning-promotion/1.0",
+        "source_refs": [
+          ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json#sha256=220d590dee6b3e41918d8ef3eeffe391deb58fd912232a4373a0409740319386"
+        ],
+        "task_class": "pacify-x-operational-repair"
+      },
+      {
+        "authority_granted": false,
+        "capability_ids": [
+          "studio.owner-gate"
+        ],
+        "environment_sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "measurements": {
+          "current_state_separation_success": 1
+        },
+        "observed_at": "2026-08-22T04:33:58.606914+00:00",
+        "operation_id": "studio-owner-current",
+        "outcome": "succeeded",
+        "record_sha256": "a50b70642f4e3f31d43b5bc8822a30958ea715358c496629212b960438bc3440",
+        "record_type": "operation_evidence",
+        "schema_version": "px.learning-promotion/1.0",
+        "source_refs": [
+          ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json#sha256=e2bc0baa12fdbefd64e5969bf46eae92758374e3fcd8ad74989027098bc70558"
+        ],
+        "task_class": "pacify-x-operational-repair"
+      },
+      {
+        "authority_granted": false,
+        "capability_ids": [
+          "dashboard.snapshot"
+        ],
+        "environment_sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "measurements": {
+          "current_state_separation_success": 1
+        },
+        "observed_at": "2026-08-22T04:33:58.671009+00:00",
+        "operation_id": "diagnostic-semantics-implemented",
+        "outcome": "succeeded",
+        "record_sha256": "f5f7d71f63bf3002cb719741072a09a81880a75e015a0f11359ce491ddc94b83",
+        "record_type": "operation_evidence",
+        "schema_version": "px.learning-promotion/1.0",
+        "source_refs": [
+          "runtime/dashboard_api.py#sha256=b904159506af941389b70e02f450a1759b32e9e0116d23d8936cb7669a3529a9"
+        ],
+        "task_class": "pacify-x-operational-repair"
+      },
+      {
+        "authority_granted": false,
+        "capability_ids": [
+          "dashboard.contract"
+        ],
+        "environment_sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "measurements": {
+          "current_state_separation_success": 1
+        },
+        "observed_at": "2026-08-22T04:33:58.727267+00:00",
+        "operation_id": "diagnostic-contract-bound",
+        "outcome": "succeeded",
+        "record_sha256": "711cc20266c24fe82dd0997e841eb254790a9d690e5f5db5df125a0962ab32d5",
+        "record_type": "operation_evidence",
+        "schema_version": "px.learning-promotion/1.0",
+        "source_refs": [
+          "tests/test_dashboard_api.py#sha256=0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185"
+        ],
+        "task_class": "pacify-x-operational-repair"
+      },
+      {
+        "authority_granted": false,
+        "capability_ids": [
+          "extension.install"
+        ],
+        "environment_sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "measurements": {
+          "current_state_separation_success": 1
+        },
+        "observed_at": "2026-08-22T04:33:58.783941+00:00",
+        "operation_id": "repaired-extension-installed",
+        "outcome": "succeeded",
+        "record_sha256": "67a377d81a42414385d4f5e198dc876ff71641cd2f983da0630b669c362e4244",
+        "record_type": "operation_evidence",
+        "schema_version": "px.learning-promotion/1.0",
+        "source_refs": [
+          "extension/media/dashboard/90-controller.js#sha256=34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a"
+        ],
+        "task_class": "pacify-x-operational-repair"
+      }
+    ],
+    "pattern": {
+      "aggregation_merkle_root": "1650e9779a34e527c3dffb812b571e6d1a6c9819ffd6e342ae782df35dcc8d98",
+      "applicability": [
+        "dashboard diagnostics",
+        "operational readiness",
+        "runtime failure reporting"
+      ],
+      "interpretation": "Operational dashboards must derive current status from current retained outcomes while preserving cumulative counters only as explicitly historical evidence.",
+      "learned_authority": false,
+      "metric": "current_state_separation_success",
+      "record_sha256": "928bdeeadf83d08fac8a89c3df2f32654d47e0ac84aabb91e903b820831901d6",
+      "record_type": "pattern_candidate",
+      "samples": 6,
+      "schema_version": "px.learning-promotion/1.0",
+      "source_evidence_sha256": [
+        "11f8942b841bf095c770bc6ce37b55ac90ac0845cac6520155f3ce8ed67b3a23",
+        "459fbd07fd87067c3d110d14730dd93790303fbc11e04d1f250c21543a6535f7",
+        "67a377d81a42414385d4f5e198dc876ff71641cd2f983da0630b669c362e4244",
+        "711cc20266c24fe82dd0997e841eb254790a9d690e5f5db5df125a0962ab32d5",
+        "a50b70642f4e3f31d43b5bc8822a30958ea715358c496629212b960438bc3440",
+        "f5f7d71f63bf3002cb719741072a09a81880a75e015a0f11359ce491ddc94b83"
+      ]
+    },
+    "pipeline_id": "learning:18f7c6afd4fa4edea4c193cc1a9531cb",
+    "pipeline_revision_sha256": "5af5859d88c685ba7ca3bc0ac870104f48a0b86e9d1f4c495c2633227c98503c",
+    "promotion_decision": {
+      "canonical_corpus_sha256": "6132dcc8a9e9ca74de9814e590237945e4708a2dde08d07be9fea68316f78027",
+      "canonical_identity": {
+        "artifact_sha256": "4c4f87bef905189fa440cced6be7edb87abd67e53893c10cc330b5f52549387d",
+        "dependency_sha256": {
+          "runtime/dashboard_api.py": "6103c3e187e513c5f51f7b69621808dcf3ecf065d7ad8363f6c7bda97cbe0d05",
+          "tests/test_dashboard_api.py": "f64f32cd6a641f873dde83f8da4db79bd783e0f187454001bf81d2c7095bc58c"
+        },
+        "kind": "knowledge",
+        "partial_units": [],
+        "revision_sha256": "07861eaf6b811a7150b5ad481bc401f73e2b1f1a8e15f9b4c48cd966606239d2",
+        "unit_id": "current-diagnostic-semantics"
+      },
+      "checks": {
+        "ab_gate": true,
+        "confidence_gate": true,
+        "dependencies_current": true,
+        "final_validation": true,
+        "frozen_revision": true,
+        "research_gate": true
+      },
+      "learning_direct_write_allowed": false,
+      "loser_retention_required": true,
+      "passed": true,
+      "record_sha256": "9914935a56f15327e1b483ad28d75f6fe1017cecfc2d066a3a8af188602cd359",
+      "record_type": "promotion_decision",
+      "rollback_revision_sha256": "cb8992f99a1ddd1ecdcb18c708777255de17bdc0cacffd4a91558bf3b3708913",
+      "schema_version": "px.learning-promotion/1.0",
+      "source_gate_sha256": [
+        "469d2258488eaefe602ace17393192f642876187367b1c8fc09e4e34d8c3339e",
+        "95d656f72e9260ecdc31331131d9b24886a251a9f0fb7fd2df8cb23025fc893d",
+        "a0e2895afebb02464f18abda96a023350f31c0a1de591f8f770707d7cc4a9eb2",
+        "b820ca07c03ab1cb088ecb781448cbd88327699bd9ae368cf56298129750a3f5",
+        "e2bc0baa12fdbefd64e5969bf46eae92758374e3fcd8ad74989027098bc70558"
+      ],
+      "state": "canonical"
+    },
+    "research": {
+      "better_alternative_found": false,
+      "conclusion": "The production contract and its focused regression assertions require current failures and historical cumulative failures to remain distinct.",
+      "passed": true,
+      "question": "Should current diagnostics derive live failures from current retained failed outcomes while preserving cumulative failure counts separately?",
+      "record_sha256": "a0e2895afebb02464f18abda96a023350f31c0a1de591f8f770707d7cc4a9eb2",
+      "record_type": "research_validation",
+      "references": [
+        {
+          "evidence_sha256": "0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185",
+          "independent": true,
+          "uri": "repo:tests/test_dashboard_api.py"
+        }
+      ],
+      "schema_version": "px.learning-promotion/1.0"
+    },
+    "research_references": [
+      {
+        "evidence_ref": "tests/test_dashboard_api.py#sha256=0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185",
+        "evidence_sha256": "0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185",
+        "independent": true,
+        "uri": "repo:tests/test_dashboard_api.py"
+      }
+    ],
+    "reuse_measurements": [],
+    "schema_version": "px.learning-pipeline/1.0",
+    "secondary_comparison": null,
+    "secondary_revision": null,
+    "secondary_trials": [],
+    "selected_revision": {
+      "artifact": {
+        "id": "current-diagnostic-semantics",
+        "implementation": "runtime/dashboard_api.py",
+        "kind": "knowledge",
+        "rule": "Derive current failures from retained failed outcomes and expose cumulative counters only as historical_failures.",
+        "status": "adopted"
+      },
+      "artifact_sha256": "4c4f87bef905189fa440cced6be7edb87abd67e53893c10cc330b5f52549387d",
+      "canonical": false,
+      "dependency_sha256": {
+        "runtime/dashboard_api.py": "6103c3e187e513c5f51f7b69621808dcf3ecf065d7ad8363f6c7bda97cbe0d05",
+        "tests/test_dashboard_api.py": "f64f32cd6a641f873dde83f8da4db79bd783e0f187454001bf81d2c7095bc58c"
+      },
+      "evidence_sha256": [
+        "11f8942b841bf095c770bc6ce37b55ac90ac0845cac6520155f3ce8ed67b3a23",
+        "459fbd07fd87067c3d110d14730dd93790303fbc11e04d1f250c21543a6535f7",
+        "67a377d81a42414385d4f5e198dc876ff71641cd2f983da0630b669c362e4244",
+        "711cc20266c24fe82dd0997e841eb254790a9d690e5f5db5df125a0962ab32d5",
+        "a50b70642f4e3f31d43b5bc8822a30958ea715358c496629212b960438bc3440",
+        "f5f7d71f63bf3002cb719741072a09a81880a75e015a0f11359ce491ddc94b83"
+      ],
+      "immutable": true,
+      "kind": "knowledge",
+      "parent_revision_sha256": "cb8992f99a1ddd1ecdcb18c708777255de17bdc0cacffd4a91558bf3b3708913",
+      "record_sha256": "3ed808a491194b588843af53090fea196cd4e2e3bd8d29c12fb6878163cb96e6",
+      "record_type": "frozen_revision",
+      "revision_sha256": "07861eaf6b811a7150b5ad481bc401f73e2b1f1a8e15f9b4c48cd966606239d2",
+      "schema_version": "px.learning-promotion/1.0",
+      "state": "shadow",
+      "tier": 2,
+      "unit_id": "current-diagnostic-semantics"
+    },
+    "selection_comparison": {
+      "challenger_revision_sha256": "07861eaf6b811a7150b5ad481bc401f73e2b1f1a8e15f9b4c48cd966606239d2",
+      "gate": {
+        "confidence_z": 1.96,
+        "losses": 0,
+        "minimum_trials": 6,
+        "passed": true,
+        "reason": "candidate advantage clears the confidence boundary",
+        "record_sha256": "95d656f72e9260ecdc31331131d9b24886a251a9f0fb7fd2df8cb23025fc893d",
+        "record_type": "confidence_gate",
+        "schema_version": "px.learning-promotion/1.0",
+        "ties": 0,
+        "trials": 6,
+        "wilson_lower_bound": 0.609656966,
+        "win_rate": 1.0,
+        "wins": 6
+      },
+      "incumbent_revision_sha256": "cb8992f99a1ddd1ecdcb18c708777255de17bdc0cacffd4a91558bf3b3708913",
+      "loser_retention_required": true,
+      "passed": true,
+      "record_sha256": "469d2258488eaefe602ace17393192f642876187367b1c8fc09e4e34d8c3339e",
+      "record_type": "ab_comparison",
+      "schema_version": "px.learning-promotion/1.0",
+      "trial_evidence_sha256": [
+        "0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185",
+        "220d590dee6b3e41918d8ef3eeffe391deb58fd912232a4373a0409740319386",
+        "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "b904159506af941389b70e02f450a1759b32e9e0116d23d8936cb7669a3529a9",
+        "de3f9f22815ff194bdd9e20681ed658af35f423e963fd3d82b4646f1c5c2ae6c",
+        "e2bc0baa12fdbefd64e5969bf46eae92758374e3fcd8ad74989027098bc70558"
+      ]
+    },
+    "sequence": 16,
+    "source_ids": [
+      "repair-pattern-library",
+      "source-requirement-coverage"
+    ],
+    "state": "validated",
+    "trials": [
+      {
+        "evidence_ref": "extension/dist/pacify-x-vscode-0.6.33.vsix#sha256=de3f9f22815ff194bdd9e20681ed658af35f423e963fd3d82b4646f1c5c2ae6c",
+        "evidence_sha256": "de3f9f22815ff194bdd9e20681ed658af35f423e963fd3d82b4646f1c5c2ae6c",
+        "recorded_utc": "2026-08-22T04:35:06.255Z",
+        "winner": "challenger"
+      },
+      {
+        "evidence_ref": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json#sha256=220d590dee6b3e41918d8ef3eeffe391deb58fd912232a4373a0409740319386",
+        "evidence_sha256": "220d590dee6b3e41918d8ef3eeffe391deb58fd912232a4373a0409740319386",
+        "recorded_utc": "2026-08-22T04:35:06.356Z",
+        "winner": "challenger"
+      },
+      {
+        "evidence_ref": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json#sha256=e2bc0baa12fdbefd64e5969bf46eae92758374e3fcd8ad74989027098bc70558",
+        "evidence_sha256": "e2bc0baa12fdbefd64e5969bf46eae92758374e3fcd8ad74989027098bc70558",
+        "recorded_utc": "2026-08-22T04:35:06.447Z",
+        "winner": "challenger"
+      },
+      {
+        "evidence_ref": "runtime/dashboard_api.py#sha256=b904159506af941389b70e02f450a1759b32e9e0116d23d8936cb7669a3529a9",
+        "evidence_sha256": "b904159506af941389b70e02f450a1759b32e9e0116d23d8936cb7669a3529a9",
+        "recorded_utc": "2026-08-22T04:35:06.550Z",
+        "winner": "challenger"
+      },
+      {
+        "evidence_ref": "tests/test_dashboard_api.py#sha256=0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185",
+        "evidence_sha256": "0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185",
+        "recorded_utc": "2026-08-22T04:35:06.650Z",
+        "winner": "challenger"
+      },
+      {
+        "evidence_ref": "extension/media/dashboard/90-controller.js#sha256=34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "evidence_sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "recorded_utc": "2026-08-22T04:35:06.745Z",
+        "winner": "challenger"
+      }
+    ],
+    "updated_utc": "2026-08-22T04:35:06.984Z"
+  }
+}

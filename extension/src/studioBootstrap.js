@@ -68,10 +68,14 @@ async function approvedOperation(bridge, kind, operation, payload) {
   return bridge.studioOperation(kind, operation, { ...exact, approval_capability: capability.approval_capability });
 }
 
-function isInitialVersionConflict(error) {
-  return error instanceof Error
-    && error.code === 'STUDIO_VERSION_CONFLICT'
-    && ['initial-version-invalid', 'initial-identity-occupied'].includes(error.reason);
+function isRecoverableVersionConflict(error) {
+  if (!(error instanceof Error)) return false;
+  if (error.code === 'STUDIO_VERSION_CONFLICT' && [
+      'initial-version-invalid', 'initial-identity-occupied',
+      'immutable-agent-revision-differs', 'immutable-workflow-revision-differs',
+      'immutable-revision-differs', 'revision-already-occupied', 'publication-collision'
+    ].includes(error.reason)) return true;
+  return /PermissionError: immutable agent builder artifacts are (?:invalid|missing)\s*$/.test(error.message);
 }
 
 async function createStarterRevision(bridge, kind, candidate) {
@@ -79,16 +83,27 @@ async function createStarterRevision(bridge, kind, candidate) {
   try {
     return { candidate, receipt: await approvedOperation(bridge, kind, 'create', candidate) };
   } catch (error) {
-    if (!isInitialVersionConflict(error)) throw error;
+    if (!isRecoverableVersionConflict(error)) throw error;
     if (typeof bridge.studioIdentityAbsence !== 'function' || typeof bridge.nextStudioVersion !== 'function') throw error;
     const absence = await bridge.studioIdentityAbsence(kind, identity);
+    let sourceVersion = candidate.version;
     if (absence?.absent === true) {
       const initial = { ...candidate, version: STARTER_INITIAL_VERSION };
       await approvedOperation(bridge, kind, 'create', initial);
+      sourceVersion = STARTER_INITIAL_VERSION;
     }
-    const allocation = await bridge.nextStudioVersion(kind, identity, STARTER_INITIAL_VERSION, 'studio-physical');
-    if (allocation?.candidate_version !== candidate.version) throw new Error(`studio-setup-${kind}-bundle-version-allocation-mismatch`);
-    const allocated = { ...candidate, version_allocation: allocation };
+    let allocation;
+    try {
+      allocation = await bridge.nextStudioVersion(kind, identity, sourceVersion, 'studio-physical');
+    } catch (allocationError) {
+      const sourceUnavailable = allocationError instanceof Error
+        && allocationError.code === 'STUDIO_VERSION_CONFLICT'
+        && ['source-revision-missing', 'source-revision-invalid'].includes(allocationError.reason);
+      if (!sourceUnavailable || sourceVersion === STARTER_INITIAL_VERSION) throw allocationError;
+      allocation = await bridge.nextStudioVersion(kind, identity, STARTER_INITIAL_VERSION, 'studio-physical');
+    }
+    if (!/^\d+\.\d+\.\d+$/.test(String(allocation?.candidate_version || ''))) throw new Error(`studio-setup-${kind}-version-allocation-invalid`);
+    const allocated = { ...candidate, version: allocation.candidate_version, version_allocation: allocation };
     return { candidate: allocated, receipt: await approvedOperation(bridge, kind, 'create', allocated) };
   }
 }

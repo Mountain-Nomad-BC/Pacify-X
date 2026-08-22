@@ -1,0 +1,24 @@
+{
+  "admitted_utc": "2026-08-21T17:46:46.614Z",
+  "agent_id": "agent:pacify-x-starter",
+  "agent_revision_sha256": "4f43648ad06fd8f92c49508ab61ca785fe8fd17c49b6538d784541c7e6b539bf",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "5cab892578ff9e3ce78e04029c69a72ef29e161a6c9148dc61fbb16c61eb3e6f",
+    "payload_sha256": "a77bde4fed28e548c37673c5e8eac1441482b0795b55347bfe736fe1a36ae92f",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "authority_record_hashes": {
+    "binding:binding:pacify-x-starter": "c19e63cbcc447bebed0fa43e9be90ce7320f874dbee5e50996b7f93128f2fdaa",
+    "grant:grant:pacify-x-starter": "af82eeeb70769673e6dd70ce0645cabb4ba6c5154c685bd3365401a9de76112e"
+  },
+  "authority_state": "codex-host-retained",
+  "decision": "admitted",
+  "nonce": "03b14d489faa49efac113c0f643ddec7",
+  "reasons": [],
+  "runtime_state": "stopped",
+  "schema_version": "px.agent-admission-receipt/1.1",
+  "status": "admitted",
+  "version": "1.0.3"
+}

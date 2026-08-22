@@ -95,6 +95,38 @@ test('Studio setup allocates the new immutable bundle version from an occupied 1
   assert.equal(creates.filter(([, payload]) => payload.version_allocation).length, 2);
 });
 
+test('Studio setup advances past an occupied revision with invalid immutable builder artifacts', async () => {
+  const creates = [];
+  const bridge = {
+    async issueStudioApproval(_kind, _operation, payload) { return { approval_capability: { payload } }; },
+    async studioIdentityAbsence(kind, identity) { return { kind, identity, absent: false }; },
+    async nextStudioVersion(kind, identity, sourceVersion) {
+      return { kind, identity, source_version: sourceVersion, candidate_version: kind === 'agent' ? '1.0.2' : STARTER_BUNDLE_VERSION };
+    },
+    async studioOperation(kind, operation, payload) {
+      const exact = payload.approval_capability?.payload || payload;
+      if (operation === 'create') {
+        creates.push([kind, exact]);
+        if (kind === 'agent' && !exact.version_allocation) {
+          throw new Error('Traceback (most recent call last):\nPermissionError: immutable agent builder artifacts are invalid');
+        }
+        return { created: true };
+      }
+      if (kind === 'agent' && operation === 'test') return { passed: true };
+      if (operation === 'admit' || (kind === 'workflow' && operation === 'validate')) return { decision: 'admitted' };
+      if (kind === 'agent' && operation === 'run') return { run_id: 'run:agent-recovered', run_outcome: 'succeeded' };
+      if (kind === 'workflow' && operation === 'dry-run') return { effects_executed: false };
+      if (kind === 'workflow' && operation === 'run') return { run_id: 'run:workflow-recovered', run_state: 'succeeded' };
+      return {};
+    }
+  };
+
+  const result = await setupStudio(bridge);
+  assert.equal(result.agent.version, '1.0.2');
+  assert.equal(result.workflow.version, STARTER_BUNDLE_VERSION);
+  assert.equal(creates.some(([kind, payload]) => kind === 'agent' && payload.version === '1.0.2' && payload.version_allocation), true);
+});
+
 test('Studio setup crosses the real host-to-Python boundary and leaves reopenable runnable revisions', { timeout: 120000 }, async t => {
   const engineRoot = path.resolve(__dirname, '..', '..');
   const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'px-studio-product-project-'));

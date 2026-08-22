@@ -1,0 +1,218 @@
+{
+  "actor": "codex-host:user-authorized",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "6c88680ff328fdddaa893aa500af57afd00e87f3679a62aa4bcd2d79c7737e6b",
+    "payload_sha256": "6d210834a961748c15696426844385fd4d296386935891758bef39fb077ec98d",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "event_sha256": "bcbff12b21b54190dd18542c3dd161169698a6844fe7a2282d4507e4755a6369",
+  "operation": "pattern.extract",
+  "pipeline_id": "learning:18f7c6afd4fa4edea4c193cc1a9531cb",
+  "previous_event_sha256": "30cc05f7445a0dd5eb4e77b50dbec23688e6b64c497927e4b0a621f107dde799",
+  "recorded_utc": "2026-08-22T04:33:58.932Z",
+  "schema_version": "px.learning-pipeline-event/1.0",
+  "sequence": 7,
+  "state": {
+    "aggregation": {
+      "aggregation_identity": null,
+      "canonical": false,
+      "higher_is_better": true,
+      "maximum": 1.0,
+      "mean": 1.0,
+      "metric": "current_state_separation_success",
+      "minimum": 1.0,
+      "record_type": "hashless_aggregation",
+      "samples": 6,
+      "schema_version": "px.learning-aggregation/1.0",
+      "source_evidence_sha256": [
+        "11f8942b841bf095c770bc6ce37b55ac90ac0845cac6520155f3ce8ed67b3a23",
+        "459fbd07fd87067c3d110d14730dd93790303fbc11e04d1f250c21543a6535f7",
+        "67a377d81a42414385d4f5e198dc876ff71641cd2f983da0630b669c362e4244",
+        "711cc20266c24fe82dd0997e841eb254790a9d690e5f5db5df125a0962ab32d5",
+        "a50b70642f4e3f31d43b5bc8822a30958ea715358c496629212b960438bc3440",
+        "f5f7d71f63bf3002cb719741072a09a81880a75e015a0f11359ce491ddc94b83"
+      ],
+      "source_merkle_root": "1650e9779a34e527c3dffb812b571e6d1a6c9819ffd6e342ae782df35dcc8d98",
+      "standard_deviation": 0.0,
+      "task_classes": [
+        "pacify-x-operational-repair"
+      ]
+    },
+    "authority_state": "codex-host-retained",
+    "canonical_writes_performed": false,
+    "challenger_revision": null,
+    "comparison": null,
+    "created_utc": "2026-08-22T04:33:58.515Z",
+    "decay_decision": null,
+    "final_validation": null,
+    "hypothesis": null,
+    "incumbent_revision": null,
+    "knowledge_proposal_id": null,
+    "learning_direct_write_allowed": false,
+    "operation_evidence": [
+      {
+        "authority_granted": false,
+        "capability_ids": [
+          "memory.canonicalize"
+        ],
+        "environment_sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "measurements": {
+          "current_state_separation_success": 1
+        },
+        "observed_at": "2026-08-22T04:33:58.515544+00:00",
+        "operation_id": "canonical-memory-restored",
+        "outcome": "succeeded",
+        "record_sha256": "11f8942b841bf095c770bc6ce37b55ac90ac0845cac6520155f3ce8ed67b3a23",
+        "record_type": "operation_evidence",
+        "schema_version": "px.learning-promotion/1.0",
+        "source_refs": [
+          "extension/dist/pacify-x-vscode-0.6.33.vsix#sha256=de3f9f22815ff194bdd9e20681ed658af35f423e963fd3d82b4646f1c5c2ae6c"
+        ],
+        "task_class": "pacify-x-operational-repair"
+      },
+      {
+        "authority_granted": false,
+        "capability_ids": [
+          "dashboard.owner-gate"
+        ],
+        "environment_sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "measurements": {
+          "current_state_separation_success": 1
+        },
+        "observed_at": "2026-08-22T04:33:58.544944+00:00",
+        "operation_id": "dashboard-owner-current",
+        "outcome": "succeeded",
+        "record_sha256": "459fbd07fd87067c3d110d14730dd93790303fbc11e04d1f250c21543a6535f7",
+        "record_type": "operation_evidence",
+        "schema_version": "px.learning-promotion/1.0",
+        "source_refs": [
+          ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json#sha256=220d590dee6b3e41918d8ef3eeffe391deb58fd912232a4373a0409740319386"
+        ],
+        "task_class": "pacify-x-operational-repair"
+      },
+      {
+        "authority_granted": false,
+        "capability_ids": [
+          "studio.owner-gate"
+        ],
+        "environment_sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "measurements": {
+          "current_state_separation_success": 1
+        },
+        "observed_at": "2026-08-22T04:33:58.606914+00:00",
+        "operation_id": "studio-owner-current",
+        "outcome": "succeeded",
+        "record_sha256": "a50b70642f4e3f31d43b5bc8822a30958ea715358c496629212b960438bc3440",
+        "record_type": "operation_evidence",
+        "schema_version": "px.learning-promotion/1.0",
+        "source_refs": [
+          ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json#sha256=e2bc0baa12fdbefd64e5969bf46eae92758374e3fcd8ad74989027098bc70558"
+        ],
+        "task_class": "pacify-x-operational-repair"
+      },
+      {
+        "authority_granted": false,
+        "capability_ids": [
+          "dashboard.snapshot"
+        ],
+        "environment_sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "measurements": {
+          "current_state_separation_success": 1
+        },
+        "observed_at": "2026-08-22T04:33:58.671009+00:00",
+        "operation_id": "diagnostic-semantics-implemented",
+        "outcome": "succeeded",
+        "record_sha256": "f5f7d71f63bf3002cb719741072a09a81880a75e015a0f11359ce491ddc94b83",
+        "record_type": "operation_evidence",
+        "schema_version": "px.learning-promotion/1.0",
+        "source_refs": [
+          "runtime/dashboard_api.py#sha256=b904159506af941389b70e02f450a1759b32e9e0116d23d8936cb7669a3529a9"
+        ],
+        "task_class": "pacify-x-operational-repair"
+      },
+      {
+        "authority_granted": false,
+        "capability_ids": [
+          "dashboard.contract"
+        ],
+        "environment_sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "measurements": {
+          "current_state_separation_success": 1
+        },
+        "observed_at": "2026-08-22T04:33:58.727267+00:00",
+        "operation_id": "diagnostic-contract-bound",
+        "outcome": "succeeded",
+        "record_sha256": "711cc20266c24fe82dd0997e841eb254790a9d690e5f5db5df125a0962ab32d5",
+        "record_type": "operation_evidence",
+        "schema_version": "px.learning-promotion/1.0",
+        "source_refs": [
+          "tests/test_dashboard_api.py#sha256=0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185"
+        ],
+        "task_class": "pacify-x-operational-repair"
+      },
+      {
+        "authority_granted": false,
+        "capability_ids": [
+          "extension.install"
+        ],
+        "environment_sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "measurements": {
+          "current_state_separation_success": 1
+        },
+        "observed_at": "2026-08-22T04:33:58.783941+00:00",
+        "operation_id": "repaired-extension-installed",
+        "outcome": "succeeded",
+        "record_sha256": "67a377d81a42414385d4f5e198dc876ff71641cd2f983da0630b669c362e4244",
+        "record_type": "operation_evidence",
+        "schema_version": "px.learning-promotion/1.0",
+        "source_refs": [
+          "extension/media/dashboard/90-controller.js#sha256=34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a"
+        ],
+        "task_class": "pacify-x-operational-repair"
+      }
+    ],
+    "pattern": {
+      "aggregation_merkle_root": "1650e9779a34e527c3dffb812b571e6d1a6c9819ffd6e342ae782df35dcc8d98",
+      "applicability": [
+        "dashboard diagnostics",
+        "operational readiness",
+        "runtime failure reporting"
+      ],
+      "interpretation": "Operational dashboards must derive current status from current retained outcomes while preserving cumulative counters only as explicitly historical evidence.",
+      "learned_authority": false,
+      "metric": "current_state_separation_success",
+      "record_sha256": "928bdeeadf83d08fac8a89c3df2f32654d47e0ac84aabb91e903b820831901d6",
+      "record_type": "pattern_candidate",
+      "samples": 6,
+      "schema_version": "px.learning-promotion/1.0",
+      "source_evidence_sha256": [
+        "11f8942b841bf095c770bc6ce37b55ac90ac0845cac6520155f3ce8ed67b3a23",
+        "459fbd07fd87067c3d110d14730dd93790303fbc11e04d1f250c21543a6535f7",
+        "67a377d81a42414385d4f5e198dc876ff71641cd2f983da0630b669c362e4244",
+        "711cc20266c24fe82dd0997e841eb254790a9d690e5f5db5df125a0962ab32d5",
+        "a50b70642f4e3f31d43b5bc8822a30958ea715358c496629212b960438bc3440",
+        "f5f7d71f63bf3002cb719741072a09a81880a75e015a0f11359ce491ddc94b83"
+      ]
+    },
+    "pipeline_id": "learning:18f7c6afd4fa4edea4c193cc1a9531cb",
+    "pipeline_revision_sha256": "bb2edfeb48a5426297411b5602cb2ace5fb2276ff24eb38dd698957cbc0d1d6e",
+    "promotion_decision": null,
+    "research": null,
+    "reuse_measurements": [],
+    "schema_version": "px.learning-pipeline/1.0",
+    "secondary_comparison": null,
+    "secondary_revision": null,
+    "secondary_trials": [],
+    "selected_revision": null,
+    "sequence": 7,
+    "source_ids": [
+      "repair-pattern-library",
+      "source-requirement-coverage"
+    ],
+    "state": "pattern",
+    "trials": [],
+    "updated_utc": "2026-08-22T04:33:58.932Z"
+  }
+}

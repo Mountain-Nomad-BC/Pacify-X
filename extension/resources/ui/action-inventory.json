@@ -7,7 +7,7 @@
     "effect": "none-outside-webview",
     "acknowledgement": "active surface and focus update"
   },
-  "action_count": 200,
+  "action_count": 202,
   "actions": [
     {
       "action": "acceptStudioVersionSuggestion",
@@ -643,6 +643,24 @@
       ]
     },
     {
+      "action": "disconnectCanonicalMemory",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "disconnectCanonicalMemory",
+        "fields": [
+          "requestId"
+        ]
+      },
+      "authority": "VS Code workspace configuration + canonical memory attachment boundary",
+      "effect": "configuration-write",
+      "state_transition": "explicit detach approval, refreshed detached snapshot, and no file deletion",
+      "acknowledgement": "explicit detach approval, refreshed detached snapshot, and no file deletion",
+      "receipt": "typed host action receipt with prior and restored workspace root",
+      "rendered_in": [
+        "media/dashboard/46-observability-surfaces.js"
+      ]
+    },
+    {
       "action": "enterpriseDoctor",
       "mode": "host",
       "inbound_schema": {
@@ -1127,6 +1145,39 @@
       "acknowledgement": "immediate visible UI state",
       "receipt": null,
       "behavior": "select deterministic community, flow, or orbit layout",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphLoadAll",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "graphQuery",
+        "fields": [
+          "requestId",
+          "view",
+          "mode",
+          "cluster",
+          "node",
+          "target",
+          "query",
+          "relation",
+          "direction",
+          "kind",
+          "status",
+          "offset",
+          "edgeOffset",
+          "depth",
+          "maxNodes",
+          "maxEdges"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "graphResult",
+      "acknowledgement": "graphResult",
+      "receipt": "all remaining bounded record and relationship pages accumulated with explicit coverage",
       "rendered_in": [
         "media/dashboard/48-graph-surface.js"
       ]
@@ -2203,7 +2254,7 @@
       "state_transition": "modal",
       "acknowledgement": "immediate visible UI state",
       "receipt": null,
-      "behavior": "load one exact authenticated admitted Studio revision for preview or execution without changing its version",
+      "behavior": "resume one exact durable Studio candidate lifecycle or load one authenticated admitted revision without changing its version",
       "rendered_in": [
         "media/dashboard/90-controller.js"
       ]

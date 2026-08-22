@@ -114,15 +114,20 @@ test('Playwright drives every dashboard route and high-risk interaction without 
     ['skill-studio', 'Skill Studio', '#studio-skill-file']
   ]) {
     await page.locator(`[data-surface="${surface}"]`).click();
+    assert.equal(await page.locator('main h1').textContent(), title);
+    assert.equal(await page.locator('[role="dialog"]').count(), 0, `${surface} navigation must load the Studio surface without forcing an editor`);
+    await page.locator(`[data-action="openStudioDraft"][data-kind="${surface.split('-')[0]}"]`).click();
     await page.locator('[role="dialog"]').waitFor({ state: 'visible' });
     assert.equal(await page.locator('.control-modal h2').textContent(), title);
-    assert.equal(await page.locator(editableSelector).isVisible(), true, `${surface} navigation must open its authoring workspace, not stop at the catalog`);
+    assert.equal(await page.locator(editableSelector).isVisible(), true, `${surface} explicit new-definition action must open its authoring workspace`);
     assert.equal(await page.locator('[data-action="submitStudioDraft"]').isVisible(), true);
     await page.keyboard.press('Escape');
   }
   await page.evaluate(() => window.dispatchEvent(new MessageEvent('message', { data: { type: 'deepLink', route: '/control-plane/skill-studio' } })));
-  await page.locator('[role="dialog"]').waitFor({ state: 'visible' });
   assert.equal(await page.locator('main h1').textContent(), 'Skill Studio');
+  assert.equal(await page.locator('[role="dialog"]').count(), 0);
+  await page.locator('[data-action="openStudioDraft"][data-kind="skill"]').click();
+  await page.locator('[role="dialog"]').waitFor({ state: 'visible' });
   assert.equal(await page.locator('#studio-skill-file').isVisible(), true);
   await page.keyboard.press('Escape');
   for (const [surface, rowKind, studioKind, editorSelector] of [
@@ -158,18 +163,23 @@ test('Playwright drives every dashboard route and high-risk interaction without 
   await page.locator('[data-action="setupStudio"]').click();
   const setupRequest = await page.evaluate(() => [...window.__PX_POSTED_MESSAGES__].reverse().find(message => message.type === 'setupStudio'));
   assert.match(setupRequest.requestId, /^[a-zA-Z0-9._:-]+$/);
-  await page.evaluate(requestId => window.dispatchEvent(new MessageEvent('message', { data: {
-    type: 'studioSetupResult', requestId,
-    result: {
-      schema_version: 'px.studio-setup-result/1.0', ready: true,
-      agent: { identity: 'agent:pacify-x-starter', version: '1.0.0', decision: 'admitted', run_id: 'run:agent-starter', run_outcome: 'succeeded' },
-      workflow: { identity: 'workflow:pacify-x-starter', version: '1.0.0', decision: 'admitted', run_id: 'run:workflow-starter', run_state: 'succeeded' },
-      completed_steps: ['agent_create', 'agent_test', 'agent_authority', 'agent_admit', 'agent_run', 'workflow_create', 'workflow_authority', 'workflow_validate', 'workflow_dry_run', 'workflow_run']
-    }
-  } })), setupRequest.requestId);
+  await page.evaluate(requestId => {
+    window.__PX_CATALOG_RESPONSE_DELAY_MS__ = 500;
+    window.dispatchEvent(new MessageEvent('message', { data: {
+      type: 'studioSetupResult', requestId,
+      result: {
+        schema_version: 'px.studio-setup-result/1.0', ready: true,
+        agent: { identity: 'agent:pacify-x-starter', version: '1.0.0', decision: 'admitted', run_id: 'run:agent-starter', run_outcome: 'succeeded' },
+        workflow: { identity: 'workflow:pacify-x-starter', version: '1.0.0', decision: 'admitted', run_id: 'run:workflow-starter', run_state: 'succeeded' },
+        completed_steps: ['agent_create', 'agent_test', 'agent_authority', 'agent_admit', 'agent_run', 'workflow_create', 'workflow_authority', 'workflow_validate', 'workflow_dry_run', 'workflow_run']
+      }
+    } }));
+  }, setupRequest.requestId);
   await page.locator('[role="dialog"]').filter({ hasText: 'operational' }).waitFor({ state: 'visible' });
   assert.match(await page.locator('[role="dialog"]').textContent(), /admitted.*bounded runs succeeded/i);
   await page.keyboard.press('Escape');
+  assert.equal(await page.locator('.catalog-loading').isVisible(), true, 'closing setup before catalog refresh must replace stale controls with a loading state');
+  assert.equal(await page.locator('[data-action="inspectCatalogItem"]').count(), 0, 'invalidated catalog records must not remain interactive');
   assert.match(await page.evaluate(() => window.__PX_PREVIEW_ALLOCATION_FIXTURE__?.authority || ''), /synthetic preview fixture; non-authoritative; UI interaction evidence only/);
   const utcValidation = await page.evaluate(() => {
     const editors = window.PXDashboard.require('studioEditors');
@@ -182,8 +192,13 @@ test('Playwright drives every dashboard route and high-risk interaction without 
     };
   });
   assert.deepEqual(utcValidation, { canonical: true, noFraction: true, yearZero: false, overflow: false, offset: false });
-  await page.locator('[data-action="inspectCatalogItem"]').first().click();
-  assert.equal(await page.locator('.agent-model').isVisible(), true);
+  const refreshedAgentRecord = page.locator('[data-action="inspectCatalogItem"]').first();
+  await refreshedAgentRecord.waitFor({ state: 'visible' });
+  await page.evaluate(() => { window.__PX_CATALOG_RESPONSE_DELAY_MS__ = 30; });
+  await refreshedAgentRecord.click();
+  const agentDetail = page.locator('[role="dialog"]', { has: page.locator('.agent-model') });
+  await agentDetail.waitFor({ state: 'visible' });
+  assert.equal(await agentDetail.locator('.agent-model').isVisible(), true);
   // UI interaction evidence only: the preview is synthetic and does not certify backend persistence or admission.
   const cancelledAgentAllocation = await page.evaluate(() => {
     document.querySelector('[data-action="openStudioFromCatalog"][data-kind="agent"]').click();

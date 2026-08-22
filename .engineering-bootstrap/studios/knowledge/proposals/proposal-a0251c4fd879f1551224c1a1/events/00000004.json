@@ -1,0 +1,152 @@
+{
+  "actor": "codex-host:user-authorized",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "4f2028090797165cda8d264a22b96d074f74e9901a66597b6efd016c435e9945",
+    "payload_sha256": "beeb4d8dada8c3f844a17c724c884dde03a43ae666d5c91c4534c4393953bb35",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "event_sha256": "ab433d15039abed9d804a529319fd687f9664ea46e1668deafbbbc656fa1b0d2",
+  "operation": "promote",
+  "previous_event_sha256": "ff0499c68b038a9cff5d31df929cc4fb98195f9a7fdef3fb72ef158e584cd3b8",
+  "proposal_id": "proposal:f7de912144ea49e685d2e8a10e4ca722",
+  "recorded_utc": "2026-08-22T04:35:07.345Z",
+  "schema_version": "px.knowledge-proposal-event/1.0",
+  "sequence": 4,
+  "state": {
+    "approval": {
+      "approval_id": "knowledge-approval:cfdf7751c13e441bab2218f719a6a2a5",
+      "approved_by": "codex-host:user-authorized",
+      "approved_utc": "2026-08-22T04:35:07.244Z",
+      "candidate_sha256": "99d737ba73b771446df9dfda372b4a348f37bbcb614c5895726cd88b102e37f3",
+      "single_use": true
+    },
+    "authority_state": "codex-host-retained",
+    "blocked_reasons": [],
+    "candidate": {
+      "_px_learning": {
+        "canonical_corpus_sha256": "6132dcc8a9e9ca74de9814e590237945e4708a2dde08d07be9fea68316f78027",
+        "direct_write_allowed": false,
+        "pipeline_id": "learning:18f7c6afd4fa4edea4c193cc1a9531cb",
+        "pipeline_revision_sha256": "5af5859d88c685ba7ca3bc0ac870104f48a0b86e9d1f4c495c2633227c98503c",
+        "promotion_decision_sha256": "9914935a56f15327e1b483ad28d75f6fe1017cecfc2d066a3a8af188602cd359",
+        "selected_revision_sha256": "07861eaf6b811a7150b5ad481bc401f73e2b1f1a8e15f9b4c48cd966606239d2"
+      },
+      "id": "current-diagnostic-semantics",
+      "implementation": "runtime/dashboard_api.py",
+      "kind": "knowledge",
+      "rule": "Derive current failures from retained failed outcomes and expose cumulative counters only as historical_failures.",
+      "status": "adopted"
+    },
+    "candidate_sha256": "99d737ba73b771446df9dfda372b4a348f37bbcb614c5895726cd88b102e37f3",
+    "canonical_writes_performed": true,
+    "created_utc": "2026-08-22T04:35:07.042Z",
+    "evidence_refs": [
+      ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json#sha256=220d590dee6b3e41918d8ef3eeffe391deb58fd912232a4373a0409740319386",
+      ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json#sha256=e2bc0baa12fdbefd64e5969bf46eae92758374e3fcd8ad74989027098bc70558",
+      "extension/dist/pacify-x-vscode-0.6.33.vsix#sha256=de3f9f22815ff194bdd9e20681ed658af35f423e963fd3d82b4646f1c5c2ae6c",
+      "extension/media/dashboard/90-controller.js#sha256=34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+      "runtime/dashboard_api.py#sha256=b904159506af941389b70e02f450a1759b32e9e0116d23d8936cb7669a3529a9",
+      "sha256:0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185",
+      "tests/test_dashboard_api.py#sha256=0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185"
+    ],
+    "promotion": {
+      "authority_state": "codex-host-retained",
+      "candidate_sha256": "99d737ba73b771446df9dfda372b4a348f37bbcb614c5895726cd88b102e37f3",
+      "proposal_id": "proposal:f7de912144ea49e685d2e8a10e4ca722",
+      "record_id": "current-diagnostic-semantics",
+      "revision": ".engineering-bootstrap/studios/knowledge/canonical/record-664f1bef634132f53daf5113/revisions/99d737ba73b771446df9dfda372b4a348f37bbcb614c5895726cd88b102e37f3.json",
+      "schema_version": "px.knowledge-canonical-head/1.0",
+      "updated_utc": "2026-08-22T04:35:07.345Z"
+    },
+    "proposal_id": "proposal:f7de912144ea49e685d2e8a10e4ca722",
+    "record_id": "current-diagnostic-semantics",
+    "schema_version": "px.knowledge-proposal/1.0",
+    "sequence": 4,
+    "source_ids": [
+      "repair-pattern-library",
+      "source-requirement-coverage"
+    ],
+    "state": "promoted",
+    "updated_utc": "2026-08-22T04:35:07.345Z",
+    "verification": {
+      "candidate_sha256": "99d737ba73b771446df9dfda372b4a348f37bbcb614c5895726cd88b102e37f3",
+      "canonical_head_sha256": null,
+      "eligible": true,
+      "evidence_snapshots": [
+        {
+          "bytes": 1162,
+          "kind": "project-file",
+          "path": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+          "reference": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json#sha256=220d590dee6b3e41918d8ef3eeffe391deb58fd912232a4373a0409740319386",
+          "sha256": "220d590dee6b3e41918d8ef3eeffe391deb58fd912232a4373a0409740319386"
+        },
+        {
+          "bytes": 3646,
+          "kind": "project-file",
+          "path": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
+          "reference": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json#sha256=e2bc0baa12fdbefd64e5969bf46eae92758374e3fcd8ad74989027098bc70558",
+          "sha256": "e2bc0baa12fdbefd64e5969bf46eae92758374e3fcd8ad74989027098bc70558"
+        },
+        {
+          "bytes": 4214404,
+          "kind": "project-file",
+          "path": "extension/dist/pacify-x-vscode-0.6.33.vsix",
+          "reference": "extension/dist/pacify-x-vscode-0.6.33.vsix#sha256=de3f9f22815ff194bdd9e20681ed658af35f423e963fd3d82b4646f1c5c2ae6c",
+          "sha256": "de3f9f22815ff194bdd9e20681ed658af35f423e963fd3d82b4646f1c5c2ae6c"
+        },
+        {
+          "bytes": 426473,
+          "kind": "project-file",
+          "path": "extension/media/dashboard/90-controller.js",
+          "reference": "extension/media/dashboard/90-controller.js#sha256=34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+          "sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a"
+        },
+        {
+          "bytes": 139715,
+          "kind": "project-file",
+          "path": "runtime/dashboard_api.py",
+          "reference": "runtime/dashboard_api.py#sha256=b904159506af941389b70e02f450a1759b32e9e0116d23d8936cb7669a3529a9",
+          "sha256": "b904159506af941389b70e02f450a1759b32e9e0116d23d8936cb7669a3529a9"
+        },
+        {
+          "kind": "content-hash",
+          "reference": "sha256:0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185",
+          "sha256": "0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185"
+        },
+        {
+          "bytes": 27195,
+          "kind": "project-file",
+          "path": "tests/test_dashboard_api.py",
+          "reference": "tests/test_dashboard_api.py#sha256=0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185",
+          "sha256": "0259855ebbf3a29624b8176b3108b8488feeb502b8700f8b41a3b5032e2fb185"
+        }
+      ],
+      "oracle": "source-availability+content-identity+optimistic-concurrency",
+      "source_errors": [],
+      "source_snapshots": [
+        {
+          "bytes": 3069,
+          "content_sha256": "fc91b744f8f0fcddf35ccac3020bba63688942f45f4cca7e50552222de0dbd13",
+          "files": 3,
+          "kind": "tree",
+          "location": ".px/skills/diagnose-python-repair/references",
+          "source_id": "repair-pattern-library",
+          "status": "active"
+        },
+        {
+          "bytes": 8058,
+          "content_sha256": "b57be36e34633fb8a093f5ad67bf8f2593265e92b25958f260fe6b3711a8f4a0",
+          "files": 1,
+          "kind": "file",
+          "location": "registry/source_requirement_coverage.json",
+          "source_id": "source-requirement-coverage",
+          "status": "active"
+        }
+      ],
+      "verified_by": "codex-host:user-authorized",
+      "verified_utc": "2026-08-22T04:35:07.173Z"
+    }
+  }
+}

@@ -1,0 +1,489 @@
+{
+  "id": "ms-vscode.js-debug",
+  "name": "JavaScript Debugger",
+  "version": "1.117.0",
+  "publisher": "ms-vscode",
+  "active": false,
+  "builtin": true,
+  "extension_kind": [
+    "workspace"
+  ],
+  "contribution_points": [
+    "breakpoints",
+    "commands",
+    "configuration",
+    "debuggers",
+    "grammars",
+    "keybindings",
+    "languages",
+    "menus",
+    "terminal",
+    "views",
+    "viewsWelcome"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:breakpoints",
+      "kind": "breakpoints",
+      "provider": "ms-vscode.js-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-vscode.js-debug",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-vscode.js-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:debuggers",
+      "kind": "debuggers",
+      "provider": "ms-vscode.js-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:grammars",
+      "kind": "grammars",
+      "provider": "ms-vscode.js-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "ms-vscode.js-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languages",
+      "kind": "languages",
+      "provider": "ms-vscode.js-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-vscode.js-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:terminal",
+      "kind": "terminal",
+      "provider": "ms-vscode.js-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "ms-vscode.js-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "ms-vscode.js-debug",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "extension.js-debug.addCustomBreakpoints",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.addCustomBreakpoints', ...args)",
+      "title": "Toggle Event Listener Breakpoints",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.addXHRBreakpoints",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.addXHRBreakpoints', ...args)",
+      "title": "Add XHR/fetch Breakpoint",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.callers.add",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.callers.add', ...args)",
+      "title": "Exclude Caller",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.callers.goToCaller",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.callers.goToCaller', ...args)",
+      "title": "Go to caller location",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.callers.gotToTarget",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.callers.gotToTarget', ...args)",
+      "title": "Go to target location",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.callers.remove",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.callers.remove', ...args)",
+      "title": "Remove excluded caller",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.callers.removeAll",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.callers.removeAll', ...args)",
+      "title": "Remove all excluded callers",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.createDebuggerTerminal",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.createDebuggerTerminal', ...args)",
+      "title": "JavaScript Debug Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.createDiagnostics",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.createDiagnostics', ...args)",
+      "title": "Diagnose Breakpoint Problems",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.debugLink",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.debugLink', ...args)",
+      "title": "Open Link",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.disableSourceMapStepping",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.disableSourceMapStepping', ...args)",
+      "title": "Disable Source Mapped Stepping",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.editXHRBreakpoints",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.editXHRBreakpoints', ...args)",
+      "title": "Edit XHR/fetch Breakpoint",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.enableSourceMapStepping",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.enableSourceMapStepping', ...args)",
+      "title": "Enable Source Mapped Stepping",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.getDiagnosticLogs",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.getDiagnosticLogs', ...args)",
+      "title": "Save Diagnostic JS Debug Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.network.clear",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.network.clear', ...args)",
+      "title": "Clear Network Log",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.network.copyUri",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.network.copyUri', ...args)",
+      "title": "Copy Request URL",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.network.openBody",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.network.openBody', ...args)",
+      "title": "Open Response Body",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.network.openBodyInHex",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.network.openBodyInHex', ...args)",
+      "title": "Open Response Body in Hex Editor",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.network.replayXHR",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.network.replayXHR', ...args)",
+      "title": "Replay Request",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.network.viewRequest",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.network.viewRequest', ...args)",
+      "title": "View Request as cURL",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.npmScript",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.npmScript', ...args)",
+      "title": "Debug npm Script",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.openEdgeDevTools",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.openEdgeDevTools', ...args)",
+      "title": "Open Browser Devtools",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.prettyPrint",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.prettyPrint', ...args)",
+      "title": "Pretty print for debugging",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.removeAllCustomBreakpoints",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.removeAllCustomBreakpoints', ...args)",
+      "title": "Remove All Event Listener Breakpoints",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.removeXHRBreakpoint",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.removeXHRBreakpoint', ...args)",
+      "title": "Remove XHR/fetch Breakpoint",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.revealPage",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.revealPage', ...args)",
+      "title": "Focus Tab",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.startProfile",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.startProfile', ...args)",
+      "title": "Take Performance Profile",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.stopProfile",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.stopProfile', ...args)",
+      "title": "Stop Performance Profile",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.js-debug.toggleSkippingFile",
+      "invocation": "vscode.commands.executeCommand('extension.js-debug.toggleSkippingFile', ...args)",
+      "title": "Toggle Skipping this File",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.node-debug.startWithStopOnEntry",
+      "invocation": "vscode.commands.executeCommand('extension.node-debug.startWithStopOnEntry', ...args)",
+      "title": "Start Debugging and Stop on Entry",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "extension.pwa-node-debug.attachNodeProcess",
+      "invocation": "vscode.commands.executeCommand('extension.pwa-node-debug.attachNodeProcess', ...args)",
+      "title": "Attach to Node Process",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:extension.js-debug.autoAttachToProcess",
+    "onCommand:extension.js-debug.clearAutoAttachVariables",
+    "onCommand:extension.js-debug.completion.nodeTool",
+    "onCommand:extension.js-debug.pickNodeProcess",
+    "onCommand:extension.js-debug.requestCDPProxy",
+    "onCommand:extension.js-debug.setAutoAttachVariables",
+    "onDebugDynamicConfigurations",
+    "onDebugInitialConfigurations",
+    "onDebugResolve:chrome",
+    "onDebugResolve:editor-browser",
+    "onDebugResolve:extensionHost",
+    "onDebugResolve:msedge",
+    "onDebugResolve:node",
+    "onDebugResolve:node-terminal",
+    "onDebugResolve:pwa-chrome",
+    "onDebugResolve:pwa-editor-browser",
+    "onDebugResolve:pwa-extensionHost",
+    "onDebugResolve:pwa-msedge",
+    "onDebugResolve:pwa-node",
+    "onFileSystem:jsDebugNetworkFs"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "workspace"
+    ],
+    "workspace_trust": {
+      "supported": "limited",
+      "description": "Trust is required to debug code in this workspace."
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-vscode.js-debug",
+    "capabilities": [
+      "contribution:breakpoints",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:debuggers",
+      "contribution:grammars",
+      "contribution:keybindings",
+      "contribution:languages",
+      "contribution:menus",
+      "contribution:terminal",
+      "contribution:views",
+      "contribution:viewsWelcome"
+    ],
+    "interface": [
+      "extension.js-debug.addCustomBreakpoints",
+      "extension.js-debug.addXHRBreakpoints",
+      "extension.js-debug.callers.add",
+      "extension.js-debug.callers.goToCaller",
+      "extension.js-debug.callers.gotToTarget",
+      "extension.js-debug.callers.remove",
+      "extension.js-debug.callers.removeAll",
+      "extension.js-debug.createDebuggerTerminal",
+      "extension.js-debug.createDiagnostics",
+      "extension.js-debug.debugLink",
+      "extension.js-debug.disableSourceMapStepping",
+      "extension.js-debug.editXHRBreakpoints",
+      "extension.js-debug.enableSourceMapStepping",
+      "extension.js-debug.getDiagnosticLogs",
+      "extension.js-debug.network.clear",
+      "extension.js-debug.network.copyUri",
+      "extension.js-debug.network.openBody",
+      "extension.js-debug.network.openBodyInHex",
+      "extension.js-debug.network.replayXHR",
+      "extension.js-debug.network.viewRequest",
+      "extension.js-debug.npmScript",
+      "extension.js-debug.openEdgeDevTools",
+      "extension.js-debug.prettyPrint",
+      "extension.js-debug.removeAllCustomBreakpoints",
+      "extension.js-debug.removeXHRBreakpoint",
+      "extension.js-debug.revealPage",
+      "extension.js-debug.startProfile",
+      "extension.js-debug.stopProfile",
+      "extension.js-debug.toggleSkippingFile",
+      "extension.node-debug.startWithStopOnEntry",
+      "extension.pwa-node-debug.attachNodeProcess"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "workspace"
+      ],
+      "workspace_trust": {
+        "supported": "limited",
+        "description": "Trust is required to debug code in this workspace."
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

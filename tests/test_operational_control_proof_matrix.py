@@ -13,7 +13,7 @@ def test_matrix_is_current_complete_and_never_self_attests_execution() -> None:
     expected = build(ROOT)
     current = json.loads((ROOT / "registry/operational_control_proof_matrix.json").read_text(encoding="utf-8"))
     assert current == expected
-    assert current["control_count"] == 938
+    assert current["control_count"] == 941
     assert current["authority"].endswith("not evidence that any probe ran or passed.")
     assert len({item["control_id"] for item in current["controls"]}) == current["control_count"]
     for item in current["controls"]:

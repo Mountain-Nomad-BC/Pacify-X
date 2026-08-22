@@ -1,0 +1,46 @@
+{
+  "agent_id": "agent:pacify-x-starter",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "20fd0abaf60f6c83d9276fe43e0934e58c4253c07d354b6bf5608df7d0fb278a",
+    "payload_sha256": "53be11b85c44bae5ad9cdd4a66ee2bb37d70a3056eb6fa005cc4f49d83c3dabe",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "authority_record_hashes": {
+    "binding:binding:pacify-x-starter": "c19e63cbcc447bebed0fa43e9be90ce7320f874dbee5e50996b7f93128f2fdaa",
+    "grant:grant:pacify-x-starter": "af82eeeb70769673e6dd70ce0645cabb4ba6c5154c685bd3365401a9de76112e"
+  },
+  "authority_state": "codex-host-retained",
+  "control_head_sha256": "056a4078d18e02d6f2e3c068df7c3731b55bafa4cde52cb0faa75b72390db95b",
+  "control_sequence": 3,
+  "execution_mode": "deterministic-local-worker",
+  "exit_code": 0,
+  "model_invoked": false,
+  "process_receipt": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.engineering-bootstrap\\studios\\agents\\cleanup-receipts\\process-f97695c8146e461cb3411370ff27bd2d.json",
+  "process_started": true,
+  "process_status": "exited",
+  "requested_model_route": {
+    "family": "px-bounded-worker",
+    "max_output_tokens": 1024,
+    "model_id": "px-bounded-worker",
+    "provider": "deterministic",
+    "temperature": 0.0,
+    "vendor": "",
+    "version": ""
+  },
+  "resumable": false,
+  "run_id": "run-ab89b7789d704751a59029d52e16d696",
+  "run_outcome": "succeeded",
+  "runtime_state": "succeeded",
+  "schema_version": "px.agent-runtime-receipt/1.2",
+  "task_cleanup_receipt": "cleanup-631dd7728079443eb2d7d03db525bd26",
+  "task_content_retained": false,
+  "task_sha256": "a25ac754bb46b9f155197c506b86fb7d47b033dc5e0265fd391a5fb5ae6d62b9",
+  "terminal_target": null,
+  "tools_dispatched": [],
+  "tree_closed": true,
+  "version": "1.0.3",
+  "worker_invoked": true,
+  "worker_result_sha256": "dd2ae0e87f7fbc4cdba3eb35871e7b995a33e960bcffd85e3c7201ced7bf53a3"
+}

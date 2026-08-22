@@ -6,6 +6,14 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const extension = fs.readFileSync(path.join(__dirname, '..', 'src', 'extension.js'), 'utf8');
+const controller = fs.readFileSync(path.join(__dirname, '..', 'media', 'dashboard', '90-controller.js'), 'utf8');
+
+test('Workflow Studio normalizes visual derived state before rendering Canonical JSON', () => {
+  const handler = controller.match(/if \(action === 'studioEditorTab'\) \{([^\n]+)\}/)?.[1] || '';
+  assert.match(handler, /studioEditor\.kind === 'workflow'/);
+  assert.match(handler, /studioEditors\.normalizeWorkflow\(studioEditor\.draft\)/);
+  assert.match(handler, /persistWorkingStudioDraft\(\)/);
+});
 
 test('production createStudioDraft dispatch delegates exactly once to the owned host coordinator', () => {
   assert.match(extension, /const \{ createStudioTrustRegistry, dispatchStudioCreateMessage, exactAllocationEnvelope \} = require\('\.\/studioDraftHost'\);/);

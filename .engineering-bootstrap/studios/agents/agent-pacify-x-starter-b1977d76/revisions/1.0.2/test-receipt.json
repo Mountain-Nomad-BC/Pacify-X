@@ -1,0 +1,43 @@
+{
+  "agent_id": "agent:pacify-x-starter",
+  "agent_revision_sha256": "b0f879abeaeccb62a871b594fb0492c2694dadd9eff19575ed5ed6d62437a297",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "9658fdba810e896b7384fd91141f50416b32c1efb0db32899911d6985057061f",
+    "payload_sha256": "b10e5d06a565e968759227292a022b386798e2d0f4b3db4f5d4c31675ae28a0c",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "checks": {
+    "bindings_declared": true,
+    "effect_grants_declared": true,
+    "handoff_runtime_resolved": true,
+    "host_tool_implementation_attested": true,
+    "instruction_present": true,
+    "memory_runtime_resolved": true,
+    "model_tool_route_compatible": true,
+    "record_sealed": true,
+    "required_tests_executed": true
+  },
+  "evidence_class": "structural_preflight_not_behavioral_certification",
+  "independently_derived": false,
+  "passed": true,
+  "schema_version": "px.agent-preflight-receipt/1.2",
+  "status": "passed",
+  "test_results": [
+    {
+      "known": true,
+      "passed": true,
+      "reason": null,
+      "test_id": "identity"
+    },
+    {
+      "known": true,
+      "passed": true,
+      "reason": null,
+      "test_id": "sandbox"
+    }
+  ],
+  "tested_utc": "2026-08-21T17:44:54.413Z",
+  "version": "1.0.2"
+}

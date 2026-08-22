@@ -19,6 +19,7 @@ const { terminateProcessTreeAsync } = require('../src/processTree');
 const { runOwnedHostWorker } = require('./owned-host-runner');
 const { ensureOwnedVscodeTestCache, markOwnedHostWorkspace } = require('./owned-vscode-test-cache');
 const {
+  evaluateBootstrapActivation,
   evaluateLauncherTerminal,
   evaluateOperationalWalk,
   exitCodeForTerminalState,
@@ -224,6 +225,11 @@ async function childMain(configPath) {
       '--no-sandbox',
       '--disable-gpu-sandbox',
       '--disable-updates',
+      '--disable-extension', 'github.copilot',
+      '--disable-extension', 'github.copilot-chat',
+      '--disable-extension', 'github.vscode-pull-request-github',
+      '--disable-extension', 'vscode.github-authentication',
+      '--disable-extension', 'vscode.microsoft-authentication',
       '--disable-workspace-trust',
       '--skip-welcome',
       '--skip-release-notes',
@@ -250,6 +256,7 @@ async function childMain(configPath) {
       stdio: ['ignore', 'pipe', 'pipe'],
       env: electronHostEnvironment({
         PX_OWNED_VSCODE_HOST: '1',
+        PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES: '1',
         PX_ENGINE_ROOT: repositoryRoot,
         PX_OPERATIONAL_WALK_BOOTSTRAP_RECEIPT: config.bootstrapReceipt,
         PX_OPERATIONAL_WALK_BOOTSTRAP_SENTINEL: config.bootstrapSentinel
@@ -265,23 +272,28 @@ async function childMain(configPath) {
     assert.equal(lifecycle.bootstrap.command_executed, true, 'operational-bootstrap-command-not-executed');
     assert.equal(storageBoundary.result.user_scoped_shared_data_observed, false, 'user-scoped-shared-storage-observed');
     assert.equal(storageBoundary.result.owned_shared_data_observed || storageBoundary.result.in_memory_observed, true, 'isolated-shared-storage-not-observed');
-    lifecycle.status = 'walking';
-    walker = childProcess.spawn(process.execPath, [walkerPath, endpoint, config.walkOutput, `--px-owned-token=${config.userData}`], {
-      cwd: extensionRoot,
-      shell: false,
-      windowsHide: true,
-      stdio: ['ignore', 'pipe', 'pipe'],
-      env: { ...nonBillableEnvironment(), PX_OWNED_VSCODE_HOST: '1' }
-    });
-    lifecycle.walker_pid = Number(walker.pid) || null;
-    capture(walker.stdout, appendStdout);
-    capture(walker.stderr, appendStderr);
-    const walkerExit = await waitForExit(walker);
-    lifecycle.walker_exit = walkerExit;
-    lifecycle.walker_termination_verified = true;
-    assert.equal(walkerExit.signal, null, `operational-walker-signal:${walkerExit.signal}`);
-    assert.ok(fs.existsSync(config.walkReceipt), 'operational-walker-receipt-missing');
-    lifecycle.status = 'walk-finished';
+    if (config.bootstrapOnly) {
+      lifecycle.walker_termination_verified = true;
+      lifecycle.status = 'bootstrap-ready';
+    } else {
+      lifecycle.status = 'walking';
+      walker = childProcess.spawn(process.execPath, [walkerPath, endpoint, config.walkOutput, `--px-owned-token=${config.userData}`], {
+        cwd: extensionRoot,
+        shell: false,
+        windowsHide: true,
+        stdio: ['ignore', 'pipe', 'pipe'],
+        env: { ...nonBillableEnvironment(), PX_OWNED_VSCODE_HOST: '1' }
+      });
+      lifecycle.walker_pid = Number(walker.pid) || null;
+      capture(walker.stdout, appendStdout);
+      capture(walker.stderr, appendStderr);
+      const walkerExit = await waitForExit(walker);
+      lifecycle.walker_exit = walkerExit;
+      lifecycle.walker_termination_verified = true;
+      assert.equal(walkerExit.signal, null, `operational-walker-signal:${walkerExit.signal}`);
+      assert.ok(fs.existsSync(config.walkReceipt), 'operational-walker-receipt-missing');
+      lifecycle.status = 'walk-finished';
+    }
   } catch (error) {
     childError = error;
     lifecycle.status = 'failed';
@@ -322,8 +334,10 @@ async function childMain(configPath) {
       processError: childError || walkReceiptError,
       processTreeClosedVerified: lifecycle.vscode_termination_verified === true && lifecycle.walker_termination_verified === true
     });
-    lifecycle.operational_status = evaluateOperationalWalk(walkReceipt, { additionalIssues: processIssues });
-    if (!childError) lifecycle.status = `walk-${lifecycle.operational_status.terminal_state}`;
+    lifecycle.operational_status = config.bootstrapOnly
+      ? evaluateBootstrapActivation({ bootstrap: lifecycle.bootstrap, storageBoundary: lifecycle.storage_boundary, additionalIssues: processIssues })
+      : evaluateOperationalWalk(walkReceipt, { additionalIssues: processIssues });
+    if (!childError) lifecycle.status = `${config.bootstrapOnly ? 'bootstrap' : 'walk'}-${lifecycle.operational_status.terminal_state}`;
     lifecycle.stdout_tail = stdout;
     lifecycle.stderr_tail = stderr;
     if (walkReceipt) {
@@ -340,7 +354,7 @@ async function childMain(configPath) {
   return 0;
 }
 
-function prepare(temporaryRoot, walkOutput, vsixPath = null) {
+function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = false) {
   const config = {
     workspace: path.join(temporaryRoot, 'workspace'),
     userData: path.join(temporaryRoot, 'user-data'),
@@ -351,6 +365,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null) {
     childResult: path.join(temporaryRoot, 'child-result.json'),
     walkOutput,
     walkReceipt: path.join(walkOutput, 'receipt.json'),
+    bootstrapOnly,
     vsixPath,
     vsixSha256: vsixPath ? sha256(vsixPath) : null
   };
@@ -371,6 +386,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null) {
   fs.writeFileSync(path.join(config.userData, 'User', 'settings.json'), `${JSON.stringify({
     'extensions.autoUpdate': false,
     'extensions.autoCheckUpdates': false,
+    'chat.disableAIFeatures': true,
     'telemetry.telemetryLevel': 'off'
   }, null, 2)}\n`, 'utf8');
   fs.writeFileSync(path.join(config.workspace, 'README.md'), '# PACIFY-X owned operational walk workspace\n', 'utf8');
@@ -381,8 +397,9 @@ async function main() {
   const stamp = utcStamp();
   const requestedVsix = argument('--vsix');
   const vsixPath = requestedVsix ? path.resolve(requestedVsix) : null;
+  const bootstrapOnly = process.argv.includes('--bootstrap-only');
   if (vsixPath && (!fs.existsSync(vsixPath) || path.extname(vsixPath).toLowerCase() !== '.vsix')) throw new Error(`exact-vsix-missing:${vsixPath}`);
-  const mode = vsixPath ? 'installed-vsix' : 'current-source';
+  const mode = `${vsixPath ? 'installed-vsix' : 'current-source'}${bootstrapOnly ? '-bootstrap' : ''}`;
   const walkOutput = path.resolve(argument('--output') || path.join(repositoryRoot, 'evidence', `operational-ui-walk-${mode}-${stamp}`));
   const reportPath = path.resolve(argument('--report') || path.join(repositoryRoot, 'evidence', 'operational-gap-ledger', `${mode}-host-walk-${stamp}.json`));
   for (const target of [walkOutput, reportPath, ...(vsixPath ? [vsixPath] : [])]) {
@@ -391,8 +408,8 @@ async function main() {
   }
   if (fs.existsSync(reportPath)) throw new Error(`evidence-report-already-exists:${reportPath}`);
   const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'pacify-x-current-source-walk-'));
-  markOwnedHostWorkspace(temporaryRoot, vsixPath ? 'installed-vsix-operational-ui-walk' : 'current-source-operational-ui-walk');
-  const config = prepare(temporaryRoot, walkOutput, vsixPath);
+  markOwnedHostWorkspace(temporaryRoot, `${vsixPath ? 'installed-vsix' : 'current-source'}-${bootstrapOnly ? 'bootstrap-activation' : 'operational-ui-walk'}`);
+  const config = prepare(temporaryRoot, walkOutput, vsixPath, bootstrapOnly);
   const configPath = path.join(temporaryRoot, 'host-config.json');
   fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, 'utf8');
   let run = null;
@@ -404,7 +421,12 @@ async function main() {
       childFlag: CHILD_FLAG,
       configPath,
       cwd: extensionRoot,
-      timeoutMs: 300_000,
+      // The exhaustive installed-control campaign is intentionally larger
+      // than the old four-minute bootstrap lease. Keep the outer owned-worker
+      // boundary longer than the bootstrap release wait so the child can
+      // publish its receipt and reconcile cleanup instead of being killed
+      // mid-walk by its own harness.
+      timeoutMs: 1_200_000,
       ownershipToken: config.userData,
       env: { ...nonBillableEnvironment(), PX_OWNED_VSCODE_HOST: '1' },
       stdout: process.stdout,
@@ -431,7 +453,7 @@ async function main() {
     authority: 'Codex host retained execution authority; PX governed scope, evidence, isolation, and cleanup.',
     effects: {
       created: ['PACIFY-X-owned temporary workspace', 'PACIFY-X-owned user-data profile', 'PACIFY-X-owned empty extensions directory', 'PACIFY-X-owned shared-data directory', 'repository evidence'],
-      spawned: ['pinned VS Code development host', 'existing operational UI walker'],
+      spawned: bootstrapOnly ? ['pinned VS Code development host'] : ['pinned VS Code development host', 'existing operational UI walker'],
       user_main_vscode_profile_touched: child?.storage_boundary?.verified === true ? false : null,
       isolation_boundary_verified: child?.storage_boundary?.verified === true,
       product_ui_modified: false,
@@ -455,7 +477,9 @@ async function main() {
       cdp: child?.cdp || null,
       extension_loading: vsixPath ? 'exact VSIX installed into owned empty extensions directory' : 'current repository source only'
     },
-    walk: child?.walk_receipt || { path: path.relative(repositoryRoot, config.walkReceipt).replace(/\\/g, '/'), present: fs.existsSync(config.walkReceipt) },
+    operation: bootstrapOnly ? 'installed-extension-bootstrap-activation' : 'operational-ui-walk',
+    bootstrap: bootstrapOnly ? child?.bootstrap || null : null,
+    walk: bootstrapOnly ? null : child?.walk_receipt || { path: path.relative(repositoryRoot, config.walkReceipt).replace(/\\/g, '/'), present: fs.existsSync(config.walkReceipt) },
     child_lifecycle: child,
     owner_lifecycle: lifecycle,
     error: error ? String(error?.stack || error?.message || error).slice(0, 4000) : null
@@ -477,7 +501,7 @@ if (require.main === module) {
       process.exitCode = 1;
     });
   } else if (process.argv.includes('--help')) {
-    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--vsix <path>] [--report-dir <path>]\n');
+    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--bootstrap-only] [--vsix <path>] [--output <path>] [--report <path>]\n');
   } else {
     main().catch(error => {
       process.stderr.write(`${error.stack || error.message}\n`);

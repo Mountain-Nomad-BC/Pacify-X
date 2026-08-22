@@ -1,0 +1,77 @@
+{
+  "attempted_effects": [],
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "dbb627e1f58b9ce5b5d3c62270ddedabbdfe99a397da2e0b2fdecd0ae8a97730",
+    "payload_sha256": "71b7f8dbfd7a5350189a11395e65ed437f425ce9dd4ddf584b919e361d73637e",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "completed_effects": [],
+  "completed_utc": "2026-08-21T17:46:52.298Z",
+  "control_sequence": 4,
+  "declared_effect_grants": [
+    "grant:pacify-x-workflow"
+  ],
+  "denied_effects": [],
+  "effects_executed": false,
+  "execution_policy": {
+    "approval_nodes_serialized": true,
+    "checkpoint_order": "node-id",
+    "max_parallel_nodes": 4,
+    "scheduler": "dependency-ready-batches",
+    "shared_effects_serialized": true
+  },
+  "node_count": 1,
+  "node_receipts": [
+    {
+      "approval_execution": {},
+      "attempts": [
+        {
+          "adapter_admitted": true,
+          "adapter_id": "identity",
+          "approval_execution": {},
+          "attempt": 1,
+          "correlation_id": "cfed8f14fdf3a45b4008d24b",
+          "exit_code": 0,
+          "failure_message": null,
+          "failure_type": null,
+          "node_config_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "node_kind": "task",
+          "process_receipt": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.engineering-bootstrap\\studios\\workflows\\cleanup-receipts\\process-a5fc7775fbda4d0d954b8a7f3c68f566.json",
+          "response_sha256": "27f8c2620162e5dd639947428305221955327e173b411350b56a7a3e60100086",
+          "status": "exited",
+          "task_cleanup_receipt": "cleanup-72099edd619c4398b978152cdef59519",
+          "task_content_retained": false,
+          "tree_closed": true,
+          "validation": {
+            "check_count": 0,
+            "checks": [],
+            "passed": true
+          }
+        }
+      ],
+      "kind": "task",
+      "node_id": "step:identity",
+      "output_sha256": "0dc1347df2da2be8edad2026ccee432fbebeee96eb23d711afcc9deffeee2218",
+      "state": "succeeded"
+    }
+  ],
+  "node_task_cleanup_policy": "registered ephemeral task envelopes are reclaimed after every node attempt",
+  "node_task_cleanup_receipts": [
+    "cleanup-72099edd619c4398b978152cdef59519"
+  ],
+  "node_task_content_retained": false,
+  "output_retention": "durable checkpoint results retained for downstream dataflow and resumable execution",
+  "output_sha256": "54a279f4f9beee0c2432deee2e238d259415f94e7265f04f8c51be0b85b2d1bb",
+  "outputs_retained": true,
+  "revision_sha256": "b32eb556e84369978aedc4c3bc5d5bb5b5b6def4306585d4caf47278790185ad",
+  "run_id": "run-39d8316cac814f6a9f77ba013712b5a5",
+  "run_state": "succeeded",
+  "schema_version": "px.workflow-run-receipt/1.3",
+  "started_utc": "2026-08-21T17:46:51.512Z",
+  "status": "succeeded",
+  "terminal_target": null,
+  "version": "1.0.1",
+  "workflow_id": "workflow:pacify-x-starter"
+}

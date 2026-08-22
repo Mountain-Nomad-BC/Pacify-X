@@ -6,6 +6,9 @@ from pathlib import Path
 
 
 EXTERNAL_ENVIRONMENT_ROOTS = frozenset({"Python", "node_modules", ".tmp"})
+CANONICAL_WORKSPACE_CUSTODY_ROOTS = frozenset(
+    {"projects", "projects_tracking", "repo_quarantine", "shared_capabilities"}
+)
 EXTERNAL_ENVIRONMENT_PARTS = frozenset({"node_modules", ".vscode-test"})
 DERIVED_CUSTODY_ROOTS = frozenset(
     {
@@ -17,6 +20,7 @@ DERIVED_CUSTODY_ROOTS = frozenset(
         "quarantine",
         "operation-bus",
         "resource-lifecycle",
+        "studios",
     }
 )
 
@@ -30,6 +34,7 @@ def is_external_environment_relative(relative: str | Path) -> bool:
     normalized_top = top.casefold()
     return (
         top in EXTERNAL_ENVIRONMENT_ROOTS
+        or top in CANONICAL_WORKSPACE_CUSTODY_ROOTS
         or normalized_top.startswith(".tmp")
         or normalized_top.startswith("tmp_")
         or normalized_top.startswith(".vscodecounter")

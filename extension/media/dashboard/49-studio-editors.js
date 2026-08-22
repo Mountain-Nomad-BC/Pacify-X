@@ -7,6 +7,17 @@
   const clone = value => JSON.parse(JSON.stringify(value));
   const safeToken = value => String(value || '').trim().replace(/[^A-Za-z0-9_.:-]+/g, '-').replace(/^-+|-+$/g, '') || 'item';
   const tokens = value => String(value || '').toLowerCase().match(/[a-z0-9]+/g) || [];
+  const AGENT_STRUCTURAL_CHECKS = Object.freeze([
+    Object.freeze({ id: 'identity', label: 'Identity', description: 'Agent, project, owner, version, and harness identities are complete and canonical.' }),
+    Object.freeze({ id: 'sandbox', label: 'Sandbox boundary', description: 'Declared effects, scope roots, cost policy, egress policy, and credential references remain bounded.' }),
+    Object.freeze({ id: 'model-route', label: 'Model route', description: 'Provider, vendor, family, model ID, version, harness, and output limits form an exact supported route.' }),
+    Object.freeze({ id: 'input-contract', label: 'Input contract', description: 'The input contract is a usable root object JSON schema.' }),
+    Object.freeze({ id: 'output-contract', label: 'Output contract', description: 'The output contract is a usable root object JSON schema.' }),
+    Object.freeze({ id: 'authority-bindings', label: 'Authority bindings', description: 'Every referenced effect grant resolves to the candidate and its declared scope.' }),
+    Object.freeze({ id: 'tool-bindings', label: 'Tool bindings', description: 'Every requested tool binding resolves to a declared compatible capability binding.' }),
+    Object.freeze({ id: 'handoff-topology', label: 'Handoff topology', description: 'The declared handoff list is non-recursive; runtime dispatch eligibility is resolved separately.' })
+  ]);
+  const AGENT_STRUCTURAL_CHECK_IDS = new Set(AGENT_STRUCTURAL_CHECKS.map(check => check.id));
 
   function editDistance(left, right) {
     const a = String(left || '').toLowerCase(); const b = String(right || '').toLowerCase();
@@ -479,6 +490,14 @@
     const nextLayout = layout && typeof layout === 'object' && !Array.isArray(layout) ? clone(layout) : {};
     if (source && operation.type === 'retype' && nextLayout[source.node_id]) nextLayout[selectedNodeId] = nextLayout[source.node_id];
     if (source && operation.type !== 'add') delete nextLayout[source.node_id];
+    if (operation.type === 'add' && (!nextLayout[selectedNodeId] || !Number.isFinite(Number(nextLayout[selectedNodeId].x)) || !Number.isFinite(Number(nextLayout[selectedNodeId].y)))) {
+      const occupied = new Set(Object.entries(nextLayout).filter(([nodeId, point]) => nodeId !== selectedNodeId && Number.isFinite(Number(point?.x)) && Number.isFinite(Number(point?.y)))
+        .map(([, point]) => `${Number(point.x)},${Number(point.y)}`));
+      for (let index = 0; index < nextGraph.nodes.length + occupied.size + 4; index += 1) {
+        const point = { x: 36 + (index % 4) * 224, y: 42 + Math.floor(index / 4) * 142 };
+        if (!occupied.has(`${point.x},${point.y}`)) { nextLayout[selectedNodeId] = point; break; }
+      }
+    }
     nextDraft.editor_layout = Object.fromEntries(nextGraph.nodes.map(node => [node.node_id, clone(nextLayout[node.node_id] || {})]));
     nextDraft.builder_graph = clone(nextGraph);
     return { draft: nextDraft, graph: nextGraph, selected_node_id: selectedNodeId };
@@ -553,7 +572,9 @@
     if (!validStudioVersion(draft?.version)) issues.push('Version must be a bounded semantic PX version.');
     if (!String(draft?.owner || '').trim()) issues.push('An accountable owner is required.');
     if (!String(draft?.instructions || '').trim()) issues.push('Bounded agent instructions are required.');
-    if (!Array.isArray(draft?.required_tests) || !draft.required_tests.length) issues.push('At least one required test is required.');
+    const requiredTests = stringList(draft?.required_tests);
+    if (!requiredTests.length) issues.push('At least one required structural preflight check is required.');
+    for (const testId of requiredTests) if (!AGENT_STRUCTURAL_CHECK_IDS.has(testId)) issues.push(`Unknown structural preflight check ${testId}. Select a check implemented by the current runtime.`);
     const model = draft?.model;
     if (!model || typeof model !== 'object' || Array.isArray(model)) issues.push('A model route is required.');
     else {
@@ -679,6 +700,7 @@
 
   dashboard.define('studioEditors', Object.freeze({
     editDistance, fuzzyScore, rankGraph, normalizeAgent, validateAgent, agentSpecProjection, projectAgentBuilderGraph, validateAgentBuilderGraph, synchronizeAgentBuilderGraph, editAgentBuilderNode, editAgentBuilderEdge, agentCandidatePayload,
-    normalizeWorkflow, validateWorkflow, normalizeSkill, prepareSkillCandidate, synchronizeSkillIdentityFiles, validateSkill, historyEntry, safeToken, validCanonicalUtc, validStudioVersion
+    normalizeWorkflow, validateWorkflow, normalizeSkill, prepareSkillCandidate, synchronizeSkillIdentityFiles, validateSkill, historyEntry, safeToken, validCanonicalUtc, validStudioVersion,
+    agentStructuralChecks: AGENT_STRUCTURAL_CHECKS
   }));
 })();

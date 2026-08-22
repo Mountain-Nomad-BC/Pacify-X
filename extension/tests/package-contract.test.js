@@ -38,6 +38,20 @@ test('MCP build dependencies are pinned and the shipped server is bundled', () =
   assert.match(cacheOwner, /retained_versions/);
 });
 
+test('owned operational host isolates unrelated AI and GitHub services', () => {
+  const runner = fs.readFileSync(path.join(root, 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
+  assert.match(runner, /'chat\.disableAIFeatures': true/);
+  for (const extensionId of ['github.copilot', 'github.copilot-chat', 'github.vscode-pull-request-github', 'vscode.github-authentication', 'vscode.microsoft-authentication']) {
+    assert.ok(runner.includes(`'--disable-extension', '${extensionId}'`), extensionId);
+  }
+  assert.match(runner, /`--extensions-dir=\$\{config\.extensions\}`/);
+  assert.match(runner, /'--install-extension', config\.vsixPath, '--force'/);
+  assert.match(runner, /exact-vsix-preinstall-sha256-mismatch/);
+  assert.match(runner, /exact-vsix-bytes-changed-during-install/);
+  assert.match(runner, /unchanged_after_install: true/);
+  assert.match(runner, /PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES: '1'/);
+});
+
 test('control center contribution and implementation agree on a demand-activated webview', () => {
   const view = pkg.contributes.views.pacifyX.find(item => item.id === 'pacifyX.controlCenter');
   const extension = fs.readFileSync(path.join(root, 'src', 'extension.js'), 'utf8');

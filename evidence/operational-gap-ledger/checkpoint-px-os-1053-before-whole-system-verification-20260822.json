@@ -1,0 +1,26 @@
+{
+  "active_gap_id": "PX-OS-1053",
+  "learned": "Extension 0.6.47 was packaged once with 375 unit tests, both four-test browser campaigns, and the performance test passing. The exact installed VSIX then completed all Agent, Workflow, and Skill lifecycle operations with typed receipts, terminal Agent and Workflow success, durable run reopen, zero host errors, no source mismatch, verified process-tree closure, and owned workspace reclamation. The same VSIX is installed in the normal user extension store.",
+  "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+  "newly_discovered_gap_ids": [],
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000008266",
+  "unresolved_branch_gap_ids": ["PX-OS-045", "PX-OS-848", "PX-OS-1053"],
+  "evidence": [
+    {
+      "reference": "extension/dist/pacify-x-vscode-0.6.47.vsix",
+      "claim": "Exact packaged Studio lifecycle repair and package-owned gates."
+    },
+    {
+      "reference": "evidence/operational-ui-walk-installed-vsix-0.6.47-lifecycle/receipt.json",
+      "claim": "Exact installed artifact completed all required Studio lifecycle operations with durable run reopen and zero host errors."
+    },
+    {
+      "reference": "evidence/operational-gap-ledger/installed-vsix-0.6.47-lifecycle-host-walk.json",
+      "claim": "Installed-artifact host identity, process closure, and isolated cleanup evidence."
+    },
+    {
+      "reference": "C:/Users/Ben/.vscode/extensions/mountain-nomad-bc.pacify-x-vscode-0.6.47/package.json",
+      "claim": "Normal user extension store contains version 0.6.47."
+    }
+  ]
+}

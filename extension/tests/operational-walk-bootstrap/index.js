@@ -8,7 +8,7 @@ const COMMAND_ID = 'pacifyX.openDashboard';
 
 const wait = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
 
-async function waitForRelease(target, timeoutMs = 240_000) {
+async function waitForRelease(target, timeoutMs = 900_000) {
   const started = Date.now();
   while (Date.now() - started < timeoutMs) {
     if (fs.existsSync(target)) return;

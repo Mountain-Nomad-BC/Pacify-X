@@ -1,0 +1,376 @@
+{
+  "id": "ms-python.vscode-pylance",
+  "name": "Pylance",
+  "version": "2026.3.1",
+  "publisher": "ms-python",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "chatSkills",
+    "commands",
+    "configuration",
+    "configurationDefaults",
+    "grammars",
+    "jsonValidation",
+    "mcpServerDefinitionProviders",
+    "menus",
+    "semanticTokenModifiers",
+    "semanticTokenScopes",
+    "semanticTokenTypes"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:chatSkills",
+      "kind": "chatSkills",
+      "provider": "ms-python.vscode-pylance",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-python.vscode-pylance",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-python.vscode-pylance",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configurationDefaults",
+      "kind": "configurationDefaults",
+      "provider": "ms-python.vscode-pylance",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:grammars",
+      "kind": "grammars",
+      "provider": "ms-python.vscode-pylance",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "ms-python.vscode-pylance",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:mcpServerDefinitionProviders",
+      "kind": "mcpServerDefinitionProviders",
+      "provider": "ms-python.vscode-pylance",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-python.vscode-pylance",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:semanticTokenModifiers",
+      "kind": "semanticTokenModifiers",
+      "provider": "ms-python.vscode-pylance",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:semanticTokenScopes",
+      "kind": "semanticTokenScopes",
+      "provider": "ms-python.vscode-pylance",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:semanticTokenTypes",
+      "kind": "semanticTokenTypes",
+      "provider": "ms-python.vscode-pylance",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "pylance.dumpCachedTypes",
+      "invocation": "vscode.commands.executeCommand('pylance.dumpCachedTypes', ...args)",
+      "title": "Pylance: Dump cached type info ...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "editorLangId == python && config.pyright.development"
+    },
+    {
+      "id": "pylance.dumpCodeFlowGraph",
+      "invocation": "vscode.commands.executeCommand('pylance.dumpCodeFlowGraph', ...args)",
+      "title": "Pylance: Dump code flow graph for node ...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "editorLangId == python && config.pyright.development"
+    },
+    {
+      "id": "pylance.dumpNodes",
+      "invocation": "vscode.commands.executeCommand('pylance.dumpNodes', ...args)",
+      "title": "Dump parse tree ...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "editorLangId == python && config.pyright.development"
+    },
+    {
+      "id": "pylance.dumpTokens",
+      "invocation": "vscode.commands.executeCommand('pylance.dumpTokens', ...args)",
+      "title": "Dump token streams ...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "editorLangId == python && config.pyright.development"
+    },
+    {
+      "id": "pylance.dumpTypes",
+      "invocation": "vscode.commands.executeCommand('pylance.dumpTypes', ...args)",
+      "title": "Dump type info ...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "editorLangId == python && config.pyright.development"
+    },
+    {
+      "id": "pylance.foldDocstrings",
+      "invocation": "vscode.commands.executeCommand('pylance.foldDocstrings', ...args)",
+      "title": "%commands.pylance.docstrings.fold.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "pylance.generateDependencyFile",
+      "invocation": "vscode.commands.executeCommand('pylance.generateDependencyFile', ...args)",
+      "title": "%commands.pylance.generateDependencyFile.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "pylance.gotoOutputChannel",
+      "invocation": "vscode.commands.executeCommand('pylance.gotoOutputChannel', ...args)",
+      "title": "%commands.pylance.gotoOutputChannel.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "pylance.indexing.clearPersistedIndices",
+      "invocation": "vscode.commands.executeCommand('pylance.indexing.clearPersistedIndices', ...args)",
+      "title": "%commands.pylance.indexing.clearPersistedIndices.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "pylance.learnMoreAboutImportResolution",
+      "invocation": "vscode.commands.executeCommand('pylance.learnMoreAboutImportResolution', ...args)",
+      "title": "Learn more about import resolution",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "false"
+    },
+    {
+      "id": "pylance.logging.start",
+      "invocation": "vscode.commands.executeCommand('pylance.logging.start', ...args)",
+      "title": "%commands.pylance.logging.start.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "pylance.logging.stop",
+      "invocation": "vscode.commands.executeCommand('pylance.logging.stop', ...args)",
+      "title": "%commands.pylance.logging.stop.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "pylance.profiling.start",
+      "invocation": "vscode.commands.executeCommand('pylance.profiling.start', ...args)",
+      "title": "%commands.pylance.profiling.start.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "pylance.profiling.stop",
+      "invocation": "vscode.commands.executeCommand('pylance.profiling.stop', ...args)",
+      "title": "%commands.pylance.profiling.stop.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "pylance.reportIssue",
+      "invocation": "vscode.commands.executeCommand('pylance.reportIssue', ...args)",
+      "title": "%commands.pylance.reportIssue.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "pylance.resetWorkspaceState",
+      "invocation": "vscode.commands.executeCommand('pylance.resetWorkspaceState', ...args)",
+      "title": "Pylance: Reset workspace memento state",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.pyright.development"
+    },
+    {
+      "id": "pylance.runCurrentFileInSandbox",
+      "invocation": "vscode.commands.executeCommand('pylance.runCurrentFileInSandbox', ...args)",
+      "title": "%commands.pylance.runCurrentFileInSandbox.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "editorLangId == python && config.pyright.development"
+    },
+    {
+      "id": "pylance.toggleBlockComment",
+      "invocation": "vscode.commands.executeCommand('pylance.toggleBlockComment', ...args)",
+      "title": "%commands.pylance.toggleBlockComment.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "pylance.unfoldDocstrings",
+      "invocation": "vscode.commands.executeCommand('pylance.unfoldDocstrings', ...args)",
+      "title": "%commands.pylance.docstrings.unfold.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onLanguage:python",
+    "workspaceContains:pyproject.toml",
+    "workspaceContains:pyrightconfig.json"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "limited",
+      "description": "Python will not be executed; the latest Python version will be used for analysis and installed libraries will not be available.",
+      "restrictedConfigurations": [
+        "python.analysis.enableExternalTypeServer",
+        "python.analysis.nodeArguments",
+        "python.analysis.nodeExecutable",
+        "python.analysis.typeServerArguments",
+        "python.analysis.typeServerExecutable",
+        "python.pythonPath"
+      ]
+    },
+    "virtual_workspaces": {
+      "supported": "limited",
+      "description": "Analysis is limited to opened files."
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-python.vscode-pylance",
+    "capabilities": [
+      "contribution:chatSkills",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:configurationDefaults",
+      "contribution:grammars",
+      "contribution:jsonValidation",
+      "contribution:mcpServerDefinitionProviders",
+      "contribution:menus",
+      "contribution:semanticTokenModifiers",
+      "contribution:semanticTokenScopes",
+      "contribution:semanticTokenTypes"
+    ],
+    "interface": [
+      "pylance.dumpCachedTypes",
+      "pylance.dumpCodeFlowGraph",
+      "pylance.dumpNodes",
+      "pylance.dumpTokens",
+      "pylance.dumpTypes",
+      "pylance.foldDocstrings",
+      "pylance.generateDependencyFile",
+      "pylance.gotoOutputChannel",
+      "pylance.indexing.clearPersistedIndices",
+      "pylance.learnMoreAboutImportResolution",
+      "pylance.logging.start",
+      "pylance.logging.stop",
+      "pylance.profiling.start",
+      "pylance.profiling.stop",
+      "pylance.reportIssue",
+      "pylance.resetWorkspaceState",
+      "pylance.runCurrentFileInSandbox",
+      "pylance.toggleBlockComment",
+      "pylance.unfoldDocstrings"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "limited",
+        "description": "Python will not be executed; the latest Python version will be used for analysis and installed libraries will not be available.",
+        "restrictedConfigurations": [
+          "python.analysis.enableExternalTypeServer",
+          "python.analysis.nodeArguments",
+          "python.analysis.nodeExecutable",
+          "python.analysis.typeServerArguments",
+          "python.analysis.typeServerExecutable",
+          "python.pythonPath"
+        ]
+      },
+      "virtual_workspaces": {
+        "supported": "limited",
+        "description": "Analysis is limited to opened files."
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

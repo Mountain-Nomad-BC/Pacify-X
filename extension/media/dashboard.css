@@ -253,6 +253,10 @@ button:disabled{ cursor: not-allowed !important; opacity: .34; filter: saturate(
 .detail-list > div{ display: grid; grid-template-columns: minmax(120px, .45fr) minmax(0, 1fr); gap: 15px; padding: 11px 0; border-bottom: 1px solid rgba(142, 174, 206, .08); }
 .detail-list dt{ color: var(--muted); }
 .detail-list dd{ margin: 0; overflow-wrap: anywhere; }
+.detail-list .badge{ max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.memory-pagination{ display: grid; grid-template-columns: minmax(92px, auto) minmax(0, 1fr) minmax(92px, auto); align-items: center; gap: 10px; margin: 12px 18px 18px; }
+.memory-pagination span{ min-width: 0; text-align: center; white-space: nowrap; }
+.memory-pagination button{ width: 100%; min-width: 0; }
 .mono, code{ font-family: var(--vscode-editor-font-family, Consolas, monospace); }
 .boundary-stack{ display: flex; flex-direction: column; align-items: stretch; gap: 7px; }
 .boundary-stack > div{ padding: 11px; border: 1px solid var(--line); border-radius: 7px; background: rgba(0, 0, 0, .14); }

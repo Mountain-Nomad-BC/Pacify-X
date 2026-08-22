@@ -3,13 +3,13 @@
   "authority": "Executable proof requirements only; this artifact is not evidence that any probe ran or passed.",
   "inventory": {
     "path": "registry/operational_surface_inventory.json",
-    "sha256": "81b1b783a832ee379ff09ebd04c9d0562acfa9f023a6acef07795c6dad1a1852",
+    "sha256": "53abf3def011a83db47c62f86873f5fb983771b73a72b610b87860849c418f38",
     "inventory_id": "pacify-x-typed-surfaces-20260820-r14"
   },
   "action_inventory": {
     "path": "extension/resources/ui/action-inventory.json",
-    "sha256": "9dd2feb4041530da02344e68af8c81f9dde7ad1ae56e973f38375a4723bf6aca",
-    "action_count": 200
+    "sha256": "ed45d67cf48fafa5e20daa38e8a876bb546786b521b9c52cdb557309c843802b",
+    "action_count": 202
   },
   "chain_stages": [
     "open_load",
@@ -26,7 +26,7 @@
     "failure_handling",
     "recovery_rollback"
   ],
-  "control_count": 938,
+  "control_count": 941,
   "controls": [
     {
       "control_id": "pxui.activity.action.activityPause",
@@ -2162,6 +2162,37 @@
         "reload_reopen": "not_applicable_with_evidence",
         "failure_handling": "not_applicable_with_evidence",
         "recovery_rollback": "not_applicable_with_evidence"
+      }
+    },
+    {
+      "control_id": "pxui.agent-studio.action.setupStudio",
+      "surface_id": "agent-studio",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/43-catalog-surfaces.js",
+        "extension/media/dashboard/44-operational-surfaces.js"
+      ],
+      "evidence_mode": "contained_host_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "workspace-write-and-owned-process",
+      "requires_disposable_target": true,
+      "requires_fault_injection": true,
+      "requires_restart": true,
+      "requires_real_external_authority": false,
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "required",
+        "backend_dispatch": "required",
+        "runtime_effect": "required",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "required",
+        "reload_reopen": "required",
+        "failure_handling": "required",
+        "recovery_rollback": "required"
       }
     },
     {
@@ -4627,6 +4658,36 @@
       }
     },
     {
+      "control_id": "pxui.agents.action.importCatalogDefinition.agent",
+      "surface_id": "agents",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/90-controller.js"
+      ],
+      "evidence_mode": "contained_ui_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "none-outside-webview",
+      "requires_disposable_target": false,
+      "requires_fault_injection": false,
+      "requires_restart": false,
+      "requires_real_external_authority": false,
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "not_applicable_with_evidence",
+        "backend_dispatch": "not_applicable_with_evidence",
+        "runtime_effect": "not_applicable_with_evidence",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "not_applicable_with_evidence",
+        "reload_reopen": "not_applicable_with_evidence",
+        "failure_handling": "not_applicable_with_evidence",
+        "recovery_rollback": "not_applicable_with_evidence"
+      }
+    },
+    {
       "control_id": "pxui.agents.action.inspectCatalogItem.row",
       "surface_id": "agents",
       "kind": "action",
@@ -4747,6 +4808,37 @@
         "reload_reopen": "not_applicable_with_evidence",
         "failure_handling": "required",
         "recovery_rollback": "not_applicable_with_evidence"
+      }
+    },
+    {
+      "control_id": "pxui.agents.action.setupStudio",
+      "surface_id": "agents",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/43-catalog-surfaces.js",
+        "extension/media/dashboard/44-operational-surfaces.js"
+      ],
+      "evidence_mode": "contained_host_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "workspace-write-and-owned-process",
+      "requires_disposable_target": true,
+      "requires_fault_injection": true,
+      "requires_restart": true,
+      "requires_real_external_authority": false,
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "required",
+        "backend_dispatch": "required",
+        "runtime_effect": "required",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "required",
+        "reload_reopen": "required",
+        "failure_handling": "required",
+        "recovery_rollback": "required"
       }
     },
     {
@@ -11532,38 +11624,6 @@
       }
     },
     {
-      "control_id": "pxui.knowledge-core.field.learningPipelineId",
-      "surface_id": "knowledge-core",
-      "kind": "field",
-      "source_refs": [
-        "extension/media/dashboard/47-advanced-surfaces.js:14-65",
-        "extension/media/dashboard/90-controller.js:998-1040",
-        "extension/media/dashboard/90-controller.js:1403-1436"
-      ],
-      "evidence_mode": "contained_ui_input",
-      "probe": "resolve the exact field, exercise valid and invalid boundaries, and restore its prior value",
-      "effect": "kind-specific declared contract",
-      "requires_disposable_target": false,
-      "requires_fault_injection": false,
-      "requires_restart": false,
-      "requires_real_external_authority": false,
-      "stage_policy": {
-        "open_load": "required",
-        "display": "required",
-        "user_edit_action": "required",
-        "input_validation": "required",
-        "authorization": "not_applicable_with_evidence",
-        "backend_dispatch": "not_applicable_with_evidence",
-        "runtime_effect": "not_applicable_with_evidence",
-        "progress_reporting": "not_applicable_with_evidence",
-        "result_acknowledgement": "required",
-        "persistence": "not_applicable_with_evidence",
-        "reload_reopen": "not_applicable_with_evidence",
-        "failure_handling": "not_applicable_with_evidence",
-        "recovery_rollback": "not_applicable_with_evidence"
-      }
-    },
-    {
       "control_id": "pxui.knowledge-core.field.learningSourceIds",
       "surface_id": "knowledge-core",
       "kind": "field",
@@ -11917,102 +11977,6 @@
     },
     {
       "control_id": "pxui.knowledge-core.field.rollbackEvidenceRefs",
-      "surface_id": "knowledge-core",
-      "kind": "field",
-      "source_refs": [
-        "extension/media/dashboard/47-advanced-surfaces.js:14-65",
-        "extension/media/dashboard/90-controller.js:998-1040",
-        "extension/media/dashboard/90-controller.js:1403-1436"
-      ],
-      "evidence_mode": "contained_ui_input",
-      "probe": "resolve the exact field, exercise valid and invalid boundaries, and restore its prior value",
-      "effect": "kind-specific declared contract",
-      "requires_disposable_target": false,
-      "requires_fault_injection": false,
-      "requires_restart": false,
-      "requires_real_external_authority": false,
-      "stage_policy": {
-        "open_load": "required",
-        "display": "required",
-        "user_edit_action": "required",
-        "input_validation": "required",
-        "authorization": "not_applicable_with_evidence",
-        "backend_dispatch": "not_applicable_with_evidence",
-        "runtime_effect": "not_applicable_with_evidence",
-        "progress_reporting": "not_applicable_with_evidence",
-        "result_acknowledgement": "required",
-        "persistence": "not_applicable_with_evidence",
-        "reload_reopen": "not_applicable_with_evidence",
-        "failure_handling": "not_applicable_with_evidence",
-        "recovery_rollback": "not_applicable_with_evidence"
-      }
-    },
-    {
-      "control_id": "pxui.knowledge-core.field.rollbackExpectedHead",
-      "surface_id": "knowledge-core",
-      "kind": "field",
-      "source_refs": [
-        "extension/media/dashboard/47-advanced-surfaces.js:14-65",
-        "extension/media/dashboard/90-controller.js:998-1040",
-        "extension/media/dashboard/90-controller.js:1403-1436"
-      ],
-      "evidence_mode": "contained_ui_input",
-      "probe": "resolve the exact field, exercise valid and invalid boundaries, and restore its prior value",
-      "effect": "kind-specific declared contract",
-      "requires_disposable_target": false,
-      "requires_fault_injection": false,
-      "requires_restart": false,
-      "requires_real_external_authority": false,
-      "stage_policy": {
-        "open_load": "required",
-        "display": "required",
-        "user_edit_action": "required",
-        "input_validation": "required",
-        "authorization": "not_applicable_with_evidence",
-        "backend_dispatch": "not_applicable_with_evidence",
-        "runtime_effect": "not_applicable_with_evidence",
-        "progress_reporting": "not_applicable_with_evidence",
-        "result_acknowledgement": "required",
-        "persistence": "not_applicable_with_evidence",
-        "reload_reopen": "not_applicable_with_evidence",
-        "failure_handling": "not_applicable_with_evidence",
-        "recovery_rollback": "not_applicable_with_evidence"
-      }
-    },
-    {
-      "control_id": "pxui.knowledge-core.field.rollbackRecord",
-      "surface_id": "knowledge-core",
-      "kind": "field",
-      "source_refs": [
-        "extension/media/dashboard/47-advanced-surfaces.js:14-65",
-        "extension/media/dashboard/90-controller.js:998-1040",
-        "extension/media/dashboard/90-controller.js:1403-1436"
-      ],
-      "evidence_mode": "contained_ui_input",
-      "probe": "resolve the exact field, exercise valid and invalid boundaries, and restore its prior value",
-      "effect": "kind-specific declared contract",
-      "requires_disposable_target": false,
-      "requires_fault_injection": false,
-      "requires_restart": false,
-      "requires_real_external_authority": false,
-      "stage_policy": {
-        "open_load": "required",
-        "display": "required",
-        "user_edit_action": "required",
-        "input_validation": "required",
-        "authorization": "not_applicable_with_evidence",
-        "backend_dispatch": "not_applicable_with_evidence",
-        "runtime_effect": "not_applicable_with_evidence",
-        "progress_reporting": "not_applicable_with_evidence",
-        "result_acknowledgement": "required",
-        "persistence": "not_applicable_with_evidence",
-        "reload_reopen": "not_applicable_with_evidence",
-        "failure_handling": "not_applicable_with_evidence",
-        "recovery_rollback": "not_applicable_with_evidence"
-      }
-    },
-    {
-      "control_id": "pxui.knowledge-core.field.rollbackTarget",
       "surface_id": "knowledge-core",
       "kind": "field",
       "source_refs": [
@@ -13358,6 +13322,36 @@
         "persistence": "not_applicable_with_evidence",
         "reload_reopen": "not_applicable_with_evidence",
         "failure_handling": "not_applicable_with_evidence",
+        "recovery_rollback": "not_applicable_with_evidence"
+      }
+    },
+    {
+      "control_id": "pxui.knowledge-graph.action.graphLoadAll",
+      "surface_id": "knowledge-graph",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/48-graph-surface.js"
+      ],
+      "evidence_mode": "contained_host_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "read",
+      "requires_disposable_target": false,
+      "requires_fault_injection": true,
+      "requires_restart": false,
+      "requires_real_external_authority": false,
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "required",
+        "backend_dispatch": "required",
+        "runtime_effect": "required",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "not_applicable_with_evidence",
+        "reload_reopen": "not_applicable_with_evidence",
+        "failure_handling": "required",
         "recovery_rollback": "not_applicable_with_evidence"
       }
     },
@@ -15222,6 +15216,36 @@
         "reload_reopen": "not_applicable_with_evidence",
         "failure_handling": "required",
         "recovery_rollback": "not_applicable_with_evidence"
+      }
+    },
+    {
+      "control_id": "pxui.memory.action.disconnectCanonicalMemory",
+      "surface_id": "memory",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/46-observability-surfaces.js"
+      ],
+      "evidence_mode": "contained_host_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "configuration-write",
+      "requires_disposable_target": true,
+      "requires_fault_injection": true,
+      "requires_restart": true,
+      "requires_real_external_authority": false,
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "required",
+        "backend_dispatch": "required",
+        "runtime_effect": "required",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "required",
+        "reload_reopen": "required",
+        "failure_handling": "required",
+        "recovery_rollback": "required"
       }
     },
     {
@@ -18432,6 +18456,36 @@
     },
     {
       "control_id": "pxui.runtime-core.action.inspectRuntimeRecord.providers",
+      "surface_id": "runtime-core",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/47-advanced-surfaces.js"
+      ],
+      "evidence_mode": "contained_ui_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "none-outside-webview",
+      "requires_disposable_target": false,
+      "requires_fault_injection": false,
+      "requires_restart": false,
+      "requires_real_external_authority": false,
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "not_applicable_with_evidence",
+        "backend_dispatch": "not_applicable_with_evidence",
+        "runtime_effect": "not_applicable_with_evidence",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "not_applicable_with_evidence",
+        "reload_reopen": "not_applicable_with_evidence",
+        "failure_handling": "not_applicable_with_evidence",
+        "recovery_rollback": "not_applicable_with_evidence"
+      }
+    },
+    {
+      "control_id": "pxui.runtime-core.action.inspectRuntimeRecord.startup",
       "surface_id": "runtime-core",
       "kind": "action",
       "source_refs": [
@@ -22241,38 +22295,6 @@
     },
     {
       "control_id": "pxui.skills-tools.field.catalogSort",
-      "surface_id": "skills-tools",
-      "kind": "field",
-      "source_refs": [
-        "extension/media/dashboard/43-catalog-surfaces.js:32-43",
-        "extension/media/dashboard/90-controller.js:605-621",
-        "extension/media/dashboard/90-controller.js:1060-1064"
-      ],
-      "evidence_mode": "contained_ui_input",
-      "probe": "resolve the exact field, exercise valid and invalid boundaries, and restore its prior value",
-      "effect": "kind-specific declared contract",
-      "requires_disposable_target": false,
-      "requires_fault_injection": false,
-      "requires_restart": false,
-      "requires_real_external_authority": false,
-      "stage_policy": {
-        "open_load": "required",
-        "display": "required",
-        "user_edit_action": "required",
-        "input_validation": "required",
-        "authorization": "not_applicable_with_evidence",
-        "backend_dispatch": "not_applicable_with_evidence",
-        "runtime_effect": "not_applicable_with_evidence",
-        "progress_reporting": "not_applicable_with_evidence",
-        "result_acknowledgement": "required",
-        "persistence": "not_applicable_with_evidence",
-        "reload_reopen": "not_applicable_with_evidence",
-        "failure_handling": "not_applicable_with_evidence",
-        "recovery_rollback": "not_applicable_with_evidence"
-      }
-    },
-    {
-      "control_id": "pxui.skills-tools.field.fixedSkillDomain",
       "surface_id": "skills-tools",
       "kind": "field",
       "source_refs": [
@@ -27703,6 +27725,36 @@
       }
     },
     {
+      "control_id": "pxui.workflows.action.importCatalogDefinition.workflow",
+      "surface_id": "workflows",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/90-controller.js"
+      ],
+      "evidence_mode": "contained_ui_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "none-outside-webview",
+      "requires_disposable_target": false,
+      "requires_fault_injection": false,
+      "requires_restart": false,
+      "requires_real_external_authority": false,
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "not_applicable_with_evidence",
+        "backend_dispatch": "not_applicable_with_evidence",
+        "runtime_effect": "not_applicable_with_evidence",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "not_applicable_with_evidence",
+        "reload_reopen": "not_applicable_with_evidence",
+        "failure_handling": "not_applicable_with_evidence",
+        "recovery_rollback": "not_applicable_with_evidence"
+      }
+    },
+    {
       "control_id": "pxui.workflows.action.inspectCatalogItem.row",
       "surface_id": "workflows",
       "kind": "action",
@@ -28051,6 +28103,37 @@
       "evidence_mode": "contained_host_interaction",
       "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
       "effect": "workspace-write",
+      "requires_disposable_target": true,
+      "requires_fault_injection": true,
+      "requires_restart": true,
+      "requires_real_external_authority": false,
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "required",
+        "backend_dispatch": "required",
+        "runtime_effect": "required",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "required",
+        "reload_reopen": "required",
+        "failure_handling": "required",
+        "recovery_rollback": "required"
+      }
+    },
+    {
+      "control_id": "pxui.workflows.action.setupStudio",
+      "surface_id": "workflows",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/43-catalog-surfaces.js",
+        "extension/media/dashboard/44-operational-surfaces.js"
+      ],
+      "evidence_mode": "contained_host_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "workspace-write-and-owned-process",
       "requires_disposable_target": true,
       "requires_fault_injection": true,
       "requires_restart": true,
@@ -29698,5 +29781,5 @@
       }
     }
   ],
-  "matrix_sha256": "e2f375fab570d22038b768461582a10b01f7229d2d6cf6315e3066465906b947"
+  "matrix_sha256": "4b25fe06139b9b0e7d10d5cef9904383bb9799841a47adb2dcfc93aea275a00c"
 }

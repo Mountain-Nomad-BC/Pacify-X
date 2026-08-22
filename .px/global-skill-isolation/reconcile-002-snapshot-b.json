@@ -1,0 +1,940 @@
+{
+  "file_count": 186,
+  "files": [
+    {
+      "path": "microsoft-foundry/.gitignore",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "microsoft-foundry/finetuning/references/agentic-rft.md",
+      "sha256": "eba1c9e40208c9d61c8035f239493f188409e77602131598514f536dca4df7f2",
+      "size_bytes": 3332
+    },
+    {
+      "path": "microsoft-foundry/finetuning/references/dataset-formats.md",
+      "sha256": "e2ad98fda7fb3890ae6c787fc7035631de5851304b7bac7b413f648d561f094e",
+      "size_bytes": 3829
+    },
+    {
+      "path": "microsoft-foundry/finetuning/references/deployment.md",
+      "sha256": "60e07943a01ca119a20a8d8a5aee9eafe09be718fa3d21e6359c65118fdb8b6d",
+      "size_bytes": 3591
+    },
+    {
+      "path": "microsoft-foundry/finetuning/references/evaluation.md",
+      "sha256": "3eb32019cfb33aa986cf0a5c140164c8e84266714ff10530e09ad429ec4f423a",
+      "size_bytes": 6085
+    },
+    {
+      "path": "microsoft-foundry/finetuning/references/grader-design.md",
+      "sha256": "f10c6811f3250766a955dd9e1c27eafa41bc777b746f7b128fd268c910383fe6",
+      "size_bytes": 3522
+    },
+    {
+      "path": "microsoft-foundry/finetuning/references/hyperparameters.md",
+      "sha256": "9f894ddc7f5f844d3c32e5763d7f6550ae62fe301a410f5851da707d7280b919",
+      "size_bytes": 3314
+    },
+    {
+      "path": "microsoft-foundry/finetuning/references/large-file-uploads.md",
+      "sha256": "5ea3cacb210954a467b6841f9abacc1280c1be18f89bbeb30019e7d95e98467c",
+      "size_bytes": 949
+    },
+    {
+      "path": "microsoft-foundry/finetuning/references/platform-gotchas.md",
+      "sha256": "3d4e75fa8a2bcd83b2d5a410a3dd170ed82dcff3ec11f4b3fc53f347e9131ec7",
+      "size_bytes": 2090
+    },
+    {
+      "path": "microsoft-foundry/finetuning/references/reward-hacking.md",
+      "sha256": "d4a4746250080c459d3aed60881e955997b22f2af63ad7b99fc95b68d417a0a3",
+      "size_bytes": 3017
+    },
+    {
+      "path": "microsoft-foundry/finetuning/references/training-curves.md",
+      "sha256": "c844a158434c07840fb171fac9651dc3941ef3c7e061b67acb0456039ea532b9",
+      "size_bytes": 4277
+    },
+    {
+      "path": "microsoft-foundry/finetuning/references/training-types.md",
+      "sha256": "7ad4f2b0ad6edf581c0363a6087fefa895fc087ce2d73e05329946077c90d5f8",
+      "size_bytes": 3231
+    },
+    {
+      "path": "microsoft-foundry/finetuning/references/vision-fine-tuning.md",
+      "sha256": "5522ae7372c4c066e5f74949e0b054868c43634486e08c934230d22a8c6c447e",
+      "size_bytes": 4321
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/calibrate_grader.py",
+      "sha256": "55cc242998a2d915351aa104165bddf354ad225bc99380b94c3f3b510a3d863d",
+      "size_bytes": 9741
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/check_training.py",
+      "sha256": "2285f2e2270901cce8ba4edd36dd7dd9f997a79756b6b4609a91005ef931247d",
+      "size_bytes": 8173
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/cleanup.py",
+      "sha256": "c59b10fc5d540fb33dc709178d244697964f6506f863a3be8534796557e5061b",
+      "size_bytes": 9955
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/common.py",
+      "sha256": "abf2d3d31c555fdfd8209ae139944eeffe008e88533c91bd3893e77d5420839c",
+      "size_bytes": 8005
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/convert_dataset.py",
+      "sha256": "9a43c2dade26768e4e8c93e66aab278c9c93dd179896724b1a43400c5f7f1695",
+      "size_bytes": 11196
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/deploy_model.py",
+      "sha256": "dc556f6b9e1d958d15fdafbfabf1d8121e7aaaa55d9915e0ebc75682382ba785",
+      "size_bytes": 9882
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/evaluate_model.py",
+      "sha256": "bb0e9798b6194df26ab85c5967a37d516c87c3c6cc81ff6ed06b667275a5a4df",
+      "size_bytes": 11985
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/generate_distillation_data.py",
+      "sha256": "c04a4e37b4ea7b729eff22f4a0bd3dd7d3f8b618432265262bc6b0e8d69935bf",
+      "size_bytes": 10553
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/monitor_training.py",
+      "sha256": "a30175817f2cd3402137f36ebcfb03de990e050a5ff49abead388f584915c906",
+      "size_bytes": 6002
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/score_dataset.py",
+      "sha256": "3f4df0356106f7c2f892daa349316068a756cdcf29b3c73049c21dc6c4adff9c",
+      "size_bytes": 8087
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/submit_training.py",
+      "sha256": "634173084c3458e6cdcdb253084d55504b6204d9b3b15f392c501e35a3820838",
+      "size_bytes": 11335
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/validate/data_stats.py",
+      "sha256": "fcc1e6b2d87839206b6d4a4264be30d49176b86bf2066b53e4411b91d8f9d796",
+      "size_bytes": 6487
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/validate/validate_dpo.py",
+      "sha256": "bd0a6ef161943385c8083e7804a08dc14aaddf89f58279e2cf8dcc5c32c6cb95",
+      "size_bytes": 3908
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/validate/validate_rft.py",
+      "sha256": "2131429632ee214c14225457902f2a29dc8e38d2f1ec0c404392d8657d51a52c",
+      "size_bytes": 9003
+    },
+    {
+      "path": "microsoft-foundry/finetuning/scripts/validate/validate_sft.py",
+      "sha256": "6dc15ad28dba24c061894f960deffe604fa8e354c8787218fe98d97c4885389b",
+      "size_bytes": 4700
+    },
+    {
+      "path": "microsoft-foundry/finetuning/SKILL.md",
+      "sha256": "55c1d73db27bdd76d7fc4e85bd764a51fa3744598687b77ed265052561605d0c",
+      "size_bytes": 5608
+    },
+    {
+      "path": "microsoft-foundry/finetuning/workflows/dataset-creation.md",
+      "sha256": "5b534c52be548d267377d354ee81046514a6cb1e48cd8bb6f78877c1a4404ec7",
+      "size_bytes": 3240
+    },
+    {
+      "path": "microsoft-foundry/finetuning/workflows/diagnose-poor-results.md",
+      "sha256": "fe970f8fe5a55cf389135f8fa848fe04160bdc499b4d657c631cceb95fdebcb7",
+      "size_bytes": 2440
+    },
+    {
+      "path": "microsoft-foundry/finetuning/workflows/full-pipeline.md",
+      "sha256": "d466377527d963397e8848889b7b3a4bc4f8ee26ea20a6370edf1bffe3520afb",
+      "size_bytes": 3259
+    },
+    {
+      "path": "microsoft-foundry/finetuning/workflows/iterative-training.md",
+      "sha256": "a55033f8b86e2a6072f6e0c32d9a75c587e99483ecc73461924549444cfdb93c",
+      "size_bytes": 3272
+    },
+    {
+      "path": "microsoft-foundry/finetuning/workflows/quickstart.md",
+      "sha256": "6f7f70338417ace27dfaa5de471ed148c8d52ac5acd51eb416594b6121aa880e",
+      "size_bytes": 4734
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/agent-optimizer/agent-optimizer.md",
+      "sha256": "97c59514f3eb94acedd737ead09acfd4f7a04f2ef78f4270889f9897acd117ac",
+      "size_bytes": 3423
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/agent-optimizer/references/azd-setup.md",
+      "sha256": "ab904371b07b64af258d51d9e02fc4c5b307c95903428f96d4d86165af5016ce",
+      "size_bytes": 1256
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/agent-optimizer/references/eval-yaml.md",
+      "sha256": "3c4b6a1a67199a161eba58e826d0bd21a3f462ce23f4a8212c0a373dc99006b0",
+      "size_bytes": 3402
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/agent-optimizer/references/optimize-workflow.md",
+      "sha256": "1755b5de30aa796acda3a07b7329f7c47a47cc00be850c7c27fb7d64a22735a7",
+      "size_bytes": 2247
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/agent-optimizer/references/python-patterns.md",
+      "sha256": "2ef967c87abefa49885842ce1dcf02abfd0f0287088752a14bf97fa7c18d5ecb",
+      "size_bytes": 4236
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/agent-optimizer/references/scaffold.md",
+      "sha256": "0b8ca6d2edb8993bbe43129216c096bb59497ce5f5d342cc28b37ec2de3cb51f",
+      "size_bytes": 3494
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/azd-guidance/azd-guidance.md",
+      "sha256": "5090d5521c70fe67644ce3b1e60e79648f02fa6ead8b8a5475e191cf69fd1756",
+      "size_bytes": 1252
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/azd-guidance/references/azd-ai-cli.md",
+      "sha256": "70c1a71a5f83e281e40a8eb6f1d018431f90709c065635f1ed897d922bc65e62",
+      "size_bytes": 9080
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/cicd/cicd.md",
+      "sha256": "5ab12256303e8981746b308030aeff1db938567269720c162c11a5b55d0abddb",
+      "size_bytes": 308
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/create-hosted.md",
+      "sha256": "596777cf07d1bb9a2aebbbdacc8e52cb60abd76773bd589cd4602b00610e8686",
+      "size_bytes": 30749
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/create-prompt.md",
+      "sha256": "b5c791b16d81c20453e3daaa6d7ab10a2475e7cb319d508572c227b4c5e7256a",
+      "size_bytes": 4366
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/quick-start-hosted.md",
+      "sha256": "9b929615789adf29b94d1f660c11219b3e35ef206a9f028db5c347067f854abb",
+      "size_bytes": 23026
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/enable-incoming-a2a.md",
+      "sha256": "f94fbc4de79ba04e1bcdf3633d57994ebecc1fda918d3ab8e30a01de10710dc5",
+      "size_bytes": 3835
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/foundry-model.md",
+      "sha256": "305e854ce17a8d4a27725811224c8a34f3d6bc57dbfb0983de001916f68ad3c9",
+      "size_bytes": 1525
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/foundry-tool-catalog.md",
+      "sha256": "9df84b2ea40081f86a44a0c99a9ab9835bcb7fcab13c6208b33628f81f851670",
+      "size_bytes": 44592
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-api-create.md",
+      "sha256": "38f322e0e663e1d2525022f1c7582c41fcdb44d84314068171cebc55fad92c9c",
+      "size_bytes": 3946
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-attach.md",
+      "sha256": "3b07414d740b67e4c6ed3a931e8165c03693058301fad4dd9c569f4aafbdeb09",
+      "size_bytes": 3958
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/guardrails/guardrail-manage.md",
+      "sha256": "8167ce8c6a5bd29ba7f01f4e3715b9cebe862e7afa4712d2c21bc75b8d3119a3",
+      "size_bytes": 2255
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/local-run.md",
+      "sha256": "31ad398fc35cc95e53d7cfe85e16e5670bd65c7163bdbdaf11f27b22738d43e1",
+      "size_bytes": 9945
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/re-host.md",
+      "sha256": "c5f707337ca4a6ed7c991bd18919494ab2929defb3d9b51df5a782b29ed297b6",
+      "size_bytes": 2732
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/sdk-operations.md",
+      "sha256": "cd75ff3c421240dc516fce60248e94e573275bcdbe15a945b779689e38de5b1c",
+      "size_bytes": 2263
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/skills/skill-attach.md",
+      "sha256": "0721df906cc8639fd5a9dbc0642ff42dbfacd09eea8d656659d87b896870d394",
+      "size_bytes": 7314
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/skills/skill-manage.md",
+      "sha256": "759e6ab55760c7b89c4347fbc3da67a6f5eab6631719335121be69d2a49c57cb",
+      "size_bytes": 5618
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/skills/skill-toolbox-attach.md",
+      "sha256": "9423ae193b0a1c0554e12d28a2748043575d36772e9ec96c318868e8a13edea0",
+      "size_bytes": 5360
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/agent-tools.md",
+      "sha256": "35e634c346fe6acffdf23d50b08119c55508d4525ceaae9db2fd9981e802f775",
+      "size_bytes": 4619
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-a2a.md",
+      "sha256": "0bf2fcf99c1d0b27d5405e5ebc1603b94adec315904a0fe7d690233cc083d60c",
+      "size_bytes": 697
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-azure-ai-search.md",
+      "sha256": "495c2389a5e221148ae76082dfbeb54b166c7f906d0c5845789170c1e3b4711a",
+      "size_bytes": 3492
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-bing-grounding.md",
+      "sha256": "35d624454729a862a8093afb6d3462108ee0360ae645f417309c8b717ac56667",
+      "size_bytes": 2919
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-code-interpreter.md",
+      "sha256": "2524689dd92f40ba13eea2d52ed9551191ef116a841452197eab7ae265204c8a",
+      "size_bytes": 1099
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-fabric-iq.md",
+      "sha256": "9d90dd04d6b5b35c9a2bec6ef89b9d5b1342c7cfe05c3c7f85fb32234bd03e41",
+      "size_bytes": 1970
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-file-search.md",
+      "sha256": "722ced5465e28a9941167e6e22f6ffdacdadc2c61f54b8bdf1a2d538573a68a6",
+      "size_bytes": 2759
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-function-calling.md",
+      "sha256": "8a8af1dad411b94cdd178c536561a767400ea5931806ddb083620825aa329b9f",
+      "size_bytes": 858
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-mcp.md",
+      "sha256": "1d56af5cdc271a7e67b1b982c2fc8a5f1dc3555fb55e1856ac1f60c8fde14596",
+      "size_bytes": 3518
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-memory.md",
+      "sha256": "f122c6bb1dab838285371fb0a1d049fcac4669a9fdb77af4b6df948eafb9e3de",
+      "size_bytes": 4997
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-openapi.md",
+      "sha256": "bd9bbee79f2294e015a4105846ac7d4d4121fbbda64ef0c813b535b5785ad4eb",
+      "size_bytes": 1559
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-web-search.md",
+      "sha256": "aafc4e8c5f882c900a2389d977e1bb5ee5b960fd7e6421434e01f8f753af6e7f",
+      "size_bytes": 3760
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/tools/prompt-agent/tool-work-iq.md",
+      "sha256": "c2f0ad4e75d24f01b223ff78723a0380dcac1f6a305b98fcc118b5ae38f68582",
+      "size_bytes": 1774
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/references/use-toolbox-in-hosted-agent.md",
+      "sha256": "5e117c2d0e51f6f69b98a92c6757970604d8f464a32a862a9fa3aa736edabadb",
+      "size_bytes": 10769
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/scripts/check-copilot-app-entry.ps1",
+      "sha256": "93e8b0b0edc07021f655d367d5c29f5bfe1ba76b3df4ff1fbffdba6c43cfb746",
+      "size_bytes": 5744
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/scripts/check-copilot-app-entry.sh",
+      "sha256": "4015822666bad7f03951b862c4b3139a15ece468bbdf6cf529692b0c24b1ac07",
+      "size_bytes": 4295
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/scripts/resolve-project-id.ps1",
+      "sha256": "e7b9b7cf08e32718667098b539222b36fc35b092cd5db5e3efa24034a1f91dc5",
+      "size_bytes": 6149
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/scripts/resolve-project-id.sh",
+      "sha256": "76ddba762f8be58b0151f1f9a178b23c1d5338ab7bd4d8fe4f26ad9518a9c4b6",
+      "size_bytes": 9243
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/scripts/verify-environment.ps1",
+      "sha256": "37afac2a876dca12cab756adf9ecc3528d09d6644dc0c158c99df9a1063367fc",
+      "size_bytes": 8620
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/create/scripts/verify-environment.sh",
+      "sha256": "562e55b831afbe7463ca4ce6ac5167f90cbeb1c268daafa67fac3d82640fc857",
+      "size_bytes": 6630
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/deploy/deploy.md",
+      "sha256": "4b80ad3686c6298a1f571ea7b0907e3fb22af6742d075b76a4e44f5dafe4021d",
+      "size_bytes": 20521
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/eval-datasets/eval-datasets.md",
+      "sha256": "6f8e2429b6a8522f94e3d6d3c604ea6bd6ad402458491ab38c8f65fa5674054e",
+      "size_bytes": 11577
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/eval-datasets/references/dataset-comparison.md",
+      "sha256": "eae309859022e9c21f0ed351162ebd565c4ec635f6ad4e9eef47b6237e301076",
+      "size_bytes": 4939
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/eval-datasets/references/dataset-curation.md",
+      "sha256": "f99b34c5323e10b7d4078b404c0f07c6eb7ce33f2407e2a78764f1ae9e1d42f1",
+      "size_bytes": 4269
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/eval-datasets/references/dataset-organization.md",
+      "sha256": "c150831c5f39e933220ba5c08534cf61289cae26e40fcf7876a93beb78e4902d",
+      "size_bytes": 4892
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/eval-datasets/references/dataset-versioning.md",
+      "sha256": "5d7a1b877ef9bf91c1e15d65f54d99ce2ece749290d8107a14970a947154ffa0",
+      "size_bytes": 7671
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/eval-datasets/references/eval-lineage.md",
+      "sha256": "c3491a7b1dfb13110a2d864a0563b0fc3f3461b90df0a94fad015aaefd884ed9",
+      "size_bytes": 4217
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/eval-datasets/references/eval-regression.md",
+      "sha256": "071dbaf6da5daa7409a5c1165f24d529d0ce09d900956421f4a9bebfb21d5408",
+      "size_bytes": 7144
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/eval-datasets/references/eval-trending.md",
+      "sha256": "cf2085c6846fb2cea0e0ca3a80f9e959731af842c9d79a0556dfc8f86fb0e00d",
+      "size_bytes": 5016
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/eval-datasets/references/generate-seed-dataset.md",
+      "sha256": "8406cbb3c92e2d292cb308b7b52e1a1c5fd1057fe73dfaccc37495b586a897a5",
+      "size_bytes": 9082
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/eval-datasets/references/trace-to-dataset.md",
+      "sha256": "ad09f2edee95c7dcc16203f75e48e9921f4ec719d23f90668608d431cf9ec5cb",
+      "size_bytes": 17811
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/invocations-ws/invocations-ws.md",
+      "sha256": "79e8d27ead0a28a7306340287e25ffe55cec237f98b34507b0d9401670a39cd4",
+      "size_bytes": 10824
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/invocations-ws/references/invocations-ws-protocol.md",
+      "sha256": "6a73f86ae7fbde12ab98ea2fe75671b60d2e4bccdeea643e53266e827128dc2d",
+      "size_bytes": 8057
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/invoke/invoke.md",
+      "sha256": "74925ea078ec08d3dd26a7468a2d794af98c40f548d0593e1f283c776a3ea9c5",
+      "size_bytes": 6502
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/invoke/references/file-operations.md",
+      "sha256": "f15b55cf46be13ca6203feb8126a20719e3c15a1b2a358b7dc770f427f71d204",
+      "size_bytes": 2960
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/invoke/references/invocations-protocol.md",
+      "sha256": "8d05f3ca3fd7fa36a4839a89fbcfa9cfd7ad15969fdd1bee3fd82d8fe49d309c",
+      "size_bytes": 3583
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/invoke/references/session-management.md",
+      "sha256": "4df0889ee3482e7797193759aab48f3ef23cd3fc5150c81c7074166f3e35d915",
+      "size_bytes": 3751
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/observe/observe.md",
+      "sha256": "7d578eaef07c51631944bcdb99f8d172ad26ecf1db686bba3a3a250efcaa3c83",
+      "size_bytes": 15564
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/observe/references/analyze-results.md",
+      "sha256": "984a8fc1d7c03d413f27af1b787e1a3da736d337a34b8e65186559f97635e446",
+      "size_bytes": 6597
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/observe/references/cicd-monitoring.md",
+      "sha256": "5794a835bea0ef1f1f288d11c387f575bb4ecf4421331d61d82d57903c99be58",
+      "size_bytes": 3753
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/observe/references/compare-iterate.md",
+      "sha256": "9f0997098017dc8d7a3e1adf0b3d11ce53d516906a6c195b151756b7a357d7e0",
+      "size_bytes": 3403
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/observe/references/continuous-eval.md",
+      "sha256": "c7700213818c9e381903bf637fce7491d457f760c3cfc392516d3e85ece63da0",
+      "size_bytes": 15736
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/observe/references/deploy-and-setup.md",
+      "sha256": "711f8da3ed990407143e99d54e56c4c1e1666b1a920081ea5366f5aa1db0b0ee",
+      "size_bytes": 5750
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/observe/references/evaluate-step.md",
+      "sha256": "32bb5dec0d832a4461721e6f1a099801001d8a3e4db94415dd8d50f8a2edbdae",
+      "size_bytes": 8838
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/observe/references/evaluation-suite-generation.md",
+      "sha256": "441663ecade084ec4bf15ff7c4ccc1b225d1f3a033a584d008c2b50d65aac574",
+      "size_bytes": 12695
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/observe/references/optimize-deploy.md",
+      "sha256": "cd25fae2b6b9399f4023a85ba98f8ba98f557d9eb36d0ebd5e3e4ff6d653e400",
+      "size_bytes": 1611
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/routine/references/azure-yaml.md",
+      "sha256": "b631276fe67ac92e889fdd7fee49f6032b1df3defef0e2e17da2042a2012bddb",
+      "size_bytes": 2719
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/routine/references/cli-crud.md",
+      "sha256": "e41d04f9f8995c0967a257c61cb860ab19146a6921003329012789919acd37b7",
+      "size_bytes": 6287
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/routine/routine.md",
+      "sha256": "871635867f3e4af2551decbe02deb8e4aff046ea0a72dc67f048fa64cf5fed09",
+      "size_bytes": 8284
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/mcp-protocol.md",
+      "sha256": "a3559185fad13b7ec5ddcca39e820567d3cf8dc806782308343bc3849be65a82",
+      "size_bytes": 3217
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/test-endpoint.md",
+      "sha256": "7b3f31cce0f2c3f26b8b25a75354d76091682fbf1d4b7b5c397b56f5861cdb35",
+      "size_bytes": 6691
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-a2a.md",
+      "sha256": "301ba8bb2484ac423b9907bcc3351e37beef165579519c1988ae25531ad0ba1d",
+      "size_bytes": 2326
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-azure-ai-search.md",
+      "sha256": "71885f753bd60404f8fdbf55d9f3af8c340ae3c8b258fe4df60d4f5d4cf113a4",
+      "size_bytes": 7318
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-browser-automation.md",
+      "sha256": "1a749fa5da6f6654bcf5c5b05029044710fbc25be5a9bb0b15d508e277c55a7f",
+      "size_bytes": 3636
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-code-interpreter.md",
+      "sha256": "35c0448f45d823fb7631e5a23dc1653ffa1c5db52d79a65b5d20f30e55063b3b",
+      "size_bytes": 3676
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-fabric-iq.md",
+      "sha256": "9287cacb42e68e4cff3462c128e6f6e62138cd2c1d7f4979a132a51dae1e8349",
+      "size_bytes": 4578
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-file-search.md",
+      "sha256": "0720054337e208fec0594c3fecdbe584a8a88216bb6effd1c1bd09f3be2e6512",
+      "size_bytes": 4283
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-agent-identity.md",
+      "sha256": "7129566c2425916545863a0eafda814ee1c810583b1242f5c6a0981fab97d8a5",
+      "size_bytes": 8172
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth-azure-starter.md",
+      "sha256": "5f2712995650d91f4008ff07e34bed5d5c01c3fc05035379e3723fb6926d4b23",
+      "size_bytes": 4197
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-custom-oauth.md",
+      "sha256": "8babf0c8e82c17230cdbe713db120de9e3da3d66dd3b10c314852fb373d1c12b",
+      "size_bytes": 8208
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-key-auth.md",
+      "sha256": "8bc736664595b3b4ae7c0e59209a1aac821c7dca3b9a86ece3acbf6692e72ecc",
+      "size_bytes": 4443
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-managed-oauth.md",
+      "sha256": "5b406c5abc59abb5bf391c01f98f0202e3e8a89907adcbcf3174d9674c09daec",
+      "size_bytes": 6448
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-noauth.md",
+      "sha256": "a27dba90986633ae244cce449fff0ded08177545ee007d1fc3d975522aff4bd9",
+      "size_bytes": 4051
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-mcp-user-entra-token.md",
+      "sha256": "e8873673644200d18a499e7237945884cda7014ebdbac43839b130d15777c668",
+      "size_bytes": 5393
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-openapi.md",
+      "sha256": "e8f4bc3c567ac3655bdb178e451e4555f82cf3d2b7cf83bbc57b62d89dccd4e5",
+      "size_bytes": 6453
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-tool-search.md",
+      "sha256": "6d42de3b797ef903f9e016887f0798c977e59431f2ef398df62034517ebccae2",
+      "size_bytes": 6136
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-web-search.md",
+      "sha256": "5089a0fc31208b54d2dddb6c5815b44ab8734d5c2b17df46ce0368aa0725bc21",
+      "size_bytes": 3271
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/tool-work-iq.md",
+      "sha256": "43c5e64dbc64008634722261aae288a08ccc9627bfc7a003f4987fb19e09bb50",
+      "size_bytes": 7902
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/references/toolbox-azd.md",
+      "sha256": "d756a7258731232cc00a0a53a94361cc0bc6dd3b5a42eec2e1903862ef602e1a",
+      "size_bytes": 6383
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/scripts/get-catalog-inputs.ps1",
+      "sha256": "352a770ea6bd549826e8f5ec67ed98c4634bd4f5883678cf5bd0d537e55732b7",
+      "size_bytes": 13292
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/scripts/get-catalog-inputs.sh",
+      "sha256": "8db4c6b1fa5dd6587ee6780c5d7eb8d9dd00b5383d3387065e1478eb131a6606",
+      "size_bytes": 13291
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/toolbox/toolbox.md",
+      "sha256": "a3d0d1a5cd22c3becd6291487f869c04fef5042c43645dd293afd932c95f48c8",
+      "size_bytes": 8050
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/trace/references/analyze-failures.md",
+      "sha256": "8f54a6d586e031248070620418ff5ca49253adf8dcba8808d59064b24be6b3ba",
+      "size_bytes": 4122
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/trace/references/analyze-latency.md",
+      "sha256": "3ef1adc96d90f3fa3ba9c94db2cefe152ce3d2546d70a9be0ef4caf790bb971d",
+      "size_bytes": 3996
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/trace/references/conversation-detail.md",
+      "sha256": "58d31ffb8bf84855a79fe1c0ecf4a7072529a6ba1c416702315149becd9ddfaf",
+      "size_bytes": 3883
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/trace/references/eval-correlation.md",
+      "sha256": "79df4824f046930f9c3f406cb06164644b0c7d97df6d818b0942772700a00555",
+      "size_bytes": 2612
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/trace/references/kql-templates.md",
+      "sha256": "514172edc93d9a0932aeb47fc2d2bc6d2f58c67b674d0d617e1b8cad8e8ed655",
+      "size_bytes": 11060
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/trace/references/search-traces.md",
+      "sha256": "5971dc4179a427bd5430baa24f312792888adbd02c58af88040b656e1bd404b4",
+      "size_bytes": 7088
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/trace/references/tracing-insights-api.md",
+      "sha256": "9fea8e24ccbdbc92ecd508c0713d4219292b55dd07747beb5d9e974f9f716ba5",
+      "size_bytes": 5056
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/trace/trace.md",
+      "sha256": "00f0a79c8cc27dbdc50e70f26f8b7b5fb7b5660bae079346611af24aa3f920ab",
+      "size_bytes": 6545
+    },
+    {
+      "path": "microsoft-foundry/foundry-agent/troubleshoot/troubleshoot.md",
+      "sha256": "969874ccf612e28203354e91ba2639f9d3df1777dcf0a2634bd739b0698cea02",
+      "size_bytes": 6692
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/capacity/scripts/discover_and_rank.ps1",
+      "sha256": "67d0c10f25f322285cb067855f03d733c325334628a3581122d95ec54ac16c73",
+      "size_bytes": 4790
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/capacity/scripts/discover_and_rank.sh",
+      "sha256": "21b1a3197e2b49c0bdc0af5dafa368c9807df0841a718e344fd09d1849df8939",
+      "size_bytes": 4641
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/capacity/scripts/query_capacity.ps1",
+      "sha256": "b89cf9c112aad52785145c232272fd246825b4dbbc4f47596d115492c41c422c",
+      "size_bytes": 3110
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/capacity/scripts/query_capacity.sh",
+      "sha256": "3af156c2cf0b2306f3389a34475ad39a9960ebf8e2384bfa6da6f05b62432ae8",
+      "size_bytes": 2942
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/capacity/SKILL.md",
+      "sha256": "b92b2c97b95dffb1a8de925d42393a2d7c67d8a3d5944ce0e1eee8566d0a981e",
+      "size_bytes": 7157
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/customize/EXAMPLES.md",
+      "sha256": "235ed687ae5280600c6a12b6fae01906f5b45b63a014a7d3b2a656858513d40d",
+      "size_bytes": 4492
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/customize/references/customize-guides.md",
+      "sha256": "2ca8d16f185976059c6afbce3d0a0c601e80f82e944a231e400683a1825a7566",
+      "size_bytes": 3613
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/customize/references/customize-workflow.md",
+      "sha256": "8d7d02c61cb23977d72375896b87380ce0ac6815c3abdd5d7f48be938c4ae7f9",
+      "size_bytes": 13813
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/customize/SKILL.md",
+      "sha256": "c07c7ff6c69579023a0bb7f862c9458aec3c5e78074ef24bd64d2f58329b850a",
+      "size_bytes": 9155
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/preset/EXAMPLES.md",
+      "sha256": "1609be58143ed000e4e684db4222d241096ab5bcb97f86787b62cd3e93ea9fc9",
+      "size_bytes": 3057
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/preset/references/preset-workflow.md",
+      "sha256": "11d646d568b921713bb015295642e33439fb161918bd1293e80c5f0f0304949b",
+      "size_bytes": 23186
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/preset/references/workflow.md",
+      "sha256": "005448c1e58f856b9429c5dcc561a81afc006ed9abcd243e4158c2ec23c4ebdf",
+      "size_bytes": 5937
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/preset/SKILL.md",
+      "sha256": "44edfdb5a281d47aa6c587cf7b307c603c0085e403c678c74735fd40b9d3cab1",
+      "size_bytes": 5038
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/scripts/generate_deployment_url.ps1",
+      "sha256": "140e12ced5a77600d4c481e2f5c458d3cb502433629be56f5d0eba5ae1d910b9",
+      "size_bytes": 2444
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/scripts/generate_deployment_url.sh",
+      "sha256": "7fbbab8aa07bf666015628b152fa64c9046c96fde3b207d0c1cba2ac16594654",
+      "size_bytes": 2687
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/SKILL.md",
+      "sha256": "17fd1d08e5de3d9c8ce4b39b09d971a75ebdd306750345b9e0705b3dd87e2d18",
+      "size_bytes": 7447
+    },
+    {
+      "path": "microsoft-foundry/models/deploy-model/TEST_PROMPTS.md",
+      "sha256": "9ce902f46742a9915271c9fb749d78a47e12d930aade8beb98919d4ba46735d2",
+      "size_bytes": 3445
+    },
+    {
+      "path": "microsoft-foundry/project/connections.md",
+      "sha256": "5aecf16b1a89615d768f160d5f5ac30378d4a93e6218f92323c9ca71d283cbd4",
+      "size_bytes": 3264
+    },
+    {
+      "path": "microsoft-foundry/project/create/create-foundry-project.md",
+      "sha256": "04f68146cb3a7c55ec36fad37ccb04ba17506c0ade4b1d6d5abe824a8c6d9cb9",
+      "size_bytes": 9372
+    },
+    {
+      "path": "microsoft-foundry/quota/quota.md",
+      "sha256": "f8dd0876effa72ba8b2c8c7c9ad16cf3d28acaa6df5912dc8374beccab493880",
+      "size_bytes": 9383
+    },
+    {
+      "path": "microsoft-foundry/quota/references/capacity-planning.md",
+      "sha256": "f0e499a50e68dbd12093f0d794a09baa09d489f9560cf6f7da3c743dfe03fb34",
+      "size_bytes": 8505
+    },
+    {
+      "path": "microsoft-foundry/quota/references/error-resolution.md",
+      "sha256": "eeb39b903e02f0a578cd4ff4cc74b18a57060b18c600c2169f235f887f899eeb",
+      "size_bytes": 5158
+    },
+    {
+      "path": "microsoft-foundry/quota/references/optimization.md",
+      "sha256": "f87c10100972caef76c5e118cd23bbc8b5b790bb91ee1ab25b276c19723110c9",
+      "size_bytes": 7986
+    },
+    {
+      "path": "microsoft-foundry/quota/references/ptu-guide.md",
+      "sha256": "a833173a98fe8fafa24615c825f94af1d63fbe3d83fec9f610c4faeaba90425e",
+      "size_bytes": 6484
+    },
+    {
+      "path": "microsoft-foundry/quota/references/troubleshooting.md",
+      "sha256": "43587a64b1041a0ea2f17f416cf641f427d8c52950087f5817f05ddaee6450cf",
+      "size_bytes": 7732
+    },
+    {
+      "path": "microsoft-foundry/quota/references/workflows.md",
+      "sha256": "f7d93024016fdcc505feb876e282669eb730dd910d6876bd8b1d5c54c07feff8",
+      "size_bytes": 7212
+    },
+    {
+      "path": "microsoft-foundry/rbac/rbac.md",
+      "sha256": "f23354a98d8371aea8115e1e548c38264b5ec7b07e6ad22eb06c919850e81130",
+      "size_bytes": 7338
+    },
+    {
+      "path": "microsoft-foundry/references/agent-metadata-contract.md",
+      "sha256": "7b95ae608dd6e46a2a489dd7174c6f676b2f9575968cf677a9692cd658ede743",
+      "size_bytes": 9013
+    },
+    {
+      "path": "microsoft-foundry/references/auth-best-practices.md",
+      "sha256": "40cf782e07634b9e76def7c7e01eed0546888102ee87a45d73662c0767266b29",
+      "size_bytes": 6799
+    },
+    {
+      "path": "microsoft-foundry/references/standard-agent-setup.md",
+      "sha256": "faa0a75a79eeae5ed4df0b778e1bd6c8461770936cba0a69c41c810803e6d4e9",
+      "size_bytes": 4343
+    },
+    {
+      "path": "microsoft-foundry/resource/create/create-foundry-resource.md",
+      "sha256": "b0b5f45bc78eb5abccf52174964f1bc0bf059683368e0efe59a5cad054ba03e1",
+      "size_bytes": 6356
+    },
+    {
+      "path": "microsoft-foundry/resource/create/references/patterns.md",
+      "sha256": "69ad845f2bac6f221afbfd20a5f42c18ff495cc281001a0e99e030c56ee477ea",
+      "size_bytes": 4143
+    },
+    {
+      "path": "microsoft-foundry/resource/create/references/troubleshooting.md",
+      "sha256": "a50f3c8ee901bbebb0898efacaac765c0788d61205ee7ebe3ace0da8a8e5b16d",
+      "size_bytes": 2562
+    },
+    {
+      "path": "microsoft-foundry/resource/create/references/workflows.md",
+      "sha256": "8775a7b93a219c18c02506180584a4a8de2dc0f22af47333f026132f2945f465",
+      "size_bytes": 7096
+    },
+    {
+      "path": "microsoft-foundry/resource/private-network/private-network.md",
+      "sha256": "838cc2be7350f29f94a2e824d10631b3fd78f25e7b186ecae69244765d487240",
+      "size_bytes": 6574
+    },
+    {
+      "path": "microsoft-foundry/resource/private-network/references/custom-template-adaptation.md",
+      "sha256": "b602bab4c84eca291af2f1a23cdbdb7b52a40f02686562afa579fe6214f0e676",
+      "size_bytes": 1656
+    },
+    {
+      "path": "microsoft-foundry/resource/private-network/references/deploy.md",
+      "sha256": "ccfb0916885b35fc29b108fac5ac023246f00e4e990db75373211ae6d0a0b4b2",
+      "size_bytes": 3862
+    },
+    {
+      "path": "microsoft-foundry/resource/private-network/references/end-to-end-test.md",
+      "sha256": "c9ef82f9a95630918cd01c491524a978881d40e811dcfb94777dac6cb184dc31",
+      "size_bytes": 4314
+    },
+    {
+      "path": "microsoft-foundry/resource/private-network/references/intake.md",
+      "sha256": "6bc44e4786dc20df76e641b183e164c333dd9b2fcb3c8a46de8f0d213acc86dd",
+      "size_bytes": 6888
+    },
+    {
+      "path": "microsoft-foundry/resource/private-network/references/post-deployment-validation.md",
+      "sha256": "b387b5d98bcdcedf0caa346658a4638b2675c86f19671ac246352cdafa855c18",
+      "size_bytes": 3838
+    },
+    {
+      "path": "microsoft-foundry/resource/private-network/references/scaffold.md",
+      "sha256": "a7c9f71e6ccec4169bac630abb7b837df1056062632800bc307a03f4277a964c",
+      "size_bytes": 1803
+    },
+    {
+      "path": "microsoft-foundry/resource/private-network/references/template-index.md",
+      "sha256": "4e1e767c9e25b125a014b00083afcef1aff0f5f6e05eb617ee22170f3d221d65",
+      "size_bytes": 1609
+    },
+    {
+      "path": "microsoft-foundry/resource/private-network/references/vpn-dns-setup.bicep",
+      "sha256": "a1dc27aec914cc78ab0472b4654cc86e1d16e7f0077e533e0fd8f695a19e14d5",
+      "size_bytes": 4722
+    },
+    {
+      "path": "microsoft-foundry/resource/private-network/references/vpn-dns-setup.md",
+      "sha256": "70aa86ed655d63976adcbe3bd942ea9830b081e91e954ff37a9175cdd09be7e2",
+      "size_bytes": 6692
+    },
+    {
+      "path": "microsoft-foundry/scripts/check-and-setup-dependencies.ps1",
+      "sha256": "99f349b2885fb51fb302a212a6ef96f428c28343204e8290934dc53006d77c56",
+      "size_bytes": 1311
+    },
+    {
+      "path": "microsoft-foundry/scripts/check-and-setup-dependencies.sh",
+      "sha256": "bb54d233fe8d0164b083a58dec25d1dc3de2c0d7057fc661c866c27b95c935dd",
+      "size_bytes": 845
+    },
+    {
+      "path": "microsoft-foundry/SKILL.md",
+      "sha256": "61f39d7725bab3ad691df8ecf06e0988465fe494f796de110f04fe3f571e753a",
+      "size_bytes": 26418
+    }
+  ],
+  "schema_version": "px.global-skill-tree-snapshot/1.0",
+  "size_bytes": 1165530,
+  "snapshot_id": "reconcile-b",
+  "source": "C:/Users/Ben/.agents/skills",
+  "tree_sha256": "53ca206527fb0d42ee5a336ffa0aebb57eb98c6a86f92c52c42aeda7a7bb3590"
+}

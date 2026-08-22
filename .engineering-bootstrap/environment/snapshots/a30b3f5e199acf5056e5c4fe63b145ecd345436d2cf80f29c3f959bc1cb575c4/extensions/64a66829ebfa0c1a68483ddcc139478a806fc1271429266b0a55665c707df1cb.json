@@ -1,0 +1,362 @@
+{
+  "id": "ms-azuretools.azure-dev",
+  "name": "Azure Developer CLI",
+  "version": "0.10.0",
+  "publisher": "ms-azuretools",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "menus",
+    "submenus",
+    "taskDefinitions",
+    "walkthroughs",
+    "x-azResources",
+    "yamlValidation"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-azuretools.azure-dev",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-azuretools.azure-dev",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-azuretools.azure-dev",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "ms-azuretools.azure-dev",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:taskDefinitions",
+      "kind": "taskDefinitions",
+      "provider": "ms-azuretools.azure-dev",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "ms-azuretools.azure-dev",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:x-azResources",
+      "kind": "x-azResources",
+      "provider": "ms-azuretools.azure-dev",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:yamlValidation",
+      "kind": "yamlValidation",
+      "provider": "ms-azuretools.azure-dev",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "azure-dev.commands.azureWorkspace.revealAzureResource",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.azureWorkspace.revealAzureResource', ...args)",
+      "title": "%azure-dev.commands.azureWorkspace.revealAzureResource.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.azureWorkspace.revealAzureResourceGroup",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.azureWorkspace.revealAzureResourceGroup', ...args)",
+      "title": "%azure-dev.commands.azureWorkspace.revealAzureResourceGroup.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.deploy",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.deploy', ...args)",
+      "title": "%azure-dev.commands.cli.deploy.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.down",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.down', ...args)",
+      "title": "%azure-dev.commands.cli.down.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.env-delete",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.env-delete', ...args)",
+      "title": "%azure-dev.commands.cli.env-delete.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.env-edit",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.env-edit', ...args)",
+      "title": "%azure-dev.commands.cli.env-edit.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.env-list",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.env-list', ...args)",
+      "title": "%azure-dev.commands.cli.env-list.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.env-new",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.env-new', ...args)",
+      "title": "%azure-dev.commands.cli.env-new.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.env-refresh",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.env-refresh', ...args)",
+      "title": "%azure-dev.commands.cli.env-refresh.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.env-select",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.env-select', ...args)",
+      "title": "%azure-dev.commands.cli.env-select.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.init",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.init', ...args)",
+      "title": "%azure-dev.commands.cli.init.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.initFromPom",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.initFromPom', ...args)",
+      "title": "%azure-dev.commands.cli.initFromPom.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.install",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.install', ...args)",
+      "title": "%azure-dev.commands.cli.install.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.login",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.login', ...args)",
+      "title": "%azure-dev.commands.cli.login.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.monitor",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.monitor', ...args)",
+      "title": "%azure-dev.commands.cli.monitor.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.package",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.package', ...args)",
+      "title": "%azure-dev.commands.cli.package.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.pipeline-config",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.pipeline-config', ...args)",
+      "title": "%azure-dev.commands.cli.pipeline-config.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.provision",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.provision', ...args)",
+      "title": "%azure-dev.commands.cli.provision.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.restore",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.restore', ...args)",
+      "title": "%azure-dev.commands.cli.restore.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.cli.up",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.cli.up', ...args)",
+      "title": "%azure-dev.commands.cli.up.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.disableDevCenterMode",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.disableDevCenterMode', ...args)",
+      "title": "%azure-dev.commands.disableDevCenterMode.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.enableDevCenterMode",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.enableDevCenterMode', ...args)",
+      "title": "%azure-dev.commands.enableDevCenterMode.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "azure-dev.commands.getDotEnvFilePath",
+      "invocation": "vscode.commands.executeCommand('azure-dev.commands.getDotEnvFilePath', ...args)",
+      "title": "%azure-dev.commands.getDotEnvFilePath.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onTaskType:dotenv",
+    "workspaceContains:azure.yaml",
+    "workspaceContains:azure.yml"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-azuretools.azure-dev",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:menus",
+      "contribution:submenus",
+      "contribution:taskDefinitions",
+      "contribution:walkthroughs",
+      "contribution:x-azResources",
+      "contribution:yamlValidation"
+    ],
+    "interface": [
+      "azure-dev.commands.azureWorkspace.revealAzureResource",
+      "azure-dev.commands.azureWorkspace.revealAzureResourceGroup",
+      "azure-dev.commands.cli.deploy",
+      "azure-dev.commands.cli.down",
+      "azure-dev.commands.cli.env-delete",
+      "azure-dev.commands.cli.env-edit",
+      "azure-dev.commands.cli.env-list",
+      "azure-dev.commands.cli.env-new",
+      "azure-dev.commands.cli.env-refresh",
+      "azure-dev.commands.cli.env-select",
+      "azure-dev.commands.cli.init",
+      "azure-dev.commands.cli.initFromPom",
+      "azure-dev.commands.cli.install",
+      "azure-dev.commands.cli.login",
+      "azure-dev.commands.cli.monitor",
+      "azure-dev.commands.cli.package",
+      "azure-dev.commands.cli.pipeline-config",
+      "azure-dev.commands.cli.provision",
+      "azure-dev.commands.cli.restore",
+      "azure-dev.commands.cli.up",
+      "azure-dev.commands.disableDevCenterMode",
+      "azure-dev.commands.enableDevCenterMode",
+      "azure-dev.commands.getDotEnvFilePath"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

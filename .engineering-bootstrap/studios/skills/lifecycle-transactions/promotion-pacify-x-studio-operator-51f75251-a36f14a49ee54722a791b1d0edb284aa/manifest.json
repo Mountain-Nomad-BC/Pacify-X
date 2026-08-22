@@ -1,0 +1,79 @@
+{
+  "applying_utc": "2026-08-22T11:20:39.212Z",
+  "artifacts": [
+    {
+      "after_exists": true,
+      "after_image": "after-0.bin",
+      "after_sha256": "beb702d11d3819f627e9644489930f6d48a1363cb836d19eec85e7df43319782",
+      "before_exists": true,
+      "before_image": "before-0.bin",
+      "before_sha256": "19f0b784908e5b401220fb784b00fa70b60e48431b785bd618079e74d28e28c1",
+      "path": ".engineering-bootstrap/studios/skills/pacify-x-studio-operator-51f75251/revisions/1.0.0/promotion-receipt.json",
+      "role": "receipt"
+    },
+    {
+      "after_exists": true,
+      "after_image": "after-1.bin",
+      "after_sha256": "866833c5ecf124123814b98d59f845910ac8e7147830c06e0a82db75b80199a2",
+      "before_exists": true,
+      "before_image": "before-1.bin",
+      "before_sha256": "866833c5ecf124123814b98d59f845910ac8e7147830c06e0a82db75b80199a2",
+      "path": ".px/skill-index.json",
+      "role": "projection"
+    },
+    {
+      "after_exists": true,
+      "after_image": "after-2.bin",
+      "after_sha256": "39dff0cf4918d5a8ce3b49d63748c6f573a86c28e8630e631dc41deffa7b1587",
+      "before_exists": true,
+      "before_image": "before-2.bin",
+      "before_sha256": "39dff0cf4918d5a8ce3b49d63748c6f573a86c28e8630e631dc41deffa7b1587",
+      "path": "pyproject.toml",
+      "role": "projection"
+    },
+    {
+      "after_exists": true,
+      "after_image": "after-3.bin",
+      "after_sha256": "e01d29886ae5db274f9a7759eec401e407cd623f4a31b6ae8196126af98cca83",
+      "before_exists": true,
+      "before_image": "before-3.bin",
+      "before_sha256": "ccef2e7b643b64272fc06931ffc2b9db359aeecf2b9587a1a192ee14a7c1ef8d",
+      "path": "registry/admission_ledger.json",
+      "role": "projection"
+    },
+    {
+      "after_exists": true,
+      "after_image": "after-4.bin",
+      "after_sha256": "94a8e7667921cec483202b5471a75f5fa673f41f94f0e71c2411e9bc2cac7ad3",
+      "before_exists": true,
+      "before_image": "before-4.bin",
+      "before_sha256": "353d0cf00a2c1e4baa43e8541d9d4eb4817e89afa999396dc28b9166f2caf81e",
+      "path": "registry/skill_packages/pacify-x-studio-operator.json",
+      "role": "projection"
+    }
+  ],
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "74cce56be5b8274166ef010318b0c3d8c7720968a53a4617dbfe638cf18ca750",
+    "payload_sha256": "18d40576e2307b1fa146997740dae873af7751e5384dfe5d82d229231fce53f0",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "canonical": {
+    "after_image": "canonical-after",
+    "after_tree_sha256": "c3deb5d8885c2f24c37fa4329b7f47bb8ecab2e2796deb1f19b7b7db38d6fd90",
+    "backup_relative": ".px/preserved-skills/pre-promotion/pacify-x-studio-operator-51f75251/c3deb5d8885c2f24c37fa4329b7f47bb8ecab2e2796deb1f19b7b7db38d6fd90",
+    "before_tree_sha256": "c3deb5d8885c2f24c37fa4329b7f47bb8ecab2e2796deb1f19b7b7db38d6fd90",
+    "displaced_relative": ".px/preserved-skills/replaced/pacify-x-studio-operator-51f75251/2026-08-22T11-20-38.933Z-fad9c76baf804d2c9ddbd7cfb10eb218",
+    "target_relative": ".px/skills/pacify-x-studio-operator"
+  },
+  "committed_utc": "2026-08-22T11:20:39.498Z",
+  "created_utc": "2026-08-22T11:20:39.207Z",
+  "operation": "promotion",
+  "receipt_relative": ".engineering-bootstrap/studios/skills/pacify-x-studio-operator-51f75251/revisions/1.0.0/promotion-receipt.json",
+  "schema_version": "px.skill-lifecycle-transaction/1.0",
+  "skill_id": "pacify-x-studio-operator",
+  "state": "committed",
+  "transaction_id": "promotion-pacify-x-studio-operator-51f75251-a36f14a49ee54722a791b1d0edb284aa",
+  "version": "1.0.0"
+}

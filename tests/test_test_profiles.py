@@ -105,10 +105,13 @@ def test_studio_section_is_bounded_into_independently_addressed_chunks():
     members = [
         value for value in studios["command"] if value.startswith("tests/")
     ]
-    assert studios["max_parallel_chunks"] == 3
+    # Several Studio members launch supervised child Python processes. Keep the
+    # governed section serial so Windows process/resource contention cannot turn
+    # a passing member into an output-less worker exit.
+    assert studios["max_parallel_chunks"] == 1
     assert len(chunks) == (len(members) + 1) // 2
     assert all(1 <= chunk["member_count"] <= 2 for chunk in chunks)
-    assert all(chunk["timeout_seconds"] == 120 for chunk in chunks)
+    assert all(chunk["timeout_seconds"] == 180 for chunk in chunks)
     assert len({chunk["input_sha256"] for chunk in chunks}) == len(chunks)
     assert [member for chunk in chunks for member in chunk["members"]] == members
     first_inputs = set(chunks[0]["inputs"])

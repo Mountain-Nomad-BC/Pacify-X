@@ -135,6 +135,60 @@ class DashboardApiTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "TTL"):
             _hardware(ROOT, cache_ttl_seconds=3601.0)
 
+    def test_snapshot_counts_each_durable_agent_session_head(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            for run_id, state in (("run-one", "succeeded"), ("run-two", "running")):
+                head = (
+                    project
+                    / ".engineering-bootstrap"
+                    / "studios"
+                    / "agents"
+                    / "sessions"
+                    / run_id
+                    / "head.json"
+                )
+                head.parent.mkdir(parents=True, exist_ok=True)
+                head.write_text(json.dumps({"state": state}), encoding="utf-8")
+            counts = build_snapshot(ROOT, project=project)["counts"]
+        self.assertEqual(counts["agent_runs"], 2)
+        self.assertEqual(counts["agents_running"], 1)
+
+    def test_snapshot_counts_admitted_studio_revisions_and_durable_runs(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            agent_receipt = (
+                project
+                / ".engineering-bootstrap/studios/agents/agent-demo/revisions/1.0.0/admission-receipt.json"
+            )
+            workflow_receipt = (
+                project
+                / ".engineering-bootstrap/studios/workflows/workflow-demo/revisions/1.0.0/admission-receipt.json"
+            )
+            workflow_run = (
+                project
+                / ".engineering-bootstrap/studios/workflows/workflow-demo/revisions/1.0.0/runs/run-one.json"
+            )
+            agent_head = (
+                project
+                / ".engineering-bootstrap/studios/agents/sessions/run-one/head.json"
+            )
+            for path, payload in (
+                (agent_receipt, {"decision": "admitted"}),
+                (workflow_receipt, {"decision": "admitted", "runnable_state": "runnable"}),
+                (workflow_run, {"state": "succeeded"}),
+                (agent_head, {"state": "succeeded"}),
+            ):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(json.dumps(payload), encoding="utf-8")
+
+            counts = build_snapshot(ROOT, project=project)["counts"]
+
+        self.assertEqual(counts["agents_runnable_revisions"], 1)
+        self.assertEqual(counts["workflow_runnable_revisions"], 1)
+        self.assertEqual(counts["agent_runs"], 1)
+        self.assertEqual(counts["workflow_runs"], 1)
+
     def test_snapshot_cardinalities_match_authoritative_sources(self) -> None:
         snapshot = build_snapshot(ROOT)
         runtime = snapshot["runtime"]
@@ -148,6 +202,17 @@ class DashboardApiTests(unittest.TestCase):
         self.assertTrue(runtime["skill_index_integrity"]["valid"])
         self.assertIn("px_policy_enforced_during_direct_host_selection", runtime["skill_host_boundary"]["codex_host"])
         self.assertIn("legacy_direct_producers", runtime["bottlenecks"])
+        self.assertEqual(
+            runtime["bottlenecks"]["failures"],
+            sum(
+                operation.get("outcome") == "failed"
+                for operation in runtime["core"]["operations"]
+            ),
+        )
+        self.assertEqual(
+            runtime["bottlenecks"]["historical_failures"],
+            runtime["core"]["counters"]["failures"],
+        )
         agents = json.loads(
             (ROOT / "registry" / "agency_agent_registry.json").read_text(
                 encoding="utf-8"

@@ -1,0 +1,212 @@
+{
+  "id": "vscode.github",
+  "name": "GitHub",
+  "version": "0.0.1",
+  "publisher": "vscode",
+  "active": true,
+  "builtin": true,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "continueEditSession",
+    "markdown.previewStyles",
+    "menus",
+    "viewsWelcome"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "vscode.github",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "vscode.github",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:continueEditSession",
+      "kind": "continueEditSession",
+      "provider": "vscode.github",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:markdown.previewStyles",
+      "kind": "markdown.previewStyles",
+      "provider": "vscode.github",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "vscode.github",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "vscode.github",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "github.copyVscodeDevLink",
+      "invocation": "vscode.commands.executeCommand('github.copyVscodeDevLink', ...args)",
+      "title": "Copy vscode.dev Link",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copyVscodeDevLinkFile",
+      "invocation": "vscode.commands.executeCommand('github.copyVscodeDevLinkFile', ...args)",
+      "title": "Copy vscode.dev Link",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.copyVscodeDevLinkWithoutRange",
+      "invocation": "vscode.commands.executeCommand('github.copyVscodeDevLinkWithoutRange', ...args)",
+      "title": "Copy vscode.dev Link",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.createPullRequest",
+      "invocation": "vscode.commands.executeCommand('github.createPullRequest', ...args)",
+      "title": "Create PR",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.graph.openOnGitHub",
+      "invocation": "vscode.commands.executeCommand('github.graph.openOnGitHub', ...args)",
+      "title": "Open on GitHub",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.openOnVscodeDev",
+      "invocation": "vscode.commands.executeCommand('github.openOnVscodeDev', ...args)",
+      "title": "Open in vscode.dev",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.openPullRequest",
+      "invocation": "vscode.commands.executeCommand('github.openPullRequest', ...args)",
+      "title": "Open PR",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.publish",
+      "invocation": "vscode.commands.executeCommand('github.publish', ...args)",
+      "title": "Publish to GitHub",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "github.timeline.openOnGitHub",
+      "invocation": "vscode.commands.executeCommand('github.timeline.openOnGitHub', ...args)",
+      "title": "Open on GitHub",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "vscode.git-base"
+  ],
+  "activation_events": [
+    "*"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": true
+    },
+    "virtual_workspaces": true,
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "vscode.github",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:continueEditSession",
+      "contribution:markdown.previewStyles",
+      "contribution:menus",
+      "contribution:viewsWelcome"
+    ],
+    "interface": [
+      "github.copyVscodeDevLink",
+      "github.copyVscodeDevLinkFile",
+      "github.copyVscodeDevLinkWithoutRange",
+      "github.createPullRequest",
+      "github.graph.openOnGitHub",
+      "github.openOnVscodeDev",
+      "github.openPullRequest",
+      "github.publish",
+      "github.timeline.openOnGitHub"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": true
+      },
+      "virtual_workspaces": true,
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

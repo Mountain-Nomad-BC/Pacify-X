@@ -1,0 +1,61 @@
+{
+  "agent_id": "agent:pacify-x-local",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "ad4626a8646ade689ad8c781c0b4676f531009295b8ac5460361dab33954b885",
+    "payload_sha256": "ad55ce334f7bd8a024c266b320bc6c0decaf7ab12d4ece30da7d46f964c32d60",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "authority_record_hashes": {
+    "binding:binding:pacify-x-local": "a2fad103da7bebb926e9928dc8acc7a92d2b766354e5e23882ba2de7f922f015",
+    "grant:grant:pacify-x-local": "d5e7558b0a2d8a5ad0f18caf30c19c9e5a0af593c96167367e693c9632a54425"
+  },
+  "authority_state": "codex-host-retained",
+  "completion_validation_failed": false,
+  "control_head_sha256": "fc4515c5a90f6ea1e373b7266c717df300c7f7cd8d8220604b0b10b46bd82fa4",
+  "control_sequence": 3,
+  "error": null,
+  "execution_mode": "host-model",
+  "host_executor": "vscode.lm",
+  "model_request_completed": true,
+  "output": {
+    "status": "success",
+    "summary": "Pacify-X local Agent execution is operational, using the latest model version."
+  },
+  "output_sha256": "c5c4c873c2f0dcfde000f2fd2f9b3f65b93da5b13ce91905dad668890770f441",
+  "requested_model_route": {
+    "family": "qwen2",
+    "max_output_tokens": 256,
+    "model_id": "qwen2.5-coder:3b",
+    "provider": "pacify-local",
+    "temperature": 0.0,
+    "timeout_seconds": 120,
+    "vendor": "pacify-local",
+    "version": "f72c60cabf6237b07f6e632b2c48d533cef25eda2efbd34bed21c5e9c01e6225"
+  },
+  "resolved_model": {
+    "aggregate_input_token_limit": 32768,
+    "aggregate_input_tokens": 166,
+    "family": "qwen2",
+    "id": "qwen2.5-coder:3b",
+    "output_token_limit": 256,
+    "output_tokens": 31,
+    "requested_model_options": {
+      "maxOutputTokens": 256,
+      "temperature": 0.0
+    },
+    "vendor": "pacify-local",
+    "version": "f72c60cabf6237b07f6e632b2c48d533cef25eda2efbd34bed21c5e9c01e6225",
+    "wall_time_ms": 9081
+  },
+  "run_id": "run-228637bc908645b6b5d0af032cca8ea7",
+  "run_outcome": "succeeded",
+  "runtime_state": "succeeded",
+  "schema_version": "px.agent-runtime-receipt/1.3",
+  "status": "succeeded",
+  "task_sha256": "4665ed8a0551b1e7958b1a830be354f37c7a98c8a6f84e00bffc78820c1e49ab",
+  "tools_dispatched": [],
+  "version": "1.0.0",
+  "worker_invoked": false
+}

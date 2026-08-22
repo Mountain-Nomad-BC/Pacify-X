@@ -1,5 +1,47 @@
 # Changelog
 
+## 0.6.49
+
+- Restore exact editable Agent model-version handling and preserve binding, grant, and test validation counts through live validation.
+- Route the composed dashboard snapshot through the governed runtime work plane while retaining runnable Agent and Workflow revision/run counts.
+- Expose honest host-startup attribution and exact milestones, remove hidden request-only bindings from the editable-control denominator, and cover all 941 current controls without probe errors.
+- Make the resource-heavy Studio/Memory/Graph governed gate deterministic on Windows by preventing competing supervised child-process chunks.
+
+## 0.6.48
+
+- Allocate newly added optional Agent graph nodes to an unoccupied canvas position so every node remains physically selectable and editable.
+- Exercise conditional Agent, Workflow, and Skill Studio controls through exact disposable prerequisites in current-source and installed-host evidence walks.
+- Run exhaustive and fault/recovery control evidence through bounded parallel browser pages while preserving isolated state and exact control ordering.
+
+## 0.6.47
+
+- Restore exact Agent and Workflow Start controls after their eligible preview or dry-run, bind submitted runs to their originating request, and accept the runtime-owned asynchronous start receipt.
+- Validate and supply required Workflow run inputs before dispatch so a newly created workflow can start, reach a terminal success state, and reopen from durable history.
+- Continue exact Skill candidates from the native catalog through validation, admission, and promotion, while retaining normal-session host confirmations.
+
+## 0.6.46
+
+- Prove immutable Agent, Workflow, and Skill candidate creation through their real installed-host Studio controls, including exact typed durable receipts and catalog persistence after reopening each route.
+- Keep normal user confirmation boundaries while allowing only the double-confirmed owned isolated host to authorize reversible candidate-save evidence.
+- Select the editable core scope deterministically before exercising Agent or Workflow Studio, preventing a retained Environment or Enterprise view from hiding the authoring control.
+
+## 0.6.32
+
+- Keep canonical Memory attached while the Pacify-X host remains active by renewing a sliding idle-expiry lease instead of exhausting a cumulative eight-hour session lifetime.
+- Raise the configurable per-renewal lease ceiling from eight hours to 24 hours while preserving automatic expiry when the host stops renewing.
+
+## 0.6.31
+
+- Recover Studio setup from an occupied immutable Agent revision whose builder artifacts are invalid by allocating and creating the next fresh version.
+- Bind installed-host verification to the exact Agent and Workflow versions returned by setup, allowing their immutable histories to advance independently.
+
+## 0.6.30
+
+- Restore durable candidate lifecycle continuation after reload for exact Agent and Workflow Studio revisions.
+- Accept and validate the runtime-owned canonical creation timestamp in Agent Studio commit receipts.
+- Replace arbitrary Agent preflight test text with eight explained runtime-owned selectors, unknown-ID rejection, and inspectable per-check outcomes.
+- Bind Agent Studio to an exact local Ollama route and retain the real objective, model, output contract, and durable run lifecycle around host execution.
+
 ## 0.6.29
 
 - Publish Agent and Workflow Studio starters as immutable bundle revision 1.0.1 so Setup Studio preserves older 1.0.0 definitions instead of colliding with them.

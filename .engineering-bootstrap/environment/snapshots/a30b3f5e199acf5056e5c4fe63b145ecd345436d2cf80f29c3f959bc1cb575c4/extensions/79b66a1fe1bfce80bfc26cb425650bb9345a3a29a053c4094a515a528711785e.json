@@ -1,0 +1,268 @@
+{
+  "id": "HCLTechnologies.hclappscancodesweep",
+  "name": "HCL AppScan CodeSweep",
+  "version": "1.5.2",
+  "publisher": "HCLTechnologies",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "languages",
+    "menus",
+    "views",
+    "viewsContainers"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "HCLTechnologies.hclappscancodesweep",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "HCLTechnologies.hclappscancodesweep",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languages",
+      "kind": "languages",
+      "provider": "HCLTechnologies.hclappscancodesweep",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "HCLTechnologies.hclappscancodesweep",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "HCLTechnologies.hclappscancodesweep",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "HCLTechnologies.hclappscancodesweep",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "findingsByScans.editStatus",
+      "invocation": "vscode.commands.executeCommand('findingsByScans.editStatus', ...args)",
+      "title": "Edit Status",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "findingsByScans.issueInfo",
+      "invocation": "vscode.commands.executeCommand('findingsByScans.issueInfo', ...args)",
+      "title": "Info",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "securityIssues.createIgnoreFinding",
+      "invocation": "vscode.commands.executeCommand('securityIssues.createIgnoreFinding', ...args)",
+      "title": "Mark as Noise",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "securityIssues.createIgnoreRule",
+      "invocation": "vscode.commands.executeCommand('securityIssues.createIgnoreRule', ...args)",
+      "title": "Disable Rule",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "securityIssues.deleteIgnoreFinding",
+      "invocation": "vscode.commands.executeCommand('securityIssues.deleteIgnoreFinding', ...args)",
+      "title": "Clear Status",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "securityIssues.deleteIgnoreRule",
+      "invocation": "vscode.commands.executeCommand('securityIssues.deleteIgnoreRule', ...args)",
+      "title": "Enable Rule",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "securityIssues.fixCode",
+      "invocation": "vscode.commands.executeCommand('securityIssues.fixCode', ...args)",
+      "title": "Fix Code",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "securityIssues.openFile",
+      "invocation": "vscode.commands.executeCommand('securityIssues.openFile', ...args)",
+      "title": "Open File",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "securityIssues.openIssues",
+      "invocation": "vscode.commands.executeCommand('securityIssues.openIssues', ...args)",
+      "title": "Open Issues",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "securityIssues.ruleInfo",
+      "invocation": "vscode.commands.executeCommand('securityIssues.ruleInfo', ...args)",
+      "title": "Info",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "securityIssues.viewInfo",
+      "invocation": "vscode.commands.executeCommand('securityIssues.viewInfo', ...args)",
+      "title": "Info",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "securityRules.createIgnoreRule",
+      "invocation": "vscode.commands.executeCommand('securityRules.createIgnoreRule', ...args)",
+      "title": "Disable Rule",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "securityRules.deleteIgnoreRule",
+      "invocation": "vscode.commands.executeCommand('securityRules.deleteIgnoreRule', ...args)",
+      "title": "Enable Rule",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "securityRules.ruleInfo",
+      "invocation": "vscode.commands.executeCommand('securityRules.ruleInfo', ...args)",
+      "title": "Info",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "securityRules.viewInfo",
+      "invocation": "vscode.commands.executeCommand('securityRules.viewInfo', ...args)",
+      "title": "Info",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "*"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "HCLTechnologies.hclappscancodesweep",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:languages",
+      "contribution:menus",
+      "contribution:views",
+      "contribution:viewsContainers"
+    ],
+    "interface": [
+      "findingsByScans.editStatus",
+      "findingsByScans.issueInfo",
+      "securityIssues.createIgnoreFinding",
+      "securityIssues.createIgnoreRule",
+      "securityIssues.deleteIgnoreFinding",
+      "securityIssues.deleteIgnoreRule",
+      "securityIssues.fixCode",
+      "securityIssues.openFile",
+      "securityIssues.openIssues",
+      "securityIssues.ruleInfo",
+      "securityIssues.viewInfo",
+      "securityRules.createIgnoreRule",
+      "securityRules.deleteIgnoreRule",
+      "securityRules.ruleInfo",
+      "securityRules.viewInfo"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

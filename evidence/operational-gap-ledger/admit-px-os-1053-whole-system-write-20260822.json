@@ -1,0 +1,17 @@
+{
+  "gap_id": "PX-OS-1053",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000008270",
+  "authority": "User-authorized whole-system testing and validation after operational repair.",
+  "scope": [
+    "Run whole-system governed verification after the operational repairs: inspect current section-receipt freshness, rerun only stale governed sections, then run exactly one owned full test profile and exactly one validation command. Independently assess current evidence and report any concrete failing subsystem without repeating successful Studio campaigns. Do not certify success unless every required postcondition has current task-scoped evidence."
+  ],
+  "expected_effect": "Establish whether the repaired installed system is ready for certification using current governed section receipts, one full profile, and one validation result.",
+  "rollback": "Testing and validation may write only governed evidence and receipts; retain failures, stop and reconcile owned processes, and do not alter product behavior unless a concrete new repair is separately checkpointed and admitted.",
+  "evidence": [
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000008270",
+      "claim": "Installed 0.6.47 lifecycle repair checkpoint."
+    }
+  ],
+  "effect": "write"
+}

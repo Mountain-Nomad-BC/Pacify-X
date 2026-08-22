@@ -1,0 +1,375 @@
+{
+  "id": "ms-vscode-remote.remote-wsl",
+  "name": "%displayName%",
+  "version": "0.104.3",
+  "publisher": "ms-vscode-remote",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [
+    "ui"
+  ],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "keybindings",
+    "menus",
+    "remoteHelp",
+    "resourceLabelFormatters",
+    "views",
+    "viewsWelcome",
+    "walkthroughs"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-vscode-remote.remote-wsl",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-vscode-remote.remote-wsl",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "ms-vscode-remote.remote-wsl",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-vscode-remote.remote-wsl",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:remoteHelp",
+      "kind": "remoteHelp",
+      "provider": "ms-vscode-remote.remote-wsl",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:resourceLabelFormatters",
+      "kind": "resourceLabelFormatters",
+      "provider": "ms-vscode-remote.remote-wsl",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "ms-vscode-remote.remote-wsl",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "ms-vscode-remote.remote-wsl",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "ms-vscode-remote.remote-wsl",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "remote-wsl.connect",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.connect', ...args)",
+      "title": "%command.connect%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.connectInNewWindow",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.connectInNewWindow', ...args)",
+      "title": "%command.connectInNewWindow%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.connectUsingDistro",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.connectUsingDistro', ...args)",
+      "title": "%command.connectUsingDistro%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.connectUsingDistroInNewWindow",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.connectUsingDistroInNewWindow', ...args)",
+      "title": "%command.connectUsingDistroInNewWindow%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.explorer.addDistro",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.explorer.addDistro', ...args)",
+      "title": "%command.explorer.addDistro%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.explorer.connectInCurrentWindow",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.explorer.connectInCurrentWindow', ...args)",
+      "title": "%command.explorer.connectInCurrentWindow%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.explorer.connectInNewWindow",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.explorer.connectInNewWindow', ...args)",
+      "title": "%command.explorer.connectInNewWindow%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.explorer.deleteDistro",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.explorer.deleteDistro', ...args)",
+      "title": "%command.explorer.deleteDistro%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.explorer.openDistroInCurrentWindow",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.explorer.openDistroInCurrentWindow', ...args)",
+      "title": "%command.explorer.connectInCurrentWindow%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.explorer.openDistroInNewWindow",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.explorer.openDistroInNewWindow', ...args)",
+      "title": "%command.explorer.connectInNewWindow%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.explorer.refresh",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.explorer.refresh', ...args)",
+      "title": "%command.explorer.refresh%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.explorer.removeFolder",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.explorer.removeFolder', ...args)",
+      "title": "%command.explorer.removeFolder%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.explorer.setDefaultDistro",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.explorer.setDefaultDistro', ...args)",
+      "title": "%command.explorer.setDefaultDistro%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.getHelp",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.getHelp', ...args)",
+      "title": "%command.getHelp%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.getStarted",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.getStarted', ...args)",
+      "title": "%command.getStarted%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.openFolder",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.openFolder', ...args)",
+      "title": "%command.openFolder%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.provideFeedback",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.provideFeedback', ...args)",
+      "title": "%command.provideFeedback%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.reopenFromRecommendation",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.reopenFromRecommendation', ...args)",
+      "title": "%command.reopenFromRecommendation%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.reopenInWindows",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.reopenInWindows', ...args)",
+      "title": "%command.reopenInWindows%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.reopenInWSL",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.reopenInWSL', ...args)",
+      "title": "%command.reopenInWSL%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.reportIssue",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.reportIssue', ...args)",
+      "title": "%command.reportIssue%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.revealInExplorer",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.revealInExplorer', ...args)",
+      "title": "%command.revealInExplorer%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "remote-wsl.showLog",
+      "invocation": "vscode.commands.executeCommand('remote-wsl.showLog', ...args)",
+      "title": "%command.showLog%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:remote-wsl.newWindow",
+    "onCommand:remote-wsl.newWindowForDistro",
+    "onResolveRemoteAuthority:wsl",
+    "onStartupFinished"
+  ],
+  "permissions_resources": {
+    "extension_kind": [
+      "ui"
+    ],
+    "workspace_trust": {
+      "supported": true
+    },
+    "virtual_workspaces": true,
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-vscode-remote.remote-wsl",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:keybindings",
+      "contribution:menus",
+      "contribution:remoteHelp",
+      "contribution:resourceLabelFormatters",
+      "contribution:views",
+      "contribution:viewsWelcome",
+      "contribution:walkthroughs"
+    ],
+    "interface": [
+      "remote-wsl.connect",
+      "remote-wsl.connectInNewWindow",
+      "remote-wsl.connectUsingDistro",
+      "remote-wsl.connectUsingDistroInNewWindow",
+      "remote-wsl.explorer.addDistro",
+      "remote-wsl.explorer.connectInCurrentWindow",
+      "remote-wsl.explorer.connectInNewWindow",
+      "remote-wsl.explorer.deleteDistro",
+      "remote-wsl.explorer.openDistroInCurrentWindow",
+      "remote-wsl.explorer.openDistroInNewWindow",
+      "remote-wsl.explorer.refresh",
+      "remote-wsl.explorer.removeFolder",
+      "remote-wsl.explorer.setDefaultDistro",
+      "remote-wsl.getHelp",
+      "remote-wsl.getStarted",
+      "remote-wsl.openFolder",
+      "remote-wsl.provideFeedback",
+      "remote-wsl.reopenFromRecommendation",
+      "remote-wsl.reopenInWindows",
+      "remote-wsl.reopenInWSL",
+      "remote-wsl.reportIssue",
+      "remote-wsl.revealInExplorer",
+      "remote-wsl.showLog"
+    ],
+    "requirements": {
+      "extension_kind": [
+        "ui"
+      ],
+      "workspace_trust": {
+        "supported": true
+      },
+      "virtual_workspaces": true,
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

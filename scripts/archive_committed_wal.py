@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -23,6 +24,39 @@ from scripts.archive_project_map_history import (
     _verify_archive,
     _write_archive,
 )
+
+
+MAX_HASH_WORKERS = 8
+
+
+def _hash_inventory(
+    committed: Path, transactions: list[Path]
+) -> list[dict[str, object]]:
+    """Build a deterministic inventory with bounded parallel file hashing."""
+    candidates: list[tuple[str, Path, int]] = []
+    for transaction in transactions:
+        if transaction.resolve().parent != committed:
+            raise ValueError("committed WAL transaction escaped its authority root")
+        for path in sorted(transaction.rglob("*")):
+            if _is_reparse(path):
+                raise ValueError("committed WAL contains a reparse point")
+            if path.is_file():
+                candidates.append(
+                    (
+                        path.relative_to(committed).as_posix(),
+                        path,
+                        path.stat().st_size,
+                    )
+                )
+    workers = max(1, min(MAX_HASH_WORKERS, len(candidates) or 1, os.cpu_count() or 1))
+    with ThreadPoolExecutor(
+        max_workers=workers, thread_name_prefix="px-wal-hash"
+    ) as pool:
+        hashes = list(pool.map(lambda row: _sha256(row[1]), candidates))
+    return [
+        {"path": relative, "sha256": digest, "size_bytes": size}
+        for (relative, _path, size), digest in zip(candidates, hashes, strict=True)
+    ]
 
 
 def plan(
@@ -49,21 +83,7 @@ def plan(
     if any(_is_reparse(path) for path in transactions):
         raise ValueError("committed WAL contains a reparse-point transaction")
     selected = transactions[:-keep_latest] if len(transactions) > keep_latest else []
-    files: list[dict[str, object]] = []
-    for transaction in selected:
-        if transaction.resolve().parent != committed:
-            raise ValueError("committed WAL transaction escaped its authority root")
-        for path in sorted(transaction.rglob("*")):
-            if _is_reparse(path):
-                raise ValueError("committed WAL contains a reparse point")
-            if path.is_file():
-                files.append(
-                    {
-                        "path": path.relative_to(committed).as_posix(),
-                        "sha256": _sha256(path),
-                        "size_bytes": path.stat().st_size,
-                    }
-                )
+    files = _hash_inventory(committed, selected)
     manifest = {
         "schema_version": "px.committed-wal-archive-manifest/1.0",
         "wal_root": relative_journal.as_posix(),

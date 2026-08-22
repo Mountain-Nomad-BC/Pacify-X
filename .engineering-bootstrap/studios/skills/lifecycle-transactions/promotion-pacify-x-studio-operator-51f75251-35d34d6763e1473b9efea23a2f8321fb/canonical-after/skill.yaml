@@ -1,0 +1,10 @@
+{
+  "schema_version": "px.native-skill-package/1.0",
+  "id": "pacify-x-studio-operator",
+  "version": "1.0.2",
+  "domain": "px-standard",
+  "effects": ["read_local"],
+  "permissions": ["read_local"],
+  "triggers": ["explicit Pacify-X Studio inspection"],
+  "non_triggers": ["mutation", "deployment", "credentialed operation"]
+}

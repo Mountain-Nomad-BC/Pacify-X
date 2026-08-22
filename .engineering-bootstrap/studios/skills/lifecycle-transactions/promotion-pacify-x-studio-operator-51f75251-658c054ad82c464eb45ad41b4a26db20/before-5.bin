@@ -1,0 +1,42 @@
+{
+  "body": ".px/skills/pacify-x-studio-operator/SKILL.md",
+  "body_sha256": "26c890b06a5582f6b6a8c1ad56130b67aee6fa915fbe53f93bb14ee90c113479",
+  "id": "pacify-x-studio-operator",
+  "manifest": {
+    "contracts": [
+      "contracts/input.schema.json"
+    ],
+    "effects": [
+      "read"
+    ],
+    "lifecycle": "draft",
+    "non_triggers": [
+      "mutation",
+      "deployment",
+      "credentialed operation"
+    ],
+    "owner": "human:vscode-local-user",
+    "permissions": [
+      "read_local"
+    ],
+    "provenance": {
+      "source": "project-owned Skill Studio intake"
+    },
+    "resources": [
+      "resources/README.md"
+    ],
+    "skill_id": "pacify-x-studio-operator",
+    "tests": [
+      "tests/contract.json"
+    ],
+    "triggers": [
+      "explicit Pacify-X Studio inspection"
+    ],
+    "version": "1.0.0"
+  },
+  "preserved_original": null,
+  "schema_version": "px.skill-package/1.1",
+  "status": "active",
+  "tree_sha256": "c3deb5d8885c2f24c37fa4329b7f47bb8ecab2e2796deb1f19b7b7db38d6fd90",
+  "version": "1.0.0"
+}

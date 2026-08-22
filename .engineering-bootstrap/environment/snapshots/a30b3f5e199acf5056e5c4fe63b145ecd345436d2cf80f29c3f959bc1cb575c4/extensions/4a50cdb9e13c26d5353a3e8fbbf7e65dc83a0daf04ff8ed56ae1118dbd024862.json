@@ -1,0 +1,389 @@
+{
+  "id": "mechatroner.rainbow-csv",
+  "name": "Rainbow CSV",
+  "version": "3.24.1",
+  "publisher": "mechatroner",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "colors",
+    "commands",
+    "configuration",
+    "configurationDefaults",
+    "grammars",
+    "languages",
+    "menus",
+    "semanticTokenScopes",
+    "submenus"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:colors",
+      "kind": "colors",
+      "provider": "mechatroner.rainbow-csv",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "mechatroner.rainbow-csv",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "mechatroner.rainbow-csv",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configurationDefaults",
+      "kind": "configurationDefaults",
+      "provider": "mechatroner.rainbow-csv",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:grammars",
+      "kind": "grammars",
+      "provider": "mechatroner.rainbow-csv",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languages",
+      "kind": "languages",
+      "provider": "mechatroner.rainbow-csv",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "mechatroner.rainbow-csv",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:semanticTokenScopes",
+      "kind": "semanticTokenScopes",
+      "provider": "mechatroner.rainbow-csv",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "mechatroner.rainbow-csv",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "rainbow-csv.Align",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.Align', ...args)",
+      "title": "Align CSV Columns with whitespaces",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.ColumnEditAfter",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.ColumnEditAfter', ...args)",
+      "title": "Column edit - After",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.ColumnEditBefore",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.ColumnEditBefore', ...args)",
+      "title": "Column edit - Before",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.ColumnEditSelect",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.ColumnEditSelect', ...args)",
+      "title": "Column edit - Selection",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.CopyBack",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.CopyBack', ...args)",
+      "title": "CopyBack",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.CSVLint",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.CSVLint', ...args)",
+      "title": "CSV Lint",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.ExcelCopy",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.ExcelCopy', ...args)",
+      "title": "Copy for Excel / Sheets export",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.GoToColumn",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.GoToColumn', ...args)",
+      "title": "Go to column",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.MarkdownCopy",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.MarkdownCopy', ...args)",
+      "title": "Copy in Markdown table format",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.RainbowSeparator",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.RainbowSeparator', ...args)",
+      "title": "Set rainbow separator",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.RainbowSeparatorOff",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.RainbowSeparatorOff', ...args)",
+      "title": "Disable Rainbow CSV",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.RainbowSeparatorOn",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.RainbowSeparatorOn', ...args)",
+      "title": "Re-enable Rainbow CSV",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.RBQL",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.RBQL', ...args)",
+      "title": "RBQL Query",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.SampleHead",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.SampleHead', ...args)",
+      "title": "Preview big CSV: head",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.SampleTail",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.SampleTail', ...args)",
+      "title": "Preview big CSV: tail",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.SetCommentPrefix",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.SetCommentPrefix', ...args)",
+      "title": "Set selection as comment prefix",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.SetHeaderLine",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.SetHeaderLine', ...args)",
+      "title": "Set header line",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.SetJoinTableName",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.SetJoinTableName', ...args)",
+      "title": "Set join table name for RBQL",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.SetVirtualHeader",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.SetVirtualHeader', ...args)",
+      "title": "Set virtual header",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.Shrink",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.Shrink', ...args)",
+      "title": "Shrink CSV table - trim whitespaces",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.ToggleColumnTracking",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.ToggleColumnTracking', ...args)",
+      "title": "Toggle Column Tracking",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.ToggleRowBackground",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.ToggleRowBackground', ...args)",
+      "title": "Toggle Alternating Row Background",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.VirtualAlign",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.VirtualAlign', ...args)",
+      "title": "Virtual Align CSV Columns",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "rainbow-csv.VirtualShrink",
+      "invocation": "vscode.commands.executeCommand('rainbow-csv.VirtualShrink', ...args)",
+      "title": "Undo Virtual Align",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:rainbow-csv.RBQL",
+    "onCommand:rainbow-csv.RainbowSeparator",
+    "onCommand:rainbow-csv.SampleHead",
+    "onCommand:rainbow-csv.SampleTail",
+    "onLanguage:csv",
+    "onLanguage:csv (pipe)",
+    "onLanguage:csv (semicolon)",
+    "onLanguage:csv (whitespace)",
+    "onLanguage:dynamic csv",
+    "onLanguage:plaintext",
+    "onLanguage:tsv"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "mechatroner.rainbow-csv",
+    "capabilities": [
+      "contribution:colors",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:configurationDefaults",
+      "contribution:grammars",
+      "contribution:languages",
+      "contribution:menus",
+      "contribution:semanticTokenScopes",
+      "contribution:submenus"
+    ],
+    "interface": [
+      "rainbow-csv.Align",
+      "rainbow-csv.ColumnEditAfter",
+      "rainbow-csv.ColumnEditBefore",
+      "rainbow-csv.ColumnEditSelect",
+      "rainbow-csv.CopyBack",
+      "rainbow-csv.CSVLint",
+      "rainbow-csv.ExcelCopy",
+      "rainbow-csv.GoToColumn",
+      "rainbow-csv.MarkdownCopy",
+      "rainbow-csv.RainbowSeparator",
+      "rainbow-csv.RainbowSeparatorOff",
+      "rainbow-csv.RainbowSeparatorOn",
+      "rainbow-csv.RBQL",
+      "rainbow-csv.SampleHead",
+      "rainbow-csv.SampleTail",
+      "rainbow-csv.SetCommentPrefix",
+      "rainbow-csv.SetHeaderLine",
+      "rainbow-csv.SetJoinTableName",
+      "rainbow-csv.SetVirtualHeader",
+      "rainbow-csv.Shrink",
+      "rainbow-csv.ToggleColumnTracking",
+      "rainbow-csv.ToggleRowBackground",
+      "rainbow-csv.VirtualAlign",
+      "rainbow-csv.VirtualShrink"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

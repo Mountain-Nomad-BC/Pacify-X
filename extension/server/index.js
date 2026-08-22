@@ -2449,7 +2449,7 @@ var require_discoveryManager = __commonJS({
     var MAX_SCAN_ENTRIES = 2e4;
     var MAX_SCAN_DEPTH = 7;
     var MAX_ENV_FILE_BYTES = 1024 * 1024;
-    var DEFAULT_DISCOVERY_TTL_MS = 5 * 60 * 1e3;
+    var DEFAULT_DISCOVERY_TTL_MS = 24 * 60 * 60 * 1e3;
     var TOOL_PROBES = [
       ["python", ["--version"]],
       ["node", ["--version"]],
@@ -32674,7 +32674,7 @@ function readJsonFile(file2, fallback) {
     return fallback;
   }
 }
-var MCP_VERSION = "0.6.29";
+var MCP_VERSION = "0.6.49";
 function contextEnvelope() {
   const value = readJsonFile(process.env.PX_CONTEXT_PATH, {});
   return value?.envelope || value;

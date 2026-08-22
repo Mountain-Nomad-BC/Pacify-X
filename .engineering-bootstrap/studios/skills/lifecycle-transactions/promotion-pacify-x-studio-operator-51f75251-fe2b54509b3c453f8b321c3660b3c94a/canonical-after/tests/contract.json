@@ -1,0 +1,12 @@
+{
+  "schema_version": "px.skill-test/1.1",
+  "cases": [
+    {
+      "name": "required-files",
+      "assertion": {
+        "kind": "required-files",
+        "paths": ["SKILL.md", "capability.json", "skill.yaml", "contracts/input.schema.json", "resources/README.md"]
+      }
+    }
+  ]
+}

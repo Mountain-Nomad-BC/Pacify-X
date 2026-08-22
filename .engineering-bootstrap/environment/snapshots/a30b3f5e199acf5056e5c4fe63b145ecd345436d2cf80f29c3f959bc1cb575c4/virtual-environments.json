@@ -1,0 +1,72 @@
+[
+  {
+    "id": "python-env:a316615cb4be36521f24",
+    "kind": "python-venv",
+    "path": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.venv-certify",
+    "relative_path": ".venv-certify",
+    "owner_root": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X",
+    "interpreter": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.venv-certify\\Scripts\\python.exe",
+    "python_version": "3.14.5",
+    "state": "inactive",
+    "active": false,
+    "evidence": {
+      "marker": ".venv-certify/pyvenv.cfg",
+      "interpreter_exists": true,
+      "active_signals": [],
+      "last_marker_change_utc": "2026-08-11T21:59:17.747Z",
+      "stale_threshold_days": 180,
+      "declared_python_series": "3.14",
+      "observed_python_series": "3.14",
+      "version_compatibility": "matching",
+      "active_evidence_captured_utc": "2026-08-22T04:50:16.346Z",
+      "active_evidence_ttl_seconds": 86400
+    },
+    "managers": [
+      "python-venv"
+    ],
+    "package_summary": {
+      "count": 14,
+      "samples": [
+        "build",
+        "colorama",
+        "coverage",
+        "iniconfig",
+        "packaging",
+        "pip",
+        "pluggy",
+        "pygments",
+        "pyproject_hooks",
+        "pytest",
+        "pyyaml",
+        "ruff",
+        "setuptools",
+        "wheel"
+      ],
+      "completeness": "bounded-marker-scan"
+    },
+    "lifecycle": {
+      "maintainable": true,
+      "deletion_requires_inactive_revalidation_and_explicit_confirmation": true
+    },
+    "trust": {
+      "state": "detected-not-admitted",
+      "execution_authorized": false
+    },
+    "resource_contract": {
+      "resource": "python-env:a316615cb4be36521f24",
+      "capabilities": [
+        "isolated-python-environment"
+      ],
+      "interface": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.venv-certify\\Scripts\\python.exe",
+      "requirements": [
+        "bounded admitted root"
+      ],
+      "effects": [
+        "read-only metadata discovery"
+      ],
+      "conflicts": [],
+      "policy": "execution and deletion require separate admission",
+      "state": "inactive"
+    }
+  }
+]

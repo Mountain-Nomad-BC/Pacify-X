@@ -1,0 +1,58 @@
+{
+  "record": {
+    "bindings": [
+      {
+        "binding_id": "binding:pacify-x-workflow",
+        "capability_id": "capability:identity",
+        "capability_version": "1.0.0",
+        "cost_policy": "non-billable",
+        "credential_namespace": null,
+        "effect_grant_ids": [
+          "grant:pacify-x-workflow"
+        ],
+        "egress_policy": "deny",
+        "evidence_refs": [
+          "receipt:studio-setup"
+        ],
+        "state": "admitted",
+        "subject_id": "workflow:pacify-x-starter",
+        "subject_kind": "workflow"
+      }
+    ],
+    "builder_domain": "px-standard",
+    "executor_adapters": {
+      "binding:pacify-x-workflow": "identity"
+    },
+    "grants": [
+      {
+        "approved_by": "human:vscode-local-user",
+        "effects": [
+          "read"
+        ],
+        "evidence_refs": [
+          "receipt:studio-setup"
+        ],
+        "expires_utc": null,
+        "grant_id": "grant:pacify-x-workflow",
+        "scope_roots": [
+          "workspace:current"
+        ],
+        "state": "admitted",
+        "subject_id": "workflow:pacify-x-starter"
+      }
+    ],
+    "kind": "workflow",
+    "run_input_contract": [
+      {
+        "key": "step:identity.value",
+        "required": true,
+        "value_type": "string"
+      }
+    ],
+    "runtime_input_values_stored": false,
+    "schema_version": "px.studio-authority-definition/1.0",
+    "subject_id": "workflow:pacify-x-starter",
+    "version": "1.0.1"
+  },
+  "sha256": "ecd34fe4e2b1731fc0baf77271f149f6ff888148e791b56c00747976934a63c8"
+}

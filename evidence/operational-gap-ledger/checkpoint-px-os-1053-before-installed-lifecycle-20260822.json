@@ -1,0 +1,22 @@
+{
+  "active_gap_id": "PX-OS-1053",
+  "learned": "Owned current-source VS Code host now completes exact Agent and Workflow creation, authority, admission, bounded start, terminal success, and durable run reopen; Skill completes creation, validation, admission, and promotion. All lifecycle operations are typed and valid with zero host errors. Affected governed sections pass.",
+  "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+  "newly_discovered_gap_ids": [],
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000008263",
+  "unresolved_branch_gap_ids": ["PX-OS-045", "PX-OS-848", "PX-OS-1053"],
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-current-source-lifecycle-focused-7/receipt.json",
+      "claim": "All exact Agent, Workflow, and Skill lifecycle operations passed with durable Agent and Workflow run reopen and zero host errors."
+    },
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+      "claim": "Affected dashboard-extension governed section passed."
+    },
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
+      "claim": "Affected studio-memory-graph governed section passed."
+    }
+  ]
+}

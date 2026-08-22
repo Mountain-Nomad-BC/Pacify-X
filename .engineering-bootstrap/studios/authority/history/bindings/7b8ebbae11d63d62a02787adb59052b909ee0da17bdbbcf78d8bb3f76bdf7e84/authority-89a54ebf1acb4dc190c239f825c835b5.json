@@ -1,0 +1,30 @@
+{
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "68ef0a8a23a2daf12e048c40ba8fa2aa3fc703627ea8b8253759f0bcff5ee3fb",
+    "payload_sha256": "5f7695fa8f5d979b4fd537de4dc4a2e3d84485068715a7b20dd83da59f392295",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "issued_utc": "2026-08-21T17:46:49.080Z",
+  "nonce": "0999c35cdfff4f1cb2bcdcf1d618e41f",
+  "record": {
+    "binding_id": "binding:pacify-x-workflow",
+    "capability_id": "capability:identity",
+    "capability_version": "1.0.0",
+    "cost_policy": "non-billable",
+    "credential_namespace": null,
+    "effect_grant_ids": [
+      "grant:pacify-x-workflow"
+    ],
+    "egress_policy": "deny",
+    "evidence_refs": [
+      "receipt:studio-setup"
+    ],
+    "state": "admitted",
+    "subject_id": "workflow:pacify-x-starter",
+    "subject_kind": "workflow"
+  },
+  "record_sha256": "00510d93c102a723e1bb30e841fdfd09272ec9f5ce58ec56f04a80ece66688dd",
+  "schema_version": "px.studio-authority-bindings/1.0"
+}

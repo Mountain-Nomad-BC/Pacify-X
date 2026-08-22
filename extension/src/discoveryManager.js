@@ -13,7 +13,10 @@ const MAX_OUTPUT = 8 * 1024 * 1024;
 const MAX_SCAN_ENTRIES = 20000;
 const MAX_SCAN_DEPTH = 7;
 const MAX_ENV_FILE_BYTES = 1024 * 1024;
-const DEFAULT_DISCOVERY_TTL_MS = 5 * 60 * 1000;
+// Extension changes invalidate this inventory immediately. Keep unchanged host
+// evidence current for the same bounded daily window used by the environment
+// doctor so a normal dashboard session does not become empty after five minutes.
+const DEFAULT_DISCOVERY_TTL_MS = 24 * 60 * 60 * 1000;
 const TOOL_PROBES = [
   ['python', ['--version']], ['node', ['--version']], ['npm', ['--version']], ['git', ['--version']],
   ['docker', ['--version']], ['ollama', ['--version']], ['uv', ['--version']], ['code', ['--version']],

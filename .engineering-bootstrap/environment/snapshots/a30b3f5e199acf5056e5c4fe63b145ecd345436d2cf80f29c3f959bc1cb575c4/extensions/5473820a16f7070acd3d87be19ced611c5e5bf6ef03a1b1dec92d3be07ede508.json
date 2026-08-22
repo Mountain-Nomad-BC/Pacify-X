@@ -1,0 +1,196 @@
+{
+  "id": "vscjava.vscode-java-test",
+  "name": "Test Runner for Java",
+  "version": "0.46.0",
+  "publisher": "vscjava",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "javaExtensions",
+    "menus",
+    "viewsWelcome"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "vscjava.vscode-java-test",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "vscjava.vscode-java-test",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:javaExtensions",
+      "kind": "javaExtensions",
+      "provider": "vscjava.vscode-java-test",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "vscjava.vscode-java-test",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "vscjava.vscode-java-test",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "java.test.debugFromJavaProjectExplorer",
+      "invocation": "vscode.commands.executeCommand('java.test.debugFromJavaProjectExplorer', ...args)",
+      "title": "%contributes.commands.java.test.debugFromJavaProjectExplorer.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.test.editor.debug",
+      "invocation": "vscode.commands.executeCommand('java.test.editor.debug', ...args)",
+      "title": "%contributes.commands.java.test.editor.debug.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.test.editor.run",
+      "invocation": "vscode.commands.executeCommand('java.test.editor.run', ...args)",
+      "title": "%contributes.commands.java.test.editor.run.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.test.goToTest",
+      "invocation": "vscode.commands.executeCommand('java.test.goToTest', ...args)",
+      "title": "%contributes.commands.java.test.goToTest.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.test.goToTestSubject",
+      "invocation": "vscode.commands.executeCommand('java.test.goToTestSubject', ...args)",
+      "title": "%contributes.commands.java.test.goToTestSubject.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "java.test.runFromJavaProjectExplorer",
+      "invocation": "vscode.commands.executeCommand('java.test.runFromJavaProjectExplorer', ...args)",
+      "title": "%contributes.commands.java.test.runFromJavaProjectExplorer.title%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "redhat.java",
+    "vscjava.vscode-java-debug"
+  ],
+  "activation_events": [
+    "onCommand:java.test.debugFromJavaProjectExplorer",
+    "onCommand:java.test.editor.debug",
+    "onCommand:java.test.editor.run",
+    "onCommand:java.test.runFromJavaProjectExplorer",
+    "onLanguage:java",
+    "workspaceContains:*/.classpath",
+    "workspaceContains:*/build.gradle",
+    "workspaceContains:*/build.gradle.kts",
+    "workspaceContains:*/pom.xml",
+    "workspaceContains:*/settings.gradle",
+    "workspaceContains:*/settings.gradle.kts",
+    "workspaceContains:.classpath",
+    "workspaceContains:build.gradle",
+    "workspaceContains:build.gradle.kts",
+    "workspaceContains:pom.xml",
+    "workspaceContains:settings.gradle",
+    "workspaceContains:settings.gradle.kts"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": false
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "vscjava.vscode-java-test",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:javaExtensions",
+      "contribution:menus",
+      "contribution:viewsWelcome"
+    ],
+    "interface": [
+      "java.test.debugFromJavaProjectExplorer",
+      "java.test.editor.debug",
+      "java.test.editor.run",
+      "java.test.goToTest",
+      "java.test.goToTestSubject",
+      "java.test.runFromJavaProjectExplorer"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": false
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

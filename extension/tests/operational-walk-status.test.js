@@ -3,11 +3,22 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
 const {
+  evaluateBootstrapActivation,
   evaluateLauncherTerminal,
   evaluateOperationalWalk,
   exitCodeForTerminalState,
   normalizeProcessOutput
 } = require('../scripts/operational-walk-status');
+
+function readyBootstrap() {
+  return {
+    status: 'ready',
+    extension_found: true,
+    activation_completed: true,
+    command_registered: true,
+    command_executed: true
+  };
+}
 
 function completeReceipt() {
   const surfaceIds = [
@@ -134,6 +145,26 @@ test('launcher requires both semantic completion and verified process closure', 
   });
   assert.equal(failed.terminal_state, 'failed');
   assert.ok(failed.issues.some(item => item.code === 'owner-process-tree-closure-unverified'));
+});
+
+test('bootstrap activation completes only with the installed extension and isolated storage proven', () => {
+  const status = evaluateBootstrapActivation({
+    bootstrap: readyBootstrap(),
+    storageBoundary: { verified: true }
+  });
+  assert.equal(status.terminal_state, 'completed');
+  assert.equal(status.operationally_complete, true);
+  assert.equal(status.summary.blocking_issue_count, 0);
+});
+
+test('bootstrap activation fails closed on missing commands or unverified shared storage', () => {
+  const bootstrap = readyBootstrap();
+  bootstrap.command_executed = false;
+  const status = evaluateBootstrapActivation({ bootstrap, storageBoundary: { verified: false } });
+  assert.equal(status.terminal_state, 'failed');
+  assert.equal(status.operationally_complete, false);
+  assert.ok(status.issues.some(item => item.code === 'dashboard-command-not-executed'));
+  assert.ok(status.issues.some(item => item.code === 'shared-storage-boundary-unverified'));
 });
 
 test('typed walker exit codes cannot disguise incomplete or blocked work as process success', () => {

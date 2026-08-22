@@ -1,0 +1,72 @@
+{
+  "actor": "codex-host:user-authorized",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "1961b0d4043270358c7d65b7a7c9b568f39dc3ff7cdc817928c11a6e39227242",
+    "payload_sha256": "04a70775f48e16a66384693ab818cdc9c4f44cbd48730e1c792de55115c72f57",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "event_sha256": "d96da91275aaa8ac49e688400cc9ed355e123f8d173d226b74b53ff2b6481fb7",
+  "operation": "observe",
+  "pipeline_id": "learning:18f7c6afd4fa4edea4c193cc1a9531cb",
+  "previous_event_sha256": null,
+  "recorded_utc": "2026-08-22T04:33:58.515Z",
+  "schema_version": "px.learning-pipeline-event/1.0",
+  "sequence": 1,
+  "state": {
+    "aggregation": null,
+    "authority_state": "codex-host-retained",
+    "canonical_writes_performed": false,
+    "challenger_revision": null,
+    "comparison": null,
+    "created_utc": "2026-08-22T04:33:58.515Z",
+    "decay_decision": null,
+    "final_validation": null,
+    "hypothesis": null,
+    "incumbent_revision": null,
+    "knowledge_proposal_id": null,
+    "learning_direct_write_allowed": false,
+    "operation_evidence": [
+      {
+        "authority_granted": false,
+        "capability_ids": [
+          "memory.canonicalize"
+        ],
+        "environment_sha256": "34b9559ac5ce3949aa507cd392e8b0cb5f142eab3f47a639c215c6976c66db3a",
+        "measurements": {
+          "current_state_separation_success": 1
+        },
+        "observed_at": "2026-08-22T04:33:58.515544+00:00",
+        "operation_id": "canonical-memory-restored",
+        "outcome": "succeeded",
+        "record_sha256": "11f8942b841bf095c770bc6ce37b55ac90ac0845cac6520155f3ce8ed67b3a23",
+        "record_type": "operation_evidence",
+        "schema_version": "px.learning-promotion/1.0",
+        "source_refs": [
+          "extension/dist/pacify-x-vscode-0.6.33.vsix#sha256=de3f9f22815ff194bdd9e20681ed658af35f423e963fd3d82b4646f1c5c2ae6c"
+        ],
+        "task_class": "pacify-x-operational-repair"
+      }
+    ],
+    "pattern": null,
+    "pipeline_id": "learning:18f7c6afd4fa4edea4c193cc1a9531cb",
+    "pipeline_revision_sha256": "9bf991153905b2ccb804226cc9dadf5be0f93a3516816a0377a285f3790dcc85",
+    "promotion_decision": null,
+    "research": null,
+    "reuse_measurements": [],
+    "schema_version": "px.learning-pipeline/1.0",
+    "secondary_comparison": null,
+    "secondary_revision": null,
+    "secondary_trials": [],
+    "selected_revision": null,
+    "sequence": 1,
+    "source_ids": [
+      "repair-pattern-library",
+      "source-requirement-coverage"
+    ],
+    "state": "evidence",
+    "trials": [],
+    "updated_utc": "2026-08-22T04:33:58.515Z"
+  }
+}

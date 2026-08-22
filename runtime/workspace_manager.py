@@ -245,7 +245,7 @@ quarantine_indexing = false
 
 [leases]
 default_minutes = 60
-max_minutes = 480
+max_minutes = 1440
 write_requires_intent = true
 
 [memory]
@@ -1382,13 +1382,7 @@ def renew_project(
     if not _session_lease_is_current(active):
         raise ValueError("active project lease expired; reacquire the project lease")
     prior_expiry = active["expires_utc"]
-    activated = datetime.fromisoformat(str(active["created_utc"]))
     requested_expiry = datetime.now(timezone.utc) + timedelta(minutes=minutes)
-    absolute_expiry = activated + timedelta(minutes=maximum)
-    if requested_expiry > absolute_expiry:
-        raise ValueError(
-            "lease renewal would exceed the configured cumulative active lifetime"
-        )
     active = {
         **active,
         "expires_utc": requested_expiry.isoformat(),

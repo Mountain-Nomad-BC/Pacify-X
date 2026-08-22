@@ -1,0 +1,1127 @@
+{
+  "id": "ms-azuretools.vscode-containers",
+  "name": "Container Tools",
+  "version": "2.4.5",
+  "publisher": "ms-azuretools",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "configurationDefaults",
+    "debuggers",
+    "languageModelTools",
+    "languages",
+    "menus",
+    "taskDefinitions",
+    "views",
+    "viewsContainers",
+    "walkthroughs"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-azuretools.vscode-containers",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-azuretools.vscode-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configurationDefaults",
+      "kind": "configurationDefaults",
+      "provider": "ms-azuretools.vscode-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:debuggers",
+      "kind": "debuggers",
+      "provider": "ms-azuretools.vscode-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languageModelTools",
+      "kind": "languageModelTools",
+      "provider": "ms-azuretools.vscode-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:languages",
+      "kind": "languages",
+      "provider": "ms-azuretools.vscode-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-azuretools.vscode-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:taskDefinitions",
+      "kind": "taskDefinitions",
+      "provider": "ms-azuretools.vscode-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "ms-azuretools.vscode-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "ms-azuretools.vscode-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "ms-azuretools.vscode-containers",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "vscode-containers.activateContainerRuntimeProviders",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.activateContainerRuntimeProviders', ...args)",
+      "title": "Activate Container Runtime Providers...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.activateRegistryProviders",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.activateRegistryProviders', ...args)",
+      "title": "Activate Registry Providers...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.askCopilot",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.askCopilot', ...args)",
+      "title": "Ask Copilot",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.chooseContainerRuntime",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.chooseContainerRuntime', ...args)",
+      "title": "Choose container runtime...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.compose.down",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.compose.down', ...args)",
+      "title": "Compose Down",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.compose.down.subset",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.compose.down.subset', ...args)",
+      "title": "Compose Down - Select Services",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.compose.restart",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.compose.restart', ...args)",
+      "title": "Compose Restart",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.compose.up",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.compose.up', ...args)",
+      "title": "Compose Up",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.compose.up.subset",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.compose.up.subset', ...args)",
+      "title": "Compose Up - Select Services",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.configure",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.configure', ...args)",
+      "title": "Add Docker Files to Workspace...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.configureCompose",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.configureCompose', ...args)",
+      "title": "Add Compose Files to Workspace...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.attachShell",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.attachShell', ...args)",
+      "title": "Attach Shell",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.browse",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.browse', ...args)",
+      "title": "Open in Browser",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.clearFilter",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.clearFilter', ...args)",
+      "title": "Clear Filter",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.composeGroup.down",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.composeGroup.down', ...args)",
+      "title": "Compose Down",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.composeGroup.logs",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.composeGroup.logs', ...args)",
+      "title": "Compose Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.composeGroup.restart",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.composeGroup.restart', ...args)",
+      "title": "Compose Restart",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.composeGroup.start",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.composeGroup.start', ...args)",
+      "title": "Compose Start",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.composeGroup.stop",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.composeGroup.stop', ...args)",
+      "title": "Compose Stop",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.configureExplorer",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.configureExplorer', ...args)",
+      "title": "Configure Explorer...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.downloadFile",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.downloadFile', ...args)",
+      "title": "Download...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.filter",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.filter', ...args)",
+      "title": "Filter...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.group.remove",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.group.remove', ...args)",
+      "title": "Remove...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.inspect",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.inspect', ...args)",
+      "title": "Inspect",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.openFile",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.openFile', ...args)",
+      "title": "Open",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.prune",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.prune', ...args)",
+      "title": "Prune...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.refresh",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.remove",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.remove', ...args)",
+      "title": "Remove...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.restart",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.restart', ...args)",
+      "title": "Restart",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.select",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.select', ...args)",
+      "title": "Select container",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.start",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.start', ...args)",
+      "title": "Start",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.stats",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.stats', ...args)",
+      "title": "Stats",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.stop",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.stop', ...args)",
+      "title": "Stop",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.containers.viewLogs",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.containers.viewLogs', ...args)",
+      "title": "View Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.contexts.configureExplorer",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.contexts.configureExplorer', ...args)",
+      "title": "Configure Explorer...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.contexts.help",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.contexts.help', ...args)",
+      "title": "Docker Context Help",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.contexts.inspect",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.contexts.inspect', ...args)",
+      "title": "Inspect",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.contexts.refresh",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.contexts.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.contexts.remove",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.contexts.remove', ...args)",
+      "title": "Remove...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.contexts.use",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.contexts.use', ...args)",
+      "title": "Use",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.debugging.initializeForDebugging",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.debugging.initializeForDebugging', ...args)",
+      "title": "Initialize for container debugging",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.help",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.help', ...args)",
+      "title": "Container Help",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.help.openWalkthrough",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.help.openWalkthrough', ...args)",
+      "title": "Open Container Tools Extension Walkthrough",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.help.reportIssue",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.help.reportIssue', ...args)",
+      "title": "Report Issue",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.build",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.build', ...args)",
+      "title": "Build Image...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.clearFilter",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.clearFilter', ...args)",
+      "title": "Clear Filter",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.configureExplorer",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.configureExplorer', ...args)",
+      "title": "Configure Explorer...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.copyFullTag",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.copyFullTag', ...args)",
+      "title": "Copy Full Tag",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.filter",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.filter', ...args)",
+      "title": "Filter...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.group.remove",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.group.remove', ...args)",
+      "title": "Remove...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.hideDangling",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.hideDangling', ...args)",
+      "title": "Hide dangling images",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.inspect",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.inspect', ...args)",
+      "title": "Inspect",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.prune",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.prune', ...args)",
+      "title": "Prune...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.pull",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.pull', ...args)",
+      "title": "Pull",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.push",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.push', ...args)",
+      "title": "Push...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.refresh",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.remove",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.remove', ...args)",
+      "title": "Remove...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.run",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.run', ...args)",
+      "title": "Run",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.runAzureCli",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.runAzureCli', ...args)",
+      "title": "Run Azure CLI",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.runInteractive",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.runInteractive', ...args)",
+      "title": "Run Interactive",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.showDangling",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.showDangling', ...args)",
+      "title": "Show dangling images",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.images.tag",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.images.tag', ...args)",
+      "title": "Tag...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.networks.configureExplorer",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.networks.configureExplorer', ...args)",
+      "title": "Configure Explorer...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.networks.create",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.networks.create', ...args)",
+      "title": "Create...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.networks.inspect",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.networks.inspect', ...args)",
+      "title": "Inspect",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.networks.prune",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.networks.prune', ...args)",
+      "title": "Prune...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.networks.refresh",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.networks.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.networks.remove",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.networks.remove', ...args)",
+      "title": "Remove...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.openDockerDownloadPage",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.openDockerDownloadPage', ...args)",
+      "title": "Learn More About Installing Docker Desktop",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.pruneSystem",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.pruneSystem', ...args)",
+      "title": "Prune System...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.azure.buildImage",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.azure.buildImage', ...args)",
+      "title": "Build Image in Azure...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.azure.createRegistry",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.azure.createRegistry', ...args)",
+      "title": "Create Registry...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.azure.deleteRegistry",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.azure.deleteRegistry', ...args)",
+      "title": "Delete Registry...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.azure.deleteRepository",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.azure.deleteRepository', ...args)",
+      "title": "Delete Repository...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.azure.openInPortal",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.azure.openInPortal', ...args)",
+      "title": "Open in Portal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.azure.untagImage",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.azure.untagImage', ...args)",
+      "title": "Untag Image...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.azure.viewProperties",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.azure.viewProperties', ...args)",
+      "title": "View Properties",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.connectRegistry",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.connectRegistry', ...args)",
+      "title": "Connect Registry...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.copyImageDigest",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.copyImageDigest', ...args)",
+      "title": "Copy Image Digest",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.copyRemoteFullTag",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.copyRemoteFullTag', ...args)",
+      "title": "Copy Full Tag",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.deleteImage",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.deleteImage', ...args)",
+      "title": "Delete Image...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.deployImageToAca",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.deployImageToAca', ...args)",
+      "title": "Deploy Image to Azure Container Apps...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.deployImageToAzure",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.deployImageToAzure', ...args)",
+      "title": "Deploy Image to Azure App Service...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.disconnectRegistry",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.disconnectRegistry', ...args)",
+      "title": "Disconnect",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.dockerHub.openInBrowser",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.dockerHub.openInBrowser', ...args)",
+      "title": "Open in Browser",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.genericV2.addTrackedRegistry",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.genericV2.addTrackedRegistry', ...args)",
+      "title": "Connect to Generic Container Registry...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.genericV2.removeTrackedRegistry",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.genericV2.removeTrackedRegistry', ...args)",
+      "title": "Disconnect from Generic Container Registry",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.help",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.help', ...args)",
+      "title": "Registries Help",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.inspectRemoteImageManifest",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.inspectRemoteImageManifest', ...args)",
+      "title": "Inspect Image Manifest",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.logInToContainerCli",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.logInToContainerCli', ...args)",
+      "title": "Log In to container CLI",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.logOutOfContainerCli",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.logOutOfContainerCli', ...args)",
+      "title": "Log Out of container CLI",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.pullImage",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.pullImage', ...args)",
+      "title": "Pull Image",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.pullRepository",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.pullRepository', ...args)",
+      "title": "Pull Repository",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.reconnectRegistry",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.reconnectRegistry', ...args)",
+      "title": "Re-enter credentials",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.registries.refresh",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.registries.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.volumes.configureExplorer",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.volumes.configureExplorer', ...args)",
+      "title": "Configure Explorer...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.volumes.inspect",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.volumes.inspect', ...args)",
+      "title": "Inspect",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.volumes.prune",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.volumes.prune', ...args)",
+      "title": "Prune...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.volumes.refresh",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.volumes.refresh', ...args)",
+      "title": "Refresh",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "vscode-containers.volumes.remove",
+      "invocation": "vscode.commands.executeCommand('vscode-containers.volumes.remove', ...args)",
+      "title": "Remove...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "vscode.docker",
+    "vscode.yaml"
+  ],
+  "activation_events": [
+    "onDebugInitialConfigurations",
+    "onDebugResolve:docker",
+    "onFileSystem:containers",
+    "onLanguage:dockercompose",
+    "onLanguage:dockerfile",
+    "onTaskType:docker-build",
+    "onTaskType:docker-compose",
+    "onTaskType:docker-run"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "limited",
+      "description": "Workspace must be trusted in order to perform relevant container actions.",
+      "restrictedConfigurations": [
+        "containers.commands.build",
+        "containers.commands.run",
+        "containers.commands.runInteractive",
+        "containers.commands.attach",
+        "containers.commands.logs",
+        "containers.commands.composeUp",
+        "containers.commands.composeUpSubset",
+        "containers.commands.composeDown",
+        "containers.environment",
+        "containers.scaffolding.templatePath",
+        "containers.containerCommand",
+        "containers.composeCommand",
+        "containers.containerClient",
+        "containers.orchestratorClient"
+      ]
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-azuretools.vscode-containers",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:configurationDefaults",
+      "contribution:debuggers",
+      "contribution:languageModelTools",
+      "contribution:languages",
+      "contribution:menus",
+      "contribution:taskDefinitions",
+      "contribution:views",
+      "contribution:viewsContainers",
+      "contribution:walkthroughs"
+    ],
+    "interface": [
+      "vscode-containers.activateContainerRuntimeProviders",
+      "vscode-containers.activateRegistryProviders",
+      "vscode-containers.askCopilot",
+      "vscode-containers.chooseContainerRuntime",
+      "vscode-containers.compose.down",
+      "vscode-containers.compose.down.subset",
+      "vscode-containers.compose.restart",
+      "vscode-containers.compose.up",
+      "vscode-containers.compose.up.subset",
+      "vscode-containers.configure",
+      "vscode-containers.configureCompose",
+      "vscode-containers.containers.attachShell",
+      "vscode-containers.containers.browse",
+      "vscode-containers.containers.clearFilter",
+      "vscode-containers.containers.composeGroup.down",
+      "vscode-containers.containers.composeGroup.logs",
+      "vscode-containers.containers.composeGroup.restart",
+      "vscode-containers.containers.composeGroup.start",
+      "vscode-containers.containers.composeGroup.stop",
+      "vscode-containers.containers.configureExplorer",
+      "vscode-containers.containers.downloadFile",
+      "vscode-containers.containers.filter",
+      "vscode-containers.containers.group.remove",
+      "vscode-containers.containers.inspect",
+      "vscode-containers.containers.openFile",
+      "vscode-containers.containers.prune",
+      "vscode-containers.containers.refresh",
+      "vscode-containers.containers.remove",
+      "vscode-containers.containers.restart",
+      "vscode-containers.containers.select",
+      "vscode-containers.containers.start",
+      "vscode-containers.containers.stats",
+      "vscode-containers.containers.stop",
+      "vscode-containers.containers.viewLogs",
+      "vscode-containers.contexts.configureExplorer",
+      "vscode-containers.contexts.help",
+      "vscode-containers.contexts.inspect",
+      "vscode-containers.contexts.refresh",
+      "vscode-containers.contexts.remove",
+      "vscode-containers.contexts.use",
+      "vscode-containers.debugging.initializeForDebugging",
+      "vscode-containers.help",
+      "vscode-containers.help.openWalkthrough",
+      "vscode-containers.help.reportIssue",
+      "vscode-containers.images.build",
+      "vscode-containers.images.clearFilter",
+      "vscode-containers.images.configureExplorer",
+      "vscode-containers.images.copyFullTag",
+      "vscode-containers.images.filter",
+      "vscode-containers.images.group.remove",
+      "vscode-containers.images.hideDangling",
+      "vscode-containers.images.inspect",
+      "vscode-containers.images.prune",
+      "vscode-containers.images.pull",
+      "vscode-containers.images.push",
+      "vscode-containers.images.refresh",
+      "vscode-containers.images.remove",
+      "vscode-containers.images.run",
+      "vscode-containers.images.runAzureCli",
+      "vscode-containers.images.runInteractive",
+      "vscode-containers.images.showDangling",
+      "vscode-containers.images.tag",
+      "vscode-containers.networks.configureExplorer",
+      "vscode-containers.networks.create",
+      "vscode-containers.networks.inspect",
+      "vscode-containers.networks.prune",
+      "vscode-containers.networks.refresh",
+      "vscode-containers.networks.remove",
+      "vscode-containers.openDockerDownloadPage",
+      "vscode-containers.pruneSystem",
+      "vscode-containers.registries.azure.buildImage",
+      "vscode-containers.registries.azure.createRegistry",
+      "vscode-containers.registries.azure.deleteRegistry",
+      "vscode-containers.registries.azure.deleteRepository",
+      "vscode-containers.registries.azure.openInPortal",
+      "vscode-containers.registries.azure.untagImage",
+      "vscode-containers.registries.azure.viewProperties",
+      "vscode-containers.registries.connectRegistry",
+      "vscode-containers.registries.copyImageDigest",
+      "vscode-containers.registries.copyRemoteFullTag",
+      "vscode-containers.registries.deleteImage",
+      "vscode-containers.registries.deployImageToAca",
+      "vscode-containers.registries.deployImageToAzure",
+      "vscode-containers.registries.disconnectRegistry",
+      "vscode-containers.registries.dockerHub.openInBrowser",
+      "vscode-containers.registries.genericV2.addTrackedRegistry",
+      "vscode-containers.registries.genericV2.removeTrackedRegistry",
+      "vscode-containers.registries.help",
+      "vscode-containers.registries.inspectRemoteImageManifest",
+      "vscode-containers.registries.logInToContainerCli",
+      "vscode-containers.registries.logOutOfContainerCli",
+      "vscode-containers.registries.pullImage",
+      "vscode-containers.registries.pullRepository",
+      "vscode-containers.registries.reconnectRegistry",
+      "vscode-containers.registries.refresh",
+      "vscode-containers.volumes.configureExplorer",
+      "vscode-containers.volumes.inspect",
+      "vscode-containers.volumes.prune",
+      "vscode-containers.volumes.refresh",
+      "vscode-containers.volumes.remove"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "limited",
+        "description": "Workspace must be trusted in order to perform relevant container actions.",
+        "restrictedConfigurations": [
+          "containers.commands.build",
+          "containers.commands.run",
+          "containers.commands.runInteractive",
+          "containers.commands.attach",
+          "containers.commands.logs",
+          "containers.commands.composeUp",
+          "containers.commands.composeUpSubset",
+          "containers.commands.composeDown",
+          "containers.environment",
+          "containers.scaffolding.templatePath",
+          "containers.containerCommand",
+          "containers.composeCommand",
+          "containers.containerClient",
+          "containers.orchestratorClient"
+        ]
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

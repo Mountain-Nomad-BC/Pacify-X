@@ -1,0 +1,81 @@
+{
+  "admission_state": "unadmitted",
+  "created": true,
+  "draft_state": "saved",
+  "file_count": 7,
+  "files": [
+    {
+      "bytes": 492,
+      "path": "SKILL.md",
+      "sha256": "26c890b06a5582f6b6a8c1ad56130b67aee6fa915fbe53f93bb14ee90c113479"
+    },
+    {
+      "bytes": 307,
+      "path": "agents/openai.yaml",
+      "sha256": "eb6a44d08fb863feb0fcbcae7a1952bd247be92dddb29c21e25e6f669b40ae34"
+    },
+    {
+      "bytes": 318,
+      "path": "capability.json",
+      "sha256": "99e90a49eb40e528aef4f871f583a0866f305ea6b85565c8ef37b85677fa4aed"
+    },
+    {
+      "bytes": 76,
+      "path": "contracts/input.schema.json",
+      "sha256": "8491177ce18b8c2860389a81e3022162f5ba7d98024abf04251bf0eb8d16bd57"
+    },
+    {
+      "bytes": 122,
+      "path": "resources/README.md",
+      "sha256": "7aa80e21c858ff96124b1c4bee49fc4513158ae88172329de7aa1683387abb76"
+    },
+    {
+      "bytes": 123,
+      "path": "skill.yaml",
+      "sha256": "02d865f76d8db3f2d371e0aa1d31510cc76f1a48fb998bbd4af1560007b768f9"
+    },
+    {
+      "bytes": 286,
+      "path": "tests/contract.json",
+      "sha256": "ed83ec7e200b078ad3d1f45a0f469676864c63e8d91608fbfaa3d4429f87d141"
+    }
+  ],
+  "manifest": {
+    "contracts": [
+      "contracts/input.schema.json"
+    ],
+    "effects": [
+      "read"
+    ],
+    "lifecycle": "draft",
+    "non_triggers": [
+      "mutation",
+      "deployment",
+      "credentialed operation"
+    ],
+    "owner": "human:vscode-local-user",
+    "permissions": [
+      "read_local"
+    ],
+    "provenance": {
+      "source": "project-owned Skill Studio intake"
+    },
+    "resources": [
+      "resources/README.md"
+    ],
+    "skill_id": "pacify-x-studio-operator",
+    "tests": [
+      "tests/contract.json"
+    ],
+    "triggers": [
+      "explicit Pacify-X Studio inspection"
+    ],
+    "version": "1.0.1"
+  },
+  "manifest_sha256": "a457ab0abd784b0cc39aeb8bfd3dfd2e046ed63c6dbadaa38bb8a7f17b816137",
+  "payload_root": "payload",
+  "promotion_state": "not_promoted",
+  "schema_version": "px.skill-draft/1.1",
+  "source_authority_token": "source:1eaae0a472ce421f8b41aa295475f1fd",
+  "source_tree_sha256": "05b9a9d92ab0b4ad978f6b39e2977c3f3dfbd82fa5f45a41a1c0c020d6e061fe"
+}

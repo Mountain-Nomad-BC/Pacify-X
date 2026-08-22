@@ -9,15 +9,48 @@ from runtime.studio_catalog_status import project
 from runtime.studio_models import SkillPackage
 
 
-def _source(root, name: str, body: str = "# Demo\n"):
+def _source(root, name: str, body: str = "# Demo\n", version: str = "1.0.0"):
     path = root / name
-    for child in ("contracts", "tests", "resources"):
+    for child in ("agents", "contracts", "tests", "resources"):
         (path / child).mkdir(parents=True, exist_ok=True)
     (path / "SKILL.md").write_text(body, encoding="utf-8")
-    (path / "capability.json").write_text("{}\n", encoding="utf-8")
-    (path / "skill.yaml").write_text("id: demo\n", encoding="utf-8")
-    (path / "contracts/manifest.json").write_text("{}\n", encoding="utf-8")
-    (path / "resources/index.json").write_text("{}\n", encoding="utf-8")
+    native_manifest = {
+        "schema_version": "px.native-skill-package/1.0",
+        "id": "demo",
+        "version": version,
+        "domain": "px-standard",
+    }
+    manifest_text = json.dumps(native_manifest, indent=2) + "\n"
+    (path / "capability.json").write_text(manifest_text, encoding="utf-8")
+    (path / "skill.yaml").write_text(manifest_text, encoding="utf-8")
+    (path / "agents/openai.yaml").write_text(
+        "interface:\n  display_name: Demo\n  short_description: Demo skill\n",
+        encoding="utf-8",
+    )
+    (path / "contracts/manifest.json").write_text(
+        json.dumps(
+            {"schema_version": "px.skill-contract-links/1.0", "contracts": []}
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (path / "resources/index.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "px.skill-resources/1.0",
+                "resources": [
+                    "agents/openai.yaml",
+                    "capability.json",
+                    "contracts/manifest.json",
+                    "SKILL.md",
+                    "skill.yaml",
+                    "tests/validation.json",
+                ],
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     (path / "tests/validation.json").write_text(
         json.dumps(
             {
@@ -67,7 +100,7 @@ def _scaffold(root):
 
 
 def _promote(studio: SkillStudio, root, package: SkillPackage, name: str, body: str):
-    selected = _source(root, name, body)
+    selected = _source(root, name, body, version=package.version)
     token = studio.admit_source(selected, approved_by="human:owner")
     studio.stage_draft(package, selected, source_token=token)
     assert studio.validate(package)["passed"] is True

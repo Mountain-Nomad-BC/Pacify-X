@@ -286,6 +286,12 @@ function stageRecords({ blocked, rendered, mutating, attempted, observedAt }) {
   });
 }
 
+function isCompleteInteractionChain(record) {
+  return Array.isArray(record?.stages)
+    && record.stages.length === CHAIN_STAGES.length
+    && record.stages.every(stage => ['observed', 'not_applicable'].includes(stage.status));
+}
+
 function buildPerControlRecords({ inventory, results = [], sidebar = null, hostSourceMismatch = false, authority = LIVE_WALK_AUTHORITY, observedAt = new Date().toISOString(), attemptedControlIds = [] }) {
   const actionIndex = runtimeActionIndex(results, sidebar);
   const attemptedIds = new Set(attemptedControlIds);
@@ -369,7 +375,7 @@ function buildPerControlRecords({ inventory, results = [], sidebar = null, hostS
       unique_control_ids: ids.size,
       terminal_dispositions: terminalCounts,
       potentially_mutating: records.filter(record => record.potentially_mutating).length,
-      complete_interaction_chains: 0
+      complete_interaction_chains: records.filter(isCompleteInteractionChain).length
     },
     controls: records
   };
@@ -381,6 +387,7 @@ module.exports = {
   buildCurrentSourceControlManifest,
   buildPerControlRecords,
   canonicalSurfaceId,
+  isCompleteInteractionChain,
   isPotentiallyMutating,
   loadOperationalSurfaceInventory,
   mutationEffect

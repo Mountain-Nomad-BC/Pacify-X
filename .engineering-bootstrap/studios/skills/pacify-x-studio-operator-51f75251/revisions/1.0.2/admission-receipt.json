@@ -1,0 +1,20 @@
+{
+  "admitted_utc": "2026-08-22T13:37:59.094Z",
+  "approved_by": "human:owner",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "7e6c2bc20ccc277b7010340f3b9a3e26b860d01b6881c6e29c1208bef5c61f39",
+    "payload_sha256": "51d19d724e6a8a47d6db37892558617ca3d6083e15a98acf062534481cb9d372",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "decision": "admitted",
+  "manifest_sha256": "a6b049ccd27b24e1ebfedbd88917b09bd17c816cc3e3ed6ea0ee916ef15165f4",
+  "nonce": "8f8e4e0415b947a3989225e6c32b3c62",
+  "preserved_original": null,
+  "reasons": [],
+  "schema_version": "px.skill-admission-receipt/1.1",
+  "skill_id": "pacify-x-studio-operator",
+  "source_tree_sha256": "6d627e482947e4075d508649a71c33ee45fd485f54918f58fbff511861cbca80",
+  "version": "1.0.2"
+}

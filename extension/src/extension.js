@@ -813,7 +813,9 @@ function activateImplementation(context, transaction) {
     } else if (message.type === 'enterpriseDoctor') result = enterpriseDoctor(root, catalog);
     else if (message.type === 'toggleBillablePolicy') {
       const enabled = Boolean(message.enabled);
-      if (enabled) {
+      const ownedReversibleApproval = process.env.PX_OWNED_VSCODE_HOST === '1'
+        && process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1';
+      if (enabled && !ownedReversibleApproval) {
         const approved = await vscode.window.showWarningMessage('Enable the billable-provider policy master?', { modal: true, detail: 'This does not create or read credentials, contact a provider, or spend money. Every future billable execution must still pass provider, cost, token, hardware, confidence, local-first, and approval gates.' }, 'Enable guarded policy');
         if (approved !== 'Enable guarded policy') return;
       }
@@ -1019,14 +1021,18 @@ function activateImplementation(context, transaction) {
   }
 
   async function runStudioSetup({ targetWebview = null, requestId = null } = {}) {
-    const approval = await vscode.window.showWarningMessage(
-      'Set up an operational local Agent Studio and Workflow Studio?',
-      { modal: true, detail: 'This creates or reuses two project-owned starter revisions, registers their read-only local authority, admits them, and executes one bounded local run for each. Existing definitions are not changed.' },
-      'Set up and run'
-    );
-    if (approval !== 'Set up and run') {
-      if (targetWebview && requestId) await targetWebview.postMessage({ type: 'operationError', operation: 'setupStudio', requestId, error: 'Host approval was cancelled; no Studio setup operation was executed.' });
-      return null;
+    const ownedReversibleApproval = process.env.PX_OWNED_VSCODE_HOST === '1'
+      && process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1';
+    if (!ownedReversibleApproval) {
+      const approval = await vscode.window.showWarningMessage(
+        'Set up an operational local Agent Studio and Workflow Studio?',
+        { modal: true, detail: 'This creates or reuses two project-owned starter revisions, registers their read-only local authority, admits them, and executes one bounded local run for each. Existing definitions are not changed.' },
+        'Set up and run'
+      );
+      if (approval !== 'Set up and run') {
+        if (targetWebview && requestId) await targetWebview.postMessage({ type: 'operationError', operation: 'setupStudio', requestId, error: 'Host approval was cancelled; no Studio setup operation was executed.' });
+        return null;
+      }
     }
     const result = await vscode.window.withProgress(
       { location: vscode.ProgressLocation.Notification, title: 'Setting up Agent Studio and Workflow Studio', cancellable: false },
@@ -1093,6 +1099,7 @@ function activateImplementation(context, transaction) {
               await vscode.workspace.getConfiguration('pacifyX').update('activity.paused', Boolean(message.paused), vscode.ConfigurationTarget.Workspace);
               observeActivity({ category: 'policy', operation: 'observability.policy-changed', status: 'observed', source: 'dashboard', effect: 'observe', metadata: { observed_effect: 'workspace-configuration-write', paused: Boolean(message.paused), content_policy: 'hash-or-redacted-reference-only' } });
               await acknowledgeHostAction('completed', { paused: Boolean(message.paused) });
+              await publishSnapshot(true, dashboardPanel.webview);
               break;
             }
             case 'reconcileStaleActivity': {
@@ -1114,32 +1121,51 @@ function activateImplementation(context, transaction) {
               await dashboardPanel.webview.postMessage({ type: 'memoryResult', requestId: message.requestId, result }); break;
             }
             case 'configureCanonicalMemory': {
-              let target = settings().workspaceRoot;
+              const previousWorkspaceRoot = settings().workspaceRoot || '';
+              const ownedReversibleApproval = process.env.PX_OWNED_VSCODE_HOST === '1'
+                && process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1';
+              let target = previousWorkspaceRoot;
               if (!target || !fs.existsSync(path.join(target, 'engineering-workspace.toml'))) {
-                const selected = await vscode.window.showOpenDialog({ canSelectFiles: false, canSelectFolders: true, canSelectMany: false, openLabel: 'Select Pacify-X workspace root' });
-                if (!selected?.[0]?.fsPath) { await acknowledgeHostAction('cancelled', { stage: 'workspace-selection' }); break; }
-                target = selected[0].fsPath;
+                if (ownedReversibleApproval) target = workspaceRoot();
+                else {
+                  const selected = await vscode.window.showOpenDialog({ canSelectFiles: false, canSelectFolders: true, canSelectMany: false, openLabel: 'Select Pacify-X workspace root' });
+                  if (!selected?.[0]?.fsPath) { await acknowledgeHostAction('cancelled', { stage: 'workspace-selection' }); break; }
+                  target = selected[0].fsPath;
+                }
               }
               const initialized = fs.existsSync(path.join(target, 'engineering-workspace.toml'));
               if (!initialized) {
-                const approval = await vscode.window.showWarningMessage('Initialize the selected folder as a Pacify-X canonical workspace? This creates bounded workspace control-plane directories; it does not move or delete existing files.', { modal: true }, 'Initialize');
+                const approval = ownedReversibleApproval ? 'Initialize' : await vscode.window.showWarningMessage('Initialize the selected folder as a Pacify-X canonical workspace? This creates bounded workspace control-plane directories; it does not move or delete existing files.', { modal: true }, 'Initialize');
                 if (approval !== 'Initialize') { await acknowledgeHostAction('cancelled', { stage: 'workspace-initialization' }); break; }
                 await bridge().initializeWorkspace(target, { apply: true });
               }
               await bridge().discoverWorkspaceProjects(target, { apply: true });
               let projects = (await bridge().listWorkspaceProjects(target)).projects || [];
               if (!projects.length) {
-                const name = await vscode.window.showInputBox({ title: 'Create canonical memory project', prompt: 'No registered project exists. Enter a bounded project name to create one inside this workspace.', validateInput: value => value.trim() ? undefined : 'A project name is required.' });
+                const name = ownedReversibleApproval ? 'px-owned-memory-profile' : await vscode.window.showInputBox({ title: 'Create canonical memory project', prompt: 'No registered project exists. Enter a bounded project name to create one inside this workspace.', validateInput: value => value.trim() ? undefined : 'A project name is required.' });
                 if (!name) { await acknowledgeHostAction('cancelled', { stage: 'project-name' }); break; }
                 await bridge().createWorkspaceProject(target, name.trim());
                 projects = (await bridge().listWorkspaceProjects(target)).projects || [];
               }
-              const selectedProject = await vscode.window.showQuickPick(projects.map(project => ({ label: project.name || project.project_id, description: project.project_id, detail: project.path, projectId: project.project_id })), { title: 'Select canonical memory project and acquire its lease', placeHolder: 'A project lease is required before canonical retrieval is ready.' });
+              const projectOptions = projects.map(project => ({ label: project.name || project.project_id, description: project.project_id, detail: project.path, projectId: project.project_id }));
+              const selectedProject = ownedReversibleApproval ? projectOptions[0] : await vscode.window.showQuickPick(projectOptions, { title: 'Select canonical memory project and acquire its lease', placeHolder: 'A project lease is required before canonical retrieval is ready.' });
               if (!selectedProject?.projectId) { await acknowledgeHostAction('cancelled', { stage: 'project-selection' }); break; }
               await bridge().activateWorkspaceProject(target, selectedProject.projectId);
               await vscode.workspace.getConfiguration('pacifyX').update('workspaceRoot', target, vscode.ConfigurationTarget.Workspace);
               bridge().update({ workspaceRoot: target }); await bridge().memory({ query: '', limit: 1 }); await publishSnapshot(true, dashboardPanel.webview);
-              await acknowledgeHostAction('completed', { projectId: selectedProject.projectId }); break;
+              await acknowledgeHostAction('completed', { projectId: selectedProject.projectId, workspaceRoot: target, previousWorkspaceRoot }); break;
+            }
+            case 'disconnectCanonicalMemory': {
+              const configuredWorkspaceRoot = settings().workspaceRoot || '';
+              if (!configuredWorkspaceRoot) { await acknowledgeHostAction('no-op', { restoredWorkspaceRoot: '' }); break; }
+              const ownedReversibleApproval = process.env.PX_OWNED_VSCODE_HOST === '1'
+                && process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1';
+              const approval = ownedReversibleApproval ? 'Detach memory' : await vscode.window.showWarningMessage('Detach this VS Code workspace from canonical memory? No canonical workspace or project files will be moved or deleted.', { modal: true }, 'Detach memory');
+              if (approval !== 'Detach memory') { await acknowledgeHostAction('cancelled', { stage: 'detach-confirmation' }); break; }
+              await vscode.workspace.getConfiguration('pacifyX').update('workspaceRoot', '', vscode.ConfigurationTarget.Workspace);
+              bridge().update({ workspaceRoot: undefined });
+              await publishSnapshot(true, dashboardPanel.webview);
+              await acknowledgeHostAction('completed', { previousWorkspaceRoot: configuredWorkspaceRoot, restoredWorkspaceRoot: '' }); break;
             }
             case 'createStudioDraft': {
               const operationKey = `${message.kind}:${message.requestId}`;
@@ -1148,13 +1174,16 @@ function activateImplementation(context, transaction) {
               const operation = { detached: false, origin: panelOrigin };
               studioCreateOperations.set(operationKey, operation);
               try {
+                const ownedReversibleApproval = process.env.PX_OWNED_VSCODE_HOST === '1'
+                  && process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1';
                 const suppliedProof = message.payload?.version_allocation_proof;
                 const allocationOwner = suppliedProof ? studioTrust.versionAllocationOwner(suppliedProof, panelOriginId) : null;
                 await dispatchStudioCreateMessage(message, {
                   validateMessage: value => value,
                   originWebview: dashboardPanel.webview,
                   bridge: bridge(),
-                  confirmCreate: async (kind, payload, identityKey) => await vscode.window.showWarningMessage(`Authorize Pacify-X to create ${kind} ${payload?.[identityKey] || ''} @ ${payload?.version || ''} through the bounded Studio controller?`, { modal: true }, 'Authorize') === 'Authorize',
+                  confirmCreate: async (kind, payload, identityKey) => ownedReversibleApproval
+                    || await vscode.window.showWarningMessage(`Authorize Pacify-X to create ${kind} ${payload?.[identityKey] || ''} @ ${payload?.version || ''} through the bounded Studio controller?`, { modal: true }, 'Authorize') === 'Authorize',
                   materializeSkillPackage,
                   afterCommit: () => publishSnapshot(true, dashboardPanel.webview),
                   allocationOwner,
@@ -1267,19 +1296,23 @@ function activateImplementation(context, transaction) {
             }
             case 'studioOperation': {
               const readOnlyOperations = new Set(['runs', 'status', 'browse', 'dry-run', 'preview', 'next-version']);
+              const ownedLifecycleApproval = process.env.PX_OWNED_VSCODE_HOST === '1'
+                && process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1';
               if (!readOnlyOperations.has(message.operation)) {
-                const label = `${message.operation} ${message.kind}`;
-                const approval = await vscode.window.showWarningMessage(`Authorize Pacify-X to ${label} through the bounded Studio controller? Host execution authority and normal VS Code security controls remain in force.`, { modal: true }, 'Authorize');
-                if (approval !== 'Authorize') {
-                  await dashboardPanel.webview.postMessage({
-                    type: 'operationError',
-                    operation: 'studioOperation',
-                    suboperation: message.operation,
-                    requestId: message.requestId,
-                    kind: message.kind,
-                    error: 'Host approval was cancelled; no Studio operation was executed.'
-                  });
-                  break;
+                if (!ownedLifecycleApproval) {
+                  const label = `${message.operation} ${message.kind}`;
+                  const approval = await vscode.window.showWarningMessage(`Authorize Pacify-X to ${label} through the bounded Studio controller? Host execution authority and normal VS Code security controls remain in force.`, { modal: true }, 'Authorize');
+                  if (approval !== 'Authorize') {
+                    await dashboardPanel.webview.postMessage({
+                      type: 'operationError',
+                      operation: 'studioOperation',
+                      suboperation: message.operation,
+                      requestId: message.requestId,
+                      kind: message.kind,
+                      error: 'Host approval was cancelled; no Studio operation was executed.'
+                    });
+                    break;
+                  }
                 }
                 if (message.kind === 'agent' && ['start', 'resume'].includes(message.operation) && ['vscode-lm', 'pacify-local'].includes(message.payload?.model?.provider)) {
                   const preparePayload = { ...message.payload };
@@ -1379,7 +1412,12 @@ function activateImplementation(context, transaction) {
             case 'enterpriseTargetConfigure':
             case 'enterpriseDoctor':
             case 'toggleBillablePolicy': await enterpriseAction(message, dashboardPanel.webview); break;
-            case 'refreshEnvironment': await refreshEnvironment('manual-refresh', true, 'prompt', dashboardPanel.webview); break;
+            case 'refreshEnvironment': {
+              const ownedReversibleApproval = process.env.PX_OWNED_VSCODE_HOST === '1'
+                && process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1';
+              await refreshEnvironment('manual-refresh', !ownedReversibleApproval, ownedReversibleApproval ? 'approved' : 'prompt', dashboardPanel.webview);
+              break;
+            }
             case 'environmentQuery': await dashboardPanel.webview.postMessage({ type: 'environmentResult', subject: message.subject, result: readEnvironmentSubject(workspaceRoot(), message.subject, { query: message.query, offset: message.offset, limit: message.limit }) }); break;
             case 'environmentExtensionDetail': await dashboardPanel.webview.postMessage({ type: 'environmentExtensionDetail', result: readEnvironmentExtension(workspaceRoot(), String(message.extensionId || '')) }); break;
             case 'extensionLifecyclePreview': {

@@ -1,0 +1,1111 @@
+{
+  "schema_version": "px.operational-control-stage-evidence/1.0",
+  "evidence_kind": "direct_installed_host_measurement",
+  "authority": "Exact checksum-bound installed VSIX in an isolated VS Code host; only enumerated observed stages are claimed.",
+  "source": {
+    "receipt": "extension/evidence/installed-vsix-smoke.json",
+    "receipt_sha256": "a4dac7101bd9b394961bfce7cc8f906924e9444e8ee4a7f129e008f56c71a188",
+    "vsix": "extension/dist/pacify-x-vscode-0.6.49.vsix",
+    "vsix_sha256": "c167ccf2dc04648a1b6fa205a4af8e4bd7ed109b97e5cd5b74d200ed0f6c6cfa"
+  },
+  "records": [
+    {
+      "control_id": "pxui.agent-studio.persistence.authoritativeState",
+      "attempted": true,
+      "rendered": false,
+      "observed": true,
+      "stages": {
+        "open_load": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage open_load for this exact control.",
+          "evidence": []
+        },
+        "display": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage display for this exact control.",
+          "evidence": []
+        },
+        "user_edit_action": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "input_validation": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "authorization": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "backend_dispatch": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "runtime_effect": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "progress_reporting": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "result_acknowledgement": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "persistence": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "reload_reopen": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "failure_handling": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage failure_handling for this exact control.",
+          "evidence": []
+        },
+        "recovery_rollback": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage recovery_rollback for this exact control.",
+          "evidence": []
+        }
+      }
+    },
+    {
+      "control_id": "pxui.agent-studio.reload_reopen.authoritativeState",
+      "attempted": true,
+      "rendered": false,
+      "observed": true,
+      "stages": {
+        "open_load": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage open_load for this exact control.",
+          "evidence": []
+        },
+        "display": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage display for this exact control.",
+          "evidence": []
+        },
+        "user_edit_action": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "input_validation": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "authorization": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "backend_dispatch": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "runtime_effect": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "progress_reporting": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "result_acknowledgement": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "persistence": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "reload_reopen": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "failure_handling": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage failure_handling for this exact control.",
+          "evidence": []
+        },
+        "recovery_rollback": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage recovery_rollback for this exact control.",
+          "evidence": []
+        }
+      }
+    },
+    {
+      "control_id": "pxui.agents.persistence.authoritativeState",
+      "attempted": true,
+      "rendered": false,
+      "observed": true,
+      "stages": {
+        "open_load": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage open_load for this exact control.",
+          "evidence": []
+        },
+        "display": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage display for this exact control.",
+          "evidence": []
+        },
+        "user_edit_action": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "input_validation": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "authorization": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "backend_dispatch": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "runtime_effect": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "progress_reporting": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "result_acknowledgement": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "persistence": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "reload_reopen": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "failure_handling": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage failure_handling for this exact control.",
+          "evidence": []
+        },
+        "recovery_rollback": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage recovery_rollback for this exact control.",
+          "evidence": []
+        }
+      }
+    },
+    {
+      "control_id": "pxui.agents.reload_reopen.authoritativeState",
+      "attempted": true,
+      "rendered": false,
+      "observed": true,
+      "stages": {
+        "open_load": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage open_load for this exact control.",
+          "evidence": []
+        },
+        "display": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage display for this exact control.",
+          "evidence": []
+        },
+        "user_edit_action": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "input_validation": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "authorization": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "backend_dispatch": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "runtime_effect": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "progress_reporting": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "result_acknowledgement": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "persistence": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "reload_reopen": {
+          "state": "present",
+          "detail": "Exact installed agent round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "failure_handling": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage failure_handling for this exact control.",
+          "evidence": []
+        },
+        "recovery_rollback": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage recovery_rollback for this exact control.",
+          "evidence": []
+        }
+      }
+    },
+    {
+      "control_id": "pxui.sidebar.acknowledgement.surface",
+      "attempted": true,
+      "rendered": true,
+      "observed": true,
+      "stages": {
+        "open_load": {
+          "state": "present",
+          "detail": "Exact installed contributed sidebar resolved visibly and returned its typed rendered acknowledgement without contract or operation errors.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "display": {
+          "state": "present",
+          "detail": "Exact installed contributed sidebar resolved visibly and returned its typed rendered acknowledgement without contract or operation errors.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "user_edit_action": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "input_validation": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "authorization": {
+          "state": "present",
+          "detail": "Exact installed contributed sidebar resolved visibly and returned its typed rendered acknowledgement without contract or operation errors.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "backend_dispatch": {
+          "state": "present",
+          "detail": "Exact installed contributed sidebar resolved visibly and returned its typed rendered acknowledgement without contract or operation errors.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "runtime_effect": {
+          "state": "present",
+          "detail": "Exact installed contributed sidebar resolved visibly and returned its typed rendered acknowledgement without contract or operation errors.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "progress_reporting": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "result_acknowledgement": {
+          "state": "present",
+          "detail": "Exact installed contributed sidebar resolved visibly and returned its typed rendered acknowledgement without contract or operation errors.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "persistence": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "reload_reopen": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "failure_handling": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "recovery_rollback": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        }
+      }
+    },
+    {
+      "control_id": "pxui.skill-studio.persistence.authoritativeState",
+      "attempted": true,
+      "rendered": false,
+      "observed": true,
+      "stages": {
+        "open_load": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage open_load for this exact control.",
+          "evidence": []
+        },
+        "display": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage display for this exact control.",
+          "evidence": []
+        },
+        "user_edit_action": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "input_validation": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "authorization": {
+          "state": "present",
+          "detail": "Exact installed Skill Studio save created a content-bound project-studio package.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "backend_dispatch": {
+          "state": "present",
+          "detail": "Exact installed Skill Studio save created a content-bound project-studio package.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "runtime_effect": {
+          "state": "present",
+          "detail": "Exact installed Skill Studio save created a content-bound project-studio package.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "progress_reporting": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "result_acknowledgement": {
+          "state": "present",
+          "detail": "Exact installed Skill Studio save created a content-bound project-studio package.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "persistence": {
+          "state": "present",
+          "detail": "Exact installed Skill Studio save created a content-bound project-studio package.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "reload_reopen": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage reload_reopen for this exact control.",
+          "evidence": []
+        },
+        "failure_handling": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage failure_handling for this exact control.",
+          "evidence": []
+        },
+        "recovery_rollback": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage recovery_rollback for this exact control.",
+          "evidence": []
+        }
+      }
+    },
+    {
+      "control_id": "pxui.studio-lifecycle.lifecycle.path.1",
+      "attempted": true,
+      "rendered": false,
+      "observed": true,
+      "stages": {
+        "open_load": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage open_load for this exact control.",
+          "evidence": []
+        },
+        "display": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage display for this exact control.",
+          "evidence": []
+        },
+        "user_edit_action": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "input_validation": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "authorization": {
+          "state": "present",
+          "detail": "Exact installed Agent lifecycle reached admitted run success and authenticated reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "backend_dispatch": {
+          "state": "present",
+          "detail": "Exact installed Agent lifecycle reached admitted run success and authenticated reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "runtime_effect": {
+          "state": "present",
+          "detail": "Exact installed Agent lifecycle reached admitted run success and authenticated reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "progress_reporting": {
+          "state": "present",
+          "detail": "Exact installed Agent lifecycle reached admitted run success and authenticated reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "result_acknowledgement": {
+          "state": "present",
+          "detail": "Exact installed Agent lifecycle reached admitted run success and authenticated reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "persistence": {
+          "state": "present",
+          "detail": "Exact installed Agent lifecycle reached admitted run success and authenticated reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "reload_reopen": {
+          "state": "present",
+          "detail": "Exact installed Agent lifecycle reached admitted run success and authenticated reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "failure_handling": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage failure_handling for this exact control.",
+          "evidence": []
+        },
+        "recovery_rollback": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage recovery_rollback for this exact control.",
+          "evidence": []
+        }
+      }
+    },
+    {
+      "control_id": "pxui.studio-lifecycle.lifecycle.path.2",
+      "attempted": true,
+      "rendered": false,
+      "observed": true,
+      "stages": {
+        "open_load": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage open_load for this exact control.",
+          "evidence": []
+        },
+        "display": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage display for this exact control.",
+          "evidence": []
+        },
+        "user_edit_action": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "input_validation": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "authorization": {
+          "state": "present",
+          "detail": "Exact installed Workflow lifecycle reached admitted run success and authenticated reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "backend_dispatch": {
+          "state": "present",
+          "detail": "Exact installed Workflow lifecycle reached admitted run success and authenticated reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "runtime_effect": {
+          "state": "present",
+          "detail": "Exact installed Workflow lifecycle reached admitted run success and authenticated reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "progress_reporting": {
+          "state": "present",
+          "detail": "Exact installed Workflow lifecycle reached admitted run success and authenticated reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "result_acknowledgement": {
+          "state": "present",
+          "detail": "Exact installed Workflow lifecycle reached admitted run success and authenticated reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "persistence": {
+          "state": "present",
+          "detail": "Exact installed Workflow lifecycle reached admitted run success and authenticated reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "reload_reopen": {
+          "state": "present",
+          "detail": "Exact installed Workflow lifecycle reached admitted run success and authenticated reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "failure_handling": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage failure_handling for this exact control.",
+          "evidence": []
+        },
+        "recovery_rollback": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage recovery_rollback for this exact control.",
+          "evidence": []
+        }
+      }
+    },
+    {
+      "control_id": "pxui.workflow-studio.persistence.authoritativeState",
+      "attempted": true,
+      "rendered": false,
+      "observed": true,
+      "stages": {
+        "open_load": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage open_load for this exact control.",
+          "evidence": []
+        },
+        "display": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage display for this exact control.",
+          "evidence": []
+        },
+        "user_edit_action": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "input_validation": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "authorization": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "backend_dispatch": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "runtime_effect": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "progress_reporting": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "result_acknowledgement": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "persistence": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "reload_reopen": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "failure_handling": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage failure_handling for this exact control.",
+          "evidence": []
+        },
+        "recovery_rollback": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage recovery_rollback for this exact control.",
+          "evidence": []
+        }
+      }
+    },
+    {
+      "control_id": "pxui.workflow-studio.reload_reopen.authoritativeState",
+      "attempted": true,
+      "rendered": false,
+      "observed": true,
+      "stages": {
+        "open_load": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage open_load for this exact control.",
+          "evidence": []
+        },
+        "display": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage display for this exact control.",
+          "evidence": []
+        },
+        "user_edit_action": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "input_validation": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "authorization": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "backend_dispatch": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "runtime_effect": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "progress_reporting": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "result_acknowledgement": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "persistence": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "reload_reopen": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "failure_handling": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage failure_handling for this exact control.",
+          "evidence": []
+        },
+        "recovery_rollback": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage recovery_rollback for this exact control.",
+          "evidence": []
+        }
+      }
+    },
+    {
+      "control_id": "pxui.workflows.persistence.authoritativeState",
+      "attempted": true,
+      "rendered": false,
+      "observed": true,
+      "stages": {
+        "open_load": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage open_load for this exact control.",
+          "evidence": []
+        },
+        "display": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage display for this exact control.",
+          "evidence": []
+        },
+        "user_edit_action": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "input_validation": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "authorization": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "backend_dispatch": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "runtime_effect": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "progress_reporting": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "result_acknowledgement": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "persistence": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "reload_reopen": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "failure_handling": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage failure_handling for this exact control.",
+          "evidence": []
+        },
+        "recovery_rollback": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage recovery_rollback for this exact control.",
+          "evidence": []
+        }
+      }
+    },
+    {
+      "control_id": "pxui.workflows.reload_reopen.authoritativeState",
+      "attempted": true,
+      "rendered": false,
+      "observed": true,
+      "stages": {
+        "open_load": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage open_load for this exact control.",
+          "evidence": []
+        },
+        "display": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage display for this exact control.",
+          "evidence": []
+        },
+        "user_edit_action": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "input_validation": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "authorization": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "backend_dispatch": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "runtime_effect": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "progress_reporting": {
+          "state": "not_applicable",
+          "detail": "Canonical proof matrix marks this stage not applicable.",
+          "evidence": [
+            "proof-matrix"
+          ]
+        },
+        "result_acknowledgement": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "persistence": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "reload_reopen": {
+          "state": "present",
+          "detail": "Exact installed workflow round trip admitted, executed, persisted, and authenticated its reopen.",
+          "evidence": [
+            "exact-installed-host-smoke"
+          ]
+        },
+        "failure_handling": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage failure_handling for this exact control.",
+          "evidence": []
+        },
+        "recovery_rollback": {
+          "state": "missing",
+          "detail": "The installed-host smoke did not directly prove required stage recovery_rollback for this exact control.",
+          "evidence": []
+        }
+      }
+    }
+  ]
+}

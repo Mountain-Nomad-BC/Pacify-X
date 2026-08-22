@@ -1,0 +1,69 @@
+{
+  "agent_id": "agent:pacify-x-local",
+  "agent_revision_sha256": "f9af01c247173db0f57312fd708d4928d41c21a415fe4203487ad34ba7f69357",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "73a9bf6099c35f8b6c51ca5b2484c190eea1b87ce691253ac934fd15b6f0128a",
+    "payload_sha256": "7fa8a43c26ac89897e0f5dacd0bc193d483f99cc07c9bca102fa023993055689",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "authority_record_hashes": {
+    "binding:binding:pacify-x-local": "a2fad103da7bebb926e9928dc8acc7a92d2b766354e5e23882ba2de7f922f015",
+    "grant:grant:pacify-x-local": "d5e7558b0a2d8a5ad0f18caf30c19c9e5a0af593c96167367e693c9632a54425"
+  },
+  "authority_state": "codex-host-retained",
+  "control_sequence": 2,
+  "handoff_agent_ids": [],
+  "host_execution_required": true,
+  "host_tools": [],
+  "input_schema": {
+    "additionalProperties": false,
+    "properties": {
+      "objective": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "objective"
+    ],
+    "type": "object"
+  },
+  "instructions": "Complete the supplied bounded objective using only the admitted local model route. Return concise JSON only.\n",
+  "memory_binding_ids": [],
+  "model": {
+    "family": "qwen2",
+    "max_output_tokens": 256,
+    "model_id": "qwen2.5-coder:3b",
+    "provider": "pacify-local",
+    "temperature": 0.0,
+    "timeout_seconds": 120,
+    "vendor": "pacify-local",
+    "version": "f72c60cabf6237b07f6e632b2c48d533cef25eda2efbd34bed21c5e9c01e6225"
+  },
+  "output_schema": {
+    "additionalProperties": false,
+    "properties": {
+      "status": {
+        "type": "string"
+      },
+      "summary": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "status",
+      "summary"
+    ],
+    "type": "object"
+  },
+  "run_id": "run-228637bc908645b6b5d0af032cca8ea7",
+  "schema_version": "px.agent-host-run-prepared/1.0",
+  "status": "prepared",
+  "task": {
+    "objective": "Confirm Pacify-X local Agent execution is operational and identify the model used."
+  },
+  "task_sha256": "4665ed8a0551b1e7958b1a830be354f37c7a98c8a6f84e00bffc78820c1e49ab",
+  "tool_binding_ids": [],
+  "version": "1.0.0"
+}

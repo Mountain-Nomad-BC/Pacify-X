@@ -1,0 +1,492 @@
+{
+  "id": "vscjava.vscode-maven",
+  "name": "Maven for Java",
+  "version": "0.45.3",
+  "publisher": "vscjava",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "javaExtensions",
+    "menus",
+    "submenus",
+    "views",
+    "viewsWelcome"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "vscjava.vscode-maven",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "vscjava.vscode-maven",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:javaExtensions",
+      "kind": "javaExtensions",
+      "provider": "vscjava.vscode-maven",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "vscjava.vscode-maven",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:submenus",
+      "kind": "submenus",
+      "provider": "vscjava.vscode-maven",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "vscjava.vscode-maven",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsWelcome",
+      "kind": "viewsWelcome",
+      "provider": "vscjava.vscode-maven",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "maven.archetype.generate",
+      "invocation": "vscode.commands.executeCommand('maven.archetype.generate', ...args)",
+      "title": "%contributes.commands.maven.archetype.generate%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.archetype.update",
+      "invocation": "vscode.commands.executeCommand('maven.archetype.update', ...args)",
+      "title": "%contributes.commands.maven.archetype.update%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.dependency.goToEffective",
+      "invocation": "vscode.commands.executeCommand('maven.dependency.goToEffective', ...args)",
+      "title": "%contributes.commands.maven.dependency.goToEffective%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.explorer.refresh",
+      "invocation": "vscode.commands.executeCommand('maven.explorer.refresh', ...args)",
+      "title": "%contributes.commands.maven.explorer.refresh%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.favorites",
+      "invocation": "vscode.commands.executeCommand('maven.favorites', ...args)",
+      "title": "%contributes.commands.maven.favorites%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.clean",
+      "invocation": "vscode.commands.executeCommand('maven.goal.clean', ...args)",
+      "title": "clean",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.compile",
+      "invocation": "vscode.commands.executeCommand('maven.goal.compile', ...args)",
+      "title": "compile",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.custom",
+      "invocation": "vscode.commands.executeCommand('maven.goal.custom', ...args)",
+      "title": "%contributes.commands.maven.goal.custom%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.deploy",
+      "invocation": "vscode.commands.executeCommand('maven.goal.deploy', ...args)",
+      "title": "deploy",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.execute",
+      "invocation": "vscode.commands.executeCommand('maven.goal.execute', ...args)",
+      "title": "%contributes.commands.maven.goal.execute%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.execute.fromFavoritesMenu",
+      "invocation": "vscode.commands.executeCommand('maven.goal.execute.fromFavoritesMenu', ...args)",
+      "title": "%contributes.commands.maven.plugin.execute%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.execute.fromLifecycleMenu",
+      "invocation": "vscode.commands.executeCommand('maven.goal.execute.fromLifecycleMenu', ...args)",
+      "title": "%contributes.commands.maven.plugin.execute%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.execute.fromProjectManager",
+      "invocation": "vscode.commands.executeCommand('maven.goal.execute.fromProjectManager', ...args)",
+      "title": "Run Maven Commands...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.install",
+      "invocation": "vscode.commands.executeCommand('maven.goal.install', ...args)",
+      "title": "install",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.package",
+      "invocation": "vscode.commands.executeCommand('maven.goal.package', ...args)",
+      "title": "package",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.site",
+      "invocation": "vscode.commands.executeCommand('maven.goal.site', ...args)",
+      "title": "site",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.test",
+      "invocation": "vscode.commands.executeCommand('maven.goal.test', ...args)",
+      "title": "test",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.test-compile",
+      "invocation": "vscode.commands.executeCommand('maven.goal.test-compile', ...args)",
+      "title": "test-compile",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.validate",
+      "invocation": "vscode.commands.executeCommand('maven.goal.validate', ...args)",
+      "title": "validate",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.goal.verify",
+      "invocation": "vscode.commands.executeCommand('maven.goal.verify', ...args)",
+      "title": "verify",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.history",
+      "invocation": "vscode.commands.executeCommand('maven.history', ...args)",
+      "title": "%contributes.commands.maven.history%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.java.projectConfiguration.update",
+      "invocation": "vscode.commands.executeCommand('maven.java.projectConfiguration.update', ...args)",
+      "title": "%contributes.commands.maven.java.projectConfiguration.update%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.new.module",
+      "invocation": "vscode.commands.executeCommand('maven.new.module', ...args)",
+      "title": "%contributes.commands.maven.module.new%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.plugin.debug",
+      "invocation": "vscode.commands.executeCommand('maven.plugin.debug', ...args)",
+      "title": "%contributes.commands.maven.plugin.debug%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.plugin.execute",
+      "invocation": "vscode.commands.executeCommand('maven.plugin.execute', ...args)",
+      "title": "%contributes.commands.maven.plugin.execute%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.profile.deselect",
+      "invocation": "vscode.commands.executeCommand('maven.profile.deselect', ...args)",
+      "title": "Deselect",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.profile.select",
+      "invocation": "vscode.commands.executeCommand('maven.profile.select', ...args)",
+      "title": "Select",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.project.addDependency",
+      "invocation": "vscode.commands.executeCommand('maven.project.addDependency', ...args)",
+      "title": "%contributes.commands.maven.project.addDependency%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.project.addFavorite",
+      "invocation": "vscode.commands.executeCommand('maven.project.addFavorite', ...args)",
+      "title": "%contributes.commands.maven.project.addFavorite%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.project.effectivePom",
+      "invocation": "vscode.commands.executeCommand('maven.project.effectivePom', ...args)",
+      "title": "%contributes.commands.maven.project.effectivePom%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.project.excludeDependency",
+      "invocation": "vscode.commands.executeCommand('maven.project.excludeDependency', ...args)",
+      "title": "%contributes.commands.maven.project.excludeDependency%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.project.goToDefinition",
+      "invocation": "vscode.commands.executeCommand('maven.project.goToDefinition', ...args)",
+      "title": "%contributes.commands.maven.project.goToDefinition%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.project.openPom",
+      "invocation": "vscode.commands.executeCommand('maven.project.openPom', ...args)",
+      "title": "%contributes.commands.maven.project.openPom%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.project.setDependencyVersion",
+      "invocation": "vscode.commands.executeCommand('maven.project.setDependencyVersion', ...args)",
+      "title": "%contributes.commands.maven.project.setDependencyVersion%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.project.showDependencies",
+      "invocation": "vscode.commands.executeCommand('maven.project.showDependencies', ...args)",
+      "title": "%contributes.commands.maven.project.showDependencies%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.view.flat",
+      "invocation": "vscode.commands.executeCommand('maven.view.flat', ...args)",
+      "title": "%contributes.commands.maven.view.flat%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "maven.view.hierarchical",
+      "invocation": "vscode.commands.executeCommand('maven.view.hierarchical', ...args)",
+      "title": "%contributes.commands.maven.view.hierarchical%",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "workspaceContains:**/pom.xml"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "limited",
+      "restrictedConfigurations": [
+        "maven.executable.path",
+        "maven.executable.options",
+        "maven.executable.preferMavenWrapper",
+        "maven.terminal.customEnv",
+        "maven.terminal.favorites",
+        "maven.pomfile.autoUpdateEffectivePOM"
+      ]
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "vscjava.vscode-maven",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:javaExtensions",
+      "contribution:menus",
+      "contribution:submenus",
+      "contribution:views",
+      "contribution:viewsWelcome"
+    ],
+    "interface": [
+      "maven.archetype.generate",
+      "maven.archetype.update",
+      "maven.dependency.goToEffective",
+      "maven.explorer.refresh",
+      "maven.favorites",
+      "maven.goal.clean",
+      "maven.goal.compile",
+      "maven.goal.custom",
+      "maven.goal.deploy",
+      "maven.goal.execute",
+      "maven.goal.execute.fromFavoritesMenu",
+      "maven.goal.execute.fromLifecycleMenu",
+      "maven.goal.execute.fromProjectManager",
+      "maven.goal.install",
+      "maven.goal.package",
+      "maven.goal.site",
+      "maven.goal.test",
+      "maven.goal.test-compile",
+      "maven.goal.validate",
+      "maven.goal.verify",
+      "maven.history",
+      "maven.java.projectConfiguration.update",
+      "maven.new.module",
+      "maven.plugin.debug",
+      "maven.plugin.execute",
+      "maven.profile.deselect",
+      "maven.profile.select",
+      "maven.project.addDependency",
+      "maven.project.addFavorite",
+      "maven.project.effectivePom",
+      "maven.project.excludeDependency",
+      "maven.project.goToDefinition",
+      "maven.project.openPom",
+      "maven.project.setDependencyVersion",
+      "maven.project.showDependencies",
+      "maven.view.flat",
+      "maven.view.hierarchical"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "limited",
+        "restrictedConfigurations": [
+          "maven.executable.path",
+          "maven.executable.options",
+          "maven.executable.preferMavenWrapper",
+          "maven.terminal.customEnv",
+          "maven.terminal.favorites",
+          "maven.pomfile.autoUpdateEffectivePOM"
+        ]
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

@@ -1,0 +1,303 @@
+{
+  "id": "vscode.typescript-language-features",
+  "name": "JavaScript and TypeScript Language Features",
+  "version": "10.0.0",
+  "publisher": "vscode",
+  "active": true,
+  "builtin": true,
+  "extension_kind": [],
+  "contribution_points": [
+    "breakpoints",
+    "commands",
+    "configuration",
+    "jsonValidation",
+    "menus",
+    "problemMatchers",
+    "problemPatterns",
+    "taskDefinitions"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:breakpoints",
+      "kind": "breakpoints",
+      "provider": "vscode.typescript-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "vscode.typescript-language-features",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "vscode.typescript-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "vscode.typescript-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "vscode.typescript-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:problemMatchers",
+      "kind": "problemMatchers",
+      "provider": "vscode.typescript-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:problemPatterns",
+      "kind": "problemPatterns",
+      "provider": "vscode.typescript-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:taskDefinitions",
+      "kind": "taskDefinitions",
+      "provider": "vscode.typescript-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "javascript.goToProjectConfig",
+      "invocation": "vscode.commands.executeCommand('javascript.goToProjectConfig', ...args)",
+      "title": "Go to Project Configuration (jsconfig / tsconfig)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "javascript.reloadProjects",
+      "invocation": "vscode.commands.executeCommand('javascript.reloadProjects', ...args)",
+      "title": "Reload Project",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "javascript.removeUnusedImports",
+      "invocation": "vscode.commands.executeCommand('javascript.removeUnusedImports', ...args)",
+      "title": "Remove Unused Imports",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!config.js/ts.experimental.useTsgo && !config.typescript.experimental.useTsgo && typescript.isManagedFile"
+    },
+    {
+      "id": "javascript.sortImports",
+      "invocation": "vscode.commands.executeCommand('javascript.sortImports', ...args)",
+      "title": "Sort Imports",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!config.js/ts.experimental.useTsgo && !config.typescript.experimental.useTsgo && typescript.isManagedFile"
+    },
+    {
+      "id": "typescript.experimental.disableTsgo",
+      "invocation": "vscode.commands.executeCommand('typescript.experimental.disableTsgo', ...args)",
+      "title": "Stop using TypeScript Go (Experimental)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "config.js/ts.experimental.useTsgo || config.typescript.experimental.useTsgo"
+    },
+    {
+      "id": "typescript.experimental.enableTsgo",
+      "invocation": "vscode.commands.executeCommand('typescript.experimental.enableTsgo', ...args)",
+      "title": "Use TypeScript Go (Experimental)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!config.js/ts.experimental.useTsgo && !config.typescript.experimental.useTsgo && config.typescript-go.executablePath"
+    },
+    {
+      "id": "typescript.findAllFileReferences",
+      "invocation": "vscode.commands.executeCommand('typescript.findAllFileReferences', ...args)",
+      "title": "Find File References",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "typescript.goToProjectConfig",
+      "invocation": "vscode.commands.executeCommand('typescript.goToProjectConfig', ...args)",
+      "title": "Go to Project Configuration (tsconfig)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "typescript.goToSourceDefinition",
+      "invocation": "vscode.commands.executeCommand('typescript.goToSourceDefinition', ...args)",
+      "title": "Go to Source Definition",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "typescript.openTsServerLog",
+      "invocation": "vscode.commands.executeCommand('typescript.openTsServerLog', ...args)",
+      "title": "Open TS Server log",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "typescript.reloadProjects",
+      "invocation": "vscode.commands.executeCommand('typescript.reloadProjects', ...args)",
+      "title": "Reload Project",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "typescript.removeUnusedImports",
+      "invocation": "vscode.commands.executeCommand('typescript.removeUnusedImports', ...args)",
+      "title": "Remove Unused Imports",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!config.js/ts.experimental.useTsgo && !config.typescript.experimental.useTsgo && typescript.isManagedFile"
+    },
+    {
+      "id": "typescript.restartTsServer",
+      "invocation": "vscode.commands.executeCommand('typescript.restartTsServer', ...args)",
+      "title": "Restart TS Server",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "typescript.selectTypeScriptVersion",
+      "invocation": "vscode.commands.executeCommand('typescript.selectTypeScriptVersion', ...args)",
+      "title": "Select TypeScript Version...",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "typescript.sortImports",
+      "invocation": "vscode.commands.executeCommand('typescript.sortImports', ...args)",
+      "title": "Sort Imports",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "!config.js/ts.experimental.useTsgo && !config.typescript.experimental.useTsgo && typescript.isManagedFile"
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:_typescript.configurePlugin",
+    "onCommand:_typescript.learnMoreAboutRefactorings",
+    "onCommand:typescript.fileReferences",
+    "onCommand:typescript.tsserverRequest",
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:jsonc",
+    "onLanguage:jsx-tags",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact",
+    "onTaskType:typescript",
+    "onWalkthrough:nodejsWelcome"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": false,
+      "description": "The extension requires workspace trust when the workspace version is used because it executes code specified by the workspace."
+    },
+    "virtual_workspaces": {
+      "supported": "limited",
+      "description": "In virtual workspaces, resolving and finding references across files is not supported."
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "vscode.typescript-language-features",
+    "capabilities": [
+      "contribution:breakpoints",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:jsonValidation",
+      "contribution:menus",
+      "contribution:problemMatchers",
+      "contribution:problemPatterns",
+      "contribution:taskDefinitions"
+    ],
+    "interface": [
+      "javascript.goToProjectConfig",
+      "javascript.reloadProjects",
+      "javascript.removeUnusedImports",
+      "javascript.sortImports",
+      "typescript.experimental.disableTsgo",
+      "typescript.experimental.enableTsgo",
+      "typescript.findAllFileReferences",
+      "typescript.goToProjectConfig",
+      "typescript.goToSourceDefinition",
+      "typescript.openTsServerLog",
+      "typescript.reloadProjects",
+      "typescript.removeUnusedImports",
+      "typescript.restartTsServer",
+      "typescript.selectTypeScriptVersion",
+      "typescript.sortImports"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": false,
+        "description": "The extension requires workspace trust when the workspace version is used because it executes code specified by the workspace."
+      },
+      "virtual_workspaces": {
+        "supported": "limited",
+        "description": "In virtual workspaces, resolving and finding references across files is not supported."
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "active-in-host"
+  }
+}

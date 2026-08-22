@@ -348,10 +348,50 @@ function evaluateLauncherTerminal({ walkStatus = null, processTreeClosedVerified
   };
 }
 
+function evaluateBootstrapActivation({ bootstrap = null, storageBoundary = null, additionalIssues = [] } = {}) {
+  const value = bootstrap && typeof bootstrap === 'object' ? bootstrap : {};
+  const boundary = storageBoundary && typeof storageBoundary === 'object' ? storageBoundary : {};
+  const issues = [...(additionalIssues || [])];
+  const required = [
+    ['status', 'ready', 'bootstrap-not-ready', 'The installed extension bootstrap did not reach ready status.'],
+    ['extension_found', true, 'extension-not-found', 'The exact installed extension was not discovered by the isolated host.'],
+    ['activation_completed', true, 'activation-not-completed', 'The exact installed extension did not complete activation.'],
+    ['command_registered', true, 'dashboard-command-not-registered', 'The dashboard command was not registered after activation.'],
+    ['command_executed', true, 'dashboard-command-not-executed', 'The registered dashboard command did not execute successfully.']
+  ];
+  for (const [field, expected, code, message] of required) {
+    if (value[field] !== expected) issues.push(issue({ source: 'extension_host', code, message, context: field }));
+  }
+  if (boundary.verified !== true) {
+    issues.push(issue({
+      source: 'process',
+      code: 'shared-storage-boundary-unverified',
+      message: 'The isolated host did not positively verify owned or in-memory shared storage without user-scoped storage.',
+      context: 'shared-data-dir'
+    }));
+  }
+  const normalizedIssues = dedupeIssues(issues);
+  const terminalState = terminalStateForIssues(normalizedIssues);
+  return {
+    schema_version: 'px.operational-host-bootstrap-status/1.0',
+    terminal_state: terminalState,
+    operationally_complete: terminalState === WALK_TERMINAL_STATES.COMPLETED,
+    bootstrap_ready: value.status === 'ready',
+    extension_found: value.extension_found === true,
+    activation_completed: value.activation_completed === true,
+    command_registered: value.command_registered === true,
+    command_executed: value.command_executed === true,
+    storage_boundary_verified: boundary.verified === true,
+    summary: summarizeIssues(normalizedIssues),
+    issues: normalizedIssues
+  };
+}
+
 module.exports = {
   WALK_EXIT_CODES,
   WALK_TERMINAL_STATES,
   dedupeIssues,
+  evaluateBootstrapActivation,
   evaluateLauncherTerminal,
   evaluateOperationalWalk,
   exitCodeForTerminalState,

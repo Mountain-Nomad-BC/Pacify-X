@@ -105,7 +105,23 @@ CURRENT_ACTION_SURFACE_BINDINGS: dict[str, dict[str, list[str]]] = {
             "assurance", "settings", "knowledge-core", "runtime-core",
         )
     },
+    "inspectRuntimeRecord": {
+        "runtime-core": [
+            "inspectRuntimeRecord.startup",
+        ]
+    },
     "openProjectModuleMap": {"projects": ["openProjectModuleMap"]},
+    "disconnectCanonicalMemory": {"memory": ["disconnectCanonicalMemory"]},
+    "graphLoadAll": {"knowledge-graph": ["graphLoadAll"]},
+    "importCatalogDefinition": {
+        "agents": ["importCatalogDefinition.agent"],
+        "workflows": ["importCatalogDefinition.workflow"],
+    },
+    "setupStudio": {
+        "agents": ["setupStudio"],
+        "workflows": ["setupStudio"],
+        "agent-studio": ["setupStudio"],
+    },
     "compareSkillOriginal": {"skills-tools": ["compareSkillOriginal"]},
     "executeExtensionConflictResolution": {"plugins": ["executeExtensionConflictResolution"]},
     "executeExtensionEnablement": {"plugins": ["executeExtensionEnablement"]},
@@ -186,6 +202,19 @@ STRUCTURAL_CONTROLS: dict[str, dict[str, list[str]]] = {
         "form": ["proposal", "reject", "rollback", "learningObservation", "learningPattern", "learningHypothesis", "learningTrial", "learningResearch", "learningFinalValidation", "learningReuse"]
     },
     "runtime-core": {"form": ["cleanupSelection"]},
+}
+
+# Historical audit extraction treated every named input as a user-operable
+# field. These values are intentionally hidden request bindings: users operate
+# the visible parent action while the controller carries the exact identity.
+# Admitting them as editable controls creates impossible proof requirements and
+# falsely lowers the operational denominator.
+HIDDEN_REQUEST_BINDINGS = {
+    ("knowledge-core", "learningPipelineId"),
+    ("knowledge-core", "rollbackExpectedHead"),
+    ("knowledge-core", "rollbackRecord"),
+    ("knowledge-core", "rollbackTarget"),
+    ("skills-tools", "fixedSkillDomain"),
 }
 
 
@@ -289,6 +318,8 @@ def build(root: Path) -> dict[str, object]:
             ("indicators", "indicator"),
         ):
             for name in source.get(plural, []):
+                if kind == "field" and (surface_id, str(name)) in HIDDEN_REQUEST_BINDINGS:
+                    continue
                 control_refs = source_refs
                 if kind == "action":
                     contract = action_contracts.get(str(name).split(".", 1)[0])

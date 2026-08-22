@@ -1,0 +1,49 @@
+{
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "842f8ed573320ac8c70417aab43cca12f14b4d34e002e481927ddc4ee327bf6f",
+    "payload_sha256": "09efad3e3db5ef493f9cbc7b0339debb1957f02c81a61e52682ab771b608c89f",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "behavioral_tests": [
+    {
+      "executed": true,
+      "passed": true,
+      "path": "tests/validation.json",
+      "runner": "trusted_declarative_runner"
+    }
+  ],
+  "checks": {
+    "all_content_scannable": true,
+    "declared_resources_present": true,
+    "manifest_current": true,
+    "native_contract_manifest_valid": true,
+    "native_manifest_present": true,
+    "native_manifest_valid": true,
+    "native_resource_index_valid": true,
+    "openai_interface_valid": true,
+    "preserved_original_current": true,
+    "schemas_parse": true,
+    "script_effects_declared": true,
+    "secret_scan_clear": true,
+    "skill_body_present": true,
+    "tests_executed": true,
+    "tree_current": true
+  },
+  "independently_derived": true,
+  "manifest_sha256": "a6b049ccd27b24e1ebfedbd88917b09bd17c816cc3e3ed6ea0ee916ef15165f4",
+  "nonce": "ca83951246b44dec8f192927e3732b81",
+  "parse_errors": [],
+  "passed": true,
+  "preserved_original": null,
+  "preserved_original_errors": [],
+  "scan_errors": [],
+  "schema_version": "px.skill-validation-receipt/1.1",
+  "script_effect_findings": [],
+  "secret_findings": [],
+  "skill_id": "pacify-x-studio-operator",
+  "source_tree_sha256": "6d627e482947e4075d508649a71c33ee45fd485f54918f58fbff511861cbca80",
+  "validated_utc": "2026-08-22T13:37:59.078Z",
+  "version": "1.0.2"
+}

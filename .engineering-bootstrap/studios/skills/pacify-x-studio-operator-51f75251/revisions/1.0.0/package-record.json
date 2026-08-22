@@ -1,0 +1,76 @@
+{
+  "admission_state": "unadmitted",
+  "created": true,
+  "draft_state": "saved",
+  "file_count": 6,
+  "files": [
+    {
+      "bytes": 492,
+      "path": "SKILL.md",
+      "sha256": "26c890b06a5582f6b6a8c1ad56130b67aee6fa915fbe53f93bb14ee90c113479"
+    },
+    {
+      "bytes": 318,
+      "path": "capability.json",
+      "sha256": "ccc3b5b9c8f33dae0088fb8b908f9c82a822097385ed4bc4a4fa0e2fd89c3a3d"
+    },
+    {
+      "bytes": 76,
+      "path": "contracts/input.schema.json",
+      "sha256": "8491177ce18b8c2860389a81e3022162f5ba7d98024abf04251bf0eb8d16bd57"
+    },
+    {
+      "bytes": 122,
+      "path": "resources/README.md",
+      "sha256": "7aa80e21c858ff96124b1c4bee49fc4513158ae88172329de7aa1683387abb76"
+    },
+    {
+      "bytes": 123,
+      "path": "skill.yaml",
+      "sha256": "6236e35bcfafa958a4b44d2609f85bfa27ab8dc005aa00ba0d49b1e665a6e6ec"
+    },
+    {
+      "bytes": 286,
+      "path": "tests/contract.json",
+      "sha256": "ed83ec7e200b078ad3d1f45a0f469676864c63e8d91608fbfaa3d4429f87d141"
+    }
+  ],
+  "manifest": {
+    "contracts": [
+      "contracts/input.schema.json"
+    ],
+    "effects": [
+      "read"
+    ],
+    "lifecycle": "draft",
+    "non_triggers": [
+      "mutation",
+      "deployment",
+      "credentialed operation"
+    ],
+    "owner": "human:vscode-local-user",
+    "permissions": [
+      "read_local"
+    ],
+    "provenance": {
+      "source": "project-owned Skill Studio intake"
+    },
+    "resources": [
+      "resources/README.md"
+    ],
+    "skill_id": "pacify-x-studio-operator",
+    "tests": [
+      "tests/contract.json"
+    ],
+    "triggers": [
+      "explicit Pacify-X Studio inspection"
+    ],
+    "version": "1.0.0"
+  },
+  "manifest_sha256": "42de31614bbc1cd4078aae26437ab63fecc5628ede267b53d892bfebe14e5107",
+  "payload_root": "payload",
+  "promotion_state": "not_promoted",
+  "schema_version": "px.skill-draft/1.1",
+  "source_authority_token": "source:b9478e61c31242f9966ac4503a0e8737",
+  "source_tree_sha256": "c3deb5d8885c2f24c37fa4329b7f47bb8ecab2e2796deb1f19b7b7db38d6fd90"
+}

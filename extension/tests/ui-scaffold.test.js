@@ -129,6 +129,10 @@ test('W001/S001/G004 Studio editors normalize typed drafts and rank typo-toleran
   const added = editors.editAgentBuilderNode(agent, graph, { type: 'add', kind: 'tools' });
   assert.equal(added.graph.nodes.some(node => node.node_id === 'agent-node:tools'), true);
   assert.deepEqual(JSON.parse(JSON.stringify(added.draft.tool_binding_ids)), []);
+  const occupiedLayout = Object.fromEntries(graph.nodes.map((node, index) => [node.node_id, { x: 36 + (index % 4) * 224, y: 42 + Math.floor(index / 4) * 142 }]));
+  const addedWithoutOverlap = editors.editAgentBuilderNode({ ...agent, editor_layout: occupiedLayout }, graph, { type: 'add', kind: 'tools' });
+  const addedPoint = addedWithoutOverlap.draft.editor_layout['agent-node:tools'];
+  assert.equal(Object.entries(addedWithoutOverlap.draft.editor_layout).some(([nodeId, point]) => nodeId !== 'agent-node:tools' && point.x === addedPoint.x && point.y === addedPoint.y), false);
   const retyped = editors.editAgentBuilderNode(added.draft, added.graph, { type: 'retype', node_id: 'agent-node:tools', kind: 'memory' });
   assert.equal(retyped.graph.nodes.some(node => node.node_id === 'agent-node:tools'), false);
   assert.equal(retyped.graph.nodes.some(node => node.node_id === 'agent-node:memory'), true);

@@ -31,6 +31,17 @@ function loadStudioEditors() {
 
 const studioEditors = loadStudioEditors();
 
+test('Agent Studio exposes only runtime-owned structural checks and rejects unknown imported IDs', () => {
+  assert.deepEqual(studioEditors.agentStructuralChecks.map(check => check.id), [
+    'identity', 'sandbox', 'model-route', 'input-contract', 'output-contract',
+    'authority-bindings', 'tool-bindings', 'handoff-topology'
+  ]);
+  const draft = studioEditors.normalizeAgent({ required_tests: ['identity', 'not-a-runtime-check'] });
+  const validation = studioEditors.validateAgent(draft);
+  assert.equal(validation.valid, false);
+  assert.ok(validation.issues.includes('Unknown structural preflight check not-a-runtime-check. Select a check implemented by the current runtime.'));
+});
+
 const NODE_ORDER = [
   'identity', 'behavior', 'model', 'harness', 'capabilities', 'tools', 'contracts',
   'authority', 'tests', 'candidate'

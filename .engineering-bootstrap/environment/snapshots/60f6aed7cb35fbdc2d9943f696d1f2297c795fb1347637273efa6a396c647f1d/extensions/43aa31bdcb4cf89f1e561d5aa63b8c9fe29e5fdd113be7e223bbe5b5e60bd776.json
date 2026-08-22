@@ -1,0 +1,689 @@
+{
+  "id": "vscode.markdown-language-features",
+  "name": "Markdown Language Features",
+  "version": "10.0.0",
+  "publisher": "vscode",
+  "active": false,
+  "builtin": true,
+  "extension_kind": [],
+  "contribution_points": [
+    "commands",
+    "configuration",
+    "configurationDefaults",
+    "customEditors",
+    "jsonValidation",
+    "keybindings",
+    "linkPresentationProviders",
+    "markdown.previewScripts",
+    "markdown.previewStyles",
+    "menus",
+    "notebookRenderer"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "vscode.markdown-language-features",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "vscode.markdown-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configurationDefaults",
+      "kind": "configurationDefaults",
+      "provider": "vscode.markdown-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:customEditors",
+      "kind": "customEditors",
+      "provider": "vscode.markdown-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:jsonValidation",
+      "kind": "jsonValidation",
+      "provider": "vscode.markdown-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "vscode.markdown-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:linkPresentationProviders",
+      "kind": "linkPresentationProviders",
+      "provider": "vscode.markdown-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:markdown.previewScripts",
+      "kind": "markdown.previewScripts",
+      "provider": "vscode.markdown-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:markdown.previewStyles",
+      "kind": "markdown.previewStyles",
+      "provider": "vscode.markdown-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "vscode.markdown-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:notebookRenderer",
+      "kind": "notebookRenderer",
+      "provider": "vscode.markdown-language-features",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "_markdown.copyImage",
+      "invocation": "vscode.commands.executeCommand('_markdown.copyImage', ...args)",
+      "title": "Copy Image",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "_markdown.openFrontMatterSettings",
+      "invocation": "vscode.commands.executeCommand('_markdown.openFrontMatterSettings', ...args)",
+      "title": "Configure Frontmatter Visibility",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "_markdown.openImage",
+      "invocation": "vscode.commands.executeCommand('_markdown.openImage', ...args)",
+      "title": "Open Image",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "markdown.editor.cursorDocumentEnd",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorDocumentEnd', ...args)",
+      "title": "Move Cursor to Document End",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorDocumentEndSelect",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorDocumentEndSelect', ...args)",
+      "title": "Select to Document End",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorDocumentStart",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorDocumentStart', ...args)",
+      "title": "Move Cursor to Document Start",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorDocumentStartSelect",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorDocumentStartSelect', ...args)",
+      "title": "Select to Document Start",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorDown",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorDown', ...args)",
+      "title": "Move Cursor Down",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorDownSelect",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorDownSelect', ...args)",
+      "title": "Select Down",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorLeft",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorLeft', ...args)",
+      "title": "Move Cursor Left",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorLeftSelect",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorLeftSelect', ...args)",
+      "title": "Select Left",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorLogicalLineEnd",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorLogicalLineEnd', ...args)",
+      "title": "Move Cursor to Logical Line End",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorLogicalLineEndSelect",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorLogicalLineEndSelect', ...args)",
+      "title": "Select to Logical Line End",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorLogicalLineStart",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorLogicalLineStart', ...args)",
+      "title": "Move Cursor to Logical Line Start",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorLogicalLineStartSelect",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorLogicalLineStartSelect', ...args)",
+      "title": "Select to Logical Line Start",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorRight",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorRight', ...args)",
+      "title": "Move Cursor Right",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorRightSelect",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorRightSelect', ...args)",
+      "title": "Select Right",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorUp",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorUp', ...args)",
+      "title": "Move Cursor Up",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorUpSelect",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorUpSelect', ...args)",
+      "title": "Select Up",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorVisualLineEnd",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorVisualLineEnd', ...args)",
+      "title": "Move Cursor to Visual Line End",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorVisualLineEndSelect",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorVisualLineEndSelect', ...args)",
+      "title": "Select to Visual Line End",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorVisualLineStart",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorVisualLineStart', ...args)",
+      "title": "Move Cursor to Visual Line Start",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorVisualLineStartSelect",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorVisualLineStartSelect', ...args)",
+      "title": "Select to Visual Line Start",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorWordLeft",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorWordLeft', ...args)",
+      "title": "Move Cursor Word Left",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorWordLeftSelect",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorWordLeftSelect', ...args)",
+      "title": "Select Word Left",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorWordRight",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorWordRight', ...args)",
+      "title": "Move Cursor Word Right",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.cursorWordRightSelect",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.cursorWordRightSelect', ...args)",
+      "title": "Select Word Right",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.deleteLeft",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.deleteLeft', ...args)",
+      "title": "Delete Left",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.deleteLineLeft",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.deleteLineLeft', ...args)",
+      "title": "Delete All Left",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.deleteLineRight",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.deleteLineRight', ...args)",
+      "title": "Delete All Right",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.deleteRight",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.deleteRight', ...args)",
+      "title": "Delete Right",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.deleteWordLeft",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.deleteWordLeft', ...args)",
+      "title": "Delete Word Left",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.deleteWordRight",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.deleteWordRight', ...args)",
+      "title": "Delete Word Right",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.insertHardLineBreak",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.insertHardLineBreak', ...args)",
+      "title": "Insert Hard Line Break",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.insertImageFromWorkspace",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.insertImageFromWorkspace', ...args)",
+      "title": "Insert Image from Workspace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "editorLangId =~ /^(markdown|prompt|instructions|chatagent|skill)$/ && !activeEditorIsReadonly"
+    },
+    {
+      "id": "markdown.editor.insertLinkFromWorkspace",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.insertLinkFromWorkspace', ...args)",
+      "title": "Insert Link to File in Workspace",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "editorLangId =~ /^(markdown|prompt|instructions|chatagent|skill)$/ && !activeEditorIsReadonly"
+    },
+    {
+      "id": "markdown.editor.insertParagraph",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.insertParagraph', ...args)",
+      "title": "Insert Paragraph Without Continuing Markup",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.insertTab",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.insertTab', ...args)",
+      "title": "Insert Tab",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.outdent",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.outdent', ...args)",
+      "title": "Outdent",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.redo",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.redo', ...args)",
+      "title": "Redo",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.selectAll",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.selectAll', ...args)",
+      "title": "Select All",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.smartEnter",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.smartEnter', ...args)",
+      "title": "Insert Paragraph",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.toggleTabFocus",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.toggleTabFocus', ...args)",
+      "title": "Toggle Tab Key Moves Focus",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.editor.undo",
+      "invocation": "vscode.commands.executeCommand('markdown.editor.undo', ...args)",
+      "title": "Undo",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "activeCustomEditorId == 'vscode.markdown.editor'"
+    },
+    {
+      "id": "markdown.findAllFileReferences",
+      "invocation": "vscode.commands.executeCommand('markdown.findAllFileReferences', ...args)",
+      "title": "Find File References",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "markdown.preview.refresh",
+      "invocation": "vscode.commands.executeCommand('markdown.preview.refresh', ...args)",
+      "title": "Refresh Preview",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "markdown.preview.toggleLock",
+      "invocation": "vscode.commands.executeCommand('markdown.preview.toggleLock', ...args)",
+      "title": "Toggle Preview Locking",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "markdown.reopenAsPreview",
+      "invocation": "vscode.commands.executeCommand('markdown.reopenAsPreview', ...args)",
+      "title": "Open as Preview",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "markdown.reopenAsSource",
+      "invocation": "vscode.commands.executeCommand('markdown.reopenAsSource', ...args)",
+      "title": "Reopen as source file",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "markdown.showLockedPreviewToSide",
+      "invocation": "vscode.commands.executeCommand('markdown.showLockedPreviewToSide', ...args)",
+      "title": "Open Locked Preview to the Side",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "markdown.showPreview",
+      "invocation": "vscode.commands.executeCommand('markdown.showPreview', ...args)",
+      "title": "Open Preview",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "markdown.showPreviewSecuritySelector",
+      "invocation": "vscode.commands.executeCommand('markdown.showPreviewSecuritySelector', ...args)",
+      "title": "Change Preview Security Settings",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "markdown.showPreviewToSide",
+      "invocation": "vscode.commands.executeCommand('markdown.showPreviewToSide', ...args)",
+      "title": "Open Preview to the Side",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "markdown.showSource",
+      "invocation": "vscode.commands.executeCommand('markdown.showSource', ...args)",
+      "title": "Open Source File",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "markdown.togglePreview",
+      "invocation": "vscode.commands.executeCommand('markdown.togglePreview', ...args)",
+      "title": "Toggle Preview",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [],
+  "activation_events": [
+    "onCommand:markdown.api.reloadPlugins",
+    "onCommand:markdown.api.render",
+    "onLanguage:chatagent",
+    "onLanguage:instructions",
+    "onLanguage:markdown",
+    "onLanguage:prompt",
+    "onLanguage:skill",
+    "onWebviewPanel:markdown.preview"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "limited",
+      "description": "Required for loading styles configured in the workspace.",
+      "restrictedConfigurations": [
+        "markdown.styles"
+      ]
+    },
+    "virtual_workspaces": true,
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "vscode.markdown-language-features",
+    "capabilities": [
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:configurationDefaults",
+      "contribution:customEditors",
+      "contribution:jsonValidation",
+      "contribution:keybindings",
+      "contribution:linkPresentationProviders",
+      "contribution:markdown.previewScripts",
+      "contribution:markdown.previewStyles",
+      "contribution:menus",
+      "contribution:notebookRenderer"
+    ],
+    "interface": [
+      "_markdown.copyImage",
+      "_markdown.openFrontMatterSettings",
+      "_markdown.openImage",
+      "markdown.editor.cursorDocumentEnd",
+      "markdown.editor.cursorDocumentEndSelect",
+      "markdown.editor.cursorDocumentStart",
+      "markdown.editor.cursorDocumentStartSelect",
+      "markdown.editor.cursorDown",
+      "markdown.editor.cursorDownSelect",
+      "markdown.editor.cursorLeft",
+      "markdown.editor.cursorLeftSelect",
+      "markdown.editor.cursorLogicalLineEnd",
+      "markdown.editor.cursorLogicalLineEndSelect",
+      "markdown.editor.cursorLogicalLineStart",
+      "markdown.editor.cursorLogicalLineStartSelect",
+      "markdown.editor.cursorRight",
+      "markdown.editor.cursorRightSelect",
+      "markdown.editor.cursorUp",
+      "markdown.editor.cursorUpSelect",
+      "markdown.editor.cursorVisualLineEnd",
+      "markdown.editor.cursorVisualLineEndSelect",
+      "markdown.editor.cursorVisualLineStart",
+      "markdown.editor.cursorVisualLineStartSelect",
+      "markdown.editor.cursorWordLeft",
+      "markdown.editor.cursorWordLeftSelect",
+      "markdown.editor.cursorWordRight",
+      "markdown.editor.cursorWordRightSelect",
+      "markdown.editor.deleteLeft",
+      "markdown.editor.deleteLineLeft",
+      "markdown.editor.deleteLineRight",
+      "markdown.editor.deleteRight",
+      "markdown.editor.deleteWordLeft",
+      "markdown.editor.deleteWordRight",
+      "markdown.editor.insertHardLineBreak",
+      "markdown.editor.insertImageFromWorkspace",
+      "markdown.editor.insertLinkFromWorkspace",
+      "markdown.editor.insertParagraph",
+      "markdown.editor.insertTab",
+      "markdown.editor.outdent",
+      "markdown.editor.redo",
+      "markdown.editor.selectAll",
+      "markdown.editor.smartEnter",
+      "markdown.editor.toggleTabFocus",
+      "markdown.editor.undo",
+      "markdown.findAllFileReferences",
+      "markdown.preview.refresh",
+      "markdown.preview.toggleLock",
+      "markdown.reopenAsPreview",
+      "markdown.reopenAsSource",
+      "markdown.showLockedPreviewToSide",
+      "markdown.showPreview",
+      "markdown.showPreviewSecuritySelector",
+      "markdown.showPreviewToSide",
+      "markdown.showSource",
+      "markdown.togglePreview"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "limited",
+        "description": "Required for loading styles configured in the workspace.",
+        "restrictedConfigurations": [
+          "markdown.styles"
+        ]
+      },
+      "virtual_workspaces": true,
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

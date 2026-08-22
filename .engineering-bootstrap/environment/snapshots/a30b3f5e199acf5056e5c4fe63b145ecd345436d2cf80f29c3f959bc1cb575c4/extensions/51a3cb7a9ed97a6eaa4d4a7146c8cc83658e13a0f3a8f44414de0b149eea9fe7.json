@@ -1,0 +1,462 @@
+{
+  "id": "ms-vscode.powershell",
+  "name": "PowerShell",
+  "version": "2025.4.0",
+  "publisher": "ms-vscode",
+  "active": false,
+  "builtin": false,
+  "extension_kind": [],
+  "contribution_points": [
+    "breakpoints",
+    "capabilities",
+    "commands",
+    "configuration",
+    "configurationDefaults",
+    "debuggers",
+    "keybindings",
+    "menus",
+    "problemMatchers",
+    "snippets",
+    "themes",
+    "views",
+    "viewsContainers",
+    "walkthroughs"
+  ],
+  "capabilities": [
+    {
+      "id": "contribution:breakpoints",
+      "kind": "breakpoints",
+      "provider": "ms-vscode.powershell",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:capabilities",
+      "kind": "capabilities",
+      "provider": "ms-vscode.powershell",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:commands",
+      "kind": "commands",
+      "provider": "ms-vscode.powershell",
+      "invocation": "See commands[]",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configuration",
+      "kind": "configuration",
+      "provider": "ms-vscode.powershell",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:configurationDefaults",
+      "kind": "configurationDefaults",
+      "provider": "ms-vscode.powershell",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:debuggers",
+      "kind": "debuggers",
+      "provider": "ms-vscode.powershell",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:keybindings",
+      "kind": "keybindings",
+      "provider": "ms-vscode.powershell",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:menus",
+      "kind": "menus",
+      "provider": "ms-vscode.powershell",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:problemMatchers",
+      "kind": "problemMatchers",
+      "provider": "ms-vscode.powershell",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:snippets",
+      "kind": "snippets",
+      "provider": "ms-vscode.powershell",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:themes",
+      "kind": "themes",
+      "provider": "ms-vscode.powershell",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:views",
+      "kind": "views",
+      "provider": "ms-vscode.powershell",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:viewsContainers",
+      "kind": "viewsContainers",
+      "provider": "ms-vscode.powershell",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    },
+    {
+      "id": "contribution:walkthroughs",
+      "kind": "walkthroughs",
+      "provider": "ms-vscode.powershell",
+      "invocation": "VS Code contribution-point contract",
+      "expected_inputs": "Defined by the VS Code contribution point and provider manifest.",
+      "expected_outputs": "Defined by the VS Code host contract; provider-specific output is not inferred."
+    }
+  ],
+  "commands": [
+    {
+      "id": "GetVsCodeSessionId",
+      "invocation": "vscode.commands.executeCommand('GetVsCodeSessionId', ...args)",
+      "title": "[PowerShell Debug Input Task] Get the VS Code Session ID for writing the PID file",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "false"
+    },
+    {
+      "id": "PowerShell.ClosePanel",
+      "invocation": "vscode.commands.executeCommand('PowerShell.ClosePanel', ...args)",
+      "title": "Close panel",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.Debug.Start",
+      "invocation": "vscode.commands.executeCommand('PowerShell.Debug.Start', ...args)",
+      "title": "Run",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.DebugPesterTestsFromFile",
+      "invocation": "vscode.commands.executeCommand('PowerShell.DebugPesterTestsFromFile', ...args)",
+      "title": "Debug Pester tests",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.DisableISEMode",
+      "invocation": "vscode.commands.executeCommand('PowerShell.DisableISEMode', ...args)",
+      "title": "Disable ISE Mode (restore to defaults)",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.EnableISEMode",
+      "invocation": "vscode.commands.executeCommand('PowerShell.EnableISEMode', ...args)",
+      "title": "Enable ISE Mode",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.ExpandAlias",
+      "invocation": "vscode.commands.executeCommand('PowerShell.ExpandAlias', ...args)",
+      "title": "Expand Alias",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.GenerateBugReport",
+      "invocation": "vscode.commands.executeCommand('PowerShell.GenerateBugReport', ...args)",
+      "title": "Upload Bug Report to GitHub",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.InsertCommand",
+      "invocation": "vscode.commands.executeCommand('PowerShell.InsertCommand', ...args)",
+      "title": "Insert Command",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.InvokeRegisteredEditorCommand",
+      "invocation": "vscode.commands.executeCommand('PowerShell.InvokeRegisteredEditorCommand', ...args)",
+      "title": "Invoke Registered Editor Command",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.OpenExamplesFolder",
+      "invocation": "vscode.commands.executeCommand('PowerShell.OpenExamplesFolder', ...args)",
+      "title": "Open Examples Folder",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.OpenInISE",
+      "invocation": "vscode.commands.executeCommand('PowerShell.OpenInISE', ...args)",
+      "title": "Open Current File in PowerShell ISE",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.OpenLogFolder",
+      "invocation": "vscode.commands.executeCommand('PowerShell.OpenLogFolder', ...args)",
+      "title": "Open PowerShell Extension Logs Folder",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.PositionPanelBottom",
+      "invocation": "vscode.commands.executeCommand('PowerShell.PositionPanelBottom', ...args)",
+      "title": "Move panel to bottom",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.PositionPanelLeft",
+      "invocation": "vscode.commands.executeCommand('PowerShell.PositionPanelLeft', ...args)",
+      "title": "Move panel left",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.PowerShellFindModule",
+      "invocation": "vscode.commands.executeCommand('PowerShell.PowerShellFindModule', ...args)",
+      "title": "Find/Install PowerShell Modules from the Gallery",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.RefreshCommandsExplorer",
+      "invocation": "vscode.commands.executeCommand('PowerShell.RefreshCommandsExplorer', ...args)",
+      "title": "Refresh Command Explorer",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.RestartSession",
+      "invocation": "vscode.commands.executeCommand('PowerShell.RestartSession', ...args)",
+      "title": "Restart Session",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.RunPesterTestsFromFile",
+      "invocation": "vscode.commands.executeCommand('PowerShell.RunPesterTestsFromFile', ...args)",
+      "title": "Run Pester tests",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.RunSelection",
+      "invocation": "vscode.commands.executeCommand('PowerShell.RunSelection', ...args)",
+      "title": "Run Selection",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.ShowAdditionalCommands",
+      "invocation": "vscode.commands.executeCommand('PowerShell.ShowAdditionalCommands', ...args)",
+      "title": "Show Additional Commands from PowerShell Modules",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.ShowHelp",
+      "invocation": "vscode.commands.executeCommand('PowerShell.ShowHelp', ...args)",
+      "title": "Get Help for Command",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.ShowLogs",
+      "invocation": "vscode.commands.executeCommand('PowerShell.ShowLogs', ...args)",
+      "title": "Show PowerShell Extension Logs",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.ShowSessionConsole",
+      "invocation": "vscode.commands.executeCommand('PowerShell.ShowSessionConsole', ...args)",
+      "title": "Show Extension Terminal",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.ShowSessionMenu",
+      "invocation": "vscode.commands.executeCommand('PowerShell.ShowSessionMenu', ...args)",
+      "title": "Show Session Menu",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.ToggleISEMode",
+      "invocation": "vscode.commands.executeCommand('PowerShell.ToggleISEMode', ...args)",
+      "title": "Toggle ISE Mode",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": null
+    },
+    {
+      "id": "PowerShell.WaitForPsesActivationAndReturnProcessId",
+      "invocation": "vscode.commands.executeCommand('PowerShell.WaitForPsesActivationAndReturnProcessId', ...args)",
+      "title": "[PowerShell Debug Input Task] Wait for and return PSES startup PID",
+      "expected_inputs": "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
+      "expected_outputs": "Return contract is not declared by the extension manifest.",
+      "enablement": "false"
+    }
+  ],
+  "api_contract": {
+    "exported_api_detected": false,
+    "activation_attempted": false,
+    "invocation": "vscode.extensions.getExtension(id)?.exports only after separately approved activation",
+    "expected_inputs": "Provider-defined; not inferred",
+    "expected_outputs": "Provider-defined; not inferred"
+  },
+  "dependencies": [
+    "vscode.powershell"
+  ],
+  "activation_events": [
+    "onCommand:PowerShell.PickPSHostProcess",
+    "onCommand:PowerShell.PickRunspace",
+    "onCommand:PowerShell.SpecifyScriptArgs",
+    "onDebugResolve:PowerShell",
+    "onLanguage:powershell"
+  ],
+  "permissions_resources": {
+    "extension_kind": [],
+    "workspace_trust": {
+      "supported": "not-declared"
+    },
+    "virtual_workspaces": {
+      "supported": "not-declared"
+    },
+    "resource_roots": [
+      "VS Code extension host",
+      "declared contribution points"
+    ],
+    "credential_access_inferred": false
+  },
+  "constraints": [
+    "Metadata detection does not activate the extension.",
+    "Command arguments and return types are unknown unless the provider declares them."
+  ],
+  "known_conflicts": [],
+  "integration_status": "detected-metadata-only",
+  "resource_contract": {
+    "resource": "ms-vscode.powershell",
+    "capabilities": [
+      "contribution:breakpoints",
+      "contribution:capabilities",
+      "contribution:commands",
+      "contribution:configuration",
+      "contribution:configurationDefaults",
+      "contribution:debuggers",
+      "contribution:keybindings",
+      "contribution:menus",
+      "contribution:problemMatchers",
+      "contribution:snippets",
+      "contribution:themes",
+      "contribution:views",
+      "contribution:viewsContainers",
+      "contribution:walkthroughs"
+    ],
+    "interface": [
+      "GetVsCodeSessionId",
+      "PowerShell.ClosePanel",
+      "PowerShell.Debug.Start",
+      "PowerShell.DebugPesterTestsFromFile",
+      "PowerShell.DisableISEMode",
+      "PowerShell.EnableISEMode",
+      "PowerShell.ExpandAlias",
+      "PowerShell.GenerateBugReport",
+      "PowerShell.InsertCommand",
+      "PowerShell.InvokeRegisteredEditorCommand",
+      "PowerShell.OpenExamplesFolder",
+      "PowerShell.OpenInISE",
+      "PowerShell.OpenLogFolder",
+      "PowerShell.PositionPanelBottom",
+      "PowerShell.PositionPanelLeft",
+      "PowerShell.PowerShellFindModule",
+      "PowerShell.RefreshCommandsExplorer",
+      "PowerShell.RestartSession",
+      "PowerShell.RunPesterTestsFromFile",
+      "PowerShell.RunSelection",
+      "PowerShell.ShowAdditionalCommands",
+      "PowerShell.ShowHelp",
+      "PowerShell.ShowLogs",
+      "PowerShell.ShowSessionConsole",
+      "PowerShell.ShowSessionMenu",
+      "PowerShell.ToggleISEMode",
+      "PowerShell.WaitForPsesActivationAndReturnProcessId"
+    ],
+    "requirements": {
+      "extension_kind": [],
+      "workspace_trust": {
+        "supported": "not-declared"
+      },
+      "virtual_workspaces": {
+        "supported": "not-declared"
+      },
+      "resource_roots": [
+        "VS Code extension host",
+        "declared contribution points"
+      ],
+      "credential_access_inferred": false
+    },
+    "effects": [
+      "metadata-read-only; invocation effects remain provider-owned"
+    ],
+    "conflicts": [],
+    "policy": "detect-without-activation; invoke-only-through-separate-governed action",
+    "state": "installed-not-active"
+  }
+}

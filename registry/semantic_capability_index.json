@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "loading_rule": "metadata_only",
-  "revision": "17f84f09040fff323f7ff609ed7c45dd98387d91e17d41728fd328d62b658d5a",
-  "record_count": 177,
+  "revision": "af32c8baeb773849aea729c5c0cd4e764b105d93e3ec6331722741b55bc84a8b",
+  "record_count": 178,
   "records": [
     {
       "id": "acquire-install-n8n",
@@ -3932,6 +3932,29 @@
       "tools": [],
       "relations": [],
       "body_sha256": "620a17486ca59e450777afc31519179a05d2ee6f4efb4b07854bdf6b6a9a4252"
+    },
+    {
+      "id": "pacify-x-studio-operator",
+      "kind": "skill",
+      "status": "active",
+      "description": "Inspect Pacify-X Studio revision, authority, admission, and durable-run state without changing it.",
+      "domains": [
+        "explicit Pacify-X Studio inspection"
+      ],
+      "intents": [],
+      "concepts": [
+        "explicit Pacify-X Studio inspection",
+        "operator",
+        "pacify",
+        "studio",
+        "x"
+      ],
+      "synonyms": [
+        "pacify x studio operator"
+      ],
+      "tools": [],
+      "relations": [],
+      "body_sha256": "26c890b06a5582f6b6a8c1ad56130b67aee6fa915fbe53f93bb14ee90c113479"
     },
     {
       "id": "paper-mechanism-extractor",

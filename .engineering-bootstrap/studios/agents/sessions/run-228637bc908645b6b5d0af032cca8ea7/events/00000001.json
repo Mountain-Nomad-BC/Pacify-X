@@ -1,0 +1,41 @@
+{
+  "actor": "human:vscode-local-user",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "245707501d45630f1ab38e932aef05d59dad983fdac787d41fe012d235db8eb0",
+    "payload_sha256": "1f38cdd19291697dba877dcc004ed331537e6d190c148553595b3e3690eeceb5",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "event_sha256": "6c44b9a4025efe7e25be149deff38d60d0ade7437832d6524d955a696b0f4ffb",
+  "operation": "create",
+  "previous_event_sha256": null,
+  "recorded_utc": "2026-08-21T18:02:14.428Z",
+  "run_id": "run-228637bc908645b6b5d0af032cca8ea7",
+  "schema_version": "px.studio-durable-run-event/1.0",
+  "sequence": 1,
+  "state": {
+    "authority_state": "codex-host-retained",
+    "checkpoint": {
+      "phase": "authorized",
+      "repeat_safe": true,
+      "resume_strategy": "restart-closed-local-worker",
+      "worker_completed": false
+    },
+    "created_utc": "2026-08-21T18:02:14.428Z",
+    "failure": null,
+    "heartbeat_utc": "2026-08-21T18:02:14.428Z",
+    "kind": "agent",
+    "owner": "human:vscode-local-user",
+    "request_sha256": "4665ed8a0551b1e7958b1a830be354f37c7a98c8a6f84e00bffc78820c1e49ab",
+    "resume_count": 0,
+    "revision_sha256": "f9af01c247173db0f57312fd708d4928d41c21a415fe4203487ad34ba7f69357",
+    "run_id": "run-228637bc908645b6b5d0af032cca8ea7",
+    "schema_version": "px.studio-durable-run/1.0",
+    "sequence": 1,
+    "state": "queued",
+    "subject_id": "agent:pacify-x-local",
+    "updated_utc": "2026-08-21T18:02:14.428Z",
+    "version": "1.0.0"
+  }
+}

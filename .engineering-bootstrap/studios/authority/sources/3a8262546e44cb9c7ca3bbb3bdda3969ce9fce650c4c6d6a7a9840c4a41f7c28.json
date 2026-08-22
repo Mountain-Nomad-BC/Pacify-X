@@ -1,0 +1,21 @@
+{
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "2b5b9de3aee23499d4b41784076f0ec2d073691994dd29e99ca0747b37e28689",
+    "payload_sha256": "07710dae645a3a7a2c6856a7acd468c7c8659e0b67ac46306e9ad0de620b1ab7",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "issued_utc": "2026-08-22T11:53:15.082Z",
+  "nonce": "49559ebd1ee14143869d049064e5b0fe",
+  "record": {
+    "approved_by": "codex-host:user-authorized-repair",
+    "source": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\.engineering-bootstrap\\studios\\repair-sources\\pacify-x-studio-operator-1.0.1",
+    "source_identity": "1585928601211604637:33495522228804103",
+    "state": "admitted",
+    "token": "source:1eaae0a472ce421f8b41aa295475f1fd",
+    "tree_sha256": "05b9a9d92ab0b4ad978f6b39e2977c3f3dfbd82fa5f45a41a1c0c020d6e061fe"
+  },
+  "record_sha256": "047f0cabe52f91806a5649177b2b229b50886043bf0e04899542068a1639657c",
+  "schema_version": "px.studio-authority-sources/1.0"
+}

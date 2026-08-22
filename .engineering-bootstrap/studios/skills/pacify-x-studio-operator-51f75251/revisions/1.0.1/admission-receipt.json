@@ -1,0 +1,20 @@
+{
+  "admitted_utc": "2026-08-22T11:53:15.556Z",
+  "approved_by": "codex-host:user-authorized-repair",
+  "authentication": {
+    "algorithm": "hmac-sha256",
+    "issuer": "px-project-studio-authority",
+    "mac": "86b5caf802269c246e53e753d2d5964ca2845a225553f307a25ff87e85e62bbd",
+    "payload_sha256": "28fb8f3b0b35de8f4acbdd3cd368645cc839fa6c8f8a1a43e6b42beb6f21e54f",
+    "project_identity": "px-project-85058463ecbb43738b5e92cd38299275"
+  },
+  "decision": "admitted",
+  "manifest_sha256": "a457ab0abd784b0cc39aeb8bfd3dfd2e046ed63c6dbadaa38bb8a7f17b816137",
+  "nonce": "b801034a6dc846c68538127d1f9afcb9",
+  "preserved_original": null,
+  "reasons": [],
+  "schema_version": "px.skill-admission-receipt/1.1",
+  "skill_id": "pacify-x-studio-operator",
+  "source_tree_sha256": "05b9a9d92ab0b4ad978f6b39e2977c3f3dfbd82fa5f45a41a1c0c020d6e061fe",
+  "version": "1.0.1"
+}

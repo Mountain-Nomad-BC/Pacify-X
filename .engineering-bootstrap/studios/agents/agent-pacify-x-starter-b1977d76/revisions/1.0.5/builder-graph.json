@@ -1,0 +1,280 @@
+{
+  "record": {
+    "agent_id": "agent:pacify-x-starter",
+    "edges": [
+      {
+        "edge_id": "agent-edge:58e8d2a708f837f177d4",
+        "relation": "requests",
+        "source_node": "agent-node:harness",
+        "source_port": "out:capability",
+        "target_node": "agent-node:capabilities",
+        "target_port": "in:capability"
+      },
+      {
+        "edge_id": "agent-edge:61a5c94f6cdf9e0120b3",
+        "relation": "defines",
+        "source_node": "agent-node:behavior",
+        "source_port": "out:definition",
+        "target_node": "agent-node:contracts",
+        "target_port": "in:definition"
+      },
+      {
+        "edge_id": "agent-edge:70af5a1a109ee4100b51",
+        "relation": "prompts",
+        "source_node": "agent-node:behavior",
+        "source_port": "out:definition",
+        "target_node": "agent-node:model",
+        "target_port": "in:definition"
+      },
+      {
+        "edge_id": "agent-edge:a85e3c5b355ed3abf207",
+        "relation": "authorizes",
+        "source_node": "agent-node:capabilities",
+        "source_port": "out:authority",
+        "target_node": "agent-node:authority",
+        "target_port": "in:authority"
+      },
+      {
+        "edge_id": "agent-edge:aa58aec0563f64626f3d",
+        "relation": "produces",
+        "source_node": "agent-node:tests",
+        "source_port": "out:candidate",
+        "target_node": "agent-node:candidate",
+        "target_port": "in:candidate"
+      },
+      {
+        "edge_id": "agent-edge:b1e49b51df89541fc360",
+        "relation": "owns",
+        "source_node": "agent-node:identity",
+        "source_port": "out:definition",
+        "target_node": "agent-node:behavior",
+        "target_port": "in:definition"
+      },
+      {
+        "edge_id": "agent-edge:bbe2a3cb69e9a24b6465",
+        "relation": "constrains",
+        "source_node": "agent-node:contracts",
+        "source_port": "out:contract",
+        "target_node": "agent-node:tests",
+        "target_port": "in:contract"
+      },
+      {
+        "edge_id": "agent-edge:e2e20836297afb1f31b5",
+        "relation": "validates",
+        "source_node": "agent-node:authority",
+        "source_port": "out:validation",
+        "target_node": "agent-node:tests",
+        "target_port": "in:validation"
+      },
+      {
+        "edge_id": "agent-edge:fd953ff0c30450ab77a3",
+        "relation": "routes",
+        "source_node": "agent-node:model",
+        "source_port": "out:model-route",
+        "target_node": "agent-node:harness",
+        "target_port": "in:model-route"
+      }
+    ],
+    "nodes": [
+      {
+        "config": {
+          "agent_id": "agent:pacify-x-starter",
+          "owner": "human:vscode-local-user",
+          "project_id": "project:current",
+          "version": "1.0.5"
+        },
+        "kind": "identity",
+        "node_id": "agent-node:identity",
+        "ports": [
+          {
+            "data_type": "definition",
+            "direction": "output",
+            "port_id": "out:definition"
+          }
+        ]
+      },
+      {
+        "config": {
+          "instruction_sha256": "d4ec6a8cc1f772e9a0070d434b7007ef1c01060f37b35a7d412bbcfea8f4c488"
+        },
+        "kind": "behavior",
+        "node_id": "agent-node:behavior",
+        "ports": [
+          {
+            "data_type": "definition",
+            "direction": "input",
+            "port_id": "in:definition"
+          },
+          {
+            "data_type": "definition",
+            "direction": "output",
+            "port_id": "out:definition"
+          }
+        ]
+      },
+      {
+        "config": {
+          "model": {
+            "family": "px-bounded-worker",
+            "max_output_tokens": 1024,
+            "model_id": "px-bounded-worker",
+            "provider": "deterministic",
+            "temperature": 0.0,
+            "vendor": "",
+            "version": ""
+          }
+        },
+        "kind": "model",
+        "node_id": "agent-node:model",
+        "ports": [
+          {
+            "data_type": "definition",
+            "direction": "input",
+            "port_id": "in:definition"
+          },
+          {
+            "data_type": "model-route",
+            "direction": "output",
+            "port_id": "out:model-route"
+          }
+        ]
+      },
+      {
+        "config": {
+          "harness_id": "harness:px"
+        },
+        "kind": "harness",
+        "node_id": "agent-node:harness",
+        "ports": [
+          {
+            "data_type": "model-route",
+            "direction": "input",
+            "port_id": "in:model-route"
+          },
+          {
+            "data_type": "capability",
+            "direction": "output",
+            "port_id": "out:capability"
+          }
+        ]
+      },
+      {
+        "config": {
+          "binding_ids": [
+            "binding:pacify-x-starter"
+          ]
+        },
+        "kind": "capabilities",
+        "node_id": "agent-node:capabilities",
+        "ports": [
+          {
+            "data_type": "capability",
+            "direction": "input",
+            "port_id": "in:capability"
+          },
+          {
+            "data_type": "capability",
+            "direction": "output",
+            "port_id": "out:capability"
+          },
+          {
+            "data_type": "authority",
+            "direction": "output",
+            "port_id": "out:authority"
+          }
+        ]
+      },
+      {
+        "config": {
+          "input_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        "kind": "contracts",
+        "node_id": "agent-node:contracts",
+        "ports": [
+          {
+            "data_type": "definition",
+            "direction": "input",
+            "port_id": "in:definition"
+          },
+          {
+            "data_type": "contract",
+            "direction": "output",
+            "port_id": "out:contract"
+          }
+        ]
+      },
+      {
+        "config": {
+          "grant_ids": [
+            "grant:pacify-x-starter"
+          ]
+        },
+        "kind": "authority",
+        "node_id": "agent-node:authority",
+        "ports": [
+          {
+            "data_type": "authority",
+            "direction": "input",
+            "port_id": "in:authority"
+          },
+          {
+            "data_type": "validation",
+            "direction": "output",
+            "port_id": "out:validation"
+          }
+        ]
+      },
+      {
+        "config": {
+          "test_ids": [
+            "identity",
+            "sandbox"
+          ]
+        },
+        "kind": "tests",
+        "node_id": "agent-node:tests",
+        "ports": [
+          {
+            "data_type": "validation",
+            "direction": "input",
+            "port_id": "in:validation"
+          },
+          {
+            "data_type": "contract",
+            "direction": "input",
+            "port_id": "in:contract"
+          },
+          {
+            "data_type": "candidate",
+            "direction": "output",
+            "port_id": "out:candidate"
+          }
+        ]
+      },
+      {
+        "config": {
+          "lifecycle": "draft"
+        },
+        "kind": "candidate",
+        "node_id": "agent-node:candidate",
+        "ports": [
+          {
+            "data_type": "candidate",
+            "direction": "input",
+            "port_id": "in:candidate"
+          }
+        ]
+      }
+    ],
+    "schema_version": "px.agent-builder-graph/1.0"
+  },
+  "schema_version": "px.agent-builder-graph/1.0",
+  "sha256": "45e50b47e61b9ec7207bf622877999346c46832b356dde633da8cd7d58251c9e"
+}
