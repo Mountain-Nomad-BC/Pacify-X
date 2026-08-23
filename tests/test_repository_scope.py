@@ -25,6 +25,7 @@ def test_local_dependency_installations_are_pruned_at_the_root() -> None:
     )
     assert is_external_environment_relative(".engineering-bootstrap/project-map/index.json")
     assert is_external_environment_relative(".engineering-bootstrap/coordination/state.json")
+    assert is_external_environment_relative(".engineering-bootstrap/runtime-core/state.json")
     assert is_external_environment_relative(
         ".engineering-bootstrap/project-map-history-archives/history.zip"
     )

@@ -20,6 +20,7 @@ DERIVED_CUSTODY_ROOTS = frozenset(
         "project-map-history",
         "project-map-history-archives",
         "project-map-lock-history",
+        "runtime-core",
         "quarantine",
         "operation-bus",
         "resource-lifecycle",

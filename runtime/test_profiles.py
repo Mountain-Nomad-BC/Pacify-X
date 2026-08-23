@@ -92,6 +92,8 @@ def _section_files(root: Path, patterns: list[str]) -> list[str]:
 def _structural_scan_files(root: Path, max_bytes: int = 1_000_000) -> list[str]:
     """Return the incompleteness scanner's exact governed source inventory."""
 
+    from .repository_scope import is_external_environment_relative
+
     excluded = {
         ".git",
         ".venv",
@@ -108,6 +110,9 @@ def _structural_scan_files(root: Path, max_bytes: int = 1_000_000) -> list[str]:
     paths: list[str] = []
     for current, dirs, files in os.walk(root, topdown=True, followlinks=False):
         relative_current = Path(current).relative_to(root)
+        if is_external_environment_relative(relative_current):
+            dirs[:] = []
+            continue
         folded_parts = tuple(part.casefold() for part in relative_current.parts)
         if len(folded_parts) >= 2 and folded_parts[:2] == (
             ".px",
@@ -121,6 +126,7 @@ def _structural_scan_files(root: Path, max_bytes: int = 1_000_000) -> list[str]:
                 for name in dirs
                 if name.casefold() not in excluded
                 and not name.casefold().startswith(".venv")
+                and not is_external_environment_relative(relative_current / name)
             ),
             key=str.casefold,
         )
@@ -129,6 +135,7 @@ def _structural_scan_files(root: Path, max_bytes: int = 1_000_000) -> list[str]:
             try:
                 eligible = (
                     path.suffix.casefold() in suffixes
+                    and not is_external_environment_relative(path.relative_to(root))
                     and not path.is_symlink()
                     and path.stat().st_size <= max_bytes
                 )

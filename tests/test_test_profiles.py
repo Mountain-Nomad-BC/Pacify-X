@@ -215,6 +215,12 @@ def test_certification_groups_are_exhaustive_exclusive_and_bounded():
         group for group in groups if group["group"] == "structural-adversarial"
     )
     assert structural["scan_inventory_current"] is True
+    assert not any(
+        path.startswith((".tmp/", ".px/preserved-extension-installations/"))
+        for path in structural["scan_inputs"]
+    )
+    assert ".tmp_query_controls.js" not in structural["scan_inputs"]
+    assert ".tmp_surface_controls.js" not in structural["scan_inputs"]
     assert (
         ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py"
         in structural["inputs"]
