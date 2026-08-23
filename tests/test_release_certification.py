@@ -11,6 +11,7 @@ from runtime.release_certification import (
     FINALIZER_FULL_REPAIR_PENDING,
     _certificate_ledger_errors,
     _commit_release_evidence,
+    _compact_coverage_contexts,
     _copy_clean,
     _junit_case_gate,
     _junit_metadata_gate,
@@ -174,6 +175,50 @@ def test_junit_skip_policy_allows_only_reviewed_host_conditionals() -> None:
         result = _junit_skip_policy_gate(report)
         assert not result["valid"]
         assert result["unexpected"] == ["tests.test_unknown::test_unreviewed"]
+
+
+def test_coverage_context_compaction_retains_only_governed_modules(tmp_path: Path) -> None:
+    root = tmp_path / "root"
+    (root / "policies").mkdir(parents=True)
+    (root / "policies/coverage-assurance.json").write_text(
+        json.dumps(
+            {
+                "classes": {
+                    "critical": {"modules": ["runtime/critical.py"]},
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    coverage_path = root / "coverage.json"
+    coverage_path.write_text(
+        json.dumps(
+            {
+                "meta": {"branch_coverage": True, "show_contexts": True},
+                "files": {
+                    "runtime/critical.py": {
+                        "summary": {"num_branches": 2, "missing_branches": 0},
+                        "contexts": {"1": ["test_critical"]},
+                    },
+                    "runtime/ordinary.py": {
+                        "summary": {"num_branches": 4, "missing_branches": 1},
+                        "contexts": {"1": ["test_ordinary"]},
+                    },
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = _compact_coverage_contexts(root, coverage_path)
+    compacted = json.loads(coverage_path.read_text(encoding="utf-8"))
+
+    assert result["files_with_contexts_retained"] == 1
+    assert result["files_with_contexts_removed"] == 1
+    assert compacted["files"]["runtime/critical.py"]["contexts"]
+    assert "contexts" not in compacted["files"]["runtime/ordinary.py"]
+    assert compacted["files"]["runtime/ordinary.py"]["summary"]["num_branches"] == 4
+    assert compacted["meta"]["pacify_x_context_scope"] == "policy-governed-modules"
 
 
 def test_junit_publication_evidence_removes_host_identity() -> None:

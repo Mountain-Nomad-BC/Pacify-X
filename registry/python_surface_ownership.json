@@ -3666,7 +3666,7 @@
       "validation_level": "evidence-association"
     },
     {
-      "bytes": 49070,
+      "bytes": 51176,
       "evidence": [
         "tests/test_rel009_release.py",
         "tests/test_release_certification.py",
@@ -3676,7 +3676,7 @@
       "packaged": true,
       "path": "runtime/release_certification.py",
       "role": "installed-runtime",
-      "sha256": "b6be282b92441eacd5556a1cdb4d5abc765e6e550577e1301ed135f61558ee01",
+      "sha256": "66f0688b809fd3dd9d2f2d047ec2ae28f06130910b7dc4b7185d43f83d8fb1c0",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -7409,7 +7409,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 15290,
+      "bytes": 17006,
       "evidence": [
         "tests/test_release_certification.py"
       ],
@@ -7417,7 +7417,7 @@
       "packaged": true,
       "path": "tests/test_release_certification.py",
       "role": "release-test",
-      "sha256": "52a58bea6e9d06b4a420b9ddfb3c77dd9e649ee643d155df1a0f03f700eb0f4c",
+      "sha256": "21837b4b76341ed7ae18526fe4bd5cbb888123a42788c51f44394b73668da5ca",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

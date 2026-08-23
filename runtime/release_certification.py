@@ -312,6 +312,53 @@ def _junit_metadata_gate(path: Path) -> dict[str, Any]:
     }
 
 
+def _compact_coverage_contexts(root: Path, coverage_path: Path) -> dict[str, Any]:
+    """Retain dynamic contexts only for modules governed by coverage policy."""
+
+    policy = _json(root / "policies/coverage-assurance.json")
+    governed_modules = sorted(
+        {
+            str(module).replace("\\", "/")
+            for rule in policy.get("classes", {}).values()
+            for module in rule.get("modules", ())
+        }
+    )
+    coverage = _json(coverage_path)
+    files = coverage.get("files", {})
+    if not isinstance(files, dict):
+        raise ValueError("coverage evidence files must be an object")
+    retained = 0
+    removed = 0
+    for name, record in files.items():
+        if not isinstance(record, dict) or "contexts" not in record:
+            continue
+        normalized = str(name).replace("\\", "/")
+        governed = any(
+            normalized == module or normalized.endswith("/" + module)
+            for module in governed_modules
+        )
+        if governed:
+            retained += 1
+        else:
+            record.pop("contexts", None)
+            removed += 1
+    meta = coverage.setdefault("meta", {})
+    if isinstance(meta, dict):
+        meta["pacify_x_context_scope"] = "policy-governed-modules"
+        meta["pacify_x_context_modules"] = governed_modules
+    prepared = coverage_path.with_name(f".{coverage_path.name}.compacted")
+    prepared.write_text(
+        json.dumps(coverage, separators=(",", ":")) + "\n", encoding="utf-8"
+    )
+    os.replace(prepared, coverage_path)
+    return {
+        "governed_module_count": len(governed_modules),
+        "files_with_contexts_retained": retained,
+        "files_with_contexts_removed": removed,
+        "bytes": coverage_path.stat().st_size,
+    }
+
+
 def _release_environment_gate(
     root: Path, python_executable: str, environment: dict[str, str]
 ) -> dict[str, Any]:
@@ -601,8 +648,15 @@ def run_release_gates(
         timeout_seconds=min(float(profile["timeout_seconds"]), 300.0),
     )
     if coverage_path.is_file() and coverage_process["valid"]:
+        coverage_compaction = _compact_coverage_contexts(root, coverage_path)
         coverage_gate = validate_coverage_evidence(root, coverage_path)
     else:
+        coverage_compaction = {
+            "governed_module_count": 0,
+            "files_with_contexts_retained": 0,
+            "files_with_contexts_removed": 0,
+            "bytes": 0,
+        }
         coverage_gate = {
             "schema_version": "1.0",
             "valid": False,
@@ -644,7 +698,10 @@ def run_release_gates(
             "valid": artifact_binding["valid"],
             "errors": artifact_binding["errors"],
         },
-        "executed_branch_coverage": coverage_gate,
+        "executed_branch_coverage": {
+            **coverage_gate,
+            "context_compaction": coverage_compaction,
+        },
     }
     gates["installed_wheel"] = (
         _junit_case_gate(junit_path, "test_installed_wheel_e2e")
