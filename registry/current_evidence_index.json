@@ -11,12 +11,12 @@
   "engine_identity": {
     "file_total": 5412,
     "manifest_path": "registry/engine_identity.json",
-    "manifest_sha256": "b134662c758f91c4c3532763af4de24bc1e136f535f5a99fe353c98a4e7a05c0",
+    "manifest_sha256": "30df895d26fa4a7bc866f900abe58a3f34dc22a6d688d2be7f1dfb80a94a6a87",
     "schema_version": "px.engine-identity-validation/1.0",
-    "tree_sha256": "10e70a852da8898d1eddd8595c7d15858f693ec57631c3813d0e294640f57056",
+    "tree_sha256": "eadda1dc165cc845d7be418dab821cd959bf78ea0b89304c491db31e190b1c6d",
     "valid": true
   },
-  "generated_utc": "2026-08-23T12:10:44.806414Z",
+  "generated_utc": "2026-08-23T13:32:35.799579Z",
   "identity": {
     "extension_version": "0.6.49",
     "python_version": "0.7.0.dev0"
@@ -116,27 +116,27 @@
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "e395e9d774c8b1e1d9e33daf0059ea1a755b20ced7c745ee1e9b8bd0ddfedbee",
+        "expected_input_sha256": "c2d134e5c12c3ff659299abcc1d62ef2b55b9ea595c6f778f694f1d861ad6559",
         "fresh": true,
         "passed": true,
         "receipt_id": "testing-governance",
         "receipt_scope": "section"
       },
-      "sha256": "533294b3435cb84540688a0efe57cd6b23f027e782577182e1995ea843aa4fb6"
+      "sha256": "ada3b71020aee98f6fd36289218bf3bfe4d7f9061997a9e9cf5fa75f4441904b"
     },
     {
-      "bytes": 658,
+      "bytes": 659,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/core-a-f.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "d0195a0e5db0643921fb38f4829424d8c896ebcc4a518ed5ef0d81efd9c2b651",
+        "expected_input_sha256": "ffd19e10b7de798835194466150c0fb60cb7643c8010213d9b2f7bff1f5a417f",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-a-f",
         "receipt_scope": "group"
       },
-      "sha256": "df177fd6a86d7e11267827653b9ee878e65cdcd55c0139f85a897fca0f51ca45"
+      "sha256": "3aea45350c3f94b5db9e9175e47d207708ab32148f47fc6e9d79e78937d3d4c3"
     },
     {
       "bytes": 659,
@@ -144,13 +144,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/core-g-m.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "1398ceadb1eaa944a00d46d3863b1feedbaa23b8e27783e53fbc62320b9c5ced",
+        "expected_input_sha256": "a96b5b473bccbdc3820cb3a50052b165f55ec46bdc82ae2e4356931e15455ab3",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-g-m",
         "receipt_scope": "group"
       },
-      "sha256": "63167654e48d9e2bf9ccf45a8ae56e7d033dca6d1a55b59da79d6c1411085f83"
+      "sha256": "a48e2a2c249809075e82decd008f7dd12c6ea92d51e865481aa1552eb0c1469c"
     },
     {
       "bytes": 660,
@@ -158,13 +158,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/core-n-s.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "73247f0b5486a358243ac84776bed229cfb404751bcc490e2e07aa7acd927f65",
+        "expected_input_sha256": "a92a481867ac0fa76f326e68d19accec9fd35c964244e0fa8db0c5397cad9c81",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-n-s",
         "receipt_scope": "group"
       },
-      "sha256": "8cb6e3b75c0ff0a11556a119af3b917a4a55dacefc43b1912d2e9bd2bff75504"
+      "sha256": "01129de422b669c402d757e3fe1596e27abb692b1314a37a2ccaff0a736e29b8"
     },
     {
       "bytes": 659,
@@ -172,13 +172,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/core-t-z.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "b709bbf9c2c6e34f7550d153395c396ed35e22995fd82a3b80e095ebe644fd06",
+        "expected_input_sha256": "c9405bf4db4f50215ec8445315e1dcad808c62f151a4cec820a1ba9c736b2394",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-t-z",
         "receipt_scope": "group"
       },
-      "sha256": "e719ff538f0db1695e08bd8d98f2ea6d934e28f3ba61610723b2cea7d2097851"
+      "sha256": "59cc2a2c37a832b9d44ed1038413732c8c2ffcb578dea4e40bc219322d47ce3a"
     },
     {
       "bytes": 667,
@@ -186,13 +186,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/derived-integrity.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "d05c572aba4dc5c2abf28feb9d374cab4d4cb10305a35e5a19849b38600f4663",
+        "expected_input_sha256": "bde67243b015d28be853d5c205eb9caf40eb0dfea93b6aea96d9b6324e7c944d",
         "fresh": true,
         "passed": true,
         "receipt_id": "derived-integrity",
         "receipt_scope": "group"
       },
-      "sha256": "70b6ec5ae501ace5bb8578234e0d81548be5650cf1a77ed74f57ee1faf878b55"
+      "sha256": "5839aa4e170e209dcc35220201d6f1596d8b457c1ee5f0a6403fbdaec66b1ef6"
     },
     {
       "bytes": 666,
@@ -200,13 +200,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/exact-installed.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "e8a9c2d4adc0eb4d55c09cf315f0ebe17c1ea970362f31588f8d50aa20d68f08",
+        "expected_input_sha256": "59e7e381e86aaa2da474c08e23577e374b55cf9db8e0d226f120a91d47c89bfd",
         "fresh": true,
         "passed": true,
         "receipt_id": "exact-installed",
         "receipt_scope": "group"
       },
-      "sha256": "eaf0d28cff0ec4bd04c35f797543384c6acf3307114921d12cef9d053f8688c4"
+      "sha256": "eb5dafc780347c8a00ed272891aa5d1ff28b1220080f4115c69d3fe7dffe0fef"
     },
     {
       "bytes": 668,
@@ -228,13 +228,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/release-audit.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "7c3ff116a4d636d3ee6fa034b96502449a941d375c522d64dc11937dddb475d8",
+        "expected_input_sha256": "e49892ba5865e57ef85720935f4ae6ea851441e98841a70b96901b3e8e234dbf",
         "fresh": true,
         "passed": true,
         "receipt_id": "release-audit",
         "receipt_scope": "group"
       },
-      "sha256": "b44b00ca01fd8de5ead88b09a4ba0ec1db80cec778288d66cfc7e27fbd9c8b2f"
+      "sha256": "a1945d444dee573c83d7cb22b1e0a8eb1056363d1689cb25080786713a96b463"
     },
     {
       "bytes": 664,
@@ -242,13 +242,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/release-build.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "3a2a504f6c4a8adc98d1336d26daa199b3736a7e5891f678596aeacfb0c87a7d",
+        "expected_input_sha256": "8bcf3ffdd857990a464533922b752fa7ef2ef732160ebb36e6c8bf04804bb1e4",
         "fresh": true,
         "passed": true,
         "receipt_id": "release-build",
         "receipt_scope": "group"
       },
-      "sha256": "6701a4c9fe94db79f1983119cde0a993722a52e10fb53b830c268259afdecb11"
+      "sha256": "643eb15e38b2a45d6e05f7dec4591c68e7619bd8dc4728580114da0a2c53cf20"
     },
     {
       "bytes": 673,
@@ -256,13 +256,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/structural-adversarial.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "c7761dd2c55fe4e95eb5d2b894031fe7b8848eeabd8e5555d944b30da58dcad8",
+        "expected_input_sha256": "a02b1f9d95187a356bdd87d15ffc7f7914e5d5401bb17ad9788894a00f6d761e",
         "fresh": true,
         "passed": true,
         "receipt_id": "structural-adversarial",
         "receipt_scope": "group"
       },
-      "sha256": "2395e80db7f6f7c18b17f8da17afed467f3d640ce45d0df772fb3facf3c5a70e"
+      "sha256": "c4af3750db4caa47255ed61d36c3db2c9527425edd338d4ace88339a0b810a46"
     },
     {
       "artifact_bound": false,

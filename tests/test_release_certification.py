@@ -199,10 +199,16 @@ def test_coverage_context_compaction_retains_only_governed_modules(tmp_path: Pat
                     "runtime/critical.py": {
                         "summary": {"num_branches": 2, "missing_branches": 0},
                         "contexts": {"1": ["test_critical"]},
+                        "functions": {
+                            "critical": {"contexts": {"1": ["test_critical"]}}
+                        },
                     },
                     "runtime/ordinary.py": {
                         "summary": {"num_branches": 4, "missing_branches": 1},
                         "contexts": {"1": ["test_ordinary"]},
+                        "classes": {
+                            "Ordinary": {"contexts": {"1": ["test_ordinary"]}}
+                        },
                     },
                 },
             }
@@ -215,8 +221,11 @@ def test_coverage_context_compaction_retains_only_governed_modules(tmp_path: Pat
 
     assert result["files_with_contexts_retained"] == 1
     assert result["files_with_contexts_removed"] == 1
+    assert result["nested_context_fields_removed"] == 2
     assert compacted["files"]["runtime/critical.py"]["contexts"]
+    assert "contexts" not in compacted["files"]["runtime/critical.py"]["functions"]["critical"]
     assert "contexts" not in compacted["files"]["runtime/ordinary.py"]
+    assert "contexts" not in compacted["files"]["runtime/ordinary.py"]["classes"]["Ordinary"]
     assert compacted["files"]["runtime/ordinary.py"]["summary"]["num_branches"] == 4
     assert compacted["meta"]["pacify_x_context_scope"] == "policy-governed-modules"
 

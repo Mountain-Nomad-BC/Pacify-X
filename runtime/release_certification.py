@@ -329,19 +329,40 @@ def _compact_coverage_contexts(root: Path, coverage_path: Path) -> dict[str, Any
         raise ValueError("coverage evidence files must be an object")
     retained = 0
     removed = 0
+    nested_removed = 0
+
+    def strip_nested_contexts(value: object) -> None:
+        nonlocal nested_removed
+        if isinstance(value, dict):
+            for key in list(value):
+                if key == "contexts":
+                    value.pop(key, None)
+                    nested_removed += 1
+                else:
+                    strip_nested_contexts(value[key])
+        elif isinstance(value, list):
+            for item in value:
+                strip_nested_contexts(item)
+
     for name, record in files.items():
-        if not isinstance(record, dict) or "contexts" not in record:
+        if not isinstance(record, dict):
             continue
         normalized = str(name).replace("\\", "/")
         governed = any(
             normalized == module or normalized.endswith("/" + module)
             for module in governed_modules
         )
-        if governed:
-            retained += 1
-        else:
-            record.pop("contexts", None)
-            removed += 1
+        if "contexts" in record:
+            if governed:
+                retained += 1
+            else:
+                record.pop("contexts", None)
+                removed += 1
+        # Coverage.py repeats line contexts in function and class projections.
+        # File-level contexts are the canonical policy input, so remove only
+        # those redundant nested copies while keeping all summaries/branches.
+        strip_nested_contexts(record.get("functions"))
+        strip_nested_contexts(record.get("classes"))
     meta = coverage.setdefault("meta", {})
     if isinstance(meta, dict):
         meta["pacify_x_context_scope"] = "policy-governed-modules"
@@ -355,6 +376,7 @@ def _compact_coverage_contexts(root: Path, coverage_path: Path) -> dict[str, Any
         "governed_module_count": len(governed_modules),
         "files_with_contexts_retained": retained,
         "files_with_contexts_removed": removed,
+        "nested_context_fields_removed": nested_removed,
         "bytes": coverage_path.stat().st_size,
     }
 
@@ -655,6 +677,7 @@ def run_release_gates(
             "governed_module_count": 0,
             "files_with_contexts_retained": 0,
             "files_with_contexts_removed": 0,
+            "nested_context_fields_removed": 0,
             "bytes": 0,
         }
         coverage_gate = {
