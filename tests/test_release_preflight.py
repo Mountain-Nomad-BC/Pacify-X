@@ -3,6 +3,7 @@ from pathlib import Path
 
 from runtime.release_preflight import (
     _cache_inputs,
+    _binding,
     _canonical,
     _sha_bytes,
     installed_equivalence,
@@ -188,3 +189,27 @@ def test_preflight_detects_its_own_product_feedback() -> None:
     result = require_stable_source_binding(boundary, "before")
     assert not result["valid"]
     assert result["failures"][0]["code"] == "RP-MUT-001"
+
+
+def test_preflight_binding_uses_exact_git_commit_sha(
+    tmp_path: Path, monkeypatch
+) -> None:
+    (tmp_path / "policies").mkdir()
+    (tmp_path / "policies/release-preflight.json").write_text("{}\n")
+    monkeypatch.setattr(
+        "runtime.release_preflight.classify_tree",
+        lambda root: {"valid": True, "product_digest": "product"},
+    )
+    monkeypatch.setattr(
+        "runtime.release_preflight.validate_engine_identity",
+        lambda root: {
+            "valid": True,
+            "tree_sha256": "engine",
+            "manifest_sha256": "manifest",
+        },
+    )
+    monkeypatch.setattr(
+        "runtime.release_preflight.capture_git_identity",
+        lambda root, version: {"valid": True, "commit_sha": "a" * 40},
+    )
+    assert _binding(tmp_path, "1.0.0", None)["source_revision"] == "a" * 40

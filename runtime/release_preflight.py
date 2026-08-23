@@ -751,7 +751,7 @@ def _binding(root: Path, release: str, artifact: Path | None) -> dict[str, Any]:
     topology = root / "registry/test_group_index.json"
     return {
         "release": release,
-        "source_revision": git.get("commit"),
+        "source_revision": git.get("commit_sha"),
         "source_identity_valid": git.get("valid") is True,
         "product_digest": product.get("product_digest"),
         "product_valid": product.get("valid") is True,

@@ -3762,7 +3762,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 46802,
+      "bytes": 46806,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -3771,7 +3771,7 @@
       "packaged": true,
       "path": "runtime/release_preflight.py",
       "role": "installed-runtime",
-      "sha256": "d349fa2c86918bb65431c6611fc952a20b5ca9964139054335ab6c40ae25096c",
+      "sha256": "48ab9bcc9503c5f1cb23e22e22ec3654cbfaf52ccb3728a016770710c7af3b8d",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -7771,7 +7771,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 6722,
+      "bytes": 7560,
       "evidence": [
         "tests/test_release_preflight.py"
       ],
@@ -7779,7 +7779,7 @@
       "packaged": true,
       "path": "tests/test_release_preflight.py",
       "role": "release-test",
-      "sha256": "6ca317779f9c11eb652dda558cbb560592265581d1413695c16ec4ed00be4031",
+      "sha256": "2cda503ef03ed0cb3716619e581e6e4661eb92ba128a83f1a11d5079d2e6b9fa",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

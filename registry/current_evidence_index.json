@@ -6,12 +6,12 @@
   "engine_identity": {
     "file_total": 3784,
     "manifest_path": "registry/engine_identity.json",
-    "manifest_sha256": "957b8c34d44432bbcdb6f7ed8e3d9efc845b6bd3cde5acaf086de1e862006bc1",
+    "manifest_sha256": "5c01f6ea0af35b061cb98dc1c3ea5ee9c7f4696e9de71d726b160eacd3d0ea4f",
     "schema_version": "px.engine-identity-validation/1.0",
-    "tree_sha256": "525dc77f9866a0b93a728bc1b1cbc44b2b2fcc9031f4af61ecadaae501adcb2a",
+    "tree_sha256": "0f80fa9d1c75ec008f0a27f35cec5815da1a89c6ce1fa53b9f202e5faf9b4830",
     "valid": true
   },
-  "generated_utc": "2026-08-23T21:36:02.212580Z",
+  "generated_utc": "2026-08-23T22:16:47.107066Z",
   "identity": {
     "extension_version": "0.6.49",
     "python_version": "0.7.0.dev0"
@@ -111,13 +111,13 @@
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "9a05e77bb0dae9b3c8a5289108b1df9d52f5c1bf2e7098fe02e995ed5a8f4930",
+        "expected_input_sha256": "bf20b9b04c56d009358a8a6497a176442be26323fefef59f430d89d375dfc12d",
         "fresh": true,
         "passed": true,
         "receipt_id": "testing-governance",
         "receipt_scope": "section"
       },
-      "sha256": "ba39e379b2f30c807e73b5e2ef54cf18da35153ddea9cfeeef98a61a3d7dfb18"
+      "sha256": "3004e0149e474cb3d4f4b4b2de3bdbc829aa561ee9fe1a93c6ab242eab65c679"
     },
     {
       "bytes": 658,
@@ -139,13 +139,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/core-g-m.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "ff9d451d4aab660100633e0d327dc6ec31505d027c6cdf438d7943a5ac3658f1",
+        "expected_input_sha256": "a58670e0c153403c241a7ce6702a6f18dc890c8715ffe4dab525eb4709747e14",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-g-m",
         "receipt_scope": "group"
       },
-      "sha256": "90f9f90159dda5812ddb50b1d742cba9e7db6e91ecd82108496b081033939e05"
+      "sha256": "533dcd52fc5086f89f45b83944af0009e230ad0975b2169d97ebbe5d26621669"
     },
     {
       "bytes": 660,
@@ -153,13 +153,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/core-n-s.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "760c999789ac5a42128c1c301ce7a9209aab326ebd192ca40f5bd01e4c8003cf",
+        "expected_input_sha256": "dee12022690a54049dfc993461e699a96f52dfdf10d7b99a5f4551f83196543f",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-n-s",
         "receipt_scope": "group"
       },
-      "sha256": "16c1ce15918d9a2c860681f169895e99f9d645ee65fa12f5c6bdee744bc91bc1"
+      "sha256": "f6f1be21486739f7973261777d2a0e6a67519c4f50c5772a759c0e799d79b2b1"
     },
     {
       "bytes": 658,
@@ -181,13 +181,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/derived-integrity.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "ca0f7c6570d09f1d33e43375d83aae5d4220d63382285cff837a3890dc25ced2",
+        "expected_input_sha256": "11239c3b39f4e2fc0da61f9b6bb9dcaa305432f141b0c2dac64c4ea1672d6b1a",
         "fresh": true,
         "passed": true,
         "receipt_id": "derived-integrity",
         "receipt_scope": "group"
       },
-      "sha256": "941740a3cf3b8fbc44447f2df070d9dc99d81a0e9ad815389bffbd09324f29bd"
+      "sha256": "9957d1db37f155b8bb23e959382a025ba43e4b3a77db1d2091556096d507a838"
     },
     {
       "bytes": 666,
@@ -195,13 +195,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/exact-installed.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "3b4121911d3fd9a7081dab20271f5f58c0dd518e22936b0c68af05a9ad92a0cb",
+        "expected_input_sha256": "c3f48eb31d69f3a3a86479b403dbba55078b476b9ebd3dae246e0017759bb680",
         "fresh": true,
         "passed": true,
         "receipt_id": "exact-installed",
         "receipt_scope": "group"
       },
-      "sha256": "609742e88dcb1bf4f63198d199fc6dc7169f2c695d83c5719769404c8a85c1a9"
+      "sha256": "920f898a22d4f02a6138ac9d7fa61e7546e63ceba2c5c6c05aed38dfac9d3479"
     },
     {
       "bytes": 668,
@@ -223,13 +223,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/release-audit.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "6d43aefdfc5ed4666d7a6d69d7f39abdff58a10bc65d50a5c0657be8d5b91298",
+        "expected_input_sha256": "2221a701ddf69a6b550e39bb5f68ddc8fcd98b14a901138ec2937849de9b70ad",
         "fresh": true,
         "passed": true,
         "receipt_id": "release-audit",
         "receipt_scope": "group"
       },
-      "sha256": "b23298ef863f48194727cda1a48b4651ddf03764764935e8efc98dc931266c61"
+      "sha256": "67b2652a041ecd7bb236852b17cfd6ed51b37f90186370b2d5bd3566254650a5"
     },
     {
       "bytes": 664,
@@ -237,13 +237,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/release-build.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "a895ca6016ea36422ca9b5d1d2832adc2d123654badec91fd6cf891ffa3dd659",
+        "expected_input_sha256": "d68be25802e7404e0f3eacfb54497464ae4b56df67066af649636b344a25c113",
         "fresh": true,
         "passed": true,
         "receipt_id": "release-build",
         "receipt_scope": "group"
       },
-      "sha256": "02707a91f1f6d6143d8df383863953f87ea68e406535b0e54003fb8b061b272e"
+      "sha256": "c846e75f28e5475968b05631ad876bb589bff7db60e956aeac684fb8b1ccb07b"
     },
     {
       "bytes": 673,
@@ -251,13 +251,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/structural-adversarial.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "a404d29c538c3c0028115bf2f39e8b978812fa8958887c3d825576f110568142",
+        "expected_input_sha256": "c29c716d9db7930d4353d8c5bebd23dd6f31d96a4e87272bf9883a904195bcc2",
         "fresh": true,
         "passed": true,
         "receipt_id": "structural-adversarial",
         "receipt_scope": "group"
       },
-      "sha256": "04545c18b8400a6b34ddf251ddfd5858f541197c82a42f617f4d58ba0a6722fe"
+      "sha256": "57652768478f26681f0b48397f2f56a086abd2ef1c1dd54c73a3e6ba00d18b19"
     },
     {
       "artifact_version": "0.6.49",
@@ -277,8 +277,8 @@
       "engine_identity": {
         "file_total": 3784,
         "manifest_path": "registry/engine_identity.json",
-        "manifest_sha256": "957b8c34d44432bbcdb6f7ed8e3d9efc845b6bd3cde5acaf086de1e862006bc1",
-        "tree_sha256": "525dc77f9866a0b93a728bc1b1cbc44b2b2fcc9031f4af61ecadaae501adcb2a"
+        "manifest_sha256": "5c01f6ea0af35b061cb98dc1c3ea5ee9c7f4696e9de71d726b160eacd3d0ea4f",
+        "tree_sha256": "0f80fa9d1c75ec008f0a27f35cec5815da1a89c6ce1fa53b9f202e5faf9b4830"
       },
       "kind": "installed-vsix-smoke",
       "limitations": [
@@ -289,19 +289,19 @@
       ],
       "path": "extension/evidence/installed-vsix-smoke.json",
       "platform": "win32",
-      "sha256": "67a63965ac3bccfeded2ee052cbeb55196e06dcc75a5cab1499c856dcf126c47"
+      "sha256": "6caefab9751aecb42e6157025fbbf19efe5cbf0afefd85e1a02724479ca138cb"
     },
     {
       "artifact_bound": true,
       "artifact_sha256": "c167ccf2dc04648a1b6fa205a4af8e4bd7ed109b97e5cd5b74d200ed0f6c6cfa",
-      "bytes": 20543,
+      "bytes": 20542,
       "coverage_complete": true,
       "coverage_tier": "B",
       "engine_identity": {
         "file_total": 3784,
         "manifest_path": "registry/engine_identity.json",
-        "manifest_sha256": "957b8c34d44432bbcdb6f7ed8e3d9efc845b6bd3cde5acaf086de1e862006bc1",
-        "tree_sha256": "525dc77f9866a0b93a728bc1b1cbc44b2b2fcc9031f4af61ecadaae501adcb2a"
+        "manifest_sha256": "5c01f6ea0af35b061cb98dc1c3ea5ee9c7f4696e9de71d726b160eacd3d0ea4f",
+        "tree_sha256": "0f80fa9d1c75ec008f0a27f35cec5815da1a89c6ce1fa53b9f202e5faf9b4830"
       },
       "kind": "installed-vsix-smoke",
       "limitations": [
@@ -312,7 +312,7 @@
       ],
       "path": "extension/evidence/installed-vsix-smoke-linux.json",
       "platform": "linux",
-      "sha256": "bcce5111cc34ec91b37d6a6bc9713221709e806b2164b62ca0d72c6a6291aea4"
+      "sha256": "9f021213803a536f6f45bcdee6f6c336a555227109a2f6d7af9c632faf5bdb81"
     }
   ],
   "required_receipt_count": 16,
