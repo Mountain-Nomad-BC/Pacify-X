@@ -38,6 +38,10 @@ Python/
 .engineering-bootstrap/project-map/retrieval-index.json
 .engineering-bootstrap/runtime-core/cache/
 .engineering-bootstrap/runtime-core/state.json
+# All other runtime-core content is derived local custody. Existing tracked
+# historical records remain tracked; newly generated preflight/cache/log
+# evidence must never dirty or enter the product source revision.
+.engineering-bootstrap/runtime-core/
 
 # IDE and operating-system residue not owned by this framework
 .idea/

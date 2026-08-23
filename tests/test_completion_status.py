@@ -123,7 +123,9 @@ def test_completion_projection_writer_is_atomic_and_exact() -> None:
         target.write_bytes(before)
 
 
-def test_runtime_completion_projection_binds_exact_artifact_custody() -> None:
+def test_runtime_completion_projection_binds_exact_artifact_custody(
+    tmp_path: Path,
+) -> None:
     target = (
         ROOT
         / ".engineering-bootstrap"
@@ -131,7 +133,8 @@ def test_runtime_completion_projection_binds_exact_artifact_custody() -> None:
         / "completion_status.json"
     )
     before = target.read_bytes() if target.is_file() else None
-    artifact_dir = ROOT / "extension" / "dist"
+    artifact_dir = tmp_path / "artifacts"
+    artifact_dir.mkdir()
     try:
         written = write_runtime(ROOT, artifact_dir=artifact_dir)
         stored = json.loads(target.read_text(encoding="utf-8"))

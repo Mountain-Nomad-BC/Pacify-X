@@ -1,0 +1,119 @@
+{
+  "cycles": [],
+  "edges": [
+    {
+      "kind": "input",
+      "source": "registry/artifact_reachability.json",
+      "target": "registry/engine_identity.json"
+    },
+    {
+      "kind": "input",
+      "source": "registry/artifact_reachability.json",
+      "target": "registry/test_group_index.json"
+    },
+    {
+      "kind": "input",
+      "source": "registry/current_evidence_index.json",
+      "target": "registry/completion_status.json"
+    },
+    {
+      "kind": "input",
+      "source": "registry/effect_surface_ownership.json",
+      "target": "registry/build_claims.json"
+    },
+    {
+      "kind": "input",
+      "source": "registry/engine_identity.json",
+      "target": "registry/current_evidence_index.json"
+    },
+    {
+      "kind": "input",
+      "source": "registry/generated_dependency_graph.json",
+      "target": "registry/artifact_reachability.json"
+    },
+    {
+      "kind": "input",
+      "source": "registry/registry_envelope_inventory.json",
+      "target": "registry/artifact_reachability.json"
+    },
+    {
+      "kind": "input",
+      "source": "registry/registry_envelope_inventory.json",
+      "target": "registry/engine_identity.json"
+    },
+    {
+      "kind": "input",
+      "source": "registry/registry_envelope_inventory.json",
+      "target": "registry/test_group_index.json"
+    },
+    {
+      "kind": "input",
+      "source": "registry/test_group_index.json",
+      "target": "registry/completion_status.json"
+    },
+    {
+      "kind": "input",
+      "source": "registry/test_group_index.json",
+      "target": "registry/current_evidence_index.json"
+    }
+  ],
+  "failures": [],
+  "nodes": [
+    "registry/artifact_reachability.json",
+    "registry/build_claims.json",
+    "registry/completion_status.json",
+    "registry/current_evidence_index.json",
+    "registry/effect_surface_ownership.json",
+    "registry/engine_identity.json",
+    "registry/generated_dependency_graph.json",
+    "registry/historical_external_references.json",
+    "registry/provider_route_scan.json",
+    "registry/python_dependency_ownership.json",
+    "registry/python_surface_ownership.json",
+    "registry/registry_envelope_inventory.json",
+    "registry/test_group_index.json"
+  ],
+  "schema_version": "px.generated-dependency-graph/1.0",
+  "strongly_connected_components": [
+    [
+      "registry/completion_status.json"
+    ],
+    [
+      "registry/current_evidence_index.json"
+    ],
+    [
+      "registry/engine_identity.json"
+    ],
+    [
+      "registry/test_group_index.json"
+    ],
+    [
+      "registry/artifact_reachability.json"
+    ],
+    [
+      "registry/build_claims.json"
+    ],
+    [
+      "registry/effect_surface_ownership.json"
+    ],
+    [
+      "registry/generated_dependency_graph.json"
+    ],
+    [
+      "registry/historical_external_references.json"
+    ],
+    [
+      "registry/provider_route_scan.json"
+    ],
+    [
+      "registry/python_dependency_ownership.json"
+    ],
+    [
+      "registry/python_surface_ownership.json"
+    ],
+    [
+      "registry/registry_envelope_inventory.json"
+    ]
+  ],
+  "valid": true
+}

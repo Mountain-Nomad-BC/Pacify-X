@@ -412,6 +412,17 @@ def parser() -> argparse.ArgumentParser:
     release_readiness.add_argument("--npm")
     release_readiness.add_argument("--browser")
     release_readiness.add_argument("--vscode")
+    release_preflight = release_commands.add_parser("preflight")
+    release_preflight.add_argument("--release", default=VERSION)
+    release_preflight.add_argument("--artifact", type=Path)
+    release_preflight.add_argument("--deep", action="store_true")
+    release_dry_run = release_commands.add_parser("dry-run")
+    release_dry_run.add_argument("--release", default=VERSION)
+    release_dry_run.add_argument("--artifact", type=Path)
+    release_discover = release_commands.add_parser("discover")
+    release_discover.add_argument("--release", default=VERSION)
+    release_discover.add_argument("--artifact", type=Path)
+    release_discover.add_argument("--deep", action="store_true")
     brief = commands.add_parser("brief")
     brief.add_argument("--project", type=Path, required=True)
     brief.add_argument("--questionnaire", type=Path, required=True)
@@ -2040,6 +2051,28 @@ def main(argv: list[str] | None = None) -> int:
                     browser=args.browser,
                     vscode=args.vscode,
                 )
+            elif args.release_action in {"preflight", "dry-run", "discover"}:
+                from .release_preflight import (
+                    run_discovery,
+                    run_dry_run,
+                    run_preflight,
+                )
+
+                if args.release_action == "preflight":
+                    output = run_preflight(
+                        root,
+                        release=args.release,
+                        artifact=args.artifact,
+                        deep=args.deep,
+                    )
+                elif args.release_action == "dry-run":
+                    output = run_dry_run(
+                        root, release=args.release, artifact=args.artifact
+                    )
+                else:
+                    output = run_discovery(
+                        root, release=args.release, artifact=args.artifact
+                    )
             else:
                 output = finalize_release(
                     root,

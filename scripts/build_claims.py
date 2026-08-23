@@ -13,6 +13,7 @@ if str(ROOT) not in sys.path:
 from runtime.build_claims import (  # noqa: E402
     CLAIMS_PATH,
     expected_build_claims,
+    update_readme_claims,
     validate_build_claims,
 )
 
@@ -38,6 +39,7 @@ def main() -> int:
             stream.flush()
             os.fsync(stream.fileno())
         os.replace(temporary, target)
+        update_readme_claims(root, claims)
     report = validate_build_claims(root)
     print(json.dumps(report, indent=2))
     return 0 if report["valid"] else 1

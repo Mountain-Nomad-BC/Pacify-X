@@ -12,6 +12,7 @@ def validate_generated_artifacts(root: Path) -> dict[str, Any]:
     from .evidence_portability import discover_historical_references
     from .graph_registry import validate_graph_artifacts
     from .build_claims import validate_build_claims
+    from .generated_dependency import generated_dependency_graph
     import json
 
     root = root.resolve()
@@ -32,9 +33,7 @@ def validate_generated_artifacts(root: Path) -> dict[str, Any]:
     ).is_dir()
     if not source_checkout:
         domain_owner = root / "templates/generated/domain_tool.py"
-        domain_targets = sorted(
-            (root / ".px/skills").glob("*/scripts/domain_tool.py")
-        )
+        domain_targets = sorted((root / ".px/skills").glob("*/scripts/domain_tool.py"))
         template_owner = root / "templates/declared_suite/authoritative-pack"
         template_targets = sorted(
             (root / "templates/declared_suite").glob("pack-*.json")
@@ -140,6 +139,15 @@ def validate_generated_artifacts(root: Path) -> dict[str, Any]:
         )
     }
     checks["graphs"] = validate_graph_artifacts(root)
+    dependency_graph = root / "registry/generated_dependency_graph.json"
+    preflight_policy = json.loads(
+        (root / "policies/release-preflight.json").read_text(encoding="utf-8")
+    )
+    checks["generated_dependency_graph"] = {
+        "valid": dependency_graph.is_file()
+        and json.loads(dependency_graph.read_text(encoding="utf-8"))
+        == generated_dependency_graph(preflight_policy["generated_authorities"])
+    }
     failed = [name for name, result in checks.items() if not result["valid"]]
     return {
         "schema_version": "1.0",

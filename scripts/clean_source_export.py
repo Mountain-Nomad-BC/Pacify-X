@@ -199,7 +199,9 @@ def _certification_preflight(
     except (OSError, json.JSONDecodeError):
         stored_completion = None
     fresh_completion = build_completion_status(root)
-    artifact_hashes = [hashlib.sha256(path.read_bytes()).hexdigest() for path in artifacts]
+    artifact_hashes = [
+        hashlib.sha256(path.read_bytes()).hexdigest() for path in artifacts
+    ]
 
     licensing = validate_licensing(root)
     sanitation_excluded_names = frozenset(
@@ -229,9 +231,7 @@ def _certification_preflight(
         "release_audit": audit_framework(root, require_external_manifests=True),
         "structural_integrity": audit_structural_integrity(root),
         "licensing": licensing,
-        "sanitation": build_sanitation_summary(
-            root, identifier_audit, licensing
-        ),
+        "sanitation": build_sanitation_summary(root, identifier_audit, licensing),
         "current_evidence": build_index(root, artifacts=artifacts),
         "completion_projection_identity": {
             "schema_version": "px.completion-projection-identity/1.0",
@@ -282,16 +282,23 @@ def _rebuild_candidate_projections(root: Path) -> None:
     from runtime.engine_identity import write_engine_identity
     from runtime.graph_registry import write_graph_artifacts
     from runtime.python_surface_certification import certify_python_surfaces
-    from scripts.build_contract_ownership_registry import build as build_contract_ownership
-    from runtime.build_claims import expected_build_claims
+    from scripts.build_contract_ownership_registry import (
+        build as build_contract_ownership,
+    )
+    from runtime.build_claims import expected_build_claims, update_readme_claims
     from runtime.provider_gateway import build_provider_route_index
-    from scripts.build_declared_suite_template_projections import reconcile as reconcile_templates
+    from scripts.build_declared_suite_template_projections import (
+        reconcile as reconcile_templates,
+    )
     from scripts.build_domain_tool_projections import reconcile as reconcile_wrappers
     from scripts.build_profile_projections import reconcile as reconcile_profiles
     from scripts.build_python_dependency_ownership import build as build_dependencies
     from scripts.build_registry_envelope_inventory import build_inventory
+    from runtime.generated_dependency import generated_dependency_graph
     from runtime.test_profiles import build_test_group_index
-    from scripts.reconcile_commissioned_skill_registry import reconcile as reconcile_skills
+    from scripts.reconcile_commissioned_skill_registry import (
+        reconcile as reconcile_skills,
+    )
     from scripts.reconcile_declared_tool_hashes import expected as declared_tool_outputs
 
     reconcile_wrappers(root, check=False)
@@ -303,24 +310,54 @@ def _rebuild_candidate_projections(root: Path) -> None:
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(payload)
     write_graph_artifacts(root)
-    _write_json(root / "registry/contract_ownership.json", build_contract_ownership(root), sort_keys=False)
-    _write_json(root / "registry/provider_route_scan.json", build_provider_route_index(root))
+    _write_json(
+        root / "registry/contract_ownership.json",
+        build_contract_ownership(root),
+        sort_keys=False,
+    )
+    _write_json(
+        root / "registry/provider_route_scan.json", build_provider_route_index(root)
+    )
     surface = certify_python_surfaces(
         root, certify_exact_tools(root), require_map_current=False
     )
+    surface["map_current"] = True
     _write_json(root / "registry/python_surface_ownership.json", surface)
-    _write_json(root / "registry/python_dependency_ownership.json", build_dependencies(root))
+    _write_json(
+        root / "registry/python_dependency_ownership.json", build_dependencies(root)
+    )
     effects = discover_effect_surfaces(root)
-    _write_json(root / "registry/effect_surface_ownership.json", {
-        "schema_version": "1.0", "record_count": len(effects), "records": effects,
-    })
+    _write_json(
+        root / "registry/effect_surface_ownership.json",
+        {
+            "schema_version": "1.0",
+            "record_count": len(effects),
+            "records": effects,
+        },
+    )
     references = discover_historical_references(root)
-    _write_json(root / "registry/historical_external_references.json", {
-        "schema_version": "1.0", "reference_count": len(references), "records": references,
-    })
-    _write_json(root / "registry/build_claims.json", expected_build_claims(root), sort_keys=False)
-    _write_json(root / "registry/artifact_reachability.json", build_artifact_reachability(root))
+    _write_json(
+        root / "registry/historical_external_references.json",
+        {
+            "schema_version": "1.0",
+            "reference_count": len(references),
+            "records": references,
+        },
+    )
+    claims = expected_build_claims(root)
+    _write_json(root / "registry/build_claims.json", claims, sort_keys=False)
+    update_readme_claims(root, claims)
+    preflight_policy = json.loads(
+        (root / "policies/release-preflight.json").read_text(encoding="utf-8")
+    )
+    _write_json(
+        root / "registry/generated_dependency_graph.json",
+        generated_dependency_graph(preflight_policy["generated_authorities"]),
+    )
     _write_json(root / "registry/registry_envelope_inventory.json", build_inventory())
+    _write_json(
+        root / "registry/artifact_reachability.json", build_artifact_reachability(root)
+    )
     _write_json(root / "registry/test_group_index.json", build_test_group_index(root))
     # This is last among source/registry projections. Installed-host evidence
     # must bind these exact engine bytes; later test receipts, evidence, and
@@ -367,9 +404,13 @@ def _certify_candidate_bytes(root: Path, artifacts: tuple[Path, ...]) -> None:
         if not progressed:
             raise ValueError("candidate section dependencies cannot be made current")
     if not section_status(root)["valid"]:
-        raise ValueError("candidate section receipts remain stale after bounded refresh")
+        raise ValueError(
+            "candidate section receipts remain stale after bounded refresh"
+        )
 
-    _run_candidate_command(root, "test-group", "run-stale", "--workers", "3", timeout=1800)
+    _run_candidate_command(
+        root, "test-group", "run-stale", "--workers", "3", timeout=1800
+    )
     # This is the sole owned whole-profile run for the final candidate.
     _run_candidate_command(root, "test-profile", "run", "full", timeout=1800)
     _run_candidate_command(root, "validate", timeout=120)
@@ -382,7 +423,11 @@ def _certify_candidate_bytes(root: Path, artifacts: tuple[Path, ...]) -> None:
     from scripts.build_completion_status import build as build_completion_status
 
     publish_index(root, artifacts=artifacts)
-    _write_json(root / "registry/completion_status.json", build_completion_status(root), sort_keys=False)
+    _write_json(
+        root / "registry/completion_status.json",
+        build_completion_status(root),
+        sort_keys=False,
+    )
 
 
 def _git_provenance(root: Path) -> dict[str, object]:
@@ -415,8 +460,14 @@ def _git_provenance(root: Path) -> dict[str, object]:
 
 def _candidate_records(stage: Path) -> list[dict[str, object]]:
     records = []
-    for path in sorted(stage.rglob("*"), key=lambda item: item.relative_to(stage).as_posix().casefold()):
-        if not path.is_file() or path.is_symlink() or path.name == "AUDIT_EXPORT_MANIFEST.json":
+    for path in sorted(
+        stage.rglob("*"), key=lambda item: item.relative_to(stage).as_posix().casefold()
+    ):
+        if (
+            not path.is_file()
+            or path.is_symlink()
+            or path.name == "AUDIT_EXPORT_MANIFEST.json"
+        ):
             continue
         data = path.read_bytes()
         records.append(
@@ -464,17 +515,27 @@ def _materialize_candidate(
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, target)
         artifact_records.append(
-            {"path": target.relative_to(stage).as_posix(), "sha256": hashlib.sha256(target.read_bytes()).hexdigest()}
+            {
+                "path": target.relative_to(stage).as_posix(),
+                "sha256": hashlib.sha256(target.read_bytes()).hexdigest(),
+            }
         )
     if artifact_records:
-        sums = "".join(f"{item['sha256']}  {Path(str(item['path'])).name}\n" for item in artifact_records)
-        (stage / "AUDIT_ARTIFACTS/SHA256SUMS.txt").write_text(sums, encoding="ascii", newline="\n")
+        sums = "".join(
+            f"{item['sha256']}  {Path(str(item['path'])).name}\n"
+            for item in artifact_records
+        )
+        (stage / "AUDIT_ARTIFACTS/SHA256SUMS.txt").write_text(
+            sums, encoding="ascii", newline="\n"
+        )
         lines = [
             "# Pacify-X audit bundle\n\n",
             "Install/audit the exact VSIX under `AUDIT_ARTIFACTS/`; verify it against `AUDIT_ARTIFACTS/SHA256SUMS.txt`.\n\n",
             "The source projection is byte-preserved. `AUDIT_EXPORT_MANIFEST.json` contains the complete record list for every payload file except the manifest itself, whose self-exclusion is explicit.\n",
         ]
-        (stage / "AUDIT_BUNDLE_README.md").write_text("".join(lines), encoding="utf-8", newline="\n")
+        (stage / "AUDIT_BUNDLE_README.md").write_text(
+            "".join(lines), encoding="utf-8", newline="\n"
+        )
     replay_contract = {
         "schema_version": "px.audit-replay-contract/1.0",
         "binding": "detached-exact-archive-receipt",
@@ -497,13 +558,20 @@ def _materialize_candidate(
     ).hexdigest()
     source_timestamp = (
         datetime.fromtimestamp(
-            max((path.stat().st_mtime for path in included_files(root, output)), default=0),
+            max(
+                (path.stat().st_mtime for path in included_files(root, output)),
+                default=0,
+            ),
             tz=timezone.utc,
-        ).isoformat().replace("+00:00", "Z")
+        )
+        .isoformat()
+        .replace("+00:00", "Z")
     )
     manifest = {
         "schema_version": "px.clean-source-audit-export/2.0",
-        "bundle_mode": "full-audit-final-byte-candidate" if artifacts else "source-only-final-byte-candidate",
+        "bundle_mode": "full-audit-final-byte-candidate"
+        if artifacts
+        else "source-only-final-byte-candidate",
         "source_timestamp": source_timestamp,
         "build_time": source_timestamp,
         **_git_provenance(root),
@@ -519,14 +587,21 @@ def _materialize_candidate(
         "artifacts": artifact_records,
     }
     (stage / "AUDIT_EXPORT_MANIFEST.json").write_text(
-        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n"
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
     )
     return manifest
 
 
 def _write_archive(stage: Path, output: Path) -> None:
-    with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
-        for path in sorted(stage.rglob("*"), key=lambda item: item.relative_to(stage).as_posix().casefold()):
+    with zipfile.ZipFile(
+        output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9
+    ) as archive:
+        for path in sorted(
+            stage.rglob("*"),
+            key=lambda item: item.relative_to(stage).as_posix().casefold(),
+        ):
             if not path.is_file() or path.is_symlink():
                 continue
             relative = path.relative_to(stage).as_posix()
@@ -535,7 +610,9 @@ def _write_archive(stage: Path, output: Path) -> None:
             info.create_system = 3
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = (0o100000 | int(_mode(data), 8)) << 16
-            archive.writestr(info, data, compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
+            archive.writestr(
+                info, data, compress_type=zipfile.ZIP_DEFLATED, compresslevel=9
+            )
 
 
 def create_clean_export(
@@ -568,15 +645,23 @@ def create_clean_export(
     manager = ResourceManager(root / ".engineering-bootstrap/export-resources.json")
     allowed_root = output.parent.resolve(strict=True)
     stage_record = manager.create_workspace(
-        allowed_root, project_id=root.name, run_id=run_id, lane_id="final-candidate",
-        creator="clean-source-export", prefix=".px-audit-candidate-"
+        allowed_root,
+        project_id=root.name,
+        run_id=run_id,
+        lane_id="final-candidate",
+        creator="clean-source-export",
+        prefix=".px-audit-candidate-",
     )
     stage = Path(str(stage_record.path))
     replay_record = None
     prepared = output.with_name(f".{output.name}.{uuid4().hex}.prepared")
     prepared_record = manager.register_path(
-        prepared, allowed_cleanup_root=allowed_root, project_id=root.name,
-        run_id=run_id, lane_id="archive", creator="clean-source-export"
+        prepared,
+        allowed_cleanup_root=allowed_root,
+        project_id=root.name,
+        run_id=run_id,
+        lane_id="archive",
+        creator="clean-source-export",
     )
     receipt_prepared = output.with_name(
         f".{output.name}.{uuid4().hex}.receipt.prepared"
@@ -593,24 +678,42 @@ def create_clean_export(
     replay_preflight: dict[str, object]
     try:
         manifest = _materialize_candidate(
-            root, stage, output, artifacts,
+            root,
+            stage,
+            output,
+            artifacts,
             rebuild_projections=bool(require_certification),
         )
-        stage_artifacts = tuple(stage / str(item["path"]) for item in manifest["artifacts"])
-        candidate_preflight = _certification_preflight(stage, stage_artifacts) if require_certification else {
-            "schema_version": "px.clean-export-preflight/1.0", "valid": True,
-            "skipped": True, "reason": "certification deferred by caller"
-        }
+        stage_artifacts = tuple(
+            stage / str(item["path"]) for item in manifest["artifacts"]
+        )
+        candidate_preflight = (
+            _certification_preflight(stage, stage_artifacts)
+            if require_certification
+            else {
+                "schema_version": "px.clean-export-preflight/1.0",
+                "valid": True,
+                "skipped": True,
+                "reason": "certification deferred by caller",
+            }
+        )
         if not candidate_preflight["valid"]:
-            raise ValueError("final candidate certification failed: " + ", ".join(map(str, candidate_preflight.get("failed", ()))))
+            raise ValueError(
+                "final candidate certification failed: "
+                + ", ".join(map(str, candidate_preflight.get("failed", ())))
+            )
         _assert_frozen_records(
             stage, list(manifest["records"]), phase="candidate preflight"
         )
         _write_archive(stage, prepared)
         if require_certification:
             replay_record = manager.create_workspace(
-                allowed_root, project_id=root.name, run_id=run_id, lane_id="extracted-replay",
-                creator="clean-source-export", prefix=".px-audit-replay-"
+                allowed_root,
+                project_id=root.name,
+                run_id=run_id,
+                lane_id="extracted-replay",
+                creator="clean-source-export",
+                prefix=".px-audit-replay-",
             )
             replay = Path(str(replay_record.path))
             with zipfile.ZipFile(prepared) as archive:
@@ -618,17 +721,30 @@ def create_clean_export(
             _assert_frozen_records(
                 replay, list(manifest["records"]), phase="archive extraction"
             )
-            replay_artifacts = tuple(replay / str(item["path"]) for item in manifest["artifacts"])
+            replay_artifacts = tuple(
+                replay / str(item["path"]) for item in manifest["artifacts"]
+            )
             replay_preflight = _certification_preflight(replay, replay_artifacts)
             if not replay_preflight["valid"]:
-                raise ValueError("extracted replay certification failed: " + ", ".join(map(str, replay_preflight.get("failed", ()))))
+                raise ValueError(
+                    "extracted replay certification failed: "
+                    + ", ".join(map(str, replay_preflight.get("failed", ())))
+                )
             _assert_frozen_records(
                 replay, list(manifest["records"]), phase="extracted replay"
             )
         else:
-            replay_preflight = {"valid": True, "skipped": True, "reason": "certification deferred by caller"}
+            replay_preflight = {
+                "valid": True,
+                "skipped": True,
+                "reason": "certification deferred by caller",
+            }
         os.replace(prepared, output)
-        manager.promote_outputs(prepared_record.resource_id, [output], validated=bool(replay_preflight["valid"]))
+        manager.promote_outputs(
+            prepared_record.resource_id,
+            [output],
+            validated=bool(replay_preflight["valid"]),
+        )
         archive_sha256 = hashlib.sha256(output.read_bytes()).hexdigest()
         receipt_body = {
             "schema_version": "px.clean-export-replay-receipt/1.0",
@@ -637,16 +753,12 @@ def create_clean_export(
             "records_sha256": manifest["records_sha256"],
             "candidate_preflight": candidate_preflight,
             "extracted_replay": replay_preflight,
-            "valid": bool(
-                candidate_preflight["valid"] and replay_preflight["valid"]
-            ),
+            "valid": bool(candidate_preflight["valid"] and replay_preflight["valid"]),
         }
         receipt = {
             **receipt_body,
             "receipt_sha256": hashlib.sha256(
-                json.dumps(
-                    receipt_body, sort_keys=True, separators=(",", ":")
-                ).encode()
+                json.dumps(receipt_body, sort_keys=True, separators=(",", ":")).encode()
             ).hexdigest(),
         }
         receipt_prepared.write_text(
@@ -674,11 +786,19 @@ def create_clean_export(
             if record is None:
                 continue
             try:
-                manager.reclaim(record.resource_id, reason="clean export staging lifecycle closed", apply=True)
+                manager.reclaim(
+                    record.resource_id,
+                    reason="clean export staging lifecycle closed",
+                    apply=True,
+                )
             except (OSError, ValueError, KeyError):
                 pass
     records = list(manifest["records"])
-    receipt_paths = [str(record["path"]) for record in records if str(record["path"]).startswith(".engineering-bootstrap/test-evidence/")]
+    receipt_paths = [
+        str(record["path"])
+        for record in records
+        if str(record["path"]).startswith(".engineering-bootstrap/test-evidence/")
+    ]
     payload = {
         "schema_version": "px.clean-export-result/2.0",
         "file_count": manifest["bundle_file_count"],

@@ -2,7 +2,7 @@
   "files": {
     "builders/__init__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f3f46920778f059a8baac31174cd907aedddc990608960694ef2ba642ad6e734"
     },
     "builders/adapter_builder.py": {
@@ -11,7 +11,7 @@
         "dataclasses",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8d211f2f26523422cb99c44281c088cdddae252394a04d83618526a43832415e"
     },
     "builders/common.py": {
@@ -23,7 +23,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "a69c9e155a2b415daf0414efede598d57541238855d2a17819c73f6c559a0402"
     },
     "builders/declared_suite_builder.py": {
@@ -36,7 +36,7 @@
         "pathlib",
         "re"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "4d36b3c06b4c15e3089a02577b6472a68b0beb94ed8936cf8933f76a56b3118d"
     },
     "builders/declared_suite_support_builder.py": {
@@ -46,7 +46,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "56f1081ffc74fff176ba1925ac00c5263be6783fd7cf6ea9e162ee9bda2d6d8f"
     },
     "builders/last_round_assimilation_builder.py": {
@@ -63,7 +63,7 @@
         "shutil",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "fbe5b843326ef4670dcfc60842363469452e336ef9375dfaa5ffa024c26e2e44"
     },
     "builders/orchestration_builder.py": {
@@ -74,7 +74,7 @@
         "runtime.graphs",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "56deb8f2cd5bb59095d5ad40d4d53952db0b388f399cc65c9bb9aea8af535b16"
     },
     "builders/repair_pattern_builder.py": {
@@ -84,7 +84,7 @@
         "hashlib",
         "re"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "abb448e61c139389bc8f23a123781ecef81862e014507aab424bfc5025883533"
     },
     "builders/skill_builder.py": {
@@ -93,7 +93,7 @@
         "dataclasses",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "3e1e390e3621bd5a89910b07394545e7d1cf0925a1af9c664064a0db813be772"
     },
     "builders/test_evidence_builder.py": {
@@ -102,7 +102,7 @@
         "dataclasses",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f007621df992a3f766b065eb752a5c69c01b2131e8e4d6de79cc085e715fe55a"
     },
     "runtime/__init__.py": {
@@ -110,12 +110,12 @@
         "__future__",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "7c830018fba1b10803f05ecc8a4b5ce7afefff228e4b618b42b618b03afffa2c"
     },
     "runtime/__main__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d"
     },
     "runtime/admission_controller.py": {
@@ -125,7 +125,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ae9d7a3a649cf53a0f2db63e9758979c623db3d74e1d0ab4fc5dac6f719bf307"
     },
     "runtime/agent_builder.py": {
@@ -137,7 +137,7 @@
         "math",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "03ec0df7ec510055f2e66b5726c3b8756fea23e1ba0f7a2443bba6067085659d"
     },
     "runtime/agent_fleet_controls.py": {
@@ -153,7 +153,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "9533d0367ccd8b1a322c849c77c82bb7080664862d552be595864ad4ce080f39"
     },
     "runtime/agent_harness_worker.py": {
@@ -164,7 +164,7 @@
         "pathlib",
         "time"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "bb0d2ad1547c93b5861c7793acb1d5af97d5d54c271adf6427516f58eeefe406"
     },
     "runtime/agent_provider.py": {
@@ -177,7 +177,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8a59f63962f329754b9ee4a0a8589e33e07c01dba2bacea99f3407fa41d299f4"
     },
     "runtime/agent_runtime.py": {
@@ -194,7 +194,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ea8507b75538b4b0790f84279e51255cca3e724ed2bad30c7d4639c29ef1fadf"
     },
     "runtime/artifact_reachability.py": {
@@ -204,7 +204,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "fcc89b568264ffdda93c1104593e885b0ca13ca724dca08724912fd7ace3ff1a"
     },
     "runtime/assurance_controls.py": {
@@ -216,7 +216,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2359cccde02946f478be26f7f447159eb7ff140c9f4bf3a93f5c9f4321e97eaa"
     },
     "runtime/authoritative_json.py": {
@@ -229,7 +229,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e6f3f2c903f19fa9c388770c00f3e8f1bff5d639d22d9018618e1c0c134272d8"
     },
     "runtime/backend_capabilities.py": {
@@ -239,7 +239,7 @@
         "json",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f258f97c1f154b8037346c64abd65c65bb8fbdf24b39946cd7433543398c2045"
     },
     "runtime/behavioral_assurance.py": {
@@ -253,7 +253,7 @@
         "time",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c3ec905041f69baaf22addf0373c71e59c3107cacc29bee956d256eee13f1480"
     },
     "runtime/behavioral_certification.py": {
@@ -263,7 +263,7 @@
         "json",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ab17f105a0666f7314c5b0784b2ec6dd31fef83209f67fba80417ff2acd970e4"
     },
     "runtime/benchmark_operations.py": {
@@ -277,7 +277,7 @@
         "statistics",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6c8bd5d92204c7e4b633b853cd04350d26219634d3bcbd25c3ceb469e61dde31"
     },
     "runtime/bounded_walk.py": {
@@ -288,7 +288,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "98e0b0cf67938d0166de11cf3952fc344cdd127095d0bf86aafa1858b328a947"
     },
     "runtime/build_claims.py": {
@@ -300,8 +300,8 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
-      "sha256": "d54c27ab134166ebd1d46d39376a8e50ee988cad1d4b17faed478ff31d7a5086"
+      "index_state": "verified",
+      "sha256": "0ff2751e63b8a9cc94913034ba5af98eed2c19a124e0d59c4458f9641c187afe"
     },
     "runtime/capability_assimilation.py": {
       "imports": [
@@ -311,7 +311,7 @@
         "pathlib",
         "tomllib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "555a764289b45de5309a4105012e745592ace1f0f0098d5497eb4034d1de92f6"
     },
     "runtime/capability_routing.py": {
@@ -325,7 +325,7 @@
         "time",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "1e158ddfebd68058e14c0b3a296749d8697bc24b6815c2697fcfa7ed54e783e3"
     },
     "runtime/capability_scheduler.py": {
@@ -338,7 +338,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "af33d5337cb93d01b1059cc9ddb1fa2ba7e2c21d4c7f005e082e5367b0f0cb4d"
     },
     "runtime/certification_readiness.py": {
@@ -356,7 +356,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6f4de4bb54d3215d589e1413e6f8992a5ae1a93b34bee2ce05ecc451e19b208e"
     },
     "runtime/classifier.py": {
@@ -366,7 +366,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2a1a6260ee9305bdaba3af72bd68271cf68ce90168afad955ea1b3abb241d806"
     },
     "runtime/clean_room_capabilities.py": {
@@ -376,7 +376,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "cf789caab28057552daaafac09a3cafee448134458ad83bd450c19aba66811a2"
     },
     "runtime/cli.py": {
@@ -396,8 +396,8 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
-      "sha256": "68c7c2fd467cf673635875e9c58010c0d43da44b5c119dacdc9ff40c1d6defbe"
+      "index_state": "verified",
+      "sha256": "37a560703447cbb7614cb7a6b8e26638690675a044d6fedb25def8bb38185138"
     },
     "runtime/cognitive_assurance.py": {
       "imports": [
@@ -409,12 +409,12 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e41a84202bca970246a919bd2830e4e109b2993edb2da4c48ea4772b5343c4de"
     },
     "runtime/cognitive_core/__init__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "3628c1ab81d08c5b2f42481238286ef0339deeea12868b8479f138fc5551cf72"
     },
     "runtime/cognitive_core/abduction.py": {
@@ -425,7 +425,7 @@
         "math",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c7f00d49172c02c79069533c551a11e7ed90702e23ff67ba802fa1bdf3bd5dad"
     },
     "runtime/cognitive_core/analogy.py": {
@@ -435,7 +435,7 @@
         "collections.abc",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "58a0cfa56813bdf2da4e139b72d2fa42126aaa8765d37d6b6f39a96afddb4dde"
     },
     "runtime/cognitive_core/causal.py": {
@@ -445,7 +445,7 @@
         "collections.abc",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "afbdfe58b9a34018dd9716b54763e310a4090a5a041d032c652871158e32f9c5"
     },
     "runtime/cognitive_core/common.py": {
@@ -458,7 +458,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "9b29fef6fd6b0f7033af2d90acb7ff6a5d402e6b0c1a47ada8163e06ed2bc4fe"
     },
     "runtime/cognitive_core/constraint.py": {
@@ -467,7 +467,7 @@
         "collections.abc",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "42a91ad5333dbd2c2141ff5651060d4d703a3ddf46ef6bff8bad40d97712cc7a"
     },
     "runtime/cognitive_core/decision.py": {
@@ -477,7 +477,7 @@
         "math",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "476d1dd01b6cdbb1a6e632585781a59fc87e19ec0dd922b934b661e5f49a4695"
     },
     "runtime/cognitive_core/facade.py": {
@@ -486,7 +486,7 @@
         "collections.abc",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "366d0738df3a163b144455b5622567531c48a3332dc4c3df624c7b7e3cfeffb3"
     },
     "runtime/cognitive_core/formula_engine.py": {
@@ -498,7 +498,7 @@
         "math",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8048aa37e5d0f7914b1fccba8185f21b25c68e6822f1f07ab0996067f79c3810"
     },
     "runtime/cognitive_core/index_builder.py": {
@@ -511,7 +511,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "67b82c0fe1bfd9be82756ad8cc0355d8db5e56a43962786211ab6c079bd1018a"
     },
     "runtime/cognitive_core/knowledge.py": {
@@ -523,7 +523,7 @@
         "datetime",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "fa85cc13bf76b1845d5d92167bfb8e9e4bdf83529b547ec0787da1a882faf27a"
     },
     "runtime/cognitive_core/logic.py": {
@@ -533,7 +533,7 @@
         "enum",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "a0cc01d56eee69fe548bc0f2bdf3cc9402e25d2630cc0553f7bdcaefc0c193a6"
     },
     "runtime/cognitive_core/navigator.py": {
@@ -545,7 +545,7 @@
         "math",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "7a60ca873808e83c02f3344d718602785dd2a04778a66ad87e03676db8bafd83"
     },
     "runtime/cognitive_core/probability.py": {
@@ -556,7 +556,7 @@
         "math",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "7075bb5ce181c3f4ca7d660fa7094675a34041c986a37511b17eb6a1bf861be7"
     },
     "runtime/cognitive_core/strategy.py": {
@@ -565,7 +565,7 @@
         "collections.abc",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e4dec6f61d1a3cf352a95dd4971982fb1790ca75a0672aebe96dac4bf5e3894a"
     },
     "runtime/cognitive_core/temporal.py": {
@@ -577,7 +577,7 @@
         "datetime",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5f46f9b8b1f26d264c5287671e64c125ead5dcd2fac70f20d5e1e58b0ec4985f"
     },
     "runtime/commissioning.py": {
@@ -593,7 +593,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "9d40d25f2ced4c47deae79f3857fa4752dcfdcc934d8114a05c3a966a9d09626"
     },
     "runtime/completion_controls.py": {
@@ -606,7 +606,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c1d1a7080ba0bf3f6320ff1505cfee36a6a7452de7a7f21f4812b8f424ac7d23"
     },
     "runtime/config.py": {
@@ -616,7 +616,7 @@
         "pathlib",
         "tomllib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c34583a8a225ec110e1e838851f661c6e317d33ec4476cf09dfb69a6eb76181e"
     },
     "runtime/contracts.py": {
@@ -633,7 +633,7 @@
         "typing",
         "urllib.parse"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f75383cc9df8a9b3254d0934e11627ee59c7a01f35a952077a38bcda85e5c630"
     },
     "runtime/corrective_release.py": {
@@ -644,7 +644,7 @@
         "shlex",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "386be7b1eb8f8f2e9500b2c57e892ca4960a8e5badd35cd8a26ed23693bb6732"
     },
     "runtime/coverage_assurance.py": {
@@ -655,7 +655,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "41fda6f8efe3fec63b8c43fc62328618aa69d461095af4cb3c0adb51f7545ddb"
     },
     "runtime/cybersecurity_provider.py": {
@@ -672,7 +672,7 @@
         "typing",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "cabc339bf0f0edc3d6e078b513c633966cdd22afe19c5847f41e6fb34baf25d6"
     },
     "runtime/dashboard_api.py": {
@@ -693,7 +693,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d24d4a1a44c326b657c262627b884806e0abdce92995e6303e166c59981ae4fe"
     },
     "runtime/declared_suite.py": {
@@ -705,7 +705,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "3a844fa4ba9bba83c408618cad359d8deb2aef26064bb0e9aa671de811045044"
     },
     "runtime/declared_suite_formulas.py": {
@@ -714,7 +714,7 @@
         "math",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f8cfa75df0f02d6d4fca1bbd2cc40e4308bde756c2f66edf759a0656c388d3e4"
     },
     "runtime/dependency_audit.py": {
@@ -726,7 +726,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "1217468bcfecce3518890988e0b62feb1f96a7568b73cd0ba8e7566f8d266644"
     },
     "runtime/durable_state.py": {
@@ -736,7 +736,7 @@
         "json",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "a8dfdf65357050358a9204a82cf5af58347a2fbfa1f18ee3401ea3db67998baf"
     },
     "runtime/effect_grants.py": {
@@ -750,7 +750,7 @@
         "tempfile",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b20f315ee99ba63a890683f3af2dbc7bcce95c0d5194090cc7bde6c85a7cfa20"
     },
     "runtime/effect_surface.py": {
@@ -762,7 +762,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "96ea2aa05d7ec14cd8b508f5747bfdab8459a302a10bdb9d95a0012bae00be67"
     },
     "runtime/engine_identity.py": {
@@ -774,8 +774,8 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
-      "sha256": "f7866edd24ef61960988c72e4d1f81cb358bf6dffefef8a98bc206465e34dbe6"
+      "index_state": "verified",
+      "sha256": "4c71888c33e1d8ed75db308c16406fd8ae175a98aecc8a439c41514a9aeb5f3b"
     },
     "runtime/engineering_intelligence.py": {
       "imports": [
@@ -787,7 +787,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "96e8ac2498a1f597ca13b67960e569583b9fd2e0c3d3ee0c4cad70e23635f7bd"
     },
     "runtime/engineering_lifecycle.py": {
@@ -797,7 +797,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d9f8461c166112915ce487585a70d6e3f9970a5b138699b931f69c81af6bb9ea"
     },
     "runtime/event_ledger.py": {
@@ -810,7 +810,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "afb9203b956b0265235f1aeee3ec7511daf9b27030a70904ad3c0aff6a266156"
     },
     "runtime/evidence_assembler.py": {
@@ -821,7 +821,7 @@
         "enum",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "52038e79a6119db39283146108f05eb2fabc5f68e9d9b9222ece1a8498bd7419"
     },
     "runtime/evidence_custody.py": {
@@ -833,7 +833,7 @@
         "typing",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b4c0939bdd433863c3cc02cf1f34894c040eb6d26a38d566995a6ab803ca8cf6"
     },
     "runtime/evidence_index.py": {
@@ -848,7 +848,7 @@
         "typing",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "286a84213d613787d4dfa6dd7a0434c0624269a1f484ead56b13969c38da9b7b"
     },
     "runtime/evidence_portability.py": {
@@ -860,7 +860,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "0f96e5476ae11d288705c0375a6b0c546782a0ade2642ef4970b73c41c6796e5"
     },
     "runtime/exact_tool_certification.py": {
@@ -881,7 +881,7 @@
         "typing",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "817f21bae2f254a406db8f0d094bfe400a0e79d9c618540a8100092bb699afe1"
     },
     "runtime/execution_contract.py": {
@@ -892,7 +892,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "05f3d4d520a931c0d4585b0b6cb6d155fe4e333ed534336c962d2b8c9050a863"
     },
     "runtime/execution_placement.py": {
@@ -906,14 +906,14 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5cb71c0fabb53b3411577388b11a637b0dea601fb0f1698057a23ee44005d011"
     },
     "runtime/exit_codes.py": {
       "imports": [
         "__future__"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e4cd2ba2958688011ee3bf09663f16960fc6381ea0a19030a4dc92deabfc99ed"
     },
     "runtime/external_capability_provider.py": {
@@ -929,7 +929,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "58abfab49d190b50553f66fe86478b2c1db3a301ebd63f60f656090f0041948d"
     },
     "runtime/external_evidence.py": {
@@ -940,7 +940,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d02e4db163a56514b5e6f19fbbacc73dbc8dcca849151e2d1ba5f8bd871468ae"
     },
     "runtime/external_toolchain.py": {
@@ -952,7 +952,7 @@
         "tempfile",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "63a2110a4328ab9ddef27de50852fe55275383349908ddeebb616ffad7ed6687"
     },
     "runtime/file_lock.py": {
@@ -975,7 +975,7 @@
         "time",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f37b43194647dcd8446fe9b582445fd2b94539df2b240ea132a43f57a4cd7572"
     },
     "runtime/foundation_assurance.py": {
@@ -988,7 +988,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "608230612367c0950da208c36e188c79728951f7402c43a5b5d2d47ed76a578a"
     },
     "runtime/full_repair.py": {
@@ -998,7 +998,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "63cbee3ca136dc06b46ef488728a83a5069f6e2f2b84c5bde7cbaf525e53bbcb"
     },
     "runtime/gate_runner.py": {
@@ -1012,7 +1012,7 @@
         "sys",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "805441e6778eb8539da8177ef4acc8c381938fc506e8612f83e22e89bec21bff"
     },
     "runtime/generated_artifacts.py": {
@@ -1030,8 +1030,17 @@
         "scripts.reconcile_declared_tool_hashes",
         "typing"
       ],
-      "index_state": "reused",
-      "sha256": "aff2e4c72f1d639ca49b2fb89131c761799d63b956e7eb05598e4d6501a907d5"
+      "index_state": "verified",
+      "sha256": "6aedad4049bb9249676898b072c82fc9b2fd873061662af697f8e5396b8459c5"
+    },
+    "runtime/generated_dependency.py": {
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "56fbc06779ebd7ff301fe27211f8251619d28224c53baaf8f7d4b89168d061a7"
     },
     "runtime/global_skill_isolation.py": {
       "imports": [
@@ -1044,7 +1053,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8410c258df0cbbfddf357eacbfb2622f927725f47ac5633cbef2309dffb65367"
     },
     "runtime/graph_registry.py": {
@@ -1056,7 +1065,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "11c2b8d85214530e82f37f919b21eed065646557966f9d2cc75764162a047497"
     },
     "runtime/graphs.py": {
@@ -1066,7 +1075,7 @@
         "dataclasses",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f5182743ac0dad857e2d1ab9f7f9f1329b2663ccc3a6afe9aee7d312487cd1b0"
     },
     "runtime/hardware_routing.py": {
@@ -1088,7 +1097,7 @@
         "time",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "51269b8b25c0903c326fed9316199fd49f48f6aeea4f27280ed7d753b8569707"
     },
     "runtime/health_model.py": {
@@ -1102,7 +1111,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "4d7be6420529ea447ecdc769dcfd5bea0257312d43d9e6724aece9e05287ae1c"
     },
     "runtime/host_boundaries.py": {
@@ -1116,7 +1125,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "9a5da93181ea95905ea2a9eb56a7efbb96e26f8fa7ae439430b6ef2c27bdf081"
     },
     "runtime/instrumentation_sdk.py": {
@@ -1127,7 +1136,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "24d43788c6c33664f161bbd5fd4f740ec599e06cd042c9e01131827b193d9bdb"
     },
     "runtime/intake.py": {
@@ -1138,7 +1147,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b007c610cc0f74ebbe93e966501265b0cf27f24a482651a359d15af6ddd540e7"
     },
     "runtime/intake_lifecycle.py": {
@@ -1151,7 +1160,7 @@
         "shutil",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8858583fdb988a8be38159d9892b03299f7f44e68ab593c93d35aaa9833bde0d"
     },
     "runtime/integration_disposition.py": {
@@ -1164,7 +1173,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6a3e6a85c96a4b9d33b2594030c69f4702dd252bf2831e32973a9a7f7f592ff8"
     },
     "runtime/integration_registry.py": {
@@ -1175,7 +1184,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "45a759a3dc029ff7d8219b3e173b5bfa68265efe8dffb845b08718e1594e379f"
     },
     "runtime/json_io.py": {
@@ -1185,7 +1194,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "36a847daca28f9b30c4a966c5cdc0b96b72d1f3bf16d584c528e04535f77ed65"
     },
     "runtime/knowledge_core_controller.py": {
@@ -1199,7 +1208,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2f281b00019cdcc005a7351827e2245c929604db51047e426b27f272951f08fd"
     },
     "runtime/knowledge_foundry.py": {
@@ -1214,7 +1223,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "deaff59b42fb0a3627bc1fbb92cefe495372eac92cb7bab70eaa6f3bae6fb735"
     },
     "runtime/knowledge_refinery.py": {
@@ -1227,7 +1236,7 @@
         "pathlib",
         "re"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "844e1a63258bb81d43724510a9e89855cbc28f495863343921377552712d3b28"
     },
     "runtime/lazy_loader.py": {
@@ -1240,7 +1249,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5daaf44139c68c002c688742463ff5374373b29438079460c88df1422738583e"
     },
     "runtime/learning_promotion.py": {
@@ -1252,7 +1261,7 @@
         "math",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8735ec423ab3b148f4c8b629e86afbf0ce79d8d4a213a8be1fe5edf998431fa2"
     },
     "runtime/licensing.py": {
@@ -1264,7 +1273,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e80cc2285dd2e8001908d49255f9624fbb3499fb3935721f6977260ce37cb988"
     },
     "runtime/lifecycle.py": {
@@ -1275,7 +1284,7 @@
         "hashlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "263761c7094a678db50ce0978c370cc7efd6f98fc6009d137a5a4f35bdf27adf"
     },
     "runtime/memory_fabric.py": {
@@ -1289,7 +1298,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "dff1c53a9fbe8a6958c19aa1c9060d92ffa444c937ab18e4761be62378394817"
     },
     "runtime/memory_intelligence.py": {
@@ -1306,7 +1315,7 @@
         "time",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6bd56a344493dd4fecb9c4bd58a3c3dca158263fbd1e865afb6a21f2059cea28"
     },
     "runtime/memory_operations.py": {
@@ -1321,7 +1330,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c452cf5420c5a2e450b691a51898959da56573498c6fd37f555096927af4dc63"
     },
     "runtime/memory_remediation.py": {
@@ -1331,7 +1340,7 @@
         "json",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "04a222529e27852e51a8b211421ca6c542b8a468f7e685d6452f49b486f29d80"
     },
     "runtime/memory_vault.py": {
@@ -1346,17 +1355,17 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "9d857fa6844aeb77e0140d3a78a69c11fabda1c42de46c11ae9e4a9a1b273c6a"
     },
     "runtime/metacognitive_evolution/__init__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "runtime/metacognitive_evolution/agent_profiles/__init__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "runtime/metacognitive_evolution/agent_profiles/router.py": {
@@ -1364,12 +1373,12 @@
         "__future__",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8b8b5791d1ed932d408a337c918ca95f75e77e643c5d89205a14bafba2630164"
     },
     "runtime/metacognitive_evolution/capability_genome/__init__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "runtime/metacognitive_evolution/capability_genome/genome.py": {
@@ -1378,12 +1387,12 @@
         "collections",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "710ad3accc90de5f579de08c0da1dd003e113de13fb10140aa4839ac1dd94847"
     },
     "runtime/metacognitive_evolution/common/__init__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "runtime/metacognitive_evolution/common/io.py": {
@@ -1393,7 +1402,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "11d3a1113bce63412d7907a7ad65fab9eed0a236433c1d02deef9bf44a9a402f"
     },
     "runtime/metacognitive_evolution/common/mathx.py": {
@@ -1402,12 +1411,12 @@
         "collections.abc",
         "math"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "16af691d107599234a283087f041304bc5ef601159e3d3160fe5dcabe8fd8785"
     },
     "runtime/metacognitive_evolution/engineering_dna/__init__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "runtime/metacognitive_evolution/engineering_dna/profiler.py": {
@@ -1416,7 +1425,7 @@
         "collections",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "a72a1b87fd35d81ad97ae69768f20228289e8e62d51f95de579bb6de2050c506"
     },
     "runtime/metacognitive_evolution/facade.py": {
@@ -1427,12 +1436,12 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "727e774480cfd15175372776728b3ab5cb4b6e5b4ec60447dfbbae8162ccbdb6"
     },
     "runtime/metacognitive_evolution/introspection/__init__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "runtime/metacognitive_evolution/introspection/trace.py": {
@@ -1441,12 +1450,12 @@
         "collections",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "426677f5ae69fe73bff9710adb57e4f6443ea844120958d03ffc4cec64a55e25"
     },
     "runtime/metacognitive_evolution/knowledge_physics/__init__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "runtime/metacognitive_evolution/knowledge_physics/engine.py": {
@@ -1455,12 +1464,12 @@
         "collections",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "81bff59cc2b937a9113a6e88291abba6d62126ec299cb0e0ceeda6a67aa59844"
     },
     "runtime/metacognitive_evolution/metacognition/__init__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "runtime/metacognitive_evolution/metacognition/contradiction.py": {
@@ -1468,19 +1477,19 @@
         "__future__",
         "re"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c08dd910e9d505f1c2e5153314a2dd1ed2d3581206c7b47fb990f1c130877ecc"
     },
     "runtime/metacognitive_evolution/metacognition/epistemic.py": {
       "imports": [
         "__future__"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "59b618f3bf148dff0b7fd5fd772d443d06959c5538221b9415942385c0285ff7"
     },
     "runtime/metacognitive_evolution/optimization/__init__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "runtime/metacognitive_evolution/optimization/engine.py": {
@@ -1488,12 +1497,12 @@
         "__future__",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "a51df7bc7f1c64208d2ead6773b1ca58a53f176d74fd84b31f6dc4ab663356b7"
     },
     "runtime/metacognitive_evolution/semantic_contracts/__init__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "runtime/metacognitive_evolution/semantic_contracts/linter.py": {
@@ -1501,12 +1510,12 @@
         "__future__",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ec2c40a06b4d67102d56cbff4ca7ce9952793efe1c6f2461dee7e0c0834a5fa9"
     },
     "runtime/metacognitive_evolution/theory_induction/__init__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "runtime/metacognitive_evolution/theory_induction/inducer.py": {
@@ -1516,7 +1525,7 @@
         "itertools",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "88d65f4d3488bd336f1d561d6c6d1427e7ec473d0b9d2478a6dd4f2d400e51a3"
     },
     "runtime/models.py": {
@@ -1528,7 +1537,7 @@
         "shutil",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2ed1ae83b4c9055694e6119a8d589c73666b02b9c4a2bbe699a31c290aced441"
     },
     "runtime/native_skills.py": {
@@ -1541,7 +1550,7 @@
         "shutil",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "731e426b3a2a36ade87e3336bfbe062138b76bfa4dfe1d94f27782fd2a47df9e"
     },
     "runtime/operation_authority.py": {
@@ -1549,7 +1558,7 @@
         "__future__",
         "dataclasses"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "dc2123b1095fdbb29ba400b7ba5b29c502febfa4109cd9760e825f1111a6637e"
     },
     "runtime/operation_coverage.py": {
@@ -1562,7 +1571,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c35bba64f2399959da0c84f9869a5dd83f66ed7e15ed83c388015a242ec9e8d3"
     },
     "runtime/operational_controls.py": {
@@ -1573,7 +1582,7 @@
         "json",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b8fdf8aea1ef33b231d8e450f9fda6cdfa9818b71f8b9567e1e91574ea634680"
     },
     "runtime/operational_event_bus.py": {
@@ -1587,7 +1596,7 @@
         "time",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2028471cc3c522486b1af340c25d94667480ab6dcf5251c762af6f330b38f56f"
     },
     "runtime/operational_gap_ledger.py": {
@@ -1607,7 +1616,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "cbe8d6e62b2175d0a13eb98c0aa55108311a1a8fda8fe8e31b6ba201184039cb"
     },
     "runtime/operational_observers.py": {
@@ -1628,7 +1637,7 @@
         "sys",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6da9dd927c97b96c40f3b1d4e7f3fd2821c23d9ac6267f1d637427145b15028b"
     },
     "runtime/operational_visibility.py": {
@@ -1638,7 +1647,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d6a42001be4d2180c4bbb9d731bec5317ae721a9352ba62d63f6aa03911a76f9"
     },
     "runtime/orchestrator.py": {
@@ -1649,7 +1658,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2220cd06d09506866d402bde72704e875beda8c1d6952c6c9b4157133e19563f"
     },
     "runtime/outcome_verifier.py": {
@@ -1660,7 +1669,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "44a17314be94ae5495344010fc38119cec5c6f5fbb8f9e47875223456147d65c"
     },
     "runtime/paths.py": {
@@ -1669,7 +1678,7 @@
         "pathlib",
         "sysconfig"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ebafa3ad5873678d322449fc1e97f7519f9473ca410c0ca8a4a247001ccfa2fb"
     },
     "runtime/planner.py": {
@@ -1681,7 +1690,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d1ce71d33ea94059913ed5d87ecc2133590a7b7e747c55935c4512398887888f"
     },
     "runtime/platform_support.py": {
@@ -1692,7 +1701,7 @@
         "sys",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "95e953511741ecaebcf3d40eb05a9e20e957e75756773e4f969ac0f7596b65b7"
     },
     "runtime/portable_audit_bundle.py": {
@@ -1706,7 +1715,7 @@
         "typing",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "19900c5e74bb7b08a49988cd6f60e07007561fa09f51acf515e7898d1a790660"
     },
     "runtime/process_memory.py": {
@@ -1719,7 +1728,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "0387613096c58a4bcb3d7af2d9eee7983061cec76948b2ec85557448b532b6c8"
     },
     "runtime/process_supervisor.py": {
@@ -1738,7 +1747,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ee6cfc15ea079f5917566bd32cefec68b05384a2422d4c20bb44f0fe07b1c5e9"
     },
     "runtime/profiles.py": {
@@ -1747,7 +1756,7 @@
         "pathlib",
         "tomllib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5a94616a314959fd62a9da77119a74b11f5794f031a6510f23999d5007fe270e"
     },
     "runtime/project_control_plane.py": {
@@ -1763,7 +1772,7 @@
         "shutil",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ba2b8ee1ccdb5f32a340ea8b33557308b716705901f46ee4afcd01cfb127d644"
     },
     "runtime/project_impact.py": {
@@ -1774,7 +1783,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "a7f074503934ed83ee05d0a074b964db852559a0c07216079c1baf51c54addc3"
     },
     "runtime/project_intelligence.py": {
@@ -1797,7 +1806,7 @@
         "uuid",
         "yaml"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "459e5d273748f488bb0fab03f748819dfda23b7fe757ac37c1e1844b530db131"
     },
     "runtime/project_management.py": {
@@ -1807,7 +1816,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "7f1cbe9b6ae81aefc2ed0c40a1ed903fbf357c27bd56c173bab3b26892b0b8be"
     },
     "runtime/project_map_retrieval.py": {
@@ -1820,12 +1829,12 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "3fa4d6dfd493db832de87abfb32a100c8165f073b8796667334e549c91c8a9d7"
     },
     "runtime/project_reasoning/__init__.py": {
       "imports": [],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5eb6c1342781d3215a14dc0e103d6a8b854b97ea3e0b2a552412d275798c4388"
     },
     "runtime/project_reasoning/deep_module_audit.py": {
@@ -1834,7 +1843,7 @@
         "ast",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d7da68bcc6666c89eafbe4666764111960c1da7fbbd42cb9d73f57c903d67e61"
     },
     "runtime/project_reasoning/frontier.py": {
@@ -1845,7 +1854,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "896044e5125b11897a6d117b7bc5adcef8dbb6e6d90b1d7c5ffb8ce67c543fb6"
     },
     "runtime/project_reasoning/glossary_audit.py": {
@@ -1855,7 +1864,7 @@
         "pathlib",
         "re"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "65faea8bea3388e0d85bde608dbb63248d854f9bb35f08598319f1c3a1f9ec72"
     },
     "runtime/project_stream_controls.py": {
@@ -1868,7 +1877,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ea5692e00bafb6cb85f733115cdfd46818f29ff061015618d87e22d6db734443"
     },
     "runtime/project_stream_orchestrator.py": {
@@ -1881,7 +1890,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d8019338d50080edbb6bf0eb0eca963845d239fa5b86f3ddd48fd2b536b945a3"
     },
     "runtime/provider_budget.py": {
@@ -1894,7 +1903,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "374dd5e90353d0e23f27818d1c7b28ada652035677a57a110e1439cd2f68515f"
     },
     "runtime/provider_certification.py": {
@@ -1907,7 +1916,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c9b964e4752e01299ba2aa5ad74fd07bbe4853b0c9fa5a87072419ff3bb71b56"
     },
     "runtime/provider_gateway.py": {
@@ -1923,8 +1932,8 @@
         "urllib.parse",
         "urllib.request"
       ],
-      "index_state": "reused",
-      "sha256": "ec89f482fe61707af2f09818276b1377091fef3e0997838ebfb33df07323fad6"
+      "index_state": "verified",
+      "sha256": "1af0d00c16b480195e00a97b6e9209fea6f4bdb11e718da7e58af0247ba1805c"
     },
     "runtime/px_doctor.py": {
       "imports": [
@@ -1938,7 +1947,7 @@
         "subprocess",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b954be86c6ce41812fd468dd2e584f23c453d0f8ee57084cdd8635367859defc"
     },
     "runtime/python_surface_certification.py": {
@@ -1954,7 +1963,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "4395ec4313a1707d29095090eb44d58defeb3ee95edf2dc02778be50ab5329e4"
     },
     "runtime/query_certification.py": {
@@ -1964,7 +1973,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e37ed30394b9bc7ed4056f24df75da0aef9e506ba70c07e1988772cc1ae1e880"
     },
     "runtime/reasoning_controls.py": {
@@ -1975,7 +1984,7 @@
         "json",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "519b56787d315d668cc84d085de689d0ef7a0a4dc398e9515913e5a7c29eb248"
     },
     "runtime/recovery.py": {
@@ -1991,7 +2000,7 @@
         "shutil",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "38c0e64e410c473cbed0fda7f95da3f3820456df8d7b367c61a5a356d7b2a4ae"
     },
     "runtime/registry.py": {
@@ -2003,7 +2012,7 @@
         "re",
         "tomllib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "29b8a90aef7b4a56b82c65a4a83b37b778df05d4d8aed338750317bd312fbc62"
     },
     "runtime/registry_envelope.py": {
@@ -2013,7 +2022,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d8e01db67fd27c3072c2acd77d943d3efc01a4137cbaf7249177ce0453b99cc7"
     },
     "runtime/release_artifacts.py": {
@@ -2024,7 +2033,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ac7d1c2a26c2e0bec876ba9411885652d6aab28ea5ef0fad954b45a9695fae15"
     },
     "runtime/release_audit.py": {
@@ -2036,8 +2045,17 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "cbd448713d245de88da12ed9de47becd045b5d73023a353ec805b8aa68585dc3"
+    },
+    "runtime/release_boundary.py": {
+      "imports": [
+        "__future__",
+        "pathlib",
+        "shutil"
+      ],
+      "index_state": "verified",
+      "sha256": "ab32a4770bb920acdb88f1cc8fd83c0cb4dbb6a216af168fb5932ce6ba7cc1e0"
     },
     "runtime/release_certification.py": {
       "imports": [
@@ -2059,8 +2077,8 @@
         "venv",
         "xml.etree.ElementTree"
       ],
-      "index_state": "reused",
-      "sha256": "830800cc5f873ce3a202c97fc549b4cc1de046960430315ccc9bd87e72f4a86b"
+      "index_state": "verified",
+      "sha256": "c44d38856496133eda60e8f4d41a5c00c91562828a4755165d101d929aac9961"
     },
     "runtime/release_distribution.py": {
       "imports": [
@@ -2078,7 +2096,7 @@
         "venv",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e91f438e49378716e9afe618da6f1106d1290c59570b998e5944669b0598dd5c"
     },
     "runtime/release_environment.py": {
@@ -2096,7 +2114,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6939e52388469cceefae455ac6f21d9341775c10d6dd0a7231a018366bb9b315"
     },
     "runtime/release_evidence.py": {
@@ -2108,7 +2126,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "4d3d4d15ed7bce1b5952ec347e702a465ad625238800142334a89192ddaba196"
     },
     "runtime/release_identity.py": {
@@ -2121,8 +2139,31 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "cbeb09b351e99a0ea82495234e0183ec8886ec48f9385331a252199cd46495bd"
+    },
+    "runtime/release_preflight.py": {
+      "imports": [
+        "__future__",
+        "concurrent.futures",
+        "dataclasses",
+        "datetime",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "platform",
+        "random",
+        "scripts.clean_source_export",
+        "subprocess",
+        "tempfile",
+        "threading",
+        "time",
+        "typing",
+        "uuid"
+      ],
+      "index_state": "verified",
+      "sha256": "d349fa2c86918bb65431c6611fc952a20b5ca9964139054335ab6c40ae25096c"
     },
     "runtime/release_signing.py": {
       "imports": [
@@ -2134,15 +2175,25 @@
         "tempfile",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "728a7c55d278efac3f88e1e0a3b2fa5a934a7fcf9522d5d4d847e088a9b6fb01"
+    },
+    "runtime/release_skip_policy.py": {
+      "imports": [
+        "__future__",
+        "pathlib",
+        "typing",
+        "xml.etree.ElementTree"
+      ],
+      "index_state": "verified",
+      "sha256": "ea0329d81550fe7c2fde84c0b18b68e30b04d1913cdf1ded5c890dd32f851932"
     },
     "runtime/repository_scope.py": {
       "imports": [
         "__future__",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "68e082b508dbb534fc68b869e8c2ff3e819025f66f4f6d07309dc38a8a1bff3d"
     },
     "runtime/research_assimilation.py": {
@@ -2155,7 +2206,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "44c0e83da9435e85e25ef708bdbeadef7fd75094e4dbfb23ed30613b8f647ce4"
     },
     "runtime/resource_lifecycle.py": {
@@ -2179,7 +2230,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "383863b6664c36630b081a9301647ee105cde07ea82752c3c2a126e2573c5548"
     },
     "runtime/retrieval.py": {
@@ -2189,7 +2240,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "66a35e21cac98952ff0f456253dec52523fc1bf331af285bbee3c699866ce8ce"
     },
     "runtime/runtime_lifecycle.py": {
@@ -2202,7 +2253,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "4651cb80392c877b741e844a48a340bc45159302b4b07e96a358048a3e7f0434"
     },
     "runtime/sanitation_assurance.py": {
@@ -2214,7 +2265,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b680428481319e341dce7c4664ea98d54ce226ac871932dd0e842970f6f8f521"
     },
     "runtime/scheduler.py": {
@@ -2224,7 +2275,7 @@
         "datetime",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "46c679c876d0c56af4b5fb3fe078ef1b875e23cdf652287b8c17d4f4565d6091"
     },
     "runtime/secret_scanning.py": {
@@ -2237,7 +2288,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "68e1dfdb3ac831b7ab9c2b247950ce854cf81d6c24abf52b3fec6abe2ba5a92a"
     },
     "runtime/semantic_index.py": {
@@ -2249,7 +2300,7 @@
         "re",
         "tomllib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "129e0a1cb4ec2bcde189946d44f6a334e355d9704dd22395864215bde491e13b"
     },
     "runtime/service_capability_provider.py": {
@@ -2260,7 +2311,7 @@
         "pathlib",
         "re"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5a0363e2c1046dc8522ced5247d4da0e0eda553eb1e112c70c6ba52dda9c0782"
     },
     "runtime/skill_navigator.py": {
@@ -2274,7 +2325,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "a4be18571bfe1008451e2cb2b1fb9849e47b8dd04c187bfd3347e020e66e5db1"
     },
     "runtime/skill_studio.py": {
@@ -2297,7 +2348,7 @@
         "uuid",
         "yaml"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "657a42c3f90b33d10b2d0377a225b8a166f49b1abd4aed902e16c16462423903"
     },
     "runtime/source_coverage.py": {
@@ -2308,7 +2359,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "fb008f450b4df3ae99897b1b81f7fd5aeffa9e97c34dae4b1630be3ef0bc29f9"
     },
     "runtime/startup.py": {
@@ -2321,7 +2372,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2ef047a51641a1eb263e50aef200f7ae54c56ce52715f14a9052b7c57bd09296"
     },
     "runtime/state_invariants.py": {
@@ -2336,7 +2387,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "82761d9a94e4fbbeffb9210f0cdc50efb5f49e4dd9f613abc748d79af02c321a"
     },
     "runtime/structural_integrity.py": {
@@ -2354,7 +2405,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "cf67b9599dd9ea7a91c7bea942306a40b838ed112621a695868d5d23105bcd00"
     },
     "runtime/studio_api.py": {
@@ -2371,7 +2422,7 @@
         "sys",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d9d2599b6bc7948333da7d6da7e5aec646e1da6b1668e053c2c50e4a06ee5b23"
     },
     "runtime/studio_approval.py": {
@@ -2381,7 +2432,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "64a4151d879737b9ff20b4d8f1df79fe046bc60939ba32ca3af87e4e39abc79f"
     },
     "runtime/studio_authority.py": {
@@ -2398,7 +2449,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "84a47fabf7813bde717e7b97bc3135c9537b58d285fb9a8e5789d8f629cc48ab"
     },
     "runtime/studio_catalog_status.py": {
@@ -2410,7 +2461,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d39501c03ba73f1f373632756cc21f924b798420a8c954790d7ce064c3732e62"
     },
     "runtime/studio_filesystem.py": {
@@ -2424,7 +2475,7 @@
         "sys",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b9243cb22289f43f773cd07dfc80bb818b5f6dbcd873bde2bfca7c637ad017de"
     },
     "runtime/studio_models.py": {
@@ -2441,7 +2492,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "87a20451b6ab1cc02eb6ce24abe3d7255a0a5d96e535a8168a19a9737b8bc7cd"
     },
     "runtime/studio_protocol.py": {
@@ -2451,7 +2502,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "0a5727c2d01c59ef938c1aaf0ef6811e8362a7b03e009a0314d3070b8a800f4d"
     },
     "runtime/studio_run_control.py": {
@@ -2465,7 +2516,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c6b4f80ae7f3b410381edc33326652b33a29d4a146b28883eba63afc0d69567a"
     },
     "runtime/studio_session_worker.py": {
@@ -2478,7 +2529,7 @@
         "time",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "749eaa165040a766bd2535bcd65926674c35fe0eb121c64347dc86ad499fac3b"
     },
     "runtime/studio_terminal_observer.py": {
@@ -2490,7 +2541,7 @@
         "pathlib",
         "time"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "11cb50d3ff495af35c2fd880b079dc740d747091bc5fac66f5d110060274ceef"
     },
     "runtime/studio_worker_launch.py": {
@@ -2506,7 +2557,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8c9ebdbbb1571ee537ed8c2adf7115e1713a41a6f7671ff14aedb2edc8f3ff23"
     },
     "runtime/system_graph.py": {
@@ -2517,7 +2568,7 @@
         "pathlib",
         "tomllib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c96719968ce6b32c9db7f0c975d29f0f02ea8382f4090b321b1bd3f99632cdfd"
     },
     "runtime/test_profiles.py": {
@@ -2533,8 +2584,8 @@
         "sys",
         "typing"
       ],
-      "index_state": "reused",
-      "sha256": "f235cbf3989cdd489a853ed7237965646319a498aaa1134b8a806aab437905d1"
+      "index_state": "verified",
+      "sha256": "03b550c914371882573fc7faf27298635c55c58cd791dbf5a53ce97230bd23d4"
     },
     "runtime/test_runner.py": {
       "imports": [
@@ -2548,7 +2599,7 @@
         "time",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "7c15e3a981c6560fcc7c6f332cd83e2c70e921e57590baeed7881dbae8ec65da"
     },
     "runtime/tool_intake.py": {
@@ -2564,7 +2615,7 @@
         "subprocess",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8ec36e5cdf95c34251701c547464d6aeeda80e85a5bb478419e35cb58df0f02d"
     },
     "runtime/tool_recommendations.py": {
@@ -2577,7 +2628,7 @@
         "subprocess",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c6fab48dc4a4c41c98e47951efdfae0369c4ce1576a77dd66addc6ba4479e12b"
     },
     "runtime/tooling.py": {
@@ -2589,7 +2640,7 @@
         "shutil",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6307cf12158a773941e8847a318fa65f8e898fa836fa9ccd98c5c3246eca4c5a"
     },
     "runtime/transcript_analysis.py": {
@@ -2607,7 +2658,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5eb7a16579048f8ee5ca5a29662521c6c4647bbce5e52a13d3c22ea727e1e910"
     },
     "runtime/trusted_evidence.py": {
@@ -2623,14 +2674,14 @@
         "tempfile",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2d71eb84b27a2d8ba4d740df51942d20810e1fde2621d761d281db571d904aa2"
     },
     "runtime/version.py": {
       "imports": [
         "__future__"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c8e1741d6a12ca6c194977e25fd68bed720890e1e3d11512d9f8c19474d0e35e"
     },
     "runtime/wal_transaction.py": {
@@ -2645,7 +2696,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ba42f568f7cdcacf06b4afa72ea6ee7423ada9f7392f1f0b74f5b59107f43723"
     },
     "runtime/work_admission.py": {
@@ -2661,7 +2712,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ce044c73c74f0c6dc01e5d5975bc77803d0e6935a8af2f957336b26d68950960"
     },
     "runtime/workflow_studio.py": {
@@ -2680,7 +2731,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "013d2f5e40cbefbe2ea8cd9d45fef719759abd6d2cdb6717f8607a2ca5c820f3"
     },
     "runtime/workflow_worker.py": {
@@ -2691,7 +2742,7 @@
         "pathlib",
         "time"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b6ba967913fd05d8524237103c7f181faead1709c4850904ccbecede6e23fc73"
     },
     "runtime/workspace_manager.py": {
@@ -2711,7 +2762,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6b320c15dae8bb3d7336b722107ec727fc8d1d99fbb22eaa7e2c1eaa5b5076cc"
     },
     "scripts/apply_typed_control_gap_links.py": {
@@ -2724,7 +2775,7 @@
         "runtime.operational_gap_ledger",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "41476ee760fa157ca1f89e92889705621ee1afa35d4604dfeada71f29b8e74a1"
     },
     "scripts/archive_committed_wal.py": {
@@ -2741,7 +2792,7 @@
         "shutil",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "57ab873b79ddf99a6ae8e4cc4a18898ec71f50c867f457de173f5d393693e65d"
     },
     "scripts/archive_project_map_history.py": {
@@ -2757,7 +2808,7 @@
         "stat",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "84096e67956df0359d14fd6463508ba9efa20336715c5774b6c6da8ec48658e0"
     },
     "scripts/assemble_operational_control_evidence.py": {
@@ -2770,7 +2821,7 @@
         "pathlib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "20ac077a5b6e209ce4119fe2ab7acf6d8fdafdb53ac8346aa926d57cce5899b4"
     },
     "scripts/attest_operational_card_evidence.py": {
@@ -2785,7 +2836,7 @@
         "sys",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "cc3069b04b457fe1d37b4a4ba75d1c6a0d20469ee1273966c0ea39ac489e741e"
     },
     "scripts/audit_sanitization.py": {
@@ -2797,7 +2848,7 @@
         "re",
         "runtime.repository_scope"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "9cf0f18e25170dba1e4916a78671f7de7e5d332b88b119e0937865f1afbd0779"
     },
     "scripts/bootstrap_certification.py": {
@@ -2809,7 +2860,7 @@
         "runtime.certification_readiness",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "9b7ddec485ab0dd04fd61ef5d8ff20d447bb1d1761303fd62cc25bc40d64122f"
     },
     "scripts/bootstrap_operational_gap_ledger.py": {
@@ -2820,7 +2871,7 @@
         "re",
         "runtime.operational_gap_ledger"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8a54e6e46d60d3701deab87c4a1a7da6b679e73375e10bf8d0ae8398f170e102"
     },
     "scripts/build_admission_queue.py": {
@@ -2832,7 +2883,7 @@
         "pathlib",
         "re"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "150566655c9d5db0f1c877dfa4f34d4f66da60af4fb74c54382f135fbe2da718"
     },
     "scripts/build_agency_agent_graph.py": {
@@ -2844,7 +2895,7 @@
         "runtime.agent_provider",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "85cf64342cd380b5090c0092848f4308d8c84a841aab7eb3da0dd4ff1a01c6d4"
     },
     "scripts/build_artifact_reachability.py": {
@@ -2855,7 +2906,7 @@
         "runtime.artifact_reachability",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "a81f39f6555f7ad8c799efcc27bc051a2a6681a66a43666ce9cffc833c16bcb0"
     },
     "scripts/build_claims.py": {
@@ -2868,8 +2919,8 @@
         "runtime.build_claims",
         "sys"
       ],
-      "index_state": "reused",
-      "sha256": "144ac4b7c4379adb52a321769a5b799cb3754c6cf3fde43001279aeea850f61e"
+      "index_state": "verified",
+      "sha256": "468f8e278f7f0de67090a51e8573d525df313afa138ed29f49881341dc3671b5"
     },
     "scripts/build_cognitive_index.py": {
       "imports": [
@@ -2880,7 +2931,7 @@
         "runtime.cognitive_core.index_builder",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "dfb640cb9f678a11f9955301af2c9a3f3bfd16e50fa9bb9daeefda7c80230317"
     },
     "scripts/build_completion_status.py": {
@@ -2898,7 +2949,7 @@
         "runtime.test_profiles",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "7a01cd1eaa15ee2c5835fdac2786cd87cda646fca934d971ca5a33cf175d8a47"
     },
     "scripts/build_contract_ownership_registry.py": {
@@ -2908,7 +2959,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "99334f8cf0e7cdba6fea4b08e7fafc58eebadd4e89b984e1150ba3cdd86fc8ab"
     },
     "scripts/build_current_evidence_index.py": {
@@ -2920,7 +2971,7 @@
         "runtime.evidence_index",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6efdd63a853cf3fc0d149d02f6f44b645d495fb719827fadd8b92ce569b28886"
     },
     "scripts/build_cybersecurity_provider_registry.py": {
@@ -2936,7 +2987,7 @@
         "sys",
         "yaml"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "14007bef484a8d0e8a8c3b198cece4a3714955bb5437ad2d338f5752f0670098"
     },
     "scripts/build_declared_suite_template_projections.py": {
@@ -2947,7 +2998,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "09dcd2b99fb0f0e680a45bb2d9d88096d3684e9fee4055fc3f951604b18b0a0c"
     },
     "scripts/build_domain_tool_projections.py": {
@@ -2958,7 +3009,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "1e8e26d8fb161d0bcd6d6a7a89f972d3a06a6d47fa9389f43c47df7a6253360a"
     },
     "scripts/build_effect_surface_ownership.py": {
@@ -2969,7 +3020,7 @@
         "runtime.effect_surface",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "678e735bf8e20d243a66b77b086b18185e878a89da1a1a0c5b2cb463b55ede4a"
     },
     "scripts/build_engine_identity.py": {
@@ -2980,7 +3031,7 @@
         "runtime.engine_identity",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "aac6e4c18e9c4ee16305b69871f26ca2de743b9f579966ffb36eb5e2f7699791"
     },
     "scripts/build_external_candidate_registry.py": {
@@ -2995,7 +3046,7 @@
         "sys",
         "tomllib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "a3504de20f97f2c7a7cfbcce24285bbb14fba045d8c2faffbb88426ccb94e2b9"
     },
     "scripts/build_historical_external_references.py": {
@@ -3006,7 +3057,7 @@
         "runtime.evidence_portability",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "1fa854b81d8bcc167a63feecd0b7f6a6f8d463adc2f67710facba3b6f9b02f0c"
     },
     "scripts/build_installed_host_control_evidence.py": {
@@ -3020,7 +3071,7 @@
         "scripts.assemble_operational_control_evidence",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "38d40babd23a13b918a73ad744ffc8cfd8268615e7be59f2722df8b27fee1909"
     },
     "scripts/build_installed_probe_control_evidence.py": {
@@ -3034,7 +3085,7 @@
         "scripts.assemble_operational_control_evidence",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "eba5130605ab7de8c64f702bf301cb69da04bc083c9d331df2137d537571da87"
     },
     "scripts/build_integration_disposition.py": {
@@ -3046,7 +3097,7 @@
         "runtime.integration_disposition",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "308c646d0066c0cd640a6f967974092342867b5c5acd52bf759321cd985c0d30"
     },
     "scripts/build_operation_health_snapshot.py": {
@@ -3060,7 +3111,7 @@
         "runtime.operation_coverage",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2fe36d26eb748c6a99dd78ae4754a36078b2d8e75d24f335b633029ab3244ac0"
     },
     "scripts/build_operational_control_proof_matrix.py": {
@@ -3071,7 +3122,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "9b207e7f568d09827a71fbcc8635ab19a27eb26fdeb0baae93e7804e44202a2f"
     },
     "scripts/build_profile_projections.py": {
@@ -3082,7 +3133,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "7f1ac5e93691d69a610e03a3498ff4ca3f97ef2fa8c833764f2a978d7c94f04e"
     },
     "scripts/build_provider_route_index.py": {
@@ -3093,7 +3144,7 @@
         "runtime.provider_gateway",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "9aefa69b1b8092b17fec52b9174fe7c9079f1996cbb15610eebccf6f20b337ec"
     },
     "scripts/build_python_dependency_ownership.py": {
@@ -3105,7 +3156,7 @@
         "pathlib",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8813516d0fca69f220d1847f113143e5279c09d650157f715a92722febe9e7c2"
     },
     "scripts/build_python_surface_ownership.py": {
@@ -3118,8 +3169,8 @@
         "runtime.python_surface_certification",
         "sys"
       ],
-      "index_state": "reused",
-      "sha256": "b11709bf6617efcb9432de38f0c22abb0d36067ccd65a13dafb35afafe9e903b"
+      "index_state": "verified",
+      "sha256": "7e1c56372c42077f95d01004778def8921833d87aba9fcb1eecef1e2472934c3"
     },
     "scripts/build_reclamation_learning_promotion.py": {
       "imports": [
@@ -3133,7 +3184,7 @@
         "sys",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5fb0b45ad694e0a48ab911bcefbfef66b6bb92683f60af877436c777b1fcc582"
     },
     "scripts/build_registry_envelope_inventory.py": {
@@ -3143,8 +3194,8 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
-      "sha256": "2e17f39fb07b52341602285c6df41d045bd0c25570425d1db9839188df7f863a"
+      "index_state": "verified",
+      "sha256": "fac8693dc61386918c8ea6586174df3bf8da6df663dae6a6139b86326acf71ef"
     },
     "scripts/build_registry_graphs.py": {
       "imports": [
@@ -3155,7 +3206,7 @@
         "runtime.graph_registry",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "316cff0ae9105f9d0906a1ca76113411fb1796e07bd0e93e85bdd93715d32d38"
     },
     "scripts/build_semantic_capability_index.py": {
@@ -3167,7 +3218,7 @@
         "runtime.semantic_index",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "cff4eeb7ecb98f1af5b6c703a2f2938ed50a189e5f264906c32ee51fbc51c212"
     },
     "scripts/build_specialty_map.py": {
@@ -3178,7 +3229,7 @@
         "pathlib",
         "tomllib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "aaf4921e0df9402c43abcde6aa4c1e82816b7d588799246faba677508367d2cd"
     },
     "scripts/build_test_group_index.py": {
@@ -3191,8 +3242,8 @@
         "sys",
         "typing"
       ],
-      "index_state": "reused",
-      "sha256": "2cdaf93393ea862f7244d16200c4dd05c7af4562b176ab2c61c979b7a3cfdd53"
+      "index_state": "verified",
+      "sha256": "f6ef934d68634a0ca4a65b98d4781c2097dfb4e70156ed9ecb7337037a6916e9"
     },
     "scripts/build_typed_operational_surface_inventory.py": {
       "imports": [
@@ -3203,7 +3254,7 @@
         "pathlib",
         "re"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e441a8efc5944a476f0e563edcfbfa158a20593c44834339eea2480219372580"
     },
     "scripts/catalog_corpus.py": {
@@ -3217,7 +3268,7 @@
         "pathlib",
         "re"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "37dc5d9d6647f8bb739c9fd820d60a48dcb6fb7aa95834e8785c6d659104cc53"
     },
     "scripts/certify_capability_queries.py": {
@@ -3230,7 +3281,7 @@
         "runtime.registry",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "de1088840f2b8aa3799949e858fbc22bb56927c9e0a60e380398c7de1dfba469"
     },
     "scripts/classify/build_review_clusters.py": {
@@ -3244,7 +3295,7 @@
         "pipeline_common",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6c559c5ad604c644559631f28c1ede9dcab01e4825b35cf079528822065c7de3"
     },
     "scripts/classify/classify_assets.py": {
@@ -3256,7 +3307,7 @@
         "pipeline_common",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "7779c3546ae9a351981267fbb72707d55e3486fefe5401e186a33d6bc3239d7a"
     },
     "scripts/clean_source_export.py": {
@@ -3276,6 +3327,7 @@
         "runtime.evidence_portability",
         "runtime.exact_tool_certification",
         "runtime.generated_artifacts",
+        "runtime.generated_dependency",
         "runtime.graph_registry",
         "runtime.licensing",
         "runtime.provider_gateway",
@@ -3302,8 +3354,8 @@
         "uuid",
         "zipfile"
       ],
-      "index_state": "reused",
-      "sha256": "02515a77656384b88a370008c080bba6469525e42173499e77c5630f0bf78517"
+      "index_state": "verified",
+      "sha256": "112e242e45f8493aaab1ff9ef5c5291212b22f2c11940c561d22eb319120397c"
     },
     "scripts/cleanup_python_caches.py": {
       "imports": [
@@ -3317,7 +3369,7 @@
         "shutil",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "3dab12b3067a3757be5fd7334cdce7b11127d44bfb451785faeebf6ba2618fa1"
     },
     "scripts/deduplicate/cluster_near_duplicates.py": {
@@ -3330,7 +3382,7 @@
         "pipeline_common",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "558694adf6c191702f6f3dff59f56c30ab4f46879207adbf2dd65ad1d8bf1b4f"
     },
     "scripts/deduplicate/hash_exact_duplicates.py": {
@@ -3343,7 +3395,7 @@
         "pipeline_common",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "7909085fee9daf6201256cf8a4247028920e0d1dadba5796f25c1781f3d6a2e5"
     },
     "scripts/extract_structured_text.py": {
@@ -3354,8 +3406,20 @@
         "pipeline_common",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "dac4c658e197ee77c9532325197afc42eeb321254fc090f6194143e9c0045314"
+    },
+    "scripts/generated_dependency_graph.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "json",
+        "pathlib",
+        "runtime.release_preflight",
+        "sys"
+      ],
+      "index_state": "verified",
+      "sha256": "4adb5b2ad9446518f597e8140fc49dcd817a7c5d8b8c2edd086922c12ee9872a"
     },
     "scripts/import_adversarial_reaudit.py": {
       "imports": [
@@ -3367,7 +3431,7 @@
         "pathlib",
         "re"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "fb4958ba1d466423b38ae7661721f3d5f04e8db187cbfad6ba9b57a59cc8e7a0"
     },
     "scripts/inventory/build_archive_inventory.py": {
@@ -3383,7 +3447,7 @@
         "typing",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "4ee7035c4d3f10d6ffb01c57e7e12b56af9d8640c6c82b82220325f4542de1fd"
     },
     "scripts/inventory/build_file_inventory.py": {
@@ -3400,7 +3464,7 @@
         "re",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "a501e904201e98dc565f41b32c48426f346d8a47a2002f1279113efbe45e3f2e"
     },
     "scripts/inventory/build_partition_campaign_report.py": {
@@ -3411,7 +3475,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "543d134ede5fd70756a1f51f671ba123d0f643ead8f1169f71fd5c01f9a6378c"
     },
     "scripts/inventory/diff_source_set.py": {
@@ -3424,7 +3488,7 @@
         "pathlib",
         "re"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "18c7ba5729345e0b74302b0acb1dd3092fcab8be8585c45e448ad35812714fb1"
     },
     "scripts/inventory/freeze_tree.py": {
@@ -3436,7 +3500,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2cdd46ebe6c65a5f916fd4e86577456cdea44d9b327735857955f2e103bbd921"
     },
     "scripts/inventory/merge_inventory_partitions.py": {
@@ -3451,7 +3515,7 @@
         "pipeline_common",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5a4d1f077bf1c507a9d2097838520facb51f65a15debea088b8e5213c01632af"
     },
     "scripts/inventory/rehash_inventory_partitions.py": {
@@ -3462,7 +3526,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "53ea299b6e4eb8f44b96731307f547c729e9748eaeaeb0660ede00ecd5e13763"
     },
     "scripts/map_archives.py": {
@@ -3474,7 +3538,7 @@
         "pathlib",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "7e9b8f8f41a633200e990b40bcab969a49c7ab04be50b0a0d6ed06f8e42c2163"
     },
     "scripts/migrate_px_skills.py": {
@@ -3492,7 +3556,7 @@
         "tomllib",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "0b54b9fc4154448548492657800fb0b7fc5a61548d4ebf62ff7646ef1940b0e7"
     },
     "scripts/migration/admit_capability_mining_skills.py": {
@@ -3503,7 +3567,7 @@
         "pathlib",
         "re"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "034571cba211f0037bd4b42649c86fe86ce16ebe4f48a334393e41eb8748736b"
     },
     "scripts/migration/build_external_requirement_disposition.py": {
@@ -3515,7 +3579,7 @@
         "pathlib",
         "tomllib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "3f4899a28235027c4323dccfeea5931aadcb1c78ce7d9a04d0c254b14b682bb1"
     },
     "scripts/migration/extract_behavior_contracts.py": {
@@ -3530,7 +3594,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c57bfde8d3d53dfbdbdfa87aee5f0f2c19d5f6c5600b99210cbd43a726725303"
     },
     "scripts/migration/plan_behavior_skill_admission.py": {
@@ -3545,7 +3609,7 @@
         "tomllib",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c6c1d57a221fd898350088f625508088e798f830438fbc9b4d8bd7bc1adbb69a"
     },
     "scripts/migration/sync_skill_packaging.py": {
@@ -3557,7 +3621,7 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "242e9add72f929f75284b9d6841d55157e37e4f9e4171d04bd751bf6ba51e1b0"
     },
     "scripts/normalize_contract_ids.py": {
@@ -3567,7 +3631,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e3e3c0d02515bdfb14197c31c9e043b4408b2dc9c1126dac8e50597db2f29d18"
     },
     "scripts/operational_gap_ledger.py": {
@@ -3580,7 +3644,7 @@
         "sys",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f0c3cf124c65d564cb5921029c59d93bbf9c861fe16680c6b136d857c7af53c6"
     },
     "scripts/package_release_evidence.py": {
@@ -3592,7 +3656,7 @@
         "runtime.evidence_custody",
         "runtime.release_signing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5596d9b8ae3468fd0bc2d641e3efd38c1cc2e4fb1782400e6af65c8643cff39b"
     },
     "scripts/pipeline_common.py": {
@@ -3605,7 +3669,7 @@
         "re",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f18392f09841ffa9ece34c892e63f8724035d839c52ad6af65c03b8970d1159b"
     },
     "scripts/portable_audit_bundle.py": {
@@ -3617,7 +3681,7 @@
         "runtime.portable_audit_bundle",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "58869f8d2bbdbcab520af8b2f71e3699dccb6332eaf880b8b1117e9725b3dda6"
     },
     "scripts/quarantine_paths.py": {
@@ -3631,7 +3695,7 @@
         "runtime.project_control_plane",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8ba532f28786e98191d92814eab1cb5fdb4ea7dfb3df368e166a4aed47bd6d31"
     },
     "scripts/reconcile_commissioned_skill_registry.py": {
@@ -3643,7 +3707,7 @@
         "runtime.commissioning",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "be49081935a65801881ffe0f7f4723c4871a75083779e74f01288d4be067c958"
     },
     "scripts/reconcile_declared_owner_hashes.py": {
@@ -3654,7 +3718,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "42df19d4ccce6339757ca041c5adb8c6e4225259f239268d7d38e727852d8f7a"
     },
     "scripts/reconcile_declared_tool_hashes.py": {
@@ -3665,7 +3729,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8e24f171f2827fc937596867956bed7413f977527f5d2252af499f5dbe795090"
     },
     "scripts/reconcile_live_walk_reports.py": {
@@ -3680,7 +3744,7 @@
         "runtime.operational_gap_ledger",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e4ecd005a134aa9708ba27d090e7b03bc5a50c13187bf03f5eeaf4c71706da4e"
     },
     "scripts/reconcile_operational_card_bindings.py": {
@@ -3694,7 +3758,7 @@
         "sys",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "92deadedb66c268db689e1aca2bb63fa78fcdf243b09af3b57091d0316300951"
     },
     "scripts/reconcile_operational_card_quality.py": {
@@ -3706,7 +3770,7 @@
         "runtime.operational_gap_ledger",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "15a8d668bd21e1644c7db71ac880f3f503b950044147d616c73f8d54d789d400"
     },
     "scripts/reconcile_project_stream_registry.py": {
@@ -3716,7 +3780,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "00ea1850474654334e9b44c12420aa15deb91e0e56cc46d816e65f3a46d06d2a"
     },
     "scripts/reconcile_punch_card_evidence.py": {
@@ -3728,7 +3792,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2ee7fd0c1246fd0462d44417c3ee092ef14b56f4a6ead26f3ba312135c7a36f5"
     },
     "scripts/reconcile_reference_candidate_admission.py": {
@@ -3739,7 +3803,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "378649286aed210b9aafcb489a0980c0e03045fb3e7afe6414f0710f9cb739e5"
     },
     "scripts/reconcile_skill_lifecycle_states.py": {
@@ -3750,7 +3814,7 @@
         "pathlib",
         "re"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "03df49e78863012fb7904bf91df133086dd7b6d5033d2a65d76a149df6c1c510"
     },
     "scripts/reconcile_studio_operation_projections.py": {
@@ -3761,7 +3825,7 @@
         "json",
         "pathlib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "a739c3e1cfa2a0b03ebc8f318e375f525a73c1f824f6a7bc1aaef18a05937de1"
     },
     "scripts/reconcile_unverified_operational_controls.py": {
@@ -3775,7 +3839,7 @@
         "runtime.operational_gap_ledger",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8d466f07216cc6269c6e06a3c655669febeaa1d5cc332876953abf1ea99bbad3"
     },
     "scripts/register_card_control_resolution_review.py": {
@@ -3788,8 +3852,111 @@
         "runtime.operational_gap_ledger",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "0a0b1db1ddefa290a9067e4ba3adfe190a3f1d64ae8094f8003e0c8b0bf5437e"
+    },
+    "scripts/release_boundary_diff.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "json",
+        "pathlib",
+        "runtime.release_certification",
+        "runtime.release_preflight",
+        "sys",
+        "tempfile"
+      ],
+      "index_state": "verified",
+      "sha256": "8fe0ff8c21227dd095b0bc7ae083af204f51867f533a0e49859ffbead72d22df"
+    },
+    "scripts/release_concurrency_stress.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "json",
+        "pathlib",
+        "runtime.release_preflight",
+        "sys",
+        "tempfile"
+      ],
+      "index_state": "verified",
+      "sha256": "36d7af9bf35ed2633459be3a17a6bc0066770633f87f4ec9825e1f7be2f42df8"
+    },
+    "scripts/release_evidence_budget.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "json",
+        "pathlib",
+        "runtime.release_preflight",
+        "sys"
+      ],
+      "index_state": "verified",
+      "sha256": "3c7aa9d5f42147ec915d0e6e893a1caa7d28bfc9bf17867b6b0ae485ac69986c"
+    },
+    "scripts/release_evidence_portability.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "json",
+        "pathlib",
+        "runtime.release_preflight",
+        "sys"
+      ],
+      "index_state": "verified",
+      "sha256": "a6d9d38bcc48687b14f4a52a26b6e7c7dfc4ce56dc1a08793ca31b6533999aca"
+    },
+    "scripts/release_feedback_audit.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "json",
+        "pathlib",
+        "runtime.release_preflight",
+        "sys"
+      ],
+      "index_state": "verified",
+      "sha256": "314afc255c021f21251f7aa96538fd4ba3373c4da2e65221822181fe9cd9d4c3"
+    },
+    "scripts/release_fixed_point.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "json",
+        "pathlib",
+        "runtime.release_certification",
+        "runtime.release_preflight",
+        "sys",
+        "tempfile"
+      ],
+      "index_state": "verified",
+      "sha256": "0f325faf56bf4b45fe0c2053a143d9adf38ba6a811439233043b1dfe5cf21bdf"
+    },
+    "scripts/release_mutation_probe.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "json",
+        "pathlib",
+        "runtime.engine_identity",
+        "runtime.release_artifacts",
+        "runtime.release_preflight",
+        "sys"
+      ],
+      "index_state": "verified",
+      "sha256": "e1ed5e83962f2bfab66470406526e93817759a466f6f1f49d33f426bff3a8fa0"
+    },
+    "scripts/release_skip_preflight.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "json",
+        "pathlib",
+        "runtime.release_preflight",
+        "sys"
+      ],
+      "index_state": "verified",
+      "sha256": "eef4ad0c3d400f30de7f2961c3164666031ce02256d118e7f6ddd047c6ed6247"
     },
     "scripts/run_release_fault_campaign.py": {
       "imports": [
@@ -3802,7 +3969,7 @@
         "subprocess",
         "time"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "26d042b0a1c51f8404323993115ed2f0bc4ed3afb3701852fed8378c9744218d"
     },
     "scripts/sanitize_host_bound_cleanup_evidence.py": {
@@ -3815,7 +3982,7 @@
         "sys",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "4935de8930a9c980ed79fe36e248cfafdb7b3583cf8eb29e5c16063797ccf2bf"
     },
     "scripts/sanitize_tree.py": {
@@ -3830,7 +3997,7 @@
         "shutil",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e9777baa1797d7e687620b51d51e7368f57e5f896354339e408b5d32659eb7c2"
     },
     "scripts/split_operational_aggregate_cards.py": {
@@ -3845,7 +4012,7 @@
         "sys",
         "typing"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6eb5c52641832ddf3531660765be3ef7385e93d28aa82408ce3f656404544f71"
     },
     "tests/test_admission_controller.py": {
@@ -3854,7 +4021,7 @@
         "runtime.admission_controller",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "11466fcd9450d8a5d5a8f5da5bf4950582c4261dcd7c8d0d6ba904499f092073"
     },
     "tests/test_agent_builder.py": {
@@ -3866,7 +4033,7 @@
         "runtime.agent_builder",
         "runtime.studio_models"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "022542931d4d41a615faec1a9717e9cbf6ebe68731306f7e6ee086b29ac884b3"
     },
     "tests/test_agent_provider.py": {
@@ -3881,7 +4048,7 @@
         "subprocess",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "1799fa7a5e8fb10a7f063f931f46c02401d13c8637ce061c24530ed7d9a73f33"
     },
     "tests/test_agent_runtime.py": {
@@ -3898,7 +4065,7 @@
         "time",
         "types"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "262173212bc4a08e87071366a13384f2a80c24a695eb79459dd954273c2f1442"
     },
     "tests/test_agent_session_coordinator.py": {
@@ -3910,7 +4077,7 @@
         "runtime.agent_fleet_controls",
         "runtime.operational_event_bus"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e8db4195760df9297d08632f1226ec4c24a46051923d45779375e13b7f6b2f85"
     },
     "tests/test_archive_catalog_v2.py": {
@@ -3922,7 +4089,7 @@
         "unittest",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "53febd61103c6aa8ad9e5303b0cc2c735922ce2bd41cc7f04a639e3d36f99fdd"
     },
     "tests/test_archive_inventory.py": {
@@ -3937,7 +4104,7 @@
         "unittest",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "0beebfc3aec96cf81166da6e93402b7e4f57b3b2ec76711cdaaa4b5308e6644c"
     },
     "tests/test_assemble_operational_control_evidence.py": {
@@ -3948,7 +4115,7 @@
         "pytest",
         "scripts.assemble_operational_control_evidence"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "000d15ab41862e5cd3dcd8e6cb6dc185dc4b44381affc2a4d6b3328b81330c59"
     },
     "tests/test_assurance_controls.py": {
@@ -3957,7 +4124,7 @@
         "runtime.assurance_controls",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "409217e732bef6a720ab9eccc76e2ca054e75afcaf5468e7f8b0a38919d4fb7e"
     },
     "tests/test_authoritative_json.py": {
@@ -3968,7 +4135,7 @@
         "pytest",
         "runtime.authoritative_json"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5ce351df85d8ed8a033e297d5cf6b50a7c3fc7f45e63e42282a798581de04040"
     },
     "tests/test_authoritative_skill_compiler.py": {
@@ -3979,7 +4146,7 @@
         "subprocess",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5112dc6dcb145cdf000198bdb8b47c211fd7a1f190dce28ddf688ef3be77c7cd"
     },
     "tests/test_behavioral_assurance.py": {
@@ -3987,7 +4154,7 @@
         "__future__",
         "runtime.behavioral_assurance"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "52b6f83bc56d76bd77d0283fe19899e4b6ac6f10cf3ad110cf448f888a6a4860"
     },
     "tests/test_benchmark_operations.py": {
@@ -3999,7 +4166,7 @@
         "runtime.benchmark_operations",
         "runtime.contracts"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "bcc9b98eefb99a547dfff2cb44fbe3624e3fdc12926cd341d90edc55defd8030"
     },
     "tests/test_bootstrap_cli.py": {
@@ -4012,7 +4179,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "fe137cfe39f372927e3b3c76b423228c0e0f427860611a75bafce0fcae3597a3"
     },
     "tests/test_bounded_walk.py": {
@@ -4025,7 +4192,7 @@
         "runtime.intake",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ab22424e972065f11c632ec958f8a01666931c5fda6dc6949e63c7dc96af7d0e"
     },
     "tests/test_build_claims.py": {
@@ -4035,8 +4202,8 @@
         "pathlib",
         "runtime.build_claims"
       ],
-      "index_state": "reused",
-      "sha256": "7208b3e6cc841422c65aabc97791d7c87e806a7cc7a8ce5017e2f63aa3f28341"
+      "index_state": "verified",
+      "sha256": "ef8e503ba1fa51c4bd80a0154498643153a60c3f08716ed30549a29bce7703fd"
     },
     "tests/test_build_installed_host_control_evidence.py": {
       "imports": [
@@ -4048,7 +4215,7 @@
         "scripts.assemble_operational_control_evidence",
         "scripts.build_installed_host_control_evidence"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "91bdf2e572ce81908afdceb949c8a32715a36b197786da5bca95839fe9709010"
     },
     "tests/test_build_installed_probe_control_evidence.py": {
@@ -4060,7 +4227,7 @@
         "scripts.assemble_operational_control_evidence",
         "scripts.build_installed_probe_control_evidence"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c8ed6a92d7eeabdc0dff7608798262430fb13c70798fa0c40bd6af361afe1f2e"
     },
     "tests/test_build_support_modules.py": {
@@ -4074,7 +4241,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "30ecfd954d063eabc8833367ee56c921b002017e28cb4d0b90c9b52be3addbea"
     },
     "tests/test_bytecode_guard.py": {
@@ -4086,7 +4253,7 @@
         "subprocess",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d21051736d1d0362bafbce4d7f61ee5458886b4a77391a0496f55e300ac5277e"
     },
     "tests/test_cache_quarantine.py": {
@@ -4098,7 +4265,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5e889f43b566d4d26da50b57a05319f10af26f75a3854cfdf25580cdade49805"
     },
     "tests/test_capability_assimilation.py": {
@@ -4108,7 +4275,7 @@
         "runtime.capability_assimilation",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "35761f90666c1dec622168cc279cc07312c8ff9b5617912fdf52981d1d407d5f"
     },
     "tests/test_capability_mining_skills.py": {
@@ -4120,7 +4287,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "0fb316644ca61ed57804390fd0e0ca39cbb412edfc6244352bbef302c2109a81"
     },
     "tests/test_capability_routing.py": {
@@ -4135,7 +4302,7 @@
         "runtime.registry",
         "runtime.skill_navigator"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c7741da9a90383402b0f91ccd46b88caabacf2a2b0d5b323270cb3d945688ccb"
     },
     "tests/test_capability_scheduler.py": {
@@ -4145,7 +4312,7 @@
         "runtime.capability_scheduler",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6f2e17d9ef7637486f7a5f5b1c7b56e73d67f22724d29c240672e8f561ec6020"
     },
     "tests/test_certification_readiness.py": {
@@ -4161,7 +4328,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "27afd9254dda96acee844e1cdf37e6afec34f3dccded24c5946df4f4d6e207c3"
     },
     "tests/test_clean_room_capabilities.py": {
@@ -4179,7 +4346,7 @@
         "runtime.memory_remediation",
         "runtime.reasoning_controls"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "76100dd7de8bf6c2d098bf27089a599046e1f541e16572f207e7c619d1724f28"
     },
     "tests/test_clean_source_export.py": {
@@ -4208,7 +4375,7 @@
         "types",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "7b75477882c2493d94dc5a24aab8ea6cee17de96a0baf8680a9ff49c5d24f986"
     },
     "tests/test_cli_commands.py": {
@@ -4226,7 +4393,7 @@
         "unittest",
         "unittest.mock"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "40a970af8bcc4535cb06d0219a7cf033055a9b686c2de4fc790bd6f288c0442b"
     },
     "tests/test_cli_lazy_loading.py": {
@@ -4237,7 +4404,7 @@
         "subprocess",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "9d5fe9d2937bab3deabea0c0b0c7882ec96fc83ab2d7559742926de2c27d246e"
     },
     "tests/test_closed_intake_quarantine.py": {
@@ -4248,7 +4415,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d77f77e023580363d098107ce83a0ae3a23e6ab7a78ad3e56ab7cbf9deffadb7"
     },
     "tests/test_cognitive_assurance.py": {
@@ -4259,7 +4426,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8bbc64d205aa08900b492109cd816c53411b6c4ebe845aace26f1c453cd7fab7"
     },
     "tests/test_cognitive_core.py": {
@@ -4283,7 +4450,7 @@
         "runtime.cognitive_core.temporal",
         "runtime.contracts"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "dded7441dafd53c9d290e491c935af3604fd683ef53c9161eac4b6b0f03d488c"
     },
     "tests/test_commissioning_apply.py": {
@@ -4296,7 +4463,7 @@
         "tomllib",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "840cdc5c13eec3440b1b8529cfbf3021d647b8528c972a9c590157c9ee2f9cdb"
     },
     "tests/test_commissioning_questionnaire.py": {
@@ -4307,7 +4474,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "1b46f02e9291e3e74fb563792b92f85cbbf76de84e3876a52738a65b1c924d45"
     },
     "tests/test_commissioning_receipt_integrity.py": {
@@ -4320,7 +4487,7 @@
         "runtime.event_ledger",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c4d2522e9327597b9760e0d6f928afc90dea22a97835d0054d11c070994ba181"
     },
     "tests/test_committed_wal_archive.py": {
@@ -4331,7 +4498,7 @@
         "scripts.archive_committed_wal",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e972216f6c4d64f3cc1970077050bf880fcb239ea6929f71a027fa41501a7733"
     },
     "tests/test_completion_controls.py": {
@@ -4341,7 +4508,7 @@
         "pytest",
         "runtime.completion_controls"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "226ff0639ffa5f72ebb5fbfa50dd2b5cfc8c2936055a5ea98d4574fd31428390"
     },
     "tests/test_completion_status.py": {
@@ -4353,8 +4520,8 @@
         "runtime.test_profiles",
         "scripts.build_completion_status"
       ],
-      "index_state": "reused",
-      "sha256": "40c013de7b6b086a2b531f3e26c48b7c5a59d0a6b3b9020c8a1c441788c72987"
+      "index_state": "verified",
+      "sha256": "687789417536eccfac95bb20340159c5499a3fb69335f3fa97929cf161b2698a"
     },
     "tests/test_config_and_registry.py": {
       "imports": [
@@ -4366,7 +4533,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "cf0b3f52ca3e5914bf01b5eeab76fbe50d5c1fadf20486029e0ee65401862287"
     },
     "tests/test_contract_runtime.py": {
@@ -4379,7 +4546,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f7faa083668e7d631ac67eedd6afeb37c44b6fa5c2b7316b905626cc4f9bb343"
     },
     "tests/test_corpus_pipeline.py": {
@@ -4394,7 +4561,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "34ac04973fbfae2672eb06379cb3a6afd3e756212255ec24c5e649a0d4f89ad9"
     },
     "tests/test_corrective_release.py": {
@@ -4407,7 +4574,7 @@
         "shlex",
         "shutil"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6d9e12bd39adf65f6be1cced5caa7732c287f4c39e8b8d4003a038b16a399f81"
     },
     "tests/test_coverage_assurance.py": {
@@ -4420,7 +4587,7 @@
         "runtime.release_certification",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f4742343a6e1083714f79a550e25a722121c7d96961d6d329510e64f9baf7498"
     },
     "tests/test_cybersecurity_provider.py": {
@@ -4434,7 +4601,7 @@
         "runtime",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e37759ae8c3e681c8c4dc88709d734cc6262d7a27c80c2a816e7f082a22ad3be"
     },
     "tests/test_dashboard_api.py": {
@@ -4448,7 +4615,7 @@
         "unittest",
         "unittest.mock"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "359c3fbd0677afc43a4fc0ab78860ad0382c85cac66a3cce4bb5158246a1fd8c"
     },
     "tests/test_declared_capability_recovery.py": {
@@ -4463,7 +4630,7 @@
         "tomllib",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "0a900dec00b297a3c31c73a88dfe467fa209edff66a0167f9781696535c0f8d8"
     },
     "tests/test_declared_suite_domains.py": {
@@ -4472,7 +4639,7 @@
         "pathlib",
         "runtime.declared_suite"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "0ef2ed33b5aed041678e177014533c1bde5594a74679222d32d2ac44c3d93afa"
     },
     "tests/test_declared_suite_reconstruction.py": {
@@ -4486,7 +4653,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "0cb8c35df00acfee4ecf1a141d61f0323d3972bf92e980502a62bccfad49254b"
     },
     "tests/test_declared_suite_support.py": {
@@ -4499,7 +4666,7 @@
         "runtime.declared_suite",
         "runtime.declared_suite_formulas"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ba2e92cf758f6a5ab5ab0ceb65765d13142ad1c0d486d62ab97e2f9c9592d837"
     },
     "tests/test_dependency_audit.py": {
@@ -4509,7 +4676,7 @@
         "runtime.dependency_audit",
         "scripts.build_python_dependency_ownership"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ea061c6d701546dbd2bb690667d62da4fb00f097105c52b3569a31c766438806"
     },
     "tests/test_drop_in_bootstrap.py": {
@@ -4526,7 +4693,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "49ca4bdba9a93a7812aa134d2628143354fdb4e3e4d5bf0b358bcb1ca2da37e9"
     },
     "tests/test_effect_grants.py": {
@@ -4541,7 +4708,7 @@
         "subprocess",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "93b917ee89d1383744fad76675c59772fccfef533252eeebc62dee272794eab7"
     },
     "tests/test_effect_surface.py": {
@@ -4553,7 +4720,7 @@
         "shutil",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "bf0fd9b14c3c4cdd694df353e8351a4395314ad31b63663d591ea69c44f09ffd"
     },
     "tests/test_engineering_intelligence.py": {
@@ -4564,7 +4731,7 @@
         "runtime.research_assimilation",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b9a7274c58d9f4c1809ba5667e215fd2f93911fb3dcc6bdcc50ae88301311931"
     },
     "tests/test_engineering_lifecycle.py": {
@@ -4575,7 +4742,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "844ea93fff70e190a5ff70de8b1750946ab828bffd488c160b80f2bc7d51afb6"
     },
     "tests/test_event_ledger_integrity.py": {
@@ -4588,7 +4755,7 @@
         "runtime.event_ledger",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c3752778af007540ae5cbbf20dd5e8638f7cc8ee46a1ca45b8c4e062e024821b"
     },
     "tests/test_evidence_assembler.py": {
@@ -4598,7 +4765,7 @@
         "runtime.evidence_assembler",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "beb629a833ef3ff49f5ba72e4dc044301b4066d4d7482c33c8994c83371a4e82"
     },
     "tests/test_evidence_custody.py": {
@@ -4608,7 +4775,7 @@
         "runtime.evidence_custody",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "88082d84f6c15689a383c6b1b1809a7711f46edf95e8fb54677d6afb2fad49d2"
     },
     "tests/test_evidence_index.py": {
@@ -4622,8 +4789,8 @@
         "runtime.test_profiles",
         "zipfile"
       ],
-      "index_state": "reused",
-      "sha256": "eea28dc00aa7e4bf1d0a153dfa9ec3fc0830cf9220f99edc8268b5b4ffeb27c5"
+      "index_state": "verified",
+      "sha256": "571534d5d849ec1b06aba40f8f767229d4eb798fa76b850496320de18758b423"
     },
     "tests/test_evidence_portability.py": {
       "imports": [
@@ -4632,7 +4799,7 @@
         "shutil",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d354003d67dfca57aa856ce9a557f38feac727ace98a5897567efe72dd361473"
     },
     "tests/test_exact_tool_certification.py": {
@@ -4646,7 +4813,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "76829a10dfcc64ed98d6796771a1afb49d8c9b431bca3d04c720bcb5815ab3c1"
     },
     "tests/test_execution_contract.py": {
@@ -4655,7 +4822,7 @@
         "runtime.execution_contract",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2e5e4b88190a58987b97e26532309e6aafb3d9213603a57ef80d20e0e3976918"
     },
     "tests/test_execution_placement.py": {
@@ -4665,7 +4832,7 @@
         "runtime.execution_placement",
         "runtime.work_admission"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "965d7db8fbd38ad668ad49e9e8345e84883285f38de1f45206cbedc99e7d3544"
     },
     "tests/test_external_audit_disposition.py": {
@@ -4674,7 +4841,7 @@
         "pathlib",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2b60f74061b3343cb3f19f996acd52994c84fca340d942e01842409bfbe3af51"
     },
     "tests/test_external_behavior_intake.py": {
@@ -4686,7 +4853,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "364931ac8a1e973d9285ce8323d33ca883f14075cdc68688bb2c86a85b0a7934"
     },
     "tests/test_external_capability_provider.py": {
@@ -4700,7 +4867,7 @@
         "runtime.contracts",
         "runtime.external_capability_provider"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "0bdc534b87f2360b8dd8a67e1b6fef27b4b791a6daf967cc15b10cbbfc9f979b"
     },
     "tests/test_external_evidence.py": {
@@ -4710,7 +4877,7 @@
         "runtime.external_evidence",
         "shutil"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "4e9a47b8fb7f00f380c378d94eb49b9f276ed6b684c2d7800779ad879bda1e4c"
     },
     "tests/test_external_toolchain.py": {
@@ -4720,7 +4887,7 @@
         "runtime.external_toolchain",
         "subprocess"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d8a3b014349205caa62271d1d7b178d61b896e4d64fd2f72d09dc513bcfde304"
     },
     "tests/test_extract_structured_text.py": {
@@ -4731,7 +4898,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "95927baed4004c1b11eea509cce4f748a9700a39f4e3895c9f8486769f3d7d88"
     },
     "tests/test_file_lock_contention.py": {
@@ -4748,7 +4915,7 @@
         "tempfile",
         "unittest.mock"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b579377c3334175f299f4a7a7341631eca7af6b7a06fa062a72d0ced29ed3142"
     },
     "tests/test_foundation_assurance.py": {
@@ -4758,7 +4925,7 @@
         "runtime.foundation_assurance",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ffc577fc320db535486882a5ce8bbcb19afd266e138218c3e7e2166f75741f14"
     },
     "tests/test_full_repair_ledger.py": {
@@ -4768,7 +4935,7 @@
         "runtime.full_repair",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "65ce38bd62d0b88bce2808a37eb6d6c4cea086d8c84b4aedeaa25d1b73f6cfa0"
     },
     "tests/test_generated_artifacts.py": {
@@ -4783,8 +4950,15 @@
         "scripts.build_profile_projections",
         "shutil"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5bc9275806ff3cfb5119ad3c7123d7f8ea667d1a7f5fa521f594caf6c91fc36a"
+    },
+    "tests/test_generated_dependency_graph.py": {
+      "imports": [
+        "runtime.release_preflight"
+      ],
+      "index_state": "verified",
+      "sha256": "8b28494a35909f55b49b7545f6f18a90d6ca09e116dd51224cc62d52588f83a0"
     },
     "tests/test_global_skill_isolation.py": {
       "imports": [
@@ -4795,7 +4969,7 @@
         "runtime.global_skill_isolation",
         "runtime.native_skills"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "29db3992d9a28960c0980a564695ad3dceeb892fb14400567f274d2761d78337"
     },
     "tests/test_graphs_and_orchestrations.py": {
@@ -4808,7 +4982,7 @@
         "runtime.registry",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e90c850e4312432e50ae95e10ba328e9e5e85d58f239066ba6c4886d5628f53d"
     },
     "tests/test_hardware_routing.py": {
@@ -4823,7 +4997,7 @@
         "unittest",
         "unittest.mock"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f047b09fe2c95734dffac9318f989448e221f196c6828d5b392aed5a1d9adabd"
     },
     "tests/test_health_model.py": {
@@ -4837,7 +5011,7 @@
         "runtime.health_model",
         "shutil"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "393f194a8c6330796ac9da252f97805be7ff666f4bc41f761af37c346c6d3be3"
     },
     "tests/test_host_boundaries.py": {
@@ -4847,7 +5021,7 @@
         "pathlib",
         "runtime.host_boundaries"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "649ff358d49c25420e368cf968ba48a4450b5e44eeaa80ece16e141af08d9bbc"
     },
     "tests/test_independent_gate_runner.py": {
@@ -4857,7 +5031,7 @@
         "pathlib",
         "runtime.gate_runner"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "800df3ddce8a40122609ce054c2a3ca7c1eddf52a284f175a20859fd03b17544"
     },
     "tests/test_installed_wheel_e2e.py": {
@@ -4873,7 +5047,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "7ef5b371e0190c3a0a916bb9827233c12869edd729c0d9f807ace6ed604e6131"
     },
     "tests/test_instrumentation_sdk.py": {
@@ -4886,7 +5060,7 @@
         "shutil",
         "subprocess"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e408d5d775e5730fc892a6686a95a2a46f85a75cb14424bbde88d4478d93b03c"
     },
     "tests/test_intake_lifecycle.py": {
@@ -4897,7 +5071,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2f0ab969e0e725fa80e692beb8adc94140fa4b7bcaaf5d0e13287c96d7ada9f9"
     },
     "tests/test_integration_acceptance.py": {
@@ -4921,7 +5095,7 @@
         "tracemalloc",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "daea78eff9b2ff6f1cf7f71110fcc9e92496484ea37dc86c2d72cbbbacd0bb0f"
     },
     "tests/test_integration_disposition.py": {
@@ -4932,7 +5106,7 @@
         "runtime.integration_disposition",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "4e0bd325f102840a6b5494ba3955ae81446dd38226dfb578a01cb2e9b2810980"
     },
     "tests/test_knowledge_core_controller.py": {
@@ -4945,7 +5119,7 @@
         "runtime.studio_api",
         "tests.studio_approval_testkit"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "257993dd2e95e6a0fdf84ff32b4f02a96174e7926d66b4cc1e160f7012b9b74a"
     },
     "tests/test_knowledge_foundry.py": {
@@ -4958,7 +5132,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "578aa5b180708d5217dda43d100b0c23b2991c7124f26ec0db00b915037b8d77"
     },
     "tests/test_knowledge_refinery.py": {
@@ -4970,7 +5144,7 @@
         "runtime.contracts",
         "runtime.knowledge_refinery"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "0767842102b944a16fe781dffb0aa92193873bfb031c2a93cf359de783e4dec3"
     },
     "tests/test_lazy_loader_transactions.py": {
@@ -4982,7 +5156,7 @@
         "runtime.lazy_loader",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f1dc58c4030f5b48dae9970497068ce59960635930b9ad33cccacd8bfddf1f5e"
     },
     "tests/test_learning_promotion.py": {
@@ -4991,7 +5165,7 @@
         "pytest",
         "runtime.learning_promotion"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5c262d7db07e577a2fefc6edfb0fa2a8adcba0126b23e1ecab8389e9f2e64cd1"
     },
     "tests/test_licensing.py": {
@@ -5001,7 +5175,7 @@
         "runtime.licensing",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "479ca953bfa35cdb149cf0db71af3bb8ac54a70d2803b332efe8466f5fe8cc43"
     },
     "tests/test_local_model_capabilities.py": {
@@ -5011,7 +5185,7 @@
         "pathlib",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "90d8a87d2c3bde73d68f5d99244999810ce588243aa6edf411c3328ae19f4811"
     },
     "tests/test_memory_fabric.py": {
@@ -5025,7 +5199,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e7f381e3c79189ed12626c3ac4325d00c6f78e3638886f3b9fe27a5c871a76e4"
     },
     "tests/test_memory_integrity_controls.py": {
@@ -5041,7 +5215,7 @@
         "runtime.memory_vault",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "1f95f55dff1bb0e437b0a4a4c6b12d071a993f2d98bf46d1c3f86d317a621635"
     },
     "tests/test_memory_intelligence.py": {
@@ -5056,7 +5230,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ad43bce384d77fae9abd4bad7c235e9912dbbd228d20087aca2f341c4be56afe"
     },
     "tests/test_memory_operations.py": {
@@ -5071,7 +5245,7 @@
         "time",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6011973eee173a48c92ba7060ba2dacb28dbe768bb8721d317af66cea55a67ce"
     },
     "tests/test_memory_vault.py": {
@@ -5085,7 +5259,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "212939c905e10b339e90eafb58820c87a150a51175e269bc8b42476bb2562dd8"
     },
     "tests/test_metacognitive_evolution.py": {
@@ -5097,7 +5271,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "29d468ae2558887a74193048151b37719d60f00226357baebcb9c4484b3cb895"
     },
     "tests/test_native_skills.py": {
@@ -5110,7 +5284,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "77f9f2715f7abf690a0b6ad6d9627c4c3215bbb013c3bfb99279064296ebf300"
     },
     "tests/test_operation_authority.py": {
@@ -5119,7 +5293,7 @@
         "runtime.operation_authority",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b544114656016420eb63dad6dbfec304a1da28997fc4e6bb62c0b13dfd05f7d4"
     },
     "tests/test_operation_coverage.py": {
@@ -5133,7 +5307,7 @@
         "runtime.operation_coverage",
         "runtime.operational_visibility"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b380a2f4550a8f4267e6b255bd256af970173e53d27263a09858b356fdd9675d"
     },
     "tests/test_operation_health_snapshot.py": {
@@ -5142,7 +5316,7 @@
         "pathlib",
         "scripts.build_operation_health_snapshot"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b7f3dc5f683d6cf6c13bd36ed0d9a5e02321e1cf06b6a21915be6eae11b73cde"
     },
     "tests/test_operational_control_proof_matrix.py": {
@@ -5152,7 +5326,7 @@
         "pathlib",
         "scripts.build_operational_control_proof_matrix"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "21138d5b18f718ef5a2f9c25a61641ad230964a27661f12f72410627fd9033ff"
     },
     "tests/test_operational_controls.py": {
@@ -5161,7 +5335,7 @@
         "runtime.operational_controls",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "bf2affbcaf55bad4535d0e13d80945fd7ab178d81f2d8d3ee056e2023b0178e7"
     },
     "tests/test_operational_event_bus.py": {
@@ -5174,7 +5348,7 @@
         "runtime.cli",
         "runtime.operational_event_bus"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c70a8c5774d859beddb59417e859f63d46f67a9e34e39fba87f68a3d018a2750"
     },
     "tests/test_operational_gap_ledger.py": {
@@ -5192,7 +5366,7 @@
         "threading",
         "time"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2ef90943ae5f8ccd7d2f9c35c3975e9ddbf24a46c3fcc0b60bd2b1438724b7cb"
     },
     "tests/test_operational_observers.py": {
@@ -5206,7 +5380,7 @@
         "runtime.operational_observers",
         "runtime.operational_visibility"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "dd1a9406b00d4088253cfc970a07814d7bd6efc06fa390107439495ef94e2b62"
     },
     "tests/test_operational_visibility.py": {
@@ -5218,7 +5392,7 @@
         "runtime.contracts",
         "runtime.operational_visibility"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d132a82608152a9f36c56c6270f17a686e95b2ca1b398630bb31af880bc56c67"
     },
     "tests/test_orchestrator.py": {
@@ -5232,7 +5406,7 @@
         "runtime.orchestrator",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "564c510a73288ae9bdaec7e4762cdccb5d008d9a7a7f0b6e5390da091383a026"
     },
     "tests/test_outcome_verifier.py": {
@@ -5241,7 +5415,7 @@
         "runtime.outcome_verifier",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "840b90a70918e2ab88f30173c71b321f167353b3faddcab7b073e9f1eeaf67f7"
     },
     "tests/test_platform_support.py": {
@@ -5254,7 +5428,7 @@
         "stat",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "bc5757a17869810ad174b690eb34e974ad4e3b5a5ed54e6b04b23982f08bde46"
     },
     "tests/test_portable_audit_bundle.py": {
@@ -5266,7 +5440,7 @@
         "runtime.portable_audit_bundle",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "cda77af9eb9c73f61b89f801937e89868cb6b43097330cbe834a87343abacacb"
     },
     "tests/test_process_memory.py": {
@@ -5277,7 +5451,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "eac40af538679c2209936804dab27134ac17ea609853d82d4d8725c18749e68e"
     },
     "tests/test_process_supervisor.py": {
@@ -5296,7 +5470,7 @@
         "threading",
         "time"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "1ec9df4416733340c3bd1e9fd115e05bd7731e27ace8a4b31aec189cf59f6c24"
     },
     "tests/test_project_brief.py": {
@@ -5307,7 +5481,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "1c10f07bdb354d44890cceb7f729ecd8f40ee7773aa0a755af403ff59679f16c"
     },
     "tests/test_project_control_plane.py": {
@@ -5321,7 +5495,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ffaa8eefb0a8c45fb67b5a853687ef2c7944a512489955dab35b34f6b04b4073"
     },
     "tests/test_project_map_history_archive.py": {
@@ -5332,7 +5506,7 @@
         "scripts.archive_project_map_history",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "7e25feae1712a0054d701e2bcfa41f101f8cb545b28b6d9f661bd1b0173be10a"
     },
     "tests/test_project_mapping.py": {
@@ -5347,7 +5521,7 @@
         "subprocess",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "941d7ca8ee131eb6894e18a255d8c8933a45271afa0473e7e65535ba244c9602"
     },
     "tests/test_project_onboarding.py": {
@@ -5362,7 +5536,7 @@
         "tomllib",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6fdc2624a0c442ec4784584c9cce9bc4f775f244cfb28cb4e2322fde08643081"
     },
     "tests/test_project_reasoning.py": {
@@ -5375,7 +5549,7 @@
         "runtime.contracts",
         "runtime.project_reasoning"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "877b0f4514c7b029e1397c676508347b6eb6d1bd418f2357a31c9fa35e0db239"
     },
     "tests/test_project_stream_controls.py": {
@@ -5386,7 +5560,7 @@
         "runtime.project_stream_controls",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c6c5d31036d59508ac6dd0957747b5559021242f52d2f018140ab248df49ceed"
     },
     "tests/test_project_stream_orchestrator.py": {
@@ -5403,7 +5577,7 @@
         "time",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e8c56ac8af99a29d920037bc09322c8402053eefbb799a6ef186813dbb6befc6"
     },
     "tests/test_provider_budget.py": {
@@ -5417,7 +5591,7 @@
         "runtime.provider_gateway",
         "shutil"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "48eb3f95d41d74697dfc05b26166908af983a9161a92eb7dc3278960edc3d10a"
     },
     "tests/test_provider_certification.py": {
@@ -5429,7 +5603,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "af62d4df09f957335f250e0eba7e86e8ee1ab4843b7edda90d129d2d85fb723b"
     },
     "tests/test_provider_gateway.py": {
@@ -5445,8 +5619,8 @@
         "shutil",
         "tempfile"
       ],
-      "index_state": "reused",
-      "sha256": "d45e2ec344c21f95c377108bd056b427b316932746688c46d04459d46a4b14d3"
+      "index_state": "verified",
+      "sha256": "1553819f74e29cd8968503a27d9b2df924641b6f7dbf2aa351d5bb5a9cc49240"
     },
     "tests/test_public_repository_surface.py": {
       "imports": [
@@ -5456,7 +5630,7 @@
         "pathlib",
         "tomllib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "05dd11cc06044388ac2e7b07ad2c944b06741efeef0fff2dfc22242111c65bcc"
     },
     "tests/test_punch_card_reconciliation.py": {
@@ -5467,7 +5641,7 @@
         "pathlib",
         "scripts.reconcile_punch_card_evidence"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "550e622d01cdeee5c6ccb8a439cc43dbe71aa9dcbc9df1746bd9da0876252e3d"
     },
     "tests/test_px_doctor.py": {
@@ -5480,7 +5654,7 @@
         "runtime.px_doctor",
         "runtime.wal_transaction"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ffcfa4030c96754a18440e5a6fcde3b8ea72056ccf1f9fce9130677e7f9399fb"
     },
     "tests/test_python_surface_boundaries.py": {
@@ -5488,7 +5662,7 @@
         "pathlib",
         "runtime.python_surface_certification"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "03354a6a2d0bca95fde275959e650056f9286dc84b4bb49217bc0faf6294d718"
     },
     "tests/test_quarantine_paths.py": {
@@ -5498,7 +5672,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "4a8bef05a21075f7d1260e287ea75bdd64d0e24e5e437387f20964c058182fe5"
     },
     "tests/test_quickstart_demo.py": {
@@ -5510,7 +5684,7 @@
         "sys",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ea276215524b83d1191192a3686949358eee1e2c03fa6114a451e085fc70a17f"
     },
     "tests/test_reclamation_learning_promotion.py": {
@@ -5521,7 +5695,7 @@
         "scripts.build_reclamation_learning_promotion",
         "shutil"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "4936d66551b9db09216a7bed0812fa49884b4dce3766c0dcb14bf7888d743ff2"
     },
     "tests/test_reconcile_unverified_operational_controls.py": {
@@ -5530,7 +5704,7 @@
         "runtime.operational_gap_ledger",
         "scripts.reconcile_unverified_operational_controls"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "083f1a40232042d6e8a7ae61672988f9aa8be8ab1cd23a0ba60b41dc7bd88e63"
     },
     "tests/test_recovery.py": {
@@ -5544,7 +5718,7 @@
         "shutil",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "61d672dc6e450d1d19f99894c843d55d6ee405ea954107d0da0c583484f7b6be"
     },
     "tests/test_recovery_coordinator_retention.py": {
@@ -5559,7 +5733,7 @@
         "runtime.wal_transaction",
         "shutil"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8b023b2afccc61afab629981484e6104906ad7062ffdea9bddafa6ba91b8e14c"
     },
     "tests/test_reference_candidate_truth.py": {
@@ -5568,7 +5742,7 @@
         "pathlib",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "29c810f9aeeb3b4169119c335a46269da2155568ef8578175f943200af1aee71"
     },
     "tests/test_registry_envelopes.py": {
@@ -5579,7 +5753,7 @@
         "runtime.registry_envelope",
         "scripts.build_registry_envelope_inventory"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ac12c08564292b22b4e92a060741fc0f9aa09c0bf9ab4e763482a85419697f04"
     },
     "tests/test_rel008_assimilation.py": {
@@ -5590,7 +5764,7 @@
         "pathlib",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "158299545a7553c685b7b843b07ecc1838af6259294ccc59d9d919a4af382739"
     },
     "tests/test_rel009_release.py": {
@@ -5600,7 +5774,7 @@
         "pathlib",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "5a8cf522b6871697efeea4415822dfd157a2bce06fa9ce9c962d85e8f4f42d59"
     },
     "tests/test_rel011_revocation.py": {
@@ -5612,7 +5786,7 @@
         "runtime.release_certification",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "51a627913315e4e1f41049932fa092af73e404ce7d7410fef7c6f66b883cf8bd"
     },
     "tests/test_release_artifacts.py": {
@@ -5623,7 +5797,7 @@
         "shutil",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f2b1c5408d64d751f551bf5ff2793b2a4d73553a07af3b00995b02c1beba1e3b"
     },
     "tests/test_release_audit.py": {
@@ -5635,8 +5809,18 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "3e407d87bebeacde06d6e03ce19c99442271a800271ddd32bc4cf1d6c78682f3"
+    },
+    "tests/test_release_boundary_diff.py": {
+      "imports": [
+        "pathlib",
+        "runtime.release_preflight",
+        "shutil",
+        "tests.release_preflight_testkit"
+      ],
+      "index_state": "verified",
+      "sha256": "cac2b0d4a7924b774636cb38185e0678f71021225672f29f362f86bcbe7ac1dd"
     },
     "tests/test_release_certification.py": {
       "imports": [
@@ -5651,8 +5835,16 @@
         "tempfile",
         "unittest.mock"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "6175ea18b39b48ea0fc26de436a2ab4d9dfe7b231f4d334abf0cede9154c6a6f"
+    },
+    "tests/test_release_concurrency_stress.py": {
+      "imports": [
+        "pathlib",
+        "runtime.release_preflight"
+      ],
+      "index_state": "verified",
+      "sha256": "c6b1626dbdad81d3ce0f683428b1c0d6ef4e0b3b65ed4e43eafccd7e7da59722"
     },
     "tests/test_release_distribution_controls.py": {
       "imports": [
@@ -5669,7 +5861,7 @@
         "tempfile",
         "zipfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "57af6e53cb8013e85822e26f2979df35d65be4ca1d78980a281b1840fd1be73e"
     },
     "tests/test_release_environment.py": {
@@ -5680,8 +5872,24 @@
         "runtime.release_environment",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "290603eaa513bd02d310993831465f0e110360a03a4a7c8692ec13608244f6d6"
+    },
+    "tests/test_release_evidence_budget.py": {
+      "imports": [
+        "pathlib",
+        "runtime.release_preflight"
+      ],
+      "index_state": "verified",
+      "sha256": "6fe5cfbcbcc21486b36e597c6f1a64f71e80bcebf4a8c16dbd4e167de26e16eb"
+    },
+    "tests/test_release_evidence_portability.py": {
+      "imports": [
+        "pathlib",
+        "runtime.release_preflight"
+      ],
+      "index_state": "verified",
+      "sha256": "81e5d0ad330d506cd7e2384eb7a521d4db4384df7b549a68d132fb4d6b1438d4"
     },
     "tests/test_release_fault_campaign.py": {
       "imports": [
@@ -5690,8 +5898,25 @@
         "pathlib",
         "scripts.run_release_fault_campaign"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "d7b61362e73b09e0bdf3939ac92df09d219daa83e6c3ea7cc32d8a69222f912e"
+    },
+    "tests/test_release_feedback_audit.py": {
+      "imports": [
+        "pathlib",
+        "runtime.release_preflight",
+        "tests.release_preflight_testkit"
+      ],
+      "index_state": "verified",
+      "sha256": "1845f75a291d1e52e41e4f1ebe602cf84281d4c5a2d1232226f355f5bb6fb9ff"
+    },
+    "tests/test_release_fixed_point.py": {
+      "imports": [
+        "pathlib",
+        "runtime.release_preflight"
+      ],
+      "index_state": "verified",
+      "sha256": "49823ac1653876ebc8ce17675f22be5f2b6ffcfa0579bd9ab361c0cd7b558fbd"
     },
     "tests/test_release_identity_controls.py": {
       "imports": [
@@ -5707,8 +5932,26 @@
         "subprocess",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ea8bb93a41d2c26622d134b4fc4b334a9079b4f802be1f3f32b56951bc86813c"
+    },
+    "tests/test_release_mutation_probe.py": {
+      "imports": [
+        "pathlib",
+        "runtime.release_preflight"
+      ],
+      "index_state": "verified",
+      "sha256": "cd52705b46ad569962863cc202ee875dbd0879e0a0d69a9101c1d3c7b7f0b2a5"
+    },
+    "tests/test_release_preflight.py": {
+      "imports": [
+        "json",
+        "pathlib",
+        "runtime.release_preflight",
+        "runtime.repository_scope"
+      ],
+      "index_state": "verified",
+      "sha256": "6ca317779f9c11eb652dda558cbb560592265581d1413695c16ec4ed00be4031"
     },
     "tests/test_release_supply_chain_evidence.py": {
       "imports": [
@@ -5719,7 +5962,7 @@
         "runtime.release_certification",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "39693ac9069465d09ab2ac3b5c79d0b228365767070f4d681a68a8f7a2cb4912"
     },
     "tests/test_repository_scope.py": {
@@ -5727,7 +5970,7 @@
         "pathlib",
         "runtime.repository_scope"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "95ee8c6df19cd3cd228e26ef4e26528a1a0221dd89fb22ffeb7cac7b4eec9253"
     },
     "tests/test_research_contract_admission.py": {
@@ -5737,7 +5980,7 @@
         "runtime.research_assimilation",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "3d789053e543688870aebd8358688b6cf345e18fbe986d833eac3a561ac843cd"
     },
     "tests/test_resource_lifecycle.py": {
@@ -5756,7 +5999,7 @@
         "time",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f7180d6578fb04cd8991689b8e7feaa02aa56d9c21eb22545d59a5094b231578"
     },
     "tests/test_retrieval_and_models.py": {
@@ -5768,7 +6011,7 @@
         "runtime.retrieval",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "79d35ec0298cc382d1fea42c83707afd4e144bd217a561d9727713873cef9f7b"
     },
     "tests/test_retrieval_strategy.py": {
@@ -5778,7 +6021,7 @@
         "pathlib",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "bda75d0ad4752b713ea2b2d2c40aa8f880c336be75e8a1ad7ca4c8ded1f83e5a"
     },
     "tests/test_runtime_lifecycle.py": {
@@ -5790,7 +6033,7 @@
         "runtime.operational_event_bus",
         "runtime.runtime_lifecycle"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "cba5ea9d015a1b7e7b11777a8accdb171a526584653cb915e2a61eaf063b1e7d"
     },
     "tests/test_runtime_wave4.py": {
@@ -5808,7 +6051,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "cd5700eff3c9ebea639d955a1bb414c500a93df4462f14e0a37d9254bea19f94"
     },
     "tests/test_sanitation_assurance.py": {
@@ -5820,7 +6063,7 @@
         "runtime.secret_scanning",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "42ced8619d99ddf265a7bd3e159a71aabbd817c0020045c760930e13bc21991f"
     },
     "tests/test_sanitization_audit.py": {
@@ -5831,7 +6074,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8de53764e67eaed5cb4d9ca3ce4d7940c23cf731b11626a9a1f3087fcfc8037c"
     },
     "tests/test_sanitize_tree.py": {
@@ -5842,7 +6085,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "cb365fd8b7e2210bdd2b4a661dd5926b9d2ad7b044d528d63ee5a906e395579f"
     },
     "tests/test_secret_scanner.py": {
@@ -5852,7 +6095,7 @@
         "pathlib",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f4d4196e2e51247328c4e9fb6b63c3aeec822200d1d341c0733675a455f641c5"
     },
     "tests/test_semantic_capability_query.py": {
@@ -5865,7 +6108,7 @@
         "runtime.skill_navigator",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "04e8e0f9dc0fc94442ed9553a45a22af5567678e7a42f70041c979df07c02efe"
     },
     "tests/test_service_capability_provider.py": {
@@ -5877,7 +6120,7 @@
         "runtime.cli",
         "runtime.service_capability_provider"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "79444c0d464c259c6f8f636b659ece580df1ad89191eacfb95f2f12a52c5bb1e"
     },
     "tests/test_skill_first_initialization.py": {
@@ -5889,7 +6132,7 @@
         "runtime.native_skills",
         "scripts.migrate_px_skills"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "945b9eafb142c7272ffdec1e2b75716919f772f05116885ad5b75199a6d4e4bd"
     },
     "tests/test_skill_library.py": {
@@ -5903,7 +6146,7 @@
         "tomllib",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "3332ff5ee115835645c617cab1bdb4d8b66ec82fcb78187e04fcf011ec45bd42"
     },
     "tests/test_skill_navigator.py": {
@@ -5912,7 +6155,7 @@
         "runtime.skill_navigator",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "15a2d2b845c8afb306f6141957f8f4d3e3c7f2923f8e6219b54689285d47fb02"
     },
     "tests/test_skill_packaging_projection.py": {
@@ -5923,7 +6166,7 @@
         "runtime.release_distribution",
         "tomllib"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "4260c7093959126ab184545290152dccb62621c57a541fb33cca64714938b1ca"
     },
     "tests/test_skill_studio.py": {
@@ -5940,7 +6183,7 @@
         "runtime.studio_models",
         "struct"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "022a668797e3a173cf76407e84ac444eceab69ab11464ce61bf1767dd0d5ff6d"
     },
     "tests/test_skill_support_scripts.py": {
@@ -5952,7 +6195,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b59e484d29cd6ad99c67ff022f91d654a1db4962e345a0a621e64b5c6ea72c9b"
     },
     "tests/test_sort_picker.py": {
@@ -5964,7 +6207,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "37f9c27b1afe6870797a96fd734b7290e00b2bc1fda0ddaabc90480a5f5763ee"
     },
     "tests/test_source_migration_receipt.py": {
@@ -5973,7 +6216,7 @@
         "pathlib",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "bcdfbff6b5c230fef54237269ee0d1e53da3f1b1d70dbe343bab106bbb22cca8"
     },
     "tests/test_source_reconciliation.py": {
@@ -5985,7 +6228,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "9b66d985a946e10474bab413c97bf995dcd30707520480c1fd6e04711ba42a71"
     },
     "tests/test_source_requirement_coverage.py": {
@@ -5994,7 +6237,7 @@
         "runtime.source_coverage",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "33e5359cdd6f25028c0c63bcda801f2d8e02627b9eac6457aa0e6cacf0ced934"
     },
     "tests/test_specialty_map.py": {
@@ -6005,7 +6248,7 @@
         "tomllib",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c8d051d28db486119369e8cb790ad2a917ef7563a901cbcca378753a394d1e4a"
     },
     "tests/test_staged_reconciliation.py": {
@@ -6017,7 +6260,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "9b11df338bf7391723f5f9d40e77db22eabbe45bf2ad1450db7d2a140259e8db"
     },
     "tests/test_state_invariants.py": {
@@ -6032,7 +6275,7 @@
         "runtime.state_invariants",
         "runtime.wal_transaction"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "18920415a2f30df512fd80ed1f61e86a501d8330dbfb214d2c63b12ff9c0615f"
     },
     "tests/test_structural_integrity.py": {
@@ -6048,7 +6291,7 @@
         "sys",
         "tempfile"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "86f3740eeb89105ac7ecf84a7e57837e30a26e627d6e62731f606e5a3ce40281"
     },
     "tests/test_studio_api.py": {
@@ -6069,7 +6312,7 @@
         "sys",
         "tests.studio_approval_testkit"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "4fe93f5f59d50dee64f13b3d1144a274dc47863b13ef85458b7a9bd2476bc388"
     },
     "tests/test_studio_catalog_status.py": {
@@ -6082,7 +6325,7 @@
         "runtime.studio_catalog_status",
         "runtime.studio_models"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "b2efd27c62cb338ad2a37fa2ef10c0c7217cc4bb901324ad8b2fe02daaa19dd6"
     },
     "tests/test_studio_models.py": {
@@ -6093,7 +6336,7 @@
         "runtime.studio_filesystem",
         "runtime.studio_models"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "7287c2c6479dadbd6a2713f9b99a40976ae9074cec65f21131158c47513ee828"
     },
     "tests/test_studio_run_control.py": {
@@ -6103,7 +6346,7 @@
         "pytest",
         "runtime.studio_run_control"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "f0f9b78dac71f00f4765af2a30c3c79ff897514e8ed560950d2f973f0b0b8dee"
     },
     "tests/test_system_graph.py": {
@@ -6113,7 +6356,7 @@
         "runtime.system_graph",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "82fc8898a6aadcbec7dde36eeedf4449deb88aad7c1368a5794e90c7911d69e2"
     },
     "tests/test_temp2_completeness.py": {
@@ -6132,7 +6375,7 @@
         "unittest",
         "yaml"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "ffe8a5ff64e6ca32c8dd0b67720bc6f19347b8ae9e74a3bbf007b552ff0296a4"
     },
     "tests/test_test_profiles.py": {
@@ -6145,7 +6388,7 @@
         "subprocess",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "2e90820d69b302c60fb8c7ad54c5738f5e8dd90c46788ffc92270a9e6339efe2"
     },
     "tests/test_test_runner_controls.py": {
@@ -6163,7 +6406,7 @@
         "tempfile",
         "time"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "c1f68a95ef56812b433f8b41ff5bd2625a78657c1f305df777bea23733c222c3"
     },
     "tests/test_tool_intake.py": {
@@ -6177,7 +6420,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "50fed318d4142ee6053551d15051a3cb92941f59052ea9bab59f88cf7c4638e4"
     },
     "tests/test_tool_recommendations.py": {
@@ -6188,7 +6431,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "3f8753f326f96b0cb2cb135863d0f615b5011de46940a11f1da9a3b7d7280e52"
     },
     "tests/test_tool_registry.py": {
@@ -6199,7 +6442,7 @@
         "runtime.tooling",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "e735a2068dcdf8843060c8789d2a9a810c961a4d09deced41f003f2e1628b9b5"
     },
     "tests/test_transcript_analysis.py": {
@@ -6213,7 +6456,7 @@
         "subprocess",
         "sys"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "db79d7b4c75e2d3f2685aaef6ce38a2da225b7c0a434b5404825cdd9c5a70dfa"
     },
     "tests/test_trust_boundaries.py": {
@@ -6230,7 +6473,7 @@
         "runtime.trusted_evidence",
         "subprocess"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "12320d424ed328e298bd90617a5f86157fb81c57f13ce40d00b0174720da3fb5"
     },
     "tests/test_typed_operational_surface_inventory.py": {
@@ -6239,7 +6482,7 @@
         "pathlib",
         "scripts.build_typed_operational_surface_inventory"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "1d4e4ab2580000102d8852b4ab0c954d571550468293d7d26f66d9ae41a52ee4"
     },
     "tests/test_wal_transaction.py": {
@@ -6254,7 +6497,7 @@
         "sys",
         "textwrap"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "89b348bfd2c1362f86a2285c1319c05babaea3dca8a89709dd461b3adb096ed9"
     },
     "tests/test_wave5_builders.py": {
@@ -6271,7 +6514,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "eb254b84d2bfffe667bf5453aeba07babed7a2b5b3bfd219307a6363c61c8d67"
     },
     "tests/test_work_admission.py": {
@@ -6283,7 +6526,7 @@
         "threading",
         "time"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8262958ff6de772924d207c02f19ace3e3f5a06157361019d4ef1b6b73b02d30"
     },
     "tests/test_workflow_studio.py": {
@@ -6301,7 +6544,7 @@
         "time",
         "types"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "297e24c6feb01b8d761d699ae0149bd16a48a6b26820399b6d22af48b252230a"
     },
     "tests/test_workspace_cli.py": {
@@ -6314,7 +6557,7 @@
         "tempfile",
         "unittest"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "473874ba95469145e754808f13663018946b2d6a16880233a1acbf62f2538dd7"
     },
     "tests/test_workspace_manager.py": {
@@ -6332,7 +6575,7 @@
         "unittest",
         "unittest.mock"
       ],
-      "index_state": "reused",
+      "index_state": "verified",
       "sha256": "8df4f26a231443ea781edbb948fb7f086bdbda3626a9fad64abc973f9edbe4c7"
     }
   },
@@ -6365,7 +6608,7 @@
       ],
       "description": "Serial process custody, recovery, test-runner, WAL, resource-lifecycle, and workspace mutation tests.",
       "group": "process-recovery",
-      "input_sha256": "5f93a23d4b6bc60e51316618f54098cfa9e7892ef4faf3ff7acff6628dc05970",
+      "input_sha256": "169f88904d7d270fd2f3b47ba6bf85cd42f76fec9207af5b77ec2aeed0f08ff0",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/commissioning.py",
@@ -6439,7 +6682,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "25c6897d743a7e91e3fb85a094b751089d94e32199f6a0519c729e6dc2a5444e",
+      "input_sha256": "3b4121911d3fd9a7081dab20271f5f58c0dd518e22936b0c68af05a9ad92a0cb",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6518,7 +6761,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "4ec9d39897c90dfd30071a15c047d7c9d0f6ab7c7020acb0d19d4a87f9228ae7",
+      "input_sha256": "a895ca6016ea36422ca9b5d1d2832adc2d123654badec91fd6cf891ffa3dd659",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6590,7 +6833,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "454af8d0f9d7740ee501d3bdb892a4ad183406c8df1ba1d09a8b33bfac1f891a",
+      "input_sha256": "6d43aefdfc5ed4666d7a6d69d7f39abdff58a10bc65d50a5c0657be8d5b91298",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6635,7 +6878,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "c471c46f3d09144847c300680a79835a24b00fef7787bf196221027cee859160",
+      "input_sha256": "a404d29c538c3c0028115bf2f39e8b978812fa8958887c3d825576f110568142",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -6951,6 +7194,7 @@
         "runtime/full_repair.py",
         "runtime/gate_runner.py",
         "runtime/generated_artifacts.py",
+        "runtime/generated_dependency.py",
         "runtime/global_skill_isolation.py",
         "runtime/graph_registry.py",
         "runtime/graphs.py",
@@ -7040,12 +7284,15 @@
         "runtime/registry_envelope.py",
         "runtime/release_artifacts.py",
         "runtime/release_audit.py",
+        "runtime/release_boundary.py",
         "runtime/release_certification.py",
         "runtime/release_distribution.py",
         "runtime/release_environment.py",
         "runtime/release_evidence.py",
         "runtime/release_identity.py",
+        "runtime/release_preflight.py",
         "runtime/release_signing.py",
+        "runtime/release_skip_policy.py",
         "runtime/repository_scope.py",
         "runtime/research_assimilation.py",
         "runtime/resource_lifecycle.py",
@@ -7135,6 +7382,7 @@
         "scripts/deduplicate/cluster_near_duplicates.py",
         "scripts/deduplicate/hash_exact_duplicates.py",
         "scripts/extract_structured_text.py",
+        "scripts/generated_dependency_graph.py",
         "scripts/import_adversarial_reaudit.py",
         "scripts/inventory/build_archive_inventory.py",
         "scripts/inventory/build_file_inventory.py",
@@ -7169,6 +7417,14 @@
         "scripts/reconcile_studio_operation_projections.py",
         "scripts/reconcile_unverified_operational_controls.py",
         "scripts/register_card_control_resolution_review.py",
+        "scripts/release_boundary_diff.py",
+        "scripts/release_concurrency_stress.py",
+        "scripts/release_evidence_budget.py",
+        "scripts/release_evidence_portability.py",
+        "scripts/release_feedback_audit.py",
+        "scripts/release_fixed_point.py",
+        "scripts/release_mutation_probe.py",
+        "scripts/release_skip_preflight.py",
         "scripts/run_release_fault_campaign.py",
         "scripts/sanitize_host_bound_cleanup_evidence.py",
         "scripts/sanitize_tree.py",
@@ -7177,6 +7433,7 @@
         "templates/generated/domain_tool.py",
         "templates/service_capabilities/supabase/functions/example/index.ts",
         "tests/__init__.py",
+        "tests/release_preflight_testkit.py",
         "tests/studio_approval_testkit.py",
         "tests/test_admission_controller.py",
         "tests/test_agent_builder.py",
@@ -7252,6 +7509,7 @@
         "tests/test_foundation_assurance.py",
         "tests/test_full_repair_ledger.py",
         "tests/test_generated_artifacts.py",
+        "tests/test_generated_dependency_graph.py",
         "tests/test_global_skill_isolation.py",
         "tests/test_graphs_and_orchestrations.py",
         "tests/test_hardware_routing.py",
@@ -7320,11 +7578,19 @@
         "tests/test_rel011_revocation.py",
         "tests/test_release_artifacts.py",
         "tests/test_release_audit.py",
+        "tests/test_release_boundary_diff.py",
         "tests/test_release_certification.py",
+        "tests/test_release_concurrency_stress.py",
         "tests/test_release_distribution_controls.py",
         "tests/test_release_environment.py",
+        "tests/test_release_evidence_budget.py",
+        "tests/test_release_evidence_portability.py",
         "tests/test_release_fault_campaign.py",
+        "tests/test_release_feedback_audit.py",
+        "tests/test_release_fixed_point.py",
         "tests/test_release_identity_controls.py",
+        "tests/test_release_mutation_probe.py",
+        "tests/test_release_preflight.py",
         "tests/test_release_supply_chain_evidence.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
@@ -7683,6 +7949,7 @@
         "runtime/full_repair.py",
         "runtime/gate_runner.py",
         "runtime/generated_artifacts.py",
+        "runtime/generated_dependency.py",
         "runtime/global_skill_isolation.py",
         "runtime/graph_registry.py",
         "runtime/graphs.py",
@@ -7772,12 +8039,15 @@
         "runtime/registry_envelope.py",
         "runtime/release_artifacts.py",
         "runtime/release_audit.py",
+        "runtime/release_boundary.py",
         "runtime/release_certification.py",
         "runtime/release_distribution.py",
         "runtime/release_environment.py",
         "runtime/release_evidence.py",
         "runtime/release_identity.py",
+        "runtime/release_preflight.py",
         "runtime/release_signing.py",
+        "runtime/release_skip_policy.py",
         "runtime/repository_scope.py",
         "runtime/research_assimilation.py",
         "runtime/resource_lifecycle.py",
@@ -7867,6 +8137,7 @@
         "scripts/deduplicate/cluster_near_duplicates.py",
         "scripts/deduplicate/hash_exact_duplicates.py",
         "scripts/extract_structured_text.py",
+        "scripts/generated_dependency_graph.py",
         "scripts/import_adversarial_reaudit.py",
         "scripts/inventory/build_archive_inventory.py",
         "scripts/inventory/build_file_inventory.py",
@@ -7901,6 +8172,14 @@
         "scripts/reconcile_studio_operation_projections.py",
         "scripts/reconcile_unverified_operational_controls.py",
         "scripts/register_card_control_resolution_review.py",
+        "scripts/release_boundary_diff.py",
+        "scripts/release_concurrency_stress.py",
+        "scripts/release_evidence_budget.py",
+        "scripts/release_evidence_portability.py",
+        "scripts/release_feedback_audit.py",
+        "scripts/release_fixed_point.py",
+        "scripts/release_mutation_probe.py",
+        "scripts/release_skip_preflight.py",
         "scripts/run_release_fault_campaign.py",
         "scripts/sanitize_host_bound_cleanup_evidence.py",
         "scripts/sanitize_tree.py",
@@ -7909,6 +8188,7 @@
         "templates/generated/domain_tool.py",
         "templates/service_capabilities/supabase/functions/example/index.ts",
         "tests/__init__.py",
+        "tests/release_preflight_testkit.py",
         "tests/studio_approval_testkit.py",
         "tests/test_admission_controller.py",
         "tests/test_agent_builder.py",
@@ -7984,6 +8264,7 @@
         "tests/test_foundation_assurance.py",
         "tests/test_full_repair_ledger.py",
         "tests/test_generated_artifacts.py",
+        "tests/test_generated_dependency_graph.py",
         "tests/test_global_skill_isolation.py",
         "tests/test_graphs_and_orchestrations.py",
         "tests/test_hardware_routing.py",
@@ -8052,11 +8333,19 @@
         "tests/test_rel011_revocation.py",
         "tests/test_release_artifacts.py",
         "tests/test_release_audit.py",
+        "tests/test_release_boundary_diff.py",
         "tests/test_release_certification.py",
+        "tests/test_release_concurrency_stress.py",
         "tests/test_release_distribution_controls.py",
         "tests/test_release_environment.py",
+        "tests/test_release_evidence_budget.py",
+        "tests/test_release_evidence_portability.py",
         "tests/test_release_fault_campaign.py",
+        "tests/test_release_feedback_audit.py",
+        "tests/test_release_fixed_point.py",
         "tests/test_release_identity_controls.py",
+        "tests/test_release_mutation_probe.py",
+        "tests/test_release_preflight.py",
         "tests/test_release_supply_chain_evidence.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
@@ -8150,7 +8439,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "1e1cfa4d4177798c42cfabce2c65dfc4bc8b2c032790aef7844bde6dcfd9d4a4",
+      "input_sha256": "ca0f7c6570d09f1d33e43375d83aae5d4220d63382285cff837a3890dc25ced2",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -8272,6 +8561,7 @@
         "runtime/external_toolchain.py",
         "runtime/foundation_assurance.py",
         "runtime/generated_artifacts.py",
+        "runtime/generated_dependency.py",
         "runtime/graph_registry.py",
         "runtime/intake.py",
         "runtime/intake_lifecycle.py",
@@ -8392,7 +8682,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin A through F; this lane shares canonical registry state with core-n-s and must not overlap it.",
       "group": "core-a-f",
-      "input_sha256": "d83582f615b30851c6cda8d88ad17ef7f7b19adc224cbacd7802f09bc0735b3a",
+      "input_sha256": "bde23e554a889cf142e42aac2370d1a815f592778de768d5b268c239de8b4014",
       "inputs": [
         "builders/declared_suite_builder.py",
         "builders/declared_suite_support_builder.py",
@@ -8461,6 +8751,7 @@
         "runtime/external_toolchain.py",
         "runtime/foundation_assurance.py",
         "runtime/generated_artifacts.py",
+        "runtime/generated_dependency.py",
         "runtime/graph_registry.py",
         "runtime/intake.py",
         "runtime/intake_lifecycle.py",
@@ -8657,11 +8948,19 @@
         "builders/common.py",
         "builders/orchestration_builder.py",
         "registry/test_profiles.json",
+        "runtime/artifact_reachability.py",
+        "runtime/build_claims.py",
         "runtime/cli.py",
         "runtime/commissioning.py",
         "runtime/contracts.py",
+        "runtime/effect_surface.py",
         "runtime/engine_identity.py",
+        "runtime/evidence_index.py",
+        "runtime/evidence_portability.py",
+        "runtime/exact_tool_certification.py",
         "runtime/gate_runner.py",
+        "runtime/generated_artifacts.py",
+        "runtime/generated_dependency.py",
         "runtime/global_skill_isolation.py",
         "runtime/graph_registry.py",
         "runtime/graphs.py",
@@ -8684,18 +8983,35 @@
         "runtime/memory_vault.py",
         "runtime/metacognitive_evolution/facade.py",
         "runtime/native_skills.py",
+        "runtime/provider_gateway.py",
+        "runtime/python_surface_certification.py",
         "runtime/recovery.py",
         "runtime/registry.py",
+        "runtime/release_audit.py",
         "runtime/release_certification.py",
+        "runtime/release_preflight.py",
         "runtime/repository_scope.py",
+        "runtime/resource_lifecycle.py",
+        "runtime/sanitation_assurance.py",
         "runtime/scheduler.py",
         "runtime/skill_navigator.py",
         "runtime/startup.py",
+        "runtime/structural_integrity.py",
         "runtime/studio_api.py",
         "runtime/test_profiles.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
+        "scripts/build_contract_ownership_registry.py",
+        "scripts/build_declared_suite_template_projections.py",
+        "scripts/build_domain_tool_projections.py",
+        "scripts/build_profile_projections.py",
+        "scripts/build_python_dependency_ownership.py",
+        "scripts/build_registry_envelope_inventory.py",
+        "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
+        "scripts/reconcile_commissioned_skill_registry.py",
+        "scripts/reconcile_declared_tool_hashes.py",
+        "tests/test_generated_dependency_graph.py",
         "tests/test_global_skill_isolation.py",
         "tests/test_graphs_and_orchestrations.py",
         "tests/test_hardware_routing.py",
@@ -8722,16 +9038,24 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin G through M; this lane reads or mutates shared canonical repository state.",
       "group": "core-g-m",
-      "input_sha256": "da4b7349b9272d2009bcbfc1dd699b67f1dbc3d9a9714edb0ed8df48c03ec036",
+      "input_sha256": "ff9d451d4aab660100633e0d327dc6ec31505d027c6cdf438d7943a5ac3658f1",
       "inputs": [
         "builders/common.py",
         "builders/orchestration_builder.py",
         "registry/test_profiles.json",
+        "runtime/artifact_reachability.py",
+        "runtime/build_claims.py",
         "runtime/cli.py",
         "runtime/commissioning.py",
         "runtime/contracts.py",
+        "runtime/effect_surface.py",
         "runtime/engine_identity.py",
+        "runtime/evidence_index.py",
+        "runtime/evidence_portability.py",
+        "runtime/exact_tool_certification.py",
         "runtime/gate_runner.py",
+        "runtime/generated_artifacts.py",
+        "runtime/generated_dependency.py",
         "runtime/global_skill_isolation.py",
         "runtime/graph_registry.py",
         "runtime/graphs.py",
@@ -8754,18 +9078,35 @@
         "runtime/memory_vault.py",
         "runtime/metacognitive_evolution/facade.py",
         "runtime/native_skills.py",
+        "runtime/provider_gateway.py",
+        "runtime/python_surface_certification.py",
         "runtime/recovery.py",
         "runtime/registry.py",
+        "runtime/release_audit.py",
         "runtime/release_certification.py",
+        "runtime/release_preflight.py",
         "runtime/repository_scope.py",
+        "runtime/resource_lifecycle.py",
+        "runtime/sanitation_assurance.py",
         "runtime/scheduler.py",
         "runtime/skill_navigator.py",
         "runtime/startup.py",
+        "runtime/structural_integrity.py",
         "runtime/studio_api.py",
         "runtime/test_profiles.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
+        "scripts/build_contract_ownership_registry.py",
+        "scripts/build_declared_suite_template_projections.py",
+        "scripts/build_domain_tool_projections.py",
+        "scripts/build_profile_projections.py",
+        "scripts/build_python_dependency_ownership.py",
+        "scripts/build_registry_envelope_inventory.py",
+        "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
+        "scripts/reconcile_commissioned_skill_registry.py",
+        "scripts/reconcile_declared_tool_hashes.py",
+        "tests/test_generated_dependency_graph.py",
         "tests/test_global_skill_isolation.py",
         "tests/test_graphs_and_orchestrations.py",
         "tests/test_hardware_routing.py",
@@ -8790,8 +9131,9 @@
         "tests/test_memory_vault.py",
         "tests/test_metacognitive_evolution.py"
       ],
-      "member_count": 23,
+      "member_count": 24,
       "members": [
+        "tests/test_generated_dependency_graph.py",
         "tests/test_global_skill_isolation.py",
         "tests/test_graphs_and_orchestrations.py",
         "tests/test_hardware_routing.py",
@@ -8825,20 +9167,30 @@
         "registry/test_profiles.json",
         "runtime/__init__.py",
         "runtime/admission_controller.py",
+        "runtime/artifact_reachability.py",
+        "runtime/build_claims.py",
         "runtime/classifier.py",
         "runtime/cli.py",
         "runtime/commissioning.py",
         "runtime/contracts.py",
         "runtime/dashboard_api.py",
+        "runtime/effect_surface.py",
         "runtime/engine_identity.py",
         "runtime/evidence_assembler.py",
+        "runtime/evidence_index.py",
+        "runtime/evidence_portability.py",
+        "runtime/exact_tool_certification.py",
         "runtime/execution_contract.py",
         "runtime/file_lock.py",
+        "runtime/generated_artifacts.py",
+        "runtime/generated_dependency.py",
+        "runtime/graph_registry.py",
         "runtime/intake.py",
         "runtime/integration_registry.py",
         "runtime/knowledge_foundry.py",
         "runtime/lazy_loader.py",
         "runtime/learning_promotion.py",
+        "runtime/licensing.py",
         "runtime/lifecycle.py",
         "runtime/memory_fabric.py",
         "runtime/memory_vault.py",
@@ -8872,11 +9224,14 @@
         "runtime/query_certification.py",
         "runtime/recovery.py",
         "runtime/registry.py",
+        "runtime/release_audit.py",
         "runtime/release_certification.py",
         "runtime/release_distribution.py",
         "runtime/release_environment.py",
+        "runtime/release_preflight.py",
         "runtime/repository_scope.py",
         "runtime/research_assimilation.py",
+        "runtime/resource_lifecycle.py",
         "runtime/retrieval.py",
         "runtime/runtime_lifecycle.py",
         "runtime/sanitation_assurance.py",
@@ -8889,6 +9244,7 @@
         "runtime/source_coverage.py",
         "runtime/startup.py",
         "runtime/state_invariants.py",
+        "runtime/structural_integrity.py",
         "runtime/studio_api.py",
         "runtime/studio_authority.py",
         "runtime/studio_catalog_status.py",
@@ -8901,14 +9257,23 @@
         "scripts/archive_project_map_history.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
+        "scripts/build_contract_ownership_registry.py",
+        "scripts/build_declared_suite_template_projections.py",
+        "scripts/build_domain_tool_projections.py",
         "scripts/build_operation_health_snapshot.py",
         "scripts/build_operational_control_proof_matrix.py",
+        "scripts/build_profile_projections.py",
+        "scripts/build_python_dependency_ownership.py",
         "scripts/build_reclamation_learning_promotion.py",
+        "scripts/build_registry_envelope_inventory.py",
+        "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
         "scripts/migrate_px_skills.py",
         "scripts/migration/sync_skill_packaging.py",
         "scripts/operational_gap_ledger.py",
         "scripts/quarantine_paths.py",
+        "scripts/reconcile_commissioned_skill_registry.py",
+        "scripts/reconcile_declared_tool_hashes.py",
         "scripts/reconcile_unverified_operational_controls.py",
         "scripts/run_release_fault_campaign.py",
         "scripts/sanitize_tree.py",
@@ -8945,7 +9310,15 @@
         "tests/test_reclamation_learning_promotion.py",
         "tests/test_reconcile_unverified_operational_controls.py",
         "tests/test_reference_candidate_truth.py",
+        "tests/test_release_boundary_diff.py",
+        "tests/test_release_concurrency_stress.py",
+        "tests/test_release_evidence_budget.py",
+        "tests/test_release_evidence_portability.py",
         "tests/test_release_fault_campaign.py",
+        "tests/test_release_feedback_audit.py",
+        "tests/test_release_fixed_point.py",
+        "tests/test_release_mutation_probe.py",
+        "tests/test_release_preflight.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
         "tests/test_retrieval_and_models.py",
@@ -8979,25 +9352,35 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
       "group": "core-n-s",
-      "input_sha256": "be261eff34b0e127813ec5a1c007675871bf455f978e4e3ecaba76859cdb6209",
+      "input_sha256": "760c999789ac5a42128c1c301ce7a9209aab326ebd192ca40f5bd01e4c8003cf",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",
         "runtime/admission_controller.py",
+        "runtime/artifact_reachability.py",
+        "runtime/build_claims.py",
         "runtime/classifier.py",
         "runtime/cli.py",
         "runtime/commissioning.py",
         "runtime/contracts.py",
         "runtime/dashboard_api.py",
+        "runtime/effect_surface.py",
         "runtime/engine_identity.py",
         "runtime/evidence_assembler.py",
+        "runtime/evidence_index.py",
+        "runtime/evidence_portability.py",
+        "runtime/exact_tool_certification.py",
         "runtime/execution_contract.py",
         "runtime/file_lock.py",
+        "runtime/generated_artifacts.py",
+        "runtime/generated_dependency.py",
+        "runtime/graph_registry.py",
         "runtime/intake.py",
         "runtime/integration_registry.py",
         "runtime/knowledge_foundry.py",
         "runtime/lazy_loader.py",
         "runtime/learning_promotion.py",
+        "runtime/licensing.py",
         "runtime/lifecycle.py",
         "runtime/memory_fabric.py",
         "runtime/memory_vault.py",
@@ -9031,11 +9414,14 @@
         "runtime/query_certification.py",
         "runtime/recovery.py",
         "runtime/registry.py",
+        "runtime/release_audit.py",
         "runtime/release_certification.py",
         "runtime/release_distribution.py",
         "runtime/release_environment.py",
+        "runtime/release_preflight.py",
         "runtime/repository_scope.py",
         "runtime/research_assimilation.py",
+        "runtime/resource_lifecycle.py",
         "runtime/retrieval.py",
         "runtime/runtime_lifecycle.py",
         "runtime/sanitation_assurance.py",
@@ -9048,6 +9434,7 @@
         "runtime/source_coverage.py",
         "runtime/startup.py",
         "runtime/state_invariants.py",
+        "runtime/structural_integrity.py",
         "runtime/studio_api.py",
         "runtime/studio_authority.py",
         "runtime/studio_catalog_status.py",
@@ -9060,14 +9447,23 @@
         "scripts/archive_project_map_history.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
+        "scripts/build_contract_ownership_registry.py",
+        "scripts/build_declared_suite_template_projections.py",
+        "scripts/build_domain_tool_projections.py",
         "scripts/build_operation_health_snapshot.py",
         "scripts/build_operational_control_proof_matrix.py",
+        "scripts/build_profile_projections.py",
+        "scripts/build_python_dependency_ownership.py",
         "scripts/build_reclamation_learning_promotion.py",
+        "scripts/build_registry_envelope_inventory.py",
+        "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
         "scripts/migrate_px_skills.py",
         "scripts/migration/sync_skill_packaging.py",
         "scripts/operational_gap_ledger.py",
         "scripts/quarantine_paths.py",
+        "scripts/reconcile_commissioned_skill_registry.py",
+        "scripts/reconcile_declared_tool_hashes.py",
         "scripts/reconcile_unverified_operational_controls.py",
         "scripts/run_release_fault_campaign.py",
         "scripts/sanitize_tree.py",
@@ -9104,7 +9500,15 @@
         "tests/test_reclamation_learning_promotion.py",
         "tests/test_reconcile_unverified_operational_controls.py",
         "tests/test_reference_candidate_truth.py",
+        "tests/test_release_boundary_diff.py",
+        "tests/test_release_concurrency_stress.py",
+        "tests/test_release_evidence_budget.py",
+        "tests/test_release_evidence_portability.py",
         "tests/test_release_fault_campaign.py",
+        "tests/test_release_feedback_audit.py",
+        "tests/test_release_fixed_point.py",
+        "tests/test_release_mutation_probe.py",
+        "tests/test_release_preflight.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
         "tests/test_retrieval_and_models.py",
@@ -9136,7 +9540,7 @@
         "tests/test_studio_run_control.py",
         "tests/test_system_graph.py"
       ],
-      "member_count": 64,
+      "member_count": 72,
       "members": [
         "tests/test_native_skills.py",
         "tests/test_operation_authority.py",
@@ -9171,7 +9575,15 @@
         "tests/test_reclamation_learning_promotion.py",
         "tests/test_reconcile_unverified_operational_controls.py",
         "tests/test_reference_candidate_truth.py",
+        "tests/test_release_boundary_diff.py",
+        "tests/test_release_concurrency_stress.py",
+        "tests/test_release_evidence_budget.py",
+        "tests/test_release_evidence_portability.py",
         "tests/test_release_fault_campaign.py",
+        "tests/test_release_feedback_audit.py",
+        "tests/test_release_fixed_point.py",
+        "tests/test_release_mutation_probe.py",
+        "tests/test_release_preflight.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
         "tests/test_retrieval_and_models.py",
@@ -9261,7 +9673,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin T through Z; this lane reads or mutates shared canonical repository state.",
       "group": "core-t-z",
-      "input_sha256": "6a1f47bb0a6143dc98792518aa05ead7622441cdc211cdf599f259880e66e08d",
+      "input_sha256": "91bda8d473e036766e3f321c0cbdc78df807e73a9e76934ca92ea66a12f82f81",
       "inputs": [
         "builders/adapter_builder.py",
         "builders/common.py",
@@ -9332,10 +9744,9 @@
       "timeout_seconds": 600.0
     }
   ],
-  "parsed_file_count": 0,
-  "reused_file_count": 502,
-  "schema_version": "px.test-group-index/1.0",
-  "test_file_count": 195,
+  "schema_version": "px.test-group-index/1.1",
+  "test_file_count": 204,
   "topology_sha256": "b5b65e8880f06a175189196aa9e07463f75ee51a792e294a4e649b7a75fe03f1",
-  "tracked_python_file_count": 502
+  "tracked_python_file_count": 524,
+  "verified_file_count": 524
 }

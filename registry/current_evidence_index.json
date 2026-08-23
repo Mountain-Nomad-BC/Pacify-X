@@ -4,14 +4,14 @@
   "blocking_reasons": [],
   "current_required_receipt_count": 16,
   "engine_identity": {
-    "file_total": 5411,
+    "file_total": 3784,
     "manifest_path": "registry/engine_identity.json",
-    "manifest_sha256": "dd3f3b176c9a3d808a35dba730002439bc396216b4c887da4f639add20415113",
+    "manifest_sha256": "957b8c34d44432bbcdb6f7ed8e3d9efc845b6bd3cde5acaf086de1e862006bc1",
     "schema_version": "px.engine-identity-validation/1.0",
-    "tree_sha256": "bea85ed2ac63d7a820086b6a636e6fd5550f658900512aa418444ad0bfdea79e",
+    "tree_sha256": "525dc77f9866a0b93a728bc1b1cbc44b2b2fcc9031f4af61ecadaae501adcb2a",
     "valid": true
   },
-  "generated_utc": "2026-08-23T17:31:09.065859Z",
+  "generated_utc": "2026-08-23T21:36:02.212580Z",
   "identity": {
     "extension_version": "0.6.49",
     "python_version": "0.7.0.dev0"
@@ -111,27 +111,27 @@
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "3c6ce929eb04fbeeb4789af15e11f90e95c95000bc780cb2338db81fa7b66e2b",
+        "expected_input_sha256": "9a05e77bb0dae9b3c8a5289108b1df9d52f5c1bf2e7098fe02e995ed5a8f4930",
         "fresh": true,
         "passed": true,
         "receipt_id": "testing-governance",
         "receipt_scope": "section"
       },
-      "sha256": "ca9a07bae94e8881700fa1d2e086a16d1abc762d9923920453a241e55abe46ba"
+      "sha256": "ba39e379b2f30c807e73b5e2ef54cf18da35153ddea9cfeeef98a61a3d7dfb18"
     },
     {
-      "bytes": 660,
+      "bytes": 658,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/core-a-f.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "d83582f615b30851c6cda8d88ad17ef7f7b19adc224cbacd7802f09bc0735b3a",
+        "expected_input_sha256": "bde23e554a889cf142e42aac2370d1a815f592778de768d5b268c239de8b4014",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-a-f",
         "receipt_scope": "group"
       },
-      "sha256": "9f0ce448c02918aa9ae944bcdb8f97c8e14c1390f89e79b162cb6b4ed837aff4"
+      "sha256": "4c66a2a34dc1742e2c9a8c4b65e069b9e8f58866c990b93611d91a1f51079c3d"
     },
     {
       "bytes": 659,
@@ -139,13 +139,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/core-g-m.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "da4b7349b9272d2009bcbfc1dd699b67f1dbc3d9a9714edb0ed8df48c03ec036",
+        "expected_input_sha256": "ff9d451d4aab660100633e0d327dc6ec31505d027c6cdf438d7943a5ac3658f1",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-g-m",
         "receipt_scope": "group"
       },
-      "sha256": "1c3551cfe7f3d9d78772d5b5f5d07830324b7e7693fd97c7596a134ee7fd4aa8"
+      "sha256": "90f9f90159dda5812ddb50b1d742cba9e7db6e91ecd82108496b081033939e05"
     },
     {
       "bytes": 660,
@@ -153,27 +153,27 @@
       "path": ".engineering-bootstrap/test-evidence/groups/core-n-s.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "be261eff34b0e127813ec5a1c007675871bf455f978e4e3ecaba76859cdb6209",
+        "expected_input_sha256": "760c999789ac5a42128c1c301ce7a9209aab326ebd192ca40f5bd01e4c8003cf",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-n-s",
         "receipt_scope": "group"
       },
-      "sha256": "9529fa5a7dd1434f660115968512b840167f8d379502b4e64356c7041c9c991a"
+      "sha256": "16c1ce15918d9a2c860681f169895e99f9d645ee65fa12f5c6bdee744bc91bc1"
     },
     {
-      "bytes": 659,
+      "bytes": 658,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/core-t-z.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "6a1f47bb0a6143dc98792518aa05ead7622441cdc211cdf599f259880e66e08d",
+        "expected_input_sha256": "91bda8d473e036766e3f321c0cbdc78df807e73a9e76934ca92ea66a12f82f81",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-t-z",
         "receipt_scope": "group"
       },
-      "sha256": "39cd42bb96959cdce4c7bba70c8f25d9c5ede722e9be3215167c2b5b2aa765cd"
+      "sha256": "fd73b55692d4229abd8171448aab3312db8b6d08d637bc43ef4241537a6462e8"
     },
     {
       "bytes": 667,
@@ -181,13 +181,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/derived-integrity.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "1e1cfa4d4177798c42cfabce2c65dfc4bc8b2c032790aef7844bde6dcfd9d4a4",
+        "expected_input_sha256": "ca0f7c6570d09f1d33e43375d83aae5d4220d63382285cff837a3890dc25ced2",
         "fresh": true,
         "passed": true,
         "receipt_id": "derived-integrity",
         "receipt_scope": "group"
       },
-      "sha256": "175937aecfc374998b7f793cc5000368116eaa6f21b753c3b8c98641b77f792e"
+      "sha256": "941740a3cf3b8fbc44447f2df070d9dc99d81a0e9ad815389bffbd09324f29bd"
     },
     {
       "bytes": 666,
@@ -195,13 +195,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/exact-installed.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "25c6897d743a7e91e3fb85a094b751089d94e32199f6a0519c729e6dc2a5444e",
+        "expected_input_sha256": "3b4121911d3fd9a7081dab20271f5f58c0dd518e22936b0c68af05a9ad92a0cb",
         "fresh": true,
         "passed": true,
         "receipt_id": "exact-installed",
         "receipt_scope": "group"
       },
-      "sha256": "f6c2f0f7c9e463a7347fa4f365e129fd83b66d222a939df4427b6b91da43c303"
+      "sha256": "609742e88dcb1bf4f63198d199fc6dc7169f2c695d83c5719769404c8a85c1a9"
     },
     {
       "bytes": 668,
@@ -209,13 +209,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/process-recovery.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "5f93a23d4b6bc60e51316618f54098cfa9e7892ef4faf3ff7acff6628dc05970",
+        "expected_input_sha256": "169f88904d7d270fd2f3b47ba6bf85cd42f76fec9207af5b77ec2aeed0f08ff0",
         "fresh": true,
         "passed": true,
         "receipt_id": "process-recovery",
         "receipt_scope": "group"
       },
-      "sha256": "46775dd8fd347d5ce5bb2a84147b4b8112fc84d60b9397dc1a95a54ad2d76f8c"
+      "sha256": "e4f5897659a2f4f7c53e336dd10a7158a8210c525490262961277a1b6b04ba67"
     },
     {
       "bytes": 663,
@@ -223,13 +223,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/release-audit.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "454af8d0f9d7740ee501d3bdb892a4ad183406c8df1ba1d09a8b33bfac1f891a",
+        "expected_input_sha256": "6d43aefdfc5ed4666d7a6d69d7f39abdff58a10bc65d50a5c0657be8d5b91298",
         "fresh": true,
         "passed": true,
         "receipt_id": "release-audit",
         "receipt_scope": "group"
       },
-      "sha256": "51c30beb2de3b721507e821d1f958054dcc2a002592185e47916e4ec54d3ced8"
+      "sha256": "b23298ef863f48194727cda1a48b4651ddf03764764935e8efc98dc931266c61"
     },
     {
       "bytes": 664,
@@ -237,13 +237,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/release-build.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "4ec9d39897c90dfd30071a15c047d7c9d0f6ab7c7020acb0d19d4a87f9228ae7",
+        "expected_input_sha256": "a895ca6016ea36422ca9b5d1d2832adc2d123654badec91fd6cf891ffa3dd659",
         "fresh": true,
         "passed": true,
         "receipt_id": "release-build",
         "receipt_scope": "group"
       },
-      "sha256": "6a9759c9ebb691a8f2958d0505e63c65ee96303359d36957c2da0014388f2361"
+      "sha256": "02707a91f1f6d6143d8df383863953f87ea68e406535b0e54003fb8b061b272e"
     },
     {
       "bytes": 673,
@@ -251,13 +251,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/structural-adversarial.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "c471c46f3d09144847c300680a79835a24b00fef7787bf196221027cee859160",
+        "expected_input_sha256": "a404d29c538c3c0028115bf2f39e8b978812fa8958887c3d825576f110568142",
         "fresh": true,
         "passed": true,
         "receipt_id": "structural-adversarial",
         "receipt_scope": "group"
       },
-      "sha256": "b7be4eaf2070f75aa4d1152f15d6f98711b973adfa54340e3e1dbb5f5507d370"
+      "sha256": "04545c18b8400a6b34ddf251ddfd5858f541197c82a42f617f4d58ba0a6722fe"
     },
     {
       "artifact_version": "0.6.49",
@@ -271,14 +271,14 @@
     {
       "artifact_bound": true,
       "artifact_sha256": "c167ccf2dc04648a1b6fa205a4af8e4bd7ed109b97e5cd5b74d200ed0f6c6cfa",
-      "bytes": 20517,
+      "bytes": 20516,
       "coverage_complete": true,
       "coverage_tier": "B",
       "engine_identity": {
-        "file_total": 5411,
+        "file_total": 3784,
         "manifest_path": "registry/engine_identity.json",
-        "manifest_sha256": "dd3f3b176c9a3d808a35dba730002439bc396216b4c887da4f639add20415113",
-        "tree_sha256": "bea85ed2ac63d7a820086b6a636e6fd5550f658900512aa418444ad0bfdea79e"
+        "manifest_sha256": "957b8c34d44432bbcdb6f7ed8e3d9efc845b6bd3cde5acaf086de1e862006bc1",
+        "tree_sha256": "525dc77f9866a0b93a728bc1b1cbc44b2b2fcc9031f4af61ecadaae501adcb2a"
       },
       "kind": "installed-vsix-smoke",
       "limitations": [
@@ -289,19 +289,19 @@
       ],
       "path": "extension/evidence/installed-vsix-smoke.json",
       "platform": "win32",
-      "sha256": "3e8093fc5c165e9ac890212518b243fb28ab1803324ea9b7228ba982eb9bf01a"
+      "sha256": "67a63965ac3bccfeded2ee052cbeb55196e06dcc75a5cab1499c856dcf126c47"
     },
     {
       "artifact_bound": true,
       "artifact_sha256": "c167ccf2dc04648a1b6fa205a4af8e4bd7ed109b97e5cd5b74d200ed0f6c6cfa",
-      "bytes": 20542,
+      "bytes": 20543,
       "coverage_complete": true,
       "coverage_tier": "B",
       "engine_identity": {
-        "file_total": 5411,
+        "file_total": 3784,
         "manifest_path": "registry/engine_identity.json",
-        "manifest_sha256": "dd3f3b176c9a3d808a35dba730002439bc396216b4c887da4f639add20415113",
-        "tree_sha256": "bea85ed2ac63d7a820086b6a636e6fd5550f658900512aa418444ad0bfdea79e"
+        "manifest_sha256": "957b8c34d44432bbcdb6f7ed8e3d9efc845b6bd3cde5acaf086de1e862006bc1",
+        "tree_sha256": "525dc77f9866a0b93a728bc1b1cbc44b2b2fcc9031f4af61ecadaae501adcb2a"
       },
       "kind": "installed-vsix-smoke",
       "limitations": [
@@ -312,7 +312,7 @@
       ],
       "path": "extension/evidence/installed-vsix-smoke-linux.json",
       "platform": "linux",
-      "sha256": "eb14a6cfe806c4b70fd9cb5914d6b7ee0395bf60e2e87cfb7541fa78fbdb5f03"
+      "sha256": "bcce5111cc34ec91b37d6a6bc9713221709e806b2164b62ca0d72c6a6291aea4"
     }
   ],
   "required_receipt_count": 16,

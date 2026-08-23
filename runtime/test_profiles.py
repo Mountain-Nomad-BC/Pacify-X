@@ -582,15 +582,12 @@ def _build_test_group_index_direct(root: Path) -> dict[str, Any]:
         }
     )
     records: dict[str, dict[str, Any]] = {}
-    parsed = 0
-    reused = 0
     for relative in paths:
         payload = (root / relative).read_bytes()
         sha256 = hashlib.sha256(payload).hexdigest()
         prior = prior_files.get(relative, {})
         if prior.get("sha256") == sha256 and isinstance(prior.get("imports"), list):
             imports = list(map(str, prior["imports"]))
-            reused += 1
         else:
             tree = ast.parse(payload.decode("utf-8"), filename=relative)
             imports = sorted(
@@ -610,16 +607,10 @@ def _build_test_group_index_direct(root: Path) -> dict[str, Any]:
                     ),
                 }
             )
-            parsed += 1
         records[relative] = {
             "sha256": sha256,
             "imports": imports,
-            "index_state": (
-                "reused"
-                if prior.get("sha256") == sha256
-                and isinstance(prior.get("imports"), list)
-                else "parsed"
-            ),
+            "index_state": "verified",
         }
     module_paths: dict[str, str] = {}
     for relative in paths:
@@ -691,12 +682,11 @@ def _build_test_group_index_direct(root: Path) -> dict[str, Any]:
     if missing:
         raise ValueError("test groups leave files unassigned: " + ", ".join(missing))
     return {
-        "schema_version": "px.test-group-index/1.0",
+        "schema_version": "px.test-group-index/1.1",
         "topology_sha256": _group_topology_sha256(config),
         "test_file_count": len(all_tests),
         "tracked_python_file_count": len(records),
-        "parsed_file_count": parsed,
-        "reused_file_count": reused,
+        "verified_file_count": len(records),
         "files": records,
         "groups": groups,
     }

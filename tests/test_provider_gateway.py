@@ -363,6 +363,21 @@ def test_provider_route_index_is_content_authoritative_not_mtime_authoritative()
         assert report["violations"][0]["kind"] == "index_stale"
 
 
+def test_provider_route_index_bytes_do_not_depend_on_cache_reuse_state() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        root = Path(directory)
+        (root / "runtime").mkdir()
+        (root / "scripts").mkdir()
+        (root / "runtime/example.py").write_text("VALUE = 1\n", encoding="utf-8")
+        first = build_provider_route_index(root)
+        target = root / "registry/provider_route_scan.json"
+        target.parent.mkdir()
+        target.write_text(json.dumps(first), encoding="utf-8")
+        assert build_provider_route_index(root) == first
+        assert first["verified_file_count"] == len(first["records"])
+        assert all(item["scan_state"] == "verified" for item in first["records"])
+
+
 def test_request_size_bound_fails_before_adapter_or_event() -> None:
     with tempfile.TemporaryDirectory() as directory:
         root = _project(directory, mode="remote", billing_state="estimated")

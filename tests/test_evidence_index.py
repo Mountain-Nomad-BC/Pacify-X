@@ -94,6 +94,34 @@ def test_engine_identity_excludes_test_group_topology(tmp_path) -> None:
     assert before == after
 
 
+def test_engine_identity_excludes_external_runtime_custody(tmp_path) -> None:
+    (tmp_path / "runtime").mkdir()
+    source = tmp_path / "runtime/engine.py"
+    source.write_text("value = 1\n", encoding="utf-8")
+    before = build_engine_identity(tmp_path)
+    (tmp_path / ".tmp/session").mkdir(parents=True)
+    (tmp_path / ".tmp/session/state.json").write_text("{}\n", encoding="utf-8")
+    (tmp_path / "projects/pacify-x").mkdir(parents=True)
+    (tmp_path / "projects/pacify-x/runtime.py").write_text(
+        "value = 2\n", encoding="utf-8"
+    )
+    after = build_engine_identity(tmp_path)
+    assert before == after
+
+
+def test_test_group_index_bytes_do_not_depend_on_incremental_cache_state(
+    tmp_path,
+) -> None:
+    _fixture(tmp_path)
+    first = build_test_group_index(tmp_path)
+    (tmp_path / "registry/test_group_index.json").write_text(
+        json.dumps(first), encoding="utf-8"
+    )
+    second = build_test_group_index(tmp_path)
+    assert second == first
+    assert first["verified_file_count"] == len(first["files"])
+
+
 def _artifact(path: Path, version: str = "2.0.0") -> Path:
     with zipfile.ZipFile(path, "w") as archive:
         archive.writestr("extension/package.json", json.dumps({"version": version}))

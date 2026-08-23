@@ -24,6 +24,7 @@ from .file_lock import FileLock
 from .generated_artifacts import validate_generated_artifacts
 from .full_repair import validate_full_repair_ledger
 from .release_artifacts import classify_tree, verify_frozen_product
+from .release_boundary import copy_clean_product
 from .release_distribution import (
     bind_artifact_set,
     build_release_artifacts_once,
@@ -46,7 +47,9 @@ from .release_identity import (
     verify_recorded_git_identity,
 )
 from .release_signing import sign_certificate, verify_certificate_signature
-from .repository_scope import is_external_environment_relative
+from .release_skip_policy import (
+    junit_skip_policy_gate as _junit_skip_policy_gate,
+)
 from .test_runner import run_test_command
 
 
@@ -59,24 +62,6 @@ PROJECT_ESCAPE_PATH = re.compile(r"(?:^|[\\/])\.\.(?:[\\/]|$)")
 WINDOWS_LOCAL_FRAGMENT = re.compile(r"(?i)[a-z]:[\\/][^\s\"'<>]*")
 POSIX_LOCAL_FRAGMENT = re.compile(r"(?i)/(?:users|home|var/tmp|tmp)/[^\s\"'<>]*")
 RELATIVE_PARENT_FRAGMENT = re.compile(r"(?:(?:\.\.[\\/])+)[^\s\"'<>]*")
-ALLOWED_RELEASE_TEST_SKIPS = {
-    (
-        "tests.test_build_installed_host_control_evidence",
-        "test_current_host_receipt_remains_bound_when_retained_vsix_is_available",
-    ): "retained installed VSIX is external host custody",
-    (
-        "tests.test_clean_source_export",
-        "test_posix_unzip_restores_and_directly_executes_script",
-    ): "ordinary POSIX unzip execution is verified on a host with unzip",
-    (
-        "tests.test_native_skills.NativeSkillTests",
-        "test_live_workspace_original_backup_restores_exactly",
-    ): "native migration has not run",
-    (
-        "tests.test_skill_studio",
-        "test_skill_source_rejects_duplicate_canonical_directory_aliases",
-    ): "host filesystem does not permit distinct case aliases",
-}
 
 
 def _json(path: Path) -> dict[str, Any]:
@@ -238,38 +223,6 @@ def _junit_case_gate(path: Path, marker: str) -> dict[str, Any]:
     }
 
 
-def _junit_skip_policy_gate(path: Path) -> dict[str, Any]:
-    """Allow only reviewed host-conditional skips; reject every unknown skip."""
-
-    root = ET.parse(path).getroot()
-    allowed: list[str] = []
-    unexpected: list[str] = []
-    for case in root.iter("testcase"):
-        skipped = case.find("skipped")
-        if skipped is None:
-            continue
-        identity = (
-            str(case.attrib.get("classname", "")),
-            str(case.attrib.get("name", "")),
-        )
-        expected_reason = ALLOWED_RELEASE_TEST_SKIPS.get(identity)
-        observed_reason = " ".join(
-            filter(None, (str(skipped.attrib.get("message", "")), skipped.text or ""))
-        )
-        label = f"{identity[0]}::{identity[1]}"
-        if expected_reason and expected_reason in observed_reason:
-            allowed.append(label)
-        else:
-            unexpected.append(label)
-    return {
-        "valid": not unexpected,
-        "allowed_count": len(allowed),
-        "allowed": sorted(allowed),
-        "unexpected_count": len(unexpected),
-        "unexpected": sorted(unexpected),
-    }
-
-
 def _sanitize_junit_metadata(path: Path) -> None:
     """Remove host identity and machine-local paths from public test evidence."""
     tree = ET.parse(path)
@@ -299,9 +252,7 @@ def _redact_machine_local_value(value: object) -> object:
     if isinstance(value, list):
         return [_redact_machine_local_value(item) for item in value]
     if isinstance(value, dict):
-        return {
-            key: _redact_machine_local_value(item) for key, item in value.items()
-        }
+        return {key: _redact_machine_local_value(item) for key, item in value.items()}
     return value
 
 
@@ -606,12 +557,14 @@ def run_release_gates(
         "custody_id": Path(release_python).resolve().parent.parent.name,
         "hard_delete": False,
     }
-    installed_receipt = _redact_machine_local_value({
-        "schema_version": "1.0",
-        **installed,
-        "expected_wheel_sha256": wheel_record["sha256"],
-        "artifact_filename": wheel_record["filename"],
-    })
+    installed_receipt = _redact_machine_local_value(
+        {
+            "schema_version": "1.0",
+            **installed,
+            "expected_wheel_sha256": wheel_record["sha256"],
+            "artifact_filename": wheel_record["filename"],
+        }
+    )
     assert isinstance(installed_receipt, dict)
     _dump(evidence_dir / "installed-wheel.json", installed_receipt)
     from .test_profiles import resolve_test_profile
@@ -867,35 +820,8 @@ def run_release_gates(
     return result
 
 
-def _copy_clean(source: Path, destination: Path) -> None:
-    source = source.resolve()
-    generated = shutil.ignore_patterns(
-        ".git",
-        "__pycache__",
-        ".pytest_cache",
-        ".ruff_cache",
-        "*.pyc",
-        "*.pyo",
-        "*.egg-info",
-        "build",
-        "dist",
-        "release.lock",
-        "release-transaction.json",
-    )
-
-    def ignore(directory: str, names: list[str]) -> set[str]:
-        relative_directory = Path(directory).resolve().relative_to(source)
-        ignored = set(generated(directory, names))
-        for name in names:
-            if is_external_environment_relative(relative_directory / name):
-                ignored.add(name)
-        return ignored
-
-    shutil.copytree(
-        source,
-        destination,
-        ignore=ignore,
-    )
+# Compatibility for focused historical tests; new release code uses the public seam.
+_copy_clean = copy_clean_product
 
 
 def finalize_release(
@@ -964,6 +890,17 @@ def finalize_release(
             "published": False,
             "errors": source_control["errors"],
         }
+    from .release_preflight import validate_preflight_receipt
+
+    preflight = validate_preflight_receipt(root, release)
+    if not preflight["valid"]:
+        return {
+            "valid": False,
+            "certified": False,
+            "published": False,
+            "errors": preflight["errors"],
+            "preflight": preflight,
+        }
     initial = classify_tree(root)
     if not initial["valid"]:
         return {
@@ -991,7 +928,7 @@ def finalize_release(
         release_quarantine.mkdir(parents=True, exist_ok=True)
         directory = Path(tempfile.mkdtemp(prefix=f"{run_id}-", dir=release_quarantine))
         staged = directory / "product"
-        _copy_clean(root, staged)
+        copy_clean_product(root, staged)
         frozen = classify_tree(staged)
         if not frozen["valid"] or frozen["product_digest"] != initial["product_digest"]:
             return {
@@ -1135,6 +1072,16 @@ def finalize_release(
                         )
                     else:
                         gate_errors.append(f"{gate_name}: failed")
+            from .release_preflight import record_coverage_gap
+
+            coverage_gap = record_coverage_gap(
+                root,
+                finalizer_gate="release-gates-or-frozen-product",
+                failure_class=gate_errors[0]
+                if gate_errors
+                else "frozen-product-mutation",
+                product_digest=str(initial["product_digest"]),
+            )
             return {
                 "valid": False,
                 "certified": False,
@@ -1147,6 +1094,7 @@ def finalize_release(
                     *staged_unchanged["errors"],
                 ],
                 "gates": gates,
+                "preflight_coverage_gap": coverage_gap.relative_to(root).as_posix(),
             }
         roles: dict[str, dict[str, object]] = {}
         for path in sorted(
@@ -1241,9 +1189,9 @@ def finalize_release(
             completion_projection = write_runtime(
                 root, artifact_dir=selected_artifact_dir
             )
-            if not completion_projection.get("complete") or not completion_projection.get(
-                "certified"
-            ):
+            if not completion_projection.get(
+                "complete"
+            ) or not completion_projection.get("certified"):
                 completion_errors.append(
                     "live completion projection did not admit the certified release"
                 )

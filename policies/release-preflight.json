@@ -1,0 +1,50 @@
+{
+  "schema_version": "px.release-preflight-policy/1.0",
+  "max_total_release_evidence_bytes": 262144000,
+  "max_single_evidence_file_bytes": 104857600,
+  "warn_context_amplification_ratio": 5.0,
+  "max_context_amplification_ratio": 20.0,
+  "concurrency_iterations": 100,
+  "generated_authorities": {
+    "registry/generated_dependency_graph.json": [],
+    "registry/effect_surface_ownership.json": [],
+    "registry/provider_route_scan.json": [],
+    "registry/python_surface_ownership.json": [],
+    "registry/python_dependency_ownership.json": [],
+    "registry/historical_external_references.json": [],
+    "registry/build_claims.json": ["registry/effect_surface_ownership.json"],
+    "registry/artifact_reachability.json": ["registry/generated_dependency_graph.json", "registry/registry_envelope_inventory.json"],
+    "registry/registry_envelope_inventory.json": [],
+    "registry/test_group_index.json": ["registry/artifact_reachability.json", "registry/registry_envelope_inventory.json"],
+    "registry/engine_identity.json": ["registry/artifact_reachability.json", "registry/registry_envelope_inventory.json"],
+    "registry/current_evidence_index.json": ["registry/engine_identity.json", "registry/test_group_index.json"],
+    "registry/completion_status.json": ["registry/current_evidence_index.json", "registry/test_group_index.json"]
+  },
+  "post_certification_writes": [
+    ".engineering-bootstrap/release-transaction.json",
+    ".engineering-bootstrap/runtime-core/completion_status.json",
+    "evidence/releases/<release>/certificate.json",
+    "evidence/releases/<release>/certificate.json.sig",
+    "evidence/releases/<release>/<run-id>"
+  ],
+  "rebuild_authorities": [
+    "registry/generated_dependency_graph.json",
+    "registry/effect_surface_ownership.json",
+    "registry/provider_route_scan.json",
+    "registry/python_surface_ownership.json",
+    "registry/python_dependency_ownership.json",
+    "registry/historical_external_references.json",
+    "registry/build_claims.json",
+    "registry/artifact_reachability.json",
+    "registry/registry_envelope_inventory.json",
+    "registry/test_group_index.json",
+    "registry/engine_identity.json"
+  ],
+  "invalidation_map": {
+    "runtime/release_certification.py": ["feedback_audit", "evidence_portability", "evidence_budget", "clean_rebuild_equivalence", "fixed_point"],
+    "runtime/engine_identity.py": ["clean_boundary", "clean_rebuild_equivalence", "installed_equivalence", "fixed_point"],
+    "runtime/resource_lifecycle.py": ["mutation_stability", "concurrency_stress", "fixed_point"],
+    "policies/release-preflight.json": ["all"],
+    "tests/test_release_*.py": ["generated_dependency_dag", "skip_policy", "fixed_point"]
+  }
+}

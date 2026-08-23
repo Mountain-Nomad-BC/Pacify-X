@@ -6,6 +6,7 @@ from pathlib import Path
 from runtime.build_claims import (
     build_claim_drift,
     expected_build_claims,
+    update_readme_claims,
     validate_build_claims,
 )
 
@@ -39,4 +40,32 @@ def test_stored_claim_drift_is_rejected(tmp_path: Path) -> None:
     )
     assert build_claim_drift(drifted, expected) == [
         "stored build claims differ from canonical source facts"
+    ]
+
+
+def test_readme_build_claim_projection_has_one_canonical_owner(tmp_path: Path) -> None:
+    labels = (
+        "Runtime modules",
+        "Contracts",
+        "Registry artifacts",
+        "Tool and support scripts",
+    )
+    (tmp_path / "README.md").write_text(
+        "\n".join(f"| {label} | 0 |" for label in labels) + "\n",
+        encoding="utf-8",
+    )
+    claims = {
+        "counts": {
+            "runtime_modules": 1,
+            "contracts": 2,
+            "registry_artifacts": 3,
+            "tool_and_support_scripts": 4,
+        }
+    }
+    update_readme_claims(tmp_path, claims)
+    assert (tmp_path / "README.md").read_text(encoding="utf-8").splitlines() == [
+        "| Runtime modules | 1 |",
+        "| Contracts | 2 |",
+        "| Registry artifacts | 3 |",
+        "| Tool and support scripts | 4 |",
     ]

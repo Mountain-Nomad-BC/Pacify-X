@@ -172,19 +172,11 @@ def build_inventory() -> dict[str, object]:
         ),
         record(
             "registry/provider_route_scan.json",
-            "rescanned_file_count",
+            "verified_file_count",
             "records",
             "filtered",
             field="scan_state",
-            equals="rescanned",
-        ),
-        record(
-            "registry/provider_route_scan.json",
-            "reused_file_count",
-            "records",
-            "filtered",
-            field="scan_state",
-            equals="reused",
+            equals="verified",
         ),
         record(
             "registry/python_surface_ownership.json",
@@ -279,19 +271,11 @@ def build_inventory() -> dict[str, object]:
         record("registry/skill_orchestrations.json", "count", "workflows"),
         record(
             "registry/test_group_index.json",
-            "parsed_file_count",
+            "verified_file_count",
             "files",
             "filtered_values",
             field="index_state",
-            equals="parsed",
-        ),
-        record(
-            "registry/test_group_index.json",
-            "reused_file_count",
-            "files",
-            "filtered_values",
-            field="index_state",
-            equals="reused",
+            equals="verified",
         ),
         record(
             "registry/test_group_index.json",

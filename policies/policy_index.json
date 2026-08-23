@@ -20,6 +20,7 @@
     {"id": "closed-loop-assurance", "summary": "Turn sealed evidence into independently admitted and verified improvement candidates without self-certification.", "body": "policies/closed-loop-assurance.json"},
     {"id": "codex-host-skill-boundary", "summary": "Separate Codex-host and PX governance boundaries while keeping native discovery and execution authority explicit.", "body": "policies/codex-host-skill-boundary.json"},
     {"id": "release-artifact-classification", "summary": "Classify every release file as product input, evidence output, generated intermediate, or bounded control output before hashing and certification.", "body": "policies/release-artifact-policy.json"},
+    {"id": "release-closure-preflight", "summary": "Discover release-boundary, feedback, portability, mutation, installed-identity, concurrency, and fixed-point defects before signed finalization.", "body": "policies/release-preflight.json"},
     {"id": "release-coverage-assurance", "summary": "Require executed branch coverage and per-test contexts for safety-critical release classes.", "body": "policies/coverage-assurance.json"},
     {"id": "effect-grant-trust", "summary": "Trust effect authority only when a scoped, unexpired grant has a verified publisher signature.", "body": "policies/effect-grant-trust.json"},
     {"id": "release-signing-trust", "summary": "Verify signed release certificates against explicitly trusted and non-revoked publisher keys.", "body": "policies/release-trust.json"},

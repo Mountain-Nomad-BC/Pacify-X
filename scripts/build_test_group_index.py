@@ -22,7 +22,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     result = build_test_group_index(ROOT)
     target = ROOT / "registry/test_group_index.json"
     target.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
-    print(json.dumps({key: result[key] for key in ("test_file_count", "tracked_python_file_count", "parsed_file_count", "reused_file_count")}, indent=2))
+    print(json.dumps({key: result[key] for key in ("test_file_count", "tracked_python_file_count", "verified_file_count")}, indent=2))
     return 0
 
 

@@ -12,6 +12,12 @@ from .release_identity import authoritative_version
 
 
 CLAIMS_PATH = Path("registry/build_claims.json")
+README_COUNT_LABELS = {
+    "Runtime modules": "runtime_modules",
+    "Contracts": "contracts",
+    "Registry artifacts": "registry_artifacts",
+    "Tool and support scripts": "tool_and_support_scripts",
+}
 
 
 def _json(path: Path) -> dict[str, Any]:
@@ -32,9 +38,7 @@ def expected_build_claims(root: Path) -> dict[str, Any]:
     orchestrations = _json(root / "registry/skill_orchestrations.json").get(
         "workflows", ()
     )
-    effects = _json(root / "registry/effect_surface_ownership.json").get(
-        "records", ()
-    )
+    effects = _json(root / "registry/effect_surface_ownership.json").get("records", ())
     framework_scripts = len(tuple((root / "scripts").glob("*.py")))
     skill_scripts = len(tuple((root / ".px/skills").glob("*/scripts/*.py")))
     return {
@@ -71,20 +75,33 @@ def expected_build_claims(root: Path) -> dict[str, Any]:
             "test_modules": "tests/test_*.py",
             "graph_records": "registry/cognitive_map_index.json:records",
             "graph_edges": "registry/cognitive_map_index.json:edges",
-            "effect_surfaces": "registry/effect_surface_ownership.json:records"
-        }
+            "effect_surfaces": "registry/effect_surface_ownership.json:records",
+        },
     }
 
 
-def build_claim_drift(
-    stored: dict[str, Any], expected: dict[str, Any]
-) -> list[str]:
+def build_claim_drift(stored: dict[str, Any], expected: dict[str, Any]) -> list[str]:
     """Return an exact diagnostic for a non-canonical stored claim set."""
     return (
         ["stored build claims differ from canonical source facts"]
         if stored != expected
         else []
     )
+
+
+def update_readme_claims(root: Path, claims: dict[str, Any]) -> None:
+    """Project canonical build denominators into the README table."""
+    path = root.resolve() / "README.md"
+    rendered = path.read_text(encoding="utf-8")
+    for label, key in README_COUNT_LABELS.items():
+        rendered, replacements = re.subn(
+            rf"(?m)^\| {re.escape(label)} \| \d+ \|$",
+            f"| {label} | {claims['counts'][key]} |",
+            rendered,
+        )
+        if replacements != 1:
+            raise ValueError(f"README build-claim row missing or ambiguous: {label}")
+    path.write_text(rendered, encoding="utf-8", newline="\n")
 
 
 def validate_build_claims(root: Path) -> dict[str, Any]:
@@ -105,13 +122,7 @@ def validate_build_claims(root: Path) -> dict[str, Any]:
     except (OSError, UnicodeError) as error:
         errors.append(f"README unavailable: {error}")
     else:
-        labels = {
-            "Runtime modules": "runtime_modules",
-            "Contracts": "contracts",
-            "Registry artifacts": "registry_artifacts",
-            "Tool and support scripts": "tool_and_support_scripts",
-        }
-        for label, key in labels.items():
+        for label, key in README_COUNT_LABELS.items():
             match = re.search(rf"(?m)^\| {re.escape(label)} \| (\d+) \|$", readme)
             actual = expected["counts"][key]
             if match is None or int(match.group(1)) != actual:

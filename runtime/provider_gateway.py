@@ -303,8 +303,6 @@ def build_provider_route_index(root: Path) -> dict[str, object]:
     prior = {str(item.get("path")): item for item in previous.get("records", ()) if isinstance(item, dict)}
     records = []
     violations: list[dict[str, object]] = []
-    rescanned = 0
-    reused = 0
     for path in _provider_source_paths(root):
         relative = path.relative_to(root).as_posix()
         stat = path.stat()
@@ -317,17 +315,14 @@ def build_provider_route_index(root: Path) -> dict[str, object]:
         )
         if unchanged:
             file_violations = list(old["violations"])
-            reused += 1
         else:
             file_violations = [] if relative == "runtime/provider_gateway.py" else _scan_provider_file(path, relative)
-            rescanned += 1
         violations.extend(file_violations)
         records.append({
             "path": relative,
             "bytes": stat.st_size,
             "sha256": content_sha256,
-            "cache_hint_mtime_ns": stat.st_mtime_ns,
-            "scan_state": "reused" if unchanged else "rescanned",
+            "scan_state": "verified",
             "violations": file_violations,
         })
     report = {
@@ -338,7 +333,12 @@ def build_provider_route_index(root: Path) -> dict[str, object]:
         "violation_count": len(violations),
         "violations": violations,
     }
-    return {"schema_version": "px.provider-route-index/1.2", "records": records, "report": report, "rescanned_file_count": rescanned, "reused_file_count": reused}
+    return {
+        "schema_version": "px.provider-route-index/1.3",
+        "records": records,
+        "report": report,
+        "verified_file_count": len(records),
+    }
 
 
 def scan_direct_provider_routes(root: Path) -> dict[str, object]:

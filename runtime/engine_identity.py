@@ -8,6 +8,8 @@ import os
 from pathlib import Path
 from typing import Any
 
+from .repository_scope import is_external_environment_relative
+
 
 EXCLUDED_DIRECTORIES = {
     ".git",
@@ -62,6 +64,7 @@ def _files(root: Path) -> list[Path]:
             relative = path.relative_to(root).as_posix()
             if (
                 path.is_symlink()
+                or is_external_environment_relative(relative)
                 or relative.startswith("AUDIT_ARTIFACTS/")
                 or relative in EXCLUDED_PATHS
                 or path.suffix.casefold() in EXCLUDED_SUFFIXES

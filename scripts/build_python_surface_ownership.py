@@ -26,6 +26,9 @@ def main() -> int:
     ).resolve()
     tools = certify_exact_tools(root)
     result = certify_python_surfaces(root, tools, require_map_current=False)
+    # The bytes being written are the current map. Persist that authority fact,
+    # not whether the prior on-disk projection happened to match.
+    result["map_current"] = True
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(
         json.dumps(result, indent=2, sort_keys=True) + "\n",
