@@ -18,6 +18,9 @@ def test_local_dependency_installations_are_pruned_at_the_root() -> None:
     assert is_external_environment_relative(".git/objects/pack/pack.bin")
     assert is_external_environment_relative(".engineering-bootstrap/quarantine/run/file.bin")
     assert is_external_environment_relative(
+        ".engineering-bootstrap/.lock-recovery-receipts/release.lock/receipt.json"
+    )
+    assert is_external_environment_relative(
         ".engineering-bootstrap/operation-bus/wal/committed/operation/after.json"
     )
     assert is_external_environment_relative(".engineering-bootstrap/project-map/index.json")

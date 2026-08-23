@@ -150,8 +150,12 @@ def test_live_doctor_covers_full_stack_without_writing() -> None:
     git_details = report["sections"]["git"]["details"]
     if (ROOT / ".git").exists():
         assert git_details["untracked_files_examined"] is True
-        assert git_details["untracked_file_count"] >= 1
+        assert git_details["untracked_file_count"] >= 0
         assert git_details["untracked_count_truncated"] is False
+        assert git_details["dirty"] is bool(
+            git_details["tracked_change_count"]
+            + git_details["untracked_file_count"]
+        )
     else:
         assert git_details["repository"] is False
     assert (

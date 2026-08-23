@@ -3752,7 +3752,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 1968,
+      "bytes": 2003,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -3761,7 +3761,7 @@
       "packaged": true,
       "path": "runtime/repository_scope.py",
       "role": "installed-runtime",
-      "sha256": "a3d9f3213193edb6fd28f0c15c48a638dace8a35358d623f848d18c469ce84cd",
+      "sha256": "42f1ada9f19da064e1b9c862ffb74be0787c5ecdd834dfc46ba52384a34d1e6e",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -7217,7 +7217,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 8751,
+      "bytes": 8904,
       "evidence": [
         "tests/test_px_doctor.py"
       ],
@@ -7225,7 +7225,7 @@
       "packaged": true,
       "path": "tests/test_px_doctor.py",
       "role": "release-test",
-      "sha256": "fab46860d3ec3e879251bdd94603a8e031fdaf10aa47f3f2c09a10b4ae28bc07",
+      "sha256": "ffcfa4030c96754a18440e5a6fcde3b8ea72056ccf1f9fce9130677e7f9399fb",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -7412,7 +7412,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 13109,
+      "bytes": 13312,
       "evidence": [
         "tests/test_release_certification.py"
       ],
@@ -7420,7 +7420,7 @@
       "packaged": true,
       "path": "tests/test_release_certification.py",
       "role": "release-test",
-      "sha256": "b666ab1aed4e3afc0c8e72414b8acc06b32d021b0f004a3df6473055cf787972",
+      "sha256": "fffa8d37ad29cb029696a57e921cbe393e9dea7e207e52fbf9c41e3a836b80aa",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -7490,7 +7490,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 2831,
+      "bytes": 2965,
       "evidence": [
         "tests/test_repository_scope.py"
       ],
@@ -7498,7 +7498,7 @@
       "packaged": true,
       "path": "tests/test_repository_scope.py",
       "role": "release-test",
-      "sha256": "e63b17959af53148e23ae7b36cd12b4a696a865ef2ff612c4be3685df26cac19",
+      "sha256": "a9f3d0dcaf1d003eb5ddd19d652bdfa0f610fd470903f930e264ff0b3bfece25",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

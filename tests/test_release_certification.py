@@ -44,6 +44,7 @@ def test_clean_release_copy_uses_the_canonical_product_boundary() -> None:
             ".engineering-bootstrap/diagnostics/cache.json",
             ".engineering-bootstrap/operation-bus/wal/owned.zip",
             ".engineering-bootstrap/project-map-history-archives/owned.zip",
+            ".engineering-bootstrap/.lock-recovery-receipts/release.lock/receipt.json",
         ):
             path = source / relative
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -60,6 +61,9 @@ def test_clean_release_copy_uses_the_canonical_product_boundary() -> None:
         assert not (destination / ".engineering-bootstrap/operation-bus").exists()
         assert not (
             destination / ".engineering-bootstrap/project-map-history-archives"
+        ).exists()
+        assert not (
+            destination / ".engineering-bootstrap/.lock-recovery-receipts"
         ).exists()
 
 

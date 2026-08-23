@@ -2141,7 +2141,7 @@
         "pathlib"
       ],
       "index_state": "reused",
-      "sha256": "a3d9f3213193edb6fd28f0c15c48a638dace8a35358d623f848d18c469ce84cd"
+      "sha256": "42f1ada9f19da064e1b9c862ffb74be0787c5ecdd834dfc46ba52384a34d1e6e"
     },
     "runtime/research_assimilation.py": {
       "imports": [
@@ -5475,8 +5475,8 @@
         "runtime.px_doctor",
         "runtime.wal_transaction"
       ],
-      "index_state": "reused",
-      "sha256": "fab46860d3ec3e879251bdd94603a8e031fdaf10aa47f3f2c09a10b4ae28bc07"
+      "index_state": "parsed",
+      "sha256": "ffcfa4030c96754a18440e5a6fcde3b8ea72056ccf1f9fce9130677e7f9399fb"
     },
     "tests/test_python_surface_boundaries.py": {
       "imports": [
@@ -5645,7 +5645,7 @@
         "unittest.mock"
       ],
       "index_state": "reused",
-      "sha256": "b666ab1aed4e3afc0c8e72414b8acc06b32d021b0f004a3df6473055cf787972"
+      "sha256": "fffa8d37ad29cb029696a57e921cbe393e9dea7e207e52fbf9c41e3a836b80aa"
     },
     "tests/test_release_distribution_controls.py": {
       "imports": [
@@ -5721,7 +5721,7 @@
         "runtime.repository_scope"
       ],
       "index_state": "reused",
-      "sha256": "e63b17959af53148e23ae7b36cd12b4a696a865ef2ff612c4be3685df26cac19"
+      "sha256": "a9f3d0dcaf1d003eb5ddd19d652bdfa0f610fd470903f930e264ff0b3bfece25"
     },
     "tests/test_research_contract_admission.py": {
       "imports": [
@@ -6432,7 +6432,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "bb9a99f1594a6fbc086d2398658002380f40c103e6c1f765e353c39ec868c2e4",
+      "input_sha256": "76bef478a480decabeee0b2e7cd08c1451df3b76d404af6367aa2f86945d256c",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6508,7 +6508,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "6cc1b9d38695ffe5650523106b8048cb572af0909e9dc36ab403cecdede84279",
+      "input_sha256": "f7ada3dfbcc8a2841eb015df6dab0bcf6f35c3c032501719c5f010db5b47b8fd",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6577,7 +6577,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "2868f8cd1f470a8723e7988dccaf69a2cadae707c083083170b6c954f898c284",
+      "input_sha256": "38d1db3f2f84ef1f640a6727e456d242f664ec7b7be500865c9fb57d56ed1f37",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6622,7 +6622,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "5980f9e5adcc428a3568d5bc7dc2832ab4c6f28af1bfeccde24e00a316319b03",
+      "input_sha256": "b367aa5ee023e2b6a2fcc9b64f122659eb931ac3e5a3681798ab813789946c0f",
       "inputs": [
         ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/media/dashboard.js",
         ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/src/activityManager.js",
@@ -8491,7 +8491,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "0249182ce2318a1c7c6be426387358b7232b93c23061487a4409fcc683b7443d",
+      "input_sha256": "445498ab53a8d9f30d6b5d569128c03f64e78af397270cd85a1442662c8eea8e",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -8733,7 +8733,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin A through F; this lane shares canonical registry state with core-n-s and must not overlap it.",
       "group": "core-a-f",
-      "input_sha256": "687adbeb92d76c314323f614f5a41aead755dd96d67eaf67573319af4e1c951e",
+      "input_sha256": "bf405365ea973be0a33ac663f7a25b6ffc415e2cb65278ea7013fdf4689c1a8d",
       "inputs": [
         "builders/declared_suite_builder.py",
         "builders/declared_suite_support_builder.py",
@@ -9063,7 +9063,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin G through M; this lane reads or mutates shared canonical repository state.",
       "group": "core-g-m",
-      "input_sha256": "6db0874f553e268c2166d710b80e8ab8291469faa2c80488c05b95ae062459df",
+      "input_sha256": "32f3d647d0a4897b3a8edd2572cf71cbbe7144484488ffce034ae5acae4712f7",
       "inputs": [
         "builders/common.py",
         "builders/orchestration_builder.py",
@@ -9320,7 +9320,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
       "group": "core-n-s",
-      "input_sha256": "adb97165ffb452c4307cd7660fd0afe40ea0e8d4401b3781eef9b052e8f2a930",
+      "input_sha256": "7965c318884da108eafbe7b3c0141b6778a57e8f1771811ea1bca2a944c32095",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",
@@ -9602,7 +9602,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin T through Z; this lane reads or mutates shared canonical repository state.",
       "group": "core-t-z",
-      "input_sha256": "0652845fdf037b09db7b49e31da7e13d7cf0e8d97c448d74ebcc47bc695baf68",
+      "input_sha256": "4074ec6a0e99928023222c77352ad5a3a134836724a68e1bc6492cc1b3228dd0",
       "inputs": [
         "builders/adapter_builder.py",
         "builders/common.py",
@@ -9673,8 +9673,8 @@
       "timeout_seconds": 600.0
     }
   ],
-  "parsed_file_count": 0,
-  "reused_file_count": 502,
+  "parsed_file_count": 1,
+  "reused_file_count": 501,
   "schema_version": "px.test-group-index/1.0",
   "test_file_count": 195,
   "topology_sha256": "b5b65e8880f06a175189196aa9e07463f75ee51a792e294a4e649b7a75fe03f1",

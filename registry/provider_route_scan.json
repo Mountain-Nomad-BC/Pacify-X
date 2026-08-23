@@ -44,7 +44,7 @@
       "bytes": 5124,
       "cache_hint_mtime_ns": 1787440523101790400,
       "path": "runtime/agent_harness_worker.py",
-      "scan_state": "rescanned",
+      "scan_state": "reused",
       "sha256": "bb0d2ad1547c93b5861c7793acb1d5af97d5d54c271adf6427516f58eeefe406",
       "violations": []
     },
@@ -1316,7 +1316,7 @@
       "bytes": 46396,
       "cache_hint_mtime_ns": 1787440281747378500,
       "path": "runtime/release_certification.py",
-      "scan_state": "rescanned",
+      "scan_state": "reused",
       "sha256": "13f542d00f5d335c1ac8f1f71396cb6557330c4c044877a4472c21f6898c4ca3",
       "violations": []
     },
@@ -1361,11 +1361,11 @@
       "violations": []
     },
     {
-      "bytes": 1968,
-      "cache_hint_mtime_ns": 1787440687014782600,
+      "bytes": 2003,
+      "cache_hint_mtime_ns": 1787446483143866400,
       "path": "runtime/repository_scope.py",
-      "scan_state": "rescanned",
-      "sha256": "a3d9f3213193edb6fd28f0c15c48a638dace8a35358d623f848d18c469ce84cd",
+      "scan_state": "reused",
+      "sha256": "42f1ada9f19da064e1b9c862ffb74be0787c5ecdd834dfc46ba52384a34d1e6e",
       "violations": []
     },
     {
@@ -1404,7 +1404,7 @@
       "bytes": 8999,
       "cache_hint_mtime_ns": 1787440290070044400,
       "path": "runtime/sanitation_assurance.py",
-      "scan_state": "rescanned",
+      "scan_state": "reused",
       "sha256": "b680428481319e341dce7c4664ea98d54ce226ac871932dd0e842970f6f8f521",
       "violations": []
     },
@@ -1420,7 +1420,7 @@
       "bytes": 7199,
       "cache_hint_mtime_ns": 1787440290070044400,
       "path": "runtime/secret_scanning.py",
-      "scan_state": "rescanned",
+      "scan_state": "reused",
       "sha256": "68e1dfdb3ac831b7ab9c2b247950ce854cf81d6c24abf52b3fec6abe2ba5a92a",
       "violations": []
     },
@@ -1732,7 +1732,7 @@
       "bytes": 10221,
       "cache_hint_mtime_ns": 1787440290070044400,
       "path": "scripts/audit_sanitization.py",
-      "scan_state": "rescanned",
+      "scan_state": "reused",
       "sha256": "9cf0f18e25170dba1e4916a78671f7de7e5d332b88b119e0937865f1afbd0779",
       "violations": []
     },
@@ -2388,7 +2388,7 @@
     "violation_count": 0,
     "violations": []
   },
-  "rescanned_file_count": 6,
-  "reused_file_count": 291,
+  "rescanned_file_count": 0,
+  "reused_file_count": 297,
   "schema_version": "px.provider-route-index/1.2"
 }

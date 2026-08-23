@@ -12,6 +12,7 @@ CANONICAL_WORKSPACE_CUSTODY_ROOTS = frozenset(
 EXTERNAL_ENVIRONMENT_PARTS = frozenset({"node_modules", ".vscode-test"})
 DERIVED_CUSTODY_ROOTS = frozenset(
     {
+        ".lock-recovery-receipts",
         "diagnostics",
         "environment",
         "project-map",
