@@ -491,9 +491,37 @@ class DashboardApiTests(unittest.TestCase):
             query_graph(ROOT, direction="sideways")
 
     def test_repository_graph_query_uses_current_project_map(self) -> None:
-        result = query_graph(
-            ROOT, project=ROOT, view="repository", query="dashboard_api", max_nodes=12
-        )
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            graph = (
+                project
+                / ".engineering-bootstrap"
+                / "project-map"
+                / "architecture-graph.json"
+            )
+            graph.parent.mkdir(parents=True)
+            graph.write_text(
+                json.dumps(
+                    {
+                        "nodes": [
+                            {
+                                "id": "file:runtime/dashboard_api.py",
+                                "name": "dashboard_api",
+                                "kind": "file",
+                            }
+                        ],
+                        "edges": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            result = query_graph(
+                ROOT,
+                project=project,
+                view="repository",
+                query="dashboard_api",
+                max_nodes=12,
+            )
         self.assertEqual(result["view"], "repository")
         self.assertIn("architecture-graph.json", result["source"])
         self.assertIsNotNone(result["selected"])

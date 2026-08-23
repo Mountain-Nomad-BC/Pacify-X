@@ -111,7 +111,8 @@ def _launch_terminal_observer(
     run_id: str,
     environment: Mapping[str, str],
 ) -> tuple[str, int, str]:
-    observer_run_id = f"studio-finalizer-{run_id}-{uuid4().hex[:8]}"
+    launch_nonce = uuid4().hex
+    observer_run_id = f"studio-finalizer-{run_id}-{launch_nonce}"
     command = (
         sys.executable,
         "-m",
@@ -124,6 +125,8 @@ def _launch_terminal_observer(
         run_id,
         "--observer-run-id",
         observer_run_id,
+        "--launch-nonce",
+        launch_nonce,
     )
     record, process = manager.spawn_owned_process(
         command,
@@ -158,6 +161,7 @@ def launch_studio_worker(
     request_path = request_root / f"{run_id}.json"
     if request_path.exists():
         raise FileExistsError("Studio worker request already exists")
+    launch_nonce = uuid4().hex
     command = (
         sys.executable,
         "-m",
@@ -170,6 +174,8 @@ def launch_studio_worker(
         run_id,
         "--request",
         str(request_path),
+        "--launch-nonce",
+        launch_nonce,
     )
     environment = dict(os.environ)
     environment["PYTHONDONTWRITEBYTECODE"] = "1"
@@ -208,6 +214,7 @@ def launch_studio_worker(
             "resource_id": record.resource_id,
             "request_resource_id": request_record.resource_id,
             "expected_pid": process.pid,
+            "launch_nonce": launch_nonce,
             "payload": dict(payload),
             "payload_sha256": digest(payload),
             "authority_state": "codex-host-retained",
@@ -223,40 +230,9 @@ def launch_studio_worker(
     )
     deadline = time.monotonic() + max(1.0, startup_timeout_seconds)
     while time.monotonic() < deadline:
-        return_code = process.poll()
-        if return_code is not None:
-            try:
-                manager.complete_process(record.resource_id)
-            except (ValueError, KeyError):
-                pass
-            if request_path.exists():
-                manager.reclaim_ephemeral_path(
-                    request_record.resource_id,
-                    reason="studio-worker-exited-before-acknowledgement",
-                    state=RunState.FAILED,
-                )
-            state = finalize_studio_run_if_worker_exited(
-                state_root=state_root,
-                manager=manager,
-                authority=authority,
-                run_control=run_control,
-                run_id=run_id,
-            )
-            if str(state["state"]) in TERMINAL_STATES:
-                return {
-                    "schema_version": f"px.{kind}-session-start/1.1",
-                    "run_id": run_id,
-                    "state": state["state"],
-                    "accepted": True,
-                    "live_worker_observed": False,
-                    "worker_resource_id": record.resource_id,
-                    "terminal_observer_resource_id": observer_resource_id,
-                    "terminal_observer_pid": observer_pid,
-                    "terminal_observer_run_id": observer_run_id,
-                    "authority_state": "codex-host-retained",
-                }
-            raise RuntimeError(f"Studio worker exited before liveness acknowledgement: {return_code}")
         state = run_control.read(run_id)
+        current_record = manager.ledger.get(record.resource_id)
+        worker_pid = int(current_record.pid or process.pid)
         if str(state["state"]) != "queued":
             return {
                 "schema_version": f"px.{kind}-session-start/1.1",
@@ -264,13 +240,18 @@ def launch_studio_worker(
                 "state": state["state"],
                 "accepted": True,
                 "live_worker_observed": True,
-                "worker_pid": process.pid,
+                "worker_pid": worker_pid,
                 "worker_resource_id": record.resource_id,
                 "terminal_observer_resource_id": observer_resource_id,
                 "terminal_observer_pid": observer_pid,
                 "terminal_observer_run_id": observer_run_id,
                 "authority_state": "codex-host-retained",
             }
+        return_code = process.poll()
+        if return_code is not None:
+            if current_record.active and worker_pid != process.pid:
+                time.sleep(0.01)
+                continue
         time.sleep(0.02)
     if request_path.exists():
         manager.reclaim_ephemeral_path(

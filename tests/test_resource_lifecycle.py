@@ -127,6 +127,47 @@ class ResourceLifecycleTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(second.run_state, RunState.CANCELLED.value)
 
+    def test_current_process_can_accept_exact_launcher_handoff(self) -> None:
+        now = "2026-08-14T00:00:00+00:00"
+        launcher_pid = os.getpid() + 100000
+        record = ResourceRecord(
+            resource_id="process-handoff",
+            resource_type="process",
+            project_id="project",
+            run_id="run-handoff",
+            lane_id="studio-agent",
+            creator="px-studio-durable-launcher",
+            classification=ResourceClassification.EPHEMERAL.value,
+            created_at=now,
+            last_activity_at=now,
+            expected_cleanup_event="process_exit_or_cancel",
+            retention_required=False,
+            pid=launcher_pid,
+            process_identity="a" * 64,
+        )
+        self.manager.ledger.upsert(record)
+
+        rebound = self.manager.rebind_current_process(
+            record.resource_id,
+            expected_launcher_pid=launcher_pid,
+            expected_run_id="run-handoff",
+            expected_lane_id="studio-agent",
+            expected_creator="px-studio-durable-launcher",
+            launch_binding="signed-request-digest",
+        )
+
+        self.assertEqual(rebound.pid, os.getpid())
+        self.assertNotEqual(rebound.process_identity, record.process_identity)
+        with self.assertRaises(PermissionError):
+            self.manager.rebind_current_process(
+                record.resource_id,
+                expected_launcher_pid=launcher_pid,
+                expected_run_id="run-handoff",
+                expected_lane_id="studio-agent",
+                expected_creator="px-studio-durable-launcher",
+                launch_binding="signed-request-digest",
+            )
+
     def test_separate_process_registrations_do_not_lose_ledger_records(self) -> None:
         ledger = self.root / "process-state" / "ledger.json"
         code = (

@@ -58,6 +58,7 @@ MACHINE_LOCAL_PATH = re.compile(r"(?i)(?:[a-z]:[\\/]|/(?:users|home|tmp|var/tmp)
 PROJECT_ESCAPE_PATH = re.compile(r"(?:^|[\\/])\.\.(?:[\\/]|$)")
 WINDOWS_LOCAL_FRAGMENT = re.compile(r"(?i)[a-z]:[\\/][^\s\"'<>]*")
 POSIX_LOCAL_FRAGMENT = re.compile(r"(?i)/(?:users|home|var/tmp|tmp)/[^\s\"'<>]*")
+RELATIVE_PARENT_FRAGMENT = re.compile(r"(?:(?:\.\.[\\/])+)[^\s\"'<>]*")
 
 
 def _json(path: Path) -> dict[str, Any]:
@@ -237,7 +238,8 @@ def _sanitize_junit_metadata(path: Path) -> None:
 
 def _redact_junit_text(value: str) -> str:
     redacted = WINDOWS_LOCAL_FRAGMENT.sub("[machine-local-path]", value)
-    return POSIX_LOCAL_FRAGMENT.sub("[machine-local-path]", redacted)
+    redacted = POSIX_LOCAL_FRAGMENT.sub("[machine-local-path]", redacted)
+    return RELATIVE_PARENT_FRAGMENT.sub("[machine-local-path]", redacted)
 
 
 def _junit_metadata_gate(path: Path) -> dict[str, Any]:
@@ -448,6 +450,16 @@ def run_release_gates(
     environment_quarantine.mkdir(parents=True, exist_ok=True)
     installed_root = Path(
         tempfile.mkdtemp(prefix="installed-wheel-", dir=environment_quarantine)
+    )
+    release_home = installed_root / "home"
+    release_state = release_home / ".local" / "state"
+    release_state.mkdir(parents=True)
+    environment.update(
+        {
+            "HOME": str(release_home),
+            "USERPROFILE": str(release_home),
+            "XDG_STATE_HOME": str(release_state),
+        }
     )
     install_started = time.monotonic()
     installed = install_exact_wheel(

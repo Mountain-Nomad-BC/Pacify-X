@@ -661,7 +661,10 @@ def _wait_for_agent_state(controller, run_id: str, expected: set[str]) -> dict:
         if state["state"] in expected:
             return state
         time.sleep(0.02)
-    raise AssertionError(f"agent session did not reach {expected}")
+    raise AssertionError(
+        f"agent session did not reach {expected}; last state={state.get('state')} "
+        f"sequence={state.get('sequence')} failure={state.get('failure')}"
+    )
 
 
 def test_agent_session_pause_resume_cancel_and_denial_are_real_owned_lifecycle(

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 
 import pytest
@@ -14,8 +15,35 @@ RECEIPT = ROOT / "extension/evidence/installed-vsix-smoke.json"
 CURRENT_VSIX = ROOT / "extension/dist" / json.loads(RECEIPT.read_text(encoding="utf-8"))["artifact"]["name"]
 
 
-def test_current_exact_installed_receipt_maps_only_narrow_observed_stages() -> None:
-    result = build(ROOT, RECEIPT, CURRENT_VSIX)
+def _portable_installed_fixture(tmp_path: Path) -> tuple[Path, Path, Path]:
+    root = tmp_path / "product"
+    matrix = root / "registry" / "operational_control_proof_matrix.json"
+    matrix.parent.mkdir(parents=True)
+    matrix.write_bytes((ROOT / "registry/operational_control_proof_matrix.json").read_bytes())
+    artifact = root / "extension" / "dist" / "pacify-x-test.vsix"
+    artifact.parent.mkdir(parents=True)
+    artifact.write_bytes(b"portable installed-host fixture\n")
+    digest = hashlib.sha256(artifact.read_bytes()).hexdigest()
+    receipt = json.loads(RECEIPT.read_text(encoding="utf-8"))
+    receipt["artifact"].update(
+        {
+            "name": artifact.name,
+            "unchanged": True,
+            "sha256_before": digest,
+            "sha256_after": digest,
+        }
+    )
+    receipt_path = root / "extension" / "evidence" / "installed-vsix-smoke.json"
+    receipt_path.parent.mkdir(parents=True)
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    return root, receipt_path, artifact
+
+
+def test_exact_installed_receipt_maps_only_narrow_observed_stages(
+    tmp_path: Path,
+) -> None:
+    root, receipt, artifact = _portable_installed_fixture(tmp_path)
+    result = build(root, receipt, artifact)
     records = {item["control_id"]: item for item in result["records"]}
     assert len(records) == 12
     sidebar = records["pxui.sidebar.acknowledgement.surface"]
@@ -30,9 +58,16 @@ def test_current_exact_installed_receipt_maps_only_narrow_observed_stages() -> N
 
 
 def test_artifact_identity_mismatch_fails_closed(tmp_path: Path) -> None:
-    receipt = json.loads(RECEIPT.read_text(encoding="utf-8"))
+    root, target, artifact = _portable_installed_fixture(tmp_path)
+    receipt = json.loads(target.read_text(encoding="utf-8"))
     receipt["artifact"]["sha256_after"] = "0" * 64
-    target = tmp_path / "receipt.json"
     target.write_text(json.dumps(receipt), encoding="utf-8")
     with pytest.raises(ValueError, match="exact retained VSIX"):
-        build(ROOT, target, CURRENT_VSIX)
+        build(root, target, artifact)
+
+
+def test_current_host_receipt_remains_bound_when_retained_vsix_is_available() -> None:
+    if not CURRENT_VSIX.is_file():
+        pytest.skip("retained installed VSIX is external host custody")
+    result = build(ROOT, RECEIPT, CURRENT_VSIX)
+    assert len(result["records"]) == 12

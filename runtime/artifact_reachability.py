@@ -6,6 +6,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from .repository_scope import is_external_environment_relative
+
 
 def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -24,6 +26,8 @@ def build_artifact_reachability(root: Path) -> dict:
 
     def record(value: dict) -> None:
         path = str(value["path"])
+        if is_external_environment_relative(path):
+            return
         if path in recorded_paths:
             raise ValueError(f"duplicate artifact reachability record: {path}")
         recorded_paths.add(path)

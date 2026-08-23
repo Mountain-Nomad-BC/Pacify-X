@@ -357,11 +357,17 @@ def skill_host_boundary(
 ) -> dict[str, Any]:
     """Report the enforceable PX boundary and the Codex-owned global gap."""
     root = root.resolve()
-    host_root = (global_skills_root or (Path.home() / ".agents" / "skills")).resolve()
+    if global_skills_root is not None:
+        host_root: Path | None = global_skills_root.resolve()
+    else:
+        try:
+            host_root = (Path.home() / ".agents" / "skills").resolve()
+        except RuntimeError:
+            host_root = None
     host_skills = sorted(
         path.parent.relative_to(host_root).as_posix()
         for path in host_root.rglob("SKILL.md")
-    ) if host_root.is_dir() else []
+    ) if host_root is not None and host_root.is_dir() else []
     microsoft = [identifier for identifier in host_skills if "microsoft-foundry" in identifier.casefold().split("/")]
     facades = sorted(
         path.parent.name for path in (root / ".agents" / "skills").glob("*/SKILL.md")
@@ -381,7 +387,13 @@ def skill_host_boundary(
     remediation = policy.get("remediation", {}) if isinstance(policy, Mapping) else {}
     return {
         "schema_version": "px.codex-skill-host-boundary/1.0",
-        "status": "host-visible-global-skills-outside-px-enforcement" if host_skills else "no-global-skills-observed",
+        "status": (
+            "host-skill-root-unavailable"
+            if host_root is None
+            else "host-visible-global-skills-outside-px-enforcement"
+            if host_skills
+            else "no-global-skills-observed"
+        ),
         "project": {
             "facade_count": len(facades),
             "facade_only": 10 <= len(facades) <= 20 and all(item.startswith("px-") for item in facades),
@@ -390,7 +402,7 @@ def skill_host_boundary(
         },
         "codex_host": {
             "authority": "Codex retains native skill discovery, selection, execution, and approval authority",
-            "global_skill_root": host_root.as_posix(),
+            "global_skill_root": host_root.as_posix() if host_root is not None else None,
             "global_skill_count": len(host_skills),
             "global_skill_ids": host_skills,
             "px_policy_enforced_during_direct_host_selection": False,

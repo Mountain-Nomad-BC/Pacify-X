@@ -30,8 +30,10 @@ def test_all_generated_projections_match_one_canonical_owner():
 
 def test_artifact_reachability_excludes_live_receipt_projection_cycle():
     from runtime.artifact_reachability import build_artifact_reachability
+    from runtime.repository_scope import is_external_environment_relative
 
     paths = {row["path"] for row in build_artifact_reachability(ROOT)["records"]}
+    assert not any(is_external_environment_relative(path) for path in paths)
     assert "registry/current_evidence_index.json" not in paths
     assert "registry/completion_status.json" not in paths
     assert "registry/test_group_index.json" not in paths

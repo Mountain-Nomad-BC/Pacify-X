@@ -182,6 +182,23 @@ def test_junit_publication_evidence_redacts_machine_local_failure_paths() -> Non
         assert "/home/runner" not in content
 
 
+def test_junit_publication_evidence_redacts_parent_traversing_traceback_paths() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = Path(directory) / "report.xml"
+        report.write_text(
+            '<testsuites><testsuite><testcase name="test_failure">'
+            "<failure>..\\..\\..\\pytest\\test_nested.py:14 ../pytest/test_nested.py:9</failure>"
+            "</testcase></testsuite></testsuites>",
+            encoding="utf-8",
+        )
+        _sanitize_junit_metadata(report)
+        result = _junit_metadata_gate(report)
+        content = report.read_text(encoding="utf-8")
+        assert result["valid"], result["errors"]
+        assert "..\\" not in content
+        assert "../" not in content
+
+
 def test_release_environment_gate_uses_isolated_interpreter() -> None:
     payload = {"schema_version": "1.0", "valid": True, "errors": []}
     completed = subprocess.CompletedProcess(

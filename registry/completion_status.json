@@ -39,7 +39,7 @@
     },
     {
       "path": "registry/current_evidence_index.json",
-      "sha256": "96ddb9adb670777f67a71785f95b291bd49ab9fe970cadb3a3a8ccee321c82e9"
+      "sha256": "aa645a0215dcec4b64fd4ef1b9bd014384e7fe04a8a22c9a9b6f318a4115cf61"
     }
   ],
   "cards_complete": true,
@@ -294,21 +294,17 @@
     ]
   },
   "current_gates": {
-    "valid": false,
-    "blocking_ids": [
-      "section:testing-governance"
-    ]
+    "valid": true,
+    "blocking_ids": []
   },
   "certification_freshness": {
     "fresh": false,
-    "receipt_current": false,
+    "receipt_current": true,
     "evidence_identity_current": false,
     "evidence_identity_evaluated": false,
-    "evidence_receipts_current": true,
+    "evidence_receipts_current": false,
     "failed_receipt_ids": [],
-    "stale_receipt_ids": [
-      "section:testing-governance"
-    ],
+    "stale_receipt_ids": [],
     "dependency_stale_receipt_ids": []
   },
   "release_certificate": {
@@ -318,7 +314,6 @@
     ]
   },
   "blocking_reasons": [
-    "1 required section/group receipts are stale or failed",
     "final exact-artifact certification has not been admitted"
   ]
 }

@@ -1,19 +1,24 @@
 {
-  "artifact_count": 2,
+  "artifact_count": 0,
   "authority": "Exact byte identities plus live semantic receipt currentness; historical evidence is never current by presence alone.",
-  "blocking_reasons": [],
+  "blocking_reasons": [
+    "No exact VSIX artifact is indexed; source/test evidence alone is not an installed-artifact certification.",
+    "Required linux installed-VSIX smoke does not bind the current exact artifact and engine manifest.",
+    "Required win32 installed-VSIX smoke does not bind the current exact artifact and engine manifest.",
+    "Windows and Linux installed-host platform-independent dashboard semantics differ."
+  ],
   "current_required_receipt_count": 16,
   "engine_identity": {
-    "file_total": 3651,
+    "file_total": 5412,
     "manifest_path": "registry/engine_identity.json",
-    "manifest_sha256": "d48158ba7f40cf128a484c1ad11c93385ff3cd26f2d0fcdcece52cf5680067ad",
+    "manifest_sha256": "a611437de20729ab3558f0fec5efd11820d5d25434c1ad4a3acdec1603e2ab8c",
     "schema_version": "px.engine-identity-validation/1.0",
-    "tree_sha256": "c011b65160517a0464394042b0a41e0bac1139df982d3ed5c7336f12771eded5",
+    "tree_sha256": "f595b60a3f0af354a59bda9838ecc66e773027ff2488e17a7a57829050e0b379",
     "valid": true
   },
-  "generated_utc": "2026-08-16T02:00:36.967631Z",
+  "generated_utc": "2026-08-23T05:09:51.635658Z",
   "identity": {
-    "extension_version": "0.6.9",
+    "extension_version": "0.6.49",
     "python_version": "0.7.0.dev0"
   },
   "limitations": [
@@ -26,41 +31,41 @@
     "win32 installed smoke: Terminal shell integration, debug-adapter startup, and built-in Git activation are host-dependent; their exact live results are reported without promotion.",
     "win32 installed smoke: test:unsupported:The test-result event is proposed/host-gated in some VS Code builds; unavailable getters are reported instead of breaking activation."
   ],
-  "namespace": "python-0.7.0.dev0__vscode-0.6.9",
-  "record_count": 20,
+  "namespace": "python-0.7.0.dev0__vscode-0.6.49",
+  "record_count": 18,
   "records": [
     {
-      "bytes": 618,
+      "bytes": 1162,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "09b32f90b4062ce54da0304feb2fba8adcdd3195dd2298bd1782211a6e71bd26",
+        "expected_input_sha256": "b6ebe0f894d6a98a44e5efebf640b37d1630107e7f0cc339af4baca40236c7c3",
         "fresh": true,
         "passed": true,
         "receipt_id": "dashboard-extension",
         "receipt_scope": "section"
       },
-      "sha256": "49e89d36a6baa685a1f9feb61641f8b5ae83645c0596fa6fab62ca2fd5b3d7f9"
+      "sha256": "f0f31fe82aac21f7284a352972efae045d4c6a19c6d8b8bc4ca367993dc20070"
     },
     {
-      "bytes": 669,
+      "bytes": 686,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/sections/execution-placement.json",
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "4e92a1289c2e36b0d6d31503e711a1b23d25ea0fbe7bdb6b738cb8e4d5c239ed",
+        "expected_input_sha256": "e3ceebe18e12bf19c9838bf83f3d33c34ef5529eec53619644ccc02432ab2863",
         "fresh": true,
         "passed": true,
         "receipt_id": "execution-placement",
         "receipt_scope": "section"
       },
-      "sha256": "0f3f19254571936afa2a38773f234fbee98612dcd8d0f44d22516b914e40732b"
+      "sha256": "93f8e87486b18350565272894559488f604a5134665da227f6cad40092397a00"
     },
     {
-      "bytes": 547,
+      "bytes": 564,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/sections/hardware-routing.json",
       "receipt_state": {
@@ -72,52 +77,52 @@
         "receipt_id": "hardware-routing",
         "receipt_scope": "section"
       },
-      "sha256": "16b71a96cbe4fa06c5fa6e4da4750b5199b27cb2946ec9bb9cac0f1607ee6af6"
+      "sha256": "1504f0a469a099a91e9cba7b72fb4c6cc7bde1b6ae09bf4a8b92e64950c03294"
     },
     {
-      "bytes": 604,
+      "bytes": 621,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/sections/learning-promotion.json",
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "6fb3613b18fee41512e3e936ea867b365b23e8bb653d58ffbe738288eabbc237",
+        "expected_input_sha256": "6a770ee4c5bc35fd783e4cbb5c1de1085ae7755fbe7928111e569c721cc8b8d9",
         "fresh": true,
         "passed": true,
         "receipt_id": "learning-promotion",
         "receipt_scope": "section"
       },
-      "sha256": "1aed797ab9579ef1615177cb6f6914b5f369af4080f37950d1997535030f4cb8"
+      "sha256": "10256608f0f622271990ce108c82acccb64cbed5b4e6351c01e2536e41f8f2c7"
     },
     {
-      "bytes": 932,
+      "bytes": 3646,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "3d5ad36f5caaf06b12c54341d1c75b02de3a9e5dcd89d216df17eefbea030729",
+        "expected_input_sha256": "6325e4780a299f933b59d8b5c883d3625c3d669092d602ff57fee0418b42ac27",
         "fresh": true,
         "passed": true,
         "receipt_id": "studio-memory-graph",
         "receipt_scope": "section"
       },
-      "sha256": "cd74e6d24b011a6b57ff0d4dfcfbd2be3285e8813b9c799a0fb03e0927fc649e"
+      "sha256": "4b1de4500a738624341a9bba41e7d0108d0d5794ab34ca47c80bb62e329a98b9"
     },
     {
-      "bytes": 783,
+      "bytes": 960,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "0ea19c0644fb235aabc2ebc0fb697ea511f5c444731dba3f79e5e3646175dc43",
+        "expected_input_sha256": "3078718bf22d5390e97ed02cd34adaf02243764e15444b371411083f3fe781b9",
         "fresh": true,
         "passed": true,
         "receipt_id": "testing-governance",
         "receipt_scope": "section"
       },
-      "sha256": "9172446d36600d835a6fc49113d919f7025e1d0f25da53f088f0c532182c377b"
+      "sha256": "86e836b76cad5163b7a17e0dc0a8530c96780f18f800fa42ee99e85dcf30bc91"
     },
     {
       "bytes": 659,
@@ -125,13 +130,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/core-a-f.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "0765d2310d46a6a4431792875b5d6836ffcd98cda223e6879807cc579c544c00",
+        "expected_input_sha256": "92f75651e0e67178fd7fdf89df5d7df898d7153babb80c3d862af73b93cdb688",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-a-f",
         "receipt_scope": "group"
       },
-      "sha256": "b4607580ec65bd5752b61f35293a6d71f99501d30797131da2d6a76cadfabb79"
+      "sha256": "2c698749d2b7ffbd958b42b77485d58dba6c2b48d60b7b353a6a343e510e7be8"
     },
     {
       "bytes": 659,
@@ -139,41 +144,41 @@
       "path": ".engineering-bootstrap/test-evidence/groups/core-g-m.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "4e9c4a9219843bb52237393ecf69bd93e1cf97f4b4626752165a2d721b30abb5",
+        "expected_input_sha256": "53bc7cc103020f790604f85e3c2c3c6a069e6a7ca5f1644bc5eed9569bd096cb",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-g-m",
         "receipt_scope": "group"
       },
-      "sha256": "e6051986487f584816a25a98e77ff858fbc9d532a94ae83941765d4fc5d81f6d"
+      "sha256": "e0691696d229d58ab6a17a227e4beb0ed72f27f851461c14134469496d48d5ad"
     },
     {
-      "bytes": 659,
+      "bytes": 660,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/core-n-s.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "cdff7adfa503fba89d4a9a9f04e5b1d0a783c12721b4bca84e644c12621d11a8",
+        "expected_input_sha256": "66f63797d4bee308212a9becce83cbef41e9ec5fc7e164127c25f96a957c2e0a",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-n-s",
         "receipt_scope": "group"
       },
-      "sha256": "ade8c660c78884fb4ccd7688004a1392f94a43d464e88c2e09b29a0629320494"
+      "sha256": "cd50198ec6f5dc4922f8056b5eb651705640a8292d6a96f5791e2b5b14bdbec6"
     },
     {
-      "bytes": 657,
+      "bytes": 659,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/core-t-z.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "2128dd1edc06ee6f4c4245d67072c006d79855bee416a882b5d69a4be85d6459",
+        "expected_input_sha256": "aaf6561c56759228cd2594604d3a5aabea4d4739d130221d2a80bf37b7f179fe",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-t-z",
         "receipt_scope": "group"
       },
-      "sha256": "114ea1c5748b5f4d4bb67da952a9b07ca0f3c00435426a7ca8d7c828b8001ff7"
+      "sha256": "ee37fd8744e35831d3f9760217bd9d86e14d463e318b55dc27083af4d4f3f367"
     },
     {
       "bytes": 667,
@@ -181,13 +186,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/derived-integrity.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "ca2b26fa89df8f14d70ba92887b6721b90d95f6d8775e0f474a92ea7e1ca0b5a",
+        "expected_input_sha256": "475d6dc583df98be52dd61fdbe440f27b50d56f9e3c14166ddb28413131d18c4",
         "fresh": true,
         "passed": true,
         "receipt_id": "derived-integrity",
         "receipt_scope": "group"
       },
-      "sha256": "12d0337d8d28aea4401bf20f658e6e2b0174d9ad515515726259836f5192661e"
+      "sha256": "b82dd6de187a71b30dbb97dce6ac1d4cae7940a0ceb542fceaead4918e19362d"
     },
     {
       "bytes": 666,
@@ -195,13 +200,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/exact-installed.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "0e477dca9b741b10c3361fc5914f52ee761c03b2e4c8645e51f80f2168ccf5c9",
+        "expected_input_sha256": "fd0c3af6f8dc86e45d47a1fc0f9ada9f9edf8601634258f54d91a038d1a2eeb7",
         "fresh": true,
         "passed": true,
         "receipt_id": "exact-installed",
         "receipt_scope": "group"
       },
-      "sha256": "b14861fe3a8acdaacd9ee69c7d8a97c013a6b857e4999444a19cc1a33f9e111a"
+      "sha256": "d8ba8184bdb6f0965bc1e8d054908d649ba5be8312128d8a4f7c0b43af4e323a"
     },
     {
       "bytes": 668,
@@ -209,13 +214,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/process-recovery.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "632b147aeb8d86fc733fdac71fb51863cdcab078417090c5ed0ca45530d3c242",
+        "expected_input_sha256": "ce750996cdc8812c6951b0669628c6c0d89a54397bc0594b9d1c10f3f3e1d345",
         "fresh": true,
         "passed": true,
         "receipt_id": "process-recovery",
         "receipt_scope": "group"
       },
-      "sha256": "38b35ea41a3ee84c2bb0f755fa910e698d80c83d6fbc377516a0ec361b57639f"
+      "sha256": "8f5d67336208a2b4d8765d5d87a0cc1b9f6fc600fce2ff1254be2ed77b67c56e"
     },
     {
       "bytes": 663,
@@ -223,13 +228,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/release-audit.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "060f8ad23704d6b7f913816344dd3a43b3459cee8ac3f1e5b939d1538e80b028",
+        "expected_input_sha256": "7d651af467ecc8ce6abbdffa3b5c6ceee7247b42c441c5d40923f9bcab39ffe3",
         "fresh": true,
         "passed": true,
         "receipt_id": "release-audit",
         "receipt_scope": "group"
       },
-      "sha256": "db273586cf24c8a051547e0b3e24c45aaed441a5d9307def5fc9a32523067367"
+      "sha256": "8b88f625feef1791fbf50d2c5e2cfde01f232fa38ba709920244ff2703029a1e"
     },
     {
       "bytes": 664,
@@ -237,13 +242,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/release-build.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "783bb09b15e060180e094566d7214dae505559684b19a357d0a7694f09f2a19d",
+        "expected_input_sha256": "acf1fe73923c6f1b1ab4fb44e810bda7e56db0af4b10ca133d4945acce7de540",
         "fresh": true,
         "passed": true,
         "receipt_id": "release-build",
         "receipt_scope": "group"
       },
-      "sha256": "5ff562bee9f746cb970ad2f8235cde315b4800935ddc7305360d07e54899d7f1"
+      "sha256": "4f708631e2033195007ea50ddbbeea7da6c661b16dba12dc7014089ccd7e047d"
     },
     {
       "bytes": 673,
@@ -251,43 +256,25 @@
       "path": ".engineering-bootstrap/test-evidence/groups/structural-adversarial.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "98a5b4909f50eb3d6c9535f5163c2938f0852e8d8e5ff923749618d6b1c8bb0b",
+        "expected_input_sha256": "f6e5ebfbe782ce4cc3f06c6f53e8177ce556769b9721cf183a08f94235fa26e8",
         "fresh": true,
         "passed": true,
         "receipt_id": "structural-adversarial",
         "receipt_scope": "group"
       },
-      "sha256": "aec1452733cbe3c40533945910f0d5414531514d0f3593c47f8fce62f2406a12"
+      "sha256": "236f0ff5faa3be5a8f66fbc365b48412155bde0d71d9a338b1bf1d148e7feba4"
     },
     {
-      "artifact_version": "0.6.9",
-      "bytes": 4003602,
-      "kind": "vsix",
-      "locator_kind": "caller-supplied-file",
-      "path": "pacify-x-vscode-0.6.9.vsix",
-      "sha256": "a11c2e6ce8bda6a1ea085cde0ca0f96f8f25b3dfbf948422b13a43499f015c0e",
-      "version_current": true
-    },
-    {
-      "artifact_version": "0.6.9",
-      "bytes": 4003602,
-      "kind": "vsix",
-      "locator_kind": "caller-supplied-file",
-      "path": "pacify-x-vscode-linux-0.6.9.vsix",
-      "sha256": "a11c2e6ce8bda6a1ea085cde0ca0f96f8f25b3dfbf948422b13a43499f015c0e",
-      "version_current": true
-    },
-    {
-      "artifact_bound": true,
-      "artifact_sha256": "a11c2e6ce8bda6a1ea085cde0ca0f96f8f25b3dfbf948422b13a43499f015c0e",
-      "bytes": 19137,
+      "artifact_bound": false,
+      "artifact_sha256": "c167ccf2dc04648a1b6fa205a4af8e4bd7ed109b97e5cd5b74d200ed0f6c6cfa",
+      "bytes": 20515,
       "coverage_complete": true,
       "coverage_tier": "B",
       "engine_identity": {
-        "file_total": 3651,
+        "file_total": 5283,
         "manifest_path": "registry/engine_identity.json",
-        "manifest_sha256": "d48158ba7f40cf128a484c1ad11c93385ff3cd26f2d0fcdcece52cf5680067ad",
-        "tree_sha256": "c011b65160517a0464394042b0a41e0bac1139df982d3ed5c7336f12771eded5"
+        "manifest_sha256": "99fd348148bf9696626cec119963ad35fcfd697c80851f7a636ae14ab9d2e830",
+        "tree_sha256": "da22a962f8b66c58444845a26490bff65a3e73cbb5d0e99ae97dc8e469805ff1"
       },
       "kind": "installed-vsix-smoke",
       "limitations": [
@@ -298,10 +285,10 @@
       ],
       "path": "extension/evidence/installed-vsix-smoke.json",
       "platform": "win32",
-      "sha256": "2693db0baebb2246516eb4240b15f89a4a13f011dc2d1dc4654b7cdf42011fa6"
+      "sha256": "a4dac7101bd9b394961bfce7cc8f906924e9444e8ee4a7f129e008f56c71a188"
     },
     {
-      "artifact_bound": true,
+      "artifact_bound": false,
       "artifact_sha256": "a11c2e6ce8bda6a1ea085cde0ca0f96f8f25b3dfbf948422b13a43499f015c0e",
       "bytes": 19143,
       "coverage_complete": true,
@@ -326,5 +313,5 @@
   ],
   "required_receipt_count": 16,
   "schema_version": "px.current-evidence-index/1.3",
-  "valid": true
+  "valid": false
 }

@@ -135,11 +135,11 @@ def run_test_command(
         for variable in ("TMP", "TEMP", "TMPDIR"):
             effective_environment[variable] = str(process_temp_path)
         # Governed test runs must never read, create, or mutate the operator's
-        # real host authority keys.  Give tests an isolated host-authority root
-        # inside the same registered/reclaimed workspace unless the caller has
-        # deliberately supplied a narrower test-specific root.
-        effective_environment.setdefault(
-            "PX_STUDIO_KEY_ROOT", str(process_temp_path / "authority-keys")
+        # real host authority keys. Give every managed pytest subprocess its own
+        # authority root inside the exact registered/reclaimed workspace. An
+        # inherited outer-test root is not a valid child-run boundary.
+        effective_environment["PX_STUDIO_KEY_ROOT"] = str(
+            process_temp_path / "authority-keys"
         )
     if _is_pytest_command(effective_command):
         if not _has_pytest_rootdir(effective_command):

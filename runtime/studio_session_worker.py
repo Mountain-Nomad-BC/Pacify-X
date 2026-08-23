@@ -120,6 +120,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--kind", choices=("agent", "workflow"), required=True)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--request", type=Path, required=True)
+    parser.add_argument("--launch-nonce", required=True)
     args = parser.parse_args(argv)
     root = args.root.resolve(strict=True)
     authority = StudioAuthorityStore(root)
@@ -131,7 +132,8 @@ def main(argv: list[str] | None = None) -> int:
         if (
             request.get("kind") != args.kind
             or request.get("run_id") != args.run_id
-            or int(request.get("expected_pid", 0)) != os.getpid()
+            or request.get("launch_nonce") != args.launch_nonce
+            or int(request.get("expected_pid", 0)) <= 0
         ):
             raise PermissionError("Studio worker launch binding is invalid")
         resource_id = str(request.get("resource_id") or "")
@@ -139,8 +141,19 @@ def main(argv: list[str] | None = None) -> int:
         state_root = root / ".engineering-bootstrap" / "studios" / ("agents" if args.kind == "agent" else "workflows")
         manager = ResourceManager(state_root / "resources.json")
         record = manager.ledger.get(resource_id)
-        if record.pid != os.getpid() or record.run_id != args.run_id or not record.active:
+        expected_launcher_pid = int(request["expected_pid"])
+        if record.pid != expected_launcher_pid or record.run_id != args.run_id or not record.active:
             raise PermissionError("Studio worker resource binding is invalid")
+        record = manager.rebind_current_process(
+            resource_id,
+            expected_launcher_pid=expected_launcher_pid,
+            expected_run_id=args.run_id,
+            expected_lane_id=f"studio-{args.kind}",
+            expected_creator="px-studio-durable-launcher",
+            launch_binding=digest(request),
+        )
+        if record.pid != os.getpid():
+            raise PermissionError("Studio worker process handoff is invalid")
         request_record = manager.ledger.get(request_resource_id)
         if (
             request_record.parent_resource_id != resource_id

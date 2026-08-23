@@ -280,6 +280,54 @@ class ResourceLedger:
             self._write_unlocked(tuple(records[key] for key in sorted(records)))
             return updated
 
+    def rebind_active_process(
+        self,
+        resource_id: str,
+        *,
+        expected_launcher_pid: int,
+        actual_pid: int,
+        expected_run_id: str,
+        expected_lane_id: str,
+        expected_creator: str,
+        launch_binding: str,
+    ) -> ResourceRecord:
+        """Atomically compare and transfer one active process identity."""
+        with self._lock, FileLock(self.lock_path, timeout_seconds=30.0):
+            records = {item.resource_id: item for item in self._load_unlocked()}
+            if resource_id not in records:
+                raise KeyError(resource_id)
+            record = records[resource_id]
+            if (
+                record.resource_type != "process"
+                or not record.active
+                or record.pid != expected_launcher_pid
+                or record.run_id != expected_run_id
+                or record.lane_id != expected_lane_id
+                or record.creator != expected_creator
+                or not record.process_identity
+            ):
+                raise PermissionError("process launch handoff does not match resource custody")
+            if actual_pid == expected_launcher_pid:
+                return record
+            identity = hashlib.sha256(
+                (
+                    record.process_identity
+                    + "\0handoff\0"
+                    + str(actual_pid)
+                    + "\0"
+                    + launch_binding
+                ).encode()
+            ).hexdigest()
+            updated = replace(
+                record,
+                pid=actual_pid,
+                process_identity=identity,
+                last_activity_at=_utc_now(),
+            )
+            records[resource_id] = updated
+            self._write_unlocked(tuple(records[key] for key in sorted(records)))
+            return updated
+
     def get(self, resource_id: str) -> ResourceRecord:
         for record in self.load():
             if record.resource_id == resource_id:
@@ -777,6 +825,35 @@ class ResourceManager:
             run_state=run_state.value,
             status=ResourceStatus.RECLAIMED.value,
             cleanup_result=f"exit_{int(exit_code)}",
+        )
+
+    def rebind_current_process(
+        self,
+        resource_id: str,
+        *,
+        expected_launcher_pid: int,
+        expected_run_id: str,
+        expected_lane_id: str,
+        expected_creator: str,
+        launch_binding: str,
+    ) -> ResourceRecord:
+        """Transfer a registered launcher identity to its actual interpreter.
+
+        Windows virtual-environment redirectors may create the registered
+        process and then hand execution to a second PID.  The child may accept
+        that handoff only for its exact active resource and launch binding.
+        """
+        actual_pid = os.getpid()
+        if expected_launcher_pid <= 0 or not launch_binding:
+            raise PermissionError("process launch handoff binding is incomplete")
+        return self.ledger.rebind_active_process(
+            resource_id,
+            expected_launcher_pid=expected_launcher_pid,
+            actual_pid=actual_pid,
+            expected_run_id=expected_run_id,
+            expected_lane_id=expected_lane_id,
+            expected_creator=expected_creator,
+            launch_binding=launch_binding,
         )
 
     def complete_persisted_process_after_exit(

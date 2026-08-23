@@ -87,3 +87,21 @@ def test_skill_host_boundary_reports_global_vendor_gap_without_claiming_control(
     assert report["microsoft_foundry"]["directly_host_visible"] is True
     assert report["codex_host"]["px_policy_enforced_during_direct_host_selection"] is False
     assert report["remediation"]["required_owner"] == "Codex host or user configuration"
+
+
+def test_skill_host_boundary_is_explicit_when_home_is_unavailable(
+    tmp_path: Path, monkeypatch
+) -> None:
+    root = tmp_path / "project"
+    root.mkdir()
+
+    def unavailable_home(cls) -> Path:
+        raise RuntimeError("no home")
+
+    monkeypatch.setattr(Path, "home", classmethod(unavailable_home))
+
+    report = skill_host_boundary(root)
+
+    assert report["status"] == "host-skill-root-unavailable"
+    assert report["codex_host"]["global_skill_root"] is None
+    assert report["codex_host"]["global_skill_count"] == 0

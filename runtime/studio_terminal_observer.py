@@ -6,6 +6,7 @@ import argparse
 import os
 from pathlib import Path
 import time
+import hashlib
 
 from .agent_runtime import AgentRuntimeController
 from .resource_lifecycle import ResourceManager
@@ -19,24 +20,35 @@ def _wait_for_observer_binding(
     *,
     observer_run_id: str,
     kind: str,
-    pid: int,
+    launch_nonce: str,
     timeout_seconds: float = 8.0,
 ):
     """Wait for the launcher to publish this already-started process identity."""
     deadline = time.monotonic() + max(0.1, timeout_seconds)
     while True:
-        observer = next(
-            (
-                record
-                for record in manager.ledger.load()
-                if record.run_id == observer_run_id
-                and record.pid == pid
-                and record.active
-                and record.lane_id == f"studio-{kind}-terminal-observer"
-            ),
-            None,
-        )
+        matches = [
+            record
+            for record in manager.ledger.load()
+            if record.run_id == observer_run_id
+            and record.active
+            and record.lane_id == f"studio-{kind}-terminal-observer"
+            and record.creator == "px-studio-terminal-observer"
+        ]
+        observer = matches[0] if len(matches) == 1 else None
         if observer is not None:
+            binding = hashlib.sha256(
+                f"{observer_run_id}\0{kind}\0{launch_nonce}".encode()
+            ).hexdigest()
+            observer = manager.rebind_current_process(
+                observer.resource_id,
+                expected_launcher_pid=int(observer.pid or 0),
+                expected_run_id=observer_run_id,
+                expected_lane_id=f"studio-{kind}-terminal-observer",
+                expected_creator="px-studio-terminal-observer",
+                launch_binding=binding,
+            )
+            if observer.pid != os.getpid():
+                raise PermissionError("terminal observer process handoff is invalid")
             return observer
         if time.monotonic() >= deadline:
             raise PermissionError("terminal observer resource binding is invalid")
@@ -49,7 +61,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--kind", choices=("agent", "workflow"), required=True)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--observer-run-id", required=True)
+    parser.add_argument("--launch-nonce", required=True)
     args = parser.parse_args(argv)
+    if args.observer_run_id != f"studio-finalizer-{args.run_id}-{args.launch_nonce}":
+        raise PermissionError("terminal observer launch binding is invalid")
     root = args.root.resolve(strict=True)
     state_root = root / ".engineering-bootstrap" / "studios" / (
         "agents" if args.kind == "agent" else "workflows"
@@ -59,7 +74,7 @@ def main(argv: list[str] | None = None) -> int:
         manager,
         observer_run_id=args.observer_run_id,
         kind=args.kind,
-        pid=os.getpid(),
+        launch_nonce=args.launch_nonce,
     )
     controller = (
         AgentRuntimeController(root)

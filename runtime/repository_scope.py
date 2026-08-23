@@ -13,6 +13,7 @@ EXTERNAL_ENVIRONMENT_PARTS = frozenset({"node_modules", ".vscode-test"})
 DERIVED_CUSTODY_ROOTS = frozenset(
     {
         ".lock-recovery-receipts",
+        "coordination",
         "diagnostics",
         "environment",
         "project-map",
