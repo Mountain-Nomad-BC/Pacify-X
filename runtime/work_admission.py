@@ -307,6 +307,33 @@ class RuntimeWorkPlane:
                     )
                 time.sleep(0.025)
 
+        # The producer can publish its cache and release the operation lock
+        # between this consumer's failed claim and its next claim attempt. In
+        # that handoff window the consumer owns the lock, but it is still a
+        # joiner for the just-published identical input. Recheck after
+        # acquisition so lock handoff never becomes a duplicate execution.
+        cached = self._read_cache(cache_path) if cache_path.is_file() else None
+        if cached is not None and (
+            cached.get("input_sha256") == input_sha
+            and float(cached.get("created_epoch", 0)) >= join_started_epoch
+        ):
+            waited = time.monotonic() - wait_started
+            try:
+                self._record_join(operation, reason, waited)
+            finally:
+                if operation_lock.is_dir():
+                    self._release_directory(operation_lock)
+            return {
+                "result": cached["result"],
+                "admission": {
+                    "decision": "joined",
+                    "operation": operation,
+                    "reason": reason,
+                    "input_sha256": input_sha,
+                    "wait_seconds": round(waited, 6),
+                },
+            }
+
         token: Path | None = None
         operation_id = f"{key}-{uuid4().hex}"
         started = time.perf_counter()

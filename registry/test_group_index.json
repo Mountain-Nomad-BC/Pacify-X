@@ -2057,7 +2057,7 @@
         "venv",
         "xml.etree.ElementTree"
       ],
-      "index_state": "parsed",
+      "index_state": "reused",
       "sha256": "b6be282b92441eacd5556a1cdb4d5abc765e6e550577e1301ed135f61558ee01"
     },
     "runtime/release_distribution.py": {
@@ -2659,8 +2659,8 @@
         "typing",
         "uuid"
       ],
-      "index_state": "reused",
-      "sha256": "486343405cad51165ac417055b8179ea45dbc9d552bc14477f06dd4e6e44fa02"
+      "index_state": "parsed",
+      "sha256": "ce044c73c74f0c6dc01e5d5975bc77803d0e6935a8af2f957336b26d68950960"
     },
     "runtime/workflow_studio.py": {
       "imports": [
@@ -5649,7 +5649,7 @@
         "tempfile",
         "unittest.mock"
       ],
-      "index_state": "parsed",
+      "index_state": "reused",
       "sha256": "52a58bea6e9d06b4a420b9ddfb3c77dd9e649ee643d155df1a0f03f700eb0f4c"
     },
     "tests/test_release_distribution_controls.py": {
@@ -6437,7 +6437,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "676a0edcf22d71a8c63a8829b7c98e5bf15d5211f42581f6879cc5e4e3d2a8e0",
+      "input_sha256": "a4b5875c84e46dff58aff5e60f949aa7663b8df0093b59bc95f3cb1feb62e1b4",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6513,7 +6513,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "3cdf3f080e243eb58413c1b534fc94182e8207dbf09864514dada4cdb128a15c",
+      "input_sha256": "a8dcc4ecf8b9628a4b98ccd2f110e9ea6235b26ebffda3c8a16f7f0cfb8dde92",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6582,7 +6582,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "9932a7bf90e299c508e90569270500fb5346ffaa4bf38fa4f735c8d42ced7a67",
+      "input_sha256": "fc23f731efb1ae5aac66a58e1603c764b5b7ac294eba6456410138ccdeabe4d7",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6627,7 +6627,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "ee12b546a04707bbe5129229e317d7ffa912aa65b5c635ed935f61625569f6a5",
+      "input_sha256": "5414d4b3ed429d0b53523a9373c5afec551480154a89da01fd33c357c00000d1",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -8142,7 +8142,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "c3920af35aeb49aa2137dba0ef9f5833c3feca88d149852d9fb97cff307c15ea",
+      "input_sha256": "44d5666aeeb02553cb580734c293157b45b7834cdb3789c561be208680c4875e",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -8384,7 +8384,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin A through F; this lane shares canonical registry state with core-n-s and must not overlap it.",
       "group": "core-a-f",
-      "input_sha256": "4f4391afda509ea846b5a3a5aa1fcb497d2a23f84d3016b6699b1a28ecda0f7c",
+      "input_sha256": "ba88bdb10d5ead3237bc13296e1924f006011aaa98709f3da61c8380f6c6e0ee",
       "inputs": [
         "builders/declared_suite_builder.py",
         "builders/declared_suite_support_builder.py",
@@ -9253,7 +9253,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin T through Z; this lane reads or mutates shared canonical repository state.",
       "group": "core-t-z",
-      "input_sha256": "12155d09bc30c293cf02283d178e82da082af503a4eb9352ad6c1d3960eae74d",
+      "input_sha256": "1cde29c9fc1851d66724dca5479846129017e985ad240caa30cad4f5b6c9fb1d",
       "inputs": [
         "builders/adapter_builder.py",
         "builders/common.py",
@@ -9324,8 +9324,8 @@
       "timeout_seconds": 600.0
     }
   ],
-  "parsed_file_count": 2,
-  "reused_file_count": 500,
+  "parsed_file_count": 1,
+  "reused_file_count": 501,
   "schema_version": "px.test-group-index/1.0",
   "test_file_count": 195,
   "topology_sha256": "b5b65e8880f06a175189196aa9e07463f75ee51a792e294a4e649b7a75fe03f1",
