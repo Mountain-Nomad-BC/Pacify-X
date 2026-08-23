@@ -94,6 +94,25 @@ class SanitizationAuditTests(unittest.TestCase):
             self.assertEqual(result["identifier_hit_count"], 0)
             self.assertTrue(result["scoped_valid"])
 
+    def test_external_environment_and_derived_custody_are_outside_product_scan(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            token = "re" + "my"
+            for relative in (
+                ".tmp/cache/private.txt",
+                ".venv-certify/private.txt",
+                "Python/private.txt",
+                ".engineering-bootstrap/operation-bus/wal/owned.zip",
+                ".engineering-bootstrap/project-map-history-archives/owned.zip",
+            ):
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(token, encoding="utf-8")
+            result = audit(root)
+            self.assertTrue(result["scoped_valid"], result)
+            self.assertEqual(result["identifier_hit_count"], 0)
+            self.assertEqual(result["active_zip_count"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

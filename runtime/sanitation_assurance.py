@@ -9,6 +9,7 @@ import re
 from typing import Any
 
 from .bounded_walk import WalkLimits, bounded_walk
+from .repository_scope import is_external_environment_relative
 from .secret_scanning import scan_secret_shapes
 
 
@@ -17,7 +18,6 @@ EMAIL_PATTERN = re.compile(
 )
 SANITATION_MAX_BYTES = 2 * 1024 * 1024 * 1024
 EXCLUDED_TREE_NAMES = {
-    ".engineering-bootstrap",
     ".mypy_cache",
     ".pytest_cache",
     ".ruff_cache",
@@ -86,7 +86,8 @@ def build_sanitation_summary(
         ),
         symlink_policy="reject",
         exclude=lambda relative: (
-            relative == ".git"
+            is_external_environment_relative(relative)
+            or relative == ".git"
             or relative.startswith(".git/")
             or relative == "evidence/bundles"
             or relative.startswith("evidence/bundles/")

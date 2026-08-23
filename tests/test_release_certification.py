@@ -11,6 +11,7 @@ from runtime.release_certification import (
     FINALIZER_FULL_REPAIR_PENDING,
     _certificate_ledger_errors,
     _commit_release_evidence,
+    _copy_clean,
     _junit_case_gate,
     _junit_metadata_gate,
     _junit_totals,
@@ -25,6 +26,41 @@ from runtime.full_repair import validate_full_repair_ledger
 
 
 ROOT = Path(__file__).parents[1]
+
+
+def test_clean_release_copy_uses_the_canonical_product_boundary() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        root = Path(directory)
+        source = root / "source"
+        destination = root / "destination"
+        (source / "runtime").mkdir(parents=True)
+        (source / "runtime/owned.py").write_text("owned = True\n", encoding="utf-8")
+        (source / ".engineering-bootstrap").mkdir()
+        (source / ".engineering-bootstrap/owned.json").write_text("{}\n", encoding="utf-8")
+        for relative in (
+            ".tmp/host-cache.bin",
+            ".venv-certify/dependency.txt",
+            "Python/runtime.txt",
+            ".engineering-bootstrap/diagnostics/cache.json",
+            ".engineering-bootstrap/operation-bus/wal/owned.zip",
+            ".engineering-bootstrap/project-map-history-archives/owned.zip",
+        ):
+            path = source / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("not product input\n", encoding="utf-8")
+
+        _copy_clean(source, destination)
+
+        assert (destination / "runtime/owned.py").is_file()
+        assert (destination / ".engineering-bootstrap/owned.json").is_file()
+        assert not (destination / ".tmp").exists()
+        assert not (destination / ".venv-certify").exists()
+        assert not (destination / "Python").exists()
+        assert not (destination / ".engineering-bootstrap/diagnostics").exists()
+        assert not (destination / ".engineering-bootstrap/operation-bus").exists()
+        assert not (
+            destination / ".engineering-bootstrap/project-map-history-archives"
+        ).exists()
 
 
 def _eligible_clone() -> Path:

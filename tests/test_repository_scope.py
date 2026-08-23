@@ -21,6 +21,9 @@ def test_local_dependency_installations_are_pruned_at_the_root() -> None:
         ".engineering-bootstrap/operation-bus/wal/committed/operation/after.json"
     )
     assert is_external_environment_relative(".engineering-bootstrap/project-map/index.json")
+    assert is_external_environment_relative(
+        ".engineering-bootstrap/project-map-history-archives/history.zip"
+    )
     assert is_external_environment_relative(".engineering-bootstrap/studios/agents/revision.json")
     assert is_external_environment_relative("projects/pacify-x/runtime/cli.py")
     assert is_external_environment_relative("projects_tracking/project-registry.json")

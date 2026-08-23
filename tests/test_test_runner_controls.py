@@ -55,7 +55,10 @@ def test_timeout_preserves_partial_output() -> None:
         ],
         cwd=ROOT,
         environment=os.environ,
-        timeout_seconds=0.25,
+        # A fresh Windows interpreter can take longer than 250 ms to start on
+        # a loaded certification host. The child still blocks for 60 seconds,
+        # so this remains a bounded timeout/partial-output assertion.
+        timeout_seconds=2.0,
     )
     assert result["timed_out"]
     assert "partial-out" in result["stdout"] and "partial-err" in result["stderr"]

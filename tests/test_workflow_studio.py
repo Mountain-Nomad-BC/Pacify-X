@@ -521,7 +521,7 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
         (WorkflowPort("seconds", "number"),),
         (grant.grant_id,),
         "fail-closed",
-        5,
+        10,
     )
     definition = WorkflowDefinition(
         "workflow:lifecycle", "1.0.0", "human:owner", (first, slow), ()
@@ -537,7 +537,9 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
         },
     )
     studio.validate_and_admit(definition)
-    inputs = {"node:first.value": 1, "node:slow.seconds": 1.0}
+    # Keep a real pause/cancel window after a clean-room status subprocess
+    # starts on Windows, below the admitted node deadline.
+    inputs = {"node:first.value": 1, "node:slow.seconds": 4.0}
     start_payload = {**asdict(definition), "run_inputs": inputs, "approvals": {}}
     approval = approval_proof(tmp_path, "workflow", "start", start_payload)
     started = _one_shot(tmp_path, "workflow", "start", {**start_payload, "approval_capability": approval})

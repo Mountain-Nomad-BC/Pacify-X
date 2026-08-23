@@ -163,7 +163,9 @@ def test_preserved_user_custody_is_excluded_from_release_sanitation() -> None:
             ".venv-certify/third-party.txt",
             "Python/runtime.txt",
             "node_modules/dependency.txt",
-            ".engineering-bootstrap/state.txt",
+            ".tmp/host-cache.txt",
+            ".engineering-bootstrap/diagnostics/state.txt",
+            ".engineering-bootstrap/operation-bus/wal/state.txt",
         ):
             generated = root / relative
             generated.parent.mkdir(parents=True, exist_ok=True)

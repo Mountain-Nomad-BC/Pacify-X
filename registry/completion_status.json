@@ -296,7 +296,7 @@
   "current_gates": {
     "valid": false,
     "blocking_ids": [
-      "group:release-audit"
+      "section:testing-governance"
     ]
   },
   "certification_freshness": {
@@ -305,10 +305,10 @@
     "evidence_identity_current": false,
     "evidence_identity_evaluated": false,
     "evidence_receipts_current": true,
-    "failed_receipt_ids": [
-      "group:release-audit"
+    "failed_receipt_ids": [],
+    "stale_receipt_ids": [
+      "section:testing-governance"
     ],
-    "stale_receipt_ids": [],
     "dependency_stale_receipt_ids": []
   },
   "release_certificate": {

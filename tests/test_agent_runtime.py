@@ -692,7 +692,10 @@ def test_agent_session_pause_resume_cancel_and_denial_are_real_owned_lifecycle(
     controller.admit(spec)
     task = {
         "objective": "exercise durable lifecycle",
-        "tool_calls": [{"tool": "delay", "input": 1.0}],
+        # Keep a real lifecycle-control window after a clean-room status
+        # subprocess starts on Windows while preserving the worker's closed
+        # per-call delay bound.
+        "tool_calls": [{"tool": "delay", "input": 1.5}] * 4,
     }
     start_payload = {**asdict(spec), "instructions": body, "task": task}
     approval = approval_proof(tmp_path, "agent", "start", start_payload)

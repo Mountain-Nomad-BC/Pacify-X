@@ -7,6 +7,8 @@ import json
 from pathlib import Path
 import re
 
+from runtime.repository_scope import is_external_environment_relative
+
 
 TERMS = ("r" + "ie", "re" + "my", "rh" + "eem")
 PATTERN = re.compile(
@@ -112,7 +114,7 @@ def audit(
         if any(
             part in EXCLUDED_DIRECTORIES or part in excluded_names
             for part in path.relative_to(resolved).parts
-        ):
+        ) or is_external_environment_relative(path.relative_to(resolved)):
             continue
         if not path.is_file() or path.resolve() in ignored_paths:
             continue

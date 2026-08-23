@@ -146,7 +146,7 @@
       "description": "Full source profile plus exact tools, clean build, installed wheel, reconciliation, strict audit, and sanitization.",
       "includes": ["full"],
       "gates": ["exact_tools", "registry", "contracts", "graphs", "integrations", "generated_outputs", "sanitization", "build", "installed_wheel"],
-      "timeout_seconds": 3600,
+      "timeout_seconds": 5400,
       "environment": {"PYTHONNOUSERSITE": "1"}
     }
   }

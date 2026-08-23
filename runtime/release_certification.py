@@ -46,6 +46,7 @@ from .release_identity import (
     verify_recorded_git_identity,
 )
 from .release_signing import sign_certificate, verify_certificate_signature
+from .repository_scope import is_external_environment_relative
 from .test_runner import run_test_command
 
 
@@ -470,7 +471,7 @@ def run_release_gates(
     _dump(evidence_dir / "installed-wheel.json", installed_receipt)
     from .test_profiles import resolve_test_profile
 
-    profile = resolve_test_profile(root, "full")
+    profile = resolve_test_profile(root, "release")
     tests_started = time.monotonic()
     junit_path = evidence_dir / "full-tests.junit.xml"
     coverage_path = evidence_dir / "coverage.json"
@@ -696,22 +697,33 @@ def run_release_gates(
 
 
 def _copy_clean(source: Path, destination: Path) -> None:
+    source = source.resolve()
+    generated = shutil.ignore_patterns(
+        ".git",
+        "__pycache__",
+        ".pytest_cache",
+        ".ruff_cache",
+        "*.pyc",
+        "*.pyo",
+        "*.egg-info",
+        "build",
+        "dist",
+        "release.lock",
+        "release-transaction.json",
+    )
+
+    def ignore(directory: str, names: list[str]) -> set[str]:
+        relative_directory = Path(directory).resolve().relative_to(source)
+        ignored = set(generated(directory, names))
+        for name in names:
+            if is_external_environment_relative(relative_directory / name):
+                ignored.add(name)
+        return ignored
+
     shutil.copytree(
         source,
         destination,
-        ignore=shutil.ignore_patterns(
-            ".git",
-            "__pycache__",
-            ".pytest_cache",
-            ".ruff_cache",
-            "*.pyc",
-            "*.pyo",
-            "*.egg-info",
-            "build",
-            "dist",
-            "release.lock",
-            "release-transaction.json",
-        ),
+        ignore=ignore,
     )
 
 

@@ -9,10 +9,11 @@ from pathlib import Path
 import re
 from typing import Iterable
 
+from .repository_scope import is_external_environment_relative
+
 
 SKIP_DIRECTORIES = {
     ".git",
-    ".engineering-bootstrap",
     ".pytest_cache",
     ".ruff_cache",
     ".vscode-test",
@@ -139,9 +140,12 @@ def scan_secret_shapes(
     errors: list[dict[str, str]] = []
     source_files: list[Path] = []
     for directory, names, files in os.walk(resolved, topdown=True, followlinks=False):
+        relative_directory = Path(directory).relative_to(resolved)
         names[:] = sorted(
             name for name in names
-            if name not in SKIP_DIRECTORIES and not name.startswith(".venv")
+            if name not in SKIP_DIRECTORIES
+            and not name.startswith(".venv")
+            and not is_external_environment_relative(relative_directory / name)
         )
         source_files.extend(Path(directory) / name for name in sorted(files))
     for path in source_files:

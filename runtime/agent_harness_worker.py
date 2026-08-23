@@ -70,6 +70,20 @@ def main() -> int:
         if not isinstance(call, dict) or set(call) != {"tool", "input"}:
             raise ValueError("agent tool call contract is invalid")
         tool = str(call["tool"])
+        # Keep the owned-process idle watchdog informed without exposing tool
+        # inputs or results. The controller consumes only the final JSON line.
+        print(
+            json.dumps(
+                {
+                    "schema_version": "px.agent-harness-progress/1.0",
+                    "status": "running",
+                    "tool_index": index,
+                    "tool": tool,
+                },
+                sort_keys=True,
+            ),
+            flush=True,
+        )
         if tool == "sha256":
             result = {"input_sha256": digest(call["input"])}
         elif tool == "json-keys" and isinstance(call["input"], dict):
