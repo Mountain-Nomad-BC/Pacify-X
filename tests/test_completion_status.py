@@ -4,7 +4,7 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from scripts.build_completion_status import build, write
+from scripts.build_completion_status import build, write, write_runtime
 from runtime.test_profiles import group_status, section_status
 
 
@@ -121,3 +121,27 @@ def test_completion_projection_writer_is_atomic_and_exact() -> None:
         assert not target.with_name(f".{target.name}.prepared").exists()
     finally:
         target.write_bytes(before)
+
+
+def test_runtime_completion_projection_binds_exact_artifact_custody() -> None:
+    target = (
+        ROOT
+        / ".engineering-bootstrap"
+        / "runtime-core"
+        / "completion_status.json"
+    )
+    before = target.read_bytes() if target.is_file() else None
+    artifact_dir = ROOT / "extension" / "dist"
+    try:
+        written = write_runtime(ROOT, artifact_dir=artifact_dir)
+        stored = json.loads(target.read_text(encoding="utf-8"))
+        assert stored == written
+        assert stored["runtime_projection"]["artifact_dir"] == str(
+            artifact_dir.resolve()
+        )
+        assert not target.with_name(f".{target.name}.prepared").exists()
+    finally:
+        if before is None:
+            target.unlink(missing_ok=True)
+        else:
+            target.write_bytes(before)

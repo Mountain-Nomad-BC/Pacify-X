@@ -1,22 +1,17 @@
 {
-  "artifact_count": 0,
+  "artifact_count": 1,
   "authority": "Exact byte identities plus live semantic receipt currentness; historical evidence is never current by presence alone.",
-  "blocking_reasons": [
-    "No exact VSIX artifact is indexed; source/test evidence alone is not an installed-artifact certification.",
-    "Required linux installed-VSIX smoke does not bind the current exact artifact and engine manifest.",
-    "Required win32 installed-VSIX smoke does not bind the current exact artifact and engine manifest.",
-    "Windows and Linux installed-host platform-independent dashboard semantics differ."
-  ],
+  "blocking_reasons": [],
   "current_required_receipt_count": 16,
   "engine_identity": {
-    "file_total": 5412,
+    "file_total": 5411,
     "manifest_path": "registry/engine_identity.json",
-    "manifest_sha256": "30df895d26fa4a7bc866f900abe58a3f34dc22a6d688d2be7f1dfb80a94a6a87",
+    "manifest_sha256": "dd3f3b176c9a3d808a35dba730002439bc396216b4c887da4f639add20415113",
     "schema_version": "px.engine-identity-validation/1.0",
-    "tree_sha256": "eadda1dc165cc845d7be418dab821cd959bf78ea0b89304c491db31e190b1c6d",
+    "tree_sha256": "bea85ed2ac63d7a820086b6a636e6fd5550f658900512aa418444ad0bfdea79e",
     "valid": true
   },
-  "generated_utc": "2026-08-23T13:32:35.799579Z",
+  "generated_utc": "2026-08-23T17:31:09.065859Z",
   "identity": {
     "extension_version": "0.6.49",
     "python_version": "0.7.0.dev0"
@@ -32,7 +27,7 @@
     "win32 installed smoke: test:unsupported:The test-result event is proposed/host-gated in some VS Code builds; unavailable getters are reported instead of breaking activation."
   ],
   "namespace": "python-0.7.0.dev0__vscode-0.6.49",
-  "record_count": 18,
+  "record_count": 19,
   "records": [
     {
       "bytes": 1162,
@@ -95,19 +90,19 @@
       "sha256": "10256608f0f622271990ce108c82acccb64cbed5b4e6351c01e2536e41f8f2c7"
     },
     {
-      "bytes": 3646,
+      "bytes": 3649,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "6325e4780a299f933b59d8b5c883d3625c3d669092d602ff57fee0418b42ac27",
+        "expected_input_sha256": "99946367f460eee852f7f229502a1946762f05119f524cd960c7379280ba4e8a",
         "fresh": true,
         "passed": true,
         "receipt_id": "studio-memory-graph",
         "receipt_scope": "section"
       },
-      "sha256": "4b1de4500a738624341a9bba41e7d0108d0d5794ab34ca47c80bb62e329a98b9"
+      "sha256": "bf9433cac23942d017b90f70ec2b06fe64484fa4886f2dfe265c693ba09f47f5"
     },
     {
       "bytes": 961,
@@ -116,27 +111,27 @@
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "c2d134e5c12c3ff659299abcc1d62ef2b55b9ea595c6f778f694f1d861ad6559",
+        "expected_input_sha256": "3c6ce929eb04fbeeb4789af15e11f90e95c95000bc780cb2338db81fa7b66e2b",
         "fresh": true,
         "passed": true,
         "receipt_id": "testing-governance",
         "receipt_scope": "section"
       },
-      "sha256": "ada3b71020aee98f6fd36289218bf3bfe4d7f9061997a9e9cf5fa75f4441904b"
+      "sha256": "ca9a07bae94e8881700fa1d2e086a16d1abc762d9923920453a241e55abe46ba"
     },
     {
-      "bytes": 659,
+      "bytes": 660,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/core-a-f.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "ffd19e10b7de798835194466150c0fb60cb7643c8010213d9b2f7bff1f5a417f",
+        "expected_input_sha256": "d83582f615b30851c6cda8d88ad17ef7f7b19adc224cbacd7802f09bc0735b3a",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-a-f",
         "receipt_scope": "group"
       },
-      "sha256": "3aea45350c3f94b5db9e9175e47d207708ab32148f47fc6e9d79e78937d3d4c3"
+      "sha256": "9f0ce448c02918aa9ae944bcdb8f97c8e14c1390f89e79b162cb6b4ed837aff4"
     },
     {
       "bytes": 659,
@@ -144,13 +139,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/core-g-m.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "a96b5b473bccbdc3820cb3a50052b165f55ec46bdc82ae2e4356931e15455ab3",
+        "expected_input_sha256": "da4b7349b9272d2009bcbfc1dd699b67f1dbc3d9a9714edb0ed8df48c03ec036",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-g-m",
         "receipt_scope": "group"
       },
-      "sha256": "a48e2a2c249809075e82decd008f7dd12c6ea92d51e865481aa1552eb0c1469c"
+      "sha256": "1c3551cfe7f3d9d78772d5b5f5d07830324b7e7693fd97c7596a134ee7fd4aa8"
     },
     {
       "bytes": 660,
@@ -158,13 +153,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/core-n-s.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "a92a481867ac0fa76f326e68d19accec9fd35c964244e0fa8db0c5397cad9c81",
+        "expected_input_sha256": "be261eff34b0e127813ec5a1c007675871bf455f978e4e3ecaba76859cdb6209",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-n-s",
         "receipt_scope": "group"
       },
-      "sha256": "01129de422b669c402d757e3fe1596e27abb692b1314a37a2ccaff0a736e29b8"
+      "sha256": "9529fa5a7dd1434f660115968512b840167f8d379502b4e64356c7041c9c991a"
     },
     {
       "bytes": 659,
@@ -172,13 +167,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/core-t-z.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "c9405bf4db4f50215ec8445315e1dcad808c62f151a4cec820a1ba9c736b2394",
+        "expected_input_sha256": "6a1f47bb0a6143dc98792518aa05ead7622441cdc211cdf599f259880e66e08d",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-t-z",
         "receipt_scope": "group"
       },
-      "sha256": "59cc2a2c37a832b9d44ed1038413732c8c2ffcb578dea4e40bc219322d47ce3a"
+      "sha256": "39cd42bb96959cdce4c7bba70c8f25d9c5ede722e9be3215167c2b5b2aa765cd"
     },
     {
       "bytes": 667,
@@ -186,13 +181,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/derived-integrity.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "bde67243b015d28be853d5c205eb9caf40eb0dfea93b6aea96d9b6324e7c944d",
+        "expected_input_sha256": "1e1cfa4d4177798c42cfabce2c65dfc4bc8b2c032790aef7844bde6dcfd9d4a4",
         "fresh": true,
         "passed": true,
         "receipt_id": "derived-integrity",
         "receipt_scope": "group"
       },
-      "sha256": "5839aa4e170e209dcc35220201d6f1596d8b457c1ee5f0a6403fbdaec66b1ef6"
+      "sha256": "175937aecfc374998b7f793cc5000368116eaa6f21b753c3b8c98641b77f792e"
     },
     {
       "bytes": 666,
@@ -200,13 +195,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/exact-installed.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "59e7e381e86aaa2da474c08e23577e374b55cf9db8e0d226f120a91d47c89bfd",
+        "expected_input_sha256": "25c6897d743a7e91e3fb85a094b751089d94e32199f6a0519c729e6dc2a5444e",
         "fresh": true,
         "passed": true,
         "receipt_id": "exact-installed",
         "receipt_scope": "group"
       },
-      "sha256": "eb5dafc780347c8a00ed272891aa5d1ff28b1220080f4115c69d3fe7dffe0fef"
+      "sha256": "f6c2f0f7c9e463a7347fa4f365e129fd83b66d222a939df4427b6b91da43c303"
     },
     {
       "bytes": 668,
@@ -228,13 +223,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/release-audit.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "e49892ba5865e57ef85720935f4ae6ea851441e98841a70b96901b3e8e234dbf",
+        "expected_input_sha256": "454af8d0f9d7740ee501d3bdb892a4ad183406c8df1ba1d09a8b33bfac1f891a",
         "fresh": true,
         "passed": true,
         "receipt_id": "release-audit",
         "receipt_scope": "group"
       },
-      "sha256": "a1945d444dee573c83d7cb22b1e0a8eb1056363d1689cb25080786713a96b463"
+      "sha256": "51c30beb2de3b721507e821d1f958054dcc2a002592185e47916e4ec54d3ced8"
     },
     {
       "bytes": 664,
@@ -242,13 +237,13 @@
       "path": ".engineering-bootstrap/test-evidence/groups/release-build.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "8bcf3ffdd857990a464533922b752fa7ef2ef732160ebb36e6c8bf04804bb1e4",
+        "expected_input_sha256": "4ec9d39897c90dfd30071a15c047d7c9d0f6ab7c7020acb0d19d4a87f9228ae7",
         "fresh": true,
         "passed": true,
         "receipt_id": "release-build",
         "receipt_scope": "group"
       },
-      "sha256": "643eb15e38b2a45d6e05f7dec4591c68e7619bd8dc4728580114da0a2c53cf20"
+      "sha256": "6a9759c9ebb691a8f2958d0505e63c65ee96303359d36957c2da0014388f2361"
     },
     {
       "bytes": 673,
@@ -256,25 +251,34 @@
       "path": ".engineering-bootstrap/test-evidence/groups/structural-adversarial.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "a02b1f9d95187a356bdd87d15ffc7f7914e5d5401bb17ad9788894a00f6d761e",
+        "expected_input_sha256": "c471c46f3d09144847c300680a79835a24b00fef7787bf196221027cee859160",
         "fresh": true,
         "passed": true,
         "receipt_id": "structural-adversarial",
         "receipt_scope": "group"
       },
-      "sha256": "c4af3750db4caa47255ed61d36c3db2c9527425edd338d4ace88339a0b810a46"
+      "sha256": "b7be4eaf2070f75aa4d1152f15d6f98711b973adfa54340e3e1dbb5f5507d370"
     },
     {
-      "artifact_bound": false,
+      "artifact_version": "0.6.49",
+      "bytes": 4217144,
+      "kind": "vsix",
+      "locator_kind": "repository-relative",
+      "path": "extension/dist/pacify-x-vscode-0.6.49.vsix",
+      "sha256": "c167ccf2dc04648a1b6fa205a4af8e4bd7ed109b97e5cd5b74d200ed0f6c6cfa",
+      "version_current": true
+    },
+    {
+      "artifact_bound": true,
       "artifact_sha256": "c167ccf2dc04648a1b6fa205a4af8e4bd7ed109b97e5cd5b74d200ed0f6c6cfa",
-      "bytes": 20515,
+      "bytes": 20517,
       "coverage_complete": true,
       "coverage_tier": "B",
       "engine_identity": {
-        "file_total": 5283,
+        "file_total": 5411,
         "manifest_path": "registry/engine_identity.json",
-        "manifest_sha256": "99fd348148bf9696626cec119963ad35fcfd697c80851f7a636ae14ab9d2e830",
-        "tree_sha256": "da22a962f8b66c58444845a26490bff65a3e73cbb5d0e99ae97dc8e469805ff1"
+        "manifest_sha256": "dd3f3b176c9a3d808a35dba730002439bc396216b4c887da4f639add20415113",
+        "tree_sha256": "bea85ed2ac63d7a820086b6a636e6fd5550f658900512aa418444ad0bfdea79e"
       },
       "kind": "installed-vsix-smoke",
       "limitations": [
@@ -285,19 +289,19 @@
       ],
       "path": "extension/evidence/installed-vsix-smoke.json",
       "platform": "win32",
-      "sha256": "a4dac7101bd9b394961bfce7cc8f906924e9444e8ee4a7f129e008f56c71a188"
+      "sha256": "3e8093fc5c165e9ac890212518b243fb28ab1803324ea9b7228ba982eb9bf01a"
     },
     {
-      "artifact_bound": false,
-      "artifact_sha256": "a11c2e6ce8bda6a1ea085cde0ca0f96f8f25b3dfbf948422b13a43499f015c0e",
-      "bytes": 19143,
+      "artifact_bound": true,
+      "artifact_sha256": "c167ccf2dc04648a1b6fa205a4af8e4bd7ed109b97e5cd5b74d200ed0f6c6cfa",
+      "bytes": 20542,
       "coverage_complete": true,
       "coverage_tier": "B",
       "engine_identity": {
-        "file_total": 3651,
+        "file_total": 5411,
         "manifest_path": "registry/engine_identity.json",
-        "manifest_sha256": "d48158ba7f40cf128a484c1ad11c93385ff3cd26f2d0fcdcece52cf5680067ad",
-        "tree_sha256": "c011b65160517a0464394042b0a41e0bac1139df982d3ed5c7336f12771eded5"
+        "manifest_sha256": "dd3f3b176c9a3d808a35dba730002439bc396216b4c887da4f639add20415113",
+        "tree_sha256": "bea85ed2ac63d7a820086b6a636e6fd5550f658900512aa418444ad0bfdea79e"
       },
       "kind": "installed-vsix-smoke",
       "limitations": [
@@ -308,10 +312,10 @@
       ],
       "path": "extension/evidence/installed-vsix-smoke-linux.json",
       "platform": "linux",
-      "sha256": "38022f04caff663e6cd3df55e7c8ef872469e69ded46a237dd789330dbabe89b"
+      "sha256": "eb14a6cfe806c4b70fd9cb5914d6b7ee0395bf60e2e87cfb7541fa78fbdb5f03"
     }
   ],
   "required_receipt_count": 16,
   "schema_version": "px.current-evidence-index/1.3",
-  "valid": false
+  "valid": true
 }

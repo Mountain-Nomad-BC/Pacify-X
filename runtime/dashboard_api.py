@@ -54,6 +54,41 @@ def _read_json(path: Path, default: Any = None) -> Any:
         return default
 
 
+def _completion(root: Path) -> dict[str, Any]:
+    """Recompute a live certified projection when exact artifact custody exists."""
+    baseline = _read_json(root / "registry" / "completion_status.json", {})
+    baseline = dict(baseline) if isinstance(baseline, Mapping) else {}
+    runtime_path = (
+        root
+        / ".engineering-bootstrap"
+        / "runtime-core"
+        / "completion_status.json"
+    )
+    runtime_value = _read_json(runtime_path, {})
+    if isinstance(runtime_value, Mapping):
+        runtime_projection = runtime_value.get("runtime_projection", {})
+        artifact_dir = (
+            runtime_projection.get("artifact_dir")
+            if isinstance(runtime_projection, Mapping)
+            else None
+        )
+        if isinstance(artifact_dir, str) and artifact_dir.strip():
+            try:
+                from scripts.build_completion_status import build
+
+                return dict(build(root, artifact_dir=Path(artifact_dir)))
+            except (OSError, ValueError, json.JSONDecodeError):
+                # A missing or malformed derived binding must never preserve an
+                # earlier certified claim. Recompute without artifact authority.
+                try:
+                    from scripts.build_completion_status import build
+
+                    return dict(build(root))
+                except (OSError, ValueError, json.JSONDecodeError):
+                    return baseline
+    return baseline
+
+
 def _git(root: Path, *args: str) -> str | None:
     try:
         result = subprocess.run(
@@ -1805,7 +1840,7 @@ def _build_snapshot_admitted(
     coordination = _coordination(project)
     memory = _memory(root, workspace_root)
     knowledge_core = _knowledge_core(root, knowledge)
-    completion = _read_json(root / "registry" / "completion_status.json", {})
+    completion = _completion(root)
     if not isinstance(completion, Mapping):
         completion = {}
     completion = {**dict(completion), "operational_punch_cards": _operational_punch_cards(root)}

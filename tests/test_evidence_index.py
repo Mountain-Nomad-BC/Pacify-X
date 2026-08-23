@@ -6,7 +6,7 @@ from pathlib import Path
 import zipfile
 
 from runtime.evidence_index import build_index, publish_index
-from runtime.engine_identity import write_engine_identity
+from runtime.engine_identity import build_engine_identity, write_engine_identity
 from runtime.test_profiles import (
     build_test_group_index,
     resolve_test_group,
@@ -82,6 +82,16 @@ def _fixture(root: Path) -> None:
         ),
         encoding="utf-8",
     )
+
+
+def test_engine_identity_excludes_test_group_topology(tmp_path) -> None:
+    (tmp_path / "registry").mkdir()
+    topology = tmp_path / "registry/test_group_index.json"
+    topology.write_text('{"revision":1}\n', encoding="utf-8")
+    before = build_engine_identity(tmp_path)
+    topology.write_text('{"revision":2}\n', encoding="utf-8")
+    after = build_engine_identity(tmp_path)
+    assert before == after
 
 
 def _artifact(path: Path, version: str = "2.0.0") -> Path:

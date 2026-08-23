@@ -39,7 +39,7 @@
     },
     {
       "path": "registry/current_evidence_index.json",
-      "sha256": "176f5fe33c877a5a99142388f6870a6180300850064a7192e909c273524b3bfc"
+      "sha256": "6110f26bb34711d900388e0fbaf018eb05b6d2e9633583f5518cb5b51dc2bfea"
     }
   ],
   "cards_complete": true,
@@ -298,19 +298,20 @@
     "blocking_ids": []
   },
   "certification_freshness": {
-    "fresh": false,
+    "fresh": true,
     "receipt_current": true,
-    "evidence_identity_current": false,
-    "evidence_identity_evaluated": false,
-    "evidence_receipts_current": false,
+    "evidence_identity_current": true,
+    "evidence_identity_evaluated": true,
+    "evidence_receipts_current": true,
     "failed_receipt_ids": [],
     "stale_receipt_ids": [],
     "dependency_stale_receipt_ids": []
   },
   "release_certificate": {
     "valid": false,
+    "release": "0.7.0.dev0",
     "errors": [
-      "current product is not certification-eligible"
+      "signed release certificate is missing"
     ]
   },
   "blocking_reasons": [

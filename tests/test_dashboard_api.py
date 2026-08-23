@@ -7,6 +7,7 @@ import unittest
 from unittest.mock import patch
 
 from runtime.dashboard_api import (
+    _completion,
     _hardware,
     _knowledge_core,
     _memory,
@@ -22,6 +23,32 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DashboardApiTests(unittest.TestCase):
+    def test_live_completion_recomputes_from_exact_artifact_binding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            runtime = root / ".engineering-bootstrap/runtime-core"
+            runtime.mkdir(parents=True)
+            artifact_dir = root / "artifacts"
+            artifact_dir.mkdir()
+            (runtime / "completion_status.json").write_text(
+                json.dumps(
+                    {
+                        "complete": True,
+                        "runtime_projection": {
+                            "artifact_dir": str(artifact_dir),
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with patch(
+                "scripts.build_completion_status.build",
+                return_value={"complete": False, "certified": False},
+            ) as build:
+                result = _completion(root)
+        self.assertEqual(result, {"complete": False, "certified": False})
+        build.assert_called_once_with(root, artifact_dir=artifact_dir)
+
     def test_visual_fixture_declares_demo_data_and_tracks_current_denominators(self) -> None:
         preview = (ROOT / "extension/tests/preview.html").read_text(encoding="utf-8")
         counts = build_snapshot(ROOT)["counts"]

@@ -292,6 +292,19 @@ def _redact_junit_text(value: str) -> str:
     return RELATIVE_PARENT_FRAGMENT.sub("[machine-local-path]", redacted)
 
 
+def _redact_machine_local_value(value: object) -> object:
+    """Redact machine-local paths while preserving public evidence shape."""
+    if isinstance(value, str):
+        return _redact_junit_text(value)
+    if isinstance(value, list):
+        return [_redact_machine_local_value(item) for item in value]
+    if isinstance(value, dict):
+        return {
+            key: _redact_machine_local_value(item) for key, item in value.items()
+        }
+    return value
+
+
 def _junit_metadata_gate(path: Path) -> dict[str, Any]:
     root = ET.parse(path).getroot()
     hostnames = [
@@ -593,12 +606,13 @@ def run_release_gates(
         "custody_id": Path(release_python).resolve().parent.parent.name,
         "hard_delete": False,
     }
-    installed_receipt = {
+    installed_receipt = _redact_machine_local_value({
         "schema_version": "1.0",
         **installed,
         "expected_wheel_sha256": wheel_record["sha256"],
         "artifact_filename": wheel_record["filename"],
-    }
+    })
+    assert isinstance(installed_receipt, dict)
     _dump(evidence_dir / "installed-wheel.json", installed_receipt)
     from .test_profiles import resolve_test_profile
 
@@ -639,7 +653,8 @@ def run_release_gates(
     test_timed_out = bool(test_process.get("timed_out"))
     test_log = evidence_dir / "full-tests.log"
     test_log.parent.mkdir(parents=True, exist_ok=True)
-    test_log.write_text(test_stdout + test_stderr, encoding="utf-8")
+    test_log_text = _redact_junit_text(test_stdout + test_stderr)
+    test_log.write_text(test_log_text, encoding="utf-8")
     if junit_path.is_file():
         _sanitize_junit_metadata(junit_path)
         totals = _junit_totals(junit_path)
@@ -712,6 +727,10 @@ def run_release_gates(
             **totals,
         },
         "full_test_skip_policy": skip_policy_gate,
+        "full_test_log_portability": _portable_payload_gate(test_log_text),
+        "installed_wheel_evidence_portability": _portable_payload_gate(
+            installed_receipt
+        ),
         "exact_artifact_install": {
             "valid": installed["valid"]
             and installed.get("installed_wheel_sha256") == wheel_record["sha256"],
@@ -1213,16 +1232,38 @@ def finalize_release(
     verification = verify_release_certificate(
         root, release=release, artifact_dir=selected_artifact_dir
     )
+    completion_projection: dict[str, Any] = {}
+    completion_errors: list[str] = []
+    if verification["valid"]:
+        try:
+            from scripts.build_completion_status import write_runtime
+
+            completion_projection = write_runtime(
+                root, artifact_dir=selected_artifact_dir
+            )
+            if not completion_projection.get("complete") or not completion_projection.get(
+                "certified"
+            ):
+                completion_errors.append(
+                    "live completion projection did not admit the certified release"
+                )
+        except (OSError, ValueError, json.JSONDecodeError) as error:
+            completion_errors.append(
+                f"live completion projection publication failed: "
+                f"{type(error).__name__}: {error}"
+            )
+    valid = verification["valid"] and not completion_errors
     return {
-        "valid": verification["valid"],
-        "certified": verification["valid"],
+        "valid": valid,
+        "certified": valid,
         "published": False,
         "run_id": run_id,
         "certificate": certificate_relative,
         "signature": signature_relative,
         "artifact_dir": str(selected_artifact_dir),
         "product_digest": frozen["product_digest"],
-        "errors": verification["errors"],
+        "completion": completion_projection,
+        "errors": [*verification["errors"], *completion_errors],
     }
 
 

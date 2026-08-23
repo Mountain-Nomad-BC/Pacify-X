@@ -18,6 +18,7 @@ from runtime.release_certification import (
     _junit_skip_policy_gate,
     _junit_totals,
     _portable_payload_gate,
+    _redact_machine_local_value,
     _release_environment_gate,
     _sanitize_junit_metadata,
     finalize_release,
@@ -312,6 +313,19 @@ def test_publishable_release_metadata_rejects_machine_local_paths() -> None:
         result = _portable_payload_gate({"quarantine": local_path})
         assert not result["valid"]
         assert result["nonportable_path_count"] == 1
+
+
+def test_release_evidence_redaction_preserves_shape_and_removes_local_paths() -> None:
+    value = {
+        "python_executable": r"C:\Users\example\Temp\venv\Scripts\python.exe",
+        "errors": ["from /tmp/release/venv/bin/python"],
+        "valid": True,
+    }
+    redacted = _redact_machine_local_value(value)
+    assert isinstance(redacted, dict)
+    assert redacted["valid"] is True
+    assert redacted["errors"] == ["from [machine-local-path]"]
+    assert _portable_payload_gate(redacted)["valid"]
 
 
 def test_in_progress_release_evidence_is_not_a_child_of_staged_product() -> None:

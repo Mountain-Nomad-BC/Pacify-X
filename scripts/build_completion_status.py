@@ -31,7 +31,9 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def build(root: Path) -> dict[str, object]:
+def build(
+    root: Path, *, artifact_dir: Path | None = None
+) -> dict[str, object]:
     root = root.resolve(strict=True)
     cards_path = root / "docs/PX_UNIVERSAL_VISIBILITY_PUNCH_CARDS.md"
     repairs_path = root / "registry/adversarial_repair_status.json"
@@ -191,7 +193,9 @@ def build(root: Path) -> dict[str, object]:
     if certification_eligible:
         from runtime.release_certification import verify_release_certificate
 
-        release_certificate = verify_release_certificate(root)
+        release_certificate = verify_release_certificate(
+            root, artifact_dir=artifact_dir
+        )
     else:
         release_certificate = {
             "valid": False,
@@ -300,6 +304,33 @@ def write(root: Path) -> dict[str, object]:
     root = root.resolve(strict=True)
     value = build(root)
     target = root / "registry/completion_status.json"
+    temporary = target.with_name(f".{target.name}.prepared")
+    temporary.write_text(
+        json.dumps(value, indent=2) + "\n", encoding="utf-8", newline="\n"
+    )
+    os.replace(temporary, target)
+    return value
+
+
+def write_runtime(root: Path, *, artifact_dir: Path) -> dict[str, object]:
+    """Publish a live, exact-artifact-bound projection outside product custody."""
+    root = root.resolve(strict=True)
+    artifact_dir = artifact_dir.resolve(strict=True)
+    value = build(root, artifact_dir=artifact_dir)
+    value = {
+        **value,
+        "runtime_projection": {
+            "authority": "derived live projection; recompute before display",
+            "artifact_dir": str(artifact_dir),
+        },
+    }
+    target = (
+        root
+        / ".engineering-bootstrap"
+        / "runtime-core"
+        / "completion_status.json"
+    )
+    target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_name(f".{target.name}.prepared")
     temporary.write_text(
         json.dumps(value, indent=2) + "\n", encoding="utf-8", newline="\n"
