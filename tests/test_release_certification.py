@@ -14,6 +14,7 @@ from runtime.release_certification import (
     _copy_clean,
     _junit_case_gate,
     _junit_metadata_gate,
+    _junit_skip_policy_gate,
     _junit_totals,
     _portable_payload_gate,
     _release_environment_gate,
@@ -146,6 +147,33 @@ def test_junit_named_surface_gate_requires_present_green_case() -> None:
         )
         assert _junit_case_gate(report, "test_installed_wheel_e2e")["valid"]
         assert not _junit_case_gate(report, "test_sanitization_audit")["valid"]
+
+
+def test_junit_skip_policy_allows_only_reviewed_host_conditionals() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = Path(directory) / "report.xml"
+        report.write_text(
+            '<testsuites><testsuite tests="1" skipped="1">'
+            '<testcase classname="tests.test_clean_source_export" '
+            'name="test_posix_unzip_restores_and_directly_executes_script">'
+            '<skipped message="ordinary POSIX unzip execution is verified on a host with unzip" />'
+            '</testcase></testsuite></testsuites>',
+            encoding="utf-8",
+        )
+        result = _junit_skip_policy_gate(report)
+        assert result["valid"]
+        assert result["allowed_count"] == 1
+
+        report.write_text(
+            '<testsuites><testsuite tests="1" skipped="1">'
+            '<testcase classname="tests.test_unknown" name="test_unreviewed">'
+            '<skipped message="environment unavailable" />'
+            '</testcase></testsuite></testsuites>',
+            encoding="utf-8",
+        )
+        result = _junit_skip_policy_gate(report)
+        assert not result["valid"]
+        assert result["unexpected"] == ["tests.test_unknown::test_unreviewed"]
 
 
 def test_junit_publication_evidence_removes_host_identity() -> None:

@@ -59,6 +59,24 @@ PROJECT_ESCAPE_PATH = re.compile(r"(?:^|[\\/])\.\.(?:[\\/]|$)")
 WINDOWS_LOCAL_FRAGMENT = re.compile(r"(?i)[a-z]:[\\/][^\s\"'<>]*")
 POSIX_LOCAL_FRAGMENT = re.compile(r"(?i)/(?:users|home|var/tmp|tmp)/[^\s\"'<>]*")
 RELATIVE_PARENT_FRAGMENT = re.compile(r"(?:(?:\.\.[\\/])+)[^\s\"'<>]*")
+ALLOWED_RELEASE_TEST_SKIPS = {
+    (
+        "tests.test_build_installed_host_control_evidence",
+        "test_current_host_receipt_remains_bound_when_retained_vsix_is_available",
+    ): "retained installed VSIX is external host custody",
+    (
+        "tests.test_clean_source_export",
+        "test_posix_unzip_restores_and_directly_executes_script",
+    ): "ordinary POSIX unzip execution is verified on a host with unzip",
+    (
+        "tests.test_native_skills.NativeSkillTests",
+        "test_live_workspace_original_backup_restores_exactly",
+    ): "native migration has not run",
+    (
+        "tests.test_skill_studio",
+        "test_skill_source_rejects_duplicate_canonical_directory_aliases",
+    ): "host filesystem does not permit distinct case aliases",
+}
 
 
 def _json(path: Path) -> dict[str, Any]:
@@ -217,6 +235,38 @@ def _junit_case_gate(path: Path, marker: str) -> dict[str, Any]:
         "errors": errors,
         "skipped": skipped,
         "marker": marker,
+    }
+
+
+def _junit_skip_policy_gate(path: Path) -> dict[str, Any]:
+    """Allow only reviewed host-conditional skips; reject every unknown skip."""
+
+    root = ET.parse(path).getroot()
+    allowed: list[str] = []
+    unexpected: list[str] = []
+    for case in root.iter("testcase"):
+        skipped = case.find("skipped")
+        if skipped is None:
+            continue
+        identity = (
+            str(case.attrib.get("classname", "")),
+            str(case.attrib.get("name", "")),
+        )
+        expected_reason = ALLOWED_RELEASE_TEST_SKIPS.get(identity)
+        observed_reason = " ".join(
+            filter(None, (str(skipped.attrib.get("message", "")), skipped.text or ""))
+        )
+        label = f"{identity[0]}::{identity[1]}"
+        if expected_reason and expected_reason in observed_reason:
+            allowed.append(label)
+        else:
+            unexpected.append(label)
+    return {
+        "valid": not unexpected,
+        "allowed_count": len(allowed),
+        "allowed": sorted(allowed),
+        "unexpected_count": len(unexpected),
+        "unexpected": sorted(unexpected),
     }
 
 
@@ -524,8 +574,16 @@ def run_release_gates(
     if junit_path.is_file():
         _sanitize_junit_metadata(junit_path)
         totals = _junit_totals(junit_path)
+        skip_policy_gate = _junit_skip_policy_gate(junit_path)
     else:
         totals = {"tests": 0, "failures": 0, "errors": 1, "skipped": 0}
+        skip_policy_gate = {
+            "valid": False,
+            "allowed_count": 0,
+            "allowed": [],
+            "unexpected_count": 0,
+            "unexpected": [],
+        }
     coverage_command = [
         str(release_python),
         "-m",
@@ -568,13 +626,15 @@ def run_release_gates(
             "valid": test_exit == 0
             and not test_timed_out
             and totals["tests"] > 0
-            and totals["failures"] == totals["errors"] == totals["skipped"] == 0,
+            and totals["failures"] == totals["errors"] == 0
+            and skip_policy_gate["valid"],
             "exit_code": test_exit,
             "timed_out": test_timed_out,
             "duration_seconds": round(time.monotonic() - tests_started, 6),
             "log": f"{evidence_locator_prefix}/full-tests.log",
             **totals,
         },
+        "full_test_skip_policy": skip_policy_gate,
         "exact_artifact_install": {
             "valid": installed["valid"]
             and installed.get("installed_wheel_sha256") == wheel_record["sha256"],
